@@ -1,1 +1,30 @@
 @import "tailwindcss";
+
+@theme {
+  /* height: uses the spacing scale */
+  --spacing-form-element: 38px;
+
+  /* font sizes */
+  --font-size-base: 12px;
+
+  /* spacing custom */
+  --spacing-small: 4px;
+  --spacing-medium: 8px;
+  --spacing-large: 16px;
+
+  /* colors */
+  --color-grey-dark: #454545;
+  --color-grey-minor: #8b9ca0;
+  --color-grey-light: #ccc;
+
+  --color-blue-light: #a7dbd8;
+  --color-blue-dark: #062e4c;
+
+  --color-red-light: #ffa5a5;
+  --color-red-dark: #4c0606;
+
+  --color-bg: #fff;
+
+  /* shadows */
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.2);
+}

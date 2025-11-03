@@ -1,1 +1,3 @@
-export { default as Info } from "./Info/Info";
+export * from "./atoms";
+export * from "./molecules";
+export * from "./organisms";
