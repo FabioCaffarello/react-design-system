@@ -1,0 +1,9 @@
+/**
+ * @type {import('pretier').Config}
+ */
+export default {
+  semi: true,
+  singleQuote: false,
+  tabWidth: 2,
+  trailingComma: "all",
+};
