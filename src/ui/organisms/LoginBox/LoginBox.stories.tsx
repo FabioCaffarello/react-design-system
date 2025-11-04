@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { action } from "@storybook/addon-actions";
+import { fn } from "storybook/test";
 import LoginBox from "./LoginBox";
-import { FormEvent } from "react";
 
 const meta: Meta<typeof LoginBox> = {
   title: "UI/Organisms/LoginBox",
@@ -16,10 +15,7 @@ const meta: Meta<typeof LoginBox> = {
 export const Primary: StoryObj<typeof LoginBox> = {
   args: {
     className: "w-[300px]",
-    onSubmit: (e: FormEvent) => {
-      e.preventDefault();
-      action("onSubmit")(e);
-    },
+    onSubmit: fn().mockName("onSubmit"),
   },
 };
 

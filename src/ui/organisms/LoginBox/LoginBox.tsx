@@ -13,7 +13,13 @@ export default function LoginBox({
 }: Props) {
   return (
     <BoxWrapper className={className}>
-      <form {...props}>
+      <form
+        {...props}
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (props.onSubmit) props.onSubmit(e);
+        }}
+      >
         <InputWithLabel label="Your email" placeholder="myname@email.com" />
         <InputWithLabel
           label="Your password"
