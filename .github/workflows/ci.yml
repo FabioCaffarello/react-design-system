@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Parse additional settings
+        id: settings-parser
+        uses: christian-ci/action-yaml-github-output@v2
+        with:
+          file_path: "./.github/ci-settings.yml"
+
+      - name: Setup Node
+        uses: volta-cli/action@v4
+        with:
+          node-version: "${{ steps.settings-parser.outputs.node-version }}"
+          package-json-path: "${{ github.workspace }}/package.json"
+
+      - name: Print runtime versions
+        id: versions
+        run: |
+          echo "Node: $(node --version)"
+          echo "NPM: $(npm --version)"
+          node_ver=$(node --version)
+          node_ver_clean=${node_ver#v}
+          echo "node_version=$node_ver_clean" >> $GITHUB_OUTPUT
+
+      - name: Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run Unit and Story Tests
+        run: npm run test
