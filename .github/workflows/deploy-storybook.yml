@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -58,6 +58,13 @@ jobs:
 
       - name: Build Storybook
         run: npm run build-storybook
+
+      - name: Check Storybook output
+        run: |
+          echo "Listing current directory..."
+          ls -R .
+          echo "Listing storybook-static..."
+          ls -R storybook-static || true
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
