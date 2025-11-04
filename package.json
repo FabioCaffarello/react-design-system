@@ -1,11 +1,17 @@
 {
-  "name": "react-design-system",
-  "private": true,
-  "version": "0.0.0",
+  "name": "@fabio.caffarello/react-design-system",
+  "private": false,
+  "version": "1.0.0",
   "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/ui/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "npx tsc --project tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
@@ -13,6 +19,10 @@
     "plop": "plop",
     "postplop": "prettier -w './src/ui/**/*.{ts,tsx}'",
     "test": "vitest run"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": ">=19"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.16",
