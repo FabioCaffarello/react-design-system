@@ -20,8 +20,13 @@ export default function LoginBox({
           if (props.onSubmit) props.onSubmit(e);
         }}
       >
-        <InputWithLabel label="Your email" placeholder="myname@email.com" />
         <InputWithLabel
+          id="login-email"
+          label="Your email"
+          placeholder="myname@email.com"
+        />
+        <InputWithLabel
+          id="login-password"
           label="Your password"
           placeholder="••••••••"
           type="password"
