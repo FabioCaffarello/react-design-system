@@ -117,6 +117,7 @@ Explore the live documentation and interactive components:
 - [x] Storybook integration
 - [x] Automated unit and story testing
 - [x] TailwindCSS theming
+- [ ] Create Publish npm package cd step
 - [ ] Improve components design
 - [ ] New components (Cards, Modals, etc.)
 - [ ] Customizable themes and dark mode
