@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 *storybook.log
-storybook-static
+docs/storybook-static
