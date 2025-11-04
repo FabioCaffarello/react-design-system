@@ -11,7 +11,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "plop": "plop",
-    "postplop": "prettier -w './src/ui/**/*.{ts,tsx}'"
+    "postplop": "prettier -w './src/ui/**/*.{ts,tsx}'",
+    "test": "vitest run"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.16",
