@@ -28,10 +28,13 @@ describe('SearchInput', () => {
     
     expect(handleSearch).not.toHaveBeenCalled();
     
-    // Advance timers and wait for debounce
-    vi.advanceTimersByTime(300);
+    // Advance timers for debounce - need to advance more than debounceMs
+    vi.advanceTimersByTime(350);
+    
+    // Run all pending timers
     await vi.runAllTimersAsync();
     
+    // Wait for the debounced call
     await waitFor(() => {
       expect(handleSearch).toHaveBeenCalledWith('test');
     }, { timeout: 2000 });

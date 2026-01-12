@@ -32,11 +32,16 @@ describe('FileUpload', () => {
     const input = container.querySelector('input[type="file"]') as HTMLInputElement;
     expect(input).toBeInTheDocument();
     
-    // Create a FileList-like object
-    const dataTransfer = new DataTransfer();
-    dataTransfer.items.add(file);
+    // Create a mock FileList
+    const fileList = {
+      0: file,
+      length: 1,
+      item: (index: number) => index === 0 ? file : null,
+      [Symbol.iterator]: function* () { yield file; },
+    } as FileList;
+    
     Object.defineProperty(input, 'files', {
-      value: dataTransfer.files,
+      value: fileList,
       writable: false,
       configurable: true,
     });
@@ -47,8 +52,8 @@ describe('FileUpload', () => {
       expect(handleFilesChange).toHaveBeenCalled();
       const callArgs = handleFilesChange.mock.calls[0];
       expect(callArgs).toBeDefined();
-      expect(callArgs[0]).toBeDefined();
-    }, { timeout: 2000 });
+      expect(Array.isArray(callArgs[0])).toBe(true);
+    }, { timeout: 3000 });
   });
 
   it('validates file size', async () => {

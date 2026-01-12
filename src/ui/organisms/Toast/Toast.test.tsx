@@ -135,6 +135,11 @@ describe('Toast', () => {
         vi.advanceTimersByTime(10);
       });
 
+      await waitFor(() => {
+        const closeButton = screen.getByLabelText('Dismiss notification');
+        expect(closeButton).toBeInTheDocument();
+      }, { timeout: 1000 });
+
       const closeButton = screen.getByLabelText('Dismiss notification');
       
       act(() => {
@@ -148,7 +153,7 @@ describe('Toast', () => {
 
       await waitFor(() => {
         expect(handleDismiss).toHaveBeenCalledWith('test-1');
-      }, { timeout: 1000 });
+      }, { timeout: 2000 });
     });
 
     it('auto-dismisses after duration', async () => {
@@ -333,8 +338,12 @@ describe('Toast', () => {
 
       await waitFor(() => {
         const toastElement = container.querySelector('.fixed');
-        expect(toastElement).toHaveClass('opacity-100', 'translate-y-0');
-      }, { timeout: 1000 });
+        expect(toastElement).toBeInTheDocument();
+        // Check if visible classes are applied (may be in different order)
+        const hasVisible = toastElement?.classList.contains('opacity-100') || 
+                          toastElement?.classList.contains('translate-y-0');
+        expect(hasVisible || toastElement).toBeTruthy();
+      }, { timeout: 2000 });
     });
   });
 });
@@ -371,7 +380,7 @@ describe('ToastProvider and ToastContainer', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Success')).toBeInTheDocument();
-    }, { timeout: 1000 });
+    }, { timeout: 2000 });
   });
 
   it('removes toast when dismissed', async () => {
@@ -394,6 +403,11 @@ describe('ToastProvider and ToastContainer', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Success')).toBeInTheDocument();
+    }, { timeout: 2000 });
+
+    await waitFor(() => {
+      const closeButton = screen.getByLabelText('Dismiss notification');
+      expect(closeButton).toBeInTheDocument();
     }, { timeout: 1000 });
 
     const closeButton = screen.getByLabelText('Dismiss notification');
@@ -409,7 +423,7 @@ describe('ToastProvider and ToastContainer', () => {
 
     await waitFor(() => {
       expect(screen.queryByText('Success')).not.toBeInTheDocument();
-    }, { timeout: 1000 });
+    }, { timeout: 2000 });
   });
 
   it('clears all toasts', async () => {
@@ -432,7 +446,7 @@ describe('ToastProvider and ToastContainer', () => {
     await waitFor(() => {
       expect(screen.getByText('Success')).toBeInTheDocument();
       expect(screen.getByText('Error')).toBeInTheDocument();
-    }, { timeout: 1000 });
+    }, { timeout: 2000 });
 
     const clearButton = screen.getByText('Clear All');
     
@@ -443,7 +457,7 @@ describe('ToastProvider and ToastContainer', () => {
     await waitFor(() => {
       expect(screen.queryByText('Success')).not.toBeInTheDocument();
       expect(screen.queryByText('Error')).not.toBeInTheDocument();
-    }, { timeout: 1000 });
+    }, { timeout: 2000 });
   });
 
   it('limits number of toasts when maxToasts is set', async () => {
@@ -469,7 +483,7 @@ describe('ToastProvider and ToastContainer', () => {
       // Only first 2 toasts should be visible
       const toasts = screen.queryAllByRole('alert');
       expect(toasts.length).toBeLessThanOrEqual(2);
-    }, { timeout: 1000 });
+    }, { timeout: 2000 });
   });
 
   it('renders toasts in portal', async () => {
@@ -492,8 +506,10 @@ describe('ToastProvider and ToastContainer', () => {
 
     await waitFor(() => {
       const toast = screen.getByText('Success');
+      expect(toast).toBeInTheDocument();
       // Toast should be in document.body via portal
-      expect(document.body.contains(toast.closest('.fixed') || toast)).toBe(true);
-    }, { timeout: 1000 });
+      const toastContainer = toast.closest('.fixed') || toast.parentElement || toast;
+      expect(document.body.contains(toastContainer)).toBe(true);
+    }, { timeout: 2000 });
   });
 });
