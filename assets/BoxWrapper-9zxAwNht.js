@@ -1,1 +1,0 @@
-import{j as a}from"./jsx-runtime-D_zvdyIk.js";function e({className:o,...s}){const r=[o,"p-large","bg-bg","rounded","shadow-card"];return a.jsx("div",{className:r.join(" "),...s})}e.__docgenInfo={description:"",methods:[],displayName:"BoxWrapper"};export{e as B};

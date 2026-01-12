@@ -1,1 +1,0 @@
-import{j as t}from"./jsx-runtime-D_zvdyIk.js";function n({className:e,...r}){const o=[e,"px-large","border","border-1","border-grey-light","rounded","lh-form-element","h-form-element","text-base"];return t.jsx("input",{className:o.join(" "),...r})}n.__docgenInfo={description:"",methods:[],displayName:"Input"};export{n as I};

@@ -1,0 +1,14 @@
+var A=Object.defineProperty,E=Object.defineProperties;var I=Object.getOwnPropertyDescriptors;var l=Object.getOwnPropertySymbols;var u=Object.prototype.hasOwnProperty,p=Object.prototype.propertyIsEnumerable;var m=(a,e,r)=>e in a?A(a,e,{enumerable:!0,configurable:!0,writable:!0,value:r}):a[e]=r,c=(a,e)=>{for(var r in e||(e={}))u.call(e,r)&&m(a,r,e[r]);if(l)for(var r of l(e))p.call(e,r)&&m(a,r,e[r]);return a},f=(a,e)=>E(a,I(e));var v=(a,e)=>{var r={};for(var n in a)u.call(a,n)&&e.indexOf(n)<0&&(r[n]=a[n]);if(a!=null&&l)for(var n of l(a))e.indexOf(n)<0&&p.call(a,n)&&(r[n]=a[n]);return r};import{j as N}from"./jsx-runtime-D_zvdyIk.js";import{r as o}from"./iframe-38FCFUQv.js";const b=o.memo(function(V){var d=V,{variant:e="default",padding:r="medium",className:n="",onClick:t,"aria-label":y,"aria-labelledby":g,children:h}=d,w=v(d,["variant","padding","className","onClick","aria-label","aria-labelledby","children"]);const x=["bg-white","rounded-lg","border","border-gray-200","shadow-sm"],C={default:"",hover:"hover:shadow-md transition-shadow cursor-pointer",selected:"border-indigo-500 shadow-md"},T={none:"",small:"p-2",medium:"p-4",large:"p-6"},s=o.useMemo(()=>t!==void 0||e==="hover",[t,e]),q=s?"button":void 0,j=s?0:void 0,D=o.useMemo(()=>[...x,C[e],T[r],n].filter(Boolean).join(" "),[e,r,n]),M=o.useCallback(i=>{s&&(i.key==="Enter"||i.key===" ")&&(i.preventDefault(),t==null||t())},[s,t]);return N.jsx("div",f(c({className:D,role:q,tabIndex:j,onClick:t,onKeyDown:M,"aria-label":y,"aria-labelledby":g},w),{children:h}))});b.displayName="Card";b.__docgenInfo={description:`Card Component
+
+A versatile card component for displaying content in containers.
+Follows Atomic Design principles as a Molecule component.
+Can be used to replace BoxWrapper in many cases with more flexibility.
+Optimized with React.memo to prevent unnecessary re-renders.
+
+@example
+\`\`\`tsx
+<Card variant="hover" padding="large">
+  <h3>Card Title</h3>
+  <p>Card content</p>
+</Card>
+\`\`\``,methods:[],displayName:"Card",props:{variant:{required:!1,tsType:{name:"union",raw:'"default" | "hover" | "selected"',elements:[{name:"literal",value:'"default"'},{name:"literal",value:'"hover"'},{name:"literal",value:'"selected"'}]},description:"",defaultValue:{value:'"default"',computed:!1}},padding:{required:!1,tsType:{name:"union",raw:'"none" | "small" | "medium" | "large"',elements:[{name:"literal",value:'"none"'},{name:"literal",value:'"small"'},{name:"literal",value:'"medium"'},{name:"literal",value:'"large"'}]},description:"",defaultValue:{value:'"medium"',computed:!1}},onClick:{required:!1,tsType:{name:"signature",type:"function",raw:"() => void",signature:{arguments:[],return:{name:"void"}}},description:""},"aria-label":{required:!1,tsType:{name:"string"},description:""},"aria-labelledby":{required:!1,tsType:{name:"string"},description:""},className:{defaultValue:{value:'""',computed:!1},required:!1}},composes:["HTMLAttributes"]};export{b as C};
