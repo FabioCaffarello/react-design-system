@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import BoxWrapper from "./BoxWrapper";
 
 const meta: Meta<typeof BoxWrapper> = {
-  title: "UI/Atoms/BoxWrapper",
+  title: "Atoms/BoxWrapper",
   component: BoxWrapper,
 };
 

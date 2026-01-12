@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import InputWithLabel from "./InputWithLabel";
 
 const meta: Meta<typeof InputWithLabel> = {
-  title: "UI/Molecules/InputWithLabel",
+  title: "Molecules/InputWithLabel",
   component: InputWithLabel,
 };
 

@@ -3,7 +3,7 @@ import Card from "./Card";
 import { Text, Button } from "../../atoms";
 
 const meta: Meta<typeof Card> = {
-  title: "UI/Molecules/Card",
+  title: "Molecules/Card",
   component: Card,
   parameters: {
     docs: {
@@ -22,6 +22,18 @@ const meta: Meta<typeof Card> = {
       control: "select",
       options: ["none", "small", "medium", "large"],
       description: "Padding size",
+    },
+    onClick: {
+      control: false,
+      description: "Click handler. When provided, card becomes interactive with keyboard support.",
+    },
+    'aria-label': {
+      control: "text",
+      description: "Accessible label for interactive cards",
+    },
+    'aria-labelledby': {
+      control: "text",
+      description: "ID of element that labels the card",
     },
   },
 };
@@ -110,6 +122,42 @@ export const NoPadding: StoryObj<typeof Card> = {
         <Text as="h3" className="text-lg font-semibold mb-2">No Padding Card</Text>
         <Text as="p" className="text-gray-600">This card has no default padding. Content controls its own spacing.</Text>
       </div>
+    ),
+  },
+};
+
+export const Interactive: StoryObj<typeof Card> = {
+  args: {
+    variant: "hover",
+    onClick: () => alert("Card clicked!"),
+    'aria-label': "Clickable card example",
+    children: (
+      <>
+        <Text as="h3" className="text-lg font-semibold mb-2">Interactive Card</Text>
+        <Text as="p" className="text-gray-600">This card is clickable. Press Enter or Space when focused to activate.</Text>
+      </>
+    ),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: "Interactive cards support keyboard navigation. Tab to focus, then press Enter or Space to activate.",
+      },
+    },
+  },
+};
+
+export const WithAriaLabel: StoryObj<typeof Card> = {
+  args: {
+    variant: "hover",
+    onClick: () => alert("Card clicked!"),
+    'aria-label': "Product card: Premium Plan - $99/month",
+    children: (
+      <>
+        <Text as="h3" className="text-lg font-semibold mb-2">Premium Plan</Text>
+        <Text as="p" className="text-gray-600 mb-2">$99/month</Text>
+        <Text as="p" className="text-sm text-gray-500">Includes all features</Text>
+      </>
     ),
   },
 };

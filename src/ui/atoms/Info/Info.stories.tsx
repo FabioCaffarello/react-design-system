@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import Info from "./Info";
 
 const meta: Meta<typeof Info> = {
-  title: "UI/Atoms/Info",
+  title: "Atoms/Info",
   component: Info,
 };
 

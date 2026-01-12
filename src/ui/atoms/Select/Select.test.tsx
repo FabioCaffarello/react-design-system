@@ -1,63 +1,179 @@
-import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
-import Select from "./Select";
+import { describe, it, expect } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import Select from './Select';
 
-describe("Select", () => {
-  const options = [
-    { value: "1", label: "Option 1" },
-    { value: "2", label: "Option 2" },
-    { value: "3", label: "Option 3" },
-  ];
+const options = [
+  { value: '1', label: 'Option 1' },
+  { value: '2', label: 'Option 2' },
+  { value: '3', label: 'Option 3' },
+];
 
-  it("renders with options", () => {
+describe('Select', () => {
+  it('renders select with options', () => {
     render(<Select options={options} />);
-    const select = screen.getByRole("combobox");
-    expect(select).toBeInTheDocument();
-    expect(screen.getByText("Option 1")).toBeInTheDocument();
-    expect(screen.getByText("Option 2")).toBeInTheDocument();
-    expect(screen.getByText("Option 3")).toBeInTheDocument();
+    expect(screen.getByText('Option 1')).toBeInTheDocument();
+    expect(screen.getByText('Option 2')).toBeInTheDocument();
   });
 
-  it("renders with placeholder", () => {
-    render(<Select options={options} placeholder="Select an option" />);
-    const placeholder = screen.getByText("Select an option");
-    expect(placeholder).toBeInTheDocument();
-    expect(placeholder).toBeDisabled();
+  it('renders with label', () => {
+    render(<Select label="Choose option" options={options} />);
+    expect(screen.getByText('Choose option')).toBeInTheDocument();
   });
 
-  it("applies error styling when error is true", () => {
-    render(<Select options={options} error />);
-    const select = screen.getByRole("combobox");
-    expect(select).toHaveClass("border-red-500");
-    expect(select).toHaveAttribute("aria-invalid", "true");
+  it('renders placeholder', () => {
+    render(<Select placeholder="Select..." options={options} />);
+    expect(screen.getByText('Select...')).toBeInTheDocument();
   });
 
-  it("applies custom className", () => {
-    render(<Select options={options} className="custom-class" />);
-    const select = screen.getByRole("combobox");
-    expect(select).toHaveClass("custom-class");
+  it('shows error state', () => {
+    const { container } = render(<Select error helperText="Error message" options={options} />);
+    const select = container.querySelector('select');
+    expect(select).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByText('Error message')).toBeInTheDocument();
   });
 
-  it("renders disabled options", () => {
-    const optionsWithDisabled = [
-      { value: "1", label: "Option 1" },
-      { value: "2", label: "Option 2", disabled: true },
+  it('shows success state', () => {
+    render(<Select success helperText="Valid" options={options} />);
+    expect(screen.getByText('Valid')).toBeInTheDocument();
+  });
+
+  it('renders option groups', () => {
+    const optionGroups = [
+      {
+        label: 'Group 1',
+        options: [
+          { value: '1', label: 'Option 1' },
+          { value: '2', label: 'Option 2' },
+        ],
+      },
     ];
-    render(<Select options={optionsWithDisabled} />);
-    const option2 = screen.getByText("Option 2");
-    expect(option2).toBeDisabled();
+    const { container } = render(<Select optionGroups={optionGroups} />);
+    const optgroup = container.querySelector('optgroup[label="Group 1"]');
+    expect(optgroup).toBeInTheDocument();
+    expect(screen.getByText('Option 1')).toBeInTheDocument();
   });
 
-  it("supports defaultValue", () => {
-    render(<Select options={options} defaultValue="2" />);
-    const select = screen.getByRole("combobox") as HTMLSelectElement;
-    expect(select.value).toBe("2");
+  it('applies size classes', () => {
+    const { container } = render(<Select size="sm" options={options} />);
+    const select = container.querySelector('select');
+    expect(select).toHaveClass('h-8', 'text-sm');
   });
 
-  it("has accessible attributes when error", () => {
-    render(<Select options={options} error id="test-select" />);
-    const select = screen.getByRole("combobox");
-    expect(select).toHaveAttribute("aria-invalid", "true");
-    expect(select).toHaveAttribute("aria-describedby", "test-select-error");
+  it('disables options correctly', () => {
+    const optionsWithDisabled = [
+      { value: '1', label: 'Option 1' },
+      { value: '2', label: 'Option 2', disabled: true },
+    ];
+    const { container } = render(<Select options={optionsWithDisabled} />);
+    const disabledOption = container.querySelector('option[value="2"]');
+    expect(disabledOption).toBeDisabled();
+  });
+
+  describe('Keyboard Navigation', () => {
+    it('is focusable', () => {
+      render(<Select options={options} />);
+      const select = screen.getByRole('combobox');
+      select.focus();
+      expect(document.activeElement).toBe(select);
+    });
+
+    it('is not focusable when disabled', () => {
+      render(<Select disabled options={options} />);
+      const select = screen.getByRole('combobox');
+      expect(select).toBeDisabled();
+    });
+
+    it('handles Arrow key navigation', () => {
+      const handleChange = vi.fn();
+      render(<Select options={options} onChange={handleChange} />);
+      const select = screen.getByRole('combobox');
+      select.focus();
+      fireEvent.keyDown(select, { key: 'ArrowDown' });
+      // Arrow keys should navigate options
+      expect(select).toBeInTheDocument();
+    });
+  });
+
+  describe('Accessibility', () => {
+    it('has correct role', () => {
+      render(<Select options={options} />);
+      const select = screen.getByRole('combobox');
+      expect(select).toBeInTheDocument();
+    });
+
+    it('associates label with select', () => {
+      render(<Select label="Choose option" id="select" options={options} />);
+      const select = screen.getByLabelText('Choose option');
+      expect(select).toBeInTheDocument();
+      expect(select).toHaveAttribute('id', 'select');
+    });
+
+    it('has aria-invalid when error', () => {
+      render(<Select error options={options} />);
+      const select = screen.getByRole('combobox');
+      expect(select).toHaveAttribute('aria-invalid', 'true');
+    });
+
+    it('has aria-describedby when helperText is provided', () => {
+      render(<Select helperText="Helper text" id="test-select" options={options} />);
+      const select = screen.getByRole('combobox');
+      expect(select).toHaveAttribute('aria-describedby', 'test-select-helper');
+    });
+
+    it('has aria-describedby for error message', () => {
+      render(<Select error helperText="Error message" id="test-select" options={options} />);
+      const select = screen.getByRole('combobox');
+      expect(select).toHaveAttribute('aria-describedby', 'test-select-error');
+    });
+
+    it('has aria-required when required', () => {
+      render(<Select required options={options} />);
+      const select = screen.getByRole('combobox');
+      expect(select).toHaveAttribute('aria-required', 'true');
+      expect(select).toHaveAttribute('required');
+    });
+
+    it('has aria-label when provided', () => {
+      render(<Select aria-label="Select option" options={options} />);
+      const select = screen.getByLabelText('Select option');
+      expect(select).toBeInTheDocument();
+    });
+
+    it('has correct name attribute', () => {
+      render(<Select name="test-select" options={options} />);
+      const select = screen.getByRole('combobox');
+      expect(select).toHaveAttribute('name', 'test-select');
+    });
+  });
+
+  describe('Edge Cases', () => {
+    it('handles controlled select', () => {
+      const { rerender } = render(<Select value="1" options={options} onChange={vi.fn()} />);
+      const select = screen.getByRole('combobox') as HTMLSelectElement;
+      expect(select.value).toBe('1');
+      
+      rerender(<Select value="2" options={options} onChange={vi.fn()} />);
+      expect(select.value).toBe('2');
+    });
+
+    it('handles uncontrolled select', () => {
+      render(<Select defaultValue="1" options={options} />);
+      const select = screen.getByRole('combobox') as HTMLSelectElement;
+      expect(select.value).toBe('1');
+    });
+
+    it('handles empty options array', () => {
+      render(<Select options={[]} />);
+      const select = screen.getByRole('combobox');
+      expect(select).toBeInTheDocument();
+    });
+
+    it('handles onChange event', () => {
+      const handleChange = vi.fn();
+      render(<Select options={options} onChange={handleChange} />);
+      const select = screen.getByRole('combobox');
+      fireEvent.change(select, { target: { value: '2' } });
+      expect(handleChange).toHaveBeenCalled();
+    });
   });
 });

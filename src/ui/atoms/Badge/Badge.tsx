@@ -1,7 +1,18 @@
-import type { HTMLAttributes } from "react";
+'use client';
 
-interface Props extends HTMLAttributes<HTMLSpanElement> {
-  variant?: "success" | "warning" | "error" | "info" | "neutral";
+import { memo, useMemo } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
+import { getColorClass } from '../../tokens/colors';
+
+export type BadgeVariant = 'success' | 'warning' | 'error' | 'info' | 'neutral' | 'primary' | 'secondary';
+export type BadgeSize = 'sm' | 'md' | 'lg';
+export type BadgeStyle = 'solid' | 'outline';
+
+export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
+  variant?: BadgeVariant;
+  size?: BadgeSize;
+  style?: BadgeStyle;
+  children: ReactNode;
 }
 
 /**
@@ -9,52 +20,84 @@ interface Props extends HTMLAttributes<HTMLSpanElement> {
  * 
  * A versatile badge component for displaying status, priority, and other labels.
  * Follows Atomic Design principles as an Atom component.
+ * Uses tokens for consistent theming.
  * 
  * @example
  * ```tsx
  * <Badge variant="success">Active</Badge>
- * <Badge variant="error">Critical</Badge>
+ * <Badge variant="error" size="lg">Critical</Badge>
+ * <Badge variant="info" style="outline">New</Badge>
  * ```
  */
-export default function Badge({ 
-  variant = "neutral", 
-  className = "",
+const Badge = memo(function Badge({ 
+  variant = 'neutral',
+  size = 'md',
+  style = 'solid',
+  className = '',
   children,
   ...props 
-}: Props) {
+}: BadgeProps) {
   const baseClasses = [
-    "inline-flex",
-    "items-center",
-    "px-2",
-    "py-1",
-    "rounded",
-    "text-xs",
-    "font-medium",
-    "border",
+    'inline-flex',
+    'items-center',
+    'justify-center',
+    'font-medium',
+    'rounded-md',
+    'border',
   ];
 
-  const variantClasses: Record<NonNullable<Props["variant"]>, string> = {
-    success: "bg-green-100 text-green-800 border-green-500",
-    warning: "bg-yellow-100 text-yellow-800 border-yellow-500",
-    error: "bg-red-100 text-red-800 border-red-500",
-    info: "bg-blue-100 text-blue-800 border-blue-500",
-    neutral: "bg-gray-100 text-gray-800 border-gray-500",
+  // Size classes
+  const sizeClasses: Record<BadgeSize, string> = {
+    sm: 'px-1.5 py-0.5 text-xs',
+    md: 'px-2 py-1 text-xs',
+    lg: 'px-2.5 py-1.5 text-sm',
   };
 
-  const classes = [
+  // Map variant to color role
+  const variantToColorRole: Record<BadgeVariant, 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' | 'neutral'> = {
+    success: 'success',
+    warning: 'warning',
+    error: 'error',
+    info: 'info',
+    neutral: 'neutral',
+    primary: 'primary',
+    secondary: 'secondary',
+  };
+
+  const colorRole = variantToColorRole[variant];
+
+  // Style classes
+  const styleClasses = style === 'outline'
+    ? [
+        'bg-transparent',
+        getColorClass(colorRole, 'DEFAULT', 'border'),
+        getColorClass(colorRole, 'DEFAULT', 'text'),
+      ]
+    : [
+        getColorClass(colorRole, 'light', 'bg'),
+        getColorClass(colorRole, 'dark', 'text'),
+        getColorClass(colorRole, 'DEFAULT', 'border'),
+      ];
+
+  const classes = useMemo(() => [
     ...baseClasses,
-    variantClasses[variant as NonNullable<Props["variant"]>],
+    sizeClasses[size],
+    ...styleClasses,
     className,
-  ].filter(Boolean).join(" ");
+  ].filter(Boolean).join(' '), [size, styleClasses, className]);
 
   return (
     <span
       role="status"
-      aria-label={typeof children === "string" ? children : undefined}
+      aria-label={typeof children === 'string' ? children : undefined}
       className={classes}
       {...props}
     >
       {children}
     </span>
   );
-}
+});
+
+Badge.displayName = 'Badge';
+
+export default Badge;
