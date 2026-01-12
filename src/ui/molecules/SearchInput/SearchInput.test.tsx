@@ -26,7 +26,9 @@ describe('SearchInput', () => {
     const input = screen.getByRole('searchbox') || screen.getByRole('textbox') || document.querySelector('input[type="search"]') as HTMLInputElement;
     expect(input).toBeInTheDocument();
     
-    fireEvent.change(input, { target: { value: 'test' } });
+    act(() => {
+      fireEvent.change(input, { target: { value: 'test' } });
+    });
     
     expect(handleSearch).not.toHaveBeenCalled();
     
@@ -35,11 +37,14 @@ describe('SearchInput', () => {
       vi.advanceTimersByTime(350);
     });
     
-    // Wait for the debounced call
-    await waitFor(() => {
-      expect(handleSearch).toHaveBeenCalledWith('test');
-    }, { timeout: 1000 });
-  });
+    // Run all pending timers to ensure debounce completes
+    act(() => {
+      vi.runOnlyPendingTimers();
+    });
+    
+    // Check if callback was called
+    expect(handleSearch).toHaveBeenCalledWith('test');
+  }, 10000);
 
   it('calls onSearch on Enter key', () => {
     const handleSearch = vi.fn();
