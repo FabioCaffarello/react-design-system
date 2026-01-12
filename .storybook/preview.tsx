@@ -109,10 +109,10 @@ const preview: Preview = {
 
   // Global decorators
   decorators: [
-    (Story) => React.createElement(
-      "div",
-      { style: { padding: "1rem" } },
-      React.createElement(Story)
+    (Story) => (
+      <div style={{ padding: "1rem" }}>
+        <Story />
+      </div>
     ),
   ],
 
