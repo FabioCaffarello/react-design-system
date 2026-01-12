@@ -1,86 +1,95 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import Badge from "./Badge";
+import type { Meta, StoryObj } from '@storybook/react';
+import Badge from './Badge';
 
 const meta: Meta<typeof Badge> = {
-  title: "UI/Atoms/Badge",
+  title: 'Atoms/Badge',
   component: Badge,
-  parameters: {
-    docs: {
-      description: {
-        component: "A versatile badge component for displaying status, priority, and other labels. Supports multiple variants: success, warning, error, info, and neutral.",
-      },
-    },
-  },
+  tags: ['autodocs'],
   argTypes: {
     variant: {
-      control: "select",
-      options: ["success", "warning", "error", "info", "neutral"],
-      description: "Visual variant of the badge",
+      control: 'select',
+      options: ['success', 'warning', 'error', 'info', 'neutral', 'primary', 'secondary'],
     },
-    children: {
-      control: "text",
-      description: "Content to display inside the badge",
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+    },
+    style: {
+      control: 'select',
+      options: ['solid', 'outline'],
     },
   },
 };
 
-export const Success: StoryObj<typeof Badge> = {
+export default meta;
+type Story = StoryObj<typeof Badge>;
+
+export const Default: Story = {
   args: {
-    children: "Success",
-    variant: "success",
+    children: 'Badge',
   },
 };
 
-export const Warning: StoryObj<typeof Badge> = {
-  args: {
-    children: "Warning",
-    variant: "warning",
-  },
-};
-
-export const Error: StoryObj<typeof Badge> = {
-  args: {
-    children: "Error",
-    variant: "error",
-  },
-};
-
-export const Info: StoryObj<typeof Badge> = {
-  args: {
-    children: "Info",
-    variant: "info",
-  },
-};
-
-export const Neutral: StoryObj<typeof Badge> = {
-  args: {
-    children: "Neutral",
-    variant: "neutral",
-  },
-};
-
-export const AllVariants: StoryObj<typeof Badge> = {
+export const Variants: Story = {
   render: () => (
-    <div className="flex gap-2 flex-wrap">
+    <div className="flex flex-wrap gap-2">
       <Badge variant="success">Success</Badge>
       <Badge variant="warning">Warning</Badge>
       <Badge variant="error">Error</Badge>
       <Badge variant="info">Info</Badge>
       <Badge variant="neutral">Neutral</Badge>
+      <Badge variant="primary">Primary</Badge>
+      <Badge variant="secondary">Secondary</Badge>
     </div>
   ),
 };
 
-export const WithCustomContent: StoryObj<typeof Badge> = {
+export const Sizes: Story = {
   render: () => (
-    <div className="flex gap-2 flex-wrap">
-      <Badge variant="success">Active</Badge>
-      <Badge variant="error">Critical</Badge>
-      <Badge variant="warning">Pending</Badge>
-      <Badge variant="info">New</Badge>
-      <Badge variant="neutral">Draft</Badge>
+    <div className="flex items-center gap-2">
+      <Badge size="sm">Small</Badge>
+      <Badge size="md">Medium</Badge>
+      <Badge size="lg">Large</Badge>
     </div>
   ),
 };
 
-export default meta;
+export const Styles: Story = {
+  render: () => (
+    <div className="flex flex-wrap gap-2">
+      <Badge variant="success" style="solid">Solid</Badge>
+      <Badge variant="success" style="outline">Outline</Badge>
+      <Badge variant="error" style="solid">Solid</Badge>
+      <Badge variant="error" style="outline">Outline</Badge>
+      <Badge variant="info" style="solid">Solid</Badge>
+      <Badge variant="info" style="outline">Outline</Badge>
+    </div>
+  ),
+};
+
+export const AllCombinations: Story = {
+  render: () => (
+    <div className="space-y-4">
+      <div>
+        <h3 className="text-sm font-medium mb-2">Solid Style</h3>
+        <div className="flex flex-wrap gap-2">
+          <Badge variant="success" size="sm">Success</Badge>
+          <Badge variant="warning" size="md">Warning</Badge>
+          <Badge variant="error" size="lg">Error</Badge>
+          <Badge variant="info" size="md">Info</Badge>
+          <Badge variant="primary" size="md">Primary</Badge>
+        </div>
+      </div>
+      <div>
+        <h3 className="text-sm font-medium mb-2">Outline Style</h3>
+        <div className="flex flex-wrap gap-2">
+          <Badge variant="success" style="outline" size="sm">Success</Badge>
+          <Badge variant="warning" style="outline" size="md">Warning</Badge>
+          <Badge variant="error" style="outline" size="lg">Error</Badge>
+          <Badge variant="info" style="outline" size="md">Info</Badge>
+          <Badge variant="primary" style="outline" size="md">Primary</Badge>
+        </div>
+      </div>
+    </div>
+  ),
+};

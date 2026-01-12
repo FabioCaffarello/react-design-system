@@ -1,0 +1,150 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Molecules/DatePicker" />
+
+# DatePicker
+
+A flexible date picker component with single date and range selection. Supports keyboard navigation, date validation, and basic localization.
+
+## Features
+
+- **Single Date Selection**: Pick a single date
+- **Range Selection**: Select date ranges
+- **Keyboard Navigation**: Full keyboard support
+- **Date Validation**: Min/max dates and disabled dates
+- **Custom Formatting**: Flexible date format options
+- **Accessibility**: Full ARIA support
+- **Compound Components**: Flexible API
+
+## Basic Usage
+
+### Single Date
+
+```tsx
+import { useState } from 'react';
+import { DatePicker } from '@fabio.caffarello/react-design-system';
+
+function MyComponent() {
+  const [date, setDate] = useState<Date | null>(null);
+
+  return (
+    <DatePicker
+      value={date || undefined}
+      onValueChange={(value) => setDate(value as Date | null)}
+      placeholder="Select a date"
+    />
+  );
+}
+```
+
+### Date Range
+
+```tsx
+import { useState } from 'react';
+import { DatePicker } from '@fabio.caffarello/react-design-system';
+
+function MyComponent() {
+  const [range, setRange] = useState<{ start: Date | null; end: Date | null } | null>(null);
+
+  return (
+    <DatePicker
+      mode="range"
+      value={range || undefined}
+      onValueChange={(value) => setRange(value as { start: Date | null; end: Date | null } | null)}
+      placeholder="Select date range"
+    />
+  );
+}
+```
+
+## Date Validation
+
+### Min/Max Dates
+
+```tsx
+<DatePicker
+  minDate={new Date()} // Only future dates
+  maxDate={new Date(2024, 11, 31)} // Until end of 2024
+/>
+```
+
+### Disabled Dates
+
+```tsx
+const disabledDates = [
+  new Date(2024, 0, 1), // New Year's Day
+  new Date(2024, 6, 4), // Independence Day
+];
+
+<DatePicker disabledDates={disabledDates} />
+```
+
+## Custom Formatting
+
+```tsx
+// ISO format (default)
+<DatePicker format="yyyy-MM-dd" />
+
+// US format
+<DatePicker format="MM/dd/yyyy" />
+
+// European format
+<DatePicker format="dd/MM/yyyy" />
+```
+
+## Controlled vs Uncontrolled
+
+### Controlled
+
+```tsx
+const [date, setDate] = useState<Date | null>(null);
+
+<DatePicker
+  value={date || undefined}
+  onValueChange={(value) => setDate(value as Date | null)}
+/>
+```
+
+### Uncontrolled
+
+```tsx
+<DatePicker
+  defaultValue={new Date()}
+  onValueChange={(value) => console.log(value)}
+/>
+```
+
+## Compound Components API
+
+For more control, use the compound components:
+
+```tsx
+<DatePicker>
+  <DatePicker.Input placeholder="Select date" />
+  <DatePicker.Calendar />
+</DatePicker>
+```
+
+## Keyboard Navigation
+
+- **Arrow Keys**: Navigate between dates
+- **Enter/Space**: Select focused date
+- **Escape**: Close calendar
+- **Tab**: Navigate between input and calendar
+
+## Accessibility
+
+The DatePicker component includes:
+
+- `role="dialog"` on calendar popup
+- `aria-label` on input
+- `aria-label` on calendar button
+- Keyboard navigation support
+- Screen reader announcements
+
+### Best Practices
+
+1. **Provide aria-label**: Always provide an accessible label
+2. **Date validation**: Use min/max dates to prevent invalid selections
+3. **Format consistency**: Use consistent date formats across your app
+4. **Keyboard support**: Ensure all functionality is keyboard accessible

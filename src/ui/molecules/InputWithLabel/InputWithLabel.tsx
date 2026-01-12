@@ -1,12 +1,14 @@
 import type { HTMLProps } from "react";
-import { Text, Input } from "../../atoms";
+import { Text, Input, type InputProps } from "../../atoms";
 
-interface Props extends HTMLProps<HTMLInputElement> {
+interface Props extends Omit<HTMLProps<HTMLInputElement>, 'size'> {
   label: string;
+  size?: InputProps['size'];
 }
 
-export default function InputWithLabel({ label, ...props }: Props) {
-  if (!props.id) {
+export default function InputWithLabel({ label, size, ...props }: Props) {
+  if (!props.id && process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-console
     console.error("InputWithLabel component requires an id prop");
   }
 
@@ -15,7 +17,7 @@ export default function InputWithLabel({ label, ...props }: Props) {
       <Text as="label" htmlFor={props.id} className="cursor-pointer">
         {label}
       </Text>
-      <Input {...props} />
+      <Input {...props} size={size} />
     </div>
   );
 }

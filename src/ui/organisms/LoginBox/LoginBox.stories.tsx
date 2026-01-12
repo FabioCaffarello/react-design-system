@@ -3,7 +3,7 @@ import { fn } from "storybook/test";
 import LoginBox from "./LoginBox";
 
 const meta: Meta<typeof LoginBox> = {
-  title: "UI/Organisms/LoginBox",
+  title: "Organisms/LoginBox",
   component: LoginBox,
   parameters: {
     actions: {

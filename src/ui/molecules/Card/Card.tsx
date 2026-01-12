@@ -1,8 +1,12 @@
+import { memo, useMemo, useCallback } from 'react';
 import type { HTMLAttributes } from "react";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   variant?: "default" | "hover" | "selected";
   padding?: "none" | "small" | "medium" | "large";
+  onClick?: () => void;
+  'aria-label'?: string;
+  'aria-labelledby'?: string;
 }
 
 /**
@@ -11,6 +15,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
  * A versatile card component for displaying content in containers.
  * Follows Atomic Design principles as a Molecule component.
  * Can be used to replace BoxWrapper in many cases with more flexibility.
+ * Optimized with React.memo to prevent unnecessary re-renders.
  * 
  * @example
  * ```tsx
@@ -20,10 +25,13 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
  * </Card>
  * ```
  */
-export default function Card({
+const Card = memo(function Card({
   variant = "default",
   padding = "medium",
   className = "",
+  onClick,
+  'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledBy,
   children,
   ...props
 }: Props) {
@@ -48,16 +56,43 @@ export default function Card({
     large: "p-6",
   };
 
-  const classes = [
+  const isInteractive = useMemo(() => 
+    onClick !== undefined || variant === "hover",
+    [onClick, variant]
+  );
+  const role = isInteractive ? "button" : undefined;
+  const tabIndex = isInteractive ? 0 : undefined;
+
+  const classes = useMemo(() => [
     ...baseClasses,
     variantClasses[variant],
     paddingClasses[padding],
     className,
-  ].filter(Boolean).join(" ");
+  ].filter(Boolean).join(" "), [variant, padding, className]);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (isInteractive && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      onClick?.();
+    }
+  }, [isInteractive, onClick]);
 
   return (
-    <div className={classes} {...props}>
+    <div
+      className={classes}
+      role={role}
+      tabIndex={tabIndex}
+      onClick={onClick}
+      onKeyDown={handleKeyDown}
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledBy}
+      {...props}
+    >
       {children}
     </div>
   );
-}
+});
+
+Card.displayName = 'Card';
+
+export default Card;

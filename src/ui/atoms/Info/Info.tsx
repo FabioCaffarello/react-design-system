@@ -1,10 +1,10 @@
 import type { HTMLAttributes } from "react";
 
-interface Props extends HTMLAttributes<HTMLDivElement> {
+export interface InfoProps extends HTMLAttributes<HTMLDivElement> {
   variant?: "info" | "warning" | "error";
 }
 
-export default function Info({ variant = "info", className, ...props }: Props) {
+export default function Info({ variant = "info", className, ...props }: InfoProps) {
   const cls: string[] = [className || ""];
 
   switch (variant) {

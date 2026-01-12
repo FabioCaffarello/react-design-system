@@ -1,47 +1,63 @@
-import { render } from "@testing-library/react";
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import Text from './Text';
 
-import Text from "./Text";
-
-describe("UI / atom / Text", () => {
-  const TEXT = "Test";
-
-  it("should render properly", () => {
-    const { getByText } = render(<Text>{TEXT}</Text>);
-
-    expect(getByText(TEXT)).toBeInTheDocument();
+describe('Text', () => {
+  it('renders text content', () => {
+    render(<Text>Hello World</Text>);
+    expect(screen.getByText('Hello World')).toBeInTheDocument();
   });
 
-  it("should change the tag accordingly", () => {
-    const heading = render(<Text variant="heading">{TEXT}</Text>);
-    const regular = render(<Text>{TEXT}</Text>);
-    const listItem = render(<Text variant="list">{TEXT}</Text>);
-
-    expect(heading.container.querySelector("h2")).toBeInTheDocument();
-    expect(regular.container.querySelector("p")).toBeInTheDocument();
-    expect(listItem.container.querySelector("li")).toBeInTheDocument();
+  it('renders as paragraph by default', () => {
+    const { container } = render(<Text>Content</Text>);
+    const text = container.querySelector('p');
+    expect(text).toBeInTheDocument();
   });
 
-  it("should force the tag accordingly", () => {
-    const { container } = render(<Text as="h1">{TEXT}</Text>);
-
-    expect(container.querySelector("h1")).toBeInTheDocument();
+  it('renders as heading when variant is heading', () => {
+    const { container } = render(<Text variant="heading">Heading</Text>);
+    const text = container.querySelector('h2');
+    expect(text).toBeInTheDocument();
   });
 
-  it("should make the text bold", () => {
-    const { container } = render(<Text bold>{TEXT}</Text>);
-
-    expect(container.querySelector(".font-bold")).toBeInTheDocument();
+  it('renders as list item when variant is list', () => {
+    const { container } = render(<Text variant="list">List item</Text>);
+    const text = container.querySelector('li');
+    expect(text).toBeInTheDocument();
   });
 
-  it("should make the text italic", () => {
-    const { container } = render(<Text italic>{TEXT}</Text>);
-
-    expect(container.querySelector(".italic")).toBeInTheDocument();
+  it('renders as custom element when as prop is provided', () => {
+    const { container } = render(<Text as="span">Content</Text>);
+    const text = container.querySelector('span');
+    expect(text).toBeInTheDocument();
   });
 
-  it("should change the color", () => {
-    const { container } = render(<Text color="red-500">{TEXT}</Text>);
+  it('applies bold class when bold prop is true', () => {
+    const { container } = render(<Text bold>Bold text</Text>);
+    const text = container.querySelector('p');
+    expect(text).toHaveClass('font-bold');
+  });
 
-    expect(container.querySelector(".text-red-500")).toBeInTheDocument();
+  it('applies italic class when italic prop is true', () => {
+    const { container } = render(<Text italic>Italic text</Text>);
+    const text = container.querySelector('p');
+    expect(text).toHaveClass('italic');
+  });
+
+  it('applies color class when color prop is provided', () => {
+    const { container } = render(<Text color="red-500">Colored text</Text>);
+    const text = container.querySelector('p');
+    expect(text).toHaveClass('text-red-500');
+  });
+
+  it('applies custom className', () => {
+    const { container } = render(<Text className="custom-class">Content</Text>);
+    const text = container.querySelector('p');
+    expect(text).toHaveClass('custom-class');
+  });
+
+  it('passes through HTML attributes', () => {
+    render(<Text data-testid="text">Content</Text>);
+    expect(screen.getByTestId('text')).toBeInTheDocument();
   });
 });
