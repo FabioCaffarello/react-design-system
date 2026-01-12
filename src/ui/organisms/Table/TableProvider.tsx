@@ -87,7 +87,7 @@ export function TableProvider<T extends Record<string, unknown> = Record<string,
   onPageChange,
   onPageSizeChange,
   defaultPageSize = 10,
-  pageSizeOptions,
+  pageSizeOptions: _pageSizeOptions,
   sortColumn: controlledSortColumn,
   sortDirection: controlledSortDirection,
   onSort,
@@ -112,7 +112,7 @@ export function TableProvider<T extends Record<string, unknown> = Record<string,
   columnWidths,
   onColumnResize,
   virtualScrolling,
-  virtualScrollingOptions,
+  virtualScrollingOptions: _virtualScrollingOptions,
   children,
 }: TableProviderProps<T>) {
   // Detect pagination mode
@@ -156,7 +156,7 @@ export function TableProvider<T extends Record<string, unknown> = Record<string,
 
   // Filter state
   const isFilterControlled = controlledFilterValues !== undefined;
-  const [internalFilterValues, setInternalFilterValues] = useState<Record<string, any>>(initialFilterValues);
+  const [internalFilterValues, setInternalFilterValues] = useState<Record<string, unknown>>(initialFilterValues);
   
   const filterValues = isFilterControlled ? controlledFilterValues! : internalFilterValues;
 
@@ -175,7 +175,7 @@ export function TableProvider<T extends Record<string, unknown> = Record<string,
         const value = filterValues[filter.key];
         if (!value || value === '') return true;
         
-        const rowValue = (row as any)[filter.key];
+        const rowValue = (row as unknown)[filter.key];
         if (filter.type === 'text') {
           return String(rowValue || '').toLowerCase().includes(String(value).toLowerCase());
         }
@@ -200,8 +200,8 @@ export function TableProvider<T extends Record<string, unknown> = Record<string,
     // Apply internal sorting
     const sorted = [...filteredData];
     sorted.sort((a, b) => {
-      const aValue = (a as any)[sortColumn];
-      const bValue = (b as any)[sortColumn];
+      const aValue = (a as unknown)[sortColumn];
+      const bValue = (b as unknown)[sortColumn];
       const comparison = String(aValue || '').localeCompare(String(bValue || ''));
       return sortDirection === 'asc' ? comparison : -comparison;
     });
@@ -225,7 +225,7 @@ export function TableProvider<T extends Record<string, unknown> = Record<string,
     if (rowId) {
       return rowId(row);
     }
-    return (row as any)?.id?.toString() || index.toString();
+    return (row as unknown)?.id?.toString() || index.toString();
   }, [rowId]);
 
   const isAllSelected = useMemo(() => {
@@ -320,7 +320,7 @@ export function TableProvider<T extends Record<string, unknown> = Record<string,
   }, [isColumnWidthsControlled, onColumnResize]);
 
   // Use controlledColumnWidths from props if provided
-  const controlledColumnWidths = columnWidths;
+  const _controlledColumnWidths = columnWidths;
 
   // Context value
   const contextValue: TableContextValue<T> = useMemo(() => ({

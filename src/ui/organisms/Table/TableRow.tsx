@@ -6,10 +6,11 @@ import { Checkbox } from '../../atoms';
 import TableCell from './TableCell';
 import TableActions from './TableActions';
 
-export interface TableRowProps<T extends Record<string, unknown> = Record<string, unknown>> extends HTMLAttributes<HTMLTableRowElement> {
+export interface TableRowProps<T extends Record<string, unknown> = Record<string, unknown>> extends Omit<HTMLAttributes<HTMLTableRowElement>, 'style'> {
   row: T;
   rowIndex: number;
   style?: React.CSSProperties;
+  className?: string;
 }
 
 /**

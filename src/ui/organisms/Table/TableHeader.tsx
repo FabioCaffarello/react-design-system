@@ -4,7 +4,9 @@ import type { HTMLAttributes } from 'react';
 import { useTableContext } from './TableContext';
 import TableHeaderRow from './TableHeaderRow';
 
-export interface TableHeaderProps extends HTMLAttributes<HTMLTableSectionElement> {}
+export interface TableHeaderProps extends Omit<HTMLAttributes<HTMLTableSectionElement>, 'children'> {
+  className?: string;
+}
 
 /**
  * TableHeader Component
@@ -16,7 +18,8 @@ export default function TableHeader({
   className = '',
   ...props
 }: TableHeaderProps) {
-  const { columns } = useTableContext();
+  useTableContext(); // Ensure we're within Table context
+  // columns is accessed via TableHeaderRow which uses useTableContext
 
   return (
     <thead className={`bg-gray-50 sticky top-0 z-10 ${className}`} {...props}>

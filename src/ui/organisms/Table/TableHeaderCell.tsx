@@ -80,12 +80,12 @@ export default function TableHeaderCell({
     };
 
     const handleMouseUp = () => {
-      document.removeEventListener('mousemove', handleMouseMove as any);
+      document.removeEventListener('mousemove', handleMouseMove as unknown);
       document.removeEventListener('mouseup', handleMouseUp);
       resizeStartRef.current = null;
     };
 
-    document.addEventListener('mousemove', handleMouseMove as any);
+    document.addEventListener('mousemove', handleMouseMove as unknown);
     document.addEventListener('mouseup', handleMouseUp);
   };
 

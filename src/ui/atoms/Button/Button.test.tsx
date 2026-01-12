@@ -206,7 +206,7 @@ describe('Button', () => {
     });
 
     it('handles onClick with event', () => {
-      const handleClick = vi.fn((e) => {
+      const handleClick = vi.fn((e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
       });
       render(<Button onClick={handleClick}>Click</Button>);

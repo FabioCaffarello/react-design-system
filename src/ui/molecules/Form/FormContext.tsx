@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext } from 'react';
-import type { FieldValues, UseFormReturn, Path } from 'react-hook-form';
+import type { FieldValues, UseFormReturn } from 'react-hook-form';
 
 export interface FormContextValue<TFieldValues extends FieldValues = FieldValues> {
   form?: UseFormReturn<TFieldValues>;

@@ -4,8 +4,7 @@ import { useId, type HTMLAttributes } from 'react';
 import { useDialogContext } from './DialogContext';
 import { getTypographyClasses } from '../../tokens';
 
-export interface DialogDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {
-}
+export type DialogDescriptionProps = HTMLAttributes<HTMLParagraphElement>;
 
 export function DialogDescription({
   children,

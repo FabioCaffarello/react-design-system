@@ -31,9 +31,9 @@ export function useDatePickerContextOptional(): DatePickerContextValue | undefin
 // Locale type - will be provided by date-fns
 export interface Locale {
   code?: string;
-  localize?: any;
-  formatLong?: any;
-  format?: any;
-  match?: any;
-  options?: any;
+  localize?: unknown;
+  formatLong?: unknown;
+  format?: unknown;
+  match?: unknown;
+  options?: unknown;
 }

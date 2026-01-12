@@ -84,7 +84,7 @@ const Badge = memo(function Badge({
     sizeClasses[size],
     ...styleClasses,
     className,
-  ].filter(Boolean).join(' '), [size, style, colorRole, className]);
+  ].filter(Boolean).join(' '), [size, styleClasses, className]);
 
   return (
     <span

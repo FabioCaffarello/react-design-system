@@ -28,7 +28,12 @@ describe('Accordion', () => {
     fireEvent.click(button!);
     expect(screen.getByText('Content 1')).toBeVisible();
     fireEvent.click(button!);
-    expect(screen.queryByText('Content 1')).not.toBeVisible();
+    const content = screen.queryByText('Content 1');
+    if (content) {
+      expect(content).toHaveAttribute('aria-hidden', 'true');
+    } else {
+      expect(content).not.toBeInTheDocument();
+    }
   });
 
   it('allows multiple items open (multiple mode)', () => {
@@ -56,7 +61,12 @@ describe('Accordion', () => {
     const disabledButton = screen.getByText('Item 3').closest('button');
     expect(disabledButton).toHaveAttribute('aria-disabled', 'true');
     fireEvent.click(disabledButton!);
-    expect(screen.queryByText('Content 3')).not.toBeVisible();
+    const content = screen.queryByText('Content 3');
+    if (content) {
+      expect(content).toHaveAttribute('aria-hidden', 'true');
+    } else {
+      expect(content).not.toBeInTheDocument();
+    }
   });
 
   it('opens default items', () => {

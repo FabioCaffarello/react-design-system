@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef, type RefObject } from 'react';
+import { useState, useCallback, useRef } from 'react';
 
 export interface ColumnWidth {
   [key: string]: number;

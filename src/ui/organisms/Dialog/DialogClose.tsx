@@ -28,7 +28,7 @@ export function DialogClose({
           children.props.onClick(e);
         }
       },
-    } as any);
+    } as unknown);
   }
 
   return (

@@ -5,7 +5,7 @@ import { useTableContext } from './TableContext';
 import { Checkbox } from '../../atoms';
 import TableHeaderCell from './TableHeaderCell';
 
-export interface TableHeaderRowProps extends HTMLAttributes<HTMLTableRowElement> {}
+export type TableHeaderRowProps = HTMLAttributes<HTMLTableRowElement>;
 
 /**
  * TableHeaderRow Component

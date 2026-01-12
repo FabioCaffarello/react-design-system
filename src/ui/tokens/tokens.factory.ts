@@ -12,7 +12,7 @@ import { BreakpointTokenFactory, type BreakpointName, type BreakpointToken } fro
 import { ShadowTokenFactory, type ShadowSize, type ShadowToken } from './shadows';
 import { RadiusTokenFactory, type RadiusSize, type RadiusToken } from './radius';
 import { BorderTokenFactory, type BorderWidth, type BorderToken } from './borders';
-import { AnimationTokenFactory, type AnimationDuration, type EasingFunction, type AnimationToken, type TransitionToken } from './animations';
+import { AnimationTokenFactory, type AnimationDuration, type EasingFunction, type AnimationToken } from './animations';
 import { ZIndexTokenFactory, type ZIndexLayer, type ZIndexToken } from './z-index';
 import { OpacityTokenFactory, type OpacityValue, type OpacityToken } from './opacity';
 import { GradientTokenFactory, type GradientRole, type GradientDirection, type GradientToken } from './gradients';

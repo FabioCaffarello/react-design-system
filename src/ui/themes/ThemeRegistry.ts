@@ -6,7 +6,7 @@
  */
 
 import { ThemeBuilder } from './ThemeBuilder';
-import { createTokenSet, type ThemeMode } from '../tokens/tokens.factory';
+import { createTokenSet } from '../tokens/tokens.factory';
 import type { CustomThemeConfig, Theme, ThemeRegistry } from './types';
 
 export class ThemeRegistryManager {
@@ -53,7 +53,7 @@ export class ThemeRegistryManager {
   /**
    * Generate CSS variables from token set
    */
-  private generateCSSVariables(tokens: any): Record<string, string> {
+  private generateCSSVariables(tokens: unknown): Record<string, string> {
     const variables: Record<string, string> = {};
 
     // Color variables

@@ -7,8 +7,9 @@ import TableRow from './TableRow';
 import TableEmptyState from './TableEmptyState';
 import { useVirtualScrolling } from './useVirtualScrolling';
 
-export interface TableBodyProps<T extends Record<string, unknown> = Record<string, unknown>> extends HTMLAttributes<HTMLTableSectionElement> {
+export interface TableBodyProps<T extends Record<string, unknown> = Record<string, unknown>> extends Omit<HTMLAttributes<HTMLTableSectionElement>, 'children'> {
   children?: (row: T, index: number) => ReactNode;
+  className?: string;
 }
 
 /**

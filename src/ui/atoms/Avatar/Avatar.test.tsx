@@ -202,7 +202,7 @@ describe('AvatarGroup', () => {
   });
 
   it('applies size and variant to overflow avatar', () => {
-    const { container } = render(
+    render(
       <AvatarGroup max={1} size="lg" variant="square">
         <Avatar fallback="U1" />
         <Avatar fallback="U2" />

@@ -59,13 +59,6 @@ export const WithTitle: Story = {
 
 export const Placements: Story = {
   render: () => {
-    const placements: Array<typeof meta.argTypes.placement.options[number]> = [
-      'top',
-      'bottom',
-      'left',
-      'right',
-    ];
-
     return (
       <div className="flex flex-col items-center gap-8 p-16">
         <Popover

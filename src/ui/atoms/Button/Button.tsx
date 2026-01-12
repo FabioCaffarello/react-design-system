@@ -50,6 +50,7 @@ class ButtonClassBuilder {
     // TODO: Remove 'regular' in next major version
     const normalizedVariant = variant === 'regular' ? 'primary' : variant;
     
+     
     if (variant === 'regular' && process.env.NODE_ENV === 'development') {
       console.warn(
         'Button variant "regular" is deprecated. Use "primary" instead. ' +

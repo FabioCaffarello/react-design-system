@@ -1,3 +1,4 @@
+import React from 'react';
 
 interface ComponentStatusTableProps {
   components: Array<{
@@ -9,8 +10,8 @@ interface ComponentStatusTableProps {
   }>;
 }
 
-export function ComponentStatusTable({ components }: ComponentStatusTableProps) {
-  const getStatusIcon = (status: string) => {
+export function ComponentStatusTable({ components }: ComponentStatusTableProps): React.JSX.Element {
+  const getStatusIcon = (status: string): React.JSX.Element | null => {
     switch (status) {
       case 'Stable':
         return <span style={{ color: '#10b981', fontSize: '18px' }}>✅</span>;

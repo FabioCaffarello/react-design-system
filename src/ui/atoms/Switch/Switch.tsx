@@ -3,8 +3,6 @@
 import { forwardRef } from 'react';
 import type { InputHTMLAttributes } from 'react';
 import { getColorClass } from '../../tokens/colors';
-import { getSpacingClass } from '../../tokens/spacing';
-import { getRadiusClass } from '../../tokens/radius';
 import { getAnimationClass } from '../../tokens/animations';
 
 export type SwitchSize = 'sm' | 'md' | 'lg';

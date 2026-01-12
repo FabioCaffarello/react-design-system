@@ -1,10 +1,9 @@
 'use client';
 
 import type { HTMLAttributes } from 'react';
-import { useTableContext } from './TableContext';
 import type { TableColumn } from './TableTypes';
 
-export interface TableCellProps<T = any> extends HTMLAttributes<HTMLTableCellElement> {
+export interface TableCellProps<T = unknown> extends HTMLAttributes<HTMLTableCellElement> {
   column: TableColumn<T>;
   row: T;
 }

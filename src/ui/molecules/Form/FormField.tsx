@@ -12,7 +12,7 @@ export interface FormFieldProps<TFieldValues extends FieldValues = FieldValues> 
     name: string;
     register: ReturnType<ReturnType<UseFormReturn<TFieldValues>['register']>>;
     error?: string;
-    value?: any;
+    value?: unknown;
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
     onBlur?: () => void;
   }) => ReactNode;

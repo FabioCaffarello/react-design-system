@@ -19,7 +19,7 @@ export function DialogTrigger({ children, asChild = false }: DialogTriggerProps)
           children.props.onClick(e);
         }
       },
-    } as any);
+    } as unknown);
   }
 
   return (

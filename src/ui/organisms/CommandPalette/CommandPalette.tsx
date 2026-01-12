@@ -136,7 +136,9 @@ export default function CommandPalette({
   useEffect(() => {
     if (listRef.current && selectedIndex >= 0) {
       const selectedElement = listRef.current.querySelector(`[data-index="${selectedIndex}"]`);
-      selectedElement?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      if (selectedElement && typeof selectedElement.scrollIntoView === 'function') {
+        selectedElement.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
     }
   }, [selectedIndex]);
 
@@ -257,7 +259,7 @@ export default function CommandPalette({
                     {group}
                   </div>
                 )}
-                {groupItems.map((item, index) => {
+                {groupItems.map((item, _index) => {
                   const globalIndex = filteredItems.indexOf(item);
                   const isSelected = globalIndex === selectedIndex;
 

@@ -4,8 +4,6 @@ import { type ReactNode } from 'react';
 import Dialog from './Dialog';
 import { DialogContent } from './DialogContent';
 import { DialogHeader } from './DialogHeader';
-import { DialogTitle } from './DialogTitle';
-import { DialogDescription } from './DialogDescription';
 import { DialogFooter } from './DialogFooter';
 import Button from '../../atoms/Button/Button';
 

@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useMemo, type ReactNode } from 'react';
-import { Download, ArrowUpDown, GripVertical } from 'lucide-react';
+import { Download, ArrowUpDown } from 'lucide-react';
 import Table, { type TableColumn } from '../Table/Table';
 import Button from '../../atoms/Button/Button';
 import { getSpacingClass } from '../../tokens/spacing';
 import type { TableAction } from '../Table/TableActions/TableActions';
 
-export type DataGridColumn<T = any> = TableColumn<T> & {
+export type DataGridColumn<T = unknown> = TableColumn<T> & {
   groupable?: boolean;
   exportable?: boolean;
   defaultWidth?: number;
@@ -66,9 +66,9 @@ export interface DataGridProps<T extends Record<string, unknown> = Record<string
   
   // Filters
   filters?: {
-    config: any[];
-    onFilter: (filters: Record<string, any>) => void;
-    initialValues?: Record<string, any>;
+    config: unknown[];
+    onFilter: (filters: Record<string, unknown>) => void;
+    initialValues?: Record<string, unknown>;
   };
   
   // Actions
@@ -118,13 +118,13 @@ export default function DataGrid<T extends Record<string, unknown> = Record<stri
   onSort,
   sortColumn,
   sortDirection,
-  multiSort = false,
+  multiSort: _multiSort = false,
   groups = [],
   onGroupChange,
   groupable = false,
   resizable = true,
-  reorderable = false,
-  onColumnReorder,
+  reorderable: _reorderable = false,
+  onColumnReorder: _onColumnReorder,
   columnWidths,
   onColumnResize,
   selectable = false,
@@ -160,7 +160,7 @@ export default function DataGrid<T extends Record<string, unknown> = Record<stri
     }));
   }, [columns, internalColumnWidths]);
 
-  const handleGroupToggle = (columnKey: string) => {
+  const _handleGroupToggle = (columnKey: string) => {
     const newGroups = internalGroups.map((g) =>
       g.column === columnKey ? { ...g, expanded: !g.expanded } : g
     );

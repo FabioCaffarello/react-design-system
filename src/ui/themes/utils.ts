@@ -7,7 +7,7 @@
 /**
  * Deep merge utility
  */
-export function mergeDeep<T extends Record<string, any>>(
+export function mergeDeep<T extends Record<string, unknown>>(
   target: T,
   ...sources: Partial<T>[]
 ): T {
@@ -31,7 +31,7 @@ export function mergeDeep<T extends Record<string, any>>(
 /**
  * Check if value is an object
  */
-function isObject(item: any): item is Record<string, any> {
+function isObject(item: unknown): item is Record<string, unknown> {
   return item && typeof item === 'object' && !Array.isArray(item);
 }
 

@@ -5,7 +5,6 @@ import type { InputHTMLAttributes } from 'react';
 import { Search, X } from 'lucide-react';
 import Input from '../../atoms/Input/Input';
 import Button from '../../atoms/Button/Button';
-import { getColorClass } from '../../tokens/colors';
 
 export interface SearchInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange'> {
   onSearch?: (value: string) => void;

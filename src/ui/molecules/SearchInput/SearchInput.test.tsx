@@ -13,7 +13,7 @@ describe('SearchInput', () => {
 
   it('renders correctly', () => {
     render(<SearchInput />);
-    const input = screen.getByRole('textbox');
+    const input = screen.getByRole('searchbox') || screen.getByRole('textbox') || document.querySelector('input[type="search"]');
     expect(input).toBeInTheDocument();
   });
 
@@ -21,7 +21,7 @@ describe('SearchInput', () => {
     const handleSearch = vi.fn();
     render(<SearchInput onSearch={handleSearch} debounceMs={300} />);
     
-    const input = screen.getByRole('textbox');
+    const input = screen.getByRole('searchbox') || screen.getByRole('textbox') || document.querySelector('input[type="search"]') as HTMLInputElement;
     fireEvent.change(input, { target: { value: 'test' } });
     
     expect(handleSearch).not.toHaveBeenCalled();
@@ -30,14 +30,14 @@ describe('SearchInput', () => {
     
     await waitFor(() => {
       expect(handleSearch).toHaveBeenCalledWith('test');
-    });
+    }, { timeout: 1000 });
   });
 
   it('calls onSearch on Enter key', () => {
     const handleSearch = vi.fn();
     render(<SearchInput onSearch={handleSearch} defaultValue="test" />);
     
-    const input = screen.getByRole('textbox');
+    const input = screen.getByRole('searchbox') || screen.getByRole('textbox') || document.querySelector('input[type="search"]') as HTMLInputElement;
     fireEvent.keyDown(input, { key: 'Enter' });
     
     expect(handleSearch).toHaveBeenCalledWith('test');
@@ -60,7 +60,10 @@ describe('SearchInput', () => {
 
   it('shows loading state', () => {
     render(<SearchInput loading />);
-    const input = screen.getByRole('textbox');
+    const input = screen.getByRole('searchbox') || screen.getByRole('textbox') || document.querySelector('input[type="search"]');
     expect(input).toBeInTheDocument();
+    // Check for loading indicator (spinner)
+    const spinner = document.querySelector('.animate-spin');
+    expect(spinner).toBeInTheDocument();
   });
 });

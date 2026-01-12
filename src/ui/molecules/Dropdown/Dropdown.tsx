@@ -39,7 +39,7 @@ export default function Dropdown({
   trigger,
   items,
   align = "right",
-  variant = "default",
+  variant: _variant = "default",
   className = "",
   'aria-label': ariaLabel,
   ...props
@@ -89,7 +89,7 @@ export default function Dropdown({
       const currentEnabledIndex = enabledItems.findIndex(({ index }) => index === activeIndex);
 
       switch (e.key) {
-        case 'ArrowDown':
+        case 'ArrowDown': {
           e.preventDefault();
           const nextIndex = currentEnabledIndex < enabledItems.length - 1 
             ? enabledItems[currentEnabledIndex + 1].index 
@@ -97,7 +97,8 @@ export default function Dropdown({
           setActiveIndex(nextIndex);
           itemRefs.current[nextIndex]?.focus();
           break;
-        case 'ArrowUp':
+        }
+        case 'ArrowUp': {
           e.preventDefault();
           const prevIndex = currentEnabledIndex > 0 
             ? enabledItems[currentEnabledIndex - 1].index 
@@ -105,18 +106,21 @@ export default function Dropdown({
           setActiveIndex(prevIndex);
           itemRefs.current[prevIndex]?.focus();
           break;
-        case 'Home':
+        }
+        case 'Home': {
           e.preventDefault();
           const firstIndex = enabledItems[0].index;
           setActiveIndex(firstIndex);
           itemRefs.current[firstIndex]?.focus();
           break;
-        case 'End':
+        }
+        case 'End': {
           e.preventDefault();
           const lastIndex = enabledItems[enabledItems.length - 1].index;
           setActiveIndex(lastIndex);
           itemRefs.current[lastIndex]?.focus();
           break;
+        }
         case 'Enter':
         case ' ':
           e.preventDefault();
@@ -175,7 +179,7 @@ export default function Dropdown({
   // Clone trigger to add accessibility props
   // Handle both Button component and native button elements
   const triggerWithProps = React.isValidElement(trigger)
-    ? React.cloneElement(trigger as React.ReactElement<any>, {
+    ? React.cloneElement(trigger as React.ReactElement<unknown>, {
         onClick: (e: React.MouseEvent) => {
           handleTriggerClick();
           // Call original onClick if it exists

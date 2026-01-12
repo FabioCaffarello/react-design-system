@@ -5,9 +5,8 @@
  * Supports theme inheritance and CSS variable generation.
  */
 
-import { TokensFactory, createTokenSet, type TokenSet, type ThemeMode } from '../tokens/tokens.factory';
+import { TokensFactory, type TokenSet, type ThemeMode } from '../tokens/tokens.factory';
 import type { CustomThemeConfig, Theme } from './types';
-import { mergeDeep } from './utils';
 
 export class ThemeBuilder {
   private config: CustomThemeConfig;
@@ -56,9 +55,9 @@ export class ThemeBuilder {
    * Merge color overrides with base colors
    */
   private mergeColors(
-    baseColors: Record<string, any>,
-    colorOverrides?: Partial<Record<string, Partial<any>>>
-  ): Record<string, any> {
+    baseColors: Record<string, unknown>,
+    colorOverrides?: Partial<Record<string, Partial<unknown>>>
+  ): Record<string, unknown> {
     if (!colorOverrides) {
       return baseColors;
     }

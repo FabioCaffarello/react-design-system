@@ -4,7 +4,7 @@ import type { HTMLAttributes } from 'react';
 import { useTableContext } from './TableContext';
 import { EmptyState } from '../../molecules';
 
-export interface TableEmptyStateProps extends HTMLAttributes<HTMLDivElement> {}
+export type TableEmptyStateProps = HTMLAttributes<HTMLDivElement>;
 
 /**
  * TableEmptyState Component

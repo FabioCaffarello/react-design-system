@@ -1,9 +1,8 @@
 'use client';
 
-import { useRef, useEffect, useState, forwardRef } from 'react';
+import { useRef, useState, forwardRef } from 'react';
 import type { HTMLAttributes } from 'react';
 import { getColorClass } from '../../tokens/colors';
-import { getSpacingClass } from '../../tokens/spacing';
 import { getAnimationClass } from '../../tokens/animations';
 
 export type SliderVariant = 'single' | 'range';
@@ -182,12 +181,12 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider({
           ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
         `}
         onClick={handleTrackClick}
-        role="slider"
-        aria-valuemin={min}
-        aria-valuemax={max}
-        aria-valuenow={singleValue}
-        aria-disabled={disabled}
-        aria-label={label}
+        role={variant === 'range' ? undefined : 'slider'}
+        aria-valuemin={variant === 'range' ? undefined : min}
+        aria-valuemax={variant === 'range' ? undefined : max}
+        aria-valuenow={variant === 'range' ? undefined : singleValue}
+        aria-disabled={variant === 'range' ? undefined : disabled}
+        aria-label={variant === 'range' ? undefined : label}
       >
         {/* Active track */}
         <div

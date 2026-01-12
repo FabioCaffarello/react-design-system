@@ -67,9 +67,9 @@ export function DatePickerInput({
   className = '',
   ...props
 }: DatePickerInputProps) {
-  const { selectedDate, selectedRange, mode, onDateChange, onRangeChange } = useDatePickerContext();
+  const { selectedDate, selectedRange, mode, onDateChange } = useDatePickerContext();
   const [inputValue, setInputValue] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
+  const [_isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Update input value when selected date changes

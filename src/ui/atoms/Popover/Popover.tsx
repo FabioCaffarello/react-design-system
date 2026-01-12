@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
-import { getColorClass } from '../../tokens/colors';
 import { getSpacingClass } from '../../tokens/spacing';
 import { getRadiusClass } from '../../tokens/radius';
 import { getShadowClass } from '../../tokens/shadows';

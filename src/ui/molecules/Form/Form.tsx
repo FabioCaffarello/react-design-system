@@ -22,7 +22,7 @@ interface ReactHookFormProps<TFieldValues extends FieldValues = FieldValues> ext
   loading?: boolean;
   error?: string | null;
   success?: string | null;
-  onSubmitError?: (errors: any) => void;
+  onSubmitError?: (errors: unknown) => void;
 }
 
 type FormProps<TFieldValues extends FieldValues = FieldValues> = 

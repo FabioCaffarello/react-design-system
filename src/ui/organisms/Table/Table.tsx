@@ -112,7 +112,7 @@ type TableProps<T extends Record<string, unknown> = Record<string, unknown>> = S
  * </Table>
  * ```
  */
-function TableComponent<T = any>(props: TableProps<T>) {
+function TableComponent<T = unknown>(props: TableProps<T>) {
   const { className = '', ...restProps } = props;
   const hasChildren = 'children' in props && props.children !== undefined;
 

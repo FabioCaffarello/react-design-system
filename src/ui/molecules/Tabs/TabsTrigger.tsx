@@ -25,7 +25,7 @@ export function TabsTrigger({
   onKeyDown,
   ...props
 }: TabsTriggerProps) {
-  const { value: activeValue, onValueChange, orientation, activationMode } = useTabsContext();
+  const { value: activeValue, onValueChange, orientation: _orientation, activationMode } = useTabsContext();
 
   const isActive = activeValue === value;
 

@@ -5,7 +5,6 @@
  * Uses Factory Pattern for type-safe token creation.
  */
 
-import type { ColorRole } from './colors';
 import { COLOR_TOKENS_LIGHT } from './colors';
 
 export type GradientDirection = 'to-r' | 'to-l' | 'to-t' | 'to-b' | 'to-tr' | 'to-tl' | 'to-br' | 'to-bl';
@@ -94,9 +93,6 @@ export class GradientTokenFactory {
     
     // Color classes (using from-*, via-*, to-* syntax)
     // Note: We'll use arbitrary values for custom colors
-    const fromColor = this.hexToTailwindColor(colors.from);
-    const toColor = this.hexToTailwindColor(colors.to);
-    
     tailwindParts.push(`from-[${colors.from}]`);
     if (colors.via) {
       tailwindParts.push(`via-[${colors.via}]`);

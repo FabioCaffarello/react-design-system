@@ -1,11 +1,14 @@
 import "@testing-library/jest-dom";
 
 // Mock ResizeObserver for tests
-global.ResizeObserver = class ResizeObserver {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
-} as any;
+if (typeof global.ResizeObserver === 'undefined') {
+   
+  global.ResizeObserver = class ResizeObserver {
+    observe(): void {}
+    unobserve(): void {}
+    disconnect(): void {}
+  } as typeof ResizeObserver;
+}
 
 // Mock localStorage for tests
 const localStorageMock = (() => {

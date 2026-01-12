@@ -30,7 +30,7 @@ export default function Tooltip({
   position = "top",
   delay = 200,
   className = "",
-  'aria-label': ariaLabel,
+  'aria-label': _ariaLabel,
   ...props
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);

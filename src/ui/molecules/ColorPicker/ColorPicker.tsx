@@ -1,13 +1,11 @@
 'use client';
 
 import { useState, useEffect, type ChangeEvent } from 'react';
-import { getColorClass } from '../../tokens/colors';
-import { getSpacingClass } from '../../tokens/spacing';
 import { getRadiusClass } from '../../tokens/radius';
 import { getShadowClass } from '../../tokens/shadows';
+import { getSpacingClass } from '../../tokens/spacing';
 import Input from '../../atoms/Input/Input';
 import Popover from '../../atoms/Popover/Popover';
-import Button from '../../atoms/Button/Button';
 
 export type ColorFormat = 'hex' | 'rgb' | 'hsl';
 
@@ -41,7 +39,7 @@ export interface ColorPickerProps {
 export default function ColorPicker({
   value: controlledValue,
   defaultValue = '#000000',
-  format = 'hex',
+  format: _format = 'hex',
   onChange,
   presets,
   showInput = true,

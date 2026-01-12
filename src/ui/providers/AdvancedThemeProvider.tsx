@@ -20,10 +20,8 @@ import {
   type ReactNode,
 } from 'react';
 import { themeRegistry } from '../themes/ThemeRegistry';
-import { ThemeBuilder } from '../themes/ThemeBuilder';
 import { applyCSSVariables, removeCSSVariables } from '../themes/utils';
 import type { Theme, CustomThemeConfig, ThemeBuilderOptions } from '../themes/types';
-import type { ThemeMode } from '../tokens/tokens.factory';
 
 export interface AdvancedThemeContextValue {
   // Current active theme
