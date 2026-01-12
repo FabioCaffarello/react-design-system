@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import SearchInput from './SearchInput';
 
 describe('SearchInput', () => {
@@ -8,7 +8,9 @@ describe('SearchInput', () => {
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
+    vi.clearAllMocks();
   });
 
   it('renders correctly', () => {
@@ -29,15 +31,14 @@ describe('SearchInput', () => {
     expect(handleSearch).not.toHaveBeenCalled();
     
     // Advance timers for debounce - need to advance more than debounceMs
-    vi.advanceTimersByTime(350);
-    
-    // Run all pending timers
-    await vi.runAllTimersAsync();
+    act(() => {
+      vi.advanceTimersByTime(350);
+    });
     
     // Wait for the debounced call
     await waitFor(() => {
       expect(handleSearch).toHaveBeenCalledWith('test');
-    }, { timeout: 2000 });
+    }, { timeout: 1000 });
   });
 
   it('calls onSearch on Enter key', () => {
