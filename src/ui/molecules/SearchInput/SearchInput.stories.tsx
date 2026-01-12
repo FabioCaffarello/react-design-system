@@ -47,7 +47,7 @@ export const WithLoading: Story = {
     const [loading, setLoading] = useState(false);
     const [value, setValue] = useState('');
     
-    const handleSearch = (val: string) => {
+    const handleSearch = (_val: string) => {
       setLoading(true);
       setTimeout(() => setLoading(false), 2000);
     };

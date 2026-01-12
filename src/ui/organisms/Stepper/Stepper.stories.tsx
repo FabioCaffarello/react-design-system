@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import Stepper from './Stepper';
 import Input from '../../atoms/Input/Input';
-import Button from '../../atoms/Button/Button';
 
 const meta: Meta<typeof Stepper> = {
   title: 'Organisms/Stepper',

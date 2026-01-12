@@ -173,7 +173,7 @@ export const WithoutOverlayClose: Story = {
 };
 
 // AlertDialog Stories
-const alertDialogMeta: Meta<typeof AlertDialog> = {
+const _alertDialogMeta: Meta<typeof AlertDialog> = {
   title: 'Organisms/Dialog/AlertDialog',
   component: AlertDialog,
   parameters: {

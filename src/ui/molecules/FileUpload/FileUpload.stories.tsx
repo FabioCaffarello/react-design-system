@@ -47,7 +47,7 @@ export const Default: Story = {
 
 export const WithLabel: Story = {
   render: (args) => {
-    const [files, setFiles] = useState<FileUploadFile[]>([]);
+    const [_files, setFiles] = useState<FileUploadFile[]>([]);
     return (
       <div className="w-full max-w-md">
         <FileUpload
@@ -66,7 +66,7 @@ export const WithLabel: Story = {
 
 export const ImageUpload: Story = {
   render: (args) => {
-    const [files, setFiles] = useState<FileUploadFile[]>([]);
+    const [_files, setFiles] = useState<FileUploadFile[]>([]);
     return (
       <div className="w-full max-w-md">
         <FileUpload
@@ -107,7 +107,7 @@ export const MultipleFiles: Story = {
 
 export const WithProgress: Story = {
   render: (args) => {
-    const [files, setFiles] = useState<FileUploadFile[]>([]);
+    const [_files, setFiles] = useState<FileUploadFile[]>([]);
     
     const handleFilesChange = (newFiles: FileUploadFile[]) => {
       setFiles(newFiles);

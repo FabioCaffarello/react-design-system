@@ -30,7 +30,7 @@ const meta: Meta<typeof Modal> = {
   },
 };
 
-const ModalWrapper = ({ children, ...args }: any) => {
+const ModalWrapper = ({ children, ...args }: { children?: React.ReactNode; [key: string]: unknown }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>

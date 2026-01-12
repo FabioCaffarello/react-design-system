@@ -119,7 +119,7 @@ export const WithSelection: Story = {
 
 export const WithFilters: Story = {
   render: () => {
-    const [filters, setFilters] = useState<Record<string, any>>({});
+    const [_filters, setFilters] = useState<Record<string, unknown>>({});
     
     return (
       <DataGrid

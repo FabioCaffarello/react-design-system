@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import Timeline from './Timeline';
-import { CheckCircle2, Clock, XCircle, Package, Truck, CheckCircle } from 'lucide-react';
+import { CheckCircle2, XCircle, Package, Truck, CheckCircle } from 'lucide-react';
 
 const meta: Meta<typeof Timeline> = {
   title: 'Organisms/Timeline',

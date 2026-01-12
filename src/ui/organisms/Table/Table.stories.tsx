@@ -59,8 +59,8 @@ export const WithSorting: StoryObj<typeof Table> = {
       setSortDirection(direction);
       
       const sorted = [...data].sort((a, b) => {
-        const aVal = (a as any)[columnKey];
-        const bVal = (b as any)[columnKey];
+        const aVal = (a as Record<string, unknown>)[columnKey] as string;
+        const bVal = (b as Record<string, unknown>)[columnKey] as string;
         const comparison = aVal.localeCompare(bVal);
         return direction === 'asc' ? comparison : -comparison;
       });
@@ -174,8 +174,8 @@ export const WithPagination: StoryObj<typeof Table> = {
 
 export const WithFilters: StoryObj<typeof Table> = {
   render: () => {
-    const [filters, setFilters] = useState<Record<string, any>>({});
-    const [data, setData] = useState(sampleData);
+    const [_filters, setFilters] = useState<Record<string, unknown>>({});
+    const [data] = useState(sampleData);
 
     const handleFilter = (newFilters: Record<string, string>) => {
       setFilters(newFilters);
@@ -287,7 +287,7 @@ export const FullFeatured: StoryObj<typeof Table> = {
     const [pageSize, setPageSize] = useState(10);
     const [sortColumn, setSortColumn] = useState<string>('');
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-    const [filters, setFilters] = useState<Record<string, any>>({});
+    const [_filters, setFilters] = useState<Record<string, unknown>>({});
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
     const allData = Array.from({ length: 50 }, (_, i) => ({
@@ -376,7 +376,7 @@ export const FullFeatured: StoryObj<typeof Table> = {
         selectedRows={selectedRows}
         onSelectionChange={setSelectedRows}
         rowId={(row) => row.id}
-        actions={(row) => [
+        actions={(_row) => [
           { label: 'View', onClick: () => {} },
           { label: 'Edit', onClick: () => {} },
           { label: 'Delete', onClick: () => {}, variant: 'danger' },
@@ -544,7 +544,7 @@ export const DeclarativeAPI: StoryObj<typeof Table> = {
           },
         ]}
         selectable
-        actions={(row) => [
+        actions={(_row) => [
           { label: 'View', onClick: () => {} },
           { label: 'Edit', onClick: () => {} },
           { label: 'Delete', onClick: () => {}, variant: 'danger' },
