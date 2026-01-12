@@ -2,9 +2,6 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Tabs from './Tabs';
-import { TabsList } from './TabsList';
-import { TabsTrigger } from './TabsTrigger';
-import { TabsContent } from './TabsContent';
 
 describe('Tabs', () => {
   describe('Rendering', () => {
@@ -285,7 +282,7 @@ describe('Tabs', () => {
     });
 
     it('requires Enter or Space to activate in manual mode', async () => {
-      const user = userEvent.setup();
+      const _user = userEvent.setup();
       render(
         <Tabs defaultValue="tab1" activationMode="manual">
           <Tabs.List>

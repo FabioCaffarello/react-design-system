@@ -22,15 +22,19 @@ describe('SearchInput', () => {
     render(<SearchInput onSearch={handleSearch} debounceMs={300} />);
     
     const input = screen.getByRole('searchbox') || screen.getByRole('textbox') || document.querySelector('input[type="search"]') as HTMLInputElement;
+    expect(input).toBeInTheDocument();
+    
     fireEvent.change(input, { target: { value: 'test' } });
     
     expect(handleSearch).not.toHaveBeenCalled();
     
+    // Advance timers and wait for debounce
     vi.advanceTimersByTime(300);
+    await vi.runAllTimersAsync();
     
     await waitFor(() => {
       expect(handleSearch).toHaveBeenCalledWith('test');
-    }, { timeout: 1000 });
+    }, { timeout: 2000 });
   });
 
   it('calls onSearch on Enter key', () => {

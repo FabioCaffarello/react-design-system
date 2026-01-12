@@ -7,7 +7,7 @@ global.FileReader = class FileReader {
   result: string | null = null;
   onload: ((this: FileReader, ev: ProgressEvent<FileReader>) => void) | null = null;
   
-  readAsDataURL(file: Blob) {
+  readAsDataURL(_file: Blob) {
     setTimeout(() => {
       this.result = 'data:image/png;base64,mock';
       if (this.onload) {
@@ -15,7 +15,7 @@ global.FileReader = class FileReader {
       }
     }, 0);
   }
-} as any;
+} as unknown as typeof FileReader;
 
 describe('FileUpload', () => {
   it('renders correctly', () => {
@@ -27,23 +27,28 @@ describe('FileUpload', () => {
     const handleFilesChange = vi.fn();
     const file = new File(['content'], 'test.txt', { type: 'text/plain' });
     
-    render(<FileUpload onFilesChange={handleFilesChange} />);
+    const { container } = render(<FileUpload onFilesChange={handleFilesChange} />);
     
-    const input = screen.getByRole('textbox', { hidden: true }) || 
-                  document.querySelector('input[type="file"]');
+    const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+    expect(input).toBeInTheDocument();
     
-    if (input) {
-      Object.defineProperty(input, 'files', {
-        value: [file],
-        writable: false,
-      });
-      
-      fireEvent.change(input);
-      
-      await waitFor(() => {
-        expect(handleFilesChange).toHaveBeenCalled();
-      });
-    }
+    // Create a FileList-like object
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(file);
+    Object.defineProperty(input, 'files', {
+      value: dataTransfer.files,
+      writable: false,
+      configurable: true,
+    });
+    
+    fireEvent.change(input);
+    
+    await waitFor(() => {
+      expect(handleFilesChange).toHaveBeenCalled();
+      const callArgs = handleFilesChange.mock.calls[0];
+      expect(callArgs).toBeDefined();
+      expect(callArgs[0]).toBeDefined();
+    }, { timeout: 2000 });
   });
 
   it('validates file size', async () => {

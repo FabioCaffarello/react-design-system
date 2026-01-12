@@ -7,7 +7,7 @@ describe('Collapsible', () => {
     // Clear localStorage before each test
     try {
       localStorage.clear();
-    } catch (e) {
+    } catch {
       // If clear is not available, remove items manually
       Object.keys(localStorage).forEach(key => localStorage.removeItem(key));
     }
@@ -17,7 +17,7 @@ describe('Collapsible', () => {
     // Clear localStorage after each test
     try {
       localStorage.clear();
-    } catch (e) {
+    } catch {
       // If clear is not available, remove items manually
       Object.keys(localStorage).forEach(key => localStorage.removeItem(key));
     }

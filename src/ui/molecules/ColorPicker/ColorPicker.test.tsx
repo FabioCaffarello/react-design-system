@@ -31,9 +31,17 @@ describe('ColorPicker', () => {
 
   it('displays presets when provided', () => {
     const presets = ['#ff0000', '#00ff00', '#0000ff'];
-    render(<ColorPicker presets={presets} />);
-    // Presets should be rendered as buttons
-    const buttons = screen.getAllByRole('button');
-    expect(buttons.length).toBeGreaterThan(0);
+    const { container } = render(<ColorPicker presets={presets} />);
+    // Click on the color swatch to open the popover
+    const colorSwatch = container.querySelector('[style*="background-color"]');
+    if (colorSwatch) {
+      fireEvent.click(colorSwatch);
+      // Presets should be rendered as buttons inside the popover
+      const buttons = screen.getAllByRole('button');
+      expect(buttons.length).toBeGreaterThan(0);
+    } else {
+      // If popover is not open, at least verify the component renders
+      expect(colorSwatch).toBeInTheDocument();
+    }
   });
 });

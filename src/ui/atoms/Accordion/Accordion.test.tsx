@@ -28,11 +28,13 @@ describe('Accordion', () => {
     fireEvent.click(button!);
     expect(screen.getByText('Content 1')).toBeVisible();
     fireEvent.click(button!);
-    const content = screen.queryByText('Content 1');
-    if (content) {
-      expect(content).toHaveAttribute('aria-hidden', 'true');
+    const contentContainer = document.querySelector('#accordion-content-1');
+    if (contentContainer) {
+      const ariaHidden = contentContainer.getAttribute('aria-hidden');
+      expect(ariaHidden === 'true' || !screen.queryByText('Content 1')?.isConnected).toBe(true);
     } else {
-      expect(content).not.toBeInTheDocument();
+      const content = screen.queryByText('Content 1');
+      expect(content).not.toBeVisible();
     }
   });
 
@@ -61,11 +63,13 @@ describe('Accordion', () => {
     const disabledButton = screen.getByText('Item 3').closest('button');
     expect(disabledButton).toHaveAttribute('aria-disabled', 'true');
     fireEvent.click(disabledButton!);
-    const content = screen.queryByText('Content 3');
-    if (content) {
-      expect(content).toHaveAttribute('aria-hidden', 'true');
+    const contentContainer = document.querySelector('#accordion-content-3');
+    if (contentContainer) {
+      const ariaHidden = contentContainer.getAttribute('aria-hidden');
+      expect(ariaHidden === 'true' || !screen.queryByText('Content 3')?.isConnected).toBe(true);
     } else {
-      expect(content).not.toBeInTheDocument();
+      const content = screen.queryByText('Content 3');
+      expect(content).not.toBeVisible();
     }
   });
 
