@@ -1,0 +1,154 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Organisms/Table" />
+
+# Table
+
+A powerful and flexible table component with sorting, filtering, pagination, and responsive design capabilities.
+
+## Features
+
+- **Sorting**: Click column headers to sort data
+- **Loading States**: Built-in loading skeleton
+- **Custom Rendering**: Customize cell rendering with render functions
+- **Responsive**: Adapts to different screen sizes
+- **Accessible**: Full ARIA support and keyboard navigation
+- **Pagination**: Built-in pagination support
+- **Actions**: Row-level actions support
+
+## Basic Usage
+
+```tsx
+import { Table } from '@fabio.caffarello/react-design-system';
+
+const data = [
+  { id: '1', name: 'Item 1', status: 'Active' },
+  { id: '2', name: 'Item 2', status: 'Inactive' },
+];
+
+const columns = [
+  { key: 'name', label: 'Name' },
+  { key: 'status', label: 'Status' },
+];
+
+<Table columns={columns} data={data} />
+```
+
+## Sorting
+
+Enable sorting by providing a `sortable` property on columns:
+
+```tsx
+const columns = [
+  { key: 'name', label: 'Name', sortable: true },
+  { key: 'status', label: 'Status', sortable: true },
+];
+
+<Table 
+  columns={columns} 
+  data={data}
+  onSort={(key, direction) => {
+    // Handle sorting
+  }}
+/>
+```
+
+## Custom Cell Rendering
+
+Customize how cells are rendered using the `render` function:
+
+```tsx
+const columns = [
+  { 
+    key: 'status', 
+    label: 'Status',
+    render: (value, row) => (
+      <Badge variant={value === 'Active' ? 'success' : 'default'}>
+        {value}
+      </Badge>
+    )
+  },
+];
+```
+
+## Loading State
+
+Show a loading skeleton while data is being fetched:
+
+```tsx
+<Table 
+  columns={columns} 
+  data={data}
+  loading={true}
+/>
+```
+
+## Pagination
+
+Integrate with pagination components:
+
+```tsx
+import { Table, TablePagination } from '@fabio.caffarello/react-design-system';
+
+<>
+  <Table columns={columns} data={currentPageData} />
+  <TablePagination
+    currentPage={page}
+    totalPages={totalPages}
+    onPageChange={setPage}
+  />
+</>
+```
+
+## Actions
+
+Add row-level actions:
+
+```tsx
+import { Table, TableActions } from '@fabio.caffarello/react-design-system';
+
+<Table
+  columns={columns}
+  data={data}
+  actions={(row) => (
+    <TableActions
+      items={[
+        { label: 'Edit', onClick: () => handleEdit(row) },
+        { label: 'Delete', onClick: () => handleDelete(row) },
+      ]}
+    />
+  )}
+/>
+```
+
+## Accessibility
+
+The Table component follows ARIA best practices:
+
+- Uses `role="table"` for the table element
+- Uses `role="columnheader"` for sortable headers
+- Provides `aria-sort` attributes for sort state
+- Supports keyboard navigation
+- Associates headers with cells via `aria-labelledby`
+
+### Keyboard Navigation
+
+- **Tab**: Navigate between interactive elements
+- **Enter/Space**: Activate sortable column headers
+- **Arrow Keys**: Navigate between cells (when implemented)
+
+## Responsive Design
+
+The table automatically adapts to smaller screens:
+
+- On mobile, consider using a card-based layout
+- Horizontal scrolling is available for wide tables
+- Use responsive column visibility
+
+## Best Practices
+
+1. **Column Keys**: Always use unique, stable keys for columns
+2. **Data Structure**: Keep data structure consistent across rows
+3. **Performance**: For large datasets, implement virtual scrolling
+4. **Accessibility**: Always provide accessible labels and descriptions
+5. **Loading States**: Always show loading states for async data
