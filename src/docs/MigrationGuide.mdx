@@ -1,0 +1,297 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Design System/Migration Guide" />
+
+# Migration Guide
+
+Este guia ajuda você a migrar de versões anteriores do React Design System ou de outras bibliotecas de componentes.
+
+## Migração do ThemeProvider para AdvancedThemeProvider
+
+### Antes (v1.8.0)
+
+```tsx
+import { ThemeProvider, useTheme } from '@fabio.caffarello/react-design-system';
+
+function App() {
+  return (
+    <ThemeProvider defaultTheme="light">
+      <MyComponent />
+    </ThemeProvider>
+  );
+}
+
+function MyComponent() {
+  const { theme, toggleTheme } = useTheme();
+  return <button onClick={toggleTheme}>Toggle</button>;
+}
+```
+
+### Depois (v1.9.0+)
+
+```tsx
+import { AdvancedThemeProvider, useAdvancedTheme } from '@fabio.caffarello/react-design-system';
+
+function App() {
+  return (
+    <AdvancedThemeProvider defaultTheme="light">
+      <MyComponent />
+    </AdvancedThemeProvider>
+  );
+}
+
+function MyComponent() {
+  const { currentTheme, setTheme } = useAdvancedTheme();
+  return (
+    <button onClick={() => setTheme(currentTheme === 'light' ? 'dark' : 'light')}>
+      Toggle
+    </button>
+  );
+}
+```
+
+### Mudanças Principais
+
+- `theme` → `currentTheme` (agora é string, não 'light' | 'dark')
+- `toggleTheme()` → `setTheme(themeName)` (mais flexível)
+- `isDark` → `currentTheme === 'dark'` (verificação manual)
+- Suporte a múltiplos temas
+- CSS variables automáticas
+
+## Migração de Imports
+
+### Antes: Import Completo
+
+```tsx
+import { Button, Input, Card } from '@fabio.caffarello/react-design-system';
+```
+
+### Depois: Import por Categoria (Recomendado)
+
+```tsx
+// Melhor tree shaking e performance
+import { Button, Input } from '@fabio.caffarello/react-design-system/atoms';
+import { Card } from '@fabio.caffarello/react-design-system/molecules';
+```
+
+## Migração de Tokens
+
+### Antes: Classes Hardcoded
+
+```tsx
+<div className="p-4 bg-indigo-500 text-white">
+  Content
+</div>
+```
+
+### Depois: Design Tokens
+
+```tsx
+import { getSpacingClass, getColorClass } from '@fabio.caffarello/react-design-system';
+
+<div className={`${getSpacingClass('md', 'p')} ${getColorClass('primary', 'DEFAULT', 'bg')} ${getColorClass('primary', 'contrast', 'text')}`}>
+  Content
+</div>
+```
+
+## Migração de Outras Bibliotecas
+
+### De Material-UI
+
+```tsx
+// Material-UI
+import { Button, TextField } from '@mui/material';
+
+// React Design System
+import { Button, Input } from '@fabio.caffarello/react-design-system/atoms';
+```
+
+**Mudanças:**
+- `TextField` → `Input`
+- Props diferentes (consulte documentação)
+- Sistema de temas diferente
+
+### De Ant Design
+
+```tsx
+// Ant Design
+import { Button, Input } from 'antd';
+
+// React Design System
+import { Button, Input } from '@fabio.caffarello/react-design-system/atoms';
+```
+
+**Mudanças:**
+- Props podem ser diferentes
+- Sistema de grid diferente (use CSS Grid/Flexbox)
+- Ícones separados (use lucide-react)
+
+### De Chakra UI
+
+```tsx
+// Chakra UI
+import { Button, Input, Box } from '@chakra-ui/react';
+
+// React Design System
+import { Button, Input, BoxWrapper } from '@fabio.caffarello/react-design-system';
+```
+
+**Mudanças:**
+- `Box` → `BoxWrapper` ou `Card`
+- Sistema de espaçamento similar (baseado em 4px)
+- Temas customizados via ThemeBuilder
+
+## Migração de Versões Específicas
+
+### v1.8.0 → v1.9.0
+
+#### Novos Componentes
+
+```tsx
+// Novos atoms disponíveis
+import { Switch, Separator, Accordion, Slider, Popover } from '@fabio.caffarello/react-design-system/atoms';
+
+// Novos molecules disponíveis
+import { SearchInput, Rating, FileUpload, TimePicker, ColorPicker } from '@fabio.caffarello/react-design-system/molecules';
+
+// Novos organisms disponíveis
+import { Stepper, Timeline, CommandPalette, DataGrid } from '@fabio.caffarello/react-design-system/organisms';
+```
+
+#### Novos Tokens
+
+```tsx
+// Novos tokens disponíveis
+import {
+  getAnimationClass,
+  getZIndexClass,
+  getOpacityClass,
+  getGradientClass,
+} from '@fabio.caffarello/react-design-system/tokens';
+```
+
+#### Sistema de Temas
+
+```tsx
+// Novo sistema de temas avançado
+import { AdvancedThemeProvider, ThemeBuilder } from '@fabio.caffarello/react-design-system';
+
+const customTheme = ThemeBuilder.create({
+  name: 'custom',
+  base: 'light',
+  colors: {
+    primary: {
+      DEFAULT: { hex: '#custom-color' },
+    },
+  },
+}).build();
+```
+
+## Checklist de Migração
+
+### Passo 1: Atualizar Dependências
+
+```bash
+npm install @fabio.caffarello/react-design-system@latest
+```
+
+### Passo 2: Atualizar Imports
+
+- [ ] Substituir `ThemeProvider` por `AdvancedThemeProvider`
+- [ ] Atualizar `useTheme` para `useAdvancedTheme`
+- [ ] Considerar usar imports por categoria
+
+### Passo 3: Atualizar Tokens
+
+- [ ] Substituir classes hardcoded por design tokens
+- [ ] Usar funções helper para tokens
+
+### Passo 4: Testar
+
+- [ ] Testar todos os componentes
+- [ ] Verificar temas (light/dark)
+- [ ] Verificar acessibilidade
+- [ ] Verificar performance
+
+### Passo 5: Otimizar
+
+- [ ] Usar code splitting (imports por categoria)
+- [ ] Remover imports não utilizados
+- [ ] Verificar bundle size
+
+## Exemplos de Migração
+
+### Exemplo 1: Formulário Simples
+
+**Antes:**
+```tsx
+import { ThemeProvider, Input, Button } from '@fabio.caffarello/react-design-system';
+
+function LoginForm() {
+  return (
+    <ThemeProvider>
+      <form>
+        <input type="email" className="p-2 border" />
+        <button className="bg-blue-500 text-white p-2">Login</button>
+      </form>
+    </ThemeProvider>
+  );
+}
+```
+
+**Depois:**
+```tsx
+import {
+  AdvancedThemeProvider,
+  Input,
+  Button,
+  Label,
+} from '@fabio.caffarello/react-design-system';
+
+function LoginForm() {
+  return (
+    <AdvancedThemeProvider defaultTheme="light">
+      <form>
+        <Label htmlFor="email">Email</Label>
+        <Input id="email" type="email" />
+        <Button variant="primary" type="submit">Login</Button>
+      </form>
+    </AdvancedThemeProvider>
+  );
+}
+```
+
+### Exemplo 2: Card com Estilos Customizados
+
+**Antes:**
+```tsx
+<div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
+  <h2 className="text-xl font-bold mb-2">Title</h2>
+  <p className="text-gray-600">Content</p>
+</div>
+```
+
+**Depois:**
+```tsx
+import { Card, Text } from '@fabio.caffarello/react-design-system';
+import { getTypographyClasses } from '@fabio.caffarello/react-design-system/tokens';
+
+<Card padding="medium" variant="default">
+  <h2 className={getTypographyClasses('h2')}>Title</h2>
+  <Text>Content</Text>
+</Card>
+```
+
+## Suporte
+
+Se encontrar problemas durante a migração:
+
+1. Consulte a [documentação completa](./Design%20System/Overview)
+2. Veja os [exemplos no Storybook](./Design%20System/Components)
+3. Abra uma [issue no GitHub](https://github.com/fabiocaffarello/react-design-system/issues)
+
+## Recursos Adicionais
+
+- [Getting Started Guide](./Design%20System/Getting%20Started)
+- [Best Practices](./Design%20System/Best%20Practices)
+- [Component Composition](./Design%20System/Component%20Composition)
