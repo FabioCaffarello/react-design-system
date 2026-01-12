@@ -16,7 +16,7 @@ const meta: Meta<typeof TableFilters> = {
 
 export const Default: StoryObj<typeof TableFilters> = {
   render: () => {
-    const [filters, setFilters] = useState<Record<string, string>>({});
+    const [_filters, setFilters] = useState<Record<string, string>>({});
 
     return (
       <TableFilters
@@ -58,7 +58,7 @@ export const Default: StoryObj<typeof TableFilters> = {
 
 export const WithInitialValues: StoryObj<typeof TableFilters> = {
   render: () => {
-    const [filters, setFilters] = useState<Record<string, any>>({});
+    const [_filters, setFilters] = useState<Record<string, unknown>>({});
 
     return (
       <TableFilters
@@ -84,7 +84,7 @@ export const WithInitialValues: StoryObj<typeof TableFilters> = {
 
 export const WithDateFilter: StoryObj<typeof TableFilters> = {
   render: () => {
-    const [filters, setFilters] = useState<Record<string, string>>({});
+    const [_filters, setFilters] = useState<Record<string, string>>({});
 
     return (
       <TableFilters

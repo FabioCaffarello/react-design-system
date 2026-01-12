@@ -8,7 +8,7 @@ describe('SidebarGroup', () => {
     // Clear localStorage before each test
     try {
       localStorage.clear();
-    } catch (e) {
+    } catch {
       // If clear is not available, remove items manually
       Object.keys(localStorage).forEach(key => localStorage.removeItem(key));
     }
@@ -18,7 +18,7 @@ describe('SidebarGroup', () => {
     // Clear localStorage after each test
     try {
       localStorage.clear();
-    } catch (e) {
+    } catch {
       // If clear is not available, remove items manually
       Object.keys(localStorage).forEach(key => localStorage.removeItem(key));
     }
@@ -60,7 +60,7 @@ describe('SidebarGroup', () => {
 
     await waitFor(() => {
       // When collapsed, the item should not be visible
-      const item = screen.queryByText('Test Item');
+      const _item = screen.queryByText('Test Item');
       // The item might still be in DOM but hidden, or not rendered
       // Check if button aria-expanded changed
       expect(title).toHaveAttribute('aria-expanded', 'false');
