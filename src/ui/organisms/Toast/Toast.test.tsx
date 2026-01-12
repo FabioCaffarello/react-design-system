@@ -131,34 +131,22 @@ describe('Toast', () => {
 
       render(<Toast toast={toast} onDismiss={handleDismiss} />);
 
-      // Wait for toast to render first
-      await waitFor(() => {
-        expect(screen.getByText('Test Toast')).toBeInTheDocument();
-      }, { timeout: 2000 });
-
       // Advance timers to trigger visibility and render
       act(() => {
         vi.advanceTimersByTime(100);
         vi.runOnlyPendingTimers();
       });
 
-      // Wait for close button to appear
-      let closeButton: HTMLElement | null = null;
-      try {
-        closeButton = await waitFor(() => {
-          const btn = screen.getByLabelText('Dismiss notification');
-          expect(btn).toBeInTheDocument();
-          return btn;
-        }, { timeout: 2000 });
-      } catch (e) {
-        // Try alternative selectors if main one fails
-        closeButton = screen.queryByLabelText('Dismiss notification') ||
-                     screen.queryByRole('button', { name: /dismiss/i }) ||
-                     screen.queryByRole('button', { name: /close/i }) ||
-                     document.querySelector('button[aria-label*="Dismiss"]') ||
-                     document.querySelector('button[aria-label*="dismiss"]') ||
-                     null;
-      }
+      // Verify toast is rendered
+      expect(screen.getByText('Test Toast')).toBeInTheDocument();
+
+      // Find close button - it should be rendered immediately
+      const closeButton = screen.queryByLabelText('Dismiss notification') ||
+                         screen.queryByRole('button', { name: /dismiss/i }) ||
+                         document.querySelector('button[aria-label*="Dismiss"]') ||
+                         document.querySelector('button[aria-label*="dismiss"]');
+
+      expect(closeButton).toBeTruthy();
 
       if (closeButton) {
         act(() => {
@@ -173,9 +161,6 @@ describe('Toast', () => {
 
         // Check if dismiss was called
         expect(handleDismiss).toHaveBeenCalledWith('test-1');
-      } else {
-        // If button not found, at least verify toast rendered
-        expect(screen.getByText('Test Toast')).toBeInTheDocument();
       }
     }, 10000);
 
@@ -366,11 +351,8 @@ describe('Toast', () => {
         vi.runOnlyPendingTimers();
       });
 
-      // Wait for toast to be rendered
-      const toastText = await waitFor(() => {
-        return screen.getByText('Test Toast');
-      }, { timeout: 2000 });
-
+      // Verify toast is rendered
+      const toastText = screen.getByText('Test Toast');
       expect(toastText).toBeInTheDocument();
 
       // Check for toast element in container or body
@@ -412,13 +394,12 @@ describe('ToastProvider and ToastContainer', () => {
     // Advance timer for animation and render
     act(() => {
       vi.advanceTimersByTime(100);
+      vi.runOnlyPendingTimers();
     });
 
-    // Wait for toast to appear
-    await waitFor(() => {
-      expect(screen.getByText('Success')).toBeInTheDocument();
-    }, { timeout: 1000 });
-  });
+    // Toast should be rendered immediately after timer advance
+    expect(screen.getByText('Success')).toBeInTheDocument();
+  }, 10000);
 
   it('removes toast when dismissed', async () => {
     render(
@@ -436,34 +417,33 @@ describe('ToastProvider and ToastContainer', () => {
     // Advance timer for animation and render
     act(() => {
       vi.advanceTimersByTime(100);
+      vi.runOnlyPendingTimers();
     });
 
-    await waitFor(() => {
-      expect(screen.getByText('Success')).toBeInTheDocument();
-    }, { timeout: 1000 });
+    // Toast should be rendered
+    expect(screen.getByText('Success')).toBeInTheDocument();
 
-    // Wait for close button
-    let closeButton: HTMLElement | null = null;
-    await waitFor(() => {
-      closeButton = screen.getByLabelText('Dismiss notification');
-      expect(closeButton).toBeInTheDocument();
-    }, { timeout: 1000 });
+    // Find close button
+    const closeButton = screen.queryByLabelText('Dismiss notification') ||
+                       document.querySelector('button[aria-label*="Dismiss"]');
+
+    expect(closeButton).toBeTruthy();
 
     if (closeButton) {
       act(() => {
         fireEvent.click(closeButton);
       });
-    }
 
-    // Advance timer for exit animation
-    act(() => {
-      vi.advanceTimersByTime(300);
-    });
+      // Advance timer for exit animation
+      act(() => {
+        vi.advanceTimersByTime(300);
+        vi.runOnlyPendingTimers();
+      });
 
-    await waitFor(() => {
+      // Toast should be removed
       expect(screen.queryByText('Success')).not.toBeInTheDocument();
-    }, { timeout: 2000 });
-  });
+    }
+  }, 10000);
 
   it('clears all toasts', async () => {
     render(
@@ -480,12 +460,12 @@ describe('ToastProvider and ToastContainer', () => {
     // Advance timer for animations and render
     act(() => {
       vi.advanceTimersByTime(100);
+      vi.runOnlyPendingTimers();
     });
 
-    await waitFor(() => {
-      expect(screen.getByText('Success')).toBeInTheDocument();
-      expect(screen.getByText('Error')).toBeInTheDocument();
-    }, { timeout: 1000 });
+    // Toasts should be rendered
+    expect(screen.getByText('Success')).toBeInTheDocument();
+    expect(screen.getByText('Error')).toBeInTheDocument();
 
     const clearButton = screen.getByText('Clear All');
     
@@ -493,11 +473,16 @@ describe('ToastProvider and ToastContainer', () => {
       fireEvent.click(clearButton);
     });
 
-    await waitFor(() => {
-      expect(screen.queryByText('Success')).not.toBeInTheDocument();
-      expect(screen.queryByText('Error')).not.toBeInTheDocument();
-    }, { timeout: 2000 });
-  });
+    // Advance timers to ensure cleanup
+    act(() => {
+      vi.advanceTimersByTime(100);
+      vi.runOnlyPendingTimers();
+    });
+
+    // Toasts should be cleared
+    expect(screen.queryByText('Success')).not.toBeInTheDocument();
+    expect(screen.queryByText('Error')).not.toBeInTheDocument();
+  }, 10000);
 
   it('limits number of toasts when maxToasts is set', async () => {
     render(
@@ -518,12 +503,6 @@ describe('ToastProvider and ToastContainer', () => {
       vi.advanceTimersByTime(100);
       vi.runOnlyPendingTimers();
     });
-
-    // Wait for toasts to render
-    await waitFor(() => {
-      const toasts = screen.queryAllByRole('alert');
-      expect(toasts.length).toBeGreaterThan(0);
-    }, { timeout: 2000 });
 
     // Only first 2 toasts should be visible
     const toasts = screen.queryAllByRole('alert');
@@ -549,10 +528,7 @@ describe('ToastProvider and ToastContainer', () => {
       vi.runOnlyPendingTimers();
     });
 
-    const toast = await waitFor(() => {
-      return screen.getByText('Success');
-    }, { timeout: 2000 });
-
+    const toast = screen.getByText('Success');
     expect(toast).toBeInTheDocument();
     // Toast should be in document.body via portal
     const toastContainer = toast.closest('.fixed') || toast.parentElement || toast;
