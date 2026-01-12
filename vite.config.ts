@@ -16,6 +16,14 @@ const dirname =
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
   plugins: [tsConfigPaths(), react()],
+  optimizeDeps: {
+    include: [
+      'lucide-react',
+      'react-hook-form',
+      '@testing-library/dom',
+      '@testing-library/react',
+    ],
+  },
   resolve: {
     // Ensure barrel exports are resolved correctly
     mainFields: ['module', 'main'],
