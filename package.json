@@ -46,6 +46,22 @@
         "default": "./dist/tokens/index.js"
       },
       "require": "./dist/tokens/index.cjs"
+    },
+    "./extensions": {
+      "types": "./dist/ui/extensions/index.d.ts",
+      "import": {
+        "development": "./src/ui/extensions/index.ts",
+        "default": "./dist/extensions/index.js"
+      },
+      "require": "./dist/extensions/index.cjs"
+    },
+    "./extensions/flow": {
+      "types": "./dist/ui/extensions/flow/index.d.ts",
+      "import": {
+        "development": "./src/ui/extensions/flow/index.ts",
+        "default": "./dist/extensions/flow/index.js"
+      },
+      "require": "./dist/extensions/flow/index.cjs"
     }
   },
   "files": [
@@ -57,9 +73,12 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:playground": "VITE_APP_MODE=true vite",
     "build": "npx tsc --project tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist && vite build",
-    "lint": "eslint .",
+    "build:playground": "VITE_APP_MODE=true vite build",
     "preview": "vite preview",
+    "preview:playground": "VITE_APP_MODE=true vite preview",
+    "lint": "eslint .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "plop": "plop",
@@ -71,6 +90,7 @@
   },
   "peerDependencies": {
     "@hookform/resolvers": "^3.0.0",
+    "@xyflow/react": "^12.0.0",
     "lucide-react": "^0.552.0",
     "react": ">=19",
     "react-dom": ">=19",
@@ -79,8 +99,13 @@
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.16",
+    "@types/d3-force": "^3.0.10",
+    "d3-force": "^3.0.0",
+    "dagre": "^0.8.5",
+    "elkjs": "^0.11.0",
     "react": ">=19",
-    "react-dom": ">=19"
+    "react-dom": ">=19",
+    "web-worker": "^1.5.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.2",
@@ -94,33 +119,35 @@
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
-    "lucide-react": "^0.552.0",
-    "react-hook-form": "^7.71.0",
-    "zod": "^3.0.0",
     "@types/node": "^24.6.0",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.4",
     "@vitest/browser-playwright": "^4.0.6",
     "@vitest/coverage-v8": "^4.0.6",
+    "@xyflow/react": "^12.0.0",
     "autoprefixer": "^10.4.21",
+    "baseline-browser-mapping": "^2.9.14",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",
     "eslint-plugin-storybook": "^10.0.3",
     "globals": "^16.4.0",
     "jsdom": "^27.0.1",
+    "lucide-react": "^0.552.0",
     "playwright": "^1.56.1",
     "plop": "^4.0.4",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
+    "react-hook-form": "^7.71.0",
     "storybook": "^10.0.3",
     "tailwindcss": "^4.1.16",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.45.0",
     "vite": "^7.1.7",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^4.0.6"
+    "vitest": "^4.0.6",
+    "zod": "^3.0.0"
   },
   "eslintConfig": {
     "extends": [

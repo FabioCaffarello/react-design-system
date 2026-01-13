@@ -111,6 +111,21 @@ Explore the live documentation and interactive components:
 
 [Storybook on GitHub Pages](https://fabiocaffarello.github.io/react-design-system)
 
+### Flow Playground
+
+The Storybook includes an interactive **Flow Playground** for creating and testing flow diagrams:
+
+- **Interactive Editor**: Add, edit, and remove nodes and edges in real-time
+- **Customization**: Modify node properties (labels, variants, etc.)
+- **Validation**: Validate flow structure and connection rules
+- **Export/Import**: Save and load flows as JSON
+- **Themes**: Switch between light and dark themes
+- **Statistics**: View real-time flow statistics
+
+Access it in Storybook: `Extensions/Flow/FlowPlayground`
+
+See the [Flow Playground Guide](./src/ui/extensions/flow/PLAYGROUND_GUIDE.md) for detailed usage instructions.
+
 ## Features
 
 ### Accessibility
@@ -155,6 +170,41 @@ Explore the live documentation and interactive components:
 - **Code Quality**: ESLint + Prettier enforced
 - **Documentation**: All components documented in Storybook
 
+## Flow Components
+
+The design system includes a comprehensive Flow/Graph system built on React Flow:
+
+- **FlowCanvas**: Main canvas component with compound pattern
+- **FlowProvider**: Context provider with state management
+- **Custom Nodes & Edges**: Pre-built components with design system integration
+- **Layout Engines**: Support for Dagre, ELK, and Force-Directed layouts
+- **Validation**: Connection rules and flow validation
+- **Playground**: Interactive playground in Storybook
+
+### Quick Start with Flow
+
+```tsx
+import { FlowCanvas, FlowProvider } from '@fabio.caffarello/react-design-system';
+import { useNodesState, useEdgesState } from '@xyflow/react';
+
+function MyFlow() {
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  
+  return (
+    <FlowProvider nodes={nodes} edges={edges}>
+      <FlowCanvas.Root>
+        <FlowCanvas.Background />
+        <FlowCanvas.Controls />
+        <FlowCanvas.MiniMap />
+      </FlowCanvas.Root>
+    </FlowProvider>
+  );
+}
+```
+
+See [Flow Documentation](./src/ui/organisms/Flow/Flow.mdx) for complete API reference.
+
 ## Roadmap
 
 - [x] Atomic Design structure
@@ -164,6 +214,7 @@ Explore the live documentation and interactive components:
 - [x] Accessibility improvements (WCAG 2.1 AA)
 - [x] Comprehensive test coverage
 - [x] MDX documentation for complex components
+- [x] Flow/Graph components with playground
 - [ ] Create Publish npm package cd step
 - [ ] Customizable themes and dark mode
 - [ ] Performance optimizations (code splitting)

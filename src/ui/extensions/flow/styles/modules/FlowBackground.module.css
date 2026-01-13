@@ -1,0 +1,65 @@
+/* FlowBackground CSS Module
+ * 
+ * Styles for FlowBackground component using React Flow CSS variables.
+ * All colors are controlled via CSS variables for theming support.
+ */
+
+.background {
+  pointer-events: none;
+  z-index: -1;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  
+  /* Use CSS variable for background color with fallback */
+  background-color: var(
+    --xy-background-color-default,
+    transparent
+  );
+}
+
+.pattern {
+  width: 100%;
+  height: 100%;
+}
+
+/* Pattern variant styles - React Flow handles the actual rendering,
+ * but we can add additional styling if needed */
+.patternDots {
+  fill: var(
+    --xy-background-pattern-color-props,
+    var(--xy-background-pattern-color, var(--xy-background-pattern-dots-color-default, #91919a))
+  );
+}
+
+.patternLines {
+  stroke: var(
+    --xy-background-pattern-color-props,
+    var(--xy-background-pattern-color, var(--xy-background-pattern-lines-color-default, #e5e7eb))
+  );
+}
+
+.patternCross {
+  stroke: var(
+    --xy-background-pattern-color-props,
+    var(--xy-background-pattern-color, var(--xy-background-pattern-cross-color-default, #e2e2e2))
+  );
+}
+
+/* Accessibility: Ensure background doesn't interfere with content */
+@media (prefers-reduced-motion: reduce) {
+  .background {
+    transition: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .patternDots,
+  .patternLines,
+  .patternCross {
+    opacity: 0.8;
+  }
+}

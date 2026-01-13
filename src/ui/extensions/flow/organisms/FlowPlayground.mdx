@@ -1,0 +1,186 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Extensions/Flow/FlowPlayground/Guide" />
+
+# Flow Playground
+
+O Flow Playground é uma ferramenta interativa completa e robusta para criar, editar e testar diagramas de fluxo diretamente no Storybook. Inspirado em https://play.reactflow.dev/, oferece uma experiência profissional com abas e configuração multi-step.
+
+## Visão Geral
+
+O playground oferece uma experiência completa de desenvolvimento para trabalhar com componentes Flow, permitindo:
+
+- **Criação Interativa**: Adicione e remova nodes e edges em tempo real
+- **Configuração Guiada**: Multi-step dentro de cada aba para configuração organizada
+- **Customização Completa**: Configure todos os aspectos do flow através de abas categorizadas
+- **Validação**: Valide a estrutura do flow e regras de conexão
+- **Code Generation**: Gere código React a partir do flow
+- **Temas**: Alterne entre temas light e dark
+- **Apply Changes**: Sistema de mudanças pendentes com aplicação explícita
+
+## Estrutura do Playground
+
+### Layout Split-View
+
+O playground utiliza um layout split-view:
+
+- **Lado Esquerdo**: Abas principais e Stepper multi-step
+- **Lado Direito**: Canvas do React Flow sempre visível
+
+### Abas Principais
+
+1. **Nodes & Edges** - Configuração completa de nodes e edges
+2. **Canvas** - Configurações do ReactFlow
+3. **Background** - Configuração de background
+4. **Layout** - Algoritmos de layout
+5. **Validation** - Regras e validação
+6. **Code** - Preview e exportação de código
+7. **Settings** - Configurações gerais
+
+### Multi-Step dentro de cada Aba
+
+Cada aba possui um Stepper com passos lógicos:
+
+#### Nodes & Edges
+- **Step 1: Dataset** - Selecionar template/dataset inicial
+- **Step 2: Node Types** - Configurar tipos de nodes disponíveis
+- **Step 3: Edge Types** - Configurar tipos de edges disponíveis
+- **Step 4: Editor** - Editar node ou edge selecionado
+
+#### Canvas
+- **Step 1: Basic** - Configurações básicas do ReactFlow
+- **Step 2: Interaction** - Configurações de interação
+- **Step 3: Viewport** - Configurações de viewport
+
+#### Background
+- **Step 1: Background** - Configuração completa de background
+
+#### Layout
+- **Step 1: Layout** - Configuração de algoritmos de layout
+
+#### Validation
+- **Step 1: Validation** - Validação do flow
+
+#### Code
+- **Step 1: Code Preview** - Preview e exportação de código
+
+#### Settings
+- **Step 1: Settings** - Configurações gerais
+
+## Funcionalidades Principais
+
+### Apply Changes
+
+O playground utiliza um sistema de mudanças pendentes:
+
+- Todas as alterações são marcadas como "pending"
+- Botão "Apply Changes" no header aplica as mudanças
+- Botão "Discard" descarta mudanças não aplicadas
+- Indicador visual mostra quando há mudanças pendentes
+
+### Dataset Selector
+
+No primeiro step de "Nodes & Edges":
+
+- Selecione um template pré-configurado
+- Templates incluem: Tree, Simple Workflow, Decision Tree, Process Flow, Hierarchy
+- Carregamento automático de nodes e edges do template
+
+### Node Inspector
+
+Quando um node ou edge está selecionado:
+
+- Editor aparece automaticamente no step "Editor"
+- Edite propriedades em tempo real
+- Mudanças refletidas imediatamente no canvas
+
+### Navegação
+
+- **Abas**: Clique nas abas à esquerda para mudar de categoria
+- **Steps**: Use os botões Next/Previous no Stepper para navegar entre steps
+- **Canvas**: Sempre visível à direita mostra resultado em tempo real
+
+## Componentes do Design System Utilizados
+
+O playground utiliza exclusivamente componentes do design system:
+
+- **Tabs** (Molecules) - Para abas principais
+- **Stepper** (Organisms) - Para multi-step
+- **Card** (Molecules) - Para containers
+- **Button** (Atoms) - Para ações
+- **Input, Select, Label** (Atoms) - Para formulários
+- **Checkbox** (Atoms) - Para opções
+
+## Fluxo de Uso
+
+1. **Selecione uma Aba**: Clique em uma aba à esquerda (ex: "Nodes & Edges")
+2. **Navegue pelos Steps**: Use o Stepper para navegar entre os steps da aba
+3. **Configure**: Ajuste configurações em cada step
+4. **Visualize**: Veja mudanças em tempo real no canvas à direita
+5. **Aplique Mudanças**: Clique em "Apply Changes" quando estiver satisfeito
+6. **Exporte**: Use a aba "Code" para gerar e exportar código
+
+## Exemplos de Uso
+
+### Criar um Flow do Zero
+
+1. Aba "Nodes & Edges" → Step "Dataset"
+2. Selecione um template ou comece vazio
+3. Adicione nodes clicando no canvas
+4. Conecte nodes arrastando de um handle para outro
+5. Configure propriedades no Step "Editor"
+
+### Aplicar Layout Automático
+
+1. Aba "Layout" → Step "Layout"
+2. Selecione algoritmo (Dagre, ELK, Force-Directed)
+3. Configure direção e espaçamento
+4. Clique em "Apply Layout"
+5. Aplique mudanças no header
+
+### Validar Flow
+
+1. Aba "Validation" → Step "Validation"
+2. Clique em "Validate"
+3. Veja erros e avisos
+4. Corrija problemas indicados
+5. Valide novamente
+
+## Dicas
+
+1. **Apply Changes**: Sempre aplique mudanças antes de mudar de aba para não perder configurações
+2. **Node Selection**: Clique em nodes/edges no canvas para editá-los
+3. **Templates**: Use templates como ponto de partida para flows complexos
+4. **Multi-Step**: Navegue pelos steps para configuração organizada
+5. **Code Preview**: Use a aba "Code" para ver código gerado e copiar
+
+## Troubleshooting
+
+### Mudanças não aparecem
+
+- Certifique-se de clicar em "Apply Changes"
+- Verifique se há mudanças pendentes (indicador no header)
+
+### Nodes não aparecem
+
+- Verifique se o template foi carregado corretamente
+- Certifique-se de que os nodes têm posições válidas
+
+### Layout não aplica
+
+- Verifique se selecionou um algoritmo de layout
+- Clique em "Apply Layout" no painel de layout
+- Depois clique em "Apply Changes" no header
+
+## Arquitetura
+
+O playground utiliza:
+
+- **PlaygroundContext**: Estado global compartilhado
+- **PlaygroundLayout**: Layout principal split-view
+- **PlaygroundTabs**: Gerenciamento de abas
+- **PlaygroundStepper**: Gerenciamento de steps
+- **PlaygroundCanvas**: Canvas principal
+- **playgroundSteps**: Configuração de steps por aba
+
+Todos os componentes seguem os padrões do design system e são totalmente reutilizáveis.

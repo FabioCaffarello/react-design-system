@@ -62,9 +62,9 @@ export class LightColorStrategy implements ColorStrategy {
 
   generateSecondary(): SemanticColor {
     return {
-      light: { hex: '#a78bfa', rgb: '167, 139, 250', tailwind: 'violet-400' },
-      DEFAULT: { hex: '#8b5cf6', rgb: '139, 92, 246', tailwind: 'violet-500' },
-      dark: { hex: '#7c3aed', rgb: '124, 58, 237', tailwind: 'violet-600' },
+      light: { hex: '#f9a8d4', rgb: '249, 168, 212', tailwind: 'pink-300' },
+      DEFAULT: { hex: '#ec4899', rgb: '236, 72, 153', tailwind: 'pink-500' },
+      dark: { hex: '#db2777', rgb: '219, 39, 119', tailwind: 'pink-600' },
       contrast: { hex: '#ffffff', rgb: '255, 255, 255', tailwind: 'white' },
     };
   }
@@ -130,9 +130,9 @@ export class DarkColorStrategy implements ColorStrategy {
 
   generateSecondary(): SemanticColor {
     return {
-      light: { hex: '#8b5cf6', rgb: '139, 92, 246', tailwind: 'violet-500' },
-      DEFAULT: { hex: '#a78bfa', rgb: '167, 139, 250', tailwind: 'violet-400' },
-      dark: { hex: '#c4b5fd', rgb: '196, 181, 253', tailwind: 'violet-300' },
+      light: { hex: '#ec4899', rgb: '236, 72, 153', tailwind: 'pink-500' },
+      DEFAULT: { hex: '#f472b6', rgb: '244, 114, 182', tailwind: 'pink-400' },
+      dark: { hex: '#f9a8d4', rgb: '249, 168, 212', tailwind: 'pink-300' },
       contrast: { hex: '#ffffff', rgb: '255, 255, 255', tailwind: 'white' },
     };
   }
@@ -220,14 +220,37 @@ export class ColorTokenFactory {
 /**
  * Light theme colors (default)
  */
-const lightFactory = new ColorTokenFactory(new LightColorStrategy());
-export const COLOR_TOKENS_LIGHT = lightFactory.generatePalette();
+let COLOR_TOKENS_LIGHT: Record<ColorRole, SemanticColor>;
+let COLOR_TOKENS_DARK: Record<ColorRole, SemanticColor>;
 
-/**
- * Dark theme colors
- */
-const darkFactory = new ColorTokenFactory(new DarkColorStrategy());
-export const COLOR_TOKENS_DARK = darkFactory.generatePalette();
+try {
+  const lightFactory = new ColorTokenFactory(new LightColorStrategy());
+  COLOR_TOKENS_LIGHT = lightFactory.generatePalette();
+} catch (error) {
+  console.error('Failed to initialize COLOR_TOKENS_LIGHT:', error);
+  // Fallback: create minimal palette
+  const fallbackStrategy = new LightColorStrategy();
+  COLOR_TOKENS_LIGHT = {
+    primary: fallbackStrategy.generatePrimary(),
+    secondary: fallbackStrategy.generateSecondary(),
+    success: fallbackStrategy.generateSuccess(),
+    warning: fallbackStrategy.generateWarning(),
+    error: fallbackStrategy.generateError(),
+    info: fallbackStrategy.generateInfo(),
+    neutral: fallbackStrategy.generateNeutral(),
+  };
+}
+
+try {
+  const darkFactory = new ColorTokenFactory(new DarkColorStrategy());
+  COLOR_TOKENS_DARK = darkFactory.generatePalette();
+} catch (error) {
+  console.error('Failed to initialize COLOR_TOKENS_DARK:', error);
+  // Fallback: use light theme as fallback
+  COLOR_TOKENS_DARK = COLOR_TOKENS_LIGHT;
+}
+
+export { COLOR_TOKENS_LIGHT, COLOR_TOKENS_DARK };
 
 /**
  * Default color tokens (light theme)
@@ -238,13 +261,52 @@ export const COLOR_TOKENS = COLOR_TOKENS_LIGHT;
  * Helper function to get color token
  */
 export function getColor(role: ColorRole, shade: 'light' | 'DEFAULT' | 'dark' = 'DEFAULT'): ColorToken {
-  return COLOR_TOKENS[role][shade];
+  // Safety check: ensure COLOR_TOKENS is initialized
+  if (!COLOR_TOKENS || typeof COLOR_TOKENS !== 'object') {
+    console.warn('COLOR_TOKENS is not initialized, using fallback');
+    return { hex: '#6b7280', rgb: '107, 114, 128', tailwind: 'gray-500' }; // Fallback
+  }
+  
+  // Safety check: ensure role exists
+  const roleTokens = COLOR_TOKENS[role];
+  if (!roleTokens || typeof roleTokens !== 'object') {
+    console.warn(`Color role "${role}" not found in COLOR_TOKENS, using fallback`);
+    return { hex: '#6b7280', rgb: '107, 114, 128', tailwind: 'gray-500' }; // Fallback
+  }
+  
+  // Safety check: ensure shade exists
+  const token = roleTokens[shade];
+  if (!token || typeof token !== 'object') {
+    console.warn(`Color shade "${shade}" not found for role "${role}", using fallback`);
+    return { hex: '#6b7280', rgb: '107, 114, 128', tailwind: 'gray-500' }; // Fallback
+  }
+  
+  return token;
 }
 
 /**
  * Helper function to get color as Tailwind class
  */
 export function getColorClass(role: ColorRole, shade: 'light' | 'DEFAULT' | 'dark' = 'DEFAULT', type: 'text' | 'bg' | 'border' = 'text'): string {
-  const token = COLOR_TOKENS[role][shade];
+  // Safety check: ensure COLOR_TOKENS is initialized
+  if (!COLOR_TOKENS || typeof COLOR_TOKENS !== 'object') {
+    console.warn('COLOR_TOKENS is not initialized, using fallback');
+    return `${type}-gray-500`; // Fallback color
+  }
+  
+  // Safety check: ensure role exists
+  const roleTokens = COLOR_TOKENS[role];
+  if (!roleTokens || typeof roleTokens !== 'object') {
+    console.warn(`Color role "${role}" not found in COLOR_TOKENS, using fallback`);
+    return `${type}-gray-500`; // Fallback color
+  }
+  
+  // Safety check: ensure shade exists
+  const token = roleTokens[shade];
+  if (!token || typeof token !== 'object' || !token.tailwind) {
+    console.warn(`Color shade "${shade}" not found for role "${role}", using fallback`);
+    return `${type}-gray-500`; // Fallback color
+  }
+  
   return `${type}-${token.tailwind}`;
 }

@@ -73,7 +73,9 @@ describe('Tabs', () => {
       expect(screen.queryByText('Content 2')).not.toBeInTheDocument();
 
       const tab2 = screen.getByText('Tab 2');
-      await user.click(tab2);
+      await act(async () => {
+        await user.click(tab2);
+      });
 
       await waitFor(() => {
         expect(screen.queryByText('Content 1')).not.toBeInTheDocument();
@@ -96,7 +98,9 @@ describe('Tabs', () => {
       );
 
       const tab2 = screen.getByText('Tab 2');
-      await user.click(tab2);
+      await act(async () => {
+        await user.click(tab2);
+      });
 
       await waitFor(() => {
         expect(handleChange).toHaveBeenCalledWith('tab2');
@@ -326,7 +330,9 @@ describe('Tabs', () => {
       );
 
       const tab2 = screen.getByText('Tab 2');
-      await user.click(tab2);
+      await act(async () => {
+        await user.click(tab2);
+      });
 
       await waitFor(() => {
         expect(screen.getByText('Content 2')).toBeInTheDocument();
@@ -379,7 +385,9 @@ describe('Tabs', () => {
       const tab2 = screen.getByText('Tab 2');
       expect(tab2).toBeDisabled();
 
-      await user.click(tab2);
+      await act(async () => {
+        await user.click(tab2);
+      });
 
       // Content should not change
       expect(screen.getByText('Content 1')).toBeInTheDocument();

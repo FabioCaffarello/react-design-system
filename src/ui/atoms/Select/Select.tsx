@@ -49,7 +49,7 @@ export interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement
  * ```
  */
 const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select({
-  options,
+  options = [],
   optionGroups,
   placeholder,
   label,
@@ -133,10 +133,10 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select({
             {placeholder}
           </option>
         )}
-        {optionGroups ? (
+        {optionGroups && optionGroups.length > 0 ? (
           optionGroups.map((group, groupIndex) => (
             <optgroup key={groupIndex} label={group.label}>
-              {group.options.map((option) => (
+              {(group.options || []).map((option) => (
                 <option
                   key={option.value}
                   value={option.value}
@@ -148,7 +148,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select({
             </optgroup>
           ))
         ) : (
-          options.map((option) => (
+          (options || []).map((option) => (
             <option
               key={option.value}
               value={option.value}

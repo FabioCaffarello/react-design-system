@@ -25,6 +25,12 @@ export * from "./Tabs";
 export { default as SearchInput } from "./SearchInput/SearchInput";
 export type { SearchInputProps } from "./SearchInput/SearchInput";
 
+export * from "./Autocomplete";
+export type { AutocompleteProps, AutocompleteOption, AutocompleteOptionProps, AutocompleteListProps } from "./Autocomplete";
+
+export * from "./MultiSelect";
+export type { MultiSelectProps } from "./MultiSelect";
+
 export { default as Rating } from "./Rating/Rating";
 export type { RatingProps, RatingSize, RatingVariant } from "./Rating/Rating";
 
@@ -36,3 +42,13 @@ export type { TimePickerProps, TimeFormat } from "./TimePicker/TimePicker";
 
 export { default as ColorPicker } from "./ColorPicker/ColorPicker";
 export type { ColorPickerProps, ColorFormat } from "./ColorPicker/ColorPicker";
+
+export { SidebarContent } from "./SidebarContent";
+export type { SidebarContentProps } from "./SidebarContent";
+
+export { SidebarNavigation } from "./SidebarNavigation";
+export type { SidebarNavigationProps } from "./SidebarNavigation";
+
+// Flow components have been moved to extensions/flow
+// Use: import { CustomNode } from '@fabio.caffarello/react-design-system/extensions/flow'
+// or: import { CustomNode } from '@fabio.caffarello/react-design-system/extensions'

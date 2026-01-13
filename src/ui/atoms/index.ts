@@ -60,4 +60,17 @@ export type { SliderProps, SliderVariant, SliderSize } from "./Slider/Slider";
 export { default as Popover } from "./Popover/Popover";
 export type { PopoverProps, PopoverPlacement } from "./Popover/Popover";
 
+export * from "./Menu";
+export type { MenuProps, MenuPlacement, MenuTriggerProps, MenuContentProps, MenuItemProps, MenuSeparatorProps } from "./Menu";
+
+export * from "./Drawer";
+export type { DrawerProps, DrawerPosition, DrawerContentProps, DrawerHeaderProps, DrawerFooterProps } from "./Drawer";
+
+export * from "./Chip";
+export type { ChipProps, ChipVariant, ChipSize } from "./Chip";
+
 export * from "./Avatar";
+
+// Flow components have been moved to extensions/flow
+// Use: import { FlowHandle } from '@fabio.caffarello/react-design-system/extensions/flow'
+// or: import { FlowHandle } from '@fabio.caffarello/react-design-system/extensions'

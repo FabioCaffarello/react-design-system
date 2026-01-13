@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { Zap } from "lucide-react";
 import NavbarGroup from "./NavbarGroup";
 
 const meta: Meta<typeof NavbarGroup> = {
@@ -41,11 +42,7 @@ export const WithIcon: StoryObj<typeof NavbarGroup> = {
   args: {
     label: "Agile",
     isActive: false,
-    icon: (
-      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-    ),
+    icon: <Zap className="h-5 w-5" />,
   },
 };
 

@@ -1,0 +1,47 @@
+/* CustomEdge CSS Module */
+
+.edge {
+  pointer-events: visibleStroke;
+  transition: stroke-width 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
+}
+
+.edge.selectable {
+  cursor: pointer;
+}
+
+.edge:hover {
+  stroke-width: 3.5;
+  opacity: 1;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
+}
+
+.edge.selected {
+  stroke-width: 3.5;
+  opacity: 1;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.2));
+}
+
+.edge.animated path {
+  stroke-dasharray: 5;
+  animation: dashdraw 0.5s linear infinite;
+}
+
+.edgeLabel {
+  font-size: 10px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.edgeLabelBackground {
+  fill: var(--xy-edge-label-background-color, var(--xy-edge-label-background-color-default));
+  fill-opacity: 0.8;
+}
+
+@keyframes dashdraw {
+  from {
+    stroke-dashoffset: 10;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}

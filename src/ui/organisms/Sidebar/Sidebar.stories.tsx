@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { FileText } from "lucide-react";
 import Sidebar from "./Sidebar";
 
 const meta: Meta<typeof Sidebar> = {
@@ -61,21 +62,13 @@ export const WithIcons: StoryObj<typeof Sidebar> = {
         <Sidebar.Item
           href="/epics"
           isActive
-          icon={
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          }
+          icon={<FileText className="h-5 w-5" />}
         >
           Epics
         </Sidebar.Item>
         <Sidebar.Item
           href="/stories"
-          icon={
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          }
+          icon={<FileText className="h-5 w-5" />}
         >
           Stories
         </Sidebar.Item>

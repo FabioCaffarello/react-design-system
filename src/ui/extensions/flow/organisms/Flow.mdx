@@ -1,0 +1,169 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { FlowCanvas } from './FlowCanvas';
+import { FlowProvider } from './FlowProvider';
+import { FlowHandle } from '../atoms/FlowHandle';
+import { FlowNodeWrapper } from '../atoms/FlowNodeWrapper';
+import { CustomNode } from '../molecules/CustomNode';
+import { CustomEdge } from '../molecules/CustomEdge';
+import { FlowNodeToolbar } from '../molecules/FlowNodeToolbar';
+import { FlowControls } from './FlowControls';
+import { FlowMinimap } from './FlowMinimap';
+import { FlowBackground } from './FlowBackground';
+import { FlowPanel } from './FlowPanel';
+
+<Meta title="Extensions/Flow" />
+
+# Flow Components
+
+A comprehensive flow diagram system built on top of React Flow (@xyflow/react) with design system integration.
+
+## Overview
+
+The Flow system provides a complete solution for building interactive flow diagrams with:
+
+- **FlowProvider**: Context provider that combines ReactFlowProvider with design system functionality
+- **FlowCanvas**: Compound component for rendering flows with sub-components
+- **Custom Nodes & Edges**: Pre-built components following design system patterns
+- **Layout Engines**: Support for Dagre, ELK, and Force-Directed layouts (optional)
+- **Validation**: Connection rules and flow validation
+- **Theming**: Full support for light/dark themes
+- **Performance**: Memoization, virtualization, and optimization
+
+## Architecture
+
+The Flow system follows Atomic Design principles:
+
+- **Atoms**: `FlowHandle`, `FlowNodeWrapper` - Basic building blocks
+- **Molecules**: `CustomNode`, `CustomEdge`, `FlowNodeToolbar`, `FlowNodeContent` - Composed components
+- **Organisms**: `FlowCanvas`, `FlowProvider` - Complex components with compound patterns
+
+## Basic Usage
+
+```tsx
+import { FlowCanvas, FlowProvider } from '@fabio.caffarello/react-design-system';
+import { useNodesState, useEdgesState } from '@xyflow/react';
+
+function MyFlow() {
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  
+  return (
+    <FlowProvider
+      nodes={nodes}
+      edges={edges}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+    >
+      <FlowCanvas.Root>
+        <FlowCanvas.Background />
+        <FlowCanvas.Controls />
+        <FlowCanvas.Minimap />
+      </FlowCanvas.Root>
+    </FlowProvider>
+  );
+}
+```
+
+## Components
+
+### FlowProvider
+
+Main provider that combines ReactFlowProvider with design system context. Supports both controlled and uncontrolled modes.
+
+### FlowCanvas
+
+Compound component with sub-components:
+- `FlowCanvas.Root` - Main canvas (wraps ReactFlow)
+- `FlowCanvas.Background` - Background pattern (dots, lines, cross)
+- `FlowCanvas.Controls` - Zoom/pan controls
+- `FlowCanvas.Minimap` - Minimap for navigation
+- `FlowCanvas.Panel` - Custom panels for UI overlays
+
+### Atoms
+
+- **FlowHandle**: Connection points for nodes with design system styling
+- **FlowNodeWrapper**: Styling wrapper for nodes with variants and sizes
+
+### Molecules
+
+- **CustomNode**: Default node component with design system integration
+- **CustomEdge**: Default edge component with animations and labels
+- **FlowNodeToolbar**: Toolbar for node actions
+- **FlowNodeContent**: Content wrapper with render props support
+
+## Customization
+
+Nodes and edges can be customized through 5 layers:
+
+1. **Variant and size props** - Quick styling
+2. **Custom components** - Replace default components
+3. **Render props** - Flexible content rendering
+4. **Slots** - Direct content injection
+5. **Theme overrides** - Advanced styling
+
+## Hooks
+
+- `useFlowState` - State management with React Flow hooks
+- `useFlowActions` - Actions for zoom, pan, fit view
+- `useNodeSelection` - Track selected nodes/edges
+- `useFlowValidation` - Validate flow with rules
+- `useAutoLayout` - Apply automatic layouts
+- `useFlowVirtualization` - Viewport-based rendering for large flows
+
+## Layout Engines
+
+Optional layout engines (install separately):
+- **Dagre**: Hierarchical layouts for directed graphs
+- **ELK**: Complex, configurable layouts
+- **Force-Directed**: Physical simulation layouts
+
+## Validation
+
+Connection rules and validation rules can be added to control flow behavior:
+
+```tsx
+import { FlowValidator } from '@fabio.caffarello/react-design-system';
+
+const validator = new FlowValidator();
+validator.addRule({
+  sourceType: 'input',
+  targetType: 'process',
+  allowed: true,
+  maxConnections: 1,
+});
+
+const isValidConnection = validator.createIsValidConnection(nodes, edges);
+```
+
+## Playground
+
+The **FlowPlayground** is the primary way to explore and interact with all Flow components. It provides a complete interactive environment where you can:
+
+- Create and edit flows in real-time
+- Configure all ReactFlow props
+- Customize nodes, edges, and backgrounds
+- Apply layout algorithms
+- Validate flows
+- Export code and share flows
+
+### Available Stories
+
+- **Interactive**: Complete playground with all features
+- **Getting Started**: Tutorial-friendly playground for beginners
+- **Customization**: Explore customization options for nodes and edges
+- **Layouts**: Experiment with different layout algorithms
+- **Validation**: Test flow validation and connection rules
+- **Advanced**: Advanced features (drag & drop, resizing, etc.)
+- **Examples**: Pre-configured templates and examples
+
+Access the playground in Storybook: `Extensions/Flow/FlowPlayground`
+
+## Examples
+
+All examples and demonstrations are available in the FlowPlayground. The playground provides interactive examples for:
+
+- Different node types (Default, Input, Output, Selector, Resizable)
+- Different edge types (Default, Smooth Step, Straight, Step, Floating)
+- Layout algorithms (Dagre, ELK, Force-Directed)
+- Customization options
+- Validation scenarios

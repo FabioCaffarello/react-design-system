@@ -22,3 +22,10 @@ export type { CommandPaletteProps, CommandItem } from "./CommandPalette/CommandP
 
 export { default as DataGrid } from "./DataGrid/DataGrid";
 export type { DataGridProps, DataGridColumn, DataGridGroup } from "./DataGrid/DataGrid";
+
+export { default as SplitSidebar } from "./SplitSidebar";
+export type { SplitSidebarProps } from "./SplitSidebar";
+
+// Flow components have been moved to extensions/flow
+// Use: import { FlowCanvas, FlowProvider } from '@fabio.caffarello/react-design-system/extensions/flow'
+// or: import { FlowCanvas, FlowProvider } from '@fabio.caffarello/react-design-system/extensions'

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
+import { FileText, CheckSquare } from "lucide-react";
 import SidebarGroup from "./SidebarGroup";
 import SidebarItem from "../SidebarItem/SidebarItem";
 
@@ -119,33 +120,21 @@ export const WithNestedItems: StoryObj<typeof SidebarGroup> = {
         <SidebarItem
           href="/epics"
           nested={true}
-          icon={
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          }
+          icon={<FileText className="h-5 w-5" />}
         >
           Epics
         </SidebarItem>
         <SidebarItem
           href="/stories"
           nested={true}
-          icon={
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          }
+          icon={<FileText className="h-5 w-5" />}
         >
           Stories
         </SidebarItem>
         <SidebarItem
           href="/tasks"
           nested={true}
-          icon={
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-            </svg>
-          }
+          icon={<CheckSquare className="h-5 w-5" />}
         >
           Tasks
         </SidebarItem>

@@ -51,6 +51,36 @@ export const SIDEBAR_TOKENS = {
     size: 'h-3 w-3',      // 12px (reduced from h-4 w-4)
     color: 'text-gray-400', // Subtle gray color
   },
+  
+  // Navigation column (for split sidebar)
+  navigation: {
+    width: {
+      default: '56px',
+      compact: '48px',
+      expanded: '200px',
+    },
+    background: {
+      default: '#fafafa',
+      hover: '#f5f5f5',
+    },
+  },
+  
+  // Split sidebar
+  split: {
+    transition: 'transition-all duration-300',
+    collapsedWidth: '0px',
+  },
+  
+  // Content area
+  content: {
+    scrollbar: {
+      width: 'thin',
+      color: {
+        thumb: '#cbd5e1',
+        track: '#f1f5f9',
+      },
+    },
+  },
 } as const;
 
 /**

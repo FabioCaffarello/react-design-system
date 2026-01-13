@@ -1,6 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
+import { CheckCircle2 } from 'lucide-react';
 import { getColorClass } from '../../tokens/colors';
 import { getSpacingClass } from '../../tokens/spacing';
 import { getRadiusClass } from '../../tokens/radius';
@@ -73,7 +74,7 @@ export default function Timeline({
                     : 'bg-white border-gray-300 text-gray-400'
                   }
                 `}>
-                  {item.icon || (status === 'completed' ? '✓' : index + 1)}
+                  {item.icon || (status === 'completed' ? <CheckCircle2 className="h-4 w-4" /> : index + 1)}
                 </div>
 
                 {/* Connector Line */}
@@ -137,7 +138,7 @@ export default function Timeline({
                   : 'bg-white border-gray-300 text-gray-400'
                 }
               `}>
-                {item.icon || (status === 'completed' ? '✓' : index + 1)}
+                {item.icon || (status === 'completed' ? <CheckCircle2 className="h-4 w-4" /> : index + 1)}
               </div>
               {!isLast && (
                 <div
