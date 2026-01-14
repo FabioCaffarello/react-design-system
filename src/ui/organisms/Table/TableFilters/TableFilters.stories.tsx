@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from '@storybook/test';
+import { expect, userEvent, within, waitFor } from '@storybook/test';
 import { useState } from "react";
 import TableFilters from "./TableFilters";
 
@@ -8,7 +10,27 @@ const meta: Meta<typeof TableFilters> = {
   parameters: {
     docs: {
       description: {
-        component: "Filter controls for tables with support for text, select, and date filters.",
+        component: `
+## TableFilters
+
+Filter controls for tables with support for text, select, and date filters.
+
+### Events
+
+| Event | Description | Parameters | When Fired |
+|-------|-------------|------------|------------|
+| \`onFilter\` | Filtros mudaram | \`(filters: Record<string, unknown>) => void\` | Quando filtros são aplicados ou alterados |
+
+### States
+
+| State | Description | How to Activate | Visual |
+|-------|-------------|-----------------|--------|
+| \`default\` | Estado padrão | Estado inicial | Filtros sem valores iniciais |
+| \`with-initial-values\` | Com valores iniciais | \`initialValues\` prop definida | Filtros pré-preenchidos |
+| \`text-filter\` | Filtro de texto | \`type="text"\` | Campo de texto para busca |
+| \`select-filter\` | Filtro de seleção | \`type="select"\` | Dropdown para seleção |
+| \`date-filter\` | Filtro de data | \`type="date"\` | Campo de data |
+        `,
       },
     },
   },
@@ -105,6 +127,216 @@ export const WithDateFilter: StoryObj<typeof TableFilters> = {
         }}
       />
     );
+  },
+};
+
+// Event Stories
+export const WithEvents: StoryObj<typeof TableFilters> = {
+  render: () => {
+    const [_filters, setFilters] = useState<Record<string, string>>({});
+    const handleFilter = fn((newFilters: Record<string, unknown>) => {
+      setFilters(newFilters as Record<string, string>);
+    });
+    
+    return (
+      <div className="space-y-4">
+        <p className="text-sm text-gray-600">
+          Apply filters. Check the Actions panel to see events being fired.
+        </p>
+        <TableFilters
+          filters={[
+            {
+              key: 'status',
+              label: 'Status',
+              type: 'select',
+              options: [
+                { value: 'ACTIVE', label: 'Active' },
+                { value: 'DRAFT', label: 'Draft' },
+                { value: 'COMPLETED', label: 'Completed' },
+              ],
+            },
+            {
+              key: 'search',
+              label: 'Search',
+              type: 'text',
+              placeholder: 'Search by name...',
+            },
+          ]}
+          onFilter={handleFilter}
+        />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    // Wait for component to be rendered
+    await waitFor(() => {
+      expect(canvas.getByText('Status')).toBeInTheDocument();
+    });
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates filter events. Apply filters and check the Actions panel to see events being logged.',
+      },
+    },
+  },
+};
+
+// State Stories
+export const DefaultState: StoryObj<typeof TableFilters> = {
+  render: () => {
+    const [_filters, setFilters] = useState<Record<string, string>>({});
+    return (
+      <TableFilters
+        filters={[
+          {
+            key: 'status',
+            label: 'Status',
+            type: 'select',
+            options: [
+              { value: 'ACTIVE', label: 'Active' },
+              { value: 'DRAFT', label: 'Draft' },
+              { value: 'COMPLETED', label: 'Completed' },
+            ],
+          },
+        ]}
+        onFilter={(newFilters) => {
+          setFilters(newFilters as Record<string, string>);
+        }}
+      />
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Default state - filters without initial values.',
+      },
+    },
+  },
+};
+
+export const WithInitialValuesState: StoryObj<typeof TableFilters> = {
+  render: () => {
+    const [_filters, setFilters] = useState<Record<string, unknown>>({});
+    return (
+      <TableFilters
+        filters={[
+          {
+            key: 'status',
+            label: 'Status',
+            type: 'select',
+            options: [
+              { value: 'ACTIVE', label: 'Active' },
+              { value: 'DRAFT', label: 'Draft' },
+            ],
+          },
+        ]}
+        onFilter={(newFilters) => {
+          setFilters(newFilters);
+        }}
+        initialValues={{ status: 'ACTIVE' }}
+      />
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'With initial values state - filters pre-filled with values.',
+      },
+    },
+  },
+};
+
+export const TextFilterState: StoryObj<typeof TableFilters> = {
+  render: () => {
+    const [_filters, setFilters] = useState<Record<string, string>>({});
+    return (
+      <TableFilters
+        filters={[
+          {
+            key: 'search',
+            label: 'Search',
+            type: 'text',
+            placeholder: 'Search by name...',
+          },
+        ]}
+        onFilter={(newFilters) => {
+          setFilters(newFilters as Record<string, string>);
+        }}
+      />
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Text filter state - text input for search.',
+      },
+    },
+  },
+};
+
+export const SelectFilterState: StoryObj<typeof TableFilters> = {
+  render: () => {
+    const [_filters, setFilters] = useState<Record<string, string>>({});
+    return (
+      <TableFilters
+        filters={[
+          {
+            key: 'status',
+            label: 'Status',
+            type: 'select',
+            options: [
+              { value: 'ACTIVE', label: 'Active' },
+              { value: 'DRAFT', label: 'Draft' },
+              { value: 'COMPLETED', label: 'Completed' },
+            ],
+          },
+        ]}
+        onFilter={(newFilters) => {
+          setFilters(newFilters as Record<string, string>);
+        }}
+      />
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Select filter state - dropdown for selection.',
+      },
+    },
+  },
+};
+
+export const DateFilterState: StoryObj<typeof TableFilters> = {
+  render: () => {
+    const [_filters, setFilters] = useState<Record<string, string>>({});
+    return (
+      <TableFilters
+        filters={[
+          {
+            key: 'startDate',
+            label: 'Start Date',
+            type: 'date',
+          },
+          {
+            key: 'endDate',
+            label: 'End Date',
+            type: 'date',
+          },
+        ]}
+        onFilter={(newFilters) => {
+          setFilters(newFilters as Record<string, string>);
+        }}
+      />
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Date filter state - date picker for date range.',
+      },
+    },
   },
 };
 

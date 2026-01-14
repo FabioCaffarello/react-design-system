@@ -3,8 +3,16 @@
 import type { FormHTMLAttributes, ReactNode } from "react";
 import { FormProvider } from './FormProvider';
 import type { FieldValues, UseFormReturn } from 'react-hook-form';
+import { cn } from '../../utils';
+import { 
+  getColorClass, 
+  getSpacingClass, 
+  getRadiusClass,
+  getTypographySizeFromFontSize
+} from '../../tokens';
+import ErrorMessage from '../../atoms/ErrorMessage/ErrorMessage';
 
-// Simple Form Props (backward compatible)
+// Simple Form Props
 interface SimpleFormProps extends FormHTMLAttributes<HTMLFormElement> {
   children: ReactNode;
   onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -36,7 +44,7 @@ type FormProps<TFieldValues extends FieldValues = FieldValues> =
  * 
  * @example
  * ```tsx
- * // Simple form (backward compatible)
+ * // Simple form
  * <Form onSubmit={handleSubmit} loading={isSubmitting}>
  *   <Input name="email" />
  *   <Button type="submit">Submit</Button>
@@ -65,8 +73,7 @@ export default function Form<TFieldValues extends FieldValues = FieldValues>({
   className = "",
   ...props
 }: FormProps<TFieldValues>) {
-  const baseClasses = ["space-y-4"];
-  const classes = [...baseClasses, className].filter(Boolean).join(" ");
+  const classes = cn(getSpacingClass('lg', 'gap'), 'flex', 'flex-col', className);
 
   // Check if using react-hook-form
   const isReactHookForm = 'form' in props && props.form !== undefined;
@@ -99,7 +106,15 @@ export default function Form<TFieldValues extends FieldValues = FieldValues>({
           {error && (
             <div
               role="alert"
-              className="p-3 text-sm text-red-800 bg-red-50 border border-red-200 rounded"
+              className={cn(
+                getSpacingClass('md', 'p'),
+                getTypographySizeFromFontSize('sm'),
+                getColorClass('error', 'dark', 'text'),
+                getColorClass('error', 'light', 'bg'),
+                'border',
+                getColorClass('error', 'DEFAULT', 'border'),
+                getRadiusClass('md')
+              )}
             >
               {error}
             </div>
@@ -107,7 +122,15 @@ export default function Form<TFieldValues extends FieldValues = FieldValues>({
           {success && (
             <div
               role="alert"
-              className="p-3 text-sm text-green-800 bg-green-50 border border-green-200 rounded"
+              className={cn(
+                getSpacingClass('md', 'p'),
+                getTypographySizeFromFontSize('sm'),
+                getColorClass('success', 'dark', 'text'),
+                getColorClass('success', 'light', 'bg'),
+                'border',
+                getColorClass('success', 'DEFAULT', 'border'),
+                getRadiusClass('md')
+              )}
             >
               {success}
             </div>
@@ -117,7 +140,7 @@ export default function Form<TFieldValues extends FieldValues = FieldValues>({
     );
   }
 
-  // Simple form mode (backward compatible)
+  // Simple form mode
   // Use onSubmit from props or from direct prop
   const onSubmitSimple = (props as SimpleFormProps).onSubmit || onSubmit;
   const { onSubmit: _, ...simpleProps } = props as SimpleFormProps;
@@ -140,7 +163,15 @@ export default function Form<TFieldValues extends FieldValues = FieldValues>({
       {error && (
         <div
           role="alert"
-          className="p-3 text-sm text-red-800 bg-red-50 border border-red-200 rounded"
+          className={cn(
+            getSpacingClass('md', 'p'),
+            getTypographySize('sm'),
+            getColorClass('error', 'dark', 'text'),
+            getColorClass('error', 'light', 'bg'),
+            'border',
+            getColorClass('error', 'DEFAULT', 'border'),
+            getRadiusClass('md')
+          )}
         >
           {error}
         </div>
@@ -148,7 +179,15 @@ export default function Form<TFieldValues extends FieldValues = FieldValues>({
       {success && (
         <div
           role="alert"
-          className="p-3 text-sm text-green-800 bg-green-50 border border-green-200 rounded"
+          className={cn(
+            getSpacingClass('md', 'p'),
+            getTypographySize('sm'),
+            getColorClass('success', 'dark', 'text'),
+            getColorClass('success', 'light', 'bg'),
+            'border',
+            getColorClass('success', 'DEFAULT', 'border'),
+            getRadiusClass('md')
+          )}
         >
           {success}
         </div>

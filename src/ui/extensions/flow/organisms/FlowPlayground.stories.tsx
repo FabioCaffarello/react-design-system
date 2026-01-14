@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, userEvent, within, waitFor } from '@storybook/test';
 import { PlaygroundLayout } from '../components/PlaygroundLayout';
 import { treeTemplate } from '../utils/playgroundTemplates';
 import type { Node, Edge } from '@xyflow/react';
@@ -11,7 +12,23 @@ const meta: Meta = {
   parameters: {
     docs: {
       description: {
-        component: 'Advanced interactive playground for creating and editing flow diagrams. Configure all ReactFlow props, edit nodes and edges, preview generated code, and share your flows.',
+        component: `
+## FlowPlayground
+
+Advanced interactive playground for creating and editing flow diagrams. Configure all ReactFlow props, edit nodes and edges, preview generated code, and share your flows.
+
+### Events
+
+| Event | Description | Parameters | When Fired |
+|-------|-------------|------------|------------|
+| N/A | FlowPlayground é um playground interativo | - | Eventos são gerenciados internamente pelo componente |
+
+### States
+
+| State | Description | How to Activate | Visual |
+|-------|-------------|-----------------|--------|
+| \`playground\` | Playground interativo | Estado padrão | Interface completa de playground com todas as funcionalidades |
+        `,
       },
     },
     layout: 'fullscreen',
@@ -54,10 +71,39 @@ export const Playground: Story = {
       />
     );
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    // Wait for playground to be rendered
+    await waitFor(() => {
+      expect(canvasElement).toBeInTheDocument();
+    });
+  },
   parameters: {
     docs: {
       description: {
         story: 'Complete interactive playground with tabs and multi-step configuration. Configure nodes, edges, canvas, background, layouts, validation, code generation, and settings all in one place.',
+      },
+    },
+  },
+};
+
+// State Stories
+export const PlaygroundState: Story = {
+  name: 'Playground State',
+  render: () => {
+    return (
+      <PlaygroundLayout
+        initialState={{
+          nodes: initialNodes,
+          edges: initialEdges,
+        }}
+      />
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Playground state - complete interactive playground interface.',
       },
     },
   },

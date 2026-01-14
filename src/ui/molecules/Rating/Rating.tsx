@@ -2,9 +2,8 @@
 
 import { useState, type ReactNode } from 'react';
 import { Star } from 'lucide-react';
-import { getColorClass } from '../../tokens/colors';
-import { getSpacingClass } from '../../tokens/spacing';
-import { getAnimationClass } from '../../tokens/animations';
+import { cn } from '../../utils';
+import { getColorClass, getSpacingClass, getAnimationClass, getTypographySizeFromFontSize } from '../../tokens';
 
 export type RatingSize = 'sm' | 'md' | 'lg';
 export type RatingVariant = 'filled' | 'outlined';
@@ -91,16 +90,14 @@ export default function Rating({
     const isHalf = allowHalf && displayValue >= starValue - 0.5 && displayValue < starValue;
     const isFilled = displayValue >= starValue;
 
-    const starClasses = [
+    const starClasses = cn(
       sizeConfig[size],
       getAnimationClass('base'),
       !readOnly && 'cursor-pointer',
       isFilled || isHalf
-        ? variant === 'filled'
-          ? getColorClass('warning', 'DEFAULT', 'text')
-          : getColorClass('warning', 'DEFAULT', 'text')
-        : 'text-gray-300',
-    ].filter(Boolean).join(' ');
+        ? getColorClass('warning', 'DEFAULT', 'text')
+        : getColorClass('neutral', 'light', 'text')
+    );
 
     const CustomIcon = icon || <Star className={starClasses} fill={isFilled ? 'currentColor' : 'none'} />;
     const CustomEmptyIcon = emptyIcon || <Star className={starClasses} fill="none" />;
@@ -155,16 +152,20 @@ export default function Rating({
   };
 
   return (
-    <div className={`inline-flex items-center gap-1 ${className}`}>
+    <div className={cn('inline-flex', 'items-center', getSpacingClass('xs', 'gap'), className)}>
       <div
-        className="flex items-center"
+        className={cn('flex', 'items-center')}
         role={readOnly ? 'img' : undefined}
         aria-label={readOnly ? `Rating: ${displayValue} out of ${max}` : undefined}
       >
         {Array.from({ length: max }, (_, i) => renderStar(i))}
       </div>
       {showValue && (
-        <span className={`${getSpacingClass('sm', 'ml')} text-sm text-gray-600`}>
+        <span className={cn(
+          getSpacingClass('sm', 'ml'),
+          getTypographySizeFromFontSize('sm'),
+          getColorClass('neutral', 'DEFAULT', 'text')
+        )}>
           {displayValue.toFixed(allowHalf ? 1 : 0)}/{max}
         </span>
       )}

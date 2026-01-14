@@ -1,14 +1,9 @@
 /**
- * Providers Module
+ * Providers Export
  * 
- * Exports for theme and context providers.
+ * Centralized export for all design system providers
  */
 
-export { ThemeProvider, useTheme } from './ThemeProvider';
-export type { ThemeContextValue, ThemeProviderProps } from './ThemeProvider';
-
-export {
-  AdvancedThemeProvider,
-  useAdvancedTheme,
-} from './AdvancedThemeProvider';
-export type { AdvancedThemeContextValue, AdvancedThemeProviderProps } from './AdvancedThemeProvider';
+export { AppProvider, useApp, type AppProviderProps, type AppProviderConfig } from './AppProvider';
+export { ConfigProvider, useConfig, type ConfigProviderProps, type DesignSystemConfig, type ConfigContextValue } from './ConfigProvider';
+export { ThemeProvider, useTheme, type ThemeProviderProps, type ThemeContextValue } from './ThemeProvider';

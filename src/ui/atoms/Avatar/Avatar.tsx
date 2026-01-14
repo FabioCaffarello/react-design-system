@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, type HTMLAttributes, ReactNode } from 'react';
-import { getColorClass, getRadiusClass } from '../../tokens';
+import { useState, forwardRef, type HTMLAttributes, type ReactNode } from 'react';
+import { getColorClass } from '../../tokens';
+import { cn } from '../../utils';
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
@@ -33,7 +34,7 @@ export interface AvatarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'child
  * <Avatar src="/user.jpg" size="lg" />
  * ```
  */
-export default function Avatar({
+const Avatar = forwardRef<HTMLDivElement, AvatarProps>(function Avatar({
   src,
   alt,
   fallback,
@@ -42,10 +43,11 @@ export default function Avatar({
   'aria-label': ariaLabel,
   className = '',
   ...props
-}: AvatarProps) {
+}, ref) {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
+  // Size and variant classes (not using cva to avoid type issues with dynamic classes)
   const sizeClasses: Record<AvatarSize, string> = {
     xs: 'h-6 w-6 text-xs',
     sm: 'h-8 w-8 text-sm',
@@ -55,9 +57,9 @@ export default function Avatar({
   };
 
   const variantClasses = {
-    circle: getRadiusClass('full'),
-    square: getRadiusClass('none'),
-    rounded: getRadiusClass('md'),
+    circle: 'rounded-full',
+    square: 'rounded-none',
+    rounded: 'rounded-md',
   };
 
   const showFallback = !src || imageError;
@@ -69,20 +71,21 @@ export default function Avatar({
 
   return (
     <div
-      className={`
-        relative
-        inline-flex
-        items-center
-        justify-center
-        flex-shrink-0
-        ${sizeClasses[size]}
-        ${variantClasses[variant]}
-        ${getColorClass('neutral', 'light', 'bg')}
-        ${getColorClass('neutral', 'dark', 'text')}
-        font-medium
-        overflow-hidden
-        ${className}
-      `}
+      ref={ref}
+      className={cn(
+        'relative',
+        'inline-flex',
+        'items-center',
+        'justify-center',
+        'shrink-0',
+        'font-medium',
+        'overflow-hidden',
+        sizeClasses[size],
+        variantClasses[variant],
+        getColorClass('neutral', 'light', 'bg'),
+        getColorClass('neutral', 'dark', 'text'),
+        className
+      )}
       role="img"
       aria-label={defaultAriaLabel}
       {...props}
@@ -91,15 +94,15 @@ export default function Avatar({
         <img
           src={src}
           alt={alt || ''}
-          className={`
-            w-full
-            h-full
-            object-cover
-            ${variantClasses[variant]}
-            ${!imageLoaded ? 'opacity-0' : 'opacity-100'}
-            transition-opacity
-            duration-200
-          `}
+          className={cn(
+            'w-full',
+            'h-full',
+            'object-cover',
+            variant === 'circle' ? 'rounded-full' : variant === 'square' ? 'rounded-none' : 'rounded-md',
+            !imageLoaded ? 'opacity-0' : 'opacity-100',
+            'transition-opacity',
+            'duration-200'
+          )}
           onLoad={() => setImageLoaded(true)}
           onError={() => {
             setImageError(true);
@@ -110,14 +113,14 @@ export default function Avatar({
       )}
       {showFallback && (
         <span
-          className={`
-            flex
-            items-center
-            justify-center
-            w-full
-            h-full
-            ${variantClasses[variant]}
-          `}
+          className={cn(
+            'flex',
+            'items-center',
+            'justify-center',
+            'w-full',
+            'h-full',
+            variant === 'circle' ? 'rounded-full' : variant === 'square' ? 'rounded-none' : 'rounded-md'
+          )}
           aria-hidden="true"
         >
           {displayFallback || '?'}
@@ -125,4 +128,8 @@ export default function Avatar({
       )}
     </div>
   );
-}
+});
+
+Avatar.displayName = 'Avatar';
+
+export default Avatar;

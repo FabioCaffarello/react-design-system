@@ -6,6 +6,10 @@ import Chip from '../../atoms/Chip/Chip';
 import { ChevronDown, Check } from 'lucide-react';
 import AutocompleteList from '../Autocomplete/AutocompleteList';
 import type { AutocompleteOptionType } from '../Autocomplete/AutocompleteOption';
+import { cn } from '../../utils';
+import { getColorClass, getFocusColorClass } from '../../tokens';
+import { getSpacingClass } from '../../tokens';
+import { getRadiusClass } from '../../tokens';
 
 export interface MultiSelectProps {
   options: AutocompleteOptionType[];
@@ -229,9 +233,27 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
 
     const shouldShowList = isOpen && (hasOptions || loading || emptyMessage);
 
+    // Get focus-within classes using primary color
+    const primaryBorderColor = getColorClass('primary', 'DEFAULT', 'border');
+    const primaryRingColor = getColorClass('primary', 'DEFAULT', 'border').replace('border-', 'ring-');
+
     return (
-      <div ref={containerRef} className={`relative ${className}`}>
-        <div className="flex flex-wrap gap-2 p-2 border border-gray-300 rounded-md min-h-[2.5rem] focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500">
+      <div ref={containerRef} className={cn('relative', className)}>
+        <div className={cn(
+          'flex',
+          'flex-wrap',
+          getSpacingClass('sm', 'gap'),
+          getSpacingClass('sm', 'p'),
+          'border',
+          getColorClass('neutral', 'DEFAULT', 'border'),
+          getRadiusClass('md'),
+          'min-h-10',
+          'focus-within:outline-none',
+          'focus-within:ring-2',
+          'focus-within:ring-offset-2',
+          `focus-within:${primaryBorderColor}`,
+          `focus-within:${primaryRingColor}`
+        )}>
           {selectedOptions.map((option) => (
             <Chip
               key={option.value}
@@ -242,7 +264,14 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
             </Chip>
           ))}
           <input
-            ref={inputRef || ref}
+            ref={(node) => {
+              if (typeof ref === 'function') {
+                ref(node);
+              } else if (ref) {
+                (ref as React.MutableRefObject<HTMLInputElement | null>).current = node;
+              }
+              inputRef.current = node;
+            }}
             type="text"
             value={searchValue}
             onChange={handleInputChange}
@@ -250,7 +279,7 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
             onFocus={() => setIsOpen(true)}
             placeholder={selectedValues.length === 0 ? placeholder : ''}
             disabled={disabled}
-            className={`flex-1 min-w-[120px] outline-none bg-transparent ${inputClassName}`}
+            className={cn('flex-1', 'min-w-[120px]', 'outline-none', 'bg-transparent', inputClassName)}
           />
         </div>
 
@@ -260,7 +289,7 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
             options={filteredOptions.map((opt) => ({
               ...opt,
               icon: selectedValues.includes(opt.value) ? (
-                <Check className="h-4 w-4 text-indigo-500" />
+                <Check className={cn('h-4', 'w-4', getColorClass('primary', 'DEFAULT', 'text'))} />
               ) : opt.icon,
             }))}
             highlightedIndex={highlightedIndex}

@@ -2,6 +2,16 @@
 
 import type { HTMLAttributes, ReactNode, KeyboardEvent } from "react";
 import React, { useState, useRef, useEffect } from "react";
+import { cn } from '../../utils';
+import { 
+  getColorClass, 
+  getRadiusClass, 
+  getFocusColorClass, 
+  getHoverColorClass,
+  getSpacingClass,
+  getTypographySize,
+  getShadowClass
+} from '../../tokens';
 
 export interface DropdownItem {
   label: string;
@@ -225,13 +235,13 @@ export default function Dropdown({
       </div>;
 
   return (
-    <div className={`relative inline-block ${className}`} ref={dropdownRef} {...props}>
+    <div className={cn('relative', 'inline-block', className)} ref={dropdownRef} {...props}>
       {triggerWithProps}
 
       {isOpen && (
         <>
           <div
-            className="fixed inset-0 z-10"
+            className={cn('fixed', 'inset-0', 'z-10')}
             onClick={() => {
               setIsOpen(false);
               setActiveIndex(-1);
@@ -241,29 +251,52 @@ export default function Dropdown({
           <div
             ref={menuRef}
             id={menuId}
-            className={`absolute z-20 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 ${alignClasses}`}
+            className={cn(
+              'absolute',
+              'z-20',
+              getSpacingClass('sm', 'mt'),
+              'w-48', // Fixed width for dropdown menu - justified as layout constraint
+              getRadiusClass('md'),
+              getShadowClass('lg'),
+              getColorClass('neutral', 'light', 'bg'),
+              'ring-1',
+              getColorClass('neutral', 'dark', 'border'),
+              'ring-opacity-5',
+              alignClasses
+            )}
             role="menu"
             aria-orientation="vertical"
             aria-labelledby={triggerId}
             aria-activedescendant={activeIndex >= 0 ? `${menuId}-item-${activeIndex}` : undefined}
           >
-            <div className="py-1" role="none">
+            <div className={cn(getSpacingClass('xs', 'py'))} role="none">
               {items.map((item, index) => {
-                const itemClasses = [
-                  "block",
-                  "px-4",
-                  "py-2",
-                  "text-sm",
-                  "w-full",
-                  "text-left",
-                  "focus:outline-none",
-                  "focus:bg-gray-100",
+                const itemClasses = cn(
+                  'block',
+                  getSpacingClass('base', 'px'),
+                  getSpacingClass('xs', 'py'),
+                  getTypographySize('bodySmall'),
+                  'w-full',
+                  'text-left',
+                  'focus:outline-none',
                   item.disabled
-                    ? "text-gray-400 cursor-not-allowed opacity-50"
+                    ? cn(
+                        getColorClass('neutral', 'DEFAULT', 'text'),
+                        'cursor-not-allowed',
+                        'opacity-50'
+                      )
                     : item.variant === "danger"
-                    ? "text-red-700 hover:bg-red-50 focus:bg-red-50"
-                    : "text-gray-700 hover:bg-gray-100",
-                ].filter(Boolean).join(" ");
+                    ? cn(
+                        getColorClass('error', 'dark', 'text'),
+                        getHoverColorClass('error', 'light', 'bg'),
+                        getFocusColorClass('error', 'light', 'bg').replace('focus:border-', 'focus:bg-')
+                      )
+                    : cn(
+                        getColorClass('neutral', 'dark', 'text'),
+                        getHoverColorClass('neutral', 'light', 'bg'),
+                        getFocusColorClass('neutral', 'light', 'bg').replace('focus:border-', 'focus:bg-')
+                      )
+                );
 
                 return (
                   <button

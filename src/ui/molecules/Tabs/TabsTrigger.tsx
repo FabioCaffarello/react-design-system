@@ -2,7 +2,16 @@
 
 import { useTabsContext } from './TabsContext';
 import type { HTMLAttributes, ReactNode, KeyboardEvent } from 'react';
-import { getColorClass, getRadiusClass } from '../../tokens';
+import { 
+  getColorClass, 
+  getRadiusClass, 
+  getFocusColorClass,
+  getHoverColorClass,
+  getSpacingClass,
+  getTypographySize,
+  getTypographyWeight
+} from '../../tokens';
+import { cn, cva } from '../../utils';
 
 export interface TabsTriggerProps extends HTMLAttributes<HTMLButtonElement> {
   value: string;
@@ -83,26 +92,32 @@ export function TabsTrigger({
       onClick={handleClick}
       onFocus={handleFocus}
       onKeyDown={handleKeyDown}
-      className={`
-        inline-flex
-        items-center
-        justify-center
-        px-3
-        py-1.5
-        text-sm
-        font-medium
-        transition-colors
-        focus:outline-none
-        focus:ring-2
-        focus:ring-offset-2
-        ${getRadiusClass('sm')}
-        ${isActive
-          ? `${getColorClass('primary', 'DEFAULT', 'bg')} ${getColorClass('primary', 'contrast', 'text')}`
-          : `${getColorClass('neutral', 'light', 'text')} hover:${getColorClass('neutral', 'DEFAULT', 'bg')}`
-        }
-        ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-        ${className}
-      `}
+      className={cn(
+        'inline-flex',
+        'items-center',
+        'justify-center',
+        getSpacingClass('sm', 'px'),
+        getSpacingClass('xs', 'py'),
+        getTypographySize('bodySmall'),
+        getTypographyWeight('label'),
+        'transition-colors',
+        'focus:outline-none',
+        'focus:ring-2',
+        getFocusColorClass('primary', 'DEFAULT', 'border').replace('focus:border-', 'focus:ring-'),
+        'focus:ring-offset-2',
+        getRadiusClass('sm'),
+        isActive
+          ? cn(
+              getColorClass('primary', 'DEFAULT', 'bg'),
+              getColorClass('primary', 'contrast', 'text')
+            )
+          : cn(
+              getColorClass('neutral', 'light', 'text'),
+              getHoverColorClass('neutral', 'DEFAULT', 'bg')
+            ),
+        disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
+        className
+      )}
       {...props}
     >
       {children}

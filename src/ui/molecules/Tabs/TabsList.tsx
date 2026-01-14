@@ -2,7 +2,8 @@
 
 import { useTabsContext } from './TabsContext';
 import { useRef, useEffect, type HTMLAttributes, ReactNode } from 'react';
-import { getRadiusClass, getColorClass } from '../../tokens';
+import { cn } from '../../utils';
+import { getRadiusClass, getColorClass, getSpacingClass } from '../../tokens';
 
 export interface TabsListProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
@@ -82,22 +83,22 @@ export function TabsList({
     : 'inline-flex';
 
   const orientationClasses = orientation === 'vertical'
-    ? 'flex-col space-y-1'
-    : 'flex-row space-x-1';
+    ? cn('flex-col', getSpacingClass('xs', 'gap'))
+    : cn('flex-row', getSpacingClass('xs', 'gap'));
 
   return (
     <div
       ref={listRef}
       role="tablist"
       aria-orientation={orientation}
-      className={`
-        ${displayClass}
-        ${orientationClasses}
-        p-1
-        ${getColorClass('neutral', 'light', 'bg')}
-        ${getRadiusClass('md')}
-        ${className}
-      `}
+      className={cn(
+        displayClass,
+        orientationClasses,
+        getSpacingClass('xs', 'p'),
+        getColorClass('neutral', 'light', 'bg'),
+        getRadiusClass('md'),
+        className
+      )}
       {...props}
     >
       {children}

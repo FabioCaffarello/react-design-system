@@ -1,19 +1,18 @@
 /**
  * Playground Sidebar Component
- * 
+ *
  * Professional sidebar for the playground with tabs and content.
  * Enhanced with search, collapsible sections, and better organization.
  * Uses design system tokens for consistent styling.
- * 
- * Refactored to use SplitSidebar and SidebarContent components from the design system.
+ *
+ * Refactored to use SideNavbar component from the design system.
  * Now uses all advanced features: collapsible, resizable, persistent, responsive.
  */
 
 import React, { useState } from 'react';
 import { PlaygroundTabs, type PlaygroundTabId } from './PlaygroundTabs';
 import { PlaygroundSidebarContent } from './PlaygroundSidebarContent';
-import SplitSidebar from '../../../organisms/SplitSidebar/SplitSidebar';
-import { createPlaygroundSidebarConfig } from '../../../organisms/SplitSidebar/utils/splitSidebarHelpers';
+import { SideNavbar } from '../../../organisms/SideNavbar';
 
 export interface PlaygroundSidebarProps {
   activeTab: PlaygroundTabId;
@@ -40,45 +39,40 @@ export function PlaygroundSidebar({
     return tabs.find(t => t.id === activeTab) || tabs[0];
   }, [activeTab]);
 
-  // Use playground configuration with all advanced features
-  const sidebarConfig = createPlaygroundSidebarConfig({
-    width: '320px',
-    navigationWidth: '56px',
-    collapsible: true,
-    responsive: true,
-    resizable: true,
-    minWidth: 200,
-    maxWidth: 600,
-    snapPoints: [200, 320, 480],
-    storageKey: 'playground-sidebar',
-    persistState: 'localStorage',
-    persistWidth: true,
-    variant: 'default',
-  });
-
   return (
-    <SplitSidebar
-      {...sidebarConfig}
+    <SideNavbar
+      width="320px"
+      navigationWidth="56px"
+      resizable
+      responsive
+      minWidth={200}
+      maxWidth={600}
+      snapPoints={[200, 320, 480]}
+      storageKey="playground-sidebar"
+      persistWidth
+      variant="default"
       className="h-full"
-      role="complementary"
       aria-label="Playground sidebar with configuration panels"
+      togglePosition="top"
     >
-      <SplitSidebar.Navigation>
-        <PlaygroundTabs 
-          activeTab={activeTab} 
-          onTabChange={onTabChange} 
+      <SideNavbar.Navbar>
+        <PlaygroundTabs
+          activeTab={activeTab}
+          onTabChange={onTabChange}
           orientation="vertical"
           variant="compact"
         />
-      </SplitSidebar.Navigation>
-      <SplitSidebar.Content title={activeTabInfo.label}>
-        <SplitSidebar.Toggle position="top" />
-        <PlaygroundSidebarContent
-          activeTab={activeTab}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-        />
-      </SplitSidebar.Content>
-    </SplitSidebar>
+      </SideNavbar.Navbar>
+      <SideNavbar.Sidebar>
+        <SideNavbar.Sidebar.Header title={activeTabInfo.label} />
+        <SideNavbar.Sidebar.Content>
+          <PlaygroundSidebarContent
+            activeTab={activeTab}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+          />
+        </SideNavbar.Sidebar.Content>
+      </SideNavbar.Sidebar>
+    </SideNavbar>
   );
 }

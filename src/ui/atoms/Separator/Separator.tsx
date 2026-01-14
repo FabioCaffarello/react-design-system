@@ -3,6 +3,7 @@
 import { memo, useMemo } from 'react';
 import type { HTMLAttributes } from 'react';
 import { getColorClass } from '../../tokens/colors';
+import { cn } from '../../utils';
 
 export type SeparatorOrientation = 'horizontal' | 'vertical';
 export type SeparatorVariant = 'solid' | 'dashed' | 'dotted';
@@ -48,12 +49,12 @@ const Separator = memo(function Separator({
     dotted: 'border-dotted',
   };
 
-  const classes = useMemo(() => [
+  const classes = useMemo(() => cn(
     ...baseClasses,
     orientationClasses[orientation],
     variantClasses[variant],
-    className,
-  ].filter(Boolean).join(' '), [orientation, variant, className]);
+    className
+  ), [orientation, variant, className]);
 
   if (orientation === 'vertical') {
     return (

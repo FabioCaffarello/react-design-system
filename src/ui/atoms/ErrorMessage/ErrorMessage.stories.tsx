@@ -1,14 +1,33 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from '@storybook/test';
 import ErrorMessage from "./ErrorMessage";
 import { Input, Label } from "../../atoms";
 
 const meta: Meta<typeof ErrorMessage> = {
   title: "Atoms/ErrorMessage",
   component: ErrorMessage,
+  tags: ['autodocs'],
   parameters: {
     docs: {
       description: {
-        component: "A component for displaying validation error messages. Accessible with role='alert'.",
+        component: `
+## ErrorMessage
+
+A component for displaying validation error messages. Accessible with role='alert' and aria-live='polite'.
+
+### Events
+
+| Event | Description | Parameters | When Fired |
+|-------|-------------|------------|------------|
+| N/A | ErrorMessage é um componente de exibição | - | Não possui eventos de interação |
+
+### States
+
+| State | Description | How to Activate | Visual |
+|-------|-------------|-----------------|--------|
+| \`visible\` | Mensagem visível | Quando há mensagem de erro | Mensagem de erro exibida |
+| \`hidden\` | Mensagem oculta | Quando não há mensagem | Mensagem não exibida |
+        `,
       },
     },
   },
@@ -76,6 +95,44 @@ export const MultipleErrors: StoryObj<typeof ErrorMessage> = {
       </div>
     </div>
   ),
+};
+
+// State Stories
+export const VisibleState: StoryObj<typeof ErrorMessage> = {
+  args: {
+    message: "This field is required",
+    id: "error-message",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Visible state - error message is displayed when there is an error.',
+      },
+    },
+  },
+};
+
+export const HiddenState: StoryObj<typeof ErrorMessage> = {
+  args: {
+    message: "",
+    id: "error-message",
+  },
+  render: (args) => (
+    <div className="space-y-2 max-w-md">
+      <Label htmlFor="input" variant="required">
+        Input Field
+      </Label>
+      <Input id="input" />
+      {args.message && <ErrorMessage {...args} />}
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Hidden state - error message is not displayed when there is no error.',
+      },
+    },
+  },
 };
 
 export default meta;

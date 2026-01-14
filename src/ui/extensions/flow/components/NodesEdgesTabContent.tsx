@@ -1,15 +1,16 @@
 /**
  * Nodes & Edges Tab Content Component
- * 
+ *
  * Organizes content in exact sections matching the reference:
  * - OPTIONS: Handle Positions, Floating Edges
  * - NODES & EDGES: Dataset selector, Add new node button
  * - NODE INSPECTOR: Editor for selected node/edge or empty message
  */
 
-import React from 'react';
-import { Card } from '../../../molecules';
+import React, { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 import { Label, Select } from '../../../atoms';
+import Collapsible from '../../../atoms/Collapsible/Collapsible';
 import { AddNodeButton } from './AddNodeButton';
 import { HandlePositionsDropdown } from './HandlePositionsDropdown';
 import { FloatingEdgesCheckbox } from './FloatingEdgesCheckbox';
@@ -17,34 +18,64 @@ import { NodeEditor, EdgeEditor } from './';
 import { usePlaygroundContext } from '../context/PlaygroundContext';
 import { flowTemplates } from '../utils/playgroundTemplates';
 import { generateNodeId } from '../utils/playgroundHelpers';
-import { 
-  getSpacingClass, 
-  getColorClass, 
-  getTypographyClasses 
+import {
+  getSpacingClass,
+  getColorClass,
+  getTypographyClasses
 } from '../../../tokens';
 
 /**
- * Section wrapper component
+ * Collapsible Section wrapper component
  */
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function CollapsibleSection({
+  title,
+  children,
+  defaultOpen = true,
+  storageKey,
+}: {
+  title: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+  storageKey?: string;
+}) {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+
   return (
     <div className={getSpacingClass('md', 'mb')}>
-      <Label
-        className={`
-          ${getTypographyClasses('label')}
-          ${getColorClass('neutral', 'dark', 'text')}
-          ${getSpacingClass('sm', 'mb')}
-          block
-          font-semibold
-          uppercase
-          text-xs
-        `}
+      <Collapsible
+        defaultOpen={defaultOpen}
+        onOpenChange={setIsOpen}
+        storageKey={storageKey}
+        trigger={
+          <div className="flex items-center justify-between w-full cursor-pointer py-1 hover:bg-gray-50 rounded transition-colors">
+            <Label
+              className={`
+                ${getTypographyClasses('label')}
+                ${getColorClass('neutral', 'dark', 'text')}
+                block
+                font-semibold
+                uppercase
+                text-xs
+                cursor-pointer
+              `}
+            >
+              {title}
+            </Label>
+            <ChevronDown
+              className={`
+                h-4 w-4
+                ${getColorClass('neutral', 'DEFAULT', 'text')}
+                transition-transform duration-200
+                ${isOpen ? 'rotate-180' : ''}
+              `}
+            />
+          </div>
+        }
       >
-        {title}
-      </Label>
-      <div className={getSpacingClass('md', 'mt')}>
-        {children}
-      </div>
+        <div className={getSpacingClass('md', 'mt')}>
+          {children}
+        </div>
+      </Collapsible>
     </div>
   );
 }
@@ -198,25 +229,37 @@ export function NodesEdgesTabContent() {
   return (
     <div className={`flex flex-col ${getSpacingClass('base', 'gap')}`}>
       {/* OPTIONS Section */}
-      <Section title="OPTIONS">
+      <CollapsibleSection
+        title="OPTIONS"
+        defaultOpen={true}
+        storageKey="playground-options"
+      >
         <div className={`flex flex-col ${getSpacingClass('md', 'gap')}`}>
           <HandlePositionsDropdown />
           <FloatingEdgesCheckbox />
         </div>
-      </Section>
+      </CollapsibleSection>
 
       {/* NODES & EDGES Section */}
-      <Section title="NODES & EDGES">
+      <CollapsibleSection
+        title="NODES & EDGES"
+        defaultOpen={true}
+        storageKey="playground-nodes-edges"
+      >
         <div className={`flex flex-col ${getSpacingClass('md', 'gap')}`}>
           <SimpleDatasetSelector />
           <AddNodeButton />
         </div>
-      </Section>
+      </CollapsibleSection>
 
       {/* NODE INSPECTOR Section */}
-      <Section title="NODE INSPECTOR">
+      <CollapsibleSection
+        title="NODE INSPECTOR"
+        defaultOpen={true}
+        storageKey="playground-inspector"
+      >
         <NodeInspector />
-      </Section>
+      </CollapsibleSection>
     </div>
   );
 }

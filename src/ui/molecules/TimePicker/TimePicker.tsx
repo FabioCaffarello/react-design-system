@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Clock } from 'lucide-react';
 import Input from '../../atoms/Input/Input';
-import Popover from '../../atoms/Popover/Popover';
+import Popover from '../Popover/Popover';
 import Button from '../../atoms/Button/Button';
 import { getSpacingClass } from '../../tokens/spacing';
 

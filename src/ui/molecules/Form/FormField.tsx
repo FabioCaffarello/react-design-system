@@ -1,9 +1,17 @@
 'use client';
 
 import { useFormContext } from './FormContext';
-import { ErrorMessage } from '../../atoms';
+import { ErrorMessage, Label } from '../../atoms';
+import { cn } from '../../utils';
+import { 
+  getSpacingClass, 
+  getTypographySizeFromFontSize, 
+  getTypographyWeightFromFontWeight,
+  getColorClass
+} from '../../tokens';
 import type { FieldValues, Path, RegisterOptions } from 'react-hook-form';
 import type { ReactNode } from 'react';
+import type { UseFormReturn } from 'react-hook-form';
 
 export interface FormFieldProps<TFieldValues extends FieldValues = FieldValues> {
   name: Path<TFieldValues>;
@@ -63,11 +71,19 @@ export function FormField<TFieldValues extends FieldValues = FieldValues>({
   const value = watch(name);
 
   return (
-    <div className={`space-y-2 ${className}`}>
+    <div className={cn('flex', 'flex-col', getSpacingClass('sm', 'gap'), className)}>
       {label && (
-        <label htmlFor={name} className="block text-sm font-medium text-gray-700">
+        <Label 
+          htmlFor={name}
+          className={cn(
+            'block',
+            getTypographySizeFromFontSize('sm'),
+            getTypographyWeightFromFontWeight('medium'),
+            getColorClass('neutral', 'dark', 'text')
+          )}
+        >
           {label}
-        </label>
+        </Label>
       )}
       {children({
         name,
@@ -77,7 +93,7 @@ export function FormField<TFieldValues extends FieldValues = FieldValues>({
         onChange: fieldRegister.onChange,
         onBlur: fieldRegister.onBlur,
       })}
-      {error && <ErrorMessage>{error}</ErrorMessage>}
+      {error && <ErrorMessage message={error} />}
     </div>
   );
 }

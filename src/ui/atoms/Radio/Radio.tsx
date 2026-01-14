@@ -1,7 +1,11 @@
 'use client';
 
+import { forwardRef, memo, useMemo } from 'react';
 import type { InputHTMLAttributes, ReactNode } from 'react';
 import { getTypographyClasses } from '../../tokens/typography';
+import { getColorClass, getFocusColorClass } from '../../tokens/colors';
+import { getSpacingClass } from '../../tokens/spacing';
+import { cn } from '../../utils';
 
 export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: ReactNode;
@@ -28,7 +32,7 @@ export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
  * />
  * ```
  */
-export default function Radio({
+const Radio = memo(forwardRef<HTMLInputElement, RadioProps>(function Radio({
   id,
   label,
   error = false,
@@ -36,49 +40,76 @@ export default function Radio({
   className = '',
   disabled = false,
   ...props
-}: RadioProps) {
-  const radioId = id || `radio-${Math.random().toString(36).substr(2, 9)}`;
-  const errorId = error ? `${radioId}-error` : undefined;
-  const helperId = helperText ? `${radioId}-helper` : undefined;
+}, ref) {
+  // Memoize IDs
+  const radioId = useMemo(() => 
+    id || `radio-${Math.random().toString(36).substr(2, 9)}`,
+    [id]
+  );
+  
+  const errorId = useMemo(() => 
+    error ? `${radioId}-error` : undefined,
+    [error, radioId]
+  );
+  
+  const helperId = useMemo(() => 
+    helperText ? `${radioId}-helper` : undefined,
+    [helperText, radioId]
+  );
 
-  const baseClasses = [
+  // Memoize focus ring colors
+  const primaryFocusRing = useMemo(() => 
+    getFocusColorClass('primary', 'DEFAULT', 'border'),
+    []
+  );
+  
+  const errorFocusRing = useMemo(() => 
+    getFocusColorClass('error', 'DEFAULT', 'border'),
+    []
+  );
+  
+  const focusRingColor = useMemo(() => 
+    error 
+      ? errorFocusRing.replace('focus:border-', 'focus:ring-')
+      : primaryFocusRing.replace('focus:border-', 'focus:ring-'),
+    [error, errorFocusRing, primaryFocusRing]
+  );
+
+  // Memoize classes
+  const radioClasses = useMemo(() => cn(
     'h-4',
     'w-4',
-    'border-gray-300',
-    'text-indigo-600',
+    'border',
+    getColorClass('neutral', 'DEFAULT', 'border'),
+    getColorClass('primary', 'DEFAULT', 'text'),
     'focus:ring-2',
-    'focus:ring-indigo-500',
+    focusRingColor,
     'focus:ring-offset-2',
     'disabled:opacity-50',
     'disabled:cursor-not-allowed',
     'cursor-pointer',
-  ];
+    error && getColorClass('error', 'DEFAULT', 'border'),
+    className
+  ), [focusRingColor, error, className]);
 
-  const errorClasses = error
-    ? 'border-red-500 focus:ring-red-500'
-    : '';
-
-  const radioClasses = [
-    ...baseClasses,
-    errorClasses,
-  ].filter(Boolean).join(' ');
-
-  const labelClasses = [
+  const labelClasses = useMemo(() => cn(
     getTypographyClasses('label'),
-    'ml-2',
-    disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
-  ].filter(Boolean).join(' ');
+    getSpacingClass('sm', 'ml'),
+    disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+  ), [disabled]);
 
   return (
-    <div className={`flex flex-col my-2 ${className}`}>
+    <div className={cn('flex', 'flex-col', getSpacingClass('sm', 'my'))}>
       <div className="flex items-center">
         <input
           type="radio"
           id={radioId}
+          ref={ref}
           className={radioClasses}
           disabled={disabled}
           aria-invalid={error}
-          aria-describedby={errorId || helperId}
+          aria-describedby={errorId || helperId || undefined}
+          aria-label={!label ? 'Radio button' : undefined}
           {...props}
         />
         {label && (
@@ -93,12 +124,20 @@ export default function Radio({
       {(error || helperText) && (
         <div
           id={errorId || helperId}
-          className={`mt-1 ${getTypographyClasses('caption')} ${error ? 'text-red-600' : 'text-gray-500'}`}
+          className={cn(
+            getSpacingClass('xs', 'mt'),
+            getTypographyClasses('caption'),
+            error ? getColorClass('error', 'DEFAULT', 'text') : getColorClass('neutral', 'DEFAULT', 'text')
+          )}
           role={error ? 'alert' : undefined}
         >
-          {helperText || (error ? 'Error' : '')}
+          {error ? (helperText || 'This field has an error') : helperText}
         </div>
       )}
     </div>
   );
-}
+}));
+
+Radio.displayName = 'Radio';
+
+export default Radio;

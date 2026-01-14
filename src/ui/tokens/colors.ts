@@ -287,7 +287,7 @@ export function getColor(role: ColorRole, shade: 'light' | 'DEFAULT' | 'dark' = 
 /**
  * Helper function to get color as Tailwind class
  */
-export function getColorClass(role: ColorRole, shade: 'light' | 'DEFAULT' | 'dark' = 'DEFAULT', type: 'text' | 'bg' | 'border' = 'text'): string {
+export function getColorClass(role: ColorRole, shade: 'light' | 'DEFAULT' | 'dark' | 'contrast' = 'DEFAULT', type: 'text' | 'bg' | 'border' = 'text'): string {
   // Safety check: ensure COLOR_TOKENS is initialized
   if (!COLOR_TOKENS || typeof COLOR_TOKENS !== 'object') {
     console.warn('COLOR_TOKENS is not initialized, using fallback');
@@ -309,4 +309,77 @@ export function getColorClass(role: ColorRole, shade: 'light' | 'DEFAULT' | 'dar
   }
   
   return `${type}-${token.tailwind}`;
+}
+
+/**
+ * Helper function to get hover color class
+ * Returns the complete hover class (e.g., 'hover:bg-gray-100')
+ * Note: Tailwind needs to see the full class name, so we return it as a complete string
+ */
+export function getHoverColorClass(role: ColorRole, shade: 'light' | 'DEFAULT' | 'dark' = 'DEFAULT', type: 'text' | 'bg' | 'border' = 'bg'): string {
+  const baseClass = getColorClass(role, shade, type);
+  // Extract the class name part (e.g., 'bg-gray-100' -> 'bg-gray-100')
+  // and prepend 'hover:' prefix
+  return `hover:${baseClass}`;
+}
+
+/**
+ * Helper function to get focus color class
+ * Returns the complete focus class (e.g., 'focus:bg-gray-100')
+ */
+export function getFocusColorClass(role: ColorRole, shade: 'light' | 'DEFAULT' | 'dark' = 'DEFAULT', type: 'text' | 'bg' | 'border' = 'border'): string {
+  const baseClass = getColorClass(role, shade, type);
+  return `focus:${baseClass}`;
+}
+
+/**
+ * Helper function to get focus ring color class
+ * Returns the complete focus ring class (e.g., 'focus:ring-indigo-500')
+ * This returns complete classes that Tailwind can detect, avoiding string manipulation.
+ * 
+ * Note: These classes must be in the safelist or used elsewhere in the codebase
+ * for Tailwind to include them in the build.
+ */
+export function getFocusRingClass(role: ColorRole, shade: 'light' | 'DEFAULT' | 'dark' = 'DEFAULT'): string {
+  // Map color roles and shades to complete focus ring classes
+  // These are complete classes that Tailwind can detect
+  const ringClassMap: Record<ColorRole, Record<'light' | 'DEFAULT' | 'dark', string>> = {
+    primary: {
+      light: 'focus:ring-indigo-400',
+      DEFAULT: 'focus:ring-indigo-500',
+      dark: 'focus:ring-indigo-600',
+    },
+    secondary: {
+      light: 'focus:ring-pink-300',
+      DEFAULT: 'focus:ring-pink-500',
+      dark: 'focus:ring-pink-600',
+    },
+    success: {
+      light: 'focus:ring-green-300',
+      DEFAULT: 'focus:ring-green-500',
+      dark: 'focus:ring-green-600',
+    },
+    warning: {
+      light: 'focus:ring-yellow-300',
+      DEFAULT: 'focus:ring-yellow-500',
+      dark: 'focus:ring-yellow-600',
+    },
+    error: {
+      light: 'focus:ring-red-300',
+      DEFAULT: 'focus:ring-red-500',
+      dark: 'focus:ring-red-600',
+    },
+    info: {
+      light: 'focus:ring-blue-300',
+      DEFAULT: 'focus:ring-blue-500',
+      dark: 'focus:ring-blue-600',
+    },
+    neutral: {
+      light: 'focus:ring-gray-200',
+      DEFAULT: 'focus:ring-gray-500',
+      dark: 'focus:ring-gray-700',
+    },
+  };
+  
+  return ringClassMap[role]?.[shade] || 'focus:ring-indigo-500';
 }

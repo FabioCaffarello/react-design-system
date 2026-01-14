@@ -1,9 +1,12 @@
 'use client';
 
-import { forwardRef } from 'react';
+import { forwardRef, memo, useMemo, useCallback } from 'react';
 import type { InputHTMLAttributes } from 'react';
-import { getColorClass } from '../../tokens/colors';
+import { getColorClass, getFocusColorClass } from '../../tokens/colors';
 import { getAnimationClass } from '../../tokens/animations';
+import { getSpacingClass } from '../../tokens/spacing';
+import { getTypographySize, getTypographyWeight } from '../../tokens/typography';
+import { cn } from '../../utils';
 
 export type SwitchSize = 'sm' | 'md' | 'lg';
 
@@ -32,7 +35,7 @@ export interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>,
  * />
  * ```
  */
-const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch({
+const Switch = memo(forwardRef<HTMLInputElement, SwitchProps>(function Switch({
   size = 'md',
   label,
   description,
@@ -44,12 +47,24 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch({
   id,
   ...props
 }, ref) {
-  const switchId = id || `switch-${Math.random().toString(36).substr(2, 9)}`;
-  const labelId = label ? `${switchId}-label` : undefined;
-  const descriptionId = description ? `${switchId}-description` : undefined;
+  // Memoize IDs
+  const switchId = useMemo(() => 
+    id || `switch-${Math.random().toString(36).substr(2, 9)}`,
+    [id]
+  );
+  
+  const labelId = useMemo(() => 
+    label ? `${switchId}-label` : undefined,
+    [label, switchId]
+  );
+  
+  const descriptionId = useMemo(() => 
+    description ? `${switchId}-description` : undefined,
+    [description, switchId]
+  );
 
-  // Size configurations
-  const sizeConfig = {
+  // Memoize size configurations
+  const sizeConfig = useMemo(() => ({
     sm: {
       track: 'w-9 h-5',
       thumb: 'w-4 h-4',
@@ -65,14 +80,21 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch({
       thumb: 'w-6 h-6',
       translate: 'translate-x-7',
     },
-  };
+  }), []);
 
-  const config = sizeConfig[size];
+  const config = useMemo(() => sizeConfig[size], [sizeConfig, size]);
 
-  const trackClasses = [
+  // Memoize focus ring color
+  const focusRingColor = useMemo(() => 
+    getFocusColorClass('primary', 'DEFAULT', 'border').replace('focus:border-', 'focus:ring-'),
+    []
+  );
+
+  // Memoize classes
+  const trackClasses = useMemo(() => cn(
     'relative',
     'inline-flex',
-    'flex-shrink-0',
+    'shrink-0',
     'cursor-pointer',
     'rounded-full',
     'border-2',
@@ -80,17 +102,18 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch({
     getAnimationClass('base'),
     'focus:outline-none',
     'focus:ring-2',
+    focusRingColor,
     'focus:ring-offset-2',
     config.track,
     checked
       ? getColorClass('primary', 'DEFAULT', 'bg')
-      : 'bg-gray-200',
-    error && !checked ? 'border-red-500' : '',
-    disabled ? 'opacity-50 cursor-not-allowed' : '',
-    className,
-  ].filter(Boolean).join(' ');
+      : getColorClass('neutral', 'light', 'bg'),
+    error && !checked && getColorClass('error', 'DEFAULT', 'border'),
+    disabled && 'opacity-50 cursor-not-allowed',
+    className
+  ), [focusRingColor, config.track, checked, error, disabled, className]);
 
-  const thumbClasses = [
+  const thumbClasses = useMemo(() => cn(
     'pointer-events-none',
     'inline-block',
     'rounded-full',
@@ -99,11 +122,11 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch({
     'transform',
     getAnimationClass('base'),
     config.thumb,
-    checked ? config.translate : 'translate-x-0',
-  ].filter(Boolean).join(' ');
+    checked ? config.translate : 'translate-x-0'
+  ), [config.thumb, config.translate, checked]);
 
   return (
-    <div className="flex items-start gap-3">
+    <div className={cn('flex', 'items-start', getSpacingClass('md', 'gap'))}>
       <div className="flex items-center">
         <button
           type="button"
@@ -113,7 +136,7 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch({
           aria-labelledby={labelId}
           aria-describedby={descriptionId}
           disabled={disabled}
-          onClick={(e) => {
+          onClick={useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
             if (!disabled && onChange) {
               const syntheticEvent = {
                 ...e,
@@ -122,8 +145,8 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch({
               } as React.ChangeEvent<HTMLInputElement>;
               onChange(syntheticEvent);
             }
-          }}
-          onKeyDown={(e) => {
+          }, [disabled, onChange, checked])}
+          onKeyDown={useCallback((e: React.KeyboardEvent<HTMLButtonElement>) => {
             if ((e.key === 'Enter' || e.key === ' ') && !disabled && onChange) {
               e.preventDefault();
               const syntheticEvent = {
@@ -133,7 +156,7 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch({
               } as React.ChangeEvent<HTMLInputElement>;
               onChange(syntheticEvent);
             }
-          }}
+          }, [disabled, onChange, checked])}
         >
           <span className={thumbClasses} />
         </button>
@@ -155,9 +178,13 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch({
             <label
               id={labelId}
               htmlFor={switchId}
-              className={`block text-sm font-medium ${
-                error ? getColorClass('error', 'DEFAULT', 'text') : 'text-gray-700'
-              } ${disabled ? 'opacity-50' : 'cursor-pointer'}`}
+              className={cn(
+                'block',
+                getTypographySize('bodySmall'),
+                getTypographyWeight('label'),
+                error ? getColorClass('error', 'DEFAULT', 'text') : getColorClass('neutral', 'dark', 'text'),
+                disabled ? 'opacity-50' : 'cursor-pointer'
+              )}
             >
               {label}
             </label>
@@ -165,7 +192,11 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch({
           {description && (
             <p
               id={descriptionId}
-              className={`mt-1 text-sm ${error ? getColorClass('error', 'DEFAULT', 'text') : 'text-gray-500'}`}
+              className={cn(
+                getSpacingClass('xs', 'mt'),
+                getTypographySize('bodySmall'),
+                error ? getColorClass('error', 'DEFAULT', 'text') : getColorClass('neutral', 'DEFAULT', 'text')
+              )}
             >
               {description}
             </p>
@@ -174,7 +205,7 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch({
       )}
     </div>
   );
-});
+}));
 
 Switch.displayName = 'Switch';
 

@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Ensure all source files are scanned for classes */
+@source "../src/ui/**/*.{ts,tsx}";
+@source "../src/ui/**/*.{js,jsx}";
+
 @theme {
   /* height: uses the spacing scale */
   --spacing-form-element: 38px;

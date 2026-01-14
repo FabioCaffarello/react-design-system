@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import Avatar from './Avatar';
 import { AvatarGroup } from './AvatarGroup';
 
@@ -8,7 +9,28 @@ const meta: Meta<typeof Avatar> = {
   parameters: {
     docs: {
       description: {
-        component: 'A versatile avatar component for displaying user profile images or initials. Supports fallback display when image fails to load or is not provided. Fully accessible with ARIA attributes.',
+        component: `
+## Avatar
+
+A versatile avatar component for displaying user profile images or initials. Supports fallback display when image fails to load.
+
+### Events
+
+| Event | Description | Parameters | When Fired |
+|-------|-------------|------------|------------|
+| \`onError\` | Erro ao carregar imagem | \`(event: SyntheticEvent) => void\` | Quando a imagem falha ao carregar |
+| \`onLoad\` | Imagem carregada | \`(event: SyntheticEvent) => void\` | Quando a imagem é carregada com sucesso |
+
+### States
+
+| State | Description | How to Activate | Visual |
+|-------|-------------|-----------------|--------|
+| \`with-image\` | Com imagem | \`src\` prop fornecida | Avatar com imagem |
+| \`with-fallback\` | Com fallback | Sem \`src\` ou erro ao carregar | Avatar com iniciais ou fallback |
+| \`circle\` | Formato circular | \`variant="circle"\` | Avatar circular |
+| \`rounded\` | Formato arredondado | \`variant="rounded"\` | Avatar com bordas arredondadas |
+| \`square\` | Formato quadrado | \`variant="square"\` | Avatar quadrado |
+        `,
       },
     },
   },
@@ -35,6 +57,22 @@ const meta: Meta<typeof Avatar> = {
       control: 'select',
       options: ['circle', 'square', 'rounded'],
       description: 'Shape variant of the avatar',
+    },
+    onError: {
+      description: 'Callback fired when the image fails to load',
+      action: 'onError',
+      table: {
+        type: { summary: '(event: SyntheticEvent) => void' },
+        category: 'Events',
+      },
+    },
+    onLoad: {
+      description: 'Callback fired when the image loads successfully',
+      action: 'onLoad',
+      table: {
+        type: { summary: '(event: SyntheticEvent) => void' },
+        category: 'Events',
+      },
     },
   },
 };
@@ -220,6 +258,119 @@ export const GroupSpacing: Story = {
     docs: {
       description: {
         story: 'Different spacing options for AvatarGroup.',
+      },
+    },
+  },
+};
+
+// Event Stories
+export const WithEvents: Story = {
+  render: () => {
+    const handleError = fn((e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+      console.log('Image failed to load');
+    });
+    
+    const handleLoad = fn((e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+      console.log('Image loaded successfully');
+    });
+    
+    return (
+      <div className="space-y-4">
+        <p className="text-sm text-gray-600">
+          The avatar below will try to load an image. Check the Actions panel to see events being fired.
+        </p>
+        <Avatar
+          src="https://i.pravatar.cc/150?img=1"
+          alt="User avatar"
+          fallback="JD"
+          onError={handleError}
+          onLoad={handleLoad}
+        />
+        <p className="text-sm text-gray-500">Try changing the src to an invalid URL to trigger onError.</p>
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates avatar events. Check the Actions panel to see onLoad and onError events being logged.',
+      },
+    },
+  },
+};
+
+// State Stories
+export const WithImageState: Story = {
+  args: {
+    src: 'https://i.pravatar.cc/150?img=1',
+    alt: 'User avatar',
+    fallback: 'JD',
+    size: 'md',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'With image state - avatar displays the provided image.',
+      },
+    },
+  },
+};
+
+export const WithFallbackState: Story = {
+  args: {
+    fallback: 'JD',
+    alt: 'John Doe',
+    size: 'md',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'With fallback state - avatar displays fallback text when no image is provided.',
+      },
+    },
+  },
+};
+
+export const CircleState: Story = {
+  args: {
+    fallback: 'JD',
+    variant: 'circle',
+    size: 'md',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Circle state - avatar with circular shape.',
+      },
+    },
+  },
+};
+
+export const RoundedState: Story = {
+  args: {
+    fallback: 'JD',
+    variant: 'rounded',
+    size: 'md',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Rounded state - avatar with rounded corners.',
+      },
+    },
+  },
+};
+
+export const SquareState: Story = {
+  args: {
+    fallback: 'JD',
+    variant: 'square',
+    size: 'md',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Square state - avatar with square shape.',
       },
     },
   },

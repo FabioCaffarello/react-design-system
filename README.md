@@ -34,12 +34,23 @@ This repository is a modern, scalable, and flexible Design System built with Rea
 src/
   ui/
     atoms/        # Basic components (Button, Input, Text, etc.)
-    molecules/    # Combinations of atoms (InputWithLabel, etc.)
-    organisms/    # Complex blocks (LoginBox, etc.)
-  assets/         # Images, icons, etc.
+    molecules/    # Combinations of atoms (Card, SearchInput, Form, etc.)
+    organisms/    # Complex blocks (Table, SideNavbar, Modal, etc.)
+    templates/    # Complete page layouts (DashboardLayout, etc.)
+    patterns/     # Design patterns (FormWizardPattern, DataTablePattern, etc.)
+    layouts/      # Structure components (Container, Stack, etc.)
+    utilities/    # Utility components (Portal, etc.)
+    providers/    # Context providers (AppProvider, ThemeProvider, etc.)
+    extensions/   # Specialized extensions (flow/, etc.)
+    tokens/       # Design tokens (colors, spacing, typography, etc.)
+    hooks/        # Custom hooks (useContextSelector, etc.)
+    playgrounds/  # Interactive playgrounds (Theme, Typography, Spacing, Colors)
+    tools/        # Development tools (ThemeBuilder, etc.)
+    a11y/         # Accessibility examples and stories
   style.css       # TailwindCSS and custom theme variables
-public/           # Static files
 .storybook/       # Storybook configuration
+scripts/          # Validation and generation scripts
+docs/             # Documentation (ARCHITECTURE.md, ACCESSIBILITY.md, etc.)
 plop-templates/   # Component and story templates
 ```
 
@@ -128,39 +139,81 @@ See the [Flow Playground Guide](./src/ui/extensions/flow/PLAYGROUND_GUIDE.md) fo
 
 ## Features
 
+### Interactive Playgrounds
+
+The Storybook includes interactive playgrounds for experimenting with design tokens:
+
+- **Theme Playground**: Adjust colors, spacing, and typography in real-time
+- **Typography Playground**: Preview all font sizes, weights, and line heights
+- **Spacing Playground**: Visualize and test spacing scale
+- **Colors Playground**: Explore color palettes and test contrast ratios
+
+Access them in Storybook: `Playgrounds/`
+
+### Theme Builder
+
+Interactive tool for building custom themes:
+
+- **Real-time Preview**: See changes instantly in component preview
+- **Export Options**: Export themes as JSON, CSS variables, or TypeScript
+- **Accessibility Validation**: Check WCAG contrast ratios
+
+Access it in Storybook: `Tools/Theme Builder`
+
 ### Accessibility
 
-- **WCAG 2.1 AA Compliance**: All components meet accessibility standards
+- **WCAG 2.1 AA Compliance**: All components meet accessibility standards (60+ rules configured)
 - **Keyboard Navigation**: Full keyboard support for all interactive components
 - **ARIA Attributes**: Proper ARIA labels, roles, and states
 - **Screen Reader Support**: Optimized for assistive technologies
 - **Focus Management**: Proper focus trapping and restoration
+- **Accessibility Stories**: Dedicated stories for testing a11y patterns
+
+See [Accessibility Guide](./docs/ACCESSIBILITY.md) for complete documentation.
 
 ### Testing
 
 - **High Test Coverage**: > 80% coverage for all components
-- **Accessibility Tests**: Automated a11y testing with @testing-library/jest-dom
-- **Storybook Tests**: Visual regression and interaction testing
+- **Accessibility Tests**: Automated a11y testing with @storybook/addon-a11y
+- **Storybook Tests**: Visual regression and interaction testing with play functions
 - **Edge Cases**: Comprehensive test coverage including error states
+- **Visual Regression**: Chromatic integration for visual testing
 
 ### Documentation
 
 - **Storybook**: Interactive documentation with live examples
 - **MDX Docs**: Detailed documentation for complex components
+- **Mermaid Diagrams**: Visual documentation of state machines, composition, and data flow
 - **JSDoc**: Complete inline documentation
 - **Type Safety**: Full TypeScript support with strict types
 
+See [Architecture Documentation](./docs/ARCHITECTURE.md) for system architecture details.
+
 ## Scripts
 
+### Development
 - `npm run dev` - Start development server
-- `npm run build` - Build for production
 - `npm run storybook` - Start Storybook
-- `npm run build-storybook` - Build static Storybook
-- `npm test` - Run tests
+- `npm run test` - Run tests
 - `npm run test:coverage` - Run tests with coverage report
 - `npm run test:watch` - Run tests in watch mode
 - `npm run lint` - Lint code
+
+### Build
+- `npm run build` - Build for production
+- `npm run build-storybook` - Build static Storybook
+
+### Validation
+- `npm run validate:all` - Run all validation scripts
+- `npm run validate-stories` - Validate story structure
+- `npm run validate-architecture` - Validate component architecture
+- `npm run validate-a11y` - Validate accessibility patterns
+- `npm run validate-themes` - Validate theme tokens
+
+### Generation
 - `npm run plop` - Generate new components
+- `npm run generate-story-index` - Generate story index
+- `npm run generate-context-diagram` - Generate context hierarchy diagram
 
 ## Quality Standards
 
@@ -205,16 +258,68 @@ function MyFlow() {
 
 See [Flow Documentation](./src/ui/organisms/Flow/Flow.mdx) for complete API reference.
 
+## Documentation
+
+### Quick Start
+- [**Documentation Index**](./docs/INDEX.md) - Índice completo de documentação
+- [**Quick Start MCP**](./docs/QUICK_START_MCP.md) - Comece a usar MCPs em 5 minutos
+
+### Core Documentation
+- [Architecture Guide](./docs/ARCHITECTURE.md) - System architecture and component organization
+- [Accessibility Guide](./docs/ACCESSIBILITY.md) - WCAG 2.1 AA compliance and patterns
+- [Storybook Guide](./docs/STORYBOOK_GUIDE.md) - Storybook usage and best practices
+- [Storybook Addons](./docs/STORYBOOK_ADDONS.md) - Complete guide to all addons
+- [Events & States Guide](./docs/EVENTS_STATES_GUIDE.md) - Component events and states documentation
+- [Categorization Guide](./docs/CATEGORIZATION_GUIDE.md) - Component categorization rules
+- [Advanced Composition](./docs/ADVANCED_COMPOSITION.md) - Advanced composition patterns
+
+### MCP & Automation
+- [MCP Strategy](./docs/MCP_STRATEGY.md) - Complete MCP strategy
+- [MCP Setup](./docs/MCP_SETUP.md) - MCP configuration guide
+- [MCP Automations](./docs/MCP_AUTOMATIONS.md) - Available automations
+- [Figma MCP Integration](./docs/FIGMA_MCP_INTEGRATION.md) - Figma MCP server
+- [Design Systems MCP](./docs/DESIGN_SYSTEMS_MCP.md) - Design Systems MCP
+
+### Testing & Quality
+- [Testing Strategy](./docs/TESTING_STRATEGY.md) - Complete testing strategy
+- [E2E Testing](./docs/E2E_TESTING.md) - End-to-end testing with Playwright
+- [Performance Guide](./docs/PERFORMANCE_GUIDE.md) - Performance optimization
+- [Visual Regression Testing](./docs/VISUAL_REGRESSION_TESTING.md) - Chromatic setup
+
+### Integration & Migration
+- [Figma Integration](./docs/FIGMA_INTEGRATION.md) - Figma integration guide
+- [Migration Guides](./docs/MIGRATION_GUIDES.md) - Version migration guides
+- [Token Versioning](./docs/TOKENS_VERSIONING.md) - Design token versioning
+
+### Processes
+- [Release Process](./docs/RELEASE_PROCESS.md) - Release and versioning process
+- [CI/CD Pipeline](./docs/CI_CD_PIPELINE.md) - Continuous integration and deployment
+- [Roadmap](./docs/ROADMAP.md) - Public roadmap
+
 ## Roadmap
 
 - [x] Atomic Design structure
-- [x] Storybook integration
+- [x] Storybook integration with advanced addons
 - [x] Automated unit and story testing
 - [x] TailwindCSS theming
 - [x] Accessibility improvements (WCAG 2.1 AA)
 - [x] Comprehensive test coverage
 - [x] MDX documentation for complex components
 - [x] Flow/Graph components with playground
-- [ ] Create Publish npm package cd step
-- [ ] Customizable themes and dark mode
-- [ ] Performance optimizations (code splitting)
+- [x] Interactive playgrounds (Theme, Typography, Spacing, Colors)
+- [x] Theme Builder tool
+- [x] Mermaid diagrams for documentation
+- [x] CI/CD pipeline with automated validations
+- [x] Performance optimizations (code splitting)
+- [x] E2E testing framework (Playwright)
+- [x] MCP (Model Context Protocol) integration
+- [x] Component Registry System
+- [x] Design Tokens Versioning
+- [x] Figma Integration
+- [x] Advanced documentation (Composition, Migration Guides)
+- [ ] Additional playgrounds and tools
+- [ ] Storybook Composition
+- [ ] Custom addons development
+- [ ] Advanced performance monitoring
+
+See [ROADMAP.md](./docs/ROADMAP.md) for detailed roadmap.

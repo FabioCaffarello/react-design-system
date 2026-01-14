@@ -1,4 +1,9 @@
 import type { LabelHTMLAttributes } from "react";
+import { forwardRef, memo, useMemo } from "react";
+import { getTypographyClasses, getTypographySize, getTypographyWeight } from '../../tokens/typography';
+import { getColorClass } from '../../tokens/colors';
+import { getSpacingClass } from '../../tokens/spacing';
+import { cn } from '../../utils';
 
 interface Props extends LabelHTMLAttributes<HTMLLabelElement> {
   variant?: "default" | "required" | "optional";
@@ -18,34 +23,49 @@ interface Props extends LabelHTMLAttributes<HTMLLabelElement> {
  * </Label>
  * ```
  */
-export default function Label({
+const Label = memo(forwardRef<HTMLLabelElement, Props>(function Label({
   variant = "default",
   className = "",
   children,
   ...props
-}: Props) {
-  const baseClasses = [
+}, ref) {
+  // Memoize base classes
+  const baseClasses = useMemo(() => cn(
     "block",
-    "text-sm",
-    "font-medium",
-    "text-gray-700",
-  ];
+    getTypographySize('label'),
+    getTypographyWeight('label'),
+    getColorClass('neutral', 'dark', 'text')
+  ), []);
 
-  const variantClasses: Record<NonNullable<Props["variant"]>, string> = {
+  // Memoize variant classes
+  const variantClasses = useMemo<Record<NonNullable<Props["variant"]>, string>>(() => ({
     default: "",
-    required: "after:content-['*'] after:ml-0.5 after:text-red-500",
-    optional: "after:content-['(optional)'] after:ml-1 after:text-gray-400 after:font-normal",
-  };
+    required: cn(
+      "after:content-['*']",
+      "after:ml-0.5", // xs spacing = 0.5 (2px)
+      "after:text-red-500" // error DEFAULT color
+    ),
+    optional: cn(
+      "after:content-['(optional)']",
+      "after:ml-1", // xs spacing = 1 (4px) - note: test expects ml-1, not ml-0.5
+      "after:text-gray-400", // neutral DEFAULT color
+      "after:font-normal"
+    ),
+  }), []);
 
-  const classes = [
-    ...baseClasses,
-    variantClasses[variant],
-    className,
-  ].filter(Boolean).join(" ");
+  // Memoize final classes
+  const classes = useMemo(() => 
+    cn(baseClasses, variantClasses[variant], className),
+    [baseClasses, variantClasses, variant, className]
+  );
 
   return (
-    <label className={classes} {...props}>
+    <label ref={ref} className={classes} {...props}>
       {children}
     </label>
   );
-}
+}));
+
+Label.displayName = 'Label';
+
+export default Label;

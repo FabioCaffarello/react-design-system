@@ -3,6 +3,8 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { Button } from "../../atoms";
 import { Text } from "../../atoms";
+import { cn } from '../../utils';
+import { getSpacingClass, getColorClass, getTypographySize, getTypographyWeightFromFontWeight } from '../../tokens';
 
 export interface EmptyStateProps extends HTMLAttributes<HTMLDivElement> {
   title: string;
@@ -39,20 +41,16 @@ export default function EmptyState({
   className = "",
   ...props
 }: EmptyStateProps) {
-  const baseClasses = [
-    "flex",
-    "flex-col",
-    "items-center",
-    "justify-center",
-    "text-center",
-    "py-12",
-    "px-4",
-  ];
-
-  const classes = [
-    ...baseClasses,
-    className,
-  ].filter(Boolean).join(" ");
+  const classes = cn(
+    'flex',
+    'flex-col',
+    'items-center',
+    'justify-center',
+    'text-center',
+    getSpacingClass('xl', 'py'),
+    getSpacingClass('base', 'px'),
+    className
+  );
 
   const showAction = variant === "withAction" || (actionLabel && onAction);
   const showIllustration = variant === "withIllustration" || illustration;
@@ -66,16 +64,32 @@ export default function EmptyState({
       {...props}
     >
       {showIllustration && illustration && (
-        <div className="mb-4" aria-hidden="true">
+        <div className={cn(getSpacingClass('base', 'mb'))} aria-hidden="true">
           {illustration}
         </div>
       )}
       
-      <Text as="h3" className="text-lg font-semibold text-gray-900 mb-2">
+      <Text 
+        as="h3" 
+        className={cn(
+          getTypographySize('h4'),
+          getTypographyWeightFromFontWeight('semibold'),
+          getColorClass('neutral', 'dark', 'text'),
+          getSpacingClass('sm', 'mb')
+        )}
+      >
         {title}
       </Text>
       
-      <Text as="p" className="text-sm text-gray-500 mb-6 max-w-sm">
+      <Text 
+        as="p" 
+        className={cn(
+          getTypographySize('bodySmall'),
+          getColorClass('neutral', 'DEFAULT', 'text'),
+          getSpacingClass('md', 'mb'),
+          'max-w-sm' // Max width utility - justified as layout constraint
+        )}
+      >
         {message}
       </Text>
       

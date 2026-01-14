@@ -58,6 +58,9 @@ interface SimplifiedTableProps<T extends Record<string, unknown> = Record<string
   // Actions
   actions?: (row: T) => TableAction<T>[];
   
+  // Row click callback
+  onRowClick?: (row: T) => void;
+  
   // Pagination mode
   paginationMode?: 'client' | 'server' | 'auto';
   defaultPageSize?: number;
@@ -178,6 +181,7 @@ function convertSimplifiedToProviderProps<T extends Record<string, unknown>>(pro
     onSelectionChange,
     rowId,
     actions,
+    onRowClick,
     paginationMode,
     defaultPageSize,
     resizable,
@@ -217,6 +221,7 @@ function convertSimplifiedToProviderProps<T extends Record<string, unknown>>(pro
     onSelectionChange,
     rowId,
     actions,
+    onRowClick,
     emptyMessage,
     emptyStateTitle,
     emptyStateMessage,

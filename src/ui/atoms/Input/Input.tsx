@@ -1,11 +1,55 @@
 'use client';
 
-import { forwardRef, useState } from 'react';
+import { forwardRef, useState, memo, useMemo, useCallback } from 'react';
 import type { InputHTMLAttributes, ReactNode } from 'react';
-import { getTypographyClasses } from '../../tokens/typography';
-import { getColorClass } from '../../tokens/colors';
+import { getTypographyClasses, getTypographySize } from '../../tokens/typography';
+import { getColorClass, getFocusColorClass } from '../../tokens/colors';
+import { getRadiusClass } from '../../tokens/radius';
+import { getSpacingClass } from '../../tokens/spacing';
+import { cn, cva } from '../../utils';
 import { X, Eye, EyeOff } from 'lucide-react';
 import Button from '../Button/Button';
+
+/**
+ * Helper Text Component
+ * Memoized component for helper/error text
+ */
+const HelperText = memo(function HelperText({
+  error,
+  success,
+  helperText,
+  errorId,
+  helperId,
+}: {
+  error: boolean;
+  success: boolean;
+  helperText?: string;
+  errorId?: string;
+  helperId?: string;
+}) {
+  const helperClasses = useMemo(() => cn(
+    getSpacingClass('xs', 'mt'),
+    getTypographyClasses('caption'),
+    error && getColorClass('error', 'DEFAULT', 'text'),
+    success && getColorClass('success', 'DEFAULT', 'text'),
+    !error && !success && getColorClass('neutral', 'DEFAULT', 'text')
+  ), [error, success]);
+
+  const text = useMemo(() => 
+    helperText || (error ? 'Error' : success ? 'Success' : ''),
+    [helperText, error, success]
+  );
+
+  return (
+    <div
+      id={errorId || helperId}
+      className={helperClasses}
+      role={error || success ? 'alert' : undefined}
+    >
+      {text}
+    </div>
+  );
+});
 
 export type InputSize = 'sm' | 'md' | 'lg';
 export type InputVariant = 'default' | 'outlined' | 'filled';
@@ -44,7 +88,7 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
  * />
  * ```
  */
-const Input = forwardRef<HTMLInputElement, InputProps>(function Input({
+const Input = memo(forwardRef<HTMLInputElement, InputProps>(function Input({
   id,
   label,
   error = false,
@@ -63,81 +107,181 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input({
   onChange,
   ...props
 }, ref) {
-  const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
-  const errorId = error ? `${inputId}-error` : undefined;
-  const helperId = helperText ? `${inputId}-helper` : undefined;
+  // Memoize input ID
+  const inputId = useMemo(() => 
+    id || `input-${Math.random().toString(36).substr(2, 9)}`,
+    [id]
+  );
+  
+  // Memoize error and helper IDs
+  const errorId = useMemo(() => 
+    error ? `${inputId}-error` : undefined,
+    [error, inputId]
+  );
+  
+  const helperId = useMemo(() => 
+    helperText ? `${inputId}-helper` : undefined,
+    [helperText, inputId]
+  );
   
   // Password toggle state
   const [showPassword, setShowPassword] = useState(false);
-  const isPassword = type === 'password';
-  const inputType = isPassword && showPassword ? 'text' : type;
   
-  // Determine state
-  const state: InputState = error ? 'error' : success ? 'success' : 'default';
+  // Memoize password-related values
+  const isPassword = useMemo(() => type === 'password', [type]);
+  const inputType = useMemo(() => 
+    isPassword && showPassword ? 'text' : type,
+    [isPassword, showPassword, type]
+  );
   
-  // Determine if we should show clear button
-  const hasValue = value !== undefined && value !== null && value !== '';
-  const shouldShowClear = showClearButton && hasValue && !disabled;
+  // Memoize state
+  const state = useMemo<InputState>(() => 
+    error ? 'error' : success ? 'success' : 'default',
+    [error, success]
+  );
+  
+  // Memoize clear button visibility
+  const hasValue = useMemo(() => 
+    value !== undefined && value !== null && value !== '',
+    [value]
+  );
+  
+  const shouldShowClear = useMemo(() => 
+    showClearButton && hasValue && !disabled,
+    [showClearButton, hasValue, disabled]
+  );
 
-  // Size classes
-  const sizeClasses: Record<InputSize, string> = {
-    sm: 'h-8 text-sm px-3',
-    md: 'h-10 text-base px-4',
-    lg: 'h-12 text-lg px-5',
-  };
+  // Memoize focus ring colors
+  const primaryFocusRing = useMemo(() => 
+    getFocusColorClass('primary', 'DEFAULT', 'border'),
+    []
+  );
+  
+  const errorFocusRing = useMemo(() => 
+    getFocusColorClass('error', 'DEFAULT', 'border'),
+    []
+  );
+  
+  const successFocusRing = useMemo(() => 
+    getFocusColorClass('success', 'DEFAULT', 'border'),
+    []
+  );
+  
+  const getFocusRingColor = useMemo(() => 
+    primaryFocusRing.replace('focus:border-', 'focus:ring-'),
+    [primaryFocusRing]
+  );
 
-  // Variant classes
-  const variantClasses: Record<InputVariant, string> = {
-    default: 'border-0 border-b-2 border-gray-300 focus:border-indigo-500',
-    outlined: 'border border-gray-300 focus:border-indigo-500',
-    filled: 'bg-gray-100 border-0 focus:bg-white focus:ring-2 focus:ring-indigo-500',
-  };
+  const getStateFocusRingColor = useCallback((stateType: 'error' | 'success'): string => {
+    return stateType === 'error' 
+      ? errorFocusRing.replace('focus:border-', 'focus:ring-')
+      : successFocusRing.replace('focus:border-', 'focus:ring-');
+  }, [errorFocusRing, successFocusRing]);
 
-  // State classes
-  const stateClasses: Record<InputState, string> = {
-    default: '',
-    error: 'border-red-500 focus:border-red-500 focus:ring-red-500',
-    success: 'border-green-500 focus:border-green-500 focus:ring-green-500',
-  };
+  // Input variants using CVA
+  const inputVariants = cva(
+    // Base classes
+    cn(
+      'w-full',
+      getRadiusClass('md'),
+      'transition-colors',
+      'focus:outline-none',
+      'focus:ring-2',
+      'focus:ring-offset-2',
+      'disabled:opacity-50',
+      'disabled:cursor-not-allowed'
+    ),
+    {
+      variants: {
+        variant: {
+          default: cn(
+            'border-0',
+            'border-b-2',
+            getColorClass('neutral', 'DEFAULT', 'border'),
+            getFocusColorClass('primary', 'DEFAULT', 'border')
+          ),
+          outlined: cn(
+            'border',
+            getColorClass('neutral', 'DEFAULT', 'border'),
+            getFocusColorClass('primary', 'DEFAULT', 'border')
+          ),
+          filled: cn(
+            getColorClass('neutral', 'light', 'bg'),
+            'border-0',
+            'focus:bg-white',
+            'focus:ring-2',
+            getFocusRingColor()
+          ),
+        },
+        size: {
+          sm: cn(
+            'h-8',
+            getTypographySize('bodySmall'),
+            getSpacingClass('md', 'px')
+          ),
+          md: cn(
+            'h-10',
+            getTypographySize('body'),
+            getSpacingClass('base', 'px')
+          ),
+          lg: cn(
+            'h-12',
+            getTypographySize('bodyLarge'),
+            getSpacingClass('lg', 'px')
+          ),
+        },
+        state: {
+          default: '',
+          error: cn(
+            getColorClass('error', 'DEFAULT', 'border'),
+            getFocusColorClass('error', 'DEFAULT', 'border'),
+            getStateFocusRingColor('error')
+          ),
+          success: cn(
+            getColorClass('success', 'DEFAULT', 'border'),
+            getFocusColorClass('success', 'DEFAULT', 'border'),
+            getStateFocusRingColor('success')
+          ),
+        },
+      },
+      defaultVariants: {
+        variant: 'outlined',
+        size: 'md',
+        state: 'default',
+      },
+    }
+  );
 
-  const baseClasses = [
-    'w-full',
-    'rounded-md',
-    'transition-colors',
-    'focus:outline-none',
-    'focus:ring-2',
-    'focus:ring-offset-2',
-    'disabled:opacity-50',
-    'disabled:cursor-not-allowed',
-    sizeClasses[size],
-    variantClasses[variant],
-    stateClasses[state],
-  ];
+  // Memoize input classes
+  const inputClasses = useMemo(() => cn(
+    inputVariants({ variant, size, state }),
+    // Icon padding - specific values for icon positioning
+    leftIcon && (size === 'sm' ? 'pl-9' : size === 'lg' ? 'pl-12' : 'pl-10'),
+    (rightIcon || shouldShowClear || isPassword) && (size === 'sm' ? 'pr-9' : size === 'lg' ? 'pr-12' : 'pr-10'),
+    className
+  ), [variant, size, state, leftIcon, rightIcon, shouldShowClear, isPassword, className]);
 
-  // Add padding for icons
-  if (leftIcon) {
-    baseClasses.push(size === 'sm' ? 'pl-9' : size === 'lg' ? 'pl-12' : 'pl-10');
-  }
-  if (rightIcon || shouldShowClear || isPassword) {
-    baseClasses.push(size === 'sm' ? 'pr-9' : size === 'lg' ? 'pr-12' : 'pr-10');
-  }
-
-  const inputClasses = [
-    ...baseClasses,
-    className,
-  ].filter(Boolean).join(' ');
-
-  const labelClasses = [
+  // Memoize label classes
+  const labelClasses = useMemo(() => cn(
     'block',
     getTypographyClasses('label'),
-    'mb-1',
-    disabled ? 'opacity-50' : '',
-  ].filter(Boolean).join(' ');
+    getSpacingClass('xs', 'mb'),
+    disabled && 'opacity-50'
+  ), [disabled]);
 
-  const iconSize = size === 'sm' ? 'h-4 w-4' : size === 'lg' ? 'h-5 w-5' : 'h-4 w-4';
-  const iconPosition = size === 'sm' ? 'top-2' : size === 'lg' ? 'top-3.5' : 'top-2.5';
+  // Memoize icon size and position
+  const iconSize = useMemo(() => 
+    size === 'sm' ? 'h-4 w-4' : size === 'lg' ? 'h-5 w-5' : 'h-4 w-4',
+    [size]
+  );
+  
+  const iconPosition = useMemo(() => 
+    size === 'sm' ? 'top-2' : size === 'lg' ? 'top-3.5' : 'top-2.5',
+    [size]
+  );
 
-  const handleClear = (e: React.MouseEvent) => {
+  // Memoize clear handler
+  const handleClear = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     if (onClear) {
       onClear();
@@ -150,7 +294,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input({
       } as React.ChangeEvent<HTMLInputElement>;
       onChange(syntheticEvent);
     }
-  };
+  }, [onClear, onChange]);
+
+  // Memoize password toggle handler
+  const handleTogglePassword = useCallback(() => {
+    setShowPassword(prev => !prev);
+  }, []);
 
   return (
     <div className="w-full">
@@ -164,7 +313,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input({
       )}
       <div className="relative">
         {leftIcon && (
-          <div className={`absolute left-3 ${iconPosition} text-gray-400 pointer-events-none`}>
+          <div className={`absolute left-3 ${iconPosition} ${getColorClass('neutral', 'DEFAULT', 'text')} opacity-60 pointer-events-none`}>
             <div className={iconSize}>
               {leftIcon}
             </div>
@@ -199,7 +348,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input({
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={handleTogglePassword}
               className="h-auto p-1"
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
@@ -211,30 +360,24 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input({
             </Button>
           )}
           {rightIcon && !shouldShowClear && !isPassword && (
-            <div className={`text-gray-400 pointer-events-none ${iconSize}`}>
+            <div className={`${getColorClass('neutral', 'DEFAULT', 'text')} opacity-60 pointer-events-none ${iconSize}`}>
               {rightIcon}
             </div>
           )}
         </div>
       </div>
       {(error || success || helperText) && (
-        <div
-          id={errorId || helperId}
-          className={`mt-1 ${getTypographyClasses('caption')} ${
-            error 
-              ? getColorClass('error', 'DEFAULT', 'text')
-              : success
-              ? getColorClass('success', 'DEFAULT', 'text')
-              : 'text-gray-500'
-          }`}
-          role={error || success ? 'alert' : undefined}
-        >
-          {helperText || (error ? 'Error' : success ? 'Success' : '')}
-        </div>
+        <HelperText
+          error={error}
+          success={success}
+          helperText={helperText}
+          errorId={errorId}
+          helperId={helperId}
+        />
       )}
     </div>
   );
-});
+}));
 
 Input.displayName = 'Input';
 

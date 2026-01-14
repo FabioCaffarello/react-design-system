@@ -42,8 +42,6 @@ export type { PlaygroundLayoutProps } from './PlaygroundLayout';
 export { PlaygroundTabs } from './PlaygroundTabs';
 export type { PlaygroundTabsProps, PlaygroundTabId, PlaygroundTab } from './PlaygroundTabs';
 
-export { PlaygroundStepper } from './PlaygroundStepper';
-export type { PlaygroundStepperProps } from './PlaygroundStepper';
 
 export { PlaygroundCanvas } from './PlaygroundCanvas';
 

@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, userEvent, within, waitFor } from '@storybook/test';
+import { fn } from '@storybook/test';
 import { ToastProvider, ToastContainer, useToast } from './index';
 import { Button } from '../../atoms';
 
@@ -60,11 +62,46 @@ const meta: Meta<typeof ToastProvider> = {
   parameters: {
     docs: {
       description: {
-        component: 'A toast notification system with provider, hook, and container. Supports multiple variants, auto-dismiss, actions, and customizable positioning.',
+        component: `
+## Toast
+
+A toast notification system with provider, hook, and container. Supports multiple variants, auto-dismiss, actions, and customizable positioning.
+
+### Events
+
+| Event | Description | Parameters | When Fired |
+|-------|-------------|------------|------------|
+| \`onAction\` | Ação do toast clicada | \`() => void\` | Quando o botão de ação do toast é clicado |
+| \`onClose\` | Toast fechado | \`() => void\` | Quando o toast é fechado (X ou auto-dismiss) |
+
+### States
+
+| State | Description | How to Activate | Visual |
+|-------|-------------|-----------------|--------|
+| \`default\` | Estado padrão | Estado inicial | Toast visível |
+| \`success\` | Variante de sucesso | \`toast.success()\` | Toast verde de sucesso |
+| \`error\` | Variante de erro | \`toast.error()\` | Toast vermelho de erro |
+| \`warning\` | Variante de aviso | \`toast.warning()\` | Toast amarelo de aviso |
+| \`info\` | Variante de informação | \`toast.info()\` | Toast azul de informação |
+| \`with-action\` | Com ação | \`action\` prop definida | Toast com botão de ação |
+| \`persistent\` | Persistente | \`duration={undefined}\` | Toast que não fecha automaticamente |
+| \`top-right\` | Posição superior direita | \`position="top-right"\` ou padrão | Toast no canto superior direito |
+| \`top-left\` | Posição superior esquerda | \`position="top-left"\` | Toast no canto superior esquerdo |
+| \`bottom-right\` | Posição inferior direita | \`position="bottom-right"\` | Toast no canto inferior direito |
+| \`bottom-left\` | Posição inferior esquerda | \`position="bottom-left"\` | Toast no canto inferior esquerdo |
+| \`top-center\` | Posição superior centro | \`position="top-center"\` | Toast no topo centralizado |
+| \`bottom-center\` | Posição inferior centro | \`position="bottom-center"\` | Toast na parte inferior centralizado |
+        `,
       },
     },
   },
   tags: ['autodocs'],
+  argTypes: {
+    children: {
+      description: 'Child components that can use the toast context',
+      control: false,
+    },
+  },
   decorators: [
     (Story) => (
       <ToastProvider>
@@ -79,6 +116,17 @@ type Story = StoryObj<typeof ToastProvider>;
 
 export const Default: Story = {
   render: () => <ToastDemo />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const successButton = canvas.getByRole('button', { name: /show success/i });
+    
+    await userEvent.click(successButton);
+    
+    // Wait for toast to appear
+    await waitFor(() => {
+      expect(canvas.getByText(/success!/i)).toBeInTheDocument();
+    });
+  },
 };
 
 export const TopLeft: Story = {
@@ -165,5 +213,333 @@ export const CustomDuration: Story = {
         <ToastContainer />
       </div>
     );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const quickButton = canvas.getByRole('button', { name: /short duration/i });
+    
+    await userEvent.click(quickButton);
+    
+    // Wait for toast to appear
+    await waitFor(() => {
+      expect(canvas.getByText(/quick toast/i)).toBeInTheDocument();
+    });
+    
+    // Wait for toast to disappear (after 2 seconds)
+    await waitFor(
+      () => {
+        expect(canvas.queryByText(/quick toast/i)).not.toBeInTheDocument();
+      },
+      { timeout: 3000 }
+    );
+  },
+};
+
+export const WithAction: Story = {
+  render: () => {
+    const toast = useToast();
+    const handleActionClick = fn(() => {
+      alert('Action clicked!');
+    });
+    
+    return (
+      <div className="space-y-4 p-8">
+        <Button
+          onClick={() => toast.success('File Uploaded', 'Your file has been uploaded successfully', {
+            action: {
+              label: 'View File',
+              onClick: handleActionClick,
+            },
+          })}
+        >
+          Toast with Action
+        </Button>
+        <ToastContainer />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button', { name: /toast with action/i });
+    
+    await userEvent.click(button);
+    
+    // Wait for toast to appear
+    await waitFor(() => {
+      expect(canvas.getByText(/file uploaded/i)).toBeInTheDocument();
+    });
+    
+    // Click the action button
+    const actionButton = canvas.getByRole('button', { name: /view file/i });
+    await userEvent.click(actionButton);
+  },
+};
+
+export const PersistentToast: Story = {
+  render: () => {
+    const toast = useToast();
+    return (
+      <div className="space-y-4 p-8">
+        <Button
+          onClick={() => toast.info('Persistent Toast', 'This toast will not auto-dismiss. Click X to close.', {
+            duration: undefined,
+          })}
+        >
+          Show Persistent Toast
+        </Button>
+        <ToastContainer />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button', { name: /show persistent toast/i });
+    
+    await userEvent.click(button);
+    
+    // Wait for toast to appear
+    await waitFor(() => {
+      expect(canvas.getByText(/persistent toast/i)).toBeInTheDocument();
+    });
+    
+    // Wait a bit to ensure it doesn't auto-dismiss
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    
+    // Toast should still be visible
+    expect(canvas.getByText(/persistent toast/i)).toBeInTheDocument();
+  },
+};
+
+export const AllVariants: Story = {
+  render: () => {
+    const toast = useToast();
+    return (
+      <div className="space-y-4 p-8">
+        <div className="space-x-2">
+          <Button onClick={() => toast.success('Success Toast', 'This is a success message')}>
+            Success
+          </Button>
+          <Button variant="error" onClick={() => toast.error('Error Toast', 'This is an error message')}>
+            Error
+          </Button>
+          <Button variant="secondary" onClick={() => toast.warning('Warning Toast', 'This is a warning message')}>
+            Warning
+          </Button>
+          <Button variant="outline" onClick={() => toast.info('Info Toast', 'This is an info message')}>
+            Info
+          </Button>
+        </div>
+        <ToastContainer />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Show all variants
+    await userEvent.click(canvas.getByRole('button', { name: /success/i }));
+    await userEvent.click(canvas.getByRole('button', { name: /error/i }));
+    await userEvent.click(canvas.getByRole('button', { name: /warning/i }));
+    await userEvent.click(canvas.getByRole('button', { name: /info/i }));
+    
+    // Wait for all toasts to appear
+    await waitFor(() => {
+      expect(canvas.getByText(/success toast/i)).toBeInTheDocument();
+      expect(canvas.getByText(/error toast/i)).toBeInTheDocument();
+      expect(canvas.getByText(/warning toast/i)).toBeInTheDocument();
+      expect(canvas.getByText(/info toast/i)).toBeInTheDocument();
+    });
+  },
+};
+
+export const ClearAll: Story = {
+  render: () => {
+    const toast = useToast();
+    return (
+      <div className="space-y-4 p-8">
+        <div className="space-x-2">
+          <Button onClick={() => toast.success('Toast 1', 'First toast')}>
+            Add Toast 1
+          </Button>
+          <Button onClick={() => toast.info('Toast 2', 'Second toast')}>
+            Add Toast 2
+          </Button>
+          <Button onClick={() => toast.warning('Toast 3', 'Third toast')}>
+            Add Toast 3
+          </Button>
+        </div>
+        <div className="space-x-2">
+          <Button variant="outline" onClick={() => toast.clearAll()}>
+            Clear All
+          </Button>
+        </div>
+        <ToastContainer />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Add multiple toasts
+    await userEvent.click(canvas.getByRole('button', { name: /add toast 1/i }));
+    await userEvent.click(canvas.getByRole('button', { name: /add toast 2/i }));
+    await userEvent.click(canvas.getByRole('button', { name: /add toast 3/i }));
+    
+    // Wait for toasts to appear
+    await waitFor(() => {
+      expect(canvas.getByText(/toast 1/i)).toBeInTheDocument();
+      expect(canvas.getByText(/toast 2/i)).toBeInTheDocument();
+      expect(canvas.getByText(/toast 3/i)).toBeInTheDocument();
+    });
+    
+    // Clear all
+    await userEvent.click(canvas.getByRole('button', { name: /clear all/i }));
+    
+    // Wait for all toasts to disappear
+    await waitFor(() => {
+      expect(canvas.queryByText(/toast 1/i)).not.toBeInTheDocument();
+      expect(canvas.queryByText(/toast 2/i)).not.toBeInTheDocument();
+      expect(canvas.queryByText(/toast 3/i)).not.toBeInTheDocument();
+    });
+  },
+};
+
+// Event Stories
+export const WithEvents: Story = {
+  render: () => {
+    const toast = useToast();
+    const handleActionClick = fn(() => {
+      console.log('Action clicked!');
+    });
+    
+    return (
+      <div className="space-y-4 p-8">
+        <p className="text-sm text-gray-600">
+          Show toasts and click action buttons. Check the Actions panel to see events being fired.
+        </p>
+        <Button
+          onClick={() => toast.success('File Uploaded', 'Your file has been uploaded successfully', {
+            action: {
+              label: 'View File',
+              onClick: handleActionClick,
+            },
+          })}
+        >
+          Toast with Action
+        </Button>
+        <ToastContainer />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button', { name: /toast with action/i });
+    await userEvent.click(button);
+    await waitFor(() => {
+      expect(canvas.getByText(/file uploaded/i)).toBeInTheDocument();
+    });
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates toast events. Show toasts and click actions, then check the Actions panel to see events being logged.',
+      },
+    },
+  },
+};
+
+// State Stories
+export const SuccessState: Story = {
+  render: () => {
+    const toast = useToast();
+    return (
+      <div className="space-y-4 p-8">
+        <Button onClick={() => toast.success('Success!', 'Operation completed successfully')}>
+          Show Success Toast
+        </Button>
+        <ToastContainer />
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Success state - green success toast.',
+      },
+    },
+  },
+};
+
+export const ErrorState: Story = {
+  render: () => {
+    const toast = useToast();
+    return (
+      <div className="space-y-4 p-8">
+        <Button variant="error" onClick={() => toast.error('Error!', 'Something went wrong')}>
+          Show Error Toast
+        </Button>
+        <ToastContainer />
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Error state - red error toast.',
+      },
+    },
+  },
+};
+
+export const WithActionState: Story = {
+  render: () => {
+    const toast = useToast();
+    return (
+      <div className="space-y-4 p-8">
+        <Button
+          onClick={() => toast.success('File Uploaded', 'Your file has been uploaded successfully', {
+            action: {
+              label: 'View File',
+              onClick: () => alert('Opening file...'),
+            },
+          })}
+        >
+          Toast with Action
+        </Button>
+        <ToastContainer />
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'With action state - toast with action button.',
+      },
+    },
+  },
+};
+
+export const PersistentState: Story = {
+  render: () => {
+    const toast = useToast();
+    return (
+      <div className="space-y-4 p-8">
+        <Button
+          onClick={() => toast.info('Persistent', 'This toast will not auto-dismiss', {
+            duration: undefined,
+          })}
+        >
+          Persistent Toast
+        </Button>
+        <ToastContainer />
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Persistent state - toast that does not auto-dismiss.',
+      },
+    },
   },
 };

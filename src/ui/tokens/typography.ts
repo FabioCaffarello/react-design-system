@@ -189,3 +189,40 @@ export function getTypographyClasses(variant: keyof typeof TYPOGRAPHY_TOKENS): s
   const token = TYPOGRAPHY_TOKENS[variant];
   return `${token.fontSize.tailwind} ${token.lineHeight.tailwind} ${token.fontWeight.tailwind}`;
 }
+
+/**
+ * Helper function to get only font size class
+ */
+export function getTypographySize(variant: keyof typeof TYPOGRAPHY_TOKENS): string {
+  return TYPOGRAPHY_TOKENS[variant].fontSize.tailwind;
+}
+
+/**
+ * Helper function to get font size class directly from FontSize
+ * This is a convenience function for when you just need a size, not a full typography variant
+ */
+export function getTypographySizeFromFontSize(size: FontSize): string {
+  return TypographyTokenFactory.createFontSize(size).tailwind;
+}
+
+/**
+ * Helper function to get only font weight class
+ */
+export function getTypographyWeight(variant: keyof typeof TYPOGRAPHY_TOKENS): string {
+  return TYPOGRAPHY_TOKENS[variant].fontWeight.tailwind;
+}
+
+/**
+ * Helper function to get font weight class directly from FontWeight
+ * This is a convenience function for when you just need a weight, not a full typography variant
+ */
+export function getTypographyWeightFromFontWeight(weight: FontWeight): string {
+  return TypographyTokenFactory.createFontWeight(weight).tailwind;
+}
+
+/**
+ * Helper function to get only line height class
+ */
+export function getTypographyLineHeight(variant: keyof typeof TYPOGRAPHY_TOKENS): string {
+  return TYPOGRAPHY_TOKENS[variant].lineHeight.tailwind;
+}

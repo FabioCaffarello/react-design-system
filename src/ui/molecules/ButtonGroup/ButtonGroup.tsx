@@ -1,8 +1,8 @@
 'use client';
 
 import { type ReactNode, type HTMLAttributes } from 'react';
-import { getSpacingClass } from '../../tokens/spacing';
-import { getRadiusClass } from '../../tokens/radius';
+import { getSpacingClass, getRadiusClass } from '../../tokens';
+import { cn } from '../../utils';
 
 export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
@@ -40,21 +40,21 @@ export default function ButtonGroup({
   };
 
   const spacingClasses = {
-    sm: attached ? '' : 'gap-1',
-    md: attached ? '' : 'gap-2',
-    lg: attached ? '' : 'gap-3',
+    sm: attached ? '' : getSpacingClass('xs', 'gap'),
+    md: attached ? '' : getSpacingClass('sm', 'gap'),
+    lg: attached ? '' : getSpacingClass('md', 'gap'),
   };
 
   return (
     <div
       role="group"
-      className={`
-        inline-flex
-        ${orientationClasses[orientation]}
-        ${spacingClasses[size]}
-        ${attached ? getRadiusClass('md') : ''}
-        ${className}
-      `}
+      className={cn(
+        'inline-flex',
+        orientationClasses[orientation],
+        spacingClasses[size],
+        attached && getRadiusClass('md'),
+        className
+      )}
       {...props}
     >
       {children}

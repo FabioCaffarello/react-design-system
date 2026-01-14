@@ -1,8 +1,12 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, forwardRef, memo, useMemo, useCallback } from 'react';
 import type { InputHTMLAttributes, ReactNode } from 'react';
 import { getTypographyClasses } from '../../tokens/typography';
+import { getColorClass, getFocusColorClass } from '../../tokens/colors';
+import { getRadiusClass } from '../../tokens/radius';
+import { getSpacingClass } from '../../tokens/spacing';
+import { cn } from '../../utils';
 
 export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: ReactNode;
@@ -28,7 +32,7 @@ export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement
  * />
  * ```
  */
-export default function Checkbox({
+const Checkbox = memo(forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox({
   id,
   label,
   error = false,
@@ -37,60 +41,103 @@ export default function Checkbox({
   disabled = false,
   indeterminate = false,
   ...props
-}: CheckboxProps) {
-  const checkboxId = id || `checkbox-${Math.random().toString(36).substr(2, 9)}`;
-  const errorId = error ? `${checkboxId}-error` : undefined;
-  const helperId = helperText ? `${checkboxId}-helper` : undefined;
+}, ref) {
+  // Memoize IDs
+  const checkboxId = useMemo(() => 
+    id || `checkbox-${Math.random().toString(36).substr(2, 9)}`,
+    [id]
+  );
+  
+  const errorId = useMemo(() => 
+    error ? `${checkboxId}-error` : undefined,
+    [error, checkboxId]
+  );
+  
+  const helperId = useMemo(() => 
+    helperText ? `${checkboxId}-helper` : undefined,
+    [helperText, checkboxId]
+  );
 
-  const baseClasses = [
+  // Memoize focus ring colors
+  const primaryFocusRing = useMemo(() => 
+    getFocusColorClass('primary', 'DEFAULT', 'border'),
+    []
+  );
+  
+  const errorFocusRing = useMemo(() => 
+    getFocusColorClass('error', 'DEFAULT', 'border'),
+    []
+  );
+  
+  const focusRingColor = useMemo(() => 
+    error 
+      ? errorFocusRing.replace('focus:border-', 'focus:ring-')
+      : primaryFocusRing.replace('focus:border-', 'focus:ring-'),
+    [error, errorFocusRing, primaryFocusRing]
+  );
+
+  // Memoize classes
+  const checkboxClasses = useMemo(() => cn(
     'h-4',
     'w-4',
-    'rounded',
-    'border-gray-300',
-    'text-indigo-600',
+    getRadiusClass('sm'),
+    'border',
+    getColorClass('neutral', 'DEFAULT', 'border'),
+    getColorClass('primary', 'DEFAULT', 'text'),
     'focus:ring-2',
-    'focus:ring-indigo-500',
+    focusRingColor,
     'focus:ring-offset-2',
     'disabled:opacity-50',
     'disabled:cursor-not-allowed',
     'cursor-pointer',
-  ];
+    error && getColorClass('error', 'DEFAULT', 'border'),
+    className
+  ), [focusRingColor, error, className]);
 
-  const errorClasses = error
-    ? 'border-red-500 focus:ring-red-500'
-    : '';
-
-  const checkboxClasses = [
-    ...baseClasses,
-    errorClasses,
-  ].filter(Boolean).join(' ');
-
-  const labelClasses = [
+  const labelClasses = useMemo(() => cn(
     getTypographyClasses('label'),
-    'ml-2',
-    disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
-  ].filter(Boolean).join(' ');
+    getSpacingClass('sm', 'ml'),
+    disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+  ), [disabled]);
 
   // Set indeterminate state via ref
-  const checkboxRef = useRef<HTMLInputElement>(null);
+  const internalRef = useRef<HTMLInputElement>(null);
+  
+  // Memoize callback ref
+  const setRef = useCallback((element: HTMLInputElement | null) => {
+    internalRef.current = element;
+    
+    // Handle forwarded ref (can be function or object)
+    if (typeof ref === 'function') {
+      ref(element);
+    } else if (ref) {
+      (ref as React.MutableRefObject<HTMLInputElement | null>).current = element;
+    }
+    
+    // Set indeterminate state
+    if (element) {
+      element.indeterminate = indeterminate;
+    }
+  }, [ref, indeterminate]);
   
   useEffect(() => {
-    if (checkboxRef.current) {
-      checkboxRef.current.indeterminate = indeterminate;
+    if (internalRef.current) {
+      internalRef.current.indeterminate = indeterminate;
     }
   }, [indeterminate]);
 
   return (
-    <div className={`flex flex-col my-2 ${className}`}>
+    <div className={cn('flex', 'flex-col', getSpacingClass('sm', 'my'))}>
       <div className="flex items-center">
         <input
           type="checkbox"
           id={checkboxId}
-          ref={checkboxRef}
+          ref={setRef}
           className={checkboxClasses}
           disabled={disabled}
           aria-invalid={error}
-          aria-describedby={errorId || helperId}
+          aria-describedby={errorId || helperId || undefined}
+          aria-label={!label ? 'Checkbox' : undefined}
           {...props}
         />
         {label && (
@@ -105,12 +152,20 @@ export default function Checkbox({
       {(error || helperText) && (
         <div
           id={errorId || helperId}
-          className={`mt-1 ${getTypographyClasses('caption')} ${error ? 'text-red-600' : 'text-gray-500'}`}
+          className={cn(
+            getSpacingClass('xs', 'mt'),
+            getTypographyClasses('caption'),
+            error ? getColorClass('error', 'DEFAULT', 'text') : getColorClass('neutral', 'DEFAULT', 'text')
+          )}
           role={error ? 'alert' : undefined}
         >
-          {helperText || (error ? 'Error' : '')}
+          {error ? (helperText || 'This field has an error') : helperText}
         </div>
       )}
     </div>
   );
-}
+}));
+
+Checkbox.displayName = 'Checkbox';
+
+export default Checkbox;

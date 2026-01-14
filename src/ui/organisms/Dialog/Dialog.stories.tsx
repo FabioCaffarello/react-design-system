@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
+import { expect, userEvent, within, waitFor } from '@storybook/test';
 import { useState } from 'react';
 import Dialog from './Dialog';
 import AlertDialog from './AlertDialog';
@@ -11,7 +13,34 @@ const meta: Meta<typeof Dialog> = {
   parameters: {
     docs: {
       description: {
-        component: 'A flexible dialog component using compound components pattern. Supports both controlled and uncontrolled modes. Includes portal rendering, focus trap, and full accessibility.',
+        component: `
+## Dialog
+
+A flexible dialog component using compound components pattern. Supports both controlled and uncontrolled modes.
+
+### Events
+
+| Event | Description | Parameters | When Fired |
+|-------|-------------|------------|------------|
+| \`onOpenChange\` | Estado de abertura muda | \`(open: boolean) => void\` | Quando o dialog abre/fecha |
+
+### States
+
+| State | Description | How to Activate | Visual |
+|-------|-------------|-----------------|--------|
+| \`closed\` | Dialog fechado | Estado inicial | Dialog oculto |
+| \`open\` | Dialog aberto | \`open={true}\` | Dialog visível |
+        `,
+      },
+    },
+  },
+  argTypes: {
+    onOpenChange: {
+      description: 'Callback fired when the dialog open state changes',
+      action: 'onOpenChange',
+      table: {
+        type: { summary: '(open: boolean) => void' },
+        category: 'Events',
       },
     },
   },
@@ -222,5 +251,120 @@ export const AlertDialogDestructive: StoryObj<typeof AlertDialog> = {
         />
       </>
     );
+  },
+};
+
+// Event Stories
+export const WithEvents: Story = {
+  render: () => {
+    const [isOpen, setIsOpen] = useState(false);
+    
+    const handleOpenChange = fn((newOpen: boolean) => {
+      setIsOpen(newOpen);
+      console.log('Dialog open state changed:', newOpen);
+    });
+    
+    return (
+      <>
+        <Button onClick={() => setIsOpen(true)}>Open Dialog</Button>
+        <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+          <Dialog.Content>
+            <Dialog.Header>
+              <Dialog.Title>Interactive Dialog</Dialog.Title>
+              <Dialog.Description>
+                Interact with the dialog. Check the Actions panel to see events being fired.
+              </Dialog.Description>
+            </Dialog.Header>
+            <div className="p-6 pt-0">
+              <p>Dialog content goes here.</p>
+            </div>
+            <Dialog.Footer>
+              <Button variant="outline" onClick={() => setIsOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={() => setIsOpen(false)}>Confirm</Button>
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog>
+      </>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button', { name: /Open Dialog/i });
+    
+    // Test opening dialog
+    await userEvent.click(button);
+    await waitFor(() => {
+      const dialog = canvas.queryByRole('dialog');
+      expect(dialog).toBeInTheDocument();
+    });
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates dialog events. Open and close the dialog and check the Actions panel to see events being logged.',
+      },
+    },
+  },
+};
+
+// State Stories
+export const ClosedState: Story = {
+  render: () => {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+      <>
+        <Button onClick={() => setIsOpen(true)}>Open Dialog</Button>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <Dialog.Content>
+            <Dialog.Header>
+              <Dialog.Title>Closed Dialog</Dialog.Title>
+              <Dialog.Description>
+                This dialog is closed.
+              </Dialog.Description>
+            </Dialog.Header>
+          </Dialog.Content>
+        </Dialog>
+      </>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Closed state - dialog is hidden, ready to be opened.',
+      },
+    },
+  },
+};
+
+export const OpenState: Story = {
+  render: () => {
+    const [isOpen, setIsOpen] = useState(true);
+    return (
+      <>
+        <Button onClick={() => setIsOpen(false)}>Close Dialog</Button>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <Dialog.Content>
+            <Dialog.Header>
+              <Dialog.Title>Open Dialog</Dialog.Title>
+              <Dialog.Description>
+                This dialog is open.
+              </Dialog.Description>
+            </Dialog.Header>
+            <Dialog.Footer>
+              <Button onClick={() => setIsOpen(false)}>Close</Button>
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog>
+      </>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Open state - dialog is visible.',
+      },
+    },
   },
 };

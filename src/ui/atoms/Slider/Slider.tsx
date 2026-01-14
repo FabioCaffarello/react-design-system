@@ -2,8 +2,12 @@
 
 import { useRef, useState, forwardRef } from 'react';
 import type { HTMLAttributes } from 'react';
-import { getColorClass } from '../../tokens/colors';
+import { getColorClass, getFocusColorClass, getFocusRingClass } from '../../tokens/colors';
 import { getAnimationClass } from '../../tokens/animations';
+import { getRadiusClass } from '../../tokens/radius';
+import { getSpacingClass } from '../../tokens/spacing';
+import { getTypographySize, getTypographyWeight } from '../../tokens/typography';
+import { cn, cva } from '../../utils';
 
 export type SliderVariant = 'single' | 'range';
 export type SliderSize = 'sm' | 'md' | 'lg';
@@ -142,13 +146,71 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider({
     updateValue(newValue);
   };
 
-  const sizeConfig = {
-    sm: { track: 'h-1', thumb: 'w-3 h-3' },
-    md: { track: 'h-2', thumb: 'w-4 h-4' },
-    lg: { track: 'h-3', thumb: 'w-5 h-5' },
+  // Get focus ring color using design system helper
+  const getFocusRingColor = (): string => {
+    return getFocusRingClass('primary', 'DEFAULT') + ' ring-offset-2';
   };
 
-  const config = sizeConfig[size];
+  // Slider variants using CVA
+  const sliderTrackVariants = cva(
+    cn('relative', 'cursor-pointer'),
+    {
+      variants: {
+        size: {
+          sm: 'h-1',
+          md: 'h-2',
+          lg: 'h-3',
+        },
+        disabled: {
+          true: 'opacity-50 cursor-not-allowed',
+          false: '',
+        },
+      },
+      defaultVariants: {
+        size: 'md',
+        disabled: false,
+      },
+    }
+  );
+
+  const sliderThumbVariants = cva(
+    cn(
+      'absolute',
+      getColorClass('primary', 'DEFAULT', 'bg'),
+      'rounded-full',
+      'border-2',
+      'border-white',
+      'shadow-md',
+      'cursor-grab',
+      'active:cursor-grabbing',
+      getAnimationClass('base'),
+      '-translate-x-1/2',
+      '-translate-y-1/2',
+      'top-1/2'
+    ),
+    {
+      variants: {
+        size: {
+          sm: 'w-3 h-3',
+          md: 'w-4 h-4',
+          lg: 'w-5 h-5',
+        },
+        active: {
+          true: getFocusRingColor(),
+          false: '',
+        },
+      },
+      defaultVariants: {
+        size: 'md',
+        active: false,
+      },
+    }
+  );
+
+  const config = {
+    track: sliderTrackVariants({ size, disabled }),
+    thumb: sliderThumbVariants({ size }),
+  };
   const singleValue = typeof currentValue === 'number' ? currentValue : currentValue[0];
   const minValue = Array.isArray(currentValue) ? currentValue[0] : min;
   const maxValue = Array.isArray(currentValue) ? currentValue[1] : singleValue;
@@ -157,12 +219,21 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider({
   const maxPercentage = getPercentage(maxValue);
 
   return (
-    <div ref={ref} className={`w-full ${className}`} {...props}>
+    <div ref={ref} className={cn('w-full', className)} {...props}>
       {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className={cn(
+          'block',
+          getTypographySize('bodySmall'),
+          getTypographyWeight('label'),
+          getColorClass('neutral', 'dark', 'text'),
+          getSpacingClass('sm', 'mb')
+        )}>
           {label}
           {showValue && (
-            <span className="ml-2 text-gray-500">
+            <span className={cn(
+              getSpacingClass('sm', 'ml'),
+              getColorClass('neutral', 'DEFAULT', 'text')
+            )}>
               {variant === 'range'
                 ? `${minValue} - ${maxValue}`
                 : singleValue}
@@ -172,14 +243,11 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider({
       )}
       <div
         ref={sliderRef}
-        className={`
-          relative
-          ${config.track}
-          ${getColorClass('neutral', 'light', 'bg')}
-          rounded-full
-          cursor-pointer
-          ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
-        `}
+        className={cn(
+          sliderTrackVariants({ size, disabled }),
+          getColorClass('neutral', 'light', 'bg'),
+          getRadiusClass('full')
+        )}
         onClick={handleTrackClick}
         role={variant === 'range' ? undefined : 'slider'}
         aria-valuemin={variant === 'range' ? undefined : min}
@@ -190,13 +258,13 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider({
       >
         {/* Active track */}
         <div
-          className={`
-            absolute
-            ${config.track}
-            ${getColorClass('primary', 'DEFAULT', 'bg')}
-            rounded-full
-            ${getAnimationClass('base')}
-          `}
+          className={cn(
+            'absolute',
+            sliderTrackVariants({ size }),
+            getColorClass('primary', 'DEFAULT', 'bg'),
+            getRadiusClass('full'),
+            getAnimationClass('base')
+          )}
           style={{
             left: `${minPercentage}%`,
             width: `${maxPercentage - minPercentage}%`,
@@ -209,7 +277,14 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider({
           return (
             <div
               key={mark}
-              className="absolute w-1 h-1 bg-gray-400 rounded-full -translate-x-1/2"
+              className={cn(
+                'absolute',
+                'w-1',
+                'h-1',
+                getColorClass('neutral', 'DEFAULT', 'bg'),
+                getRadiusClass('full'),
+                '-translate-x-1/2'
+              )}
               style={{ left: `${markPercentage}%`, top: '50%', transform: 'translate(-50%, -50%)' }}
             />
           );
@@ -219,22 +294,9 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider({
         {variant === 'range' ? (
           <>
             <div
-              className={`
-                absolute
-                ${config.thumb}
-                ${getColorClass('primary', 'DEFAULT', 'bg')}
-                rounded-full
-                border-2
-                border-white
-                shadow-md
-                cursor-grab
-                active:cursor-grabbing
-                ${getAnimationClass('base')}
-                ${activeThumb === 'min' ? 'ring-2 ring-offset-2 ring-indigo-500' : ''}
-                -translate-x-1/2
-                -translate-y-1/2
-                top-1/2
-              `}
+              className={cn(
+                sliderThumbVariants({ size, active: activeThumb === 'min' })
+              )}
               style={{ left: `${minPercentage}%` }}
               onMouseDown={(e) => handleMouseDown(e, 'min')}
               role="slider"
@@ -243,22 +305,9 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider({
               aria-valuenow={minValue}
             />
             <div
-              className={`
-                absolute
-                ${config.thumb}
-                ${getColorClass('primary', 'DEFAULT', 'bg')}
-                rounded-full
-                border-2
-                border-white
-                shadow-md
-                cursor-grab
-                active:cursor-grabbing
-                ${getAnimationClass('base')}
-                ${activeThumb === 'max' ? 'ring-2 ring-offset-2 ring-indigo-500' : ''}
-                -translate-x-1/2
-                -translate-y-1/2
-                top-1/2
-              `}
+              className={cn(
+                sliderThumbVariants({ size, active: activeThumb === 'max' })
+              )}
               style={{ left: `${maxPercentage}%` }}
               onMouseDown={(e) => handleMouseDown(e, 'max')}
               role="slider"
@@ -269,22 +318,9 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider({
           </>
         ) : (
           <div
-            className={`
-              absolute
-              ${config.thumb}
-              ${getColorClass('primary', 'DEFAULT', 'bg')}
-              rounded-full
-              border-2
-              border-white
-              shadow-md
-              cursor-grab
-              active:cursor-grabbing
-              ${getAnimationClass('base')}
-              ${isDragging ? 'ring-2 ring-offset-2 ring-indigo-500' : ''}
-              -translate-x-1/2
-              -translate-y-1/2
-              top-1/2
-            `}
+            className={cn(
+              sliderThumbVariants({ size, active: isDragging })
+            )}
             style={{ left: `${maxPercentage}%` }}
             onMouseDown={(e) => handleMouseDown(e)}
           />
@@ -292,7 +328,15 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider({
 
         {showValue && !label && (
           <div className="absolute -top-6 left-0 right-0 flex justify-center">
-            <span className="text-xs text-gray-600 bg-white px-2 py-1 rounded shadow">
+            <span className={cn(
+              getTypographySize('caption'),
+              getColorClass('neutral', 'DEFAULT', 'text'),
+              'bg-white',
+              getSpacingClass('sm', 'px'),
+              getSpacingClass('xs', 'py'),
+              getRadiusClass('md'),
+              'shadow'
+            )}>
               {variant === 'range' ? `${minValue} - ${maxValue}` : singleValue}
             </span>
           </div>

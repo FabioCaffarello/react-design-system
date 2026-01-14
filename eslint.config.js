@@ -13,7 +13,7 @@ export default defineConfig([
   {
     files: ["**/*.{ts,tsx}"],
     ignores: [".storybook/**", "**/*.stories.{ts,tsx}", "**/*.test.{ts,tsx}", "vite.config.ts"],
-    extends: [
+    extends: [  
       js.configs.recommended,
       ...tseslint.configs.recommended,
       reactHooks.configs["recommended-latest"],
