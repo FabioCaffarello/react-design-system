@@ -1,4 +1,8 @@
 import type { HTMLAttributes } from "react";
+import { getColorClass } from '../../tokens/colors';
+import { getRadiusClass } from '../../tokens/radius';
+import { getSpacingClass } from '../../tokens/spacing';
+import { cn } from '../../utils';
 
 export interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
   variant?: "text" | "card" | "list" | "circle";
@@ -29,9 +33,9 @@ export default function Skeleton({
   ...props
 }: SkeletonProps) {
   const baseClasses = [
-    "animate-pulse",
-    "bg-gray-200",
-    "rounded",
+    "motion-safe:animate-pulse",
+    getColorClass('neutral', 'light', 'bg'),
+    getRadiusClass('sm'),
   ];
 
   const variantClasses: Record<NonNullable<SkeletonProps["variant"]>, string> = {
@@ -41,11 +45,7 @@ export default function Skeleton({
     circle: "rounded-full",
   };
 
-  const classes = [
-    ...baseClasses,
-    variantClasses[variant],
-    className,
-  ].filter(Boolean).join(" ");
+  const classes = cn(...baseClasses, variantClasses[variant], className);
 
   const style: React.CSSProperties = {};
   if (width) style.width = width;
@@ -56,7 +56,7 @@ export default function Skeleton({
   if (variant === "text" && lines > 1) {
     return (
       <div
-        className="space-y-2"
+        className={getSpacingClass('sm', 'space-y')}
         role="status"
         aria-busy="true"
         aria-label={defaultAriaLabel}

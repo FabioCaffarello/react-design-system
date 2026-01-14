@@ -12,6 +12,9 @@ export * from "./tokens/themes/dark";
 export * from "./providers";
 export * from "./themes";
 
+// Extensions
+export * from "./extensions";
+
 // Export helper functions for convenience
 export { getSpacingClass, getSpacing } from "./tokens/spacing";
 export { getTypographyClasses, getTypography } from "./tokens/typography";

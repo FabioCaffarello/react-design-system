@@ -5,6 +5,8 @@ import type { InputHTMLAttributes } from 'react';
 import { Search, X } from 'lucide-react';
 import Input from '../../atoms/Input/Input';
 import Button from '../../atoms/Button/Button';
+import { cn } from '../../utils';
+import { getSpacingClass } from '../../tokens';
 
 export interface SearchInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange'> {
   onSearch?: (value: string) => void;
@@ -94,7 +96,7 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(function Sear
   };
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={cn('relative', className)}>
       <Input
         ref={ref}
         {...props}
@@ -122,7 +124,7 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(function Sear
             </Button>
           ) : undefined
         }
-        className="pr-10"
+        className={cn(getSpacingClass('lg', 'pr'))}
       />
     </div>
   );

@@ -2,6 +2,11 @@
 
 import type { HTMLAttributes, ReactNode, KeyboardEvent, FocusEvent, ReactElement } from "react";
 import { useState, useRef, useEffect, cloneElement, isValidElement } from "react";
+import { getColorClass } from '../../tokens/colors';
+import { getRadiusClass } from '../../tokens/radius';
+import { getSpacingClass } from '../../tokens/spacing';
+import { getTypographySize } from '../../tokens/typography';
+import { cn, cva } from '../../utils';
 
 export interface TooltipProps extends HTMLAttributes<HTMLDivElement> {
   content: string;
@@ -93,19 +98,65 @@ export default function Tooltip({
     };
   }, [isVisible]);
 
-  const positionClasses: Record<NonNullable<TooltipProps["position"]>, string> = {
-    top: "bottom-full left-1/2 transform -translate-x-1/2 mb-2",
-    bottom: "top-full left-1/2 transform -translate-x-1/2 mt-2",
-    left: "right-full top-1/2 transform -translate-y-1/2 mr-2",
-    right: "left-full top-1/2 transform -translate-y-1/2 ml-2",
+  // Helper to get arrow border color
+  // Uses complete classes that Tailwind can detect
+  const getArrowBorderColor = (position: 'top' | 'bottom' | 'left' | 'right'): string => {
+    // Return complete border classes for neutral dark color
+    // These classes must be in safelist or used elsewhere for Tailwind to detect
+    const borderMap: Record<'top' | 'bottom' | 'left' | 'right', string> = {
+      top: 'border-t-gray-700',
+      bottom: 'border-b-gray-700',
+      left: 'border-l-gray-700',
+      right: 'border-r-gray-700',
+    };
+    return borderMap[position];
   };
 
-  const arrowClasses: Record<NonNullable<TooltipProps["position"]>, string> = {
-    top: "top-full left-1/2 transform -translate-x-1/2 border-t-gray-900",
-    bottom: "bottom-full left-1/2 transform -translate-x-1/2 border-b-gray-900",
-    left: "left-full top-1/2 transform -translate-y-1/2 border-l-gray-900",
-    right: "right-full top-1/2 transform -translate-y-1/2 border-r-gray-900",
-  };
+  // Tooltip variants using CVA
+  const tooltipVariants = cva(
+    cn(
+      'absolute',
+      'z-50',
+      getSpacingClass('sm', 'px'),
+      getSpacingClass('xs', 'py'),
+      getTypographySize('caption'),
+      getColorClass('neutral', 'contrast', 'text'),
+      getColorClass('neutral', 'dark', 'bg'),
+      getRadiusClass('md'),
+      'shadow-lg',
+      'whitespace-nowrap'
+    ),
+    {
+      variants: {
+        position: {
+          top: cn('bottom-full', 'left-1/2', 'transform', '-translate-x-1/2', getSpacingClass('sm', 'mb')),
+          bottom: cn('top-full', 'left-1/2', 'transform', '-translate-x-1/2', getSpacingClass('sm', 'mt')),
+          left: cn('right-full', 'top-1/2', 'transform', '-translate-y-1/2', getSpacingClass('sm', 'mr')),
+          right: cn('left-full', 'top-1/2', 'transform', '-translate-y-1/2', getSpacingClass('sm', 'ml')),
+        },
+      },
+      defaultVariants: {
+        position: 'top',
+      },
+    }
+  );
+
+  const arrowVariants = cva(
+    cn('absolute', 'w-0', 'h-0', 'border-4', 'border-transparent'),
+    {
+      variants: {
+        position: {
+          top: cn('top-full', 'left-1/2', 'transform', '-translate-x-1/2', getArrowBorderColor('top')),
+          bottom: cn('bottom-full', 'left-1/2', 'transform', '-translate-x-1/2', getArrowBorderColor('bottom')),
+          left: cn('left-full', 'top-1/2', 'transform', '-translate-y-1/2', getArrowBorderColor('left')),
+          right: cn('right-full', 'top-1/2', 'transform', '-translate-y-1/2', getArrowBorderColor('right')),
+        },
+      },
+      defaultVariants: {
+        position: 'top',
+      },
+    }
+  );
 
   // Clone children to add accessibility props
   const childrenWithProps = isValidElement(children)
@@ -151,7 +202,7 @@ export default function Tooltip({
 
   return (
     <div
-      className={`relative inline-block ${className}`}
+      className={cn('relative', 'inline-block', className)}
       {...props}
     >
       {childrenWithProps}
@@ -159,13 +210,13 @@ export default function Tooltip({
         <div
           ref={tooltipRef}
           id={tooltipId}
-          className={`absolute z-50 px-2 py-1 text-xs text-white bg-gray-900 rounded shadow-lg whitespace-nowrap ${positionClasses[position]}`}
+          className={cn(tooltipVariants({ position }))}
           role="tooltip"
           aria-live="polite"
         >
           {content}
           <div
-            className={`absolute w-0 h-0 border-4 border-transparent ${arrowClasses[position]}`}
+            className={cn(arrowVariants({ position }))}
             aria-hidden="true"
           />
         </div>

@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from '@storybook/test';
+import { expect, userEvent, within, waitFor } from '@storybook/test';
 import { useState } from "react";
 import Table from "./Table";
 import { Badge, Button } from "../../atoms";
@@ -24,7 +26,56 @@ const meta: Meta<typeof Table> = {
   parameters: {
     docs: {
       description: {
-        component: "A table component with sorting, loading states, and responsive design. Supports custom cell rendering.",
+        component: `
+## Table
+
+A table component with sorting, loading states, and responsive design. Supports custom cell rendering.
+
+### State Machine
+
+\`\`\`mermaid
+stateDiagram-v2
+    [*] --> Idle: Initialize
+    Idle --> Sorting: onSort(column, direction)
+    Sorting --> Sorted: Sort applied
+    Sorted --> Sorting: onSort(column, direction)
+    Idle --> Filtering: onFilter(filters)
+    Filtering --> Filtered: Filters applied
+    Filtered --> Filtering: onFilter(filters)
+    Idle --> Paginating: setPage(page) / setPageSize(size)
+    Paginating --> Paginated: Page changed
+    Paginated --> Paginating: setPage(page) / setPageSize(size)
+    Idle --> Selecting: toggleRowSelection(id)
+    Selecting --> Selected: Selection changed
+    Selected --> Selecting: toggleRowSelection(id)
+    Sorted --> Filtering: onFilter(filters)
+    Filtered --> Sorting: onSort(column, direction)
+    Sorted --> Paginating: setPage(page)
+    Filtered --> Paginating: setPage(page)
+    Loading --> Idle: Data loaded
+    Idle --> Loading: Data fetching
+\`\`\`
+
+### Events
+
+| Event | Description | Parameters | When Fired |
+|-------|-------------|------------|------------|
+| \`onSort\` | Coluna ordenada | \`(column: string, direction: 'asc' \| 'desc') => void\` | Quando uma coluna é clicada para ordenar |
+| \`onSelectionChange\` | Seleção de linhas mudou | \`(selectedRows: string[]) => void\` | Quando linhas são selecionadas ou desselecionadas |
+| \`onFilter\` | Filtros mudaram | \`(filters: Record<string, unknown>) => void\` | Quando filtros são aplicados |
+
+### States
+
+| State | Description | How to Activate | Visual |
+|-------|-------------|-----------------|--------|
+| \`default\` | Estado padrão | Estado inicial | Tabela normal |
+| \`with-sorting\` | Com ordenação | \`onSort\` definido | Cabeçalhos de coluna clicáveis |
+| \`with-selection\` | Com seleção | \`selectable={true}\` | Checkboxes para seleção |
+| \`with-pagination\` | Com paginação | \`pagination\` prop definida | Controles de paginação visíveis |
+| \`with-filters\` | Com filtros | \`filters\` prop definida | Controles de filtro visíveis |
+| \`loading\` | Carregando | \`loading={true}\` | Indicador de loading visível |
+| \`empty\` | Sem dados | \`data={[]}\` | Empty state visível |
+        `,
       },
     },
   },
@@ -739,6 +790,199 @@ export const LargeDataset: StoryObj<typeof Table> = {
     docs: {
       description: {
         story: 'Table handling large datasets with pagination. Demonstrates performance with 100+ rows.',
+      },
+    },
+  },
+};
+
+// Event Stories
+export const WithEvents: StoryObj<typeof Table> = {
+  render: () => {
+    const [sortColumn, setSortColumn] = useState<string>('');
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+    const [selectedRows, setSelectedRows] = useState<string[]>([]);
+    const [_filters, setFilters] = useState<Record<string, unknown>>({});
+    
+    const handleSort = fn((columnKey: string, direction: 'asc' | 'desc') => {
+      setSortColumn(columnKey);
+      setSortDirection(direction);
+    });
+    
+    const handleSelectionChange = fn((selected: string[]) => {
+      setSelectedRows(selected);
+    });
+    
+    const handleFilter = fn((newFilters: Record<string, unknown>) => {
+      setFilters(newFilters);
+    });
+    
+    return (
+      <div className="space-y-4">
+        <p className="text-sm text-gray-600">
+          Sort columns, select rows, or apply filters. Check the Actions panel to see events being fired.
+        </p>
+        <Table
+          columns={[
+            { key: 'name', label: 'Name', sortable: true },
+            { key: 'status', label: 'Status', sortable: true },
+            { key: 'priority', label: 'Priority' },
+          ]}
+          data={sampleData}
+          onSort={handleSort}
+          sortColumn={sortColumn}
+          sortDirection={sortDirection}
+          selectable
+          selectedRows={selectedRows}
+          onSelectionChange={handleSelectionChange}
+          rowId={(row) => row.id}
+          filters={{
+            config: [
+              {
+                key: 'status',
+                label: 'Status',
+                type: 'select',
+                options: [
+                  { value: 'ACTIVE', label: 'Active' },
+                  { value: 'DRAFT', label: 'Draft' },
+                  { value: 'COMPLETED', label: 'Completed' },
+                ],
+              },
+            ],
+            onFilter: handleFilter,
+          }}
+        />
+        {selectedRows.length > 0 && (
+          <p className="text-sm text-gray-500">
+            {selectedRows.length} row(s) selected
+          </p>
+        )}
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    // Wait for table to be rendered
+    await waitFor(() => {
+      expect(canvas.getByText('Name')).toBeInTheDocument();
+    });
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates table events. Sort, select, or filter and check the Actions panel to see events being logged.',
+      },
+    },
+  },
+};
+
+// State Stories
+export const DefaultState: StoryObj<typeof Table> = {
+  args: {
+    columns: [
+      { key: 'name', label: 'Name' },
+      { key: 'status', label: 'Status' },
+      { key: 'priority', label: 'Priority' },
+    ],
+    data: sampleData,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Default state - table with basic functionality.',
+      },
+    },
+  },
+};
+
+export const WithSortingState: StoryObj<typeof Table> = {
+  render: () => {
+    const [sortColumn, setSortColumn] = useState<string>('name');
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+    
+    return (
+      <Table
+        columns={[
+          { key: 'name', label: 'Name', sortable: true },
+          { key: 'status', label: 'Status', sortable: true },
+          { key: 'priority', label: 'Priority' },
+        ]}
+        data={sampleData}
+        onSort={(col, dir) => {
+          setSortColumn(col);
+          setSortDirection(dir);
+        }}
+        sortColumn={sortColumn}
+        sortDirection={sortDirection}
+      />
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'With sorting state - columns are sortable.',
+      },
+    },
+  },
+};
+
+export const WithSelectionState: StoryObj<typeof Table> = {
+  render: () => {
+    const [selectedRows, setSelectedRows] = useState<string[]>(['1', '2']);
+    return (
+      <Table
+        columns={[
+          { key: 'name', label: 'Name' },
+          { key: 'status', label: 'Status' },
+          { key: 'priority', label: 'Priority' },
+        ]}
+        data={sampleData}
+        selectable
+        selectedRows={selectedRows}
+        onSelectionChange={setSelectedRows}
+        rowId={(row) => row.id}
+      />
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'With selection state - rows can be selected.',
+      },
+    },
+  },
+};
+
+export const LoadingStateSimple: StoryObj<typeof Table> = {
+  args: {
+    columns: [
+      { key: 'name', label: 'Name' },
+      { key: 'status', label: 'Status' },
+    ],
+    data: [],
+    loading: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Loading state - shows loading indicator while fetching data.',
+      },
+    },
+  },
+};
+
+export const NoData: StoryObj<typeof Table> = {
+  args: {
+    columns: [
+      { key: 'name', label: 'Name' },
+      { key: 'status', label: 'Status' },
+    ],
+    data: [],
+    emptyMessage: 'No data available',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Empty state - no data is available to display.',
       },
     },
   },

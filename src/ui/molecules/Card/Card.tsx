@@ -1,5 +1,7 @@
 import { memo, useMemo, useCallback } from 'react';
 import type { HTMLAttributes } from "react";
+import { cn, cva } from '../../utils';
+import { getColorClass, getRadiusClass, getSpacingClass } from '../../tokens';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   variant?: "default" | "hover" | "selected";
@@ -35,26 +37,37 @@ const Card = memo(function Card({
   children,
   ...props
 }: Props) {
-  const baseClasses = [
-    "bg-white",
-    "rounded-lg",
-    "border",
-    "border-gray-200",
-    "shadow-sm",
-  ];
-
-  const variantClasses: Record<NonNullable<Props["variant"]>, string> = {
-    default: "",
-    hover: "hover:shadow-md transition-shadow cursor-pointer",
-    selected: "border-indigo-500 shadow-md",
-  };
-
-  const paddingClasses: Record<NonNullable<Props["padding"]>, string> = {
-    none: "",
-    small: "p-2",
-    medium: "p-4",
-    large: "p-6",
-  };
+  const cardVariants = cva(
+    cn(
+      'bg-white',
+      getRadiusClass('lg'),
+      'border',
+      getColorClass('neutral', 'DEFAULT', 'border'),
+      'shadow-sm'
+    ),
+    {
+      variants: {
+        variant: {
+          default: '',
+          hover: cn('hover:shadow-md', 'transition-shadow', 'cursor-pointer'),
+          selected: cn(
+            getColorClass('primary', 'DEFAULT', 'border'),
+            'shadow-md'
+          ),
+        },
+        padding: {
+          none: '',
+          small: getSpacingClass('xs', 'p'),
+          medium: getSpacingClass('base', 'p'),
+          large: getSpacingClass('lg', 'p'),
+        },
+      },
+      defaultVariants: {
+        variant: 'default',
+        padding: 'medium',
+      },
+    }
+  );
 
   const isInteractive = useMemo(() => 
     onClick !== undefined || variant === "hover",
@@ -63,12 +76,7 @@ const Card = memo(function Card({
   const role = isInteractive ? "button" : undefined;
   const tabIndex = isInteractive ? 0 : undefined;
 
-  const classes = useMemo(() => [
-    ...baseClasses,
-    variantClasses[variant],
-    paddingClasses[padding],
-    className,
-  ].filter(Boolean).join(" "), [variant, padding, className]);
+  const classes = cn(cardVariants({ variant, padding }), className);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
     if (isInteractive && (e.key === 'Enter' || e.key === ' ')) {

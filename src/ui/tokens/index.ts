@@ -6,7 +6,7 @@
 
 // Colors
 export * from './colors';
-export { COLOR_TOKENS, COLOR_TOKENS_LIGHT, COLOR_TOKENS_DARK, getColor, getColorClass } from './colors';
+export { COLOR_TOKENS, COLOR_TOKENS_LIGHT, COLOR_TOKENS_DARK, getColor, getColorClass, getHoverColorClass, getFocusColorClass, getFocusRingClass } from './colors';
 
 // Spacing
 export * from './spacing';
@@ -14,7 +14,7 @@ export { SPACING_TOKENS, getSpacing, getSpacingClass } from './spacing';
 
 // Typography
 export * from './typography';
-export { TYPOGRAPHY_TOKENS, FONT_FAMILY_TOKENS, FONT_WEIGHT_TOKENS, getTypography, getTypographyClasses } from './typography';
+export { TYPOGRAPHY_TOKENS, FONT_FAMILY_TOKENS, FONT_WEIGHT_TOKENS, getTypography, getTypographyClasses, getTypographySize, getTypographySizeFromFontSize, getTypographyWeight, getTypographyWeightFromFontWeight, getTypographyLineHeight } from './typography';
 
 // Shadows
 export * from './shadows';

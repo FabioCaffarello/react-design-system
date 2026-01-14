@@ -1,4 +1,10 @@
+import { forwardRef, memo, useMemo } from 'react';
 import type { TextareaHTMLAttributes } from "react";
+import { getColorClass, getFocusColorClass } from '../../tokens/colors';
+import { getRadiusClass } from '../../tokens/radius';
+import { getSpacingClass } from '../../tokens/spacing';
+import { getTypographySize } from '../../tokens/typography';
+import { cn } from '../../utils';
 
 interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   error?: boolean;
@@ -19,49 +25,74 @@ interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
  * />
  * ```
  */
-export default function Textarea({
+const Textarea = memo(forwardRef<HTMLTextAreaElement, Props>(function Textarea({
   error = false,
   resize = "vertical",
   className = "",
   ...props
-}: Props) {
-  const baseClasses = [
-    "block",
-    "w-full",
-    "rounded",
-    "px-large",
-    "py-medium",
-    "border",
-    "text-base",
-    "focus:outline-none",
-    "focus:ring-2",
-    "focus:ring-offset-2",
-  ];
+}, ref) {
+  // Memoize focus ring colors
+  const primaryFocusRing = useMemo(() => 
+    getFocusColorClass('primary', 'DEFAULT', 'border'),
+    []
+  );
+  
+  const errorFocusRing = useMemo(() => 
+    getFocusColorClass('error', 'DEFAULT', 'border'),
+    []
+  );
+  
+  const focusRingColor = useMemo(() => 
+    error 
+      ? errorFocusRing.replace('focus:border-', 'focus:ring-')
+      : primaryFocusRing.replace('focus:border-', 'focus:ring-'),
+    [error, errorFocusRing, primaryFocusRing]
+  );
 
-  const resizeClasses: Record<NonNullable<Props["resize"]>, string> = {
+  // Memoize resize classes
+  const resizeClasses = useMemo<Record<NonNullable<Props["resize"]>, string>>(() => ({
     none: "resize-none",
     both: "resize",
     horizontal: "resize-x",
     vertical: "resize-y",
-  };
+  }), []);
 
-  const errorClasses = error
-    ? "border-red-500 focus:ring-red-500"
-    : "border-gray-300 focus:ring-indigo-500";
-
-  const classes = [
-    ...baseClasses,
+  // Memoize classes
+  const classes = useMemo(() => cn(
+    "block",
+    "w-full",
+    getRadiusClass('md'),
+    getSpacingClass('base', 'px'),
+    getSpacingClass('md', 'py'),
+    "border",
+    getTypographySize('body'),
+    "focus:outline-none",
+    "focus:ring-2",
+    "focus:ring-offset-2",
     resizeClasses[resize],
-    errorClasses,
-    className,
-  ].filter(Boolean).join(" ");
+    error 
+      ? cn(getColorClass('error', 'DEFAULT', 'border'), focusRingColor)
+      : cn(getColorClass('neutral', 'DEFAULT', 'border'), focusRingColor),
+    className
+  ), [resize, resizeClasses, error, focusRingColor, className]);
+
+  // Memoize aria-describedby
+  const ariaDescribedBy = useMemo(() => 
+    error && props.id ? `${props.id}-error` : undefined,
+    [error, props.id]
+  );
 
   return (
     <textarea
+      ref={ref}
       className={classes}
       aria-invalid={error}
-      aria-describedby={error && props.id ? `${props.id}-error` : undefined}
+      aria-describedby={ariaDescribedBy}
       {...props}
     />
   );
-}
+}));
+
+Textarea.displayName = 'Textarea';
+
+export default Textarea;

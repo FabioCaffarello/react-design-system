@@ -1,5 +1,3 @@
-export { default as InputWithLabel } from "./InputWithLabel/InputWithLabel";
-
 export { default as Card } from "./Card/Card";
 
 export * from "./Form";
@@ -15,15 +13,18 @@ export type { EmptyStateProps } from "./EmptyState/EmptyState";
 export { default as Dropdown } from "./Dropdown/Dropdown";
 export type { DropdownProps, DropdownItem } from "./Dropdown/Dropdown";
 
-export { default as NavbarGroup } from "./NavbarGroup/NavbarGroup";
-export type { NavbarGroupProps } from "./NavbarGroup/NavbarGroup";
-
 export * from "./DatePicker";
 
 export * from "./Tabs";
 
 export { default as SearchInput } from "./SearchInput/SearchInput";
 export type { SearchInputProps } from "./SearchInput/SearchInput";
+
+export * from "./Autocomplete";
+export type { AutocompleteProps, AutocompleteOption, AutocompleteOptionProps, AutocompleteListProps } from "./Autocomplete";
+
+export * from "./MultiSelect";
+export type { MultiSelectProps } from "./MultiSelect";
 
 export { default as Rating } from "./Rating/Rating";
 export type { RatingProps, RatingSize, RatingVariant } from "./Rating/Rating";
@@ -36,3 +37,19 @@ export type { TimePickerProps, TimeFormat } from "./TimePicker/TimePicker";
 
 export { default as ColorPicker } from "./ColorPicker/ColorPicker";
 export type { ColorPickerProps, ColorFormat } from "./ColorPicker/ColorPicker";
+
+export * from "./Drawer";
+export type { DrawerProps, DrawerPosition, DrawerContentProps, DrawerHeaderProps, DrawerFooterProps } from "./Drawer";
+
+export * from "./Menu";
+export type { MenuProps, MenuPlacement, MenuTriggerProps, MenuContentProps, MenuItemProps, MenuSeparatorProps } from "./Menu";
+
+export { default as Accordion } from "./Accordion/Accordion";
+export type { AccordionProps, AccordionItem, AccordionType } from "./Accordion/Accordion";
+
+export { default as Popover } from "./Popover/Popover";
+export type { PopoverProps, PopoverPlacement } from "./Popover/Popover";
+
+// Flow components have been moved to extensions/flow
+// Use: import { CustomNode } from '@fabio.caffarello/react-design-system/extensions/flow'
+// or: import { CustomNode } from '@fabio.caffarello/react-design-system/extensions'

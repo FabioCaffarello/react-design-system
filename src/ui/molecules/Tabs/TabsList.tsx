@@ -2,10 +2,12 @@
 
 import { useTabsContext } from './TabsContext';
 import { useRef, useEffect, type HTMLAttributes, ReactNode } from 'react';
-import { getRadiusClass } from '../../tokens';
+import { cn } from '../../utils';
+import { getRadiusClass, getColorClass, getSpacingClass } from '../../tokens';
 
 export interface TabsListProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
+  variant?: 'default' | 'compact';
 }
 
 /**
@@ -18,6 +20,7 @@ export interface TabsListProps extends HTMLAttributes<HTMLDivElement> {
 export function TabsList({
   children,
   className = '',
+  variant = 'default',
   ...props
 }: TabsListProps) {
   const { orientation } = useTabsContext();
@@ -73,23 +76,29 @@ export function TabsList({
     return () => list.removeEventListener('keydown', handleKeyDown);
   }, [orientation]);
 
+  // Determine display class based on variant and orientation
+  // For compact vertical, use 'flex' instead of 'inline-flex' to allow full width
+  const displayClass = variant === 'compact' && orientation === 'vertical'
+    ? 'flex'
+    : 'inline-flex';
+
   const orientationClasses = orientation === 'vertical'
-    ? 'flex-col space-y-1'
-    : 'flex-row space-x-1';
+    ? cn('flex-col', getSpacingClass('xs', 'gap'))
+    : cn('flex-row', getSpacingClass('xs', 'gap'));
 
   return (
     <div
       ref={listRef}
       role="tablist"
       aria-orientation={orientation}
-      className={`
-        inline-flex
-        ${orientationClasses}
-        p-1
-        bg-gray-100
-        ${getRadiusClass('md')}
-        ${className}
-      `}
+      className={cn(
+        displayClass,
+        orientationClasses,
+        getSpacingClass('xs', 'p'),
+        getColorClass('neutral', 'light', 'bg'),
+        getRadiusClass('md'),
+        className
+      )}
       {...props}
     >
       {children}

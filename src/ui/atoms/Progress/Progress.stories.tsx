@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import React from 'react';
 import Progress from './Progress';
 
@@ -8,7 +9,26 @@ const meta: Meta<typeof Progress> = {
   parameters: {
     docs: {
       description: {
-        component: 'A progress bar component for displaying progress or loading states. Supports both determinate (with value) and indeterminate (without value) modes. Fully accessible with ARIA attributes.',
+        component: `
+## Progress
+
+A progress bar component for displaying progress or loading states. Supports both determinate (with value) and indeterminate (without value) modes.
+
+### Events
+
+| Event | Description | Parameters | When Fired |
+|-------|-------------|------------|------------|
+| N/A | Progress é um componente de exibição | - | Não possui eventos de interação |
+
+### States
+
+| State | Description | How to Activate | Visual |
+|-------|-------------|-----------------|--------|
+| \`determinate\` | Com valor definido | \`value={0-100}\` | Barra de progresso com porcentagem visível |
+| \`indeterminate\` | Sem valor definido | Sem prop \`value\` | Barra de progresso animada |
+| \`0%\` | Não iniciado | \`value={0}\` | Barra vazia |
+| \`100%\` | Completo | \`value={100}\` | Barra cheia |
+        `,
       },
     },
   },
@@ -39,6 +59,71 @@ const meta: Meta<typeof Progress> = {
     label: {
       control: 'text',
       description: 'Custom label text',
+    },
+  },
+};
+
+// State Stories
+export const DeterminateState: Story = {
+  args: {
+    value: 50,
+    variant: 'primary',
+    size: 'md',
+    showLabel: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Determinate state - progress bar with a defined value (0-100).',
+      },
+    },
+  },
+};
+
+export const IndeterminateState: Story = {
+  args: {
+    variant: 'primary',
+    size: 'md',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Indeterminate state - animated progress bar for loading states where progress cannot be determined.',
+      },
+    },
+  },
+};
+
+export const ZeroPercentState: Story = {
+  args: {
+    value: 0,
+    variant: 'primary',
+    size: 'md',
+    showLabel: true,
+    label: 'Not Started',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Zero percent state - progress bar at 0%, not started.',
+      },
+    },
+  },
+};
+
+export const CompleteState: Story = {
+  args: {
+    value: 100,
+    variant: 'success',
+    size: 'md',
+    showLabel: true,
+    label: 'Complete',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Complete state - progress bar at 100%, fully completed.',
+      },
     },
   },
 };

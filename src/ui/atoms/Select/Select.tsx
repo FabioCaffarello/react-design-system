@@ -1,9 +1,12 @@
 'use client';
 
-import { forwardRef } from 'react';
+import { forwardRef, memo, useMemo, useCallback } from 'react';
 import type { SelectHTMLAttributes, ReactNode } from 'react';
-import { getTypographyClasses } from '../../tokens/typography';
-import { getColorClass } from '../../tokens/colors';
+import { getTypographyClasses, getTypographySize } from '../../tokens/typography';
+import { getColorClass, getFocusColorClass } from '../../tokens/colors';
+import { getRadiusClass } from '../../tokens/radius';
+import { getSpacingClass } from '../../tokens/spacing';
+import { cn, cva } from '../../utils';
 
 export type SelectSize = 'sm' | 'md' | 'lg';
 
@@ -48,8 +51,8 @@ export interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement
  * />
  * ```
  */
-const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select({
-  options,
+const Select = memo(forwardRef<HTMLSelectElement, SelectProps>(function Select({
+  options = [],
   optionGroups,
   placeholder,
   label,
@@ -62,51 +65,124 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select({
   id,
   ...props
 }, ref) {
-  const selectId = id || `select-${Math.random().toString(36).substr(2, 9)}`;
-  const errorId = error ? `${selectId}-error` : undefined;
-  const helperId = helperText ? `${selectId}-helper` : undefined;
+  // Memoize IDs
+  const selectId = useMemo(() => 
+    id || `select-${Math.random().toString(36).substr(2, 9)}`,
+    [id]
+  );
+  
+  const errorId = useMemo(() => 
+    error ? `${selectId}-error` : undefined,
+    [error, selectId]
+  );
+  
+  const helperId = useMemo(() => 
+    helperText ? `${selectId}-helper` : undefined,
+    [helperText, selectId]
+  );
 
-  // Size classes
-  const sizeClasses: Record<SelectSize, string> = {
-    sm: 'h-8 text-sm px-3',
-    md: 'h-10 text-base px-4',
-    lg: 'h-12 text-lg px-5',
-  };
+  // Memoize focus ring colors
+  const primaryFocusRing = useMemo(() => 
+    getFocusColorClass('primary', 'DEFAULT', 'border'),
+    []
+  );
+  
+  const errorFocusRing = useMemo(() => 
+    getFocusColorClass('error', 'DEFAULT', 'border'),
+    []
+  );
+  
+  const successFocusRing = useMemo(() => 
+    getFocusColorClass('success', 'DEFAULT', 'border'),
+    []
+  );
+  
+  // Memoize focus ring color function
+  const getFocusRingColor = useCallback((stateType?: 'error' | 'success'): string => {
+    if (stateType === 'error') {
+      return errorFocusRing.replace('focus:border-', 'focus:ring-');
+    }
+    if (stateType === 'success') {
+      return successFocusRing.replace('focus:border-', 'focus:ring-');
+    }
+    return primaryFocusRing.replace('focus:border-', 'focus:ring-');
+  }, [errorFocusRing, successFocusRing, primaryFocusRing]);
 
-  // State classes
-  const stateClasses = error
-    ? 'border-red-500 focus:ring-red-500'
-    : success
-    ? 'border-green-500 focus:ring-green-500'
-    : 'border-gray-300 focus:ring-indigo-500';
+  // Select variants using CVA
+  const selectVariants = cva(
+    // Base classes
+    cn(
+      'block',
+      'w-full',
+      getRadiusClass('md'),
+      'border',
+      'bg-white',
+      'transition-colors',
+      'focus:outline-none',
+      'focus:ring-2',
+      'focus:ring-offset-2',
+      'disabled:opacity-50',
+      'disabled:cursor-not-allowed'
+    ),
+    {
+      variants: {
+        size: {
+          sm: cn(
+            'h-8',
+            getTypographySize('bodySmall'),
+            getSpacingClass('md', 'px')
+          ),
+          md: cn(
+            'h-10',
+            getTypographySize('body'),
+            getSpacingClass('base', 'px')
+          ),
+          lg: cn(
+            'h-12',
+            getTypographySize('bodyLarge'),
+            getSpacingClass('lg', 'px')
+          ),
+        },
+        state: {
+          default: cn(
+            getColorClass('neutral', 'DEFAULT', 'border'),
+            getFocusRingColor()
+          ),
+          error: cn(
+            getColorClass('error', 'DEFAULT', 'border'),
+            getFocusRingColor('error')
+          ),
+          success: cn(
+            getColorClass('success', 'DEFAULT', 'border'),
+            getFocusRingColor('success')
+          ),
+        },
+      },
+      defaultVariants: {
+        size: 'md',
+        state: 'default',
+      },
+    }
+  );
 
-  const baseClasses = [
-    'block',
-    'w-full',
-    'rounded-md',
-    'border',
-    'bg-white',
-    'transition-colors',
-    'focus:outline-none',
-    'focus:ring-2',
-    'focus:ring-offset-2',
-    'disabled:opacity-50',
-    'disabled:cursor-not-allowed',
-    sizeClasses[size],
-    stateClasses,
-  ];
+  // Memoize state
+  const selectState = useMemo(() => 
+    error ? 'error' : success ? 'success' : 'default',
+    [error, success]
+  );
 
-  const selectClasses = [
-    ...baseClasses,
-    className,
-  ].filter(Boolean).join(' ');
+  // Memoize classes
+  const selectClasses = useMemo(() => cn(
+    selectVariants({ size, state: selectState }),
+    className
+  ), [size, selectState, className]);
 
-  const labelClasses = [
+  const labelClasses = useMemo(() => cn(
     'block',
     getTypographyClasses('label'),
-    'mb-1',
-    disabled ? 'opacity-50' : '',
-  ].filter(Boolean).join(' ');
+    getSpacingClass('xs', 'mb'),
+    disabled && 'opacity-50'
+  ), [disabled]);
 
   return (
     <div className="w-full">
@@ -133,10 +209,10 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select({
             {placeholder}
           </option>
         )}
-        {optionGroups ? (
+        {optionGroups && optionGroups.length > 0 ? (
           optionGroups.map((group, groupIndex) => (
             <optgroup key={groupIndex} label={group.label}>
-              {group.options.map((option) => (
+              {(group.options || []).map((option) => (
                 <option
                   key={option.value}
                   value={option.value}
@@ -148,7 +224,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select({
             </optgroup>
           ))
         ) : (
-          options.map((option) => (
+          (options || []).map((option) => (
             <option
               key={option.value}
               value={option.value}
@@ -160,23 +236,17 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select({
         )}
       </select>
       {(error || success || helperText) && (
-        <div
-          id={errorId || helperId}
-          className={`mt-1 ${getTypographyClasses('caption')} ${
-            error 
-              ? getColorClass('error', 'DEFAULT', 'text')
-              : success
-              ? getColorClass('success', 'DEFAULT', 'text')
-              : 'text-gray-500'
-          }`}
-          role={error || success ? 'alert' : undefined}
-        >
-          {helperText || (error ? 'Error' : success ? 'Success' : '')}
-        </div>
+        <HelperText
+          error={error}
+          success={success}
+          helperText={helperText}
+          errorId={errorId}
+          helperId={helperId}
+        />
       )}
     </div>
   );
-});
+}));
 
 Select.displayName = 'Select';
 

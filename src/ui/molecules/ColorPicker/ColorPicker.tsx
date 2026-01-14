@@ -5,7 +5,7 @@ import { getRadiusClass } from '../../tokens/radius';
 import { getShadowClass } from '../../tokens/shadows';
 import { getSpacingClass } from '../../tokens/spacing';
 import Input from '../../atoms/Input/Input';
-import Popover from '../../atoms/Popover/Popover';
+import Popover from '../Popover/Popover';
 
 export type ColorFormat = 'hex' | 'rgb' | 'hsl';
 

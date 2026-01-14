@@ -1,0 +1,666 @@
+/* 
+ * React Flow CSS Variables
+ * 
+ * Integrated CSS variables from @xyflow/react for theming and customization.
+ * These variables are used throughout the Flow components and can be overridden
+ * via the theming system or custom CSS.
+ */
+
+/* Base Flow Variables */
+.xy-flow {
+  direction: ltr;
+
+  /* Edge Variables */
+  --xy-edge-stroke-default: #b1b1b7;
+  --xy-edge-stroke-width-default: 1;
+  --xy-edge-stroke-selected-default: #555;
+
+  /* Connection Line Variables */
+  --xy-connectionline-stroke-default: #b1b1b7;
+  --xy-connectionline-stroke-width-default: 1;
+
+  /* Attribution Variables */
+  --xy-attribution-background-color-default: rgba(255, 255, 255, 0.5);
+
+  /* Minimap Variables */
+  --xy-minimap-background-color-default: #fff;
+  --xy-minimap-mask-background-color-default: rgba(240, 240, 240, 0.6);
+  --xy-minimap-mask-stroke-color-default: transparent;
+  --xy-minimap-mask-stroke-width-default: 1;
+  --xy-minimap-node-background-color-default: #e2e2e2;
+  --xy-minimap-node-stroke-color-default: transparent;
+  --xy-minimap-node-stroke-width-default: 2;
+
+  /* Background Variables */
+  --xy-background-color-default: transparent;
+  --xy-background-pattern-dots-color-default: #91919a;
+  --xy-background-pattern-lines-color-default: #eee;
+  --xy-background-pattern-cross-color-default: #e2e2e2;
+
+  /* Node Variables */
+  --xy-node-color-default: inherit;
+  --xy-node-border-default: 1px solid #1a192b;
+  --xy-node-border-selected-default: 1px solid #555;
+  --xy-node-background-color-default: #fff;
+  --xy-node-group-background-color-default: rgba(240, 240, 240, 0.25);
+  --xy-node-boxshadow-hover-default: 0 1px 4px 1px rgba(0, 0, 0, 0.08);
+  --xy-node-boxshadow-selected-default: 0 0 0 0.5px #1a192b;
+  --xy-node-border-radius-default: 3px;
+
+  /* Handle Variables */
+  --xy-handle-background-color-default: #1a192b;
+  --xy-handle-border-color-default: #fff;
+
+  /* Selection Variables */
+  --xy-selection-background-color-default: rgba(0, 89, 220, 0.08);
+  --xy-selection-border-default: 1px dotted rgba(0, 89, 220, 0.8);
+
+  /* Controls Variables */
+  --xy-controls-button-background-color-default: #fefefe;
+  --xy-controls-button-background-color-hover-default: #f4f4f4;
+  --xy-controls-button-color-default: inherit;
+  --xy-controls-button-color-hover-default: inherit;
+  --xy-controls-button-border-color-default: #eee;
+  --xy-controls-box-shadow-default: 0 0 2px 1px rgba(0, 0, 0, 0.08);
+
+  /* Edge Label Variables */
+  --xy-edge-label-background-color-default: #ffffff;
+  --xy-edge-label-color-default: inherit;
+}
+
+/* Dark Mode Variables */
+.xy-flow.dark {
+  /* Edge Variables - Dark */
+  --xy-edge-stroke-default: #3e3e3e;
+  --xy-edge-stroke-width-default: 1;
+  --xy-edge-stroke-selected-default: #727272;
+
+  /* Connection Line Variables - Dark */
+  --xy-connectionline-stroke-default: #b1b1b7;
+  --xy-connectionline-stroke-width-default: 1;
+
+  /* Attribution Variables - Dark */
+  --xy-attribution-background-color-default: rgba(150, 150, 150, 0.25);
+
+  /* Minimap Variables - Dark */
+  --xy-minimap-background-color-default: #141414;
+  --xy-minimap-mask-background-color-default: rgba(60, 60, 60, 0.6);
+  --xy-minimap-mask-stroke-color-default: transparent;
+  --xy-minimap-mask-stroke-width-default: 1;
+  --xy-minimap-node-background-color-default: #2b2b2b;
+  --xy-minimap-node-stroke-color-default: transparent;
+  --xy-minimap-node-stroke-width-default: 2;
+
+  /* Background Variables - Dark */
+  --xy-background-color-default: #141414;
+  --xy-background-pattern-dots-color-default: #777;
+  --xy-background-pattern-lines-color-default: #777;
+  --xy-background-pattern-cross-color-default: #777;
+
+  /* Node Variables - Dark */
+  --xy-node-color-default: #f8f8f8;
+  --xy-node-border-default: 1px solid #3c3c3c;
+  --xy-node-background-color-default: #1e1e1e;
+  --xy-node-group-background-color-default: rgba(240, 240, 240, 0.25);
+  --xy-node-boxshadow-hover-default: 0 1px 4px 1px rgba(255, 255, 255, 0.08);
+  --xy-node-boxshadow-selected-default: 0 0 0 0.5px #999;
+
+  /* Handle Variables - Dark */
+  --xy-handle-background-color-default: #bebebe;
+  --xy-handle-border-color-default: #1e1e1e;
+
+  /* Selection Variables - Dark */
+  --xy-selection-background-color-default: rgba(200, 200, 220, 0.08);
+  --xy-selection-border-default: 1px dotted rgba(200, 200, 220, 0.8);
+
+  /* Controls Variables - Dark */
+  --xy-controls-button-background-color-default: #2b2b2b;
+  --xy-controls-button-background-color-hover-default: #3e3e3e;
+  --xy-controls-button-color-default: #f8f8f8;
+  --xy-controls-button-color-hover-default: #fff;
+  --xy-controls-button-border-color-default: #5b5b5b;
+  --xy-controls-box-shadow-default: 0 0 2px 1px rgba(0, 0, 0, 0.08);
+
+  /* Edge Label Variables - Dark */
+  --xy-edge-label-background-color-default: #141414;
+  --xy-edge-label-color-default: #f8f8f8;
+}
+
+/* Base Flow Styles */
+.xy-flow {
+  background-color: var(--xy-background-color, var(--xy-background-color-default));
+}
+
+.xy-flow__background {
+  background-color: var(--xy-background-color-props, var(--xy-background-color, var(--xy-background-color-default)));
+}
+
+.xy-flow__container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.xy-flow__pane {
+  z-index: 1;
+}
+
+.xy-flow__pane.draggable {
+  cursor: grab;
+}
+
+.xy-flow__pane.dragging {
+  cursor: grabbing;
+}
+
+.xy-flow__pane.selection {
+  cursor: pointer;
+}
+
+.xy-flow__viewport {
+  transform-origin: 0 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.xy-flow__renderer {
+  z-index: 4;
+}
+
+.xy-flow__selection {
+  z-index: 6;
+}
+
+.xy-flow__nodesselection-rect:focus,
+.xy-flow__nodesselection-rect:focus-visible {
+  outline: none;
+}
+
+/* Edge Styles */
+.xy-flow__edge-path {
+  stroke: var(--xy-edge-stroke, var(--xy-edge-stroke-default));
+  stroke-width: var(--xy-edge-stroke-width, var(--xy-edge-stroke-width-default));
+  fill: none;
+}
+
+.xy-flow__connection-path {
+  stroke: var(--xy-connectionline-stroke, var(--xy-connectionline-stroke-default));
+  stroke-width: var(--xy-connectionline-stroke-width, var(--xy-connectionline-stroke-width-default));
+  fill: none;
+}
+
+.xy-flow .xy-flow__edges {
+  position: absolute;
+}
+
+.xy-flow .xy-flow__edges svg {
+  overflow: visible;
+  position: absolute;
+  pointer-events: none;
+}
+
+.xy-flow__edge {
+  pointer-events: visibleStroke;
+}
+
+.xy-flow__edge.selectable {
+  cursor: pointer;
+}
+
+.xy-flow__edge.animated path {
+  stroke-dasharray: 5;
+  animation: dashdraw 0.5s linear infinite;
+}
+
+.xy-flow__edge.animated path.xy-flow__edge-interaction {
+  stroke-dasharray: none;
+  animation: none;
+}
+
+.xy-flow__edge.inactive {
+  pointer-events: none;
+}
+
+.xy-flow__edge.selected,
+.xy-flow__edge:focus,
+.xy-flow__edge:focus-visible {
+  outline: none;
+}
+
+.xy-flow__edge.selected .xy-flow__edge-path,
+.xy-flow__edge.selectable:focus .xy-flow__edge-path,
+.xy-flow__edge.selectable:focus-visible .xy-flow__edge-path {
+  stroke: var(--xy-edge-stroke-selected, var(--xy-edge-stroke-selected-default));
+}
+
+.xy-flow__edge-textwrapper {
+  pointer-events: all;
+}
+
+.xy-flow__edge-text {
+  pointer-events: none;
+  user-select: none;
+}
+
+.xy-flow__edge.updating .xy-flow__edge-path {
+  stroke: #777;
+}
+
+.xy-flow__edge-text {
+  font-size: 10px;
+}
+
+/* Arrowhead Marker Styles */
+.xy-flow__arrowhead polyline {
+  stroke: var(--xy-edge-stroke, var(--xy-edge-stroke-default));
+}
+
+.xy-flow__arrowhead polyline.arrowclosed {
+  fill: var(--xy-edge-stroke, var(--xy-edge-stroke-default));
+}
+
+.xy-flow__connection {
+  pointer-events: none;
+}
+
+.xy-flow__connection .animated {
+  stroke-dasharray: 5;
+  animation: dashdraw 0.5s linear infinite;
+}
+
+svg.xy-flow__connectionline {
+  z-index: 1001;
+  overflow: visible;
+  position: absolute;
+}
+
+/* Node Styles */
+.xy-flow__nodes {
+  pointer-events: none;
+  transform-origin: 0 0;
+}
+
+.xy-flow__node {
+  position: absolute;
+  user-select: none;
+  pointer-events: all;
+  transform-origin: 0 0;
+  box-sizing: border-box;
+  cursor: default;
+}
+
+.xy-flow__node.selectable {
+  cursor: pointer;
+}
+
+.xy-flow__node.draggable {
+  cursor: grab;
+  pointer-events: all;
+}
+
+.xy-flow__node.draggable.dragging {
+  cursor: grabbing;
+}
+
+.xy-flow__node.selectable:focus,
+.xy-flow__node.selectable:focus-visible {
+  outline: none;
+}
+
+.xy-flow__node-input,
+.xy-flow__node-default,
+.xy-flow__node-output,
+.xy-flow__node-group {
+  padding: 10px;
+  border-radius: var(--xy-node-border-radius, var(--xy-node-border-radius-default));
+  width: 150px;
+  font-size: 12px;
+  color: var(--xy-node-color, var(--xy-node-color-default));
+  text-align: center;
+  border: var(--xy-node-border, var(--xy-node-border-default));
+  background-color: var(--xy-node-background-color, var(--xy-node-background-color-default));
+}
+
+.xy-flow__node-input.selectable:hover,
+.xy-flow__node-default.selectable:hover,
+.xy-flow__node-output.selectable:hover,
+.xy-flow__node-group.selectable:hover {
+  box-shadow: var(--xy-node-boxshadow-hover, var(--xy-node-boxshadow-hover-default));
+}
+
+.xy-flow__node-input.selectable.selected,
+.xy-flow__node-input.selectable:focus,
+.xy-flow__node-input.selectable:focus-visible,
+.xy-flow__node-default.selectable.selected,
+.xy-flow__node-default.selectable:focus,
+.xy-flow__node-default.selectable:focus-visible,
+.xy-flow__node-output.selectable.selected,
+.xy-flow__node-output.selectable:focus,
+.xy-flow__node-output.selectable:focus-visible,
+.xy-flow__node-group.selectable.selected,
+.xy-flow__node-group.selectable:focus,
+.xy-flow__node-group.selectable:focus-visible {
+  box-shadow: var(--xy-node-boxshadow-selected, var(--xy-node-boxshadow-selected-default));
+}
+
+.xy-flow__node-input.selected,
+.xy-flow__node-input:focus,
+.xy-flow__node-input:focus-visible,
+.xy-flow__node-default.selected,
+.xy-flow__node-default:focus,
+.xy-flow__node-default:focus-visible,
+.xy-flow__node-output.selected,
+.xy-flow__node-output:focus,
+.xy-flow__node-output:focus-visible,
+.xy-flow__node-group.selected,
+.xy-flow__node-group:focus,
+.xy-flow__node-group:focus-visible {
+  outline: none;
+  border: var(--xy-node-border-selected, var(--xy-node-border-selected-default));
+}
+
+.xy-flow__node-group {
+  background-color: var(--xy-node-group-background-color, var(--xy-node-group-background-color-default));
+}
+
+/* Node Selection Styles */
+.xy-flow__nodesselection {
+  z-index: 3;
+  transform-origin: left top;
+  pointer-events: none;
+}
+
+.xy-flow__nodesselection-rect {
+  position: absolute;
+  pointer-events: all;
+  cursor: grab;
+}
+
+.xy-flow__nodesselection-rect,
+.xy-flow__selection {
+  background: var(--xy-selection-background-color, var(--xy-selection-background-color-default));
+  border: var(--xy-selection-border, var(--xy-selection-border-default));
+}
+
+.xy-flow__nodesselection-rect:focus,
+.xy-flow__nodesselection-rect:focus-visible,
+.xy-flow__selection:focus,
+.xy-flow__selection:focus-visible {
+  outline: none;
+}
+
+/* Handle Styles */
+.xy-flow__handle {
+  position: absolute;
+  pointer-events: none;
+  min-width: 5px;
+  min-height: 5px;
+  width: 6px;
+  height: 6px;
+  background-color: var(--xy-handle-background-color, var(--xy-handle-background-color-default));
+  border: 1px solid var(--xy-handle-border-color, var(--xy-handle-border-color-default));
+  border-radius: 100%;
+}
+
+.xy-flow__handle.connectingfrom {
+  pointer-events: all;
+}
+
+.xy-flow__handle.connectionindicator {
+  pointer-events: all;
+  cursor: crosshair;
+}
+
+.xy-flow__handle-bottom {
+  top: auto;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 50%);
+}
+
+.xy-flow__handle-top {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.xy-flow__handle-left {
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+
+.xy-flow__handle-right {
+  top: 50%;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.xy-flow__edgeupdater {
+  cursor: move;
+  pointer-events: all;
+}
+
+/* Panel Styles */
+.xy-flow__pane.selection .xy-flow__panel {
+  pointer-events: none;
+}
+
+.xy-flow__panel {
+  position: absolute;
+  z-index: 5;
+  margin: 15px;
+}
+
+.xy-flow__panel.top {
+  top: 0;
+}
+
+.xy-flow__panel.bottom {
+  bottom: 0;
+}
+
+.xy-flow__panel.top.center,
+.xy-flow__panel.bottom.center {
+  left: 50%;
+  transform: translateX(-15px) translateX(-50%);
+}
+
+.xy-flow__panel.left {
+  left: 0;
+}
+
+.xy-flow__panel.right {
+  right: 0;
+}
+
+.xy-flow__panel.left.center,
+.xy-flow__panel.right.center {
+  top: 50%;
+  transform: translateY(-15px) translateY(-50%);
+}
+
+/* Attribution Styles */
+.xy-flow__attribution {
+  font-size: 10px;
+  background: var(--xy-attribution-background-color, var(--xy-attribution-background-color-default));
+  padding: 2px 3px;
+  margin: 0;
+}
+
+.xy-flow__attribution a {
+  text-decoration: none;
+  color: #999;
+}
+
+/* Animations */
+@keyframes dashdraw {
+  from {
+    stroke-dashoffset: 10;
+  }
+}
+
+/* Edge Label Renderer */
+.xy-flow__edgelabel-renderer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  left: 0;
+  top: 0;
+}
+
+.xy-flow__viewport-portal {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  user-select: none;
+}
+
+/* Minimap Styles */
+.xy-flow__minimap {
+  background: var(
+    --xy-minimap-background-color-props,
+    var(--xy-minimap-background-color, var(--xy-minimap-background-color-default))
+  );
+}
+
+.xy-flow__minimap-svg {
+  display: block;
+}
+
+.xy-flow__minimap-mask {
+  fill: var(
+    --xy-minimap-mask-background-color-props,
+    var(--xy-minimap-mask-background-color, var(--xy-minimap-mask-background-color-default))
+  );
+  stroke: var(
+    --xy-minimap-mask-stroke-color-props,
+    var(--xy-minimap-mask-stroke-color, var(--xy-minimap-mask-stroke-color-default))
+  );
+  stroke-width: var(
+    --xy-minimap-mask-stroke-width-props,
+    var(--xy-minimap-mask-stroke-width, var(--xy-minimap-mask-stroke-width-default))
+  );
+}
+
+.xy-flow__minimap-node {
+  fill: var(
+    --xy-minimap-node-background-color-props,
+    var(--xy-minimap-node-background-color, var(--xy-minimap-node-background-color-default))
+  );
+  stroke: var(
+    --xy-minimap-node-stroke-color-props,
+    var(--xy-minimap-node-stroke-color, var(--xy-minimap-node-stroke-color-default))
+  );
+  stroke-width: var(
+    --xy-minimap-node-stroke-width-props,
+    var(--xy-minimap-node-stroke-width, var(--xy-minimap-node-stroke-width-default))
+  );
+}
+
+/* Background Styles */
+.xy-flow__background {
+  pointer-events: none;
+  z-index: -1;
+}
+
+.xy-flow__background-pattern.dots {
+  fill: var(
+    --xy-background-pattern-color-props,
+    var(--xy-background-pattern-color, var(--xy-background-pattern-dots-color-default))
+  );
+}
+
+.xy-flow__background-pattern.lines {
+  stroke: var(
+    --xy-background-pattern-color-props,
+    var(--xy-background-pattern-color, var(--xy-background-pattern-lines-color-default))
+  );
+}
+
+.xy-flow__background-pattern.cross {
+  stroke: var(
+    --xy-background-pattern-color-props,
+    var(--xy-background-pattern-color, var(--xy-background-pattern-cross-color-default))
+  );
+}
+
+/* Controls Styles */
+.xy-flow__controls {
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--xy-controls-box-shadow, var(--xy-controls-box-shadow-default));
+}
+
+.xy-flow__controls.horizontal {
+  flex-direction: row;
+}
+
+.xy-flow__controls-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 26px;
+  width: 26px;
+  padding: 4px;
+  border: none;
+  background: var(--xy-controls-button-background-color, var(--xy-controls-button-background-color-default));
+  border-bottom: 1px solid var(
+    --xy-controls-button-border-color-props,
+    var(--xy-controls-button-border-color, var(--xy-controls-button-border-color-default))
+  );
+  color: var(
+    --xy-controls-button-color-props,
+    var(--xy-controls-button-color, var(--xy-controls-button-color-default))
+  );
+  cursor: pointer;
+  user-select: none;
+}
+
+.xy-flow__controls-button svg {
+  width: 100%;
+  max-width: 12px;
+  max-height: 12px;
+  fill: currentColor;
+}
+
+.xy-flow__controls-button:hover {
+  background: var(
+    --xy-controls-button-background-color-hover-props,
+    var(--xy-controls-button-background-color-hover, var(--xy-controls-button-background-color-hover-default))
+  );
+  color: var(
+    --xy-controls-button-color-hover-props,
+    var(--xy-controls-button-color-hover, var(--xy-controls-button-color-hover-default))
+  );
+}
+
+.xy-flow__controls-button:disabled {
+  pointer-events: none;
+}
+
+.xy-flow__controls-button:disabled svg {
+  fill-opacity: 0.4;
+}
+
+.xy-flow__controls-button:last-child {
+  border-bottom: none;
+}
+
+.xy-flow__controls.horizontal .xy-flow__controls-button {
+  border-bottom: none;
+  border-right: 1px solid var(
+    --xy-controls-button-border-color-props,
+    var(--xy-controls-button-border-color, var(--xy-controls-button-border-color-default))
+  );
+}
+
+.xy-flow__controls.horizontal .xy-flow__controls-button:last-child {
+  border-right: none;
+}

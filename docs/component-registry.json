@@ -1,0 +1,5011 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-01-13T23:47:46.795Z",
+  "totalComponents": 228,
+  "byCategory": {
+    "unknown": [
+      "meta",
+      "interface",
+      "ColorsPlayground",
+      "SpacingPlayground",
+      "ThemePlayground",
+      "TypographyPlayground",
+      "type",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "ColorPalette",
+      "ThemeBuilderComponent"
+    ],
+    "atoms": [
+      "Avatar",
+      "interface",
+      "Badge",
+      "Button",
+      "Checkbox",
+      "Chip",
+      "Collapsible",
+      "ErrorMessage",
+      "Info",
+      "Input",
+      "Label",
+      "Progress",
+      "Radio",
+      "Select",
+      "Separator",
+      "Skeleton",
+      "Slider",
+      "Spinner",
+      "Switch",
+      "Text",
+      "Textarea",
+      "Tooltip",
+      "interface",
+      "interface"
+    ],
+    "extensions": [
+      "AddNodeButton",
+      "interface",
+      "interface",
+      "DatasetSelector",
+      "interface",
+      "interface",
+      "interface",
+      "MyFlow",
+      "FloatingEdgesCheckbox",
+      "type",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "NodesEdgesTabContent",
+      "interface",
+      "PlaygroundCanvas",
+      "PlaygroundCanvasFooter",
+      "interface",
+      "class",
+      "PlaygroundHeader",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "type",
+      "interface",
+      "interface",
+      "ViewportLogger",
+      "type",
+      "interface",
+      "interface",
+      "interface",
+      "getPlaygroundTabContent"
+    ],
+    "molecules": [
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "FloatingConnectionLine",
+      "type",
+      "interface",
+      "interface",
+      "type",
+      "interface",
+      "type",
+      "interface",
+      "interface",
+      "interface",
+      "Accordion",
+      "Autocomplete",
+      "AutocompleteList",
+      "AutocompleteOption",
+      "Breadcrumb",
+      "ButtonGroup",
+      "Card",
+      "ColorPicker",
+      "DatePicker",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "Drawer",
+      "DrawerContent",
+      "interface",
+      "DrawerFooter",
+      "DrawerHeader",
+      "Dropdown",
+      "EmptyState",
+      "FileUpload",
+      "Form",
+      "interface",
+      "interface",
+      "interface",
+      "Menu",
+      "MenuContent",
+      "MenuProvider",
+      "MenuItem",
+      "MenuSeparator",
+      "MenuTrigger",
+      "MultiSelect",
+      "Pagination",
+      "Popover",
+      "Rating",
+      "SearchInput",
+      "Tabs",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "TimePicker"
+    ],
+    "organisms": [
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "CommandPalette",
+      "DataGrid",
+      "AlertDialog",
+      "Dialog",
+      "interface",
+      "interface",
+      "interface",
+      "type",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "interface",
+      "LoginBox",
+      "Modal",
+      "SideNavbar",
+      "Navbar",
+      "NavbarGroup",
+      "NavbarItem",
+      "NavbarSeparator",
+      "NavbarToggle",
+      "SideNavbarBackdrop",
+      "SideNavbarGroup",
+      "SideNavbarResizeHandle",
+      "SideNavbarRoot",
+      "SideNavbarToggle",
+      "Sidebar",
+      "SidebarContent",
+      "SidebarFooter",
+      "SidebarGroup",
+      "SidebarHeader",
+      "interface",
+      "interface",
+      "NavbarContext",
+      "SideNavbarConfigContext",
+      "SideNavbarStateContext",
+      "SideNavbarThemeContext",
+      "interface",
+      "SidebarContext",
+      "SidebarSlotContext",
+      "SideNavbarConfigProvider",
+      "SideNavbarProvider",
+      "SideNavbarStateProvider",
+      "SideNavbarThemeProvider",
+      "SidebarSlotProvider",
+      "Stepper",
+      "TableComponent",
+      "TableActions",
+      "TableActions",
+      "TableBody",
+      "TableCell",
+      "type",
+      "TableEmptyState",
+      "TableFilters",
+      "TableFilters",
+      "TableHeader",
+      "TableHeaderCell",
+      "TableHeaderRow",
+      "TablePagination",
+      "TablePagination",
+      "interface",
+      "TableRow",
+      "Timeline",
+      "interface",
+      "interface",
+      "type",
+      "interface"
+    ],
+    "providers": [
+      "interface",
+      "type",
+      "type",
+      "interface",
+      "type",
+      "interface",
+      "interface",
+      "interface",
+      "interface"
+    ],
+    "layouts": [
+      "interface",
+      "interface"
+    ],
+    "patterns": [
+      "interface",
+      "interface",
+      "interface"
+    ],
+    "templates": [
+      "interface"
+    ],
+    "utilities": [
+      "interface"
+    ]
+  },
+  "components": {
+    "meta": {
+      "category": "unknown",
+      "path": "/src/ui/a11y/AccessibilityStories.tsx",
+      "status": "stable",
+      "description": "Keyboard Navigation Example",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 4
+    },
+    "Avatar": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Avatar/Avatar.tsx",
+      "status": "stable",
+      "description": "Avatar Component",
+      "propsCount": 0,
+      "storiesCount": 2,
+      "dependenciesCount": 2
+    },
+    "interface": {
+      "category": "utilities",
+      "path": "/src/ui/utilities/Portal/Portal.tsx",
+      "status": "stable",
+      "description": "Content to render in the portal",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 0
+    },
+    "Badge": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Badge/Badge.tsx",
+      "status": "stable",
+      "description": "Badge Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 5
+    },
+    "Button": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Button/Button.tsx",
+      "status": "stable",
+      "description": "Helper to get focus ring color from background color",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 6
+    },
+    "Checkbox": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Checkbox/Checkbox.tsx",
+      "status": "stable",
+      "description": "Checkbox Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 5
+    },
+    "Chip": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Chip/Chip.tsx",
+      "status": "stable",
+      "description": "Chip Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 5
+    },
+    "Collapsible": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Collapsible/Collapsible.tsx",
+      "status": "stable",
+      "description": "Collapsible Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 4
+    },
+    "ErrorMessage": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/ErrorMessage/ErrorMessage.tsx",
+      "status": "stable",
+      "description": "ErrorMessage Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 4
+    },
+    "Info": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Info/Info.tsx",
+      "status": "stable",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 4
+    },
+    "Input": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Input/Input.tsx",
+      "status": "stable",
+      "description": "Input Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 6
+    },
+    "Label": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Label/Label.tsx",
+      "status": "stable",
+      "description": "Label Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 4
+    },
+    "Progress": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Progress/Progress.tsx",
+      "status": "stable",
+      "description": "Progress Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 4
+    },
+    "Radio": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Radio/Radio.tsx",
+      "status": "stable",
+      "description": "Radio Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 4
+    },
+    "Select": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Select/Select.tsx",
+      "status": "stable",
+      "description": "Select Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 5
+    },
+    "Separator": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Separator/Separator.tsx",
+      "status": "stable",
+      "description": "Separator Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 2
+    },
+    "Skeleton": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Skeleton/Skeleton.tsx",
+      "status": "stable",
+      "description": "Skeleton Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 4
+    },
+    "Slider": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Slider/Slider.tsx",
+      "status": "stable",
+      "description": "Slider Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 6
+    },
+    "Spinner": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Spinner/Spinner.tsx",
+      "status": "stable",
+      "description": "Spinner Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 4
+    },
+    "Switch": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Switch/Switch.tsx",
+      "status": "stable",
+      "description": "Switch Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 5
+    },
+    "Text": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Text/Text.tsx",
+      "status": "stable",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 3
+    },
+    "Textarea": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Textarea/Textarea.tsx",
+      "status": "stable",
+      "description": "Textarea Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 5
+    },
+    "Tooltip": {
+      "category": "atoms",
+      "path": "/src/ui/atoms/Tooltip/Tooltip.tsx",
+      "status": "stable",
+      "description": "Tooltip Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 5
+    },
+    "AddNodeButton": {
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/AddNodeButton.tsx",
+      "status": "stable",
+      "description": "Add Node Button Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 5
+    },
+    "DatasetSelector": {
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/DatasetSelector.tsx",
+      "status": "stable",
+      "description": "Dataset Selector Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 8
+    },
+    "MyFlow": {
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/ExportPanel.tsx",
+      "status": "stable",
+      "description": "Export Panel Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 8
+    },
+    "FloatingEdgesCheckbox": {
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/FloatingEdgesCheckbox.tsx",
+      "status": "stable",
+      "description": "Floating Edges Checkbox Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 3
+    },
+    "type": {
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/shared/PlaygroundControls/CodeDisplay.tsx",
+      "status": "stable",
+      "description": "CodeDisplay Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 5
+    },
+    "NodesEdgesTabContent": {
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/NodesEdgesTabContent.tsx",
+      "status": "stable",
+      "description": "Nodes & Edges Tab Content Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 10
+    },
+    "PlaygroundCanvas": {
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/PlaygroundCanvas.tsx",
+      "status": "stable",
+      "description": "Playground Canvas Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 7
+    },
+    "PlaygroundCanvasFooter": {
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/PlaygroundCanvasFooter.tsx",
+      "status": "stable",
+      "description": "Playground Canvas Footer Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 7
+    },
+    "class": {
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/PlaygroundErrorBoundary.tsx",
+      "status": "stable",
+      "description": "Playground Error Boundary",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 3
+    },
+    "PlaygroundHeader": {
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/PlaygroundHeader.tsx",
+      "status": "stable",
+      "description": "Playground Header Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 7
+    },
+    "ViewportLogger": {
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/ViewportLogger.tsx",
+      "status": "stable",
+      "description": "Viewport Logger Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 3
+    },
+    "FloatingConnectionLine": {
+      "category": "molecules",
+      "path": "/src/ui/extensions/flow/molecules/FloatingConnectionLine.tsx",
+      "status": "stable",
+      "description": "FloatingConnectionLine Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 1
+    },
+    "getPlaygroundTabContent": {
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/utils/playgroundSteps.tsx",
+      "status": "stable",
+      "description": "Playground Tab Content Configuration",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 6
+    },
+    "Accordion": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Accordion/Accordion.tsx",
+      "status": "stable",
+      "description": "Accordion Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 5
+    },
+    "Autocomplete": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Autocomplete/Autocomplete.tsx",
+      "status": "stable",
+      "description": "Autocomplete Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 8
+    },
+    "AutocompleteList": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Autocomplete/AutocompleteList.tsx",
+      "status": "stable",
+      "description": "AutocompleteList Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 6
+    },
+    "AutocompleteOption": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Autocomplete/AutocompleteOption.tsx",
+      "status": "stable",
+      "description": "AutocompleteOption Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 1
+    },
+    "Breadcrumb": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Breadcrumb/Breadcrumb.tsx",
+      "status": "stable",
+      "description": "Breadcrumb Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 2
+    },
+    "ButtonGroup": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/ButtonGroup/ButtonGroup.tsx",
+      "status": "stable",
+      "description": "ButtonGroup Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 2
+    },
+    "Card": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Card/Card.tsx",
+      "status": "stable",
+      "description": "Card Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 2
+    },
+    "ColorPicker": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/ColorPicker/ColorPicker.tsx",
+      "status": "stable",
+      "description": "ColorPicker Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 5
+    },
+    "DatePicker": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/DatePicker/DatePicker.tsx",
+      "status": "stable",
+      "description": "DatePicker Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 4
+    },
+    "Drawer": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Drawer/Drawer.tsx",
+      "status": "stable",
+      "description": "Drawer Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 4
+    },
+    "DrawerContent": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Drawer/DrawerContent.tsx",
+      "status": "stable",
+      "description": "DrawerContent Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 8
+    },
+    "DrawerFooter": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Drawer/DrawerFooter.tsx",
+      "status": "stable",
+      "description": "DrawerFooter Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 2
+    },
+    "DrawerHeader": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Drawer/DrawerHeader.tsx",
+      "status": "stable",
+      "description": "DrawerHeader Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 2
+    },
+    "Dropdown": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Dropdown/Dropdown.tsx",
+      "status": "stable",
+      "description": "Dropdown Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 2
+    },
+    "EmptyState": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/EmptyState/EmptyState.tsx",
+      "status": "stable",
+      "description": "EmptyState Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 4
+    },
+    "FileUpload": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/FileUpload/FileUpload.tsx",
+      "status": "stable",
+      "description": "FileUpload Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 4
+    },
+    "Form": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Form/Form.tsx",
+      "status": "stable",
+      "description": "Form Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 4
+    },
+    "Menu": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Menu/Menu.tsx",
+      "status": "stable",
+      "description": "Menu Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 5
+    },
+    "MenuContent": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Menu/MenuContent.tsx",
+      "status": "stable",
+      "description": "MenuContent Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 6
+    },
+    "MenuProvider": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Menu/MenuContext.tsx",
+      "status": "stable",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 0
+    },
+    "MenuItem": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Menu/MenuItem.tsx",
+      "status": "stable",
+      "description": "MenuItem Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 4
+    },
+    "MenuSeparator": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Menu/MenuSeparator.tsx",
+      "status": "stable",
+      "description": "MenuSeparator Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 2
+    },
+    "MenuTrigger": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Menu/MenuTrigger.tsx",
+      "status": "stable",
+      "description": "MenuTrigger Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 1
+    },
+    "MultiSelect": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/MultiSelect/MultiSelect.tsx",
+      "status": "stable",
+      "description": "MultiSelect Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 8
+    },
+    "Pagination": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Pagination/Pagination.tsx",
+      "status": "stable",
+      "description": "Pagination Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 3
+    },
+    "Popover": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Popover/Popover.tsx",
+      "status": "stable",
+      "description": "Popover Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 8
+    },
+    "Rating": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Rating/Rating.tsx",
+      "status": "stable",
+      "description": "Rating Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 2
+    },
+    "SearchInput": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/SearchInput/SearchInput.tsx",
+      "status": "stable",
+      "description": "SearchInput Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 4
+    },
+    "Tabs": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/Tabs/Tabs.tsx",
+      "status": "stable",
+      "description": "Tabs Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 4
+    },
+    "TimePicker": {
+      "category": "molecules",
+      "path": "/src/ui/molecules/TimePicker/TimePicker.tsx",
+      "status": "stable",
+      "description": "TimePicker Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 4
+    },
+    "CommandPalette": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/CommandPalette/CommandPalette.tsx",
+      "status": "stable",
+      "description": "CommandPalette Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 7
+    },
+    "DataGrid": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/DataGrid/DataGrid.tsx",
+      "status": "stable",
+      "description": "DataGrid Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 3
+    },
+    "AlertDialog": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/Dialog/AlertDialog.tsx",
+      "status": "stable",
+      "description": "AlertDialog Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 5
+    },
+    "Dialog": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/Dialog/Dialog.tsx",
+      "status": "stable",
+      "description": "Dialog Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 8
+    },
+    "LoginBox": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/LoginBox/LoginBox.tsx",
+      "status": "stable",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 5
+    },
+    "Modal": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/Modal/Modal.tsx",
+      "status": "stable",
+      "description": "Modal Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 0
+    },
+    "SideNavbar": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/SideNavbar.tsx",
+      "status": "stable",
+      "description": "SideNavbar Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 13
+    },
+    "Navbar": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Navbar/Navbar.tsx",
+      "status": "stable",
+      "description": "Navbar subcomponent for SideNavbar",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 12
+    },
+    "NavbarGroup": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Navbar/NavbarGroup.tsx",
+      "status": "stable",
+      "description": "NavbarGroup Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 2
+    },
+    "NavbarItem": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Navbar/NavbarItem.tsx",
+      "status": "stable",
+      "description": "Size configuration for navbar items",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 4
+    },
+    "NavbarSeparator": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Navbar/NavbarSeparator.tsx",
+      "status": "stable",
+      "description": "Separator for the Navbar subcomponent",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 1
+    },
+    "NavbarToggle": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Navbar/NavbarToggle.tsx",
+      "status": "stable",
+      "description": "Toggle button for the Navbar subcomponent",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 3
+    },
+    "SideNavbarBackdrop": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/SideNavbarBackdrop.tsx",
+      "status": "stable",
+      "description": "Override visibility (uses context by default)",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 3
+    },
+    "SideNavbarGroup": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/SideNavbarGroup.tsx",
+      "status": "stable",
+      "description": "Unique identifier for the group",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 4
+    },
+    "SideNavbarResizeHandle": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/SideNavbarResizeHandle.tsx",
+      "status": "stable",
+      "description": "SideNavbar Resize Handle Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 2
+    },
+    "SideNavbarRoot": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/SideNavbarRoot.tsx",
+      "status": "stable",
+      "description": "SideNavbar Root Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 7
+    },
+    "SideNavbarToggle": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/SideNavbarToggle.tsx",
+      "status": "stable",
+      "description": "SideNavbarToggle Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 6
+    },
+    "Sidebar": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Sidebar/Sidebar.tsx",
+      "status": "stable",
+      "description": "Sidebar subcomponent for SideNavbar",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 11
+    },
+    "SidebarContent": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Sidebar/SidebarContent.tsx",
+      "status": "stable",
+      "description": "Content component for the Sidebar subcomponent",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 4
+    },
+    "SidebarFooter": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Sidebar/SidebarFooter.tsx",
+      "status": "stable",
+      "description": "Footer component for the Sidebar subcomponent",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 3
+    },
+    "SidebarGroup": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Sidebar/SidebarGroup.tsx",
+      "status": "stable",
+      "description": "Group component for the Sidebar subcomponent",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 5
+    },
+    "SidebarHeader": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Sidebar/SidebarHeader.tsx",
+      "status": "stable",
+      "description": "Header component for the Sidebar subcomponent",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 3
+    },
+    "NavbarContext": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/contexts/NavbarContext.tsx",
+      "status": "stable",
+      "description": "Context for the Navbar subcomponent",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 1
+    },
+    "SideNavbarConfigContext": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/contexts/SideNavbarConfigContext.tsx",
+      "status": "stable",
+      "description": "Config context for SideNavbar behavior configuration.",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 1
+    },
+    "SideNavbarStateContext": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/contexts/SideNavbarStateContext.tsx",
+      "status": "stable",
+      "description": "State context for SideNavbar runtime state.",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 1
+    },
+    "SideNavbarThemeContext": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/contexts/SideNavbarThemeContext.tsx",
+      "status": "stable",
+      "description": "Theme context for SideNavbar styling configuration.",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 1
+    },
+    "SidebarContext": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/contexts/SidebarContext.tsx",
+      "status": "stable",
+      "description": "Context for the Sidebar subcomponent",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 1
+    },
+    "SidebarSlotContext": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/contexts/SidebarSlotContext.tsx",
+      "status": "stable",
+      "description": "Sidebar Slot Context",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 1
+    },
+    "SideNavbarConfigProvider": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/providers/SideNavbarConfigProvider.tsx",
+      "status": "stable",
+      "description": "Config Provider for SideNavbar",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 2
+    },
+    "SideNavbarProvider": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/providers/SideNavbarProvider.tsx",
+      "status": "stable",
+      "description": "Combined Provider for SideNavbar",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 4
+    },
+    "SideNavbarStateProvider": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/providers/SideNavbarStateProvider.tsx",
+      "status": "stable",
+      "description": "State Provider for SideNavbar",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 9
+    },
+    "SideNavbarThemeProvider": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/providers/SideNavbarThemeProvider.tsx",
+      "status": "stable",
+      "description": "Theme Provider for SideNavbar",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 2
+    },
+    "SidebarSlotProvider": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/providers/SidebarSlotProvider.tsx",
+      "status": "stable",
+      "description": "Sidebar Slot Provider",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 2
+    },
+    "Stepper": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/Stepper/Stepper.tsx",
+      "status": "stable",
+      "description": "Stepper Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 6
+    },
+    "TableComponent": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/Table.tsx",
+      "status": "stable",
+      "description": "Table Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 14
+    },
+    "TableActions": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableActions.tsx",
+      "status": "stable",
+      "description": "TableActions Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 2
+    },
+    "TableBody": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableBody.tsx",
+      "status": "stable",
+      "description": "TableBody Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 5
+    },
+    "TableCell": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableCell.tsx",
+      "status": "stable",
+      "description": "TableCell Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 1
+    },
+    "TableEmptyState": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableEmptyState.tsx",
+      "status": "stable",
+      "description": "TableEmptyState Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 2
+    },
+    "TableFilters": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableFilters.tsx",
+      "status": "stable",
+      "description": "TableFilters Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 2
+    },
+    "TableHeader": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableHeader.tsx",
+      "status": "stable",
+      "description": "TableHeader Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 2
+    },
+    "TableHeaderCell": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableHeaderCell.tsx",
+      "status": "stable",
+      "description": "TableHeaderCell Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 2
+    },
+    "TableHeaderRow": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableHeaderRow.tsx",
+      "status": "stable",
+      "description": "TableHeaderRow Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 3
+    },
+    "TablePagination": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TablePagination.tsx",
+      "status": "stable",
+      "description": "TablePagination Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 2
+    },
+    "TableRow": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableRow.tsx",
+      "status": "stable",
+      "description": "TableRow Component",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 4
+    },
+    "Timeline": {
+      "category": "organisms",
+      "path": "/src/ui/organisms/Timeline/Timeline.tsx",
+      "status": "stable",
+      "description": "Timeline Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 3
+    },
+    "ColorsPlayground": {
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/ColorsPlayground.tsx",
+      "status": "stable",
+      "description": "Colors Playground Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 11
+    },
+    "SpacingPlayground": {
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/SpacingPlayground.tsx",
+      "status": "stable",
+      "description": "Spacing Playground Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 9
+    },
+    "ThemePlayground": {
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/ThemePlayground.tsx",
+      "status": "stable",
+      "description": "Theme Playground Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 10
+    },
+    "TypographyPlayground": {
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/TypographyPlayground.tsx",
+      "status": "stable",
+      "description": "Typography Playground Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 9
+    },
+    "ColorPalette": {
+      "category": "unknown",
+      "path": "/src/ui/tokens/TokenVisualizations.tsx",
+      "status": "stable",
+      "description": "Token Visualization Components",
+      "propsCount": 0,
+      "storiesCount": 0,
+      "dependenciesCount": 1
+    },
+    "ThemeBuilderComponent": {
+      "category": "unknown",
+      "path": "/src/ui/tools/ThemeBuilder.tsx",
+      "status": "stable",
+      "description": "Theme Builder Component",
+      "propsCount": 0,
+      "storiesCount": 1,
+      "dependenciesCount": 9
+    }
+  },
+  "fullMetadata": [
+    {
+      "name": "meta",
+      "category": "unknown",
+      "path": "/src/ui/a11y/AccessibilityStories.tsx",
+      "file": "AccessibilityStories.tsx",
+      "dependencies": [
+        "../atoms",
+        "../atoms",
+        "../atoms",
+        "../organisms/Modal/Modal"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Keyboard Navigation Example"
+    },
+    {
+      "name": "Avatar",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Avatar/Avatar.tsx",
+      "file": "Avatar.tsx",
+      "dependencies": [
+        "../../tokens",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "Avatar.stories.tsx",
+        "AvatarGroup.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Avatar Component"
+    },
+    {
+      "name": "interface",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Avatar/AvatarGroup.tsx",
+      "file": "AvatarGroup.tsx",
+      "dependencies": [
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "AvatarGroup.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "AvatarGroup Component"
+    },
+    {
+      "name": "Badge",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Badge/Badge.tsx",
+      "file": "Badge.tsx",
+      "dependencies": [
+        "../../tokens/colors",
+        "../../tokens/radius",
+        "../../tokens/spacing",
+        "../../tokens/typography",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "Badge.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Badge Component"
+    },
+    {
+      "name": "Button",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Button/Button.tsx",
+      "file": "Button.tsx",
+      "dependencies": [
+        "../../tokens/colors",
+        "../../tokens/radius",
+        "../../tokens/spacing",
+        "../../tokens/typography",
+        "../../utils",
+        "../Spinner/Spinner"
+      ],
+      "props": [],
+      "stories": [
+        "Button.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Helper to get focus ring color from background color"
+    },
+    {
+      "name": "Checkbox",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Checkbox/Checkbox.tsx",
+      "file": "Checkbox.tsx",
+      "dependencies": [
+        "../../tokens/typography",
+        "../../tokens/colors",
+        "../../tokens/radius",
+        "../../tokens/spacing",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "Checkbox.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Checkbox Component"
+    },
+    {
+      "name": "Chip",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Chip/Chip.tsx",
+      "file": "Chip.tsx",
+      "dependencies": [
+        "../../tokens/colors",
+        "../../tokens/radius",
+        "../../tokens/spacing",
+        "../../tokens/typography",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "Chip.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Chip Component"
+    },
+    {
+      "name": "Collapsible",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Collapsible/Collapsible.tsx",
+      "file": "Collapsible.tsx",
+      "dependencies": [
+        "../../hooks/useCollapsible",
+        "../../tokens/colors",
+        "../../tokens/radius",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "Collapsible.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Collapsible Component"
+    },
+    {
+      "name": "ErrorMessage",
+      "category": "atoms",
+      "path": "/src/ui/atoms/ErrorMessage/ErrorMessage.tsx",
+      "file": "ErrorMessage.tsx",
+      "dependencies": [
+        "../../tokens/typography",
+        "../../tokens/colors",
+        "../../tokens/spacing",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "ErrorMessage.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "ErrorMessage Component"
+    },
+    {
+      "name": "Info",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Info/Info.tsx",
+      "file": "Info.tsx",
+      "dependencies": [
+        "../../tokens/colors",
+        "../../tokens/radius",
+        "../../tokens/spacing",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "Info.stories.tsx"
+      ],
+      "status": "stable"
+    },
+    {
+      "name": "Input",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Input/Input.tsx",
+      "file": "Input.tsx",
+      "dependencies": [
+        "../../tokens/typography",
+        "../../tokens/colors",
+        "../../tokens/radius",
+        "../../tokens/spacing",
+        "../../utils",
+        "../Button/Button"
+      ],
+      "props": [],
+      "stories": [
+        "Input.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Input Component"
+    },
+    {
+      "name": "Label",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Label/Label.tsx",
+      "file": "Label.tsx",
+      "dependencies": [
+        "../../tokens/typography",
+        "../../tokens/colors",
+        "../../tokens/spacing",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "Label.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Label Component"
+    },
+    {
+      "name": "Progress",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Progress/Progress.tsx",
+      "file": "Progress.tsx",
+      "dependencies": [
+        "../../tokens",
+        "../../tokens/spacing",
+        "../../tokens/typography",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "Progress.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Progress Component"
+    },
+    {
+      "name": "Radio",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Radio/Radio.tsx",
+      "file": "Radio.tsx",
+      "dependencies": [
+        "../../tokens/typography",
+        "../../tokens/colors",
+        "../../tokens/spacing",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "Radio.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Radio Component"
+    },
+    {
+      "name": "Select",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Select/Select.tsx",
+      "file": "Select.tsx",
+      "dependencies": [
+        "../../tokens/typography",
+        "../../tokens/colors",
+        "../../tokens/radius",
+        "../../tokens/spacing",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "Select.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Select Component"
+    },
+    {
+      "name": "Separator",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Separator/Separator.tsx",
+      "file": "Separator.tsx",
+      "dependencies": [
+        "../../tokens/colors",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "Separator.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Separator Component"
+    },
+    {
+      "name": "Skeleton",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Skeleton/Skeleton.tsx",
+      "file": "Skeleton.tsx",
+      "dependencies": [
+        "../../tokens/colors",
+        "../../tokens/radius",
+        "../../tokens/spacing",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "Skeleton.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Skeleton Component"
+    },
+    {
+      "name": "Slider",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Slider/Slider.tsx",
+      "file": "Slider.tsx",
+      "dependencies": [
+        "../../tokens/colors",
+        "../../tokens/animations",
+        "../../tokens/radius",
+        "../../tokens/spacing",
+        "../../tokens/typography",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "Slider.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Slider Component"
+    },
+    {
+      "name": "Spinner",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Spinner/Spinner.tsx",
+      "file": "Spinner.tsx",
+      "dependencies": [
+        "../../tokens/colors",
+        "../../tokens/spacing",
+        "../../tokens/typography",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "Spinner.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Spinner Component"
+    },
+    {
+      "name": "Switch",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Switch/Switch.tsx",
+      "file": "Switch.tsx",
+      "dependencies": [
+        "../../tokens/colors",
+        "../../tokens/animations",
+        "../../tokens/spacing",
+        "../../tokens/typography",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "Switch.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Switch Component"
+    },
+    {
+      "name": "Text",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Text/Text.tsx",
+      "file": "Text.tsx",
+      "dependencies": [
+        "../../tokens/typography",
+        "../../tokens/colors",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "Text.stories.tsx"
+      ],
+      "status": "stable"
+    },
+    {
+      "name": "Textarea",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Textarea/Textarea.tsx",
+      "file": "Textarea.tsx",
+      "dependencies": [
+        "../../tokens/colors",
+        "../../tokens/radius",
+        "../../tokens/spacing",
+        "../../tokens/typography",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "Textarea.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Textarea Component"
+    },
+    {
+      "name": "Tooltip",
+      "category": "atoms",
+      "path": "/src/ui/atoms/Tooltip/Tooltip.tsx",
+      "file": "Tooltip.tsx",
+      "dependencies": [
+        "../../tokens/colors",
+        "../../tokens/radius",
+        "../../tokens/spacing",
+        "../../tokens/typography",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "Tooltip.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Tooltip Component"
+    },
+    {
+      "name": "interface",
+      "category": "unknown",
+      "path": "/src/ui/devtools/ContextDevTools.tsx",
+      "file": "ContextDevTools.tsx",
+      "dependencies": [
+        "../providers/ThemeProvider",
+        "../providers/ConfigProvider"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Context information for debugging"
+    },
+    {
+      "name": "interface",
+      "category": "atoms",
+      "path": "/src/ui/extensions/flow/atoms/FlowHandle.tsx",
+      "file": "FlowHandle.tsx",
+      "dependencies": [
+        "../organisms/FlowContext",
+        "../../../tokens",
+        "../styles/modules/FlowHandle.module.css"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "FlowHandle Component"
+    },
+    {
+      "name": "interface",
+      "category": "atoms",
+      "path": "/src/ui/extensions/flow/atoms/FlowNodeWrapper.tsx",
+      "file": "FlowNodeWrapper.tsx",
+      "dependencies": [
+        "../organisms/FlowContext",
+        "../../../tokens",
+        "../styles/modules/FlowNodeWrapper.module.css"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "FlowNodeWrapper Component"
+    },
+    {
+      "name": "AddNodeButton",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/AddNodeButton.tsx",
+      "file": "AddNodeButton.tsx",
+      "dependencies": [
+        "../../../atoms",
+        "../context/PlaygroundContext",
+        "../utils/playgroundHelpers",
+        "../organisms/FlowTypes",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Add Node Button Component"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/BackgroundConfigPanel.tsx",
+      "file": "BackgroundConfigPanel.tsx",
+      "dependencies": [
+        "../../../molecules",
+        "../../../atoms",
+        "../organisms/FlowBackground",
+        "../organisms/FlowProvider",
+        "../organisms/FlowCanvas",
+        "../types/playgroundTypes",
+        "../utils/backgroundPresets",
+        "../hooks/useFlowStyles",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Background Config Panel Component"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/CodePreview.tsx",
+      "file": "CodePreview.tsx",
+      "dependencies": [
+        "../../../molecules",
+        "../../../atoms",
+        "../utils/codeGenerator",
+        "../organisms/FlowTypes",
+        "../types/playgroundTypes"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Code Preview Component"
+    },
+    {
+      "name": "DatasetSelector",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/DatasetSelector.tsx",
+      "file": "DatasetSelector.tsx",
+      "dependencies": [
+        "../../../molecules",
+        "../../../atoms",
+        "../../../atoms/Collapsible/Collapsible",
+        "../utils/playgroundTemplates",
+        "../context/PlaygroundContext",
+        "../utils/playgroundHelpers",
+        "../organisms/FlowTypes",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Dataset Selector Component"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/DragNDropSidebar.tsx",
+      "file": "DragNDropSidebar.tsx",
+      "dependencies": [
+        "../../../molecules",
+        "../../../atoms",
+        "../styles/modules/DragNDropSidebar.module.css"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Drag & Drop Sidebar Component"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/EdgeEditor.tsx",
+      "file": "EdgeEditor.tsx",
+      "dependencies": [
+        "../../../molecules",
+        "../../../atoms",
+        "../molecules/CustomEdge",
+        "../molecules/CustomEdge",
+        "../organisms/FlowTypes"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Edge Editor Component"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/EdgeTypesPanel.tsx",
+      "file": "EdgeTypesPanel.tsx",
+      "dependencies": [
+        "../../../molecules",
+        "../../../atoms",
+        "../../../atoms/Collapsible/Collapsible",
+        "../organisms/FlowProvider",
+        "../organisms/FlowCanvas",
+        "../molecules/CustomEdge",
+        "../molecules/FloatingEdge",
+        "../organisms/FlowTypes",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Edge Types Panel Component"
+    },
+    {
+      "name": "MyFlow",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/ExportPanel.tsx",
+      "file": "ExportPanel.tsx",
+      "dependencies": [
+        "../../../molecules",
+        "../../../atoms",
+        "../../../atoms/Collapsible/Collapsible",
+        "../../../atoms/Tooltip/Tooltip",
+        "../context/PlaygroundContext",
+        "../utils/PlaygroundPersistence",
+        "../../../tokens",
+        "../organisms/FlowTypes"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Export Panel Component"
+    },
+    {
+      "name": "FloatingEdgesCheckbox",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/FloatingEdgesCheckbox.tsx",
+      "file": "FloatingEdgesCheckbox.tsx",
+      "dependencies": [
+        "../../../atoms",
+        "../context/PlaygroundContext",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Floating Edges Checkbox Component"
+    },
+    {
+      "name": "type",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/HandlePositionsDropdown.tsx",
+      "file": "HandlePositionsDropdown.tsx",
+      "dependencies": [
+        "../../../atoms",
+        "../context/PlaygroundContext",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Handle Positions Dropdown Component"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/LayoutApplier.tsx",
+      "file": "LayoutApplier.tsx",
+      "dependencies": [
+        "../hooks/useAutoLayout",
+        "../organisms/FlowTypes"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Layout Applier Component"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/LayoutConfigPanel.tsx",
+      "file": "LayoutConfigPanel.tsx",
+      "dependencies": [
+        "../../../molecules",
+        "../../../atoms",
+        "../types/playgroundTypes",
+        "../organisms/FlowTypes",
+        "../utils/layoutEngine",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Layout Config Panel Component"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/NodeEditor.tsx",
+      "file": "NodeEditor.tsx",
+      "dependencies": [
+        "../../../molecules",
+        "../../../atoms",
+        "../molecules/CustomNode",
+        "../molecules/CustomNode",
+        "../organisms/FlowTypes"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Node Editor Component"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/NodeTypesPanel.tsx",
+      "file": "NodeTypesPanel.tsx",
+      "dependencies": [
+        "../../../molecules",
+        "../../../atoms",
+        "../../../atoms/Collapsible/Collapsible",
+        "../organisms/FlowProvider",
+        "../organisms/FlowCanvas",
+        "../molecules/CardNode",
+        "../molecules/CustomNode",
+        "../molecules/InputNode",
+        "../molecules/OutputNode",
+        "../molecules/SelectorNode",
+        "../molecules/ResizableNode",
+        "../organisms/FlowTypes",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Node Types Panel Component"
+    },
+    {
+      "name": "NodesEdgesTabContent",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/NodesEdgesTabContent.tsx",
+      "file": "NodesEdgesTabContent.tsx",
+      "dependencies": [
+        "../../../atoms",
+        "../../../atoms/Collapsible/Collapsible",
+        "./AddNodeButton",
+        "./HandlePositionsDropdown",
+        "./FloatingEdgesCheckbox",
+        "./",
+        "../context/PlaygroundContext",
+        "../utils/playgroundTemplates",
+        "../utils/playgroundHelpers",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Nodes & Edges Tab Content Component"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/PlaygroundBreadcrumbs.tsx",
+      "file": "PlaygroundBreadcrumbs.tsx",
+      "dependencies": [
+        "./PlaygroundTabs",
+        "./PlaygroundTabs",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Playground Breadcrumbs Component"
+    },
+    {
+      "name": "PlaygroundCanvas",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/PlaygroundCanvas.tsx",
+      "file": "PlaygroundCanvas.tsx",
+      "dependencies": [
+        "../organisms/FlowProvider",
+        "../organisms/FlowCanvas",
+        "./LayoutApplier",
+        "./PlaygroundCanvasFooter",
+        "../context/PlaygroundContext",
+        "../organisms/FlowTypes",
+        "../utils/playgroundHelpers"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Playground Canvas Component"
+    },
+    {
+      "name": "PlaygroundCanvasFooter",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/PlaygroundCanvasFooter.tsx",
+      "file": "PlaygroundCanvasFooter.tsx",
+      "dependencies": [
+        "../../../molecules",
+        "../../../atoms",
+        "./",
+        "./ViewportLogger",
+        "../context/PlaygroundContext",
+        "../organisms/FlowContext",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Playground Canvas Footer Component"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/PlaygroundDevTools.tsx",
+      "file": "PlaygroundDevTools.tsx",
+      "dependencies": [
+        "../../../molecules",
+        "../../../atoms",
+        "../../../atoms/Collapsible/Collapsible",
+        "../context/PlaygroundContext",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Playground Dev Tools Component"
+    },
+    {
+      "name": "class",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/PlaygroundErrorBoundary.tsx",
+      "file": "PlaygroundErrorBoundary.tsx",
+      "dependencies": [
+        "../../../molecules",
+        "../../../atoms",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Playground Error Boundary"
+    },
+    {
+      "name": "PlaygroundHeader",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/PlaygroundHeader.tsx",
+      "file": "PlaygroundHeader.tsx",
+      "dependencies": [
+        "../../../atoms",
+        "../../../atoms/Tooltip/Tooltip",
+        "./PlaygroundBreadcrumbs",
+        "./PlaygroundSearch",
+        "../context/PlaygroundContext",
+        "../hooks/useKeyboardShortcuts",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Playground Header Component"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/PlaygroundLayout.tsx",
+      "file": "PlaygroundLayout.tsx",
+      "dependencies": [
+        "../context/PlaygroundContext",
+        "./PlaygroundSidebar",
+        "./PlaygroundHeader",
+        "./PlaygroundCanvas",
+        "./PlaygroundErrorBoundary",
+        "./PlaygroundDevTools",
+        "../hooks/useKeyboardShortcuts",
+        "../utils/playgroundRouting",
+        "../../../atoms",
+        "./PlaygroundTabs",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Playground Layout Component"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/PlaygroundOnboarding.tsx",
+      "file": "PlaygroundOnboarding.tsx",
+      "dependencies": [
+        "../../../molecules",
+        "../../../atoms",
+        "../../../atoms/Tooltip/Tooltip",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Playground Onboarding Component"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/PlaygroundSearch.tsx",
+      "file": "PlaygroundSearch.tsx",
+      "dependencies": [
+        "../../../atoms",
+        "../../../molecules",
+        "../context/PlaygroundContext",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Enhanced Playground Search Component"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/PlaygroundSidebar.tsx",
+      "file": "PlaygroundSidebar.tsx",
+      "dependencies": [
+        "./PlaygroundTabs",
+        "./PlaygroundSidebarContent",
+        "../../../organisms/SideNavbar"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Playground Sidebar Component"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/PlaygroundSidebarContent.tsx",
+      "file": "PlaygroundSidebarContent.tsx",
+      "dependencies": [
+        "../../../molecules",
+        "../../../atoms",
+        "../../../atoms/Collapsible/Collapsible",
+        "../utils/playgroundSteps",
+        "./PlaygroundTabs",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Playground Sidebar Content Component"
+    },
+    {
+      "name": "type",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/PlaygroundTabs.tsx",
+      "file": "PlaygroundTabs.tsx",
+      "dependencies": [
+        "../../../molecules/Tabs/Tabs",
+        "../../../atoms/Tooltip/Tooltip",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Playground Tabs Component"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/ReactFlowPropsPanel.tsx",
+      "file": "ReactFlowPropsPanel.tsx",
+      "dependencies": [
+        "../../../molecules",
+        "../../../atoms",
+        "../../../atoms/Collapsible/Collapsible",
+        "../../../atoms/Tooltip/Tooltip",
+        "../utils/reactFlowPropsDefinitions",
+        "../utils/playgroundHelpers",
+        "../types/playgroundTypes",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "React Flow Props Panel"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/SettingsPanel.tsx",
+      "file": "SettingsPanel.tsx",
+      "dependencies": [
+        "../../../molecules",
+        "../../../atoms",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Settings Panel Component"
+    },
+    {
+      "name": "ViewportLogger",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/components/ViewportLogger.tsx",
+      "file": "ViewportLogger.tsx",
+      "dependencies": [
+        "../../../molecules",
+        "../organisms/FlowContext",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Viewport Logger Component"
+    },
+    {
+      "name": "type",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/context/FlowEventContext.tsx",
+      "file": "FlowEventContext.tsx",
+      "dependencies": [],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Flow Event Context"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/context/FlowPerformanceContext.tsx",
+      "file": "FlowPerformanceContext.tsx",
+      "dependencies": [],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Flow Performance Context"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/context/FlowStyleContext.tsx",
+      "file": "FlowStyleContext.tsx",
+      "dependencies": [
+        "../styles/flow-theme"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Flow Style Context"
+    },
+    {
+      "name": "interface",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/context/PlaygroundContext.tsx",
+      "file": "PlaygroundContext.tsx",
+      "dependencies": [
+        "../organisms/FlowTypes",
+        "../types/playgroundTypes",
+        "../utils/playgroundTemplates",
+        "../utils/playgroundHelpers",
+        "../hooks/usePlaygroundHistory",
+        "../utils/PlaygroundStateManager",
+        "../utils/PlaygroundPersistence"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Playground Context"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/extensions/flow/molecules/CardNode.tsx",
+      "file": "CardNode.tsx",
+      "dependencies": [
+        "../atoms/FlowNodeWrapper",
+        "../atoms/FlowHandle",
+        "../../../molecules",
+        "../organisms/FlowTypes",
+        "../styles/modules/CardNode.module.css"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "CardNode Component"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/extensions/flow/molecules/ColorSelectorNode.tsx",
+      "file": "ColorSelectorNode.tsx",
+      "dependencies": [
+        "../atoms/FlowNodeWrapper",
+        "../atoms/FlowHandle",
+        "../organisms/FlowTypes",
+        "../../../atoms"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "ColorSelectorNode Component"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/extensions/flow/molecules/CustomEdge.tsx",
+      "file": "CustomEdge.tsx",
+      "dependencies": [
+        "../organisms/FlowContext",
+        "../organisms/FlowEdgeToolbar",
+        "../organisms/FlowTypes",
+        "../../../tokens/colors",
+        "../utils/propFilters",
+        "../styles/modules/CustomEdge.module.css"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "CustomEdge Component"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/extensions/flow/molecules/CustomNode.tsx",
+      "file": "CustomNode.tsx",
+      "dependencies": [
+        "../atoms/FlowNodeWrapper",
+        "../atoms/FlowHandle",
+        "./FlowNodeContent",
+        "../organisms/FlowTypes",
+        "../styles/modules/CustomNode.module.css"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "CustomNode Component"
+    },
+    {
+      "name": "FloatingConnectionLine",
+      "category": "molecules",
+      "path": "/src/ui/extensions/flow/molecules/FloatingConnectionLine.tsx",
+      "file": "FloatingConnectionLine.tsx",
+      "dependencies": [
+        "../utils/floatingEdgeUtils"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "FloatingConnectionLine Component"
+    },
+    {
+      "name": "type",
+      "category": "molecules",
+      "path": "/src/ui/extensions/flow/molecules/FloatingEdge.tsx",
+      "file": "FloatingEdge.tsx",
+      "dependencies": [
+        "../organisms/FlowTypes",
+        "../../../tokens/colors",
+        "../utils/floatingEdgeUtils",
+        "../styles/modules/CustomEdge.module.css"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "FloatingEdge Component"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/extensions/flow/molecules/FlowNodeContent.tsx",
+      "file": "FlowNodeContent.tsx",
+      "dependencies": [
+        "../organisms/FlowContext",
+        "../organisms/FlowTypes"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "FlowNodeContent Component"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/extensions/flow/molecules/FlowNodeToolbar.tsx",
+      "file": "FlowNodeToolbar.tsx",
+      "dependencies": [
+        "../../../atoms"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "FlowNodeToolbar Component"
+    },
+    {
+      "name": "type",
+      "category": "molecules",
+      "path": "/src/ui/extensions/flow/molecules/InputNode.tsx",
+      "file": "InputNode.tsx",
+      "dependencies": [
+        "../atoms/FlowNodeWrapper",
+        "../atoms/FlowHandle",
+        "../organisms/FlowTypes"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "InputNode Component"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/extensions/flow/molecules/NoteNode.tsx",
+      "file": "NoteNode.tsx",
+      "dependencies": [
+        "../atoms/FlowNodeWrapper",
+        "../atoms/FlowHandle",
+        "../organisms/FlowTypes"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "NoteNode Component"
+    },
+    {
+      "name": "type",
+      "category": "molecules",
+      "path": "/src/ui/extensions/flow/molecules/OutputNode.tsx",
+      "file": "OutputNode.tsx",
+      "dependencies": [
+        "../atoms/FlowNodeWrapper",
+        "../atoms/FlowHandle",
+        "../organisms/FlowTypes"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "OutputNode Component"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/extensions/flow/molecules/ResizableNode.tsx",
+      "file": "ResizableNode.tsx",
+      "dependencies": [
+        "../atoms/FlowNodeWrapper",
+        "../atoms/FlowHandle",
+        "../organisms/FlowTypes"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "ResizableNode Component"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/extensions/flow/molecules/SelectorNode.tsx",
+      "file": "SelectorNode.tsx",
+      "dependencies": [
+        "../atoms/FlowNodeWrapper",
+        "../atoms/FlowHandle",
+        "../organisms/FlowTypes"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "SelectorNode Component"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/extensions/flow/molecules/TextNode.tsx",
+      "file": "TextNode.tsx",
+      "dependencies": [
+        "../atoms/FlowNodeWrapper",
+        "../atoms/FlowHandle",
+        "../../../atoms",
+        "../organisms/FlowTypes"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "TextNode Component"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/extensions/flow/organisms/FlowBackground.tsx",
+      "file": "FlowBackground.tsx",
+      "dependencies": [
+        "./FlowContext",
+        "../hooks/useFlowStyles",
+        "../utils/cssUtils",
+        "../styles/modules/FlowBackground.module.css"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "FlowBackground Component"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/extensions/flow/organisms/FlowCanvas.tsx",
+      "file": "FlowCanvas.tsx",
+      "dependencies": [
+        "./FlowContext",
+        "../utils/nodeTypes",
+        "../utils/edgeTypes",
+        "./FlowBackground",
+        "./FlowControls",
+        "./FlowMinimap",
+        "./FlowPanel"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "FlowCanvasRoot Component"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/extensions/flow/organisms/FlowContext.tsx",
+      "file": "FlowContext.tsx",
+      "dependencies": [
+        "./FlowTypes"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Flow Context Value"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/extensions/flow/organisms/FlowControls.tsx",
+      "file": "FlowControls.tsx",
+      "dependencies": [
+        "./FlowContext",
+        "../../../tokens",
+        "../styles/modules/FlowControls.module.css"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "FlowControls Component"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/extensions/flow/organisms/FlowDragHandle.tsx",
+      "file": "FlowDragHandle.tsx",
+      "dependencies": [],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "FlowDragHandle Component"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/extensions/flow/organisms/FlowEdgeToolbar.tsx",
+      "file": "FlowEdgeToolbar.tsx",
+      "dependencies": [
+        "../../../atoms"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "FlowEdgeToolbar Component"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/extensions/flow/organisms/FlowMinimap.tsx",
+      "file": "FlowMinimap.tsx",
+      "dependencies": [
+        "./FlowContext",
+        "../../../tokens",
+        "../styles/modules/FlowMinimap.module.css"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "FlowMinimap Component"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/extensions/flow/organisms/FlowNodeResizer.tsx",
+      "file": "FlowNodeResizer.tsx",
+      "dependencies": [],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "FlowNodeResizer Component"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/extensions/flow/organisms/FlowPanel.tsx",
+      "file": "FlowPanel.tsx",
+      "dependencies": [
+        "../../../tokens",
+        "./FlowContext"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "FlowPanel Component"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/extensions/flow/organisms/FlowProvider.tsx",
+      "file": "FlowProvider.tsx",
+      "dependencies": [
+        "./FlowContext",
+        "./FlowTypes"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Callback before deleting nodes/edges - return false to prevent deletion"
+    },
+    {
+      "name": "interface",
+      "category": "providers",
+      "path": "/src/ui/extensions/flow/providers/FlowDebugProvider.tsx",
+      "file": "FlowDebugProvider.tsx",
+      "dependencies": [
+        "../organisms/FlowTypes"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Flow Debug Provider"
+    },
+    {
+      "name": "type",
+      "category": "providers",
+      "path": "/src/ui/extensions/flow/providers/FlowEventProvider.tsx",
+      "file": "FlowEventProvider.tsx",
+      "dependencies": [],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Flow Event Provider"
+    },
+    {
+      "name": "type",
+      "category": "providers",
+      "path": "/src/ui/extensions/flow/providers/FlowPerformanceProvider.tsx",
+      "file": "FlowPerformanceProvider.tsx",
+      "dependencies": [],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Flow Performance Provider"
+    },
+    {
+      "name": "interface",
+      "category": "providers",
+      "path": "/src/ui/extensions/flow/providers/FlowProviderComposition.tsx",
+      "file": "FlowProviderComposition.tsx",
+      "dependencies": [
+        "../organisms/FlowProvider",
+        "./FlowStyleProvider",
+        "./FlowEventProvider",
+        "./FlowPerformanceProvider",
+        "./FlowDebugProvider"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Flow Provider Composition"
+    },
+    {
+      "name": "type",
+      "category": "providers",
+      "path": "/src/ui/extensions/flow/providers/FlowStyleProvider.tsx",
+      "file": "FlowStyleProvider.tsx",
+      "dependencies": [],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Flow Style Provider"
+    },
+    {
+      "name": "getPlaygroundTabContent",
+      "category": "extensions",
+      "path": "/src/ui/extensions/flow/utils/playgroundSteps.tsx",
+      "file": "playgroundSteps.tsx",
+      "dependencies": [
+        "../context/PlaygroundContext",
+        "../../../molecules",
+        "../../../atoms",
+        "./playgroundHelpers",
+        "../components/NodesEdgesTabContent",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Playground Tab Content Configuration"
+    },
+    {
+      "name": "interface",
+      "category": "layouts",
+      "path": "/src/ui/layouts/Container/Container.tsx",
+      "file": "Container.tsx",
+      "dependencies": [
+        "../../utils",
+        "../../tokens/spacing"
+      ],
+      "props": [],
+      "stories": [
+        "Container.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Maximum width of the container"
+    },
+    {
+      "name": "interface",
+      "category": "layouts",
+      "path": "/src/ui/layouts/Stack/Stack.tsx",
+      "file": "Stack.tsx",
+      "dependencies": [
+        "../../utils",
+        "../../tokens/spacing"
+      ],
+      "props": [],
+      "stories": [
+        "Stack.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Spacing between children"
+    },
+    {
+      "name": "Accordion",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Accordion/Accordion.tsx",
+      "file": "Accordion.tsx",
+      "dependencies": [
+        "../../tokens/colors",
+        "../../tokens/spacing",
+        "../../tokens/animations",
+        "../../tokens/typography",
+        "../../tokens/radius"
+      ],
+      "props": [],
+      "stories": [
+        "Accordion.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Accordion Component"
+    },
+    {
+      "name": "Autocomplete",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Autocomplete/Autocomplete.tsx",
+      "file": "Autocomplete.tsx",
+      "dependencies": [
+        "../../atoms/Input/Input",
+        "../../tokens/radius",
+        "../../tokens/shadows",
+        "../../tokens/z-index",
+        "../../tokens/spacing",
+        "./AutocompleteOption",
+        "./AutocompleteList",
+        "./AutocompleteOption"
+      ],
+      "props": [],
+      "stories": [
+        "Autocomplete.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Autocomplete Component"
+    },
+    {
+      "name": "AutocompleteList",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Autocomplete/AutocompleteList.tsx",
+      "file": "AutocompleteList.tsx",
+      "dependencies": [
+        "../../tokens/radius",
+        "../../tokens/shadows",
+        "../../tokens/z-index",
+        "../../tokens/spacing",
+        "./AutocompleteOption",
+        "./AutocompleteOption"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "AutocompleteList Component"
+    },
+    {
+      "name": "AutocompleteOption",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Autocomplete/AutocompleteOption.tsx",
+      "file": "AutocompleteOption.tsx",
+      "dependencies": [
+        "../../tokens/spacing"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "AutocompleteOption Component"
+    },
+    {
+      "name": "Breadcrumb",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Breadcrumb/Breadcrumb.tsx",
+      "file": "Breadcrumb.tsx",
+      "dependencies": [
+        "../../utils",
+        "../../tokens"
+      ],
+      "props": [],
+      "stories": [
+        "Breadcrumb.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Breadcrumb Component"
+    },
+    {
+      "name": "ButtonGroup",
+      "category": "molecules",
+      "path": "/src/ui/molecules/ButtonGroup/ButtonGroup.tsx",
+      "file": "ButtonGroup.tsx",
+      "dependencies": [
+        "../../tokens",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [
+        "ButtonGroup.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "ButtonGroup Component"
+    },
+    {
+      "name": "Card",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Card/Card.tsx",
+      "file": "Card.tsx",
+      "dependencies": [
+        "../../utils",
+        "../../tokens"
+      ],
+      "props": [],
+      "stories": [
+        "Card.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Card Component"
+    },
+    {
+      "name": "ColorPicker",
+      "category": "molecules",
+      "path": "/src/ui/molecules/ColorPicker/ColorPicker.tsx",
+      "file": "ColorPicker.tsx",
+      "dependencies": [
+        "../../tokens/radius",
+        "../../tokens/shadows",
+        "../../tokens/spacing",
+        "../../atoms/Input/Input",
+        "../Popover/Popover"
+      ],
+      "props": [],
+      "stories": [
+        "ColorPicker.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "ColorPicker Component"
+    },
+    {
+      "name": "DatePicker",
+      "category": "molecules",
+      "path": "/src/ui/molecules/DatePicker/DatePicker.tsx",
+      "file": "DatePicker.tsx",
+      "dependencies": [
+        "./DatePickerProvider",
+        "./DatePickerInput",
+        "./DatePickerCalendar",
+        "../../tokens"
+      ],
+      "props": [],
+      "stories": [
+        "DatePicker.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "DatePicker Component"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/molecules/DatePicker/DatePickerCalendar.tsx",
+      "file": "DatePickerCalendar.tsx",
+      "dependencies": [
+        "./DatePickerContext",
+        "../../atoms/Button/Button",
+        "../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/molecules/DatePicker/DatePickerContext.tsx",
+      "file": "DatePickerContext.tsx",
+      "dependencies": [],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/molecules/DatePicker/DatePickerInput.tsx",
+      "file": "DatePickerInput.tsx",
+      "dependencies": [
+        "./DatePickerContext",
+        "../../atoms/Input/Input",
+        "../../atoms/Button/Button"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/molecules/DatePicker/DatePickerProvider.tsx",
+      "file": "DatePickerProvider.tsx",
+      "dependencies": [
+        "./DatePickerContext"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "Drawer",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Drawer/Drawer.tsx",
+      "file": "Drawer.tsx",
+      "dependencies": [
+        "./DrawerContent",
+        "./DrawerHeader",
+        "./DrawerFooter",
+        "./DrawerContext"
+      ],
+      "props": [],
+      "stories": [
+        "Drawer.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Drawer Component"
+    },
+    {
+      "name": "DrawerContent",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Drawer/DrawerContent.tsx",
+      "file": "DrawerContent.tsx",
+      "dependencies": [
+        "../../tokens/radius",
+        "../../tokens/shadows",
+        "../../tokens/z-index",
+        "../../tokens/animations",
+        "../../tokens/spacing",
+        "../../tokens/colors",
+        "./DrawerContext",
+        "../../atoms"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "DrawerContent Component"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Drawer/DrawerContext.tsx",
+      "file": "DrawerContext.tsx",
+      "dependencies": [
+        "./Drawer"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "DrawerFooter",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Drawer/DrawerFooter.tsx",
+      "file": "DrawerFooter.tsx",
+      "dependencies": [
+        "../../tokens/spacing",
+        "../../tokens/colors"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "DrawerFooter Component"
+    },
+    {
+      "name": "DrawerHeader",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Drawer/DrawerHeader.tsx",
+      "file": "DrawerHeader.tsx",
+      "dependencies": [
+        "../../tokens/spacing",
+        "../../tokens/colors"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "DrawerHeader Component"
+    },
+    {
+      "name": "Dropdown",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Dropdown/Dropdown.tsx",
+      "file": "Dropdown.tsx",
+      "dependencies": [
+        "../../utils",
+        "../../tokens"
+      ],
+      "props": [],
+      "stories": [
+        "Dropdown.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Dropdown Component"
+    },
+    {
+      "name": "EmptyState",
+      "category": "molecules",
+      "path": "/src/ui/molecules/EmptyState/EmptyState.tsx",
+      "file": "EmptyState.tsx",
+      "dependencies": [
+        "../../atoms",
+        "../../atoms",
+        "../../utils",
+        "../../tokens"
+      ],
+      "props": [],
+      "stories": [
+        "EmptyState.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "EmptyState Component"
+    },
+    {
+      "name": "FileUpload",
+      "category": "molecules",
+      "path": "/src/ui/molecules/FileUpload/FileUpload.tsx",
+      "file": "FileUpload.tsx",
+      "dependencies": [
+        "../../utils",
+        "../../tokens",
+        "../../atoms/Button/Button",
+        "../../atoms/Progress/Progress"
+      ],
+      "props": [],
+      "stories": [
+        "FileUpload.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "FileUpload Component"
+    },
+    {
+      "name": "Form",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Form/Form.tsx",
+      "file": "Form.tsx",
+      "dependencies": [
+        "./FormProvider",
+        "../../utils",
+        "../../tokens",
+        "../../atoms/ErrorMessage/ErrorMessage"
+      ],
+      "props": [],
+      "stories": [
+        "Form.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Form Component"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Form/FormContext.tsx",
+      "file": "FormContext.tsx",
+      "dependencies": [],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Hook to access Form context"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Form/FormField.tsx",
+      "file": "FormField.tsx",
+      "dependencies": [
+        "./FormContext",
+        "../../atoms",
+        "../../utils",
+        "../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "FormField Component"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Form/FormProvider.tsx",
+      "file": "FormProvider.tsx",
+      "dependencies": [
+        "./FormContext"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "FormProvider Component"
+    },
+    {
+      "name": "Menu",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Menu/Menu.tsx",
+      "file": "Menu.tsx",
+      "dependencies": [
+        "./MenuContext",
+        "./MenuTrigger",
+        "./MenuContent",
+        "./MenuItem",
+        "./MenuSeparator"
+      ],
+      "props": [],
+      "stories": [
+        "Menu.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Menu Component"
+    },
+    {
+      "name": "MenuContent",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Menu/MenuContent.tsx",
+      "file": "MenuContent.tsx",
+      "dependencies": [
+        "../../tokens/radius",
+        "../../tokens/shadows",
+        "../../tokens/z-index",
+        "../../tokens/spacing",
+        "../../tokens/colors",
+        "./MenuContext"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "MenuContent Component"
+    },
+    {
+      "name": "MenuProvider",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Menu/MenuContext.tsx",
+      "file": "MenuContext.tsx",
+      "dependencies": [],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "MenuItem",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Menu/MenuItem.tsx",
+      "file": "MenuItem.tsx",
+      "dependencies": [
+        "../../tokens/spacing",
+        "../../tokens/colors",
+        "../../tokens/typography",
+        "./MenuContext"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "MenuItem Component"
+    },
+    {
+      "name": "MenuSeparator",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Menu/MenuSeparator.tsx",
+      "file": "MenuSeparator.tsx",
+      "dependencies": [
+        "../../tokens/spacing",
+        "../../tokens/colors"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "MenuSeparator Component"
+    },
+    {
+      "name": "MenuTrigger",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Menu/MenuTrigger.tsx",
+      "file": "MenuTrigger.tsx",
+      "dependencies": [
+        "./MenuContext"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "MenuTrigger Component"
+    },
+    {
+      "name": "MultiSelect",
+      "category": "molecules",
+      "path": "/src/ui/molecules/MultiSelect/MultiSelect.tsx",
+      "file": "MultiSelect.tsx",
+      "dependencies": [
+        "../../atoms/Input/Input",
+        "../../atoms/Chip/Chip",
+        "../Autocomplete/AutocompleteList",
+        "../Autocomplete/AutocompleteOption",
+        "../../utils",
+        "../../tokens",
+        "../../tokens",
+        "../../tokens"
+      ],
+      "props": [],
+      "stories": [
+        "MultiSelect.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "MultiSelect Component"
+    },
+    {
+      "name": "Pagination",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Pagination/Pagination.tsx",
+      "file": "Pagination.tsx",
+      "dependencies": [
+        "../../atoms",
+        "../../utils",
+        "../../tokens"
+      ],
+      "props": [],
+      "stories": [
+        "Pagination.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Pagination Component"
+    },
+    {
+      "name": "Popover",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Popover/Popover.tsx",
+      "file": "Popover.tsx",
+      "dependencies": [
+        "../../tokens/spacing",
+        "../../tokens/radius",
+        "../../tokens/shadows",
+        "../../tokens/z-index",
+        "../../tokens/animations",
+        "../../tokens/colors",
+        "../../tokens/typography",
+        "../../atoms/Button/Button"
+      ],
+      "props": [],
+      "stories": [
+        "Popover.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Popover Component"
+    },
+    {
+      "name": "Rating",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Rating/Rating.tsx",
+      "file": "Rating.tsx",
+      "dependencies": [
+        "../../utils",
+        "../../tokens"
+      ],
+      "props": [],
+      "stories": [
+        "Rating.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Rating Component"
+    },
+    {
+      "name": "SearchInput",
+      "category": "molecules",
+      "path": "/src/ui/molecules/SearchInput/SearchInput.tsx",
+      "file": "SearchInput.tsx",
+      "dependencies": [
+        "../../atoms/Input/Input",
+        "../../atoms/Button/Button",
+        "../../utils",
+        "../../tokens"
+      ],
+      "props": [],
+      "stories": [
+        "SearchInput.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "SearchInput Component"
+    },
+    {
+      "name": "Tabs",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Tabs/Tabs.tsx",
+      "file": "Tabs.tsx",
+      "dependencies": [
+        "./TabsProvider",
+        "./TabsList",
+        "./TabsTrigger",
+        "./TabsContent"
+      ],
+      "props": [],
+      "stories": [
+        "Tabs.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Tabs Component"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Tabs/TabsContent.tsx",
+      "file": "TabsContent.tsx",
+      "dependencies": [
+        "./TabsContext"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "TabsContent Component"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Tabs/TabsContext.tsx",
+      "file": "TabsContext.tsx",
+      "dependencies": [],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Hook to access Tabs context"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Tabs/TabsList.tsx",
+      "file": "TabsList.tsx",
+      "dependencies": [
+        "./TabsContext",
+        "../../utils",
+        "../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "TabsList Component"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Tabs/TabsProvider.tsx",
+      "file": "TabsProvider.tsx",
+      "dependencies": [
+        "./TabsContext"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "TabsProvider Component"
+    },
+    {
+      "name": "interface",
+      "category": "molecules",
+      "path": "/src/ui/molecules/Tabs/TabsTrigger.tsx",
+      "file": "TabsTrigger.tsx",
+      "dependencies": [
+        "./TabsContext",
+        "../../tokens",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "TabsTrigger Component"
+    },
+    {
+      "name": "TimePicker",
+      "category": "molecules",
+      "path": "/src/ui/molecules/TimePicker/TimePicker.tsx",
+      "file": "TimePicker.tsx",
+      "dependencies": [
+        "../../atoms/Input/Input",
+        "../Popover/Popover",
+        "../../atoms/Button/Button",
+        "../../tokens/spacing"
+      ],
+      "props": [],
+      "stories": [
+        "TimePicker.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "TimePicker Component"
+    },
+    {
+      "name": "CommandPalette",
+      "category": "organisms",
+      "path": "/src/ui/organisms/CommandPalette/CommandPalette.tsx",
+      "file": "CommandPalette.tsx",
+      "dependencies": [
+        "../../tokens/colors",
+        "../../tokens/spacing",
+        "../../tokens/radius",
+        "../../tokens/shadows",
+        "../../tokens/z-index",
+        "../../tokens/animations",
+        "../../atoms/Input/Input"
+      ],
+      "props": [],
+      "stories": [
+        "CommandPalette.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "CommandPalette Component"
+    },
+    {
+      "name": "DataGrid",
+      "category": "organisms",
+      "path": "/src/ui/organisms/DataGrid/DataGrid.tsx",
+      "file": "DataGrid.tsx",
+      "dependencies": [
+        "../../atoms/Button/Button",
+        "../../tokens/spacing",
+        "../Table/TableActions/TableActions"
+      ],
+      "props": [],
+      "stories": [
+        "DataGrid.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "DataGrid Component"
+    },
+    {
+      "name": "AlertDialog",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Dialog/AlertDialog.tsx",
+      "file": "AlertDialog.tsx",
+      "dependencies": [
+        "./Dialog",
+        "./DialogContent",
+        "./DialogHeader",
+        "./DialogFooter",
+        "../../atoms/Button/Button"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "AlertDialog Component"
+    },
+    {
+      "name": "Dialog",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Dialog/Dialog.tsx",
+      "file": "Dialog.tsx",
+      "dependencies": [
+        "./DialogProvider",
+        "./DialogTrigger",
+        "./DialogContent",
+        "./DialogHeader",
+        "./DialogTitle",
+        "./DialogDescription",
+        "./DialogFooter",
+        "./DialogClose"
+      ],
+      "props": [],
+      "stories": [
+        "Dialog.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Dialog Component"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Dialog/DialogClose.tsx",
+      "file": "DialogClose.tsx",
+      "dependencies": [
+        "./DialogContext",
+        "../../atoms/Button/Button"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Dialog/DialogContent.tsx",
+      "file": "DialogContent.tsx",
+      "dependencies": [
+        "./DialogContext",
+        "../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Dialog/DialogContext.tsx",
+      "file": "DialogContext.tsx",
+      "dependencies": [],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "type",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Dialog/DialogDescription.tsx",
+      "file": "DialogDescription.tsx",
+      "dependencies": [
+        "./DialogContext",
+        "../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Dialog/DialogFooter.tsx",
+      "file": "DialogFooter.tsx",
+      "dependencies": [],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Dialog/DialogHeader.tsx",
+      "file": "DialogHeader.tsx",
+      "dependencies": [],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Dialog/DialogProvider.tsx",
+      "file": "DialogProvider.tsx",
+      "dependencies": [
+        "./DialogContext"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Dialog/DialogTitle.tsx",
+      "file": "DialogTitle.tsx",
+      "dependencies": [
+        "./DialogContext",
+        "../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Dialog/DialogTrigger.tsx",
+      "file": "DialogTrigger.tsx",
+      "dependencies": [
+        "./DialogContext"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "LoginBox",
+      "category": "organisms",
+      "path": "/src/ui/organisms/LoginBox/LoginBox.tsx",
+      "file": "LoginBox.tsx",
+      "dependencies": [
+        "../../atoms",
+        "../../utils",
+        "../../tokens/spacing",
+        "../../tokens/radius",
+        "../../tokens/colors"
+      ],
+      "props": [],
+      "stories": [
+        "LoginBox.stories.tsx"
+      ],
+      "status": "stable"
+    },
+    {
+      "name": "Modal",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Modal/Modal.tsx",
+      "file": "Modal.tsx",
+      "dependencies": [],
+      "props": [],
+      "stories": [
+        "Modal.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Modal Component"
+    },
+    {
+      "name": "SideNavbar",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/SideNavbar.tsx",
+      "file": "SideNavbar.tsx",
+      "dependencies": [
+        "./providers/SideNavbarProvider",
+        "./providers/SideNavbarThemeProvider",
+        "./providers/SideNavbarConfigProvider",
+        "./providers/SideNavbarStateProvider",
+        "./providers/SidebarSlotProvider",
+        "./contexts/SideNavbarToggleContext",
+        "./components/SideNavbarRoot",
+        "./components/SideNavbarToggle",
+        "./components/SideNavbarResizeHandle",
+        "./components/SideNavbarBackdrop",
+        "./components/Navbar",
+        "./components/Sidebar",
+        "./types"
+      ],
+      "props": [],
+      "stories": [
+        "SideNavbar.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "SideNavbar Component"
+    },
+    {
+      "name": "Navbar",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Navbar/Navbar.tsx",
+      "file": "Navbar.tsx",
+      "dependencies": [
+        "../../contexts/NavbarContext",
+        "../../contexts/SideNavbarStateContext",
+        "../../contexts/SideNavbarThemeContext",
+        "../../contexts/SideNavbarConfigContext",
+        "../../contexts/SideNavbarToggleContext",
+        "../../../../utils",
+        "../../types",
+        "./NavbarToggle",
+        "./NavbarItem",
+        "./NavbarSeparator",
+        "./NavbarGroup",
+        "../SideNavbarToggle"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Navbar subcomponent for SideNavbar"
+    },
+    {
+      "name": "NavbarGroup",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Navbar/NavbarGroup.tsx",
+      "file": "NavbarGroup.tsx",
+      "dependencies": [
+        "../../../../utils",
+        "../../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "NavbarGroup Component"
+    },
+    {
+      "name": "NavbarItem",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Navbar/NavbarItem.tsx",
+      "file": "NavbarItem.tsx",
+      "dependencies": [
+        "../../contexts/NavbarContext",
+        "../../../../utils",
+        "../../../../atoms/Tooltip/Tooltip",
+        "../../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Size configuration for navbar items"
+    },
+    {
+      "name": "NavbarSeparator",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Navbar/NavbarSeparator.tsx",
+      "file": "NavbarSeparator.tsx",
+      "dependencies": [
+        "../../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Separator for the Navbar subcomponent"
+    },
+    {
+      "name": "NavbarToggle",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Navbar/NavbarToggle.tsx",
+      "file": "NavbarToggle.tsx",
+      "dependencies": [
+        "../../contexts/NavbarContext",
+        "../../../../atoms/Tooltip/Tooltip",
+        "../../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Toggle button for the Navbar subcomponent"
+    },
+    {
+      "name": "SideNavbarBackdrop",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/SideNavbarBackdrop.tsx",
+      "file": "SideNavbarBackdrop.tsx",
+      "dependencies": [
+        "../contexts/SideNavbarStateContext",
+        "../contexts/SideNavbarThemeContext",
+        "../contexts/SideNavbarConfigContext"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Override visibility (uses context by default)"
+    },
+    {
+      "name": "SideNavbarGroup",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/SideNavbarGroup.tsx",
+      "file": "SideNavbarGroup.tsx",
+      "dependencies": [
+        "../contexts/SideNavbarStateContext",
+        "../contexts/SideNavbarThemeContext",
+        "../../../atoms/Collapsible/Collapsible",
+        "../../../tokens"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Unique identifier for the group"
+    },
+    {
+      "name": "SideNavbarResizeHandle",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/SideNavbarResizeHandle.tsx",
+      "file": "SideNavbarResizeHandle.tsx",
+      "dependencies": [
+        "../contexts/SideNavbarStateContext",
+        "../contexts/SideNavbarConfigContext"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "SideNavbar Resize Handle Component"
+    },
+    {
+      "name": "SideNavbarRoot",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/SideNavbarRoot.tsx",
+      "file": "SideNavbarRoot.tsx",
+      "dependencies": [
+        "../contexts/SideNavbarStateContext",
+        "../contexts/SideNavbarThemeContext",
+        "../contexts/SideNavbarConfigContext",
+        "../../../tokens",
+        "./SideNavbarResizeHandle",
+        "./SideNavbarBackdrop",
+        "../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "SideNavbar Root Component"
+    },
+    {
+      "name": "SideNavbarToggle",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/SideNavbarToggle.tsx",
+      "file": "SideNavbarToggle.tsx",
+      "dependencies": [
+        "../contexts/SideNavbarStateContext",
+        "../contexts/SideNavbarThemeContext",
+        "../contexts/SideNavbarConfigContext",
+        "../../../atoms/Tooltip/Tooltip",
+        "../../../atoms/Button/Button",
+        "../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "SideNavbarToggle Component"
+    },
+    {
+      "name": "Sidebar",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Sidebar/Sidebar.tsx",
+      "file": "Sidebar.tsx",
+      "dependencies": [
+        "../../contexts/SidebarContext",
+        "../../contexts/SideNavbarStateContext",
+        "../../contexts/SideNavbarThemeContext",
+        "../../utils",
+        "../../types",
+        "./SidebarHeader",
+        "./SidebarContent",
+        "./SidebarFooter",
+        "./SidebarGroup",
+        "./SidebarSlot",
+        "./SidebarSlotContent"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Sidebar subcomponent for SideNavbar"
+    },
+    {
+      "name": "SidebarContent",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Sidebar/SidebarContent.tsx",
+      "file": "SidebarContent.tsx",
+      "dependencies": [
+        "../../contexts/SidebarContext",
+        "../../../../tokens",
+        "../../../../tokens/sidebar",
+        "../../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Content component for the Sidebar subcomponent"
+    },
+    {
+      "name": "SidebarFooter",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Sidebar/SidebarFooter.tsx",
+      "file": "SidebarFooter.tsx",
+      "dependencies": [
+        "../../contexts/SidebarContext",
+        "../../../../tokens",
+        "../../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Footer component for the Sidebar subcomponent"
+    },
+    {
+      "name": "SidebarGroup",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Sidebar/SidebarGroup.tsx",
+      "file": "SidebarGroup.tsx",
+      "dependencies": [
+        "../../contexts/SidebarContext",
+        "../../contexts/SideNavbarStateContext",
+        "../../contexts/SideNavbarThemeContext",
+        "../../../../atoms/Collapsible/Collapsible",
+        "../../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Group component for the Sidebar subcomponent"
+    },
+    {
+      "name": "SidebarHeader",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Sidebar/SidebarHeader.tsx",
+      "file": "SidebarHeader.tsx",
+      "dependencies": [
+        "../../contexts/SidebarContext",
+        "../../../../tokens",
+        "../../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Header component for the Sidebar subcomponent"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Sidebar/SidebarSlot.tsx",
+      "file": "SidebarSlot.tsx",
+      "dependencies": [
+        "../../contexts/SidebarSlotContext"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "SidebarSlot Component"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/components/Sidebar/SidebarSlotContent.tsx",
+      "file": "SidebarSlotContent.tsx",
+      "dependencies": [
+        "../../contexts/SidebarSlotContext"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "SidebarSlotContent Component"
+    },
+    {
+      "name": "NavbarContext",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/contexts/NavbarContext.tsx",
+      "file": "NavbarContext.tsx",
+      "dependencies": [
+        "../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Context for the Navbar subcomponent"
+    },
+    {
+      "name": "SideNavbarConfigContext",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/contexts/SideNavbarConfigContext.tsx",
+      "file": "SideNavbarConfigContext.tsx",
+      "dependencies": [
+        "../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Config context for SideNavbar behavior configuration."
+    },
+    {
+      "name": "SideNavbarStateContext",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/contexts/SideNavbarStateContext.tsx",
+      "file": "SideNavbarStateContext.tsx",
+      "dependencies": [
+        "../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "State context for SideNavbar runtime state."
+    },
+    {
+      "name": "SideNavbarThemeContext",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/contexts/SideNavbarThemeContext.tsx",
+      "file": "SideNavbarThemeContext.tsx",
+      "dependencies": [
+        "../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Theme context for SideNavbar styling configuration."
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/contexts/SideNavbarToggleContext.tsx",
+      "file": "SideNavbarToggleContext.tsx",
+      "dependencies": [
+        "../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "SidebarContext",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/contexts/SidebarContext.tsx",
+      "file": "SidebarContext.tsx",
+      "dependencies": [
+        "../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Context for the Sidebar subcomponent"
+    },
+    {
+      "name": "SidebarSlotContext",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/contexts/SidebarSlotContext.tsx",
+      "file": "SidebarSlotContext.tsx",
+      "dependencies": [
+        "../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Sidebar Slot Context"
+    },
+    {
+      "name": "SideNavbarConfigProvider",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/providers/SideNavbarConfigProvider.tsx",
+      "file": "SideNavbarConfigProvider.tsx",
+      "dependencies": [
+        "../contexts/SideNavbarConfigContext",
+        "../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Config Provider for SideNavbar"
+    },
+    {
+      "name": "SideNavbarProvider",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/providers/SideNavbarProvider.tsx",
+      "file": "SideNavbarProvider.tsx",
+      "dependencies": [
+        "./SideNavbarThemeProvider",
+        "./SideNavbarConfigProvider",
+        "./SideNavbarStateProvider",
+        "../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Combined Provider for SideNavbar"
+    },
+    {
+      "name": "SideNavbarStateProvider",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/providers/SideNavbarStateProvider.tsx",
+      "file": "SideNavbarStateProvider.tsx",
+      "dependencies": [
+        "../contexts/SideNavbarStateContext",
+        "../contexts/SideNavbarThemeContext",
+        "../contexts/SideNavbarConfigContext",
+        "../hooks/useResize",
+        "../hooks/useResponsiveSidebar",
+        "../hooks/useFocusManagement",
+        "../hooks/useKeyboardShortcut",
+        "../utils",
+        "../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "State Provider for SideNavbar"
+    },
+    {
+      "name": "SideNavbarThemeProvider",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/providers/SideNavbarThemeProvider.tsx",
+      "file": "SideNavbarThemeProvider.tsx",
+      "dependencies": [
+        "../contexts/SideNavbarThemeContext",
+        "../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Theme Provider for SideNavbar"
+    },
+    {
+      "name": "SidebarSlotProvider",
+      "category": "organisms",
+      "path": "/src/ui/organisms/SideNavbar/providers/SidebarSlotProvider.tsx",
+      "file": "SidebarSlotProvider.tsx",
+      "dependencies": [
+        "../contexts/SidebarSlotContext",
+        "../types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Sidebar Slot Provider"
+    },
+    {
+      "name": "Stepper",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Stepper/Stepper.tsx",
+      "file": "Stepper.tsx",
+      "dependencies": [
+        "../../tokens/colors",
+        "../../tokens/spacing",
+        "../../tokens/radius",
+        "../../tokens/animations",
+        "../../atoms/Button/Button",
+        "../../atoms/Separator/Separator"
+      ],
+      "props": [],
+      "stories": [
+        "Stepper.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Stepper Component"
+    },
+    {
+      "name": "TableComponent",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/Table.tsx",
+      "file": "Table.tsx",
+      "dependencies": [
+        "./TableProvider",
+        "./TableFilters/TableFilters",
+        "./TableActions/TableActions",
+        "./TableTypes",
+        "./TableHeader",
+        "./TableHeaderRow",
+        "./TableHeaderCell",
+        "./TableBody",
+        "./TableRow",
+        "./TableCell",
+        "./TableFilters",
+        "./TablePagination",
+        "./TableEmptyState",
+        "./TableActions"
+      ],
+      "props": [],
+      "stories": [
+        "Table.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Table Component"
+    },
+    {
+      "name": "TableActions",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableActions/TableActions.tsx",
+      "file": "TableActions.tsx",
+      "dependencies": [
+        "../../../molecules/Dropdown/Dropdown",
+        "../../../atoms"
+      ],
+      "props": [],
+      "stories": [
+        "TableActions.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "TableActions Component"
+    },
+    {
+      "name": "TableActions",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableActions.tsx",
+      "file": "TableActions.tsx",
+      "dependencies": [
+        "./TableContext",
+        "./TableActions/TableActions"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "TableActions Component"
+    },
+    {
+      "name": "TableBody",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableBody.tsx",
+      "file": "TableBody.tsx",
+      "dependencies": [
+        "./TableContext",
+        "../../atoms",
+        "./TableRow",
+        "./TableEmptyState",
+        "./useVirtualScrolling"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "TableBody Component"
+    },
+    {
+      "name": "TableCell",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableCell.tsx",
+      "file": "TableCell.tsx",
+      "dependencies": [
+        "./TableTypes"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "TableCell Component"
+    },
+    {
+      "name": "type",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableContext.tsx",
+      "file": "TableContext.tsx",
+      "dependencies": [
+        "./TableTypes",
+        "./TableFilters/TableFilters",
+        "./TableActions/TableActions",
+        "./TableFilters/TableFilters"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Hook to access Table context"
+    },
+    {
+      "name": "TableEmptyState",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableEmptyState.tsx",
+      "file": "TableEmptyState.tsx",
+      "dependencies": [
+        "./TableContext",
+        "../../molecules"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "TableEmptyState Component"
+    },
+    {
+      "name": "TableFilters",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableFilters/TableFilters.tsx",
+      "file": "TableFilters.tsx",
+      "dependencies": [
+        "../../../atoms"
+      ],
+      "props": [],
+      "stories": [
+        "TableFilters.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "TableFilters Component"
+    },
+    {
+      "name": "TableFilters",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableFilters.tsx",
+      "file": "TableFilters.tsx",
+      "dependencies": [
+        "./TableContext",
+        "./TableFilters/TableFilters"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "TableFilters Component"
+    },
+    {
+      "name": "TableHeader",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableHeader.tsx",
+      "file": "TableHeader.tsx",
+      "dependencies": [
+        "./TableContext",
+        "./TableHeaderRow"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "TableHeader Component"
+    },
+    {
+      "name": "TableHeaderCell",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableHeaderCell.tsx",
+      "file": "TableHeaderCell.tsx",
+      "dependencies": [
+        "./TableContext",
+        "./TableTypes"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "TableHeaderCell Component"
+    },
+    {
+      "name": "TableHeaderRow",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableHeaderRow.tsx",
+      "file": "TableHeaderRow.tsx",
+      "dependencies": [
+        "./TableContext",
+        "../../atoms",
+        "./TableHeaderCell"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "TableHeaderRow Component"
+    },
+    {
+      "name": "TablePagination",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TablePagination/TablePagination.tsx",
+      "file": "TablePagination.tsx",
+      "dependencies": [
+        "../../../atoms"
+      ],
+      "props": [],
+      "stories": [
+        "TablePagination.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "TablePagination Component"
+    },
+    {
+      "name": "TablePagination",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TablePagination.tsx",
+      "file": "TablePagination.tsx",
+      "dependencies": [
+        "./TableContext",
+        "./TablePagination/TablePagination"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "TablePagination Component"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableProvider.tsx",
+      "file": "TableProvider.tsx",
+      "dependencies": [
+        "./TableContext",
+        "./TableTypes",
+        "./TableFilters/TableFilters",
+        "./TableActions/TableActions"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "TableProvider Component"
+    },
+    {
+      "name": "TableRow",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Table/TableRow.tsx",
+      "file": "TableRow.tsx",
+      "dependencies": [
+        "./TableContext",
+        "../../atoms",
+        "./TableCell",
+        "./TableActions"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "TableRow Component"
+    },
+    {
+      "name": "Timeline",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Timeline/Timeline.tsx",
+      "file": "Timeline.tsx",
+      "dependencies": [
+        "../../tokens/colors",
+        "../../tokens/spacing",
+        "../../tokens/radius"
+      ],
+      "props": [],
+      "stories": [
+        "Timeline.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Timeline Component"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Toast/Toast.tsx",
+      "file": "Toast.tsx",
+      "dependencies": [
+        "./ToastContext",
+        "../../tokens",
+        "../../atoms/Button/Button"
+      ],
+      "props": [],
+      "stories": [
+        "Toast.stories.tsx"
+      ],
+      "status": "stable"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Toast/ToastContainer.tsx",
+      "file": "ToastContainer.tsx",
+      "dependencies": [
+        "./ToastContext",
+        "./Toast"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "type",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Toast/ToastContext.tsx",
+      "file": "ToastContext.tsx",
+      "dependencies": [],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "interface",
+      "category": "organisms",
+      "path": "/src/ui/organisms/Toast/ToastProvider.tsx",
+      "file": "ToastProvider.tsx",
+      "dependencies": [
+        "./ToastContext"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable"
+    },
+    {
+      "name": "interface",
+      "category": "patterns",
+      "path": "/src/ui/patterns/DataTablePattern/DataTablePattern.tsx",
+      "file": "DataTablePattern.tsx",
+      "dependencies": [
+        "../../organisms",
+        "../../molecules",
+        "../../atoms",
+        "../../layouts/Stack/Stack",
+        "../../layouts/Container/Container",
+        "../../organisms/Table/TableTypes"
+      ],
+      "props": [],
+      "stories": [
+        "DataTablePattern.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Table columns configuration"
+    },
+    {
+      "name": "interface",
+      "category": "patterns",
+      "path": "/src/ui/patterns/FormWizardPattern/FormWizardPattern.tsx",
+      "file": "FormWizardPattern.tsx",
+      "dependencies": [
+        "../../organisms",
+        "../../atoms",
+        "../../layouts/Container/Container",
+        "../../layouts/Stack/Stack",
+        "../../organisms"
+      ],
+      "props": [],
+      "stories": [
+        "FormWizardPattern.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Form fields for this step"
+    },
+    {
+      "name": "interface",
+      "category": "patterns",
+      "path": "/src/ui/patterns/SearchAndFilterPattern/SearchAndFilterPattern.tsx",
+      "file": "SearchAndFilterPattern.tsx",
+      "dependencies": [
+        "../../molecules",
+        "../../atoms",
+        "../../layouts/Container/Container",
+        "../../layouts/Stack/Stack"
+      ],
+      "props": [],
+      "stories": [
+        "SearchAndFilterPattern.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Items to search and filter"
+    },
+    {
+      "name": "ColorsPlayground",
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/ColorsPlayground.tsx",
+      "file": "ColorsPlayground.tsx",
+      "dependencies": [
+        "../providers/ThemeProvider",
+        "../atoms",
+        "../molecules",
+        "../tokens/spacing",
+        "../tokens/typography",
+        "../tokens/colors",
+        "./shared",
+        "./shared/hooks",
+        "./shared/utils/codeGenerator",
+        "./shared/utils/contrastCalculator",
+        "./shared/PlaygroundControls/TokenSelector"
+      ],
+      "props": [],
+      "stories": [
+        "ColorsPlayground.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Colors Playground Component"
+    },
+    {
+      "name": "SpacingPlayground",
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/SpacingPlayground.tsx",
+      "file": "SpacingPlayground.tsx",
+      "dependencies": [
+        "../providers/ThemeProvider",
+        "../atoms",
+        "../molecules",
+        "../tokens/spacing",
+        "../tokens/typography",
+        "./shared",
+        "./shared/hooks",
+        "./shared/utils/codeGenerator",
+        "./shared/PlaygroundControls/TokenSelector"
+      ],
+      "props": [],
+      "stories": [
+        "SpacingPlayground.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Spacing Playground Component"
+    },
+    {
+      "name": "ThemePlayground",
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/ThemePlayground.tsx",
+      "file": "ThemePlayground.tsx",
+      "dependencies": [
+        "../providers/ThemeProvider",
+        "../atoms",
+        "../molecules",
+        "../tokens/tokens.factory",
+        "../tokens/spacing",
+        "../tokens/typography",
+        "./shared",
+        "./shared/hooks",
+        "./shared/utils/codeGenerator",
+        "./shared/PlaygroundControls/TokenSelector"
+      ],
+      "props": [],
+      "stories": [
+        "ThemePlayground.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Theme Playground Component"
+    },
+    {
+      "name": "TypographyPlayground",
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/TypographyPlayground.tsx",
+      "file": "TypographyPlayground.tsx",
+      "dependencies": [
+        "../providers/ThemeProvider",
+        "../atoms",
+        "../molecules",
+        "../tokens/spacing",
+        "../tokens/typography",
+        "./shared",
+        "./shared/hooks",
+        "./shared/utils/codeGenerator",
+        "./shared/PlaygroundControls/TokenSelector"
+      ],
+      "props": [],
+      "stories": [
+        "TypographyPlayground.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Typography Playground Component"
+    },
+    {
+      "name": "type",
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/shared/PlaygroundControls/CodeDisplay.tsx",
+      "file": "CodeDisplay.tsx",
+      "dependencies": [
+        "../../../providers/ThemeProvider",
+        "../../../atoms",
+        "../../../molecules",
+        "../../../tokens/spacing",
+        "../../../utils"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "CodeDisplay Component"
+    },
+    {
+      "name": "interface",
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/shared/PlaygroundControls/ColorPicker.tsx",
+      "file": "ColorPicker.tsx",
+      "dependencies": [
+        "../../../providers/ThemeProvider",
+        "../../../atoms",
+        "../../../atoms",
+        "../../../atoms",
+        "../../../tokens/spacing",
+        "../../../utils",
+        "../utils/contrastCalculator"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "ColorPicker Component"
+    },
+    {
+      "name": "interface",
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/shared/PlaygroundControls/ControlGroup.tsx",
+      "file": "ControlGroup.tsx",
+      "dependencies": [
+        "../../../providers/ThemeProvider",
+        "../../../molecules",
+        "../../../tokens/spacing",
+        "../../../utils"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "ControlGroup Component"
+    },
+    {
+      "name": "interface",
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/shared/PlaygroundControls/SliderControl.tsx",
+      "file": "SliderControl.tsx",
+      "dependencies": [
+        "../../../providers/ThemeProvider",
+        "../../../atoms",
+        "../../../atoms",
+        "../../../tokens/spacing",
+        "../../../utils"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "SliderControl Component"
+    },
+    {
+      "name": "interface",
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/shared/PlaygroundControls/TokenSelector.tsx",
+      "file": "TokenSelector.tsx",
+      "dependencies": [
+        "../../../providers/ThemeProvider",
+        "../../../atoms",
+        "../../../atoms",
+        "../../../atoms",
+        "../../../tokens/spacing",
+        "../../../utils"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "TokenSelector Component"
+    },
+    {
+      "name": "interface",
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/shared/PlaygroundHeader.tsx",
+      "file": "PlaygroundHeader.tsx",
+      "dependencies": [
+        "../../providers/ThemeProvider",
+        "../../atoms",
+        "../../atoms",
+        "../../tokens/spacing",
+        "../../tokens/typography",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "PlaygroundHeader Component"
+    },
+    {
+      "name": "interface",
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/shared/PlaygroundLayout.tsx",
+      "file": "PlaygroundLayout.tsx",
+      "dependencies": [
+        "../../providers/ThemeProvider",
+        "../../atoms",
+        "../../tokens/spacing",
+        "../../utils",
+        "./PlaygroundHeader",
+        "./PlaygroundSidebar",
+        "./PlaygroundPreview"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "PlaygroundLayout Component"
+    },
+    {
+      "name": "interface",
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/shared/PlaygroundPreview.tsx",
+      "file": "PlaygroundPreview.tsx",
+      "dependencies": [
+        "../../providers/ThemeProvider",
+        "../../tokens/spacing",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "PlaygroundPreview Component"
+    },
+    {
+      "name": "interface",
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/shared/PlaygroundSidebar.tsx",
+      "file": "PlaygroundSidebar.tsx",
+      "dependencies": [
+        "../../providers/ThemeProvider",
+        "../../tokens/spacing",
+        "../../utils"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "PlaygroundSidebar Component"
+    },
+    {
+      "name": "interface",
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/shared/components/ComparisonView.tsx",
+      "file": "ComparisonView.tsx",
+      "dependencies": [
+        "../../../providers/ThemeProvider",
+        "../../../molecules",
+        "../../../atoms",
+        "../../../tokens/spacing",
+        "../../../utils"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "ComparisonView Component"
+    },
+    {
+      "name": "interface",
+      "category": "unknown",
+      "path": "/src/ui/playgrounds/shared/components/ValidationFeedback.tsx",
+      "file": "ValidationFeedback.tsx",
+      "dependencies": [
+        "../../../providers/ThemeProvider",
+        "../../../atoms",
+        "../../../utils",
+        "../utils/playgroundValidation"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "ValidationFeedback Component"
+    },
+    {
+      "name": "interface",
+      "category": "providers",
+      "path": "/src/ui/providers/AdvancedThemeProvider.tsx",
+      "file": "AdvancedThemeProvider.tsx",
+      "dependencies": [
+        "../themes/ThemeRegistry",
+        "../themes/utils",
+        "../themes/types"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Advanced Theme Provider"
+    },
+    {
+      "name": "interface",
+      "category": "providers",
+      "path": "/src/ui/providers/AppProvider.tsx",
+      "file": "AppProvider.tsx",
+      "dependencies": [
+        "./ThemeProvider",
+        "./ConfigProvider",
+        "../organisms/Toast/ToastProvider",
+        "../organisms/Dialog/DialogProvider"
+      ],
+      "props": [],
+      "stories": [
+        "AppProvider.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "AppProvider Configuration"
+    },
+    {
+      "name": "interface",
+      "category": "providers",
+      "path": "/src/ui/providers/ConfigProvider.tsx",
+      "file": "ConfigProvider.tsx",
+      "dependencies": [
+        "../tokens/spacing",
+        "../tokens/typography",
+        "../tokens/breakpoints",
+        "../tokens/animations",
+        "../tokens/breakpoints",
+        "../tokens/spacing",
+        "../tokens/typography",
+        "../tokens/animations"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Design System Configuration"
+    },
+    {
+      "name": "interface",
+      "category": "providers",
+      "path": "/src/ui/providers/ThemeProvider.tsx",
+      "file": "ThemeProvider.tsx",
+      "dependencies": [
+        "../tokens/colors",
+        "../tokens/tokens.factory"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "ThemeProvider Component"
+    },
+    {
+      "name": "interface",
+      "category": "templates",
+      "path": "/src/ui/templates/DashboardLayout/DashboardLayout.tsx",
+      "file": "DashboardLayout.tsx",
+      "dependencies": [
+        "../../organisms",
+        "../../layouts/Container/Container",
+        "../../layouts/Stack/Stack"
+      ],
+      "props": [],
+      "stories": [
+        "DashboardLayout.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Sidebar content - use SideNavbar.Navbar and SideNavbar.Sidebar subcomponents"
+    },
+    {
+      "name": "ColorPalette",
+      "category": "unknown",
+      "path": "/src/ui/tokens/TokenVisualizations.tsx",
+      "file": "TokenVisualizations.tsx",
+      "dependencies": [
+        "./index"
+      ],
+      "props": [],
+      "stories": [],
+      "status": "stable",
+      "description": "Token Visualization Components"
+    },
+    {
+      "name": "ThemeBuilderComponent",
+      "category": "unknown",
+      "path": "/src/ui/tools/ThemeBuilder.tsx",
+      "file": "ThemeBuilder.tsx",
+      "dependencies": [
+        "../providers/ThemeProvider",
+        "../atoms",
+        "../molecules",
+        "../tokens/spacing",
+        "../tokens/typography",
+        "../themes/ThemeBuilder",
+        "../themes/types",
+        "../tokens/colors",
+        "../tokens/colors"
+      ],
+      "props": [],
+      "stories": [
+        "ThemeBuilder.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Theme Builder Component"
+    },
+    {
+      "name": "interface",
+      "category": "utilities",
+      "path": "/src/ui/utilities/Portal/Portal.tsx",
+      "file": "Portal.tsx",
+      "dependencies": [],
+      "props": [],
+      "stories": [
+        "Portal.stories.tsx"
+      ],
+      "status": "stable",
+      "description": "Content to render in the portal"
+    }
+  ]
+}

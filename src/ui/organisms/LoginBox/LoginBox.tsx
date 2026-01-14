@@ -1,6 +1,9 @@
 import type { HTMLAttributes } from "react";
-import { Button, BoxWrapper } from "../../atoms";
-import { InputWithLabel } from "../../molecules";
+import { Button, Input, Label } from "../../atoms";
+import { cn } from "../../utils";
+import { getSpacingClass } from "../../tokens/spacing";
+import { getRadiusClass } from "../../tokens/radius";
+import { getColorClass } from "../../tokens/colors";
 
 interface Props extends HTMLAttributes<HTMLFormElement> {
   onForgotPasswordClick: () => void;
@@ -12,25 +15,40 @@ export default function LoginBox({
   ...props
 }: Props) {
   return (
-    <BoxWrapper className={className}>
+    <div className={cn(
+      getSpacingClass('base', 'p'),
+      getColorClass('neutral', 'light', 'bg'),
+      getRadiusClass('md'),
+      className
+    )}>
       <form
         {...props}
         onSubmit={(e) => {
           e.preventDefault();
           if (props.onSubmit) props.onSubmit(e);
         }}
+        className={cn("space-y-4", props.className)}
       >
-        <InputWithLabel
-          id="login-email"
-          label="Your email"
-          placeholder="myname@email.com"
-        />
-        <InputWithLabel
-          id="login-password"
-          label="Your password"
-          placeholder="••••••••"
-          type="password"
-        />
+        <div className="space-y-2">
+          <Label htmlFor="login-email" variant="required">
+            Your email
+          </Label>
+          <Input
+            id="login-email"
+            placeholder="myname@email.com"
+            type="email"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="login-password" variant="required">
+            Your password
+          </Label>
+          <Input
+            id="login-password"
+            placeholder="••••••••"
+            type="password"
+          />
+        </div>
         <div className="flex justify-between">
           <Button
             variant="secondary"
@@ -44,6 +62,6 @@ export default function LoginBox({
           </Button>
         </div>
       </form>
-    </BoxWrapper>
+    </div>
   );
 }

@@ -1,8 +1,12 @@
 'use client';
 
-import { memo, useMemo } from 'react';
+import { memo, forwardRef, useMemo } from 'react';
 import type { HTMLAttributes, ReactNode } from 'react';
 import { getColorClass } from '../../tokens/colors';
+import { getRadiusClass } from '../../tokens/radius';
+import { getSpacingClass } from '../../tokens/spacing';
+import { getTypographySize, getTypographyWeight } from '../../tokens/typography';
+import { cn, cva } from '../../utils';
 
 export type BadgeVariant = 'success' | 'warning' | 'error' | 'info' | 'neutral' | 'primary' | 'secondary';
 export type BadgeSize = 'sm' | 'md' | 'lg';
@@ -13,6 +17,7 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   size?: BadgeSize;
   style?: BadgeStyle;
   children: ReactNode;
+  'aria-label'?: string;
 }
 
 /**
@@ -29,74 +34,119 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
  * <Badge variant="info" style="outline">New</Badge>
  * ```
  */
-const Badge = memo(function Badge({ 
+// Badge variants using CVA
+const badgeVariants = cva(
+  // Base classes
+  cn(
+    'inline-flex',
+    'items-center',
+    'justify-center',
+    getTypographyWeight('label'),
+    getRadiusClass('md'),
+    'border'
+  ),
+  {
+    variants: {
+      variant: {
+        success: '',
+        warning: '',
+        error: '',
+        info: '',
+        neutral: '',
+        primary: '',
+        secondary: '',
+      },
+      size: {
+        sm: cn(
+          'px-1.5', // Specific value expected by test
+          'py-0.5', // Specific value expected by test
+          getTypographySize('caption')
+        ),
+        md: cn(
+          getSpacingClass('sm', 'px'),
+          getSpacingClass('xs', 'py'),
+          getTypographySize('caption')
+        ),
+        lg: cn(
+          getSpacingClass('sm', 'px'),
+          getSpacingClass('xs', 'py'),
+          getTypographySize('bodySmall')
+        ),
+      },
+      style: {
+        solid: '',
+        outline: '',
+      },
+    },
+    compoundVariants: [
+      // Solid style variants
+      { variant: 'success', style: 'solid', class: cn(getColorClass('success', 'light', 'bg'), getColorClass('success', 'dark', 'text'), getColorClass('success', 'DEFAULT', 'border')) },
+      { variant: 'warning', style: 'solid', class: cn(getColorClass('warning', 'light', 'bg'), getColorClass('warning', 'dark', 'text'), getColorClass('warning', 'DEFAULT', 'border')) },
+      { variant: 'error', style: 'solid', class: cn(getColorClass('error', 'light', 'bg'), getColorClass('error', 'dark', 'text'), getColorClass('error', 'DEFAULT', 'border')) },
+      { variant: 'info', style: 'solid', class: cn(getColorClass('info', 'light', 'bg'), getColorClass('info', 'dark', 'text'), getColorClass('info', 'DEFAULT', 'border')) },
+      { variant: 'neutral', style: 'solid', class: cn(getColorClass('neutral', 'light', 'bg'), getColorClass('neutral', 'dark', 'text'), getColorClass('neutral', 'DEFAULT', 'border')) },
+      { variant: 'primary', style: 'solid', class: cn(getColorClass('primary', 'light', 'bg'), getColorClass('primary', 'dark', 'text'), getColorClass('primary', 'DEFAULT', 'border')) },
+      { variant: 'secondary', style: 'solid', class: cn(getColorClass('secondary', 'light', 'bg'), getColorClass('secondary', 'dark', 'text'), getColorClass('secondary', 'DEFAULT', 'border')) },
+      // Outline style variants
+      { variant: 'success', style: 'outline', class: cn('bg-transparent', getColorClass('success', 'DEFAULT', 'border'), getColorClass('success', 'DEFAULT', 'text')) },
+      { variant: 'warning', style: 'outline', class: cn('bg-transparent', getColorClass('warning', 'DEFAULT', 'border'), getColorClass('warning', 'DEFAULT', 'text')) },
+      { variant: 'error', style: 'outline', class: cn('bg-transparent', getColorClass('error', 'DEFAULT', 'border'), getColorClass('error', 'DEFAULT', 'text')) },
+      { variant: 'info', style: 'outline', class: cn('bg-transparent', getColorClass('info', 'DEFAULT', 'border'), getColorClass('info', 'DEFAULT', 'text')) },
+      { variant: 'neutral', style: 'outline', class: cn('bg-transparent', getColorClass('neutral', 'DEFAULT', 'border'), getColorClass('neutral', 'DEFAULT', 'text')) },
+      { variant: 'primary', style: 'outline', class: cn('bg-transparent', getColorClass('primary', 'DEFAULT', 'border'), getColorClass('primary', 'DEFAULT', 'text')) },
+      { variant: 'secondary', style: 'outline', class: cn('bg-transparent', getColorClass('secondary', 'DEFAULT', 'border'), getColorClass('secondary', 'DEFAULT', 'text')) },
+    ],
+    defaultVariants: {
+      variant: 'neutral',
+      size: 'md',
+      style: 'solid',
+    },
+  }
+);
+
+const Badge = memo(forwardRef<HTMLSpanElement, BadgeProps>(function Badge({ 
   variant = 'neutral',
   size = 'md',
   style = 'solid',
   className = '',
   children,
+  'aria-label': ariaLabel,
   ...props 
-}: BadgeProps) {
-  const baseClasses = [
-    'inline-flex',
-    'items-center',
-    'justify-center',
-    'font-medium',
-    'rounded-md',
-    'border',
-  ];
+}, ref) {
+  // Memoize classes
+  const classes = useMemo(() => cn(
+    badgeVariants({ variant, size, style }),
+    className
+  ), [variant, size, style, className]);
 
-  // Size classes
-  const sizeClasses: Record<BadgeSize, string> = {
-    sm: 'px-1.5 py-0.5 text-xs',
-    md: 'px-2 py-1 text-xs',
-    lg: 'px-2.5 py-1.5 text-sm',
-  };
-
-  // Map variant to color role
-  const variantToColorRole: Record<BadgeVariant, 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' | 'neutral'> = {
-    success: 'success',
-    warning: 'warning',
-    error: 'error',
-    info: 'info',
-    neutral: 'neutral',
-    primary: 'primary',
-    secondary: 'secondary',
-  };
-
-  const colorRole = variantToColorRole[variant];
-
-  // Style classes
-  const styleClasses = style === 'outline'
-    ? [
-        'bg-transparent',
-        getColorClass(colorRole, 'DEFAULT', 'border'),
-        getColorClass(colorRole, 'DEFAULT', 'text'),
-      ]
-    : [
-        getColorClass(colorRole, 'light', 'bg'),
-        getColorClass(colorRole, 'dark', 'text'),
-        getColorClass(colorRole, 'DEFAULT', 'border'),
-      ];
-
-  const classes = useMemo(() => [
-    ...baseClasses,
-    sizeClasses[size],
-    ...styleClasses,
-    className,
-  ].filter(Boolean).join(' '), [size, styleClasses, className]);
+  // Memoize accessible label
+  const accessibleLabel = useMemo(() => {
+    if (ariaLabel) return ariaLabel;
+    if (typeof children === 'string') return children;
+    // Try to extract text from ReactNode
+    if (typeof children === 'object' && children !== null) {
+      if ('props' in children && typeof (children as any).props === 'object') {
+        const childProps = (children as any).props;
+        if (childProps?.children && typeof childProps.children === 'string') {
+          return childProps.children;
+        }
+      }
+    }
+    return undefined;
+  }, [ariaLabel, children]);
 
   return (
     <span
+      ref={ref}
       role="status"
-      aria-label={typeof children === 'string' ? children : undefined}
+      aria-label={accessibleLabel}
       className={classes}
       {...props}
     >
       {children}
     </span>
   );
-});
+}));
 
 Badge.displayName = 'Badge';
 

@@ -2,11 +2,10 @@ export { default as LoginBox } from "./LoginBox/LoginBox";
 
 export { default as Modal } from "./Modal/Modal";
 
-export { default as Table } from "./Table/Table";
 export * from "./Table";
 
-export { default as Sidebar } from "./Sidebar/Sidebar";
-export * from "./Sidebar";
+export { default as SideNavbar } from "./SideNavbar";
+export * from "./SideNavbar";
 
 export * from "./Dialog";
 export * from "./Toast";
@@ -22,3 +21,7 @@ export type { CommandPaletteProps, CommandItem } from "./CommandPalette/CommandP
 
 export { default as DataGrid } from "./DataGrid/DataGrid";
 export type { DataGridProps, DataGridColumn, DataGridGroup } from "./DataGrid/DataGrid";
+
+// Flow components have been moved to extensions/flow
+// Use: import { FlowCanvas, FlowProvider } from '@fabio.caffarello/react-design-system/extensions/flow'
+// or: import { FlowCanvas, FlowProvider } from '@fabio.caffarello/react-design-system/extensions'

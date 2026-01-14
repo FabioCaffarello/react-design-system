@@ -2,6 +2,14 @@
 
 import type { HTMLAttributes } from "react";
 import { Button } from "../../atoms";
+import { cn } from '../../utils';
+import { 
+  getColorClass, 
+  getSpacingClass, 
+  getRadiusClass,
+  getTypographySizeFromFontSize,
+  getHoverColorClass
+} from '../../tokens';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   currentPage: number;
@@ -97,35 +105,37 @@ export default function Pagination({
     ? Math.min(currentPage * itemsPerPage, totalItems)
     : undefined;
 
-  const baseClasses = [
-    "flex",
-    "items-center",
-    "justify-between",
-    "px-4",
-    "py-3",
-  ];
-
-  const classes = [
-    ...baseClasses,
-    className,
-  ].filter(Boolean).join(" ");
+  const classes = cn(
+    'flex',
+    'items-center',
+    'justify-between',
+    getSpacingClass('base', 'px'),
+    getSpacingClass('md', 'py'),
+    className
+  );
 
   return (
     <nav className={classes} aria-label="Pagination" {...props}>
-      <div className="flex items-center gap-2">
+      <div className={cn('flex', 'items-center', getSpacingClass('sm', 'gap'))}>
         <Button
           variant="secondary"
           onClick={handlePrevious}
           disabled={currentPage === 1}
-          className="px-3 py-1 text-sm"
+          size="sm"
         >
           Previous
         </Button>
-        <div className="flex items-center gap-1">
+        <div className={cn('flex', 'items-center', getSpacingClass('xs', 'gap'))}>
           {getPageNumbers().map((page, index) => {
             if (page === 'ellipsis') {
               return (
-                <span key={`ellipsis-${index}`} className="px-2 text-gray-500">
+                <span 
+                  key={`ellipsis-${index}`} 
+                  className={cn(
+                    getSpacingClass('sm', 'px'),
+                    getColorClass('neutral', 'DEFAULT', 'text')
+                  )}
+                >
                   ...
                 </span>
               );
@@ -135,19 +145,16 @@ export default function Pagination({
             const isActive = pageNum === currentPage;
 
             return (
-              <button
+              <Button
                 key={pageNum}
+                variant={isActive ? 'primary' : 'ghost'}
                 onClick={() => handlePageClick(pageNum)}
-                className={`px-3 py-1 text-sm rounded ${
-                  isActive
-                    ? 'bg-indigo-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
-                }`}
+                size="sm"
                 aria-current={isActive ? 'page' : undefined}
                 aria-label={`Go to page ${pageNum}`}
               >
                 {pageNum}
-              </button>
+              </Button>
             );
           })}
         </div>
@@ -155,13 +162,16 @@ export default function Pagination({
           variant="secondary"
           onClick={handleNext}
           disabled={currentPage === totalPages}
-          className="px-3 py-1 text-sm"
+          size="sm"
         >
           Next
         </Button>
       </div>
       {showPageInfo && totalItems && itemsPerPage && (
-        <div className="text-sm text-gray-700">
+        <div className={cn(
+          getTypographySizeFromFontSize('sm'),
+          getColorClass('neutral', 'dark', 'text')
+        )}>
           Showing {startItem} to {endItem} of {totalItems} results
         </div>
       )}

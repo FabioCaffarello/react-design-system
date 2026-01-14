@@ -1,11 +1,13 @@
-'use client';
-
-import { forwardRef } from 'react';
+import { forwardRef, memo, useMemo } from 'react';
 import type { ButtonHTMLAttributes, ReactNode, ElementType } from 'react';
-import { getColorClass } from '../../tokens/colors';
+import { getColorClass, getHoverColorClass, getFocusColorClass, getFocusRingClass } from '../../tokens/colors';
+import { getRadiusClass } from '../../tokens/radius';
+import { getSpacingClass } from '../../tokens/spacing';
+import { getTypographyClasses, getTypographySize } from '../../tokens/typography';
+import { cn, cva, type VariantProps } from '../../utils';
 import Spinner from '../Spinner/Spinner';
 
-export type ButtonVariant = 'primary' | 'regular' | 'secondary' | 'error' | 'outline' | 'ghost' | 'iconOnly';
+export type ButtonVariant = 'primary' | 'secondary' | 'error' | 'outline' | 'ghost' | 'iconOnly';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'as'> {
@@ -22,131 +24,112 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
 }
 
 /**
- * Button Component Builder
- * Uses Builder Pattern for constructing button classes
+ * Button Variants using CVA
+ * Type-safe variant system for Button component
  */
-class ButtonClassBuilder {
-  private classes: string[] = [];
-
-  addBase(): this {
-    this.classes.push(
-      'inline-flex',
-      'items-center',
-      'justify-center',
-      'font-medium',
-      'rounded-md',
-      'transition-colors',
-      'focus:outline-none',
-      'focus:ring-2',
-      'focus:ring-offset-2',
-      'disabled:opacity-50',
-      'disabled:cursor-not-allowed'
-    );
-    return this;
+const buttonVariants = cva(
+  // Base classes
+  cn(
+    'inline-flex',
+    'items-center',
+    'justify-center',
+    getTypographyClasses('button').split(' ')[2] || 'font-medium', // Extract font-medium
+    getRadiusClass('md'),
+    'transition-colors',
+    'focus:outline-none',
+    'focus:ring-2',
+    'focus:ring-offset-2',
+    'disabled:opacity-50',
+    'disabled:cursor-not-allowed'
+  ),
+  {
+    variants: {
+      variant: {
+        primary: cn(
+          getColorClass('primary', 'DEFAULT', 'bg'),
+          getColorClass('primary', 'contrast', 'text'),
+          'hover:opacity-90',
+          getFocusRingClass('primary', 'DEFAULT')
+        ),
+        secondary: cn(
+          getColorClass('secondary', 'DEFAULT', 'bg'),
+          getColorClass('secondary', 'contrast', 'text'),
+          'hover:opacity-90',
+          getFocusRingClass('secondary', 'DEFAULT')
+        ),
+        error: cn(
+          getColorClass('error', 'DEFAULT', 'bg'),
+          getColorClass('error', 'contrast', 'text'),
+          'hover:opacity-90',
+          getFocusRingClass('error', 'DEFAULT')
+        ),
+        outline: cn(
+          'border-2',
+          getColorClass('neutral', 'DEFAULT', 'border'),
+          'bg-transparent',
+          getColorClass('neutral', 'dark', 'text'),
+          getHoverColorClass('neutral', 'light', 'bg'),
+          getFocusRingClass('neutral', 'DEFAULT')
+        ),
+        ghost: cn(
+          'bg-transparent',
+          getColorClass('neutral', 'dark', 'text'),
+          getHoverColorClass('neutral', 'light', 'bg'),
+          getFocusRingClass('neutral', 'DEFAULT')
+        ),
+        iconOnly: cn(
+          'bg-transparent',
+          getColorClass('neutral', 'dark', 'text'),
+          getHoverColorClass('neutral', 'light', 'bg'),
+          getFocusRingClass('neutral', 'DEFAULT'),
+          'p-0'
+        ),
+      },
+      size: {
+        sm: cn(
+          'px-3', // md = 3 (12px) - matches test expectation
+          'py-1.5', // 6px - not in tokens, keeping hardcoded for exact match
+          getTypographySize('bodySmall'),
+          'gap-1.5'
+        ),
+        md: cn(
+          getSpacingClass('base', 'px'), // px-4
+          getSpacingClass('sm', 'py'), // py-2
+          getTypographySize('body'),
+          'gap-2'
+        ),
+        lg: cn(
+          getSpacingClass('lg', 'px'), // px-6
+          getSpacingClass('md', 'py'), // py-3
+          getTypographySize('bodyLarge'),
+          'gap-2.5'
+        ),
+      },
+    },
+    compoundVariants: [
+      // IconOnly variant has different sizing
+      {
+        variant: 'iconOnly',
+        size: 'sm',
+        class: cn('h-8', 'w-8', 'p-0'),
+      },
+      {
+        variant: 'iconOnly',
+        size: 'md',
+        class: cn('h-10', 'w-10', 'p-0'),
+      },
+      {
+        variant: 'iconOnly',
+        size: 'lg',
+        class: cn('h-12', 'w-12', 'p-0'),
+      },
+    ],
+    defaultVariants: {
+      variant: 'primary',
+      size: 'md',
+    },
   }
-
-  addVariant(variant: ButtonVariant): this {
-    // Map 'regular' to 'primary' for backward compatibility
-    // TODO: Remove 'regular' in next major version
-    const normalizedVariant = variant === 'regular' ? 'primary' : variant;
-    
-     
-    if (variant === 'regular' && process.env.NODE_ENV === 'development') {
-      console.warn(
-        'Button variant "regular" is deprecated. Use "primary" instead. ' +
-        'This mapping will be removed in the next major version.'
-      );
-    }
-    
-    type NormalizedVariant = Exclude<ButtonVariant, 'regular'>;
-    
-    const variantClasses: Record<NormalizedVariant, string[]> = {
-      primary: [
-        getColorClass('primary', 'DEFAULT', 'bg'),
-        'text-white',
-        'hover:opacity-90',
-        'focus:ring-indigo-500',
-      ],
-      secondary: [
-        getColorClass('secondary', 'DEFAULT', 'bg'),
-        'text-white',
-        'hover:opacity-90',
-        'focus:ring-violet-500',
-      ],
-      error: [
-        getColorClass('error', 'DEFAULT', 'bg'),
-        'text-white',
-        'hover:opacity-90',
-        'focus:ring-red-500',
-      ],
-      outline: [
-        'border-2',
-        getColorClass('neutral', 'DEFAULT', 'border'),
-        'bg-transparent',
-        getColorClass('neutral', 'dark', 'text'),
-        'hover:bg-gray-50',
-        'focus:ring-gray-500',
-      ],
-      ghost: [
-        'bg-transparent',
-        getColorClass('neutral', 'dark', 'text'),
-        'hover:bg-gray-100',
-        'focus:ring-gray-500',
-      ],
-      iconOnly: [
-        'bg-transparent',
-        getColorClass('neutral', 'dark', 'text'),
-        'hover:bg-gray-100',
-        'focus:ring-gray-500',
-        'p-0',
-      ],
-    };
-
-    this.classes.push(...variantClasses[normalizedVariant as NormalizedVariant]);
-    return this;
-  }
-
-  addSize(size: ButtonSize, variant: ButtonVariant): this {
-    // Normalize variant for size calculation
-    const normalizedVariant = variant === 'regular' ? 'primary' : variant;
-    
-    // IconOnly variant has different sizing
-    if (normalizedVariant === 'iconOnly') {
-      const iconSizeClasses: Record<ButtonSize, string[]> = {
-        sm: ['h-8', 'w-8', 'p-0'],
-        md: ['h-10', 'w-10', 'p-0'],
-        lg: ['h-12', 'w-12', 'p-0'],
-      };
-      this.classes.push(...iconSizeClasses[size]);
-      return this;
-    }
-
-    const sizeClasses: Record<ButtonSize, string[]> = {
-      sm: ['px-3', 'py-1.5', 'text-sm', 'gap-1.5'],
-      md: ['px-4', 'py-2', 'text-base', 'gap-2'],
-      lg: ['px-6', 'py-3', 'text-lg', 'gap-2.5'],
-    };
-
-    this.classes.push(...sizeClasses[size]);
-    return this;
-  }
-
-  addFullWidth(): this {
-    this.classes.push('w-full');
-    return this;
-  }
-
-  addCustom(className: string): this {
-    if (className) {
-      this.classes.push(className);
-    }
-    return this;
-  }
-
-  build(): string {
-    return this.classes.filter(Boolean).join(' ');
-  }
-}
+);
 
 /**
  * Icon Wrapper Component
@@ -202,7 +185,7 @@ function IconWrapper({
  * <Button variant="iconOnly" leftIcon={<Icon />} aria-label="Close" />
  * ```
  */
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button({
+const Button = memo(forwardRef<HTMLButtonElement, ButtonProps>(function Button({
   variant = 'primary',
   size = 'md',
   isLoading = false,
@@ -218,41 +201,55 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button({
   'aria-label': ariaLabel,
   ...props
 }, ref) {
-  const builder = new ButtonClassBuilder();
-  const classes = builder
-    .addBase()
-    .addVariant(variant)
-    .addSize(size, variant)
-    .addFullWidth(fullWidth)
-    .addCustom(className)
-    .build();
+  // Memoize classes computation
+  const classes = useMemo(() => cn(
+    buttonVariants({ 
+      variant,
+      size 
+    }),
+    fullWidth && 'w-full',
+    className
+  ), [variant, size, fullWidth, className]);
 
-  // Determine if button is icon-only (no children, only icons)
-  const isIconOnly = variant === 'iconOnly' || (!children && (leftIcon || rightIcon));
+  // Memoize icon-only check
+  const isIconOnly = useMemo(() => 
+    variant === 'iconOnly' || (!children && (leftIcon || rightIcon)),
+    [variant, children, leftIcon, rightIcon]
+  );
   
-  // Aria label is required for icon-only buttons
-  const finalAriaLabel = isIconOnly && !ariaLabel && !children
-    ? 'Button' // Fallback, but should be provided
-    : ariaLabel;
-
-  // Normalize variant for spinner
-  const normalizedVariant = variant === 'regular' ? 'primary' : variant;
+  // Memoize aria label
+  const finalAriaLabel = useMemo(() => 
+    isIconOnly && !ariaLabel && !children
+      ? 'Button' // Fallback, but should be provided
+      : ariaLabel,
+    [isIconOnly, ariaLabel, children]
+  );
   
-  // Determine spinner variant based on button variant
-  const getSpinnerVariant = (): 'primary' | 'secondary' | 'neutral' => {
-    if (normalizedVariant === 'error') return 'primary'; // Red buttons use primary spinner (white)
-    if (normalizedVariant === 'primary' || normalizedVariant === 'secondary') return 'neutral'; // Colored buttons use neutral spinner
+  // Memoize spinner variant computation
+  const spinnerVariant = useMemo((): 'primary' | 'secondary' | 'neutral' => {
+    if (variant === 'error') return 'primary'; // Red buttons use primary spinner (white)
+    if (variant === 'primary' || variant === 'secondary') return 'neutral'; // Colored buttons use neutral spinner
     return 'primary'; // Default
-  };
+  }, [variant]);
   
-  // Loading state
-  const displayLoadingIcon = loadingIcon || (
-    <Spinner 
-      size={size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md'} 
-      variant={getSpinnerVariant()}
-    />
+  // Memoize spinner size
+  const spinnerSize = useMemo(() => 
+    size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md',
+    [size]
+  );
+  
+  // Memoize loading icon
+  const displayLoadingIcon = useMemo(() => 
+    loadingIcon || (
+      <Spinner 
+        size={spinnerSize} 
+        variant={spinnerVariant}
+      />
+    ),
+    [loadingIcon, spinnerSize, spinnerVariant]
   );
 
+  // Build button props (spread props at the end to allow overrides)
   const buttonProps = {
     className: classes,
     disabled: disabled || isLoading,
@@ -283,7 +280,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button({
       )}
     </Component>
   );
-});
+}));
 
 Button.displayName = 'Button';
 

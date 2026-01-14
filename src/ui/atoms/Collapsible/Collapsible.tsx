@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, useState, type HTMLAttributes, type ReactNode, type KeyboardEvent } from 'react';
 import { useCollapsible, type UseCollapsibleOptions } from '../../hooks/useCollapsible';
+import { getColorClass, getFocusColorClass, getFocusRingClass } from '../../tokens/colors';
+import { getRadiusClass } from '../../tokens/radius';
+import { cn } from '../../utils';
 
 export interface CollapsibleProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   children: ReactNode;
@@ -102,7 +105,15 @@ export default function Collapsible({
         aria-expanded={isOpen}
         aria-controls={contentId}
         aria-disabled={disabled}
-        className="w-full text-left focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 rounded-md"
+        className={cn(
+          'w-full',
+          'text-left',
+          'focus:outline-none',
+          'focus:ring-2',
+          getFocusRingClass('primary', 'DEFAULT'),
+          'focus:ring-offset-2',
+          getRadiusClass('md')
+        )}
       >
         {trigger}
       </button>

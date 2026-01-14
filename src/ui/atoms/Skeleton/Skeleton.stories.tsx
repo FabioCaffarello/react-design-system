@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from '@storybook/test';
 import Skeleton from "./Skeleton";
 
 const meta = {
@@ -8,7 +9,26 @@ const meta = {
     layout: "centered",
     docs: {
       description: {
-        component: "A skeleton loader component for displaying loading states. Includes proper ARIA attributes (role='status', aria-busy='true') to indicate loading state to screen readers.",
+        component: `
+## Skeleton
+
+A skeleton loader component for displaying loading states. Includes proper ARIA attributes.
+
+### Events
+
+| Event | Description | Parameters | When Fired |
+|-------|-------------|------------|------------|
+| N/A | Skeleton é um componente de exibição | - | Não possui eventos de interação |
+
+### States
+
+| State | Description | How to Activate | Visual |
+|-------|-------------|-----------------|--------|
+| \`text\` | Variante texto | \`variant="text"\` | Skeleton para texto |
+| \`card\` | Variante card | \`variant="card"\` | Skeleton para card |
+| \`list\` | Variante lista | \`variant="list"\` | Skeleton para lista |
+| \`circle\` | Variante círculo | \`variant="circle"\` | Skeleton circular |
+        `,
       },
     },
   },
@@ -117,6 +137,61 @@ export const LoadingStates: Story = {
     docs: {
       description: {
         story: "Example of using multiple skeleton loaders together to show a loading state.",
+      },
+    },
+  },
+};
+
+// State Stories
+export const TextState: Story = {
+  args: {
+    variant: "text",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Text state - skeleton for loading text content.',
+      },
+    },
+  },
+};
+
+export const CardState: Story = {
+  args: {
+    variant: "card",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Card state - skeleton for loading card content.',
+      },
+    },
+  },
+};
+
+export const ListState: Story = {
+  args: {
+    variant: "list",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'List state - skeleton for loading list content.',
+      },
+    },
+  },
+};
+
+export const CircleState: Story = {
+  args: {
+    variant: "circle",
+    width: "48px",
+    height: "48px",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Circle state - skeleton for loading circular content (e.g., avatars).',
       },
     },
   },

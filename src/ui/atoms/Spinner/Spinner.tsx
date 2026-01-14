@@ -2,7 +2,11 @@
 
 import { memo, useMemo } from 'react';
 import type { HTMLAttributes } from 'react';
+import { Loader2 } from 'lucide-react';
 import { getColorClass } from '../../tokens/colors';
+import { getSpacingClass } from '../../tokens/spacing';
+import { getTypographySize } from '../../tokens/typography';
+import { cn, cva } from '../../utils';
 
 export type SpinnerSize = 'sm' | 'md' | 'lg';
 export type SpinnerVariant = 'primary' | 'secondary' | 'neutral';
@@ -25,6 +29,29 @@ export interface SpinnerProps extends HTMLAttributes<HTMLDivElement> {
  * <Spinner size="md" variant="primary" label="Loading..." />
  * ```
  */
+// Spinner variants using CVA
+const spinnerVariants = cva(
+  'motion-safe:animate-spin',
+  {
+    variants: {
+      size: {
+        sm: 'h-4 w-4',
+        md: 'h-5 w-5',
+        lg: 'h-8 w-8',
+      },
+      variant: {
+        primary: getColorClass('primary', 'DEFAULT', 'text'),
+        secondary: getColorClass('secondary', 'DEFAULT', 'text'),
+        neutral: getColorClass('neutral', 'DEFAULT', 'text'),
+      },
+    },
+    defaultVariants: {
+      size: 'md',
+      variant: 'primary',
+    },
+  }
+);
+
 const Spinner = memo(function Spinner({
   size = 'md',
   variant = 'primary',
@@ -32,52 +59,25 @@ const Spinner = memo(function Spinner({
   className = '',
   ...props
 }: SpinnerProps) {
-  const sizeClasses: Record<SpinnerSize, string> = {
-    sm: 'h-4 w-4',
-    md: 'h-5 w-5',
-    lg: 'h-8 w-8',
-  };
-
-  const variantColorClass = useMemo(() => 
-    variant === 'neutral' 
-      ? 'text-gray-500' 
-      : variant === 'secondary'
-      ? getColorClass('secondary', 'DEFAULT', 'text')
-      : getColorClass('primary', 'DEFAULT', 'text'),
-    [variant]
-  );
-
   return (
     <div
-      className={`inline-flex items-center ${className}`}
+      className={cn('inline-flex', 'items-center', className)}
       role="status"
       aria-label={label || 'Loading'}
       aria-live="polite"
       {...props}
     >
-      <svg
-        className={`animate-spin ${sizeClasses[size]} ${variantColorClass}`}
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
+      <Loader2
+        className={cn(spinnerVariants({ size, variant }))}
         aria-hidden="true"
-      >
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          strokeWidth="4"
-        />
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-        />
-      </svg>
+      />
       {label && (
-        <span className="ml-2 text-sm text-gray-600 sr-only">{label}</span>
+        <span className={cn(
+          getSpacingClass('sm', 'ml'),
+          getTypographySize('bodySmall'),
+          getColorClass('neutral', 'DEFAULT', 'text'),
+          'sr-only'
+        )}>{label}</span>
       )}
     </div>
   );

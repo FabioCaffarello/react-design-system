@@ -1,6 +1,7 @@
 'use client';
 
-import { Children, type HTMLAttributes, ReactNode, isValidElement, cloneElement } from 'react';
+import { Children, type HTMLAttributes, type ReactNode, isValidElement, cloneElement } from 'react';
+import { cn } from '../../utils';
 import Avatar, { type AvatarProps } from './Avatar';
 
 export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
@@ -50,12 +51,12 @@ export function AvatarGroup({
 
   return (
     <div
-      className={`
-        flex
-        items-center
-        ${spacingClasses[spacing]}
-        ${className}
-      `}
+      className={cn(
+        'flex',
+        'items-center',
+        spacingClasses[spacing],
+        className
+      )}
       role="group"
       aria-label={`${avatars.length} avatars`}
       {...props}
