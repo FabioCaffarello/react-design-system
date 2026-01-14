@@ -197,7 +197,7 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
     useEffect(() => {
       if (highlightedIndex >= 0 && listRef.current) {
         const items = listRef.current.querySelectorAll('[role="option"]');
-        if (items[highlightedIndex]) {
+        if (items[highlightedIndex] && typeof items[highlightedIndex].scrollIntoView === 'function') {
           items[highlightedIndex].scrollIntoView({
             block: 'nearest',
             behavior: 'smooth',

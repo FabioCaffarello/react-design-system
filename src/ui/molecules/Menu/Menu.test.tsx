@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Menu, { MenuTrigger, MenuContent, MenuItem, MenuSeparator } from './Menu';
-import Button from '../Button/Button';
+import Button from '../../atoms/Button/Button';
 import { Settings, User, LogOut } from 'lucide-react';
 
 describe('Menu', () => {
@@ -52,7 +52,8 @@ describe('Menu', () => {
         </Menu>
       );
 
-      const trigger = screen.getByRole('button', { name: 'Open Menu' });
+      const triggers = screen.getAllByRole('button', { name: 'Open Menu' });
+      const trigger = triggers[0]; // Get the MenuTrigger, not the Button inside
       const wrapper = trigger.closest('[aria-haspopup="menu"]');
       expect(wrapper).toBeInTheDocument();
     });
@@ -148,7 +149,7 @@ describe('Menu', () => {
       );
 
       await waitFor(() => {
-        const item = screen.getByText('Disabled Item');
+        const item = screen.getByRole('menuitem', { name: 'Disabled Item' });
         expect(item).toHaveAttribute('aria-disabled', 'true');
         expect(item).toHaveAttribute('tabIndex', '-1');
       });
@@ -186,7 +187,7 @@ describe('Menu', () => {
       );
 
       await waitFor(() => {
-        const item = screen.getByText('Submenu Item');
+        const item = screen.getByRole('menuitem', { name: 'Submenu Item' });
         // Should have chevron icon
         const chevron = item.querySelector('svg');
         expect(chevron).toBeInTheDocument();

@@ -141,9 +141,13 @@ describe('Chip', () => {
           Both
         </Chip>
       );
-      const chip = screen.getByRole('button');
-      fireEvent.click(chip);
-      expect(handleClick).toHaveBeenCalledTimes(1);
+      const buttons = screen.getAllByRole('button');
+      const chip = buttons.find(btn => btn.textContent?.includes('Both'));
+      expect(chip).toBeDefined();
+      if (chip) {
+        fireEvent.click(chip);
+        expect(handleClick).toHaveBeenCalledTimes(1);
+      }
       
       const removeButton = screen.getByLabelText(/Remove/);
       fireEvent.click(removeButton);

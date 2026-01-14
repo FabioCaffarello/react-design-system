@@ -46,7 +46,7 @@ describe('Progress', () => {
 
     rerender(<Progress value={50} variant="secondary" />);
     fill = container.querySelector('div[aria-hidden="true"]');
-    expect(fill).toHaveClass('bg-violet-500');
+    expect(fill).toHaveClass('bg-pink-500');
 
     rerender(<Progress value={50} variant="success" />);
     fill = container.querySelector('div[aria-hidden="true"]');

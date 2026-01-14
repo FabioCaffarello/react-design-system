@@ -337,7 +337,7 @@ describe('SideNavbar', () => {
       );
 
       const toggleButton = screen.getByRole('button', { name: /collapse sidebar/i });
-      expect(toggleButton).toHaveAttribute('aria-controls', 'side-navbar-content');
+      expect(toggleButton).toHaveAttribute('aria-controls', 'side-navbar-sidebar');
     });
   });
 

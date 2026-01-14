@@ -20,6 +20,30 @@ const config: StorybookConfig = {
     name: "@storybook/react-vite",
     options: {},
   },
+  async viteFinal(config, { configType }) {
+    // Ensure proper module resolution
+    config.resolve = config.resolve || {};
+    config.resolve.dedupe = config.resolve.dedupe || [];
+    config.resolve.dedupe.push('react', 'react-dom');
+    
+    // Optimize dependencies
+    config.optimizeDeps = config.optimizeDeps || {};
+    config.optimizeDeps.include = config.optimizeDeps.include || [];
+    config.optimizeDeps.include.push(
+      'react',
+      'react-dom',
+      'lucide-react'
+    );
+    
+    // Improve module resolution for complex imports
+    config.resolve.alias = config.resolve.alias || {};
+    
+    // Ensure proper handling of client directives
+    config.esbuild = config.esbuild || {};
+    config.esbuild.jsx = 'automatic';
+    
+    return config;
+  },
   core: {
     disableTelemetry: true,
   },

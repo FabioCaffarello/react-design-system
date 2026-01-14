@@ -45,9 +45,10 @@ describe('Text', () => {
   });
 
   it('applies color class when color prop is provided', () => {
-    const { container } = render(<Text color="red-500">Colored text</Text>);
+    const { container } = render(<Text colorRole="error" colorShade="dark">Colored text</Text>);
     const text = container.querySelector('p');
-    expect(text).toHaveClass('text-red-500');
+    // Component uses getColorClass which returns semantic color classes
+    expect(text).toHaveClass('text-red-600'); // error dark variant
   });
 
   it('applies custom className', () => {

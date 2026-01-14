@@ -8,6 +8,7 @@ import {
   getColorClass, 
   getSpacingClass, 
   getRadiusClass,
+  getTypographySize,
   getTypographySizeFromFontSize
 } from '../../tokens';
 import ErrorMessage from '../../atoms/ErrorMessage/ErrorMessage';
@@ -165,7 +166,7 @@ export default function Form<TFieldValues extends FieldValues = FieldValues>({
           role="alert"
           className={cn(
             getSpacingClass('md', 'p'),
-            getTypographySize('sm'),
+            getTypographySizeFromFontSize('sm'),
             getColorClass('error', 'dark', 'text'),
             getColorClass('error', 'light', 'bg'),
             'border',
@@ -181,7 +182,7 @@ export default function Form<TFieldValues extends FieldValues = FieldValues>({
           role="alert"
           className={cn(
             getSpacingClass('md', 'p'),
-            getTypographySize('sm'),
+            getTypographySizeFromFontSize('sm'),
             getColorClass('success', 'dark', 'text'),
             getColorClass('success', 'light', 'bg'),
             'border',

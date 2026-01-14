@@ -210,7 +210,7 @@ const Input = memo(forwardRef<HTMLInputElement, InputProps>(function Input({
             'border-0',
             'focus:bg-white',
             'focus:ring-2',
-            getFocusRingColor()
+            getFocusRingColor
           ),
         },
         size: {

@@ -8,6 +8,47 @@ import { getRadiusClass } from '../../tokens/radius';
 import { getSpacingClass } from '../../tokens/spacing';
 import { cn, cva } from '../../utils';
 
+/**
+ * Helper Text Component
+ * Memoized component for helper/error text
+ */
+const HelperText = memo(function HelperText({
+  error,
+  success,
+  helperText,
+  errorId,
+  helperId,
+}: {
+  error: boolean;
+  success: boolean;
+  helperText?: string;
+  errorId?: string;
+  helperId?: string;
+}) {
+  const helperClasses = useMemo(() => cn(
+    getSpacingClass('xs', 'mt'),
+    getTypographyClasses('caption'),
+    error && getColorClass('error', 'DEFAULT', 'text'),
+    success && getColorClass('success', 'DEFAULT', 'text'),
+    !error && !success && getColorClass('neutral', 'DEFAULT', 'text')
+  ), [error, success]);
+
+  const text = useMemo(() => 
+    helperText || (error ? 'Error' : success ? 'Success' : ''),
+    [helperText, error, success]
+  );
+
+  return (
+    <div
+      id={errorId || helperId}
+      className={helperClasses}
+      role={error || success ? 'alert' : undefined}
+    >
+      {text}
+    </div>
+  );
+});
+
 export type SelectSize = 'sm' | 'md' | 'lg';
 
 export interface SelectOption {

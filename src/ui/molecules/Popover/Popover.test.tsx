@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Popover from './Popover';
-import Button from '../Button/Button';
+import Button from '../../atoms/Button/Button';
 
 describe('Popover', () => {
   it('renders trigger correctly', () => {

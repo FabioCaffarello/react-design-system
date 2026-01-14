@@ -81,3 +81,6 @@ Menu.Trigger = MenuTrigger;
 Menu.Content = MenuContent;
 Menu.Item = MenuItem;
 Menu.Separator = MenuSeparator;
+
+// Also export as named exports for easier imports
+export { MenuTrigger, MenuContent, MenuItem, MenuSeparator };

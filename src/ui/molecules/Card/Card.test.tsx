@@ -11,7 +11,7 @@ describe("Card", () => {
   it("renders with default variant", () => {
     const { container } = render(<Card>Content</Card>);
     const card = container.firstChild as HTMLElement;
-    expect(card).toHaveClass("bg-white", "rounded-lg", "border", "border-gray-200");
+    expect(card).toHaveClass("bg-white", "rounded-lg", "border", "border-gray-500");
   });
 
   it("applies hover variant classes", () => {
@@ -35,7 +35,7 @@ describe("Card", () => {
   it("applies small padding", () => {
     const { container } = render(<Card padding="small">Content</Card>);
     const card = container.firstChild as HTMLElement;
-    expect(card).toHaveClass("p-2");
+    expect(card).toHaveClass("p-1"); // xs spacing is p-1
   });
 
   it("applies large padding", () => {

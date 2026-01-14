@@ -141,8 +141,8 @@ const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(
   },
   ref
 ) {
-  // Determine if chip is interactive (has onClick or is selectable)
-  const isInteractive = onClick !== undefined || selected !== undefined;
+  // Determine if chip is interactive (has onClick or is explicitly selectable)
+  const isInteractive = onClick !== undefined || (selected !== false && selected !== undefined);
   const role = selected ? 'option' : (isInteractive ? 'button' : undefined);
   
   // Generate accessible label

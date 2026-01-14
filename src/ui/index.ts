@@ -15,6 +15,15 @@ export * from "./themes";
 // Extensions
 export * from "./extensions";
 
+// Builders
+export * from "./builders";
+
+// Playgrounds
+export * from "./playgrounds";
+
+// Tools
+export * from "./tools";
+
 // Export helper functions for convenience
 export { getSpacingClass, getSpacing } from "./tokens/spacing";
 export { getTypographyClasses, getTypography } from "./tokens/typography";
