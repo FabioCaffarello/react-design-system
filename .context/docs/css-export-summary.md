@@ -6,17 +6,20 @@
 ## ✅ O que foi feito
 
 ### 1. Exports de CSS no package.json
+
 - ✅ Adicionado `"./styles"` → `./dist/react-design-system.css`
 - ✅ Adicionado `"./styles.css"` → `./dist/react-design-system.css`
 - ✅ Adicionado `"style"` no export principal
 - ✅ Adicionado campo `"style"` legacy
 
 ### 2. Configuração do Vite
+
 - ✅ `cssCodeSplit: false` - Bundle único de CSS
 - ✅ `cssMinify: true` - Minificação ativada
 - ✅ `assetFileNames` configurado para garantir nome consistente
 
 ### 3. Documentação
+
 - ✅ `GettingStarted.mdx` atualizado com exemplos
 - ✅ Múltiplas formas de importar documentadas
 

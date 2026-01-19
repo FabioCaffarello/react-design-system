@@ -8,7 +8,6 @@
 import React, { useState, useMemo } from 'react';
 import { Card } from '../../../molecules';
 import { Input, Button } from '../../../atoms';
-import Collapsible from '../../../atoms/Collapsible/Collapsible';
 import { getPlaygroundTabContent } from '../utils/playgroundSteps';
 import type { PlaygroundTabId } from './PlaygroundTabs';
 import { 
@@ -29,12 +28,12 @@ export function PlaygroundSidebarContent({
   onSearchChange,
 }: PlaygroundSidebarContentProps) {
   const [localSearchQuery, setLocalSearchQuery] = useState('');
-  const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set());
+  const [_collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set());
   
   const searchValue = searchQuery || localSearchQuery;
   const handleSearchChange = onSearchChange || setLocalSearchQuery;
   
-  const toggleSection = (sectionId: string) => {
+  const _toggleSection = (sectionId: string) => {
     setCollapsedSections(prev => {
       const next = new Set(prev);
       if (next.has(sectionId)) {

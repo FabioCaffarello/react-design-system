@@ -36,9 +36,11 @@ phases:
 > Refatorar a lógica de sincronização de estado do hook `usePlaygroundHistory` para corrigir os 2 testes falhando relacionados a undo/redo e sincronização entre refs e state
 
 ## Task Snapshot
+
 - **Primary goal:** Refatorar o hook `usePlaygroundHistory` para eliminar problemas de sincronização entre refs e state, garantindo que undo/redo funcionem corretamente em todos os cenários
 - **Success signal:** Todos os testes do `usePlaygroundHistory.test.ts` passam, incluindo `can undo after pushing multiple states` e `can redo after undo`
 - **Key references:**
+
   - [Documentation Index](../docs/README.md)
   - [Agent Handbook](../agents/README.md)
   - [Testing Strategy](../docs/testing-strategy.md)
@@ -47,6 +49,7 @@ phases:
 ## Análise do Problema
 
 ### Testes Falhando
+
 1. **`can undo after pushing multiple states`** - `undo()` retorna `undefined` ao invés do estado esperado
 2. **`can redo after undo`** - `canRedo` retorna `false` quando deveria ser `true`
 
@@ -62,6 +65,7 @@ O hook atual tem múltiplos problemas de sincronização:
 ### Arquitetura Atual (Problemática)
 
 ```typescript
+
 // Problema: State e refs podem ficar dessincronizados
 const [history, setHistory] = useState<HistoryState[]>([]);
 const [historyIndex, setHistoryIndex] = useState(-1);
@@ -80,6 +84,7 @@ setHistoryIndex((currentIndex) => {
   historyRef.current = finalHistory; // Pode estar desatualizado
   return finalIndex;
 });
+
 ```
 
 ## Solução Proposta
@@ -96,7 +101,9 @@ Refatorar para usar `useReducer` como única fonte de verdade, eliminando a nece
 ### Arquitetura Proposta
 
 ```typescript
+
 type HistoryAction =
+
   | { type: 'PUSH_STATE'; payload: HistoryState }
   | { type: 'UNDO' }
   | { type: 'REDO' }
@@ -119,9 +126,11 @@ function historyReducer(state: HistoryReducerState, action: HistoryAction): Hist
     // ...
   }
 }
+
 ```
 
 ## Agent Lineup
+
 | Agent | Role in this plan | Playbook | First responsibility focus |
 | --- | --- | --- | --- |
 | Refactoring Specialist | Identificar problemas arquiteturais e propor solução | [Refactoring Specialist](../agents/refactoring-specialist.md) | Analisar código atual e propor arquitetura com useReducer |
@@ -131,6 +140,7 @@ function historyReducer(state: HistoryReducerState, action: HistoryAction): Hist
 | Code Reviewer | Revisar qualidade e padrões do código refatorado | [Code Reviewer](../agents/code-reviewer.md) | Revisar implementação final e garantir qualidade |
 
 ## Documentation Touchpoints
+
 | Guide | File | Primary Inputs | Updates Needed |
 | --- | --- | --- | --- |
 | Testing Strategy | [testing-strategy.md](../docs/testing-strategy.md) | Estratégia de testes atual | Documentar padrões de teste para hooks com useReducer |
@@ -140,6 +150,7 @@ function historyReducer(state: HistoryReducerState, action: HistoryAction): Hist
 ## Risk Assessment
 
 ### Identified Risks
+
 | Risk | Probability | Impact | Mitigation Strategy | Owner |
 | --- | --- | --- | --- | --- |
 | Refatoração pode quebrar funcionalidade existente | Medium | High | Manter interface pública idêntica, testar extensivamente | Frontend Specialist |
@@ -148,15 +159,20 @@ function historyReducer(state: HistoryReducerState, action: HistoryAction): Hist
 | Componentes que usam o hook podem precisar de ajustes | Low | Medium | Interface pública permanece a mesma, não deve haver breaking changes | Frontend Specialist |
 
 ### Dependencies
+
 - **Internal:** Nenhuma dependência de outros times
-- **External:** 
+- **External:**
+
   - `react` - Garantir compatibilidade com versão atual
   - `@xyflow/react` - Tipos de Node e Edge
-- **Technical:** 
+
+- **Technical:**
+
   - Ambiente de teste configurado (Vitest + @testing-library/react)
   - Conhecimento de useReducer e padrões React
 
 ### Assumptions
+
 - Assumimos que a interface pública do hook (`UsePlaygroundHistoryReturn`) pode permanecer a mesma
 - Assumimos que componentes que usam o hook não precisarão de mudanças
 - Se assumirmos incorretamente, precisaremos atualizar componentes consumidores também
@@ -164,6 +180,7 @@ function historyReducer(state: HistoryReducerState, action: HistoryAction): Hist
 ## Resource Estimation
 
 ### Time Allocation
+
 | Phase | Estimated Effort | Calendar Time | Team Size |
 | --- | --- | --- | --- |
 | Phase 1 - Análise e Design | 0.5 person-days | 1 dia | 1 pessoa |
@@ -172,12 +189,14 @@ function historyReducer(state: HistoryReducerState, action: HistoryAction): Hist
 | **Total** | **2 person-days** | **3-4 dias** | **1 pessoa** |
 
 ### Required Skills
+
 - Experiência com React hooks (useState, useReducer, useCallback, useRef)
 - Conhecimento de padrões de sincronização de state em React
 - Experiência com testes de hooks usando @testing-library/react
 - Habilidades de debugging e análise de race conditions
 
 ### Resource Availability
+
 - **Available:** Desenvolvedor principal do projeto
 - **Blocked:** Nenhum bloqueio identificado
 - **Escalation:** N/A
@@ -185,9 +204,10 @@ function historyReducer(state: HistoryReducerState, action: HistoryAction): Hist
 ## Working Phases
 
 ### Phase 1 — Análise e Design da Solução
+
 **Objetivo:** Analisar profundamente o problema e projetar a solução com useReducer
 
-**Steps**
+#### Phase 1 Steps
 
 1. **Análise detalhada do problema atual** (Bug Fixer)
    - Executar testes falhando e capturar logs detalhados
@@ -206,19 +226,22 @@ function historyReducer(state: HistoryReducerState, action: HistoryAction): Hist
    - Verificar que interface pública permanece compatível
    - Validar que não há edge cases não cobertos
 
-**Deliverables**
+#### Phase 1 Deliverables
+
 - Documento com análise detalhada do problema
 - Design da solução com useReducer (código comentado)
 - Diagrama de fluxo de estado (antes e depois)
 - Lista de edge cases identificados
 
-**Commit Checkpoint**
+#### Phase 1 Commit Checkpoint
+
 - `git commit -m "chore(plan): complete phase 1 analysis and design for usePlaygroundHistory refactor"`
 
 ### Phase 2 — Implementação da Refatoração
+
 **Objetivo:** Implementar a refatoração usando useReducer
 
-**Steps**
+#### Phase 2 Steps
 
 1. **Criar reducer e types** (Frontend Specialist)
    - Definir types para HistoryAction e HistoryReducerState
@@ -243,18 +266,21 @@ function historyReducer(state: HistoryReducerState, action: HistoryAction): Hist
    - Adicionar comentários explicativos
    - Garantir que código segue padrões do projeto
 
-**Deliverables**
+#### Phase 2 Deliverables
+
 - Hook refatorado com useReducer
 - Código limpo sem refs de sincronização desnecessários
 - Interface pública mantida compatível
 
-**Commit Checkpoint**
+#### Phase 2 Commit Checkpoint
+
 - `git commit -m "refactor(hooks): refactor usePlaygroundHistory to use useReducer for atomic state management"`
 
 ### Phase 3 — Validação e Testes
+
 **Objetivo:** Validar que a refatoração corrige os testes e não quebra funcionalidade
 
-**Steps**
+#### Phase 3 Steps
 
 1. **Executar testes existentes** (Test Writer)
    - Executar `npm run test` para usePlaygroundHistory.test.ts
@@ -278,42 +304,51 @@ function historyReducer(state: HistoryReducerState, action: HistoryAction): Hist
    - Validar que não há código morto ou comentários desnecessários
    - Garantir performance adequada
 
-**Deliverables**
+#### Phase 3 Deliverables
+
 - Todos os testes passando (100%)
 - Testes adicionais para edge cases
 - Validação de que componentes consumidores funcionam corretamente
 - Código revisado e aprovado
 
-**Commit Checkpoint**
+#### Phase 3 Commit Checkpoint
+
 - `git commit -m "test(hooks): add comprehensive tests for usePlaygroundHistory refactor"`
 
 ## Rollback Plan
 
 ### Rollback Triggers
+
 When to initiate rollback:
+
 - Testes ainda falhando após refatoração
 - Componentes consumidores quebrados
 - Performance degradada significativamente
 - Regressões funcionais no playground
 
 ### Rollback Procedures
+
 #### Phase 1 Rollback
+
 - Action: Descartar design, manter implementação atual
 - Data Impact: Nenhum
 - Estimated Time: < 5 minutos
 
 #### Phase 2 Rollback
+
 - Action: Reverter commit de refatoração, restaurar código anterior
 - Data Impact: Nenhum
 - Estimated Time: < 10 minutos
 - Command: `git revert <commit-hash>`
 
 #### Phase 3 Rollback
+
 - Action: Reverter apenas testes se necessário, manter refatoração
 - Data Impact: Nenhum
 - Estimated Time: < 5 minutos
 
 ### Post-Rollback Actions
+
 1. Documentar razão do rollback
 2. Analisar o que deu errado
 3. Atualizar plano com lições aprendidas
@@ -322,6 +357,7 @@ When to initiate rollback:
 ## Evidence & Follow-up
 
 ### Artifacts to Collect
+
 - [ ] Output de testes antes da refatoração (mostrando falhas)
 - [ ] Output de testes após refatoração (todos passando)
 - [ ] Código do reducer implementado
@@ -329,12 +365,14 @@ When to initiate rollback:
 - [ ] Screenshots de undo/redo funcionando no playground (se aplicável)
 
 ### Follow-up Actions
+
 - [ ] Considerar aplicar padrão useReducer em outros hooks similares
 - [ ] Documentar padrão de useReducer para state complexo na arquitetura
 - [ ] Atualizar documentação de testes se necessário
 - [ ] Monitorar performance do hook em produção
 
 ### Success Metrics
+
 - ✅ Todos os testes do usePlaygroundHistory passando (5/5)
 - ✅ Zero regressões em componentes consumidores
 - ✅ Código mais simples e manutenível (menos linhas, menos complexidade)
@@ -345,13 +383,16 @@ When to initiate rollback:
 ### Padrão useReducer para State Complexo
 
 #### Estrutura do Reducer
+
 ```typescript
+
 interface HistoryReducerState {
   history: HistoryState[];
   index: number;
 }
 
 type HistoryAction =
+
   | { type: 'PUSH_STATE'; payload: HistoryState }
   | { type: 'UNDO' }
   | { type: 'REDO' }
@@ -372,25 +413,27 @@ function historyReducer(
         return { history: newHistory, index: MAX_HISTORY_SIZE - 1 };
       }
       return { history: newHistory, index: newHistory.length - 1 };
-    
+
     case 'UNDO':
       if (state.index <= 0) return state;
       return { ...state, index: state.index - 1 };
-    
+
     case 'REDO':
       if (state.index >= state.history.length - 1) return state;
       return { ...state, index: state.index + 1 };
-    
+
     case 'CLEAR':
       return { history: [], index: -1 };
-    
+
     default:
       return state;
   }
 }
+
 ```
 
 #### Vantagens da Abordagem
+
 1. **Atomicidade**: Todas as operações são atômicas através do reducer
 2. **Single Source of Truth**: Apenas o reducer gerencia o estado
 3. **Simplicidade**: Elimina necessidade de sincronizar refs com state
@@ -398,11 +441,13 @@ function historyReducer(
 5. **Manutenibilidade**: Lógica centralizada e fácil de entender
 
 ### Considerações de Performance
+
 - `useReducer` é otimizado pelo React e não deve ter impacto negativo
 - Deep cloning ainda necessário para evitar mutações
 - MAX_HISTORY_SIZE limita memória usada
 
 ### Compatibilidade
+
 - Interface pública (`UsePlaygroundHistoryReturn`) permanece idêntica
 - Componentes consumidores não precisam de mudanças
 - Apenas implementação interna muda

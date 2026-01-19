@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
+import { expect, within, waitFor } from '@storybook/test';
 import { useState } from 'react';
 import Rating from './Rating';
 
@@ -22,7 +22,7 @@ A rating component that allows users to rate items using stars or other icons.
 | Event | Description | Parameters | When Fired |
 |-------|-------------|------------|------------|
 | \`onChange\` | Avaliação mudou | \`(value: number) => void\` | Quando uma nova avaliação é selecionada |
-| \`onHover\` | Hover sobre estrela | \`(value: number \| null) => void\` | Quando o mouse passa sobre uma estrela |
+| \`onHover\` | Hover sobre estrela | \`(value: number | null) => void\` | Quando o mouse passa sobre uma estrela |
 
 ### States
 

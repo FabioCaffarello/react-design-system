@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { expect, userEvent, within, waitFor } from '@storybook/test';
 import { fn } from '@storybook/test';
-import CommandPalette, { type CommandItem } from './CommandPalette';
+import CommandPalette from './CommandPalette';
 import Button from '../../atoms/Button/Button';
 import {
   FileText,

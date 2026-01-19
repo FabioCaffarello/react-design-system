@@ -33,7 +33,7 @@ test.describe('Input Component', () => {
   });
 
   test('should have proper ARIA attributes', async ({ page }) => {
-    const input = page.getByRole('textbox');
+    const _input = page.getByRole('textbox');
     
     // Check aria-invalid when error
     await page.goto('/?path=/story/atoms-input--error');

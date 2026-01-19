@@ -17,11 +17,13 @@ Remover a aplicação standalone (Flow Playground) do design system, mantendo ap
 ## 📊 Arquivos a Remover
 
 ### Arquivos da Aplicação Standalone
+
 - ✅ `src/main.tsx` - Entry point da aplicação
 - ✅ `src/app.tsx` - Componente principal da aplicação  
 - ✅ `index.html` - HTML da aplicação standalone
 
 ### Arquivos a MANTER
+
 - ✅ `src/style.css` - **MANTIDO** - Importado pelo Storybook (`.storybook/preview.tsx`)
 - ✅ `src/styles/` - **MANTIDO** - Usado pelo Storybook
 - ✅ `src/ui/extensions/flow/components/PlaygroundLayout.tsx` - **MANTIDO** - Usado pelo Storybook
@@ -31,21 +33,25 @@ Remover a aplicação standalone (Flow Playground) do design system, mantendo ap
 ## 🔧 Configurações a Atualizar
 
 ### vite.config.ts
+
 - Remover lógica `isAppMode`
 - Simplificar configuração do servidor
 - Remover variável `VITE_APP_MODE`
 
 ### Documentação
+
 - Atualizar `src/docs/GettingStarted.mdx` (remover referência a `main.tsx`)
 
 ## ✅ Checklist de Execução
 
 ### Fase 1: Verificação
+
 - [x] Confirmar que Storybook usa `src/style.css`
 - [x] Confirmar que PlaygroundLayout é usado pelo Storybook
 - [x] Identificar todos os arquivos a remover
 
 ### Fase 2: Remoção
+
 - [ ] Remover `src/main.tsx`
 - [ ] Remover `src/app.tsx`
 - [ ] Remover `index.html`
@@ -53,6 +59,7 @@ Remover a aplicação standalone (Flow Playground) do design system, mantendo ap
 - [ ] Atualizar documentação
 
 ### Fase 3: Validação
+
 - [ ] Build funciona (`npm run build`)
 - [ ] Storybook funciona (`npm run storybook`)
 - [ ] Validações passam (`npm run validate:all`)

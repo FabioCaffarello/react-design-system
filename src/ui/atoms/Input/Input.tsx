@@ -259,6 +259,7 @@ const Input = memo(forwardRef<HTMLInputElement, InputProps>(function Input({
     leftIcon && (size === 'sm' ? 'pl-9' : size === 'lg' ? 'pl-12' : 'pl-10'),
     (rightIcon || shouldShowClear || isPassword) && (size === 'sm' ? 'pr-9' : size === 'lg' ? 'pr-12' : 'pr-10'),
     className
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   ), [variant, size, state, leftIcon, rightIcon, shouldShowClear, isPassword, className]);
 
   // Memoize label classes

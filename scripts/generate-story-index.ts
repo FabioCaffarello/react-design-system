@@ -8,7 +8,7 @@
  */
 
 import { readFileSync, existsSync, readdirSync, writeFileSync } from 'fs';
-import { join, dirname, basename } from 'path';
+import { join } from 'path';
 
 interface StoryInfo {
   title: string;

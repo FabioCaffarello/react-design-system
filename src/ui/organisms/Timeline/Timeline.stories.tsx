@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
+import { expect, within, waitFor } from '@storybook/test';
 import { useState } from 'react';
 import Timeline, { type TimelineItem } from './Timeline';
 import { CheckCircle2, XCircle, Package, Truck, CheckCircle } from 'lucide-react';
@@ -306,7 +306,7 @@ export const InteractiveTimeline: Story = {
       },
     ]);
 
-    const handleItemClick = (itemId: string) => {
+    const _handleItemClick = (itemId: string) => {
       setItems(items.map(item => 
         item.id === itemId 
           ? { ...item, status: item.status === 'completed' ? 'default' : 'completed' as const }
@@ -357,7 +357,7 @@ export const ManyItems: Story = {
 export const WithEvents: Story = {
   render: () => {
     const [items, setItems] = useState<TimelineItem[]>(basicItems);
-    const handleItemClick = fn((itemId: string) => {
+    const _handleItemClick = fn((itemId: string) => {
       setItems(items.map(item => 
         item.id === itemId 
           ? { ...item, status: item.status === 'completed' ? 'default' as const : 'completed' as const }

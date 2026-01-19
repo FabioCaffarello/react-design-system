@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, type HTMLAttributes } from 'react';
+import React, { useState } from 'react';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { cn } from '../../../../utils';
 import type { NavbarGroupProps } from '../../types';

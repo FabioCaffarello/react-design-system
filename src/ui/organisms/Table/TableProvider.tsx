@@ -417,7 +417,7 @@ export function TableProvider<T extends Record<string, unknown> = Record<string,
     onRowClick,
     onColumnResize,
     resizable,
-    columnWidths,
+    finalColumnWidths,
     virtualScrolling,
   ]);
 

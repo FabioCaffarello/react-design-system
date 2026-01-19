@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react';
 import { ReactFlowProvider } from '@xyflow/react';
 import { FlowProvider } from '../organisms/FlowProvider';
 import { CustomNode } from './CustomNode';
-import type { Node } from '@xyflow/react';
-import type { FlowNodeData } from '../organisms/FlowTypes';
+import type { Node, Edge } from '@xyflow/react';
+import type { FlowNodeData, FlowEdgeData } from '../organisms/FlowTypes';
 
 describe('CustomNode', () => {
   const mockNodes: Node<FlowNodeData>[] = [
@@ -18,7 +18,7 @@ describe('CustomNode', () => {
       },
     },
   ];
-  const mockEdges: any[] = [];
+  const mockEdges: Edge<FlowEdgeData>[] = [];
   
   beforeEach(() => {
     vi.clearAllMocks();

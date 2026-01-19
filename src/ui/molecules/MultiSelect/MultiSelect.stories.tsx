@@ -364,7 +364,7 @@ export const KeyboardNavigation: Story = {
 export const RealTimeSearch: Story = {
   render: () => {
     const [selected, setSelected] = React.useState<string[]>([]);
-    const [searchTerm, setSearchTerm] = React.useState('');
+    const [searchTerm, _setSearchTerm] = React.useState('');
     
     const allOptions = [
       { value: '1', label: 'Apple' },

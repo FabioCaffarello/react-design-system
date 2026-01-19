@@ -95,7 +95,7 @@ describe('NavLink Accessibility', () => {
   describe('Focus Management', () => {
     it('should have visible focus indicators', () => {
       // TDD: Test focus visibility
-      const { container } = render(<NavLink href="/home">Home</NavLink>);
+      render(<NavLink href="/home">Home</NavLink>);
       const link = screen.getByRole('link', { name: 'Home' });
       link.focus();
       

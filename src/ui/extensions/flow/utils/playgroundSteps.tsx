@@ -5,6 +5,7 @@
  * Each tab maps to a component that will be rendered.
  */
 
+/* eslint-disable react-refresh/only-export-components */
 import React, { lazy, Suspense } from 'react';
 import { CheckCircle2, XCircle } from 'lucide-react';
 import { usePlaygroundContext } from '../context/PlaygroundContext';

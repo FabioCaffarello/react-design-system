@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useEffect, useState, type ReactNode } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { getRadiusClass } from '../../tokens/radius';
 import { getShadowClass } from '../../tokens/shadows';

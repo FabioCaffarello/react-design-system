@@ -8,10 +8,8 @@ import {
   getColorClass, 
   getSpacingClass, 
   getRadiusClass,
-  getTypographySize,
   getTypographySizeFromFontSize
 } from '../../tokens';
-import ErrorMessage from '../../atoms/ErrorMessage/ErrorMessage';
 
 // Simple Form Props
 interface SimpleFormProps extends FormHTMLAttributes<HTMLFormElement> {

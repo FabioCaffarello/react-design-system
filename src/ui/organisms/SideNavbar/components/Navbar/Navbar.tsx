@@ -1,18 +1,17 @@
 'use client';
 
-import React, { useState, useRef, useMemo, type HTMLAttributes, type ReactNode } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { NavbarContext } from '../../contexts/NavbarContext';
 import { useSideNavbarStateRequired } from '../../contexts/SideNavbarStateContext';
 import { useSideNavbarThemeRequired } from '../../contexts/SideNavbarThemeContext';
 import { useSideNavbarConfigRequired } from '../../contexts/SideNavbarConfigContext';
 import { useSideNavbarToggleContextRequired } from '../../contexts/SideNavbarToggleContext';
 import { cn } from '../../../../utils';
-import type { NavbarProps, NavbarContextValue, NavbarTogglePosition } from '../../types';
+import type { NavbarProps, NavbarContextValue } from '../../types';
 import NavbarToggle from './NavbarToggle';
 import NavbarItem from './NavbarItem';
 import NavbarSeparator from './NavbarSeparator';
 import { NavbarGroup } from './NavbarGroup';
-import SideNavbarToggle from '../SideNavbarToggle';
 
 /**
  * Navbar subcomponent for SideNavbar
@@ -50,7 +49,7 @@ function Navbar({
 
   // Use props if provided, otherwise use context values
   const showMainToggle = showMainToggleProp ?? toggleContext.showMainToggle;
-  const mainTogglePosition = mainTogglePositionProp ?? toggleContext.mainTogglePosition;
+  const _mainTogglePosition = mainTogglePositionProp ?? toggleContext.mainTogglePosition;
 
   // When labelMode is 'inline', navbar should expand
   const shouldExpand = labelMode === 'inline' && !rootState.collapsed;
@@ -84,7 +83,7 @@ function Navbar({
   );
 
   // Determine if main toggle should be shown
-  const shouldShowMainToggle = showMainToggle && rootConfig.mode !== 'navigation';
+  const _shouldShowMainToggle = showMainToggle && rootConfig.mode !== 'navigation';
 
   return (
     <NavbarContext.Provider value={contextValue}>

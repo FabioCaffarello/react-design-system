@@ -45,23 +45,27 @@ describe('Toast', () => {
   });
 
   describe('Rendering', () => {
-    it('renders toast with title', () => {
+    it('renders toast with title', async () => {
       const toast = {
         id: 'test-1',
         title: 'Test Toast',
         variant: 'success' as const,
       };
 
-      act(() => {
-        render(
-          <Toast toast={toast} onDismiss={vi.fn()} />
-        );
+      render(
+        <Toast toast={toast} onDismiss={vi.fn()} />
+      );
+
+      // Advance timers to trigger any internal state updates
+      await act(async () => {
+        vi.advanceTimersByTime(100);
+        vi.runOnlyPendingTimers();
       });
 
       expect(screen.getByText('Test Toast')).toBeInTheDocument();
     });
 
-    it('renders toast with description', () => {
+    it('renders toast with description', async () => {
       const toast = {
         id: 'test-1',
         title: 'Test Toast',
@@ -69,52 +73,66 @@ describe('Toast', () => {
         variant: 'info' as const,
       };
 
-      act(() => {
-        render(
-          <Toast toast={toast} onDismiss={vi.fn()} />
-        );
+      render(
+        <Toast toast={toast} onDismiss={vi.fn()} />
+      );
+
+      // Advance timers to trigger any internal state updates
+      await act(async () => {
+        vi.advanceTimersByTime(100);
+        vi.runOnlyPendingTimers();
       });
 
       expect(screen.getByText('Test Toast')).toBeInTheDocument();
       expect(screen.getByText('Test description')).toBeInTheDocument();
     });
 
-    it('renders correct icon for each variant', () => {
+    it('renders correct icon for each variant', async () => {
       const { rerender } = render(
         <Toast
           toast={{ id: '1', title: 'Success', variant: 'success' }}
           onDismiss={vi.fn()}
         />
       );
+      await act(async () => {
+        vi.advanceTimersByTime(100);
+        vi.runOnlyPendingTimers();
+      });
       expect(screen.getByRole('alert')).toBeInTheDocument();
 
-      act(() => {
+      await act(async () => {
         rerender(
           <Toast
             toast={{ id: '2', title: 'Error', variant: 'error' }}
             onDismiss={vi.fn()}
           />
         );
+        vi.advanceTimersByTime(100);
+        vi.runOnlyPendingTimers();
       });
       expect(screen.getByRole('alert')).toBeInTheDocument();
 
-      act(() => {
+      await act(async () => {
         rerender(
           <Toast
             toast={{ id: '3', title: 'Warning', variant: 'warning' }}
             onDismiss={vi.fn()}
           />
         );
+        vi.advanceTimersByTime(100);
+        vi.runOnlyPendingTimers();
       });
       expect(screen.getByRole('alert')).toBeInTheDocument();
 
-      act(() => {
+      await act(async () => {
         rerender(
           <Toast
             toast={{ id: '4', title: 'Info', variant: 'info' }}
             onDismiss={vi.fn()}
           />
         );
+        vi.advanceTimersByTime(100);
+        vi.runOnlyPendingTimers();
       });
       expect(screen.getByRole('alert')).toBeInTheDocument();
     });
@@ -221,7 +239,7 @@ describe('Toast', () => {
   });
 
   describe('Action Button', () => {
-    it('renders action button when provided', () => {
+    it('renders action button when provided', async () => {
       const handleAction = vi.fn();
       const toast = {
         id: 'test-1',
@@ -234,6 +252,12 @@ describe('Toast', () => {
       };
 
       render(<Toast toast={toast} onDismiss={vi.fn()} />);
+
+      // Advance timers to trigger any internal state updates
+      await act(async () => {
+        vi.advanceTimersByTime(100);
+        vi.runOnlyPendingTimers();
+      });
 
       const actionButton = screen.getByText('Undo');
       expect(actionButton).toBeInTheDocument();
@@ -269,7 +293,7 @@ describe('Toast', () => {
   });
 
   describe('Positioning', () => {
-    it('applies correct position classes', () => {
+    it('applies correct position classes', async () => {
       const toast = {
         id: 'test-1',
         title: 'Test Toast',
@@ -280,21 +304,34 @@ describe('Toast', () => {
         <Toast toast={toast} onDismiss={vi.fn()} position="top-right" />
       );
 
+      await act(async () => {
+        vi.advanceTimersByTime(100);
+        vi.runOnlyPendingTimers();
+      });
+
       let toastElement = container.querySelector('.fixed');
       expect(toastElement).toHaveClass('top-4', 'right-4');
 
-      rerender(<Toast toast={toast} onDismiss={vi.fn()} position="bottom-left" />);
+      await act(async () => {
+        rerender(<Toast toast={toast} onDismiss={vi.fn()} position="bottom-left" />);
+        vi.advanceTimersByTime(100);
+        vi.runOnlyPendingTimers();
+      });
       toastElement = container.querySelector('.fixed');
       expect(toastElement).toHaveClass('bottom-4', 'left-4');
 
-      rerender(<Toast toast={toast} onDismiss={vi.fn()} position="top-center" />);
+      await act(async () => {
+        rerender(<Toast toast={toast} onDismiss={vi.fn()} position="top-center" />);
+        vi.advanceTimersByTime(100);
+        vi.runOnlyPendingTimers();
+      });
       toastElement = container.querySelector('.fixed');
       expect(toastElement).toHaveClass('top-4', 'left-1/2', '-translate-x-1/2');
     });
   });
 
   describe('Accessibility', () => {
-    it('has correct ARIA attributes', () => {
+    it('has correct ARIA attributes', async () => {
       const toast = {
         id: 'test-1',
         title: 'Test Toast',
@@ -303,12 +340,17 @@ describe('Toast', () => {
 
       render(<Toast toast={toast} onDismiss={vi.fn()} />);
 
+      await act(async () => {
+        vi.advanceTimersByTime(100);
+        vi.runOnlyPendingTimers();
+      });
+
       const alert = screen.getByRole('alert');
       expect(alert).toHaveAttribute('aria-live', 'polite');
       expect(alert).toHaveAttribute('aria-atomic', 'true');
     });
 
-    it('uses assertive aria-live for error toasts', () => {
+    it('uses assertive aria-live for error toasts', async () => {
       const toast = {
         id: 'test-1',
         title: 'Error Toast',
@@ -317,11 +359,16 @@ describe('Toast', () => {
 
       render(<Toast toast={toast} onDismiss={vi.fn()} />);
 
+      await act(async () => {
+        vi.advanceTimersByTime(100);
+        vi.runOnlyPendingTimers();
+      });
+
       const alert = screen.getByRole('alert');
       expect(alert).toHaveAttribute('aria-live', 'assertive');
     });
 
-    it('has accessible close button', () => {
+    it('has accessible close button', async () => {
       const toast = {
         id: 'test-1',
         title: 'Test Toast',
@@ -329,6 +376,11 @@ describe('Toast', () => {
       };
 
       render(<Toast toast={toast} onDismiss={vi.fn()} />);
+
+      await act(async () => {
+        vi.advanceTimersByTime(100);
+        vi.runOnlyPendingTimers();
+      });
 
       const closeButton = screen.getByLabelText('Dismiss notification');
       expect(closeButton).toBeInTheDocument();

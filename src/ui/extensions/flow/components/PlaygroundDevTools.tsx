@@ -9,7 +9,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { X, Wrench } from 'lucide-react';
 import { Card } from '../../../molecules';
-import { Button, Badge, Switch, Label } from '../../../atoms';
+import { Button, Badge, Label } from '../../../atoms';
 import Collapsible from '../../../atoms/Collapsible/Collapsible';
 import { usePlaygroundContext } from '../context/PlaygroundContext';
 import { 
@@ -27,23 +27,21 @@ export interface PlaygroundDevToolsProps {
 /**
  * Dev Tools Panel Component
  */
+interface EventLogEntry {
+  timestamp: number;
+  type: string;
+  data: unknown;
+}
+
 export function PlaygroundDevTools({ 
   enabled = false,
   position = 'bottom'
 }: PlaygroundDevToolsProps) {
-  if (!enabled) {
-    return null;
-  }
-  
+  // All hooks must be called before any early returns
   const [isOpen, setIsOpen] = useState(false);
   const [showStateInspector, setShowStateInspector] = useState(false);
   const [showPerformance, setShowPerformance] = useState(false);
   const [showEventLog, setShowEventLog] = useState(false);
-  interface EventLogEntry {
-    timestamp: number;
-    type: string;
-    data: unknown;
-  }
   const [eventLog, setEventLog] = useState<EventLogEntry[]>([]);
   
   const {
@@ -91,6 +89,11 @@ export function PlaygroundDevTools({
   const clearEventLog = useCallback(() => {
     setEventLog([]);
   }, []);
+
+  // Early return after all hooks
+  if (!enabled) {
+    return null;
+  }
 
   const positionClasses = {
     bottom: 'fixed bottom-4 right-4',
@@ -287,8 +290,12 @@ export function PlaygroundDevTools({
             variant="outline"
             size="sm"
             onClick={() => {
-              console.log('Playground State:', stateData);
-              console.log('Performance:', performanceMetrics);
+              if (process.env.NODE_ENV === 'development') {
+                // eslint-disable-next-line no-console
+                console.log('Playground State:', stateData);
+                // eslint-disable-next-line no-console
+                console.log('Performance:', performanceMetrics);
+              }
             }}
             className="w-full"
           >

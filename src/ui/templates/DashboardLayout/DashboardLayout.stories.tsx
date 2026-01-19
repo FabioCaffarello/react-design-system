@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
+import { expect, within, waitFor } from '@storybook/test';
 import { DashboardLayout } from './DashboardLayout';
 import { Button, Text } from '../../atoms';
 import { SideNavbar } from '../../organisms';
@@ -69,7 +68,7 @@ export const Default: Story = {
     sidebar: mockSidebar,
     header: (
       <div className="flex items-center justify-between">
-        <Text variant="heading" size="lg">
+        <Text variant="heading" className="text-lg">
           Dashboard
         </Text>
         <div className="flex gap-2">
@@ -80,7 +79,7 @@ export const Default: Story = {
     ),
     children: (
       <div className="space-y-4">
-        <Text variant="heading" size="xl">
+        <Text variant="heading" className="text-xl">
           Welcome to Dashboard
         </Text>
         <Text>
@@ -89,10 +88,10 @@ export const Default: Story = {
         <div className="grid grid-cols-3 gap-4">
           {[1, 2, 3].map((i) => (
             <div key={i} className="bg-gray-100 p-4 rounded">
-              <Text variant="heading" size="md">
+              <Text variant="heading" className="text-base">
                 Card {i}
               </Text>
-              <Text size="sm">Content for card {i}</Text>
+              <Text variant="bodySmall">Content for card {i}</Text>
             </div>
           ))}
         </div>
@@ -100,10 +99,10 @@ export const Default: Story = {
     ),
     footer: (
       <div className="flex items-center justify-between">
-        <Text size="sm" className="text-gray-600">
+        <Text variant="bodySmall" className="text-gray-600">
           © 2024 Company Name
         </Text>
-        <Text size="sm" className="text-gray-600">
+        <Text variant="bodySmall" className="text-gray-600">
           Version 1.0.0
         </Text>
       </div>
@@ -142,13 +141,6 @@ export const Minimal: Story = {
 // Event Stories
 export const WithEvents: Story = {
   render: () => {
-    const handleSidebarToggle = fn((collapsed: boolean) => {
-      console.log('Sidebar toggled:', collapsed);
-    });
-    const handleNavItemClick = fn((item: { id: string; label: string }) => {
-      console.log('Nav item clicked:', item);
-    });
-    
     return (
       <div className="space-y-4">
         <p className="text-sm text-gray-600">
@@ -186,7 +178,7 @@ export const DefaultState: Story = {
     sidebar: mockSidebar,
     header: (
       <div className="flex items-center justify-between">
-        <Text variant="heading" size="lg">
+        <Text variant="heading" className="text-lg">
           Dashboard
         </Text>
         <div className="flex gap-2">
@@ -197,7 +189,7 @@ export const DefaultState: Story = {
     ),
     children: (
       <div className="space-y-4">
-        <Text variant="heading" size="xl">
+        <Text variant="heading" className="text-xl">
           Welcome to Dashboard
         </Text>
         <Text>
@@ -207,10 +199,10 @@ export const DefaultState: Story = {
     ),
     footer: (
       <div className="flex items-center justify-between">
-        <Text size="sm" className="text-gray-600">
+        <Text variant="bodySmall" className="text-gray-600">
           © 2024 Company Name
         </Text>
-        <Text size="sm" className="text-gray-600">
+        <Text variant="bodySmall" className="text-gray-600">
           Version 1.0.0
         </Text>
       </div>

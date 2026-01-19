@@ -9,7 +9,6 @@ import { Card } from '../../../molecules';
 import { Label, Select, Button, Input } from '../../../atoms';
 import type { LayoutConfig } from '../types/playgroundTypes';
 import type { LayoutStrategyName, LayoutOptions } from '../organisms/FlowTypes';
-import { layoutEngine } from '../utils/layoutEngine';
 import { 
   getSpacingClass, 
   getColorClass, 
@@ -53,7 +52,7 @@ export function LayoutConfigPanel({
         ...config.options,
       },
     });
-  }, [direction, spacing, nodeWidth, nodeHeight]);
+  }, [direction, spacing, nodeWidth, nodeHeight, config, onChange]);
 
   const handleStrategyChange = useCallback((strategy: LayoutStrategyName | null) => {
     onChange({

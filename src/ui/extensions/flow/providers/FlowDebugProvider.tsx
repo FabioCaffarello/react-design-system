@@ -7,6 +7,7 @@
 
 'use client';
 
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useCallback, useMemo, type ReactNode } from 'react';
 import type { Node, Edge } from '@xyflow/react';
 import type { FlowNodeData, FlowEdgeData } from '../organisms/FlowTypes';
@@ -152,7 +153,10 @@ export function FlowDebugProvider({
     try {
       const state = JSON.parse(json);
       // Note: This would need to be integrated with FlowProvider to actually set state
-      console.log('Imported state:', state);
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.log('Imported state:', state);
+      }
     } catch (error) {
       console.error('Failed to import state:', error);
     }

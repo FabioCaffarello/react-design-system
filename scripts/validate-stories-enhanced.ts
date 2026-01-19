@@ -4,9 +4,8 @@
  * Validates stories with advanced checks.
  */
 
-import { readdir, readFile } from 'fs/promises';
+import { readFile } from 'fs/promises';
 import { join } from 'path';
-import { existsSync } from 'fs';
 import { glob } from 'glob';
 
 const STORIES_DIR = join(process.cwd(), 'src');

@@ -12,11 +12,13 @@ The `AppProvider` and other providers (`ConfigProvider`, `ThemeProvider`) are ex
 ### Current State
 
 **Source exports (`src/ui/index.ts`):**
+
 ```typescript
 export * from "./providers";  // ← Includes AppProvider
 ```
 
 **Provider exports (`src/ui/providers/index.ts`):**
+
 ```typescript
 export { AppProvider, useApp, type AppProviderProps, type AppProviderConfig } from './AppProvider';
 export { ConfigProvider, useConfig, ... } from './ConfigProvider';
@@ -24,21 +26,25 @@ export { ThemeProvider, useTheme, ... } from './ThemeProvider';
 ```
 
 **Type definitions exist:**
+
 - ✅ `dist/ui/providers/index.d.ts` - Contains all provider exports
 - ✅ `dist/ui/providers/AppProvider.d.ts` - Contains AppProvider definition
 
 **Production build:**
+
 - ❌ `dist/index.js` - Does NOT contain AppProvider
 - ❌ Consumers cannot import AppProvider in production
 
 ### Impact
 
 **Error observed:**
-```
+
+```text
 Attempted import error: 'AppProvider' is not exported from '@fabio.caffarello/react-design-system' (imported as 'AppProvider').
 ```
 
 **Workaround applied by consumers:**
+
 - Created temporary `Providers` component
 - Disabled AppProvider functionality
 - Lost theme, config, toast, and dialog features
@@ -46,6 +52,7 @@ Attempted import error: 'AppProvider' is not exported from '@fabio.caffarello/re
 ### Root Cause Analysis
 
 **Vite build configuration:**
+
 ```typescript
 // vite.config.ts
 build: {
@@ -59,6 +66,7 @@ build: {
 ```
 
 **Possible causes:**
+
 1. **Tree-shaking too aggressive**: Vite/Rollup may be removing unused exports
 2. **Circular dependencies**: Providers may have circular dependencies that break bundling
 3. **External dependencies**: Providers may depend on external packages not properly configured
@@ -78,6 +86,7 @@ We will **ensure all exports from `src/ui/index.ts` are included in the producti
 #### Step 1: Investigate Build Output
 
 1. **Analyze current build**:
+
    ```bash
    # Check what's actually exported
    node -e "const pkg = require('./dist/index.js'); console.log(Object.keys(pkg))"
@@ -90,7 +99,8 @@ We will **ensure all exports from `src/ui/index.ts` are included in the producti
 
 #### Step 2: Fix Vite Configuration
 
-**Option A: Preserve all exports (Recommended)**
+##### Option A: Preserve all exports (Recommended)
+
 ```typescript
 // vite.config.ts
 build: {
@@ -110,7 +120,8 @@ build: {
 }
 ```
 
-**Option B: Explicit export preservation**
+##### Option B: Explicit export preservation
+
 ```typescript
 // vite.config.ts
 rollupOptions: {
@@ -130,6 +141,7 @@ rollupOptions: {
 #### Step 3: Add Build Validation
 
 Create validation script:
+
 ```javascript
 // scripts/validate-build-exports.js
 import { readFileSync } from 'fs';
@@ -154,6 +166,7 @@ if (missing.length > 0) {
 Check for issues that might prevent bundling:
 
 1. **Circular dependencies**:
+
    ```bash
    npx madge --circular src/ui/providers
    ```
@@ -199,6 +212,7 @@ Check for issues that might prevent bundling:
 **Approach**: Publish providers as separate package entry point.
 
 **Rejected because**:
+
 - Adds complexity for consumers
 - Doesn't solve the root problem
 - Inconsistent with current architecture
@@ -208,6 +222,7 @@ Check for issues that might prevent bundling:
 **Approach**: Only support dynamic imports for providers.
 
 **Rejected because**:
+
 - Poor developer experience
 - Breaks existing usage patterns
 - Not a real solution
@@ -217,6 +232,7 @@ Check for issues that might prevent bundling:
 **Approach**: Document that providers must be imported differently.
 
 **Rejected because**:
+
 - Doesn't solve the problem
 - Confusing for consumers
 - Not acceptable for production
@@ -224,24 +240,28 @@ Check for issues that might prevent bundling:
 ## Implementation Plan
 
 ### Phase 1: Investigation (Day 1)
+
 - [ ] Analyze current build output
 - [ ] Identify missing exports
 - [ ] Check for circular dependencies
 - [ ] Review Vite/Rollup configuration
 
 ### Phase 2: Fix Configuration (Day 2)
+
 - [ ] Update Vite config to preserve exports
 - [ ] Test build output
 - [ ] Verify AppProvider is included
 - [ ] Verify all providers are included
 
 ### Phase 3: Validation (Day 3)
+
 - [ ] Create build validation script
 - [ ] Add to CI/CD pipeline
 - [ ] Test in clean Next.js project
 - [ ] Verify all imports work
 
 ### Phase 4: Documentation (Day 4)
+
 - [ ] Update migration guide
 - [ ] Document the fix
 - [ ] Update examples
@@ -250,6 +270,7 @@ Check for issues that might prevent bundling:
 ## Testing Strategy
 
 ### Unit Tests
+
 ```typescript
 // tests/build-exports.test.ts
 describe('Build Exports', () => {
@@ -267,6 +288,7 @@ describe('Build Exports', () => {
 ```
 
 ### Integration Tests
+
 ```typescript
 // tests/consumer-integration.test.ts
 describe('Consumer Integration', () => {

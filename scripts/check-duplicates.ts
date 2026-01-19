@@ -65,9 +65,9 @@ function findMDXFiles(dir: string, files: string[] = []): string[] {
 /**
  * Extract title from story file
  */
-function extractStoryTitle(filePath: string): string | null {
+function extractStoryTitle(_filePath: string): string | null {
   try {
-    const content = readFileSync(filePath, 'utf-8');
+    const content = readFileSync(_filePath, 'utf-8');
     const titleMatch = content.match(/title:\s*['"]([^'"]+)['"]/);
     const metaTitleMatch = content.match(/<Meta\s+title=["']([^"']+)["']/);
     return titleMatch?.[1] || metaTitleMatch?.[1] || null;
@@ -79,9 +79,9 @@ function extractStoryTitle(filePath: string): string | null {
 /**
  * Extract title from MDX file
  */
-function extractMDXTitle(filePath: string): string | null {
+function extractMDXTitle(_filePath: string): string | null {
   try {
-    const content = readFileSync(filePath, 'utf-8');
+    const content = readFileSync(_filePath, 'utf-8');
     const metaTitleMatch = content.match(/<Meta\s+title=["']([^"']+)["']/);
     return metaTitleMatch?.[1] || null;
   } catch {
@@ -92,7 +92,7 @@ function extractMDXTitle(filePath: string): string | null {
 /**
  * Find duplicates by title
  */
-function findDuplicatesByTitle<T>(
+function findDuplicatesByTitle(
   files: string[],
   extractTitle: (file: string) => string | null
 ): DuplicateInfo[] {

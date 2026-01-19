@@ -4,7 +4,7 @@
  * Automatically generates stories for components that don't have them.
  */
 
-import { readdir, readFile, writeFile, stat } from 'fs/promises';
+import { readdir, readFile, writeFile } from 'fs/promises';
 import { join, dirname } from 'path';
 import { existsSync } from 'fs';
 import { generateStoryFromConfig, getStoryFilePath } from '../src/ui/builders/StorybookIntegration';

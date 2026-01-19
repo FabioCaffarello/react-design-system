@@ -1,12 +1,11 @@
 'use client';
 
-import React, { type ReactNode, type ButtonHTMLAttributes } from 'react';
+import React from 'react';
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useSideNavbarStateRequired } from '../contexts/SideNavbarStateContext';
 import { useSideNavbarThemeRequired } from '../contexts/SideNavbarThemeContext';
 import { useSideNavbarConfigRequired } from '../contexts/SideNavbarConfigContext';
 import Tooltip from '../../../atoms/Tooltip/Tooltip';
-import Button from '../../../atoms/Button/Button';
 import type { SideNavbarToggleProps, SideNavbarTogglePosition, SideNavbarToggleVariant } from '../types';
 
 const sizeClasses = {
@@ -94,7 +93,7 @@ export default function SideNavbarToggle({
   ...props
 }: SideNavbarToggleProps) {
   const { collapsed, toggle } = useSideNavbarStateRequired();
-  const { animationDuration, animationEasing, navigationWidth, contentWidth } = useSideNavbarThemeRequired();
+  const { animationDuration, animationEasing, navigationWidth: _navigationWidth, contentWidth: _contentWidth, minWidth: _minWidth } = useSideNavbarThemeRequired();
   const config = useSideNavbarConfigRequired();
 
   // Use config values as defaults, allow prop overrides
@@ -150,7 +149,7 @@ export default function SideNavbarToggle({
     : {};
 
   // Determine if this is an inline position (inside navigation)
-  const isInlinePosition = position === 'inside' || position === 'navigation-top' || position === 'navigation-bottom';
+  const _isInlinePosition = position === 'inside' || position === 'navigation-top' || position === 'navigation-bottom';
 
   // Edge-following toggle positioning (right edge of sidebar)
   // The toggle is now positioned in SideNavbarRoot (at <aside> level), not in <nav>

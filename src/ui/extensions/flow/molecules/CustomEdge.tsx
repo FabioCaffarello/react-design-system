@@ -3,7 +3,6 @@
 import React, { useMemo } from 'react';
 import { 
   BaseEdge, 
-  EdgeLabelRenderer, 
   EdgeText,
   getBezierPath,
   getSimpleBezierPath,
@@ -12,7 +11,6 @@ import {
   MarkerType,
 } from '@xyflow/react';
 import type { EdgeProps } from '@xyflow/react';
-import { useFlowContext } from '../organisms/FlowContext';
 import { FlowEdgeToolbar } from '../organisms/FlowEdgeToolbar';
 import type { FlowEdgeData } from '../organisms/FlowTypes';
 import { getColor } from '../../../tokens/colors';

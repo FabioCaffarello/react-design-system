@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
 import { useState } from 'react';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
 import FileUpload from './FileUpload';
@@ -407,7 +406,7 @@ export const Disabled: Story = {
 export const RealWorldUpload: Story = {
   render: () => {
     const [files, setFiles] = useState<FileUploadFile[]>([]);
-    const [uploading, setUploading] = useState(false);
+    const [_uploading, setUploading] = useState(false);
     const [uploaded, setUploaded] = useState<string[]>([]);
     
     const handleFilesChange = (newFiles: FileUploadFile[]) => {
@@ -496,7 +495,7 @@ export const RealWorldUpload: Story = {
 export const DragAndDrop: Story = {
   render: () => {
     const [files, setFiles] = useState<FileUploadFile[]>([]);
-    const [isDragging, setIsDragging] = useState(false);
+    const [_isDragging, _setIsDragging] = useState(false);
     
     return (
       <div className="w-full max-w-md space-y-4">

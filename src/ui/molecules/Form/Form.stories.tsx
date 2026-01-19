@@ -1128,7 +1128,7 @@ export const ReactHookFormWithComplexValidation: StoryObj<typeof Form> = {
 
     const password = form.watch('password');
 
-    const onSubmit = async (data: RegistrationData) => {
+    const onSubmit = async (_data: RegistrationData) => {
       setIsSubmitting(true);
       setSuccess(null);
       

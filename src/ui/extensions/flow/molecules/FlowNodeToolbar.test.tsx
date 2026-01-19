@@ -4,8 +4,8 @@ import { ReactFlowProvider, ReactFlow } from '@xyflow/react';
 import { FlowProvider } from '../organisms/FlowProvider';
 import { FlowNodeToolbar } from './FlowNodeToolbar';
 import { Position } from '@xyflow/react';
-import type { Node } from '@xyflow/react';
-import type { FlowNodeData } from '../organisms/FlowTypes';
+import type { Node, Edge } from '@xyflow/react';
+import type { FlowNodeData, FlowEdgeData } from '../organisms/FlowTypes';
 
 describe('FlowNodeToolbar', () => {
   const mockNodes: Node<FlowNodeData>[] = [
@@ -16,7 +16,7 @@ describe('FlowNodeToolbar', () => {
       data: { label: 'Test Node' },
     },
   ];
-  const mockEdges: any[] = [];
+  const mockEdges: Edge<FlowEdgeData>[] = [];
   
   beforeEach(() => {
     vi.clearAllMocks();

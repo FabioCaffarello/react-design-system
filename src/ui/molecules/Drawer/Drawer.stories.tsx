@@ -4,7 +4,6 @@ import { fn } from '@storybook/test';
 import { expect, userEvent, within, waitFor } from '@storybook/test';
 import { Drawer, DrawerContent, DrawerHeader, DrawerFooter } from './index';
 import { Button } from '../../atoms';
-import { X } from 'lucide-react';
 
 const meta: Meta<typeof Drawer> = {
   title: 'Molecules/Drawer',

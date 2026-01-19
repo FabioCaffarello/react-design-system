@@ -216,6 +216,7 @@ const Select = memo(forwardRef<HTMLSelectElement, SelectProps>(function Select({
   const selectClasses = useMemo(() => cn(
     selectVariants({ size, state: selectState }),
     className
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   ), [size, selectState, className]);
 
   const labelClasses = useMemo(() => cn(

@@ -33,7 +33,7 @@ test.describe('Radio Component', () => {
   });
 
   test('should have proper ARIA attributes', async ({ page }) => {
-    const radio = page.getByRole('radio');
+    const _radio = page.getByRole('radio');
     
     // Check aria-invalid when error
     await page.goto('/?path=/story/atoms-radio--error');
@@ -45,12 +45,12 @@ test.describe('Radio Component', () => {
   test('should handle disabled state', async ({ page }) => {
     await page.goto('/?path=/story/atoms-radio--disabled');
     
-    const radio = page.getByRole('radio');
-    await expect(radio).toBeDisabled();
+    const _radio = page.getByRole('radio');
+    await expect(_radio).toBeDisabled();
   });
 
   test('should display label', async ({ page }) => {
-    const radio = page.getByRole('radio');
+    const _radio = page.getByRole('radio');
     const label = page.locator('label');
     await expect(label).toBeVisible();
   });

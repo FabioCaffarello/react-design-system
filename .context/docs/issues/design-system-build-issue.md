@@ -25,14 +25,16 @@ O pacote `@fabio.caffarello/react-design-system` está causando erro de build no
 **Data de Descoberta:** 2026-01-19  
 **Severidade:** Bloqueante (P0)
 
-O pacote `@fabio.caffarello/react-design-system@1.9.1` não inclui `AppProvider` (e outros providers) no build de distribuição (`dist/index.js`). 
+O pacote `@fabio.caffarello/react-design-system@1.9.1` não inclui `AppProvider` (e outros providers) no build de distribuição (`dist/index.js`).
 
 **Erro Observado:**
-```
+
+```text
 Attempted import error: 'AppProvider' is not exported from '@fabio.caffarello/react-design-system' (imported as 'AppProvider').
 ```
 
 **Análise:**
+
 - O arquivo `dist/index.js` não contém `AppProvider`
 - O arquivo `src/ui/providers/AppProvider.tsx` existe e está correto
 - O arquivo `src/ui/index.ts` exporta `export * from "./providers"` que inclui `AppProvider`
@@ -41,6 +43,7 @@ Attempted import error: 'AppProvider' is not exported from '@fabio.caffarello/re
   - `default`: usa `./dist/index.js` (NÃO contém AppProvider)
 
 **Workaround Aplicado:**
+
 - Criado componente `Providers` temporário que retorna children diretamente
 - AppProvider e funcionalidades relacionadas (theme, config, toast, dialog) estão desabilitadas
 - Arquivo: `apps/web/assessment/src/app/providers.tsx`
@@ -50,7 +53,7 @@ O design system precisa incluir `AppProvider` e todos os providers no build `dis
 
 ### Erro Observado (Original)
 
-```
+```text
 Module parse failed: Unexpected token (2:7)
 | export { default as Info } from "./Info/Info";
 > export type { InfoProps } from "./Info/Info";
@@ -59,12 +62,14 @@ Module parse failed: Unexpected token (2:7)
 ```
 
 **Arquivo problemático:**
-```
+
+```text
 node_modules/@fabio.caffarello/react-design-system/src/ui/atoms/index.ts
 ```
 
 **Cadeia de importação:**
-```
+
+```text
 ./src/app/layout.tsx
   → @fabio.caffarello/react-design-system
     → src/ui/index.ts
@@ -100,11 +105,13 @@ const nextConfig = {
 ```
 
 **O que isso faz:**
+
 - Força o Next.js a transpilar o pacote durante o build
 - Resolve o erro imediato
 - Adiciona overhead no build (transpila código que deveria já estar pronto)
 
 **Limitações:**
+
 - ⚠️ Aumenta o tempo de build
 - ⚠️ Pode causar problemas com tree-shaking
 - ⚠️ Não é uma solução ideal para produção
@@ -119,7 +126,8 @@ const nextConfig = {
 O design system deve fornecer builds JavaScript transpilados:
 
 **Estrutura recomendada:**
-```
+
+```text
 @fabio.caffarello/react-design-system/
 ├── package.json
 │   ├── "main": "./dist/index.js"
@@ -140,6 +148,7 @@ O design system deve fornecer builds JavaScript transpilados:
 ```
 
 **Benefícios:**
+
 - ✅ Consumidores não precisam de configuração especial
 - ✅ Builds mais rápidos
 - ✅ Melhor tree-shaking
@@ -164,6 +173,7 @@ Fornecer builds separados para ESM e CommonJS:
 ### Opção 3: TypeScript com Declarações de Tipo Separadas
 
 Se precisar manter `.ts` no build:
+
 - Usar `export type` apenas em arquivos `.d.ts`
 - Separar exports de tipos dos exports de valores
 - Garantir que o código JavaScript não contenha sintaxe TypeScript
@@ -198,12 +208,14 @@ Se precisar manter `.ts` no build:
 ## 🔬 Como Reproduzir o Problema
 
 1. **Remover o workaround:**
+
    ```javascript
    // next.config.js - remover esta linha
    transpilePackages: ['@fabio.caffarello/react-design-system'],
    ```
 
 2. **Tentar build:**
+
    ```bash
    npm run build
    # ou
@@ -211,7 +223,8 @@ Se precisar manter `.ts` no build:
    ```
 
 3. **Erro esperado:**
-   ```
+
+   ```text
    Module parse failed: Unexpected token
    export type { InfoProps } from "./Info/Info";
    ```
@@ -221,11 +234,13 @@ Se precisar manter `.ts` no build:
 ## 📊 Impacto
 
 ### Impacto Atual (com workaround)
+
 - ✅ Aplicação funciona
 - ⚠️ Build mais lento
 - ⚠️ Configuração não padrão
 
 ### Impacto se não corrigir
+
 - ❌ Dependência de workaround permanente
 - ❌ Builds mais lentos
 - ❌ Possíveis problemas futuros com atualizações do Next.js

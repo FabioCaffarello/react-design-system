@@ -29,6 +29,7 @@ The package currently uses conditional exports that point to TypeScript source f
 ```
 
 **Issues:**
+
 1. Next.js cannot process TypeScript syntax (`export type`, `interface`, etc.) without configuration
 2. Consumers must add `transpilePackages` to their Next.js config
 3. Inconsistent behavior between development and production
@@ -37,6 +38,7 @@ The package currently uses conditional exports that point to TypeScript source f
 ### Consumer Impact
 
 **Current workaround required:**
+
 ```javascript
 // next.config.js
 const nextConfig = {
@@ -45,6 +47,7 @@ const nextConfig = {
 ```
 
 This workaround:
+
 - Adds build overhead
 - Requires configuration knowledge
 - May break with Next.js updates
@@ -94,6 +97,7 @@ Remove all conditional `development` exports and use only transpiled builds:
 ### Phase 1: Build Configuration
 
 1. Update `package.json`:
+
    ```json
    {
      "exports": {
@@ -119,6 +123,7 @@ Remove all conditional `development` exports and use only transpiled builds:
    - Validate entry points
 
 2. Add build validation:
+
    ```javascript
    // scripts/validate-build-exports.js
    // Compare src/ui/index.ts exports with dist/index.js
@@ -128,6 +133,7 @@ Remove all conditional `development` exports and use only transpiled builds:
 ### Phase 3: Testing
 
 1. Create test consumer:
+
    ```bash
    # Create minimal Next.js project
    npx create-next-app@latest test-consumer
@@ -147,6 +153,7 @@ Remove all conditional `development` exports and use only transpiled builds:
 ### For Consumers
 
 **Before (v1.x):**
+
 ```javascript
 // next.config.js
 const nextConfig = {
@@ -155,6 +162,7 @@ const nextConfig = {
 ```
 
 **After (v2.0.0):**
+
 ```javascript
 // next.config.js
 // No special configuration needed!

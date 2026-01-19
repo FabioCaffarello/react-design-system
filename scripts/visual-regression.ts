@@ -4,9 +4,11 @@
  * Custom visual regression testing using Playwright (free alternative).
  */
 
-import { test, expect } from '@playwright/test';
-import { readdir } from 'fs/promises';
-import { join } from 'path';
+// Visual regression testing script
+// Imports will be added when implementing visual regression tests
+// import { test, expect } from '@playwright/test';
+// import { readdir } from 'fs/promises';
+// import { join } from 'path';
 
 /**
  * Generate visual regression tests for all stories

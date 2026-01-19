@@ -20,7 +20,7 @@ const config: StorybookConfig = {
     name: "@storybook/react-vite",
     options: {},
   },
-  async viteFinal(config, { configType }) {
+  async viteFinal(config) {
     // Ensure proper module resolution
     config.resolve = config.resolve || {};
     config.resolve.dedupe = config.resolve.dedupe || [];
@@ -62,7 +62,8 @@ const config: StorybookConfig = {
     // Add plugin to handle 'use client' directives
     const plugins = config.plugins || [];
     const existingPluginIndex = plugins.findIndex(
-      (p: any) => p && p.name === 'vite-plugin-client-directive'
+      (p: unknown): p is { name: string } => 
+        typeof p === 'object' && p !== null && 'name' in p && (p as { name: unknown }).name === 'vite-plugin-client-directive'
     );
     
     // If there's no existing plugin, add a simple transform to strip 'use client'

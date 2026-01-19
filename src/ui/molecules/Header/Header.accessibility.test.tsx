@@ -136,7 +136,7 @@ describe('Header Accessibility', () => {
   describe('Focus Management', () => {
     it('should have visible focus indicators', () => {
       // TDD: Test focus indicators
-      const { container } = render(
+      render(
         <Header>
           <Header.Logo href="/">MyApp</Header.Logo>
         </Header>

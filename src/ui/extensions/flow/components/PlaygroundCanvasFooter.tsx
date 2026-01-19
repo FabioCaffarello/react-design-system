@@ -26,7 +26,7 @@ export function PlaygroundCanvasFooter() {
   const [activeTab, setActiveTab] = useState<FooterTab>('inspector');
   const { nodes, edges, selectedNodeId, selectedEdgeId, setNodes, setEdges } = usePlaygroundContext();
   // ViewportLogger needs FlowContext, so we get it here
-  const { reactFlowInstance } = useFlowContext();
+  const { reactFlowInstance: _reactFlowInstance } = useFlowContext();
 
   const selectedNode = React.useMemo(
     () => nodes.find((n) => n.id === selectedNodeId),

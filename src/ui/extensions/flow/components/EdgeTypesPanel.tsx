@@ -127,9 +127,9 @@ const EdgeTypePreview = React.memo(function EdgeTypePreview({
   edgeType: typeof edgeTypeDefinitions[0]; 
   onSelect?: () => void 
 }) {
-  const edgeTypes = React.useMemo(() => ({
+  const _edgeTypes = React.useMemo(() => ({
     [edgeType.id]: edgeType.component,
-  }), [edgeType.id]);
+  }), [edgeType.id, edgeType.component]);
 
   return (
     <Card

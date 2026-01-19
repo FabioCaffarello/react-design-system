@@ -47,7 +47,7 @@ export function FlowHandle({
   // Conditional rendering based on node data
   if (shouldRender && id) {
     // Find the node this handle belongs to
-    const node = nodes?.find(n => {
+    const node = nodes?.find(_n => {
       // Check if this handle ID matches any handle in the node
       // This is a simplified check - in practice, you'd need to pass node data
       return true; // For now, always render if shouldRender is provided
@@ -61,13 +61,6 @@ export function FlowHandle({
   // Get color based on variant
   const colorRole = variant === 'default' ? 'neutral' : variant;
   const colorClass = getColorClass(colorRole, 'DEFAULT', 'bg');
-  
-  // Size classes - make handles more visible
-  const sizeClasses = {
-    sm: 'w-3 h-3',
-    md: 'w-4 h-4',
-    lg: 'w-5 h-5',
-  };
   
   // Border radius
   const radiusClass = getRadiusClass('full');

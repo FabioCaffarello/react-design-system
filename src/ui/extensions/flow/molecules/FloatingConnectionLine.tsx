@@ -20,10 +20,7 @@ export function FloatingConnectionLine({
   toPosition,
   fromNode,
 }: ConnectionLineComponentProps) {
-  if (!fromNode) {
-    return null;
-  }
-
+  // All hooks must be called before any early returns
   // Create a target node at the connection point
   const targetNode = useMemo(() => ({
     id: 'connection-target',
@@ -40,12 +37,15 @@ export function FloatingConnectionLine({
 
   // Get edge parameters
   const { sx, sy } = useMemo(() => {
+    if (!fromNode) {
+      return { sx: toX, sy: toY };
+    }
     const sourceIntersectionPoint = getNodeIntersection(fromNode, targetNode);
     return {
       sx: sourceIntersectionPoint.x,
       sy: sourceIntersectionPoint.y,
     };
-  }, [fromNode, targetNode]);
+  }, [fromNode, targetNode, toX, toY]);
 
   // Calculate path
   const path = useMemo(() => {
@@ -59,6 +59,11 @@ export function FloatingConnectionLine({
     });
     return pathString;
   }, [sx, sy, fromPosition, toPosition, toX, toY]);
+
+  // Early return after all hooks
+  if (!fromNode) {
+    return null;
+  }
 
   return (
     <g>

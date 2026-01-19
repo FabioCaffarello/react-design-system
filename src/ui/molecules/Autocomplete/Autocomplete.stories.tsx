@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import { expect, userEvent, within, waitFor } from '@storybook/test';
 import Autocomplete from './Autocomplete';
-import { User, Settings, Mail, Search } from 'lucide-react';
+import { Mail, User, Settings } from 'lucide-react';
 
 const meta: Meta<typeof Autocomplete> = {
   title: 'Molecules/Autocomplete',

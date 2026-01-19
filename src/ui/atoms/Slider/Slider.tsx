@@ -2,7 +2,7 @@
 
 import { useRef, useState, forwardRef } from 'react';
 import type { HTMLAttributes } from 'react';
-import { getColorClass, getFocusColorClass, getFocusRingClass } from '../../tokens/colors';
+import { getColorClass, getFocusRingClass } from '../../tokens/colors';
 import { getAnimationClass } from '../../tokens/animations';
 import { getRadiusClass } from '../../tokens/radius';
 import { getSpacingClass } from '../../tokens/spacing';
@@ -207,7 +207,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider({
     }
   );
 
-  const config = {
+  const _config = {
     track: sliderTrackVariants({ size, disabled }),
     thumb: sliderThumbVariants({ size }),
   };

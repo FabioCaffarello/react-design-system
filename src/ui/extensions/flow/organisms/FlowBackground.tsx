@@ -151,7 +151,7 @@ export function FlowBackground({
       theme === 'dark' ? '#141414' : 'transparent',
       customBgColor
     );
-  }, [customBgColor, theme, flowStyles]);
+  }, [customBgColor, theme]);
   
   // Get pattern color based on variant
   const patternColor = useMemo(() => {

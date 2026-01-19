@@ -537,11 +537,11 @@ export const WithEvents: Story = {
       console.log('Checkbox changed:', checked);
     });
     
-    const handleFocus = fn((event: React.FocusEvent<HTMLInputElement>) => {
+    const handleFocus = fn((_event: React.FocusEvent<HTMLInputElement>) => {
       console.log('Checkbox focused');
     });
     
-    const handleBlur = fn((event: React.FocusEvent<HTMLInputElement>) => {
+    const handleBlur = fn((_event: React.FocusEvent<HTMLInputElement>) => {
       console.log('Checkbox blurred');
     });
     

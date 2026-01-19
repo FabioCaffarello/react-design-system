@@ -10,6 +10,7 @@ generated: 2026-01-19
 ## Problem This Project Solves
 
 This design system addresses the common challenges faced by development teams:
+
 - **Inconsistent UI**: Different teams building components with varying styles and behaviors
 - **Accessibility Gaps**: Components that don't meet WCAG 2.1 AA standards
 - **Reinventing the Wheel**: Teams duplicating effort by building similar components
@@ -35,6 +36,7 @@ This design system addresses the common challenges faced by development teams:
 - .css (34 files)
 
 ## Entry Points
+
 - [`../../../src/ui/index.ts`](../../../src/ui/index.ts)
 - [`../../../src/ui/utils/index.ts`](../../../src/ui/utils/index.ts)
 - [`../../../src/ui/utilities/index.ts`](../../../src/ui/utilities/index.ts)
@@ -116,7 +118,9 @@ This design system addresses the common challenges faced by development teams:
 - [`../../../src/app.tsx`](../../../src/app.tsx)
 
 ## Key Exports
+
 **Classes:**
+
 - [`ZIndexTokenFactory`](src/ui/tokens/z-index.ts#L29)
 - [`TypographyTokenFactory`](src/ui/tokens/typography.ts#L45)
 - [`TokensFactory`](src/ui/tokens/tokens.factory.ts#L40)
@@ -168,6 +172,7 @@ This design system addresses the common challenges faced by development teams:
 - [`EdgeBuilder`](src/ui/extensions/flow/factories/builders/EdgeBuilder.ts#L16)
 
 **Interfaces:**
+
 - [`ZIndexToken`](src/ui/tokens/z-index.ts#L19)
 - [`TokenVersion`](src/ui/tokens/versioning.ts#L8)
 - [`TokenChange`](src/ui/tokens/versioning.ts#L15)
@@ -525,6 +530,7 @@ This design system addresses the common challenges faced by development teams:
 - [`SidebarSlotProps`](src/ui/organisms/SideNavbar/components/Sidebar/SidebarSlot.tsx#L6)
 
 ## File Structure & Code Organization
+
 - `CHANGELOG.md/` — TODO: Describe the purpose of this directory.
 - `CONTRIBUTING.md/` — TODO: Describe the purpose of this directory.
 - `docs/` — Living documentation produced by this tool.
@@ -554,6 +560,7 @@ This design system addresses the common challenges faced by development teams:
 ## Technology Stack Summary
 
 ### Core Technologies
+
 - **React 19**: Modern React with latest features and hooks
 - **TypeScript 5.9**: Strict type safety with zero `any` policy
 - **Vite 7**: Fast development and optimized production builds
@@ -561,6 +568,7 @@ This design system addresses the common challenges faced by development teams:
 - **Storybook 10**: Interactive component documentation and testing
 
 ### Testing & Quality
+
 - **Vitest 4**: Fast unit and integration testing
 - **Testing Library**: React component testing utilities
 - **Playwright**: End-to-end testing framework
@@ -569,6 +577,7 @@ This design system addresses the common challenges faced by development teams:
 - **Prettier**: Code formatting
 
 ### Build & Development Tools
+
 - **Plop**: Component code generation
 - **PostCSS**: CSS processing
 - **Autoprefixer**: CSS vendor prefixing
@@ -577,6 +586,7 @@ This design system addresses the common challenges faced by development teams:
 ## Core Framework Stack
 
 ### Frontend Architecture
+
 - **Atomic Design Pattern**: Components organized as Atoms → Molecules → Organisms → Templates
 - **Compound Components**: Complex components using compound pattern (e.g., `FlowCanvas.Root`, `FlowCanvas.Background`)
 - **Context Providers**: Centralized state management with React Context
@@ -585,6 +595,7 @@ This design system addresses the common challenges faced by development teams:
 - **Builder Pattern**: Theme builder for creating custom themes
 
 ### Component Architecture
+
 - **Composition over Configuration**: Flexible component APIs
 - **Controlled/Uncontrolled**: Support for both patterns
 - **Accessibility First**: WCAG 2.1 AA compliance built-in
@@ -593,6 +604,7 @@ This design system addresses the common challenges faced by development teams:
 ## UI & Interaction Libraries
 
 ### Core Dependencies
+
 - **@xyflow/react**: Flow/graph visualization (for Flow extension)
 - **@dnd-kit/core**: Drag and drop functionality
 - **class-variance-authority**: Variant management for components
@@ -602,6 +614,7 @@ This design system addresses the common challenges faced by development teams:
 - **zod**: Schema validation
 
 ### Design System Features
+
 - **Theming**: Light/dark mode support with custom theme builder
 - **Accessibility**: Full keyboard navigation, ARIA attributes, screen reader support
 - **Responsive Design**: Mobile-first approach with breakpoint tokens
@@ -611,6 +624,7 @@ This design system addresses the common challenges faced by development teams:
 ## Development Tools Overview
 
 ### Essential Scripts
+
 - `npm run dev` - Start development server
 - `npm run storybook` - Start Storybook documentation
 - `npm run test` - Run unit and story tests
@@ -620,9 +634,11 @@ This design system addresses the common challenges faced by development teams:
 - `npm run lint` - Lint code
 
 ### Code Generation
+
 - `npm run plop` - Generate new components with templates
 
 ### Validation Scripts
+
 - `npm run validate:all` - Run all validation checks
 - `npm run validate-stories` - Validate story structure
 - `npm run validate-architecture` - Validate component architecture
@@ -634,8 +650,8 @@ See [Tooling & Productivity Guide](./tooling.md) for complete setup instructions
 ## Getting Started Checklist
 
 1. **Install dependencies**: `npm install`
-2. **Start development server**: `npm run dev` (runs on http://localhost:5173)
-3. **Start Storybook**: `npm run storybook` (runs on http://localhost:6006)
+2. **Start development server**: `npm run dev` (runs on <http://localhost:5173>)
+3. **Start Storybook**: `npm run storybook` (runs on <http://localhost:6006>)
 4. **Run tests**: `npm run test` to verify everything works
 5. **Explore components**: Browse Storybook to see all available components
 6. **Read documentation**: Review [Development Workflow](./development-workflow.md) for day-to-day tasks
@@ -643,18 +659,21 @@ See [Tooling & Productivity Guide](./tooling.md) for complete setup instructions
 ## Key Features
 
 ### Component Library
+
 - **100+ Components**: Atoms, Molecules, Organisms, Templates, and Patterns
 - **Flow Extension**: Complete flow/graph visualization system with playground
 - **Interactive Playgrounds**: Theme, Typography, Spacing, and Colors playgrounds
 - **Theme Builder**: Interactive tool for building custom themes
 
 ### Developer Experience
+
 - **TypeScript**: Full type safety with strict configuration
 - **Storybook**: Interactive documentation with live examples
 - **Code Generation**: Plop templates for rapid component creation
 - **Validation Scripts**: Automated architecture, accessibility, and story validation
 
 ### Quality Assurance
+
 - **Test Coverage**: >80% coverage target (90% goal)
 - **Accessibility**: WCAG 2.1 AA compliance (60+ rules)
 - **Visual Regression**: Chromatic integration
@@ -663,6 +682,7 @@ See [Tooling & Productivity Guide](./tooling.md) for complete setup instructions
 ## Project Structure
 
 The codebase follows Atomic Design principles with additional categories:
+
 - **atoms/**: Basic components (Button, Input, Badge, etc.)
 - **molecules/**: Composite components (SearchInput, Form, Card, etc.)
 - **organisms/**: Complex components (Table, DataGrid, SideNavbar, etc.)

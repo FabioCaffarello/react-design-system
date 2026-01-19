@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
+import { expect, within, waitFor } from '@storybook/test';
 import { SearchAndFilterPattern } from './SearchAndFilterPattern';
 import { Card } from '../../molecules';
 import { Text } from '../../atoms';
@@ -173,10 +173,10 @@ export const FiltersOnly: Story = {
 // Event Stories
 export const WithEvents: Story = {
   render: () => {
-    const handleSearch = fn((query: string) => {
+    const _handleSearch = fn((query: string) => {
       console.log('Search:', query);
     });
-    const handleFilter = fn((filters: Record<string, unknown>) => {
+    const _handleFilter = fn((filters: Record<string, unknown>) => {
       console.log('Filter:', filters);
     });
     

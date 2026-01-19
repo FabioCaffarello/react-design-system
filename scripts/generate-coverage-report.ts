@@ -4,7 +4,7 @@
  * Generates coverage reports for Storybook components.
  */
 
-import { readFile, writeFile } from 'fs/promises';
+import { writeFile } from 'fs/promises';
 import { join } from 'path';
 
 /**

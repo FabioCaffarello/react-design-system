@@ -10,7 +10,9 @@ This document outlines the day-to-day engineering process for the React Design S
 ## Branching & Releases
 
 ### Branching Model
+
 The project uses a **trunk-based development** approach with feature branches:
+
 - **main**: Production-ready code (protected branch)
 - **feature/***: New features and enhancements
 - **fix/***: Bug fixes
@@ -18,7 +20,9 @@ The project uses a **trunk-based development** approach with feature branches:
 - **refactor/***: Code refactoring
 
 ### Release Process
+
 The project uses **Semantic Release** for automated versioning and publishing:
+
 - **Automatic Versioning**: Based on [Conventional Commits](https://www.conventionalcommits.org/)
 - **Release Triggers**: Push to `main` (excluding docs-only changes)
 - **Version Types**:
@@ -34,8 +38,10 @@ The project uses **Semantic Release** for automated versioning and publishing:
   6. Deploy Storybook to GitHub Pages
 
 ### Commit Convention
+
 All commits must follow Conventional Commits format:
-```
+
+```text
 <type>(<scope>): <subject>
 
 <body>
@@ -48,6 +54,7 @@ All commits must follow Conventional Commits format:
 ## Local Development
 
 ### Initial Setup
+
 ```bash
 # Install dependencies
 npm install
@@ -59,18 +66,21 @@ npx playwright install
 ### Daily Development Commands
 
 **Development Server**:
+
 ```bash
 npm run dev              # Start Vite dev server (http://localhost:5173)
 npm run dev:playground   # Start dev server with playground mode
 ```
 
 **Storybook**:
+
 ```bash
 npm run storybook        # Start Storybook (http://localhost:6006)
 npm run build-storybook  # Build static Storybook
 ```
 
 **Testing**:
+
 ```bash
 npm run test             # Run all tests once
 npm run test:watch       # Run tests in watch mode
@@ -80,12 +90,14 @@ npm run test:e2e:ui      # Run E2E tests with UI
 ```
 
 **Code Quality**:
+
 ```bash
 npm run lint             # Run ESLint
 npm run validate:all    # Run all validation scripts
 ```
 
 **Build**:
+
 ```bash
 npm run build            # Build for production
 npm run preview          # Preview production build
@@ -94,6 +106,7 @@ npm run preview          # Preview production build
 ### Component Development Workflow
 
 1. **Create Component**:
+
    ```bash
    npm run plop           # Use Plop to generate component scaffold
    ```
@@ -109,11 +122,13 @@ npm run preview          # Preview production build
    - Check accessibility: Use Storybook a11y addon
 
 4. **Validate**:
+
    ```bash
    npm run validate:all   # Run all validations
    ```
 
 5. **Commit**:
+
    ```bash
    git commit -m "feat(Button): add loading state"
    ```
@@ -121,6 +136,7 @@ npm run preview          # Preview production build
 ## Code Review Expectations
 
 ### Pre-Submission Checklist
+
 - [ ] All tests pass (`npm run test`)
 - [ ] Linting passes (`npm run lint`)
 - [ ] All validations pass (`npm run validate:all`)
@@ -133,35 +149,41 @@ npm run preview          # Preview production build
 ### Review Criteria
 
 **Code Quality**:
+
 - Follows TypeScript best practices (no `any` types)
 - Uses design tokens (not hardcoded values)
 - Follows Atomic Design categorization
 - Proper error handling
 
 **Accessibility**:
+
 - Keyboard navigation supported
 - ARIA attributes present
 - Focus management correct
 - Screen reader compatible
 
 **Testing**:
+
 - Unit tests for component logic
 - Story tests for interactions
 - Edge cases covered
 - Accessibility tests included
 
 **Documentation**:
+
 - JSDoc comments on exported functions/components
 - Storybook stories with examples
 - Props documented in `argTypes`
 
 ### Review Process
+
 1. **Automated Checks**: Must pass all CI checks
 2. **Code Review**: At least one maintainer approval required
 3. **Accessibility Review**: Required for interactive components
 4. **Documentation Review**: Required if API changes
 
 ### Required Approvals
+
 - **Minor changes** (docs, style): 1 approval
 - **Feature additions**: 2 approvals
 - **Breaking changes**: 2 approvals + maintainer discussion
@@ -177,6 +199,7 @@ npm run preview          # Preview production build
    - [ACCESSIBILITY.md](../../docs/ACCESSIBILITY.md) - A11y guidelines
 
 2. **Set Up Environment**:
+
    ```bash
    git clone <repository>
    cd react-design-system
@@ -196,6 +219,7 @@ npm run preview          # Preview production build
    - Check existing stories for examples
 
 ### Recommended First Tasks
+
 - Fix typos in documentation
 - Add missing Storybook stories
 - Improve test coverage
@@ -203,6 +227,7 @@ npm run preview          # Preview production build
 - Write component examples
 
 ### Getting Help
+
 - **Documentation**: Check `docs/` directory
 - **Issues**: Search GitHub issues
 - **Discussions**: Use GitHub Discussions

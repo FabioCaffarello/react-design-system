@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import SideNavbar from './SideNavbar';
 import { useSideNavbarStateRequired } from './contexts/SideNavbarStateContext';
@@ -140,7 +140,9 @@ describe('SideNavbar', () => {
       expect(sidebar).toHaveStyle({ width: '320px' });
 
       const toggleButton = screen.getByRole('button', { name: /collapse sidebar/i });
-      await user.click(toggleButton);
+      await act(async () => {
+        await user.click(toggleButton);
+      });
 
       expect(sidebar).toHaveStyle({ width: '56px' });
     });
@@ -158,7 +160,9 @@ describe('SideNavbar', () => {
       );
 
       const toggleButton = screen.getByRole('button', { name: /collapse sidebar/i });
-      await user.click(toggleButton);
+      await act(async () => {
+        await user.click(toggleButton);
+      });
 
       expect(onCollapseChange).toHaveBeenCalledWith(true);
     });
@@ -395,7 +399,9 @@ describe('SideNavbar', () => {
       );
 
       const toggleButton = screen.getByRole('button', { name: /collapse sidebar/i });
-      await user.click(toggleButton);
+      await act(async () => {
+        await user.click(toggleButton);
+      });
 
       expect(localStorageMock.getItem('test-sidebar-collapsed')).toBe('true');
     });

@@ -19,7 +19,6 @@ import { PlaygroundErrorBoundary } from './PlaygroundErrorBoundary';
 import { PlaygroundDevTools } from './PlaygroundDevTools';
 import { useKeyboardShortcuts, PLAYGROUND_SHORTCUTS } from '../hooks/useKeyboardShortcuts';
 import { updateRoute, onRouteChange, getCurrentRoute } from '../utils/playgroundRouting';
-import { Spinner } from '../../../atoms';
 import type { PlaygroundTabId } from './PlaygroundTabs';
 import { 
   getColorClass 

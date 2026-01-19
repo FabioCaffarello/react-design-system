@@ -4,7 +4,6 @@
  * Strategy pattern for different edge routing algorithms.
  */
 
-import type { Edge, XYPosition } from '@xyflow/react';
 import { getBezierPath, getSmoothStepPath, getStraightPath } from '@xyflow/react';
 
 /**

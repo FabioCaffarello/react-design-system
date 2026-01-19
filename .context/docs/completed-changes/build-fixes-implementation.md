@@ -8,6 +8,7 @@
 ### 1. package.json - Remoção de Exports Condicionais
 
 **Antes:**
+
 ```json
 {
   "exports": {
@@ -23,6 +24,7 @@
 ```
 
 **Depois:**
+
 ```json
 {
   "exports": {
@@ -37,6 +39,7 @@
 ```
 
 **Impacto:**
+
 - ✅ Elimina necessidade de `transpilePackages` no Next.js
 - ✅ Comportamento consistente em todos os ambientes
 - ✅ Builds mais rápidos para consumidores
@@ -44,11 +47,13 @@
 ### 2. vite.config.ts - Preservação de Exports
 
 **Mudanças:**
+
 - Adicionado `exports: "named"` para preservar todos os exports nomeados
 - Configurado `treeshake.moduleSideEffects` para preservar exports de `src/ui/`
 - Ajustado `manualChunks` para não separar o entry point principal
 
 **Configuração Adicionada:**
+
 ```typescript
 rollupOptions: {
   output: {
@@ -68,6 +73,7 @@ rollupOptions: {
 ```
 
 **Impacto:**
+
 - ✅ Garante que todos os exports sejam incluídos no build
 - ✅ Previne tree-shaking agressivo que remove exports não usados
 - ✅ Especialmente importante para AppProvider e outros providers
@@ -77,17 +83,20 @@ rollupOptions: {
 **Novo arquivo:** `scripts/validate-build-exports.ts`
 
 **Funcionalidades:**
+
 - Compara exports do source (`src/ui/index.ts`) com o build (`dist/index.js`)
 - Verifica exports críticos (AppProvider, ConfigProvider, ThemeProvider, Button, Input, Text)
 - Falha o build se exports críticos estiverem faltando
 - Integrado no script de build
 
 **Uso:**
+
 ```bash
 npm run build:validate
 ```
 
 **Integração:**
+
 ```json
 {
   "scripts": {
@@ -98,6 +107,7 @@ npm run build:validate
 ```
 
 **Impacto:**
+
 - ✅ Previne regressões onde exports são removidos acidentalmente
 - ✅ Validação automatizada no CI/CD
 - ✅ Feedback imediato durante desenvolvimento
@@ -105,6 +115,7 @@ npm run build:validate
 ### 4. Scripts de Build Atualizados
 
 **Novos scripts:**
+
 ```json
 {
   "build": "npm run build:types && npm run build:js && npm run build:validate",
@@ -115,6 +126,7 @@ npm run build:validate
 ```
 
 **Benefícios:**
+
 - ✅ Build modular (types, js, validate)
 - ✅ Validação automática após build
 - ✅ Facilita debugging de problemas de build
@@ -135,22 +147,26 @@ npm run build:validate
 ## ⚠️ Próximos Passos
 
 ### Imediato
+
 1. **Corrigir erros TypeScript** que impedem o build completo
    - Vários erros de tipos em componentes
    - Erros de imports não utilizados
    - Necessário para testar as mudanças
 
 2. **Executar build completo**
+
    ```bash
    npm run build
    ```
 
 3. **Validar exports**
+
    ```bash
    npm run build:validate
    ```
 
 ### Curto Prazo
+
 1. **Verificar AppProvider no build**
    - Confirmar que AppProvider está em `dist/index.js`
    - Testar importação em projeto de teste
@@ -162,6 +178,7 @@ npm run build:validate
    - Testar importação de AppProvider
 
 ### Médio Prazo
+
 1. **Atualizar versão**
    - Bump para v2.0.0 (breaking change)
    - Atualizar changelog
@@ -175,7 +192,8 @@ npm run build:validate
 ## 🔍 Validação Atual
 
 **Status do Script de Validação:**
-```
+
+```text
 ❌ Missing critical exports in build:
    - AppProvider
    - ConfigProvider

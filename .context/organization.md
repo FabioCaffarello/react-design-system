@@ -4,7 +4,7 @@ Este documento descreve a estrutura organizacional dos documentos de contexto do
 
 ## Estrutura de Diretórios
 
-```
+```text
 .context/
 ├── agents/              # Playbooks de agentes AI
 ├── docs/               # Documentação principal
@@ -19,40 +19,51 @@ Este documento descreve a estrutura organizacional dos documentos de contexto do
 ## Categorização de Documentos
 
 ### 📋 Plans (`.context/plans/`)
+
 Planos de implementação detalhados com cronogramas, tarefas e critérios de sucesso.
 
 **Documentos:**
+
 - `build-fixes-implementation.md` - Correções estruturais do build
 - `standalone-app-removal.md` - Remoção da aplicação standalone
 - `css-export-plan.md` - Exportação de CSS
 
 ### 📊 Executive Summaries (`.context/docs/executive-summaries/`)
+
 Resumos executivos de alto nível para mudanças significativas.
 
 **Documentos:**
+
 - `build-fixes-summary.md` - Resumo das correções de build
 - `app-removal-summary.md` - Resumo da remoção da aplicação standalone
 
 ### ✅ Completed Changes (`.context/docs/completed-changes/`)
+
 Documentação de mudanças já implementadas e validadas.
 
 **Documentos:**
+
 - `build-fixes-implementation.md` - Mudanças implementadas para correções de build
 - `standalone-app-removal.md` - Documentação da remoção concluída
 
 ### 🏗️ Architecture & Decisions (`.context/docs/adr/` e `.context/docs/rfc/`)
+
 - **ADRs**: Decisões arquiteturais importantes
 - **RFCs**: Propostas de mudanças técnicas
 
 ### 📝 Core Documentation (`.context/docs/`)
+
 Documentação principal do projeto:
+
 - `project-overview.md` - Visão geral do projeto
 - `development-workflow.md` - Fluxo de desenvolvimento
 - `testing-strategy.md` - Estratégia de testes
 - `tooling.md` - Ferramentas e produtividade
 
 ### 🐛 Issues (`.context/docs/issues/`)
+
 Documentação de problemas e suas resoluções:
+
 - `design-system-build-issue.md` - Issues críticas de build
 - `final-status.md` - Status final das issues resolvidas
 
@@ -74,17 +85,20 @@ Os seguintes tipos de documentos são mantidos para referência mas não precisa
 ## Como Adicionar Novos Documentos
 
 ### Adicionar um Novo Plano
+
 1. Criar arquivo em `.context/plans/`
 2. Adicionar entrada no `.context/plans/README.md`
 3. Criar resumo executivo em `.context/docs/executive-summaries/` se necessário
 4. Atualizar `.context/docs/README.md` com link
 
 ### Documentar Mudanças Completadas
+
 1. Criar arquivo em `.context/docs/completed-changes/`
 2. Atualizar `.context/docs/README.md` com link
 3. Atualizar referências nos planos relacionados
 
 ### Criar ADR ou RFC
+
 1. Criar arquivo em `.context/docs/adr/` ou `.context/docs/rfc/`
 2. Seguir numeração sequencial
 3. Atualizar README da pasta correspondente

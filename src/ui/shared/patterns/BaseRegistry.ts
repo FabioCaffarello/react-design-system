@@ -220,7 +220,7 @@ export abstract class BaseRegistry<T extends RegistryEntry> {
   clear(): void {
     const entries = Array.from(this.entries.values());
     this.entries.clear();
-    entries.forEach(entry => this.onUnregister(entry));
+    entries.forEach(_entry => this.onUnregister(_entry));
   }
 
   /**
@@ -261,7 +261,7 @@ export abstract class BaseRegistry<T extends RegistryEntry> {
    * Hook called after successful registration
    * Can be overridden by subclasses
    */
-  protected onRegister(entry: T): void {
+  protected onRegister(_entry: T): void {
     // Override in subclasses if needed
   }
 
@@ -269,7 +269,7 @@ export abstract class BaseRegistry<T extends RegistryEntry> {
    * Hook called after unregistration
    * Can be overridden by subclasses
    */
-  protected onUnregister(entry: T): void {
+  protected onUnregister(_entry: T): void {
     // Override in subclasses if needed
   }
 

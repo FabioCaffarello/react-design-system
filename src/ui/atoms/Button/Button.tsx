@@ -1,10 +1,10 @@
 import { forwardRef, memo, useMemo } from 'react';
 import type { ButtonHTMLAttributes, ReactNode, ElementType } from 'react';
-import { getColorClass, getHoverColorClass, getFocusColorClass, getFocusRingClass } from '../../tokens/colors';
+import { getColorClass, getHoverColorClass, getFocusRingClass } from '../../tokens/colors';
 import { getRadiusClass } from '../../tokens/radius';
 import { getSpacingClass } from '../../tokens/spacing';
 import { getTypographyClasses, getTypographySize } from '../../tokens/typography';
-import { cn, cva, type VariantProps } from '../../utils';
+import { cn, cva } from '../../utils';
 import Spinner from '../Spinner/Spinner';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'error' | 'outline' | 'ghost' | 'iconOnly';

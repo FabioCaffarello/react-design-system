@@ -13,6 +13,7 @@ Exportar CSS do design system de forma que consumidores possam importar facilmen
 ### 1. package.json - Exports de CSS Adicionados
 
 **Exports adicionados:**
+
 ```json
 {
   "exports": {
@@ -27,6 +28,7 @@ Exportar CSS do design system de forma que consumidores possam importar facilmen
 ```
 
 **Benefícios:**
+
 - ✅ Múltiplas formas de importar CSS
 - ✅ Compatível com diferentes bundlers
 - ✅ Suporta campo `style` legacy
@@ -34,6 +36,7 @@ Exportar CSS do design system de forma que consumidores possam importar facilmen
 ### 2. vite.config.ts - Configuração de CSS
 
 **Configurações adicionadas:**
+
 ```typescript
 build: {
   cssCodeSplit: false,  // Bundle único de CSS
@@ -52,6 +55,7 @@ build: {
 ```
 
 **Resultado:**
+
 - ✅ CSS gerado como `react-design-system.css`
 - ✅ Bundle único (não splitado)
 - ✅ Minificado e otimizado
@@ -60,16 +64,19 @@ build: {
 ## 📊 Formas de Importar CSS
 
 ### Opção 1: Via Export (Recomendado)
+
 ```typescript
 import '@fabio.caffarello/react-design-system/styles';
 ```
 
 ### Opção 2: Via Export com Extensão
+
 ```typescript
 import '@fabio.caffarello/react-design-system/styles.css';
 ```
 
 ### Opção 3: Caminho Direto
+
 ```typescript
 import '@fabio.caffarello/react-design-system/dist/react-design-system.css';
 ```
@@ -77,18 +84,21 @@ import '@fabio.caffarello/react-design-system/dist/react-design-system.css';
 ## 🎯 Compatibilidade
 
 ### Next.js
+
 ```typescript
 // app/layout.tsx ou pages/_app.tsx
 import '@fabio.caffarello/react-design-system/styles';
 ```
 
 ### Vite
+
 ```typescript
 // main.tsx
 import '@fabio.caffarello/react-design-system/styles';
 ```
 
 ### Webpack
+
 ```typescript
 // index.tsx
 import '@fabio.caffarello/react-design-system/styles';
@@ -97,6 +107,7 @@ import '@fabio.caffarello/react-design-system/styles';
 ## ✅ Checklist de Implementação
 
 ### Configuração
+
 - [x] Adicionar exports de CSS no `package.json`
 - [x] Adicionar campo `style` (legacy)
 - [x] Configurar Vite para gerar CSS com nome correto
@@ -104,6 +115,7 @@ import '@fabio.caffarello/react-design-system/styles';
 - [x] Verificar minificação e source maps
 
 ### Validação
+
 - [x] CSS gerado corretamente (`react-design-system.css`)
 - [x] Tamanho do CSS verificado (~23KB, ~3.84KB gzipped)
 - [x] Source maps gerados
@@ -112,13 +124,14 @@ import '@fabio.caffarello/react-design-system/styles';
 - [ ] Testar importação em Webpack (pendente teste real)
 
 ### Documentação
+
 - [x] Atualizar `GettingStarted.mdx` com exemplos
 - [x] Documentar múltiplas formas de importar
 - [x] Adicionar nota sobre Tailwind CSS 4
 
 ## 📝 Estrutura Final
 
-```
+```text
 dist/
 ├── react-design-system.css (bundle completo, ~23KB)
 ├── react-design-system.css.map (source map)
@@ -131,8 +144,9 @@ dist/
 ## 🔍 Detalhes Técnicos
 
 ### CSS Bundle
+
 - **Tamanho:** ~23KB (não minificado), ~3.84KB (gzipped)
-- **Conteúdo:** 
+- **Conteúdo:**
   - Tailwind CSS 4 base
   - Primitives (cores, spacing, typography, etc.)
   - Semantic tokens
@@ -140,6 +154,7 @@ dist/
   - Utilities
 
 ### Ordem de Importação
+
 O CSS deve ser importado **antes** dos componentes para garantir que os estilos estejam disponíveis:
 
 ```typescript
@@ -155,16 +170,19 @@ import '@fabio.caffarello/react-design-system/styles';
 ## ⚠️ Considerações Importantes
 
 ### Tailwind CSS 4
+
 - O CSS usa `@import "tailwindcss"` e `@source` directives
 - Consumidores precisam ter Tailwind CSS 4 configurado OU
 - O CSS do design system já inclui o necessário
 
 ### Tree-shaking
+
 - CSS não pode ser tree-shaken facilmente
 - Bundle único é mais prático
 - Consumidores podem usar PostCSS para otimizar se necessário
 
 ### Source Maps
+
 - Source maps são gerados para debugging
 - Úteis para identificar origem de estilos
 - Não impactam produção (não são incluídos no bundle final)
@@ -172,6 +190,7 @@ import '@fabio.caffarello/react-design-system/styles';
 ## 🚀 Próximos Passos
 
 ### Testes
+
 1. Criar projeto Next.js de teste
 2. Instalar design system
 3. Importar CSS via export
@@ -179,6 +198,7 @@ import '@fabio.caffarello/react-design-system/styles';
 5. Testar build de produção
 
 ### Melhorias Futuras (Opcional)
+
 - [ ] Considerar módulos CSS separados (primitives, semantic, themes)
 - [ ] Adicionar CSS variables para customização
 - [ ] Documentar customização de temas
@@ -192,6 +212,7 @@ import '@fabio.caffarello/react-design-system/styles';
 ## ✅ Conclusão
 
 A exportação de CSS foi implementada com sucesso:
+
 - ✅ Múltiplas formas de importar
 - ✅ Compatível com diferentes bundlers
 - ✅ Bundle único e otimizado

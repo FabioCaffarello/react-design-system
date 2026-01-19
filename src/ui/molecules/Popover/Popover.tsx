@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, type ReactNode } from 'react';
+import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { getSpacingClass } from '../../tokens/spacing';
@@ -82,7 +82,7 @@ export default function Popover({
   const isControlled = controlledOpen !== undefined;
   const isOpen = isControlled ? controlledOpen : internalOpen;
 
-  const updatePosition = () => {
+  const updatePosition = useCallback(() => {
     if (!triggerRef.current || !popoverRef.current) return;
 
     const triggerRect = triggerRef.current.getBoundingClientRect();
@@ -122,7 +122,7 @@ export default function Popover({
     left = Math.max(padding, Math.min(left, window.innerWidth + scrollX - popoverRect.width - padding));
 
     setPosition({ top, left });
-  };
+  }, [placement]);
 
   useEffect(() => {
     if (isOpen) {
@@ -136,25 +136,25 @@ export default function Popover({
         window.removeEventListener('scroll', handleScroll, true);
       };
     }
-  }, [isOpen, placement]);
+  }, [isOpen, placement, updatePosition]);
 
   useEffect(() => {
     if (isOpen && popoverRef.current) {
       // Small delay to ensure DOM is ready
       setTimeout(updatePosition, 0);
     }
-  }, [isOpen]);
+  }, [isOpen, updatePosition]);
 
-  const handleOpenChange = (newOpen: boolean) => {
+  const handleOpenChange = useCallback((newOpen: boolean) => {
     if (!isControlled) {
       setInternalOpen(newOpen);
     }
     onOpenChange?.(newOpen);
-  };
+  }, [isControlled, onOpenChange]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     handleOpenChange(false);
-  };
+  }, [handleOpenChange]);
 
   useEffect(() => {
     if (isOpen && closeOnEscape) {
@@ -166,7 +166,7 @@ export default function Popover({
       document.addEventListener('keydown', handleEscape);
       return () => document.removeEventListener('keydown', handleEscape);
     }
-  }, [isOpen, closeOnEscape]);
+  }, [isOpen, closeOnEscape, handleClose]);
 
   useEffect(() => {
     if (isOpen && closeOnClickOutside) {
@@ -183,7 +183,7 @@ export default function Popover({
       document.addEventListener('mousedown', handleClickOutside);
       return () => document.removeEventListener('mousedown', handleClickOutside);
     }
-  }, [isOpen, closeOnClickOutside]);
+  }, [isOpen, closeOnClickOutside, handleClose]);
 
   const popoverContent = isOpen ? (
     <div

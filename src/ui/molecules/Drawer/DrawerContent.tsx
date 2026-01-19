@@ -2,7 +2,6 @@
 
 import { useEffect, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { getRadiusClass } from '../../tokens/radius';
 import { getShadowClass } from '../../tokens/shadows';
 import { getZIndexClass } from '../../tokens/z-index';
 import { getAnimationClass } from '../../tokens/animations';

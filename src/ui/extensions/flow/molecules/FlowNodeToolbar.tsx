@@ -103,6 +103,7 @@ export function FlowNodeToolbar({
   style,
   ...props
 }: FlowNodeToolbarProps) {
+  // All hooks must be called before any early returns
   // Convert position to Position enum
   const toolbarPosition = useMemo(() => stringToPosition(position), [position]);
   
@@ -116,11 +117,6 @@ export function FlowNodeToolbar({
     }
     return visible;
   }, [visible]);
-  
-  // Don't render if not visible
-  if (!isVisible) {
-    return null;
-  }
   
   // Animation classes with more options
   const animationClasses = useMemo(() => {
@@ -173,6 +169,11 @@ export function FlowNodeToolbar({
     }
     return { ...baseStyle, ...style };
   }, [offset, toolbarPosition, style]);
+  
+  // Early return after all hooks
+  if (!isVisible) {
+    return null;
+  }
   
   return (
     <NodeToolbar 

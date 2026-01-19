@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from '@storybook/test';
 import { expect, userEvent, within, waitFor } from '@storybook/test';
 import { useState } from "react";
-import TableFilters from "./TableFilters";
+import TableFilters, { type FilterValue } from "./TableFilters";
 
 const meta: Meta<typeof TableFilters> = {
   title: "Organisms/Table/TableFilters",
@@ -38,7 +38,7 @@ Filter controls for tables with support for text, select, and date filters.
 
 export const Default: StoryObj<typeof TableFilters> = {
   render: () => {
-    const [_filters, setFilters] = useState<Record<string, string>>({});
+    const [_filters, setFilters] = useState<Record<string, FilterValue>>({});
 
     return (
       <TableFilters
@@ -106,7 +106,7 @@ export const WithInitialValues: StoryObj<typeof TableFilters> = {
 
 export const WithDateFilter: StoryObj<typeof TableFilters> = {
   render: () => {
-    const [_filters, setFilters] = useState<Record<string, string>>({});
+    const [_filters, setFilters] = useState<Record<string, FilterValue>>({});
 
     return (
       <TableFilters
@@ -133,9 +133,9 @@ export const WithDateFilter: StoryObj<typeof TableFilters> = {
 // Event Stories
 export const WithEvents: StoryObj<typeof TableFilters> = {
   render: () => {
-    const [_filters, setFilters] = useState<Record<string, string>>({});
-    const handleFilter = fn((newFilters: Record<string, unknown>) => {
-      setFilters(newFilters as Record<string, string>);
+    const [_filters, setFilters] = useState<Record<string, FilterValue>>({});
+    const handleFilter = fn((newFilters: Record<string, FilterValue>) => {
+      setFilters(newFilters);
     });
     
     return (
@@ -200,7 +200,7 @@ export const WithEvents: StoryObj<typeof TableFilters> = {
 // State Stories
 export const DefaultState: StoryObj<typeof TableFilters> = {
   render: () => {
-    const [_filters, setFilters] = useState<Record<string, string>>({});
+    const [_filters, setFilters] = useState<Record<string, FilterValue>>({});
     return (
       <TableFilters
         filters={[
@@ -216,7 +216,7 @@ export const DefaultState: StoryObj<typeof TableFilters> = {
           },
         ]}
         onFilter={(newFilters) => {
-          setFilters(newFilters as Record<string, string>);
+          setFilters(newFilters);
         }}
       />
     );
@@ -264,7 +264,7 @@ export const WithInitialValuesState: StoryObj<typeof TableFilters> = {
 
 export const TextFilterState: StoryObj<typeof TableFilters> = {
   render: () => {
-    const [_filters, setFilters] = useState<Record<string, string>>({});
+    const [_filters, setFilters] = useState<Record<string, FilterValue>>({});
     return (
       <TableFilters
         filters={[
@@ -276,7 +276,7 @@ export const TextFilterState: StoryObj<typeof TableFilters> = {
           },
         ]}
         onFilter={(newFilters) => {
-          setFilters(newFilters as Record<string, string>);
+          setFilters(newFilters);
         }}
       />
     );
@@ -292,7 +292,7 @@ export const TextFilterState: StoryObj<typeof TableFilters> = {
 
 export const SelectFilterState: StoryObj<typeof TableFilters> = {
   render: () => {
-    const [_filters, setFilters] = useState<Record<string, string>>({});
+    const [_filters, setFilters] = useState<Record<string, FilterValue>>({});
     return (
       <TableFilters
         filters={[
@@ -308,7 +308,7 @@ export const SelectFilterState: StoryObj<typeof TableFilters> = {
           },
         ]}
         onFilter={(newFilters) => {
-          setFilters(newFilters as Record<string, string>);
+          setFilters(newFilters);
         }}
       />
     );
@@ -324,7 +324,7 @@ export const SelectFilterState: StoryObj<typeof TableFilters> = {
 
 export const DateFilterState: StoryObj<typeof TableFilters> = {
   render: () => {
-    const [_filters, setFilters] = useState<Record<string, string>>({});
+    const [_filters, setFilters] = useState<Record<string, FilterValue>>({});
     return (
       <TableFilters
         filters={[
@@ -340,7 +340,7 @@ export const DateFilterState: StoryObj<typeof TableFilters> = {
           },
         ]}
         onFilter={(newFilters) => {
-          setFilters(newFilters as Record<string, string>);
+          setFilters(newFilters);
         }}
       />
     );

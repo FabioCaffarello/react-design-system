@@ -4,7 +4,7 @@ import { type HTMLAttributes } from 'react';
 import { getSpacingClass } from '../../tokens/spacing';
 import { getColorClass } from '../../tokens/colors';
 
-export interface MenuSeparatorProps extends HTMLAttributes<HTMLDivElement> {}
+export type MenuSeparatorProps = HTMLAttributes<HTMLDivElement>;
 
 /**
  * MenuSeparator Component

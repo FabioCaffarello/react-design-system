@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import type { HTMLAttributes } from 'react';
 import { Loader2 } from 'lucide-react';
 import { getColorClass } from '../../tokens/colors';

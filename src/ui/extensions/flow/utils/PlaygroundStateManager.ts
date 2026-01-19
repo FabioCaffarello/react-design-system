@@ -5,7 +5,6 @@
  * Provides layered state management (UI state, Flow state, Config state).
  */
 
-import { useCallback, useRef } from 'react';
 import type { Node, Edge } from '@xyflow/react';
 import type { FlowNodeData, FlowEdgeData } from '../organisms/FlowTypes';
 import type { ReactFlowConfig, BackgroundConfig, LayoutConfig } from '../types/playgroundTypes';
@@ -154,8 +153,8 @@ export class PlaygroundStateManager {
   /**
    * Remove middleware
    */
-  removeMiddleware(middleware: StateMiddleware): void {
-    const index = this.middlewares.indexOf(middleware);
+  removeMiddleware(_strategy: StateMiddleware): void {
+    const index = this.middlewares.indexOf(_strategy);
     if (index > -1) {
       this.middlewares.splice(index, 1);
     }
@@ -227,8 +226,9 @@ export function usePlaygroundStateManager(initialState: PlaygroundState) {
  * Logging middleware
  */
 export function createLoggingMiddleware(): StateMiddleware {
-  return (state, update) => {
+  return (_state, update) => {
     if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
       console.log('[PlaygroundState] Update:', update.type, update.payload);
     }
     return null; // Let default handler process
@@ -239,9 +239,9 @@ export function createLoggingMiddleware(): StateMiddleware {
  * Persistence middleware
  */
 export function createPersistenceMiddleware(storageKey: string = 'playground-state'): StateMiddleware {
-  return (state, update) => {
+  return (state, _updates) => {
     // Only persist certain updates
-    if (['nodes', 'edges', 'config', 'background', 'layout', 'theme'].includes(update.type)) {
+    if (['nodes', 'edges', 'config', 'background', 'layout', 'theme'].includes(_updates.type)) {
       try {
         const stateToSave = {
           nodes: state.nodes,

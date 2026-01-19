@@ -81,7 +81,7 @@ export function useVirtualScrolling<T>(
       });
     }
     return result;
-  }, [items.length, itemHeight, scrollOffset, containerHeight, overscan, enabled]);
+  }, [items, itemHeight, scrollOffset, containerHeight, overscan, enabled]);
 
   const totalHeight = items.length * itemHeight;
 

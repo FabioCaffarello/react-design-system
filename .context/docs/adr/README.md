@@ -5,6 +5,7 @@ Este diretório contém Architecture Decision Records (ADRs) que documentam deci
 ## O que são ADRs?
 
 ADRs são documentos que capturam decisões arquiteturais importantes, incluindo:
+
 - **Contexto**: Por que a decisão foi necessária
 - **Decisão**: O que foi decidido
 - **Consequências**: Impactos positivos e negativos
@@ -13,25 +14,30 @@ ADRs são documentos que capturam decisões arquiteturais importantes, incluindo
 ## ADRs Atuais
 
 ### [ADR-0001: Build and Distribution Strategy](./0001-build-and-distribution-strategy.md)
+
 **Status:** Proposed  
 **Data:** 2026-01-19
 
 Estratégia completa para resolver problemas de build e distribuição:
+
 - Remoção de exports condicionais TypeScript
 - Garantia de builds completos e transpilados
 - Compatibilidade universal com bundlers
 
 **Issues relacionadas:**
+
 - TypeScript source files em exports de desenvolvimento
 - Necessidade de `transpilePackages` no Next.js
 
 ### [ADR-0002: Provider Exports in Production Build](./0002-provider-exports-in-build.md)
+
 **Status:** Proposed  
 **Data:** 2026-01-19
 
 Solução para garantir que todos os providers (AppProvider, ConfigProvider, ThemeProvider) sejam incluídos no build de produção.
 
 **Issues relacionadas:**
+
 - AppProvider não exportado em `dist/index.js`
 - Funcionalidades perdidas em produção
 

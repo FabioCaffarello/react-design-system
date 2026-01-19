@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, act } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import TableActions from './TableActions';
@@ -29,7 +29,9 @@ describe('TableActions', () => {
     render(<TableActions actions={actions} row={{ id: '1' }} />);
 
     const button = screen.getByLabelText('Row actions');
-    await user.click(button);
+    await act(async () => {
+      await user.click(button);
+    });
 
     await waitFor(() => {
       expect(screen.getByText('Edit')).toBeInTheDocument();
@@ -50,14 +52,18 @@ describe('TableActions', () => {
     render(<TableActions actions={actions} row={row} />);
 
     const button = screen.getByLabelText('Row actions');
-    await user.click(button);
+    await act(async () => {
+      await user.click(button);
+    });
 
     await waitFor(() => {
       expect(screen.getByText('Edit')).toBeInTheDocument();
     });
 
     const editButton = screen.getByText('Edit');
-    await user.click(editButton);
+    await act(async () => {
+      await user.click(editButton);
+    });
 
     expect(onClick).toHaveBeenCalledWith(row);
   });

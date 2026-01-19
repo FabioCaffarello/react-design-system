@@ -4,7 +4,7 @@
  * Analyzes component performance metrics.
  */
 
-import { readFile, writeFile } from 'fs/promises';
+import { writeFile } from 'fs/promises';
 import { join } from 'path';
 
 interface PerformanceMetric {

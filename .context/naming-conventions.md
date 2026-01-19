@@ -16,44 +16,56 @@ Todos os arquivos seguem o padrão **kebab-case** (lowercase com hífens):
 ## Estrutura por Tipo
 
 ### Plans (`.context/plans/`)
+
 **Formato:** `[descrição]-[tipo].md`
 
 Exemplos:
+
 - `build-fixes-implementation.md`
 - `standalone-app-removal.md`
 - `css-export-plan.md`
 
 ### Executive Summaries (`.context/docs/executive-summaries/`)
+
 **Formato:** `[descrição]-summary.md`
 
 Exemplos:
+
 - `build-fixes-summary.md`
 - `app-removal-summary.md`
 
 ### Completed Changes (`.context/docs/completed-changes/`)
+
 **Formato:** `[descrição]-[tipo].md` (mesmo nome do plano relacionado)
 
 Exemplos:
+
 - `build-fixes-implementation.md` (corresponde ao plano `build-fixes-implementation.md`)
 - `standalone-app-removal.md` (corresponde ao plano `standalone-app-removal.md`)
 
 ### ADRs (`.context/docs/adr/`)
+
 **Formato:** `[número]-[descrição].md`
 
 Exemplos:
+
 - `0001-build-and-distribution-strategy.md`
 - `0002-provider-exports-in-build.md`
 
 ### RFCs (`.context/docs/rfc/`)
+
 **Formato:** `[número]-[descrição].md`
 
 Exemplos:
+
 - `0001-conditional-exports-removal.md`
 
 ### Issues (`.context/docs/issues/`)
+
 **Formato:** `[descrição].md` (kebab-case)
 
 Exemplos:
+
 - `design-system-build-issue.md`
 - `final-status.md`
 
@@ -68,15 +80,18 @@ Exemplos:
 ## Mapeamento de Nomes Antigos → Novos
 
 ### Plans
+
 - `CSS_EXPORT_PLAN.md` → `css-export-plan.md`
 - `IMPLEMENTATION_PLAN.md` → `build-fixes-implementation.md`
 - `REMOVAL_PLAN_STANDALONE_APP.md` → `standalone-app-removal.md`
 
 ### Executive Summaries
+
 - `EXECUTIVE_SUMMARY_BUILD_FIXES.md` → `build-fixes-summary.md`
 - `EXECUTIVE_SUMMARY_APP_REMOVAL.md` → `app-removal-summary.md`
 
 ### Completed Changes
+
 - `CHANGES_IMPLEMENTED.md` → `build-fixes-implementation.md`
 - `REMOVAL_COMPLETED.md` → `standalone-app-removal.md`
 

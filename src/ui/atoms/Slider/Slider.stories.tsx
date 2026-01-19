@@ -21,8 +21,8 @@ A slider component for selecting a value or range of values.
 
 | Event | Description | Parameters | When Fired |
 |-------|-------------|------------|------------|
-| \`onChange\` | Valor mudou | \`(value: number \| [number, number]) => void\` | Quando o valor do slider muda |
-| \`onValueChange\` | Valor mudou (alternativo) | \`(value: number \| [number, number]) => void\` | Quando o valor do slider muda |
+| \`onChange\` | Valor mudou | \`(value: number | [number, number]) => void\` | Quando o valor do slider muda |
+| \`onValueChange\` | Valor mudou (alternativo) | \`(value: number | [number, number]) => void\` | Quando o valor do slider muda |
 
 ### States
 

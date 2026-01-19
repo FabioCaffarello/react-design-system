@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
+import { expect, within, waitFor } from '@storybook/test';
 import { useState } from 'react';
 import DataGrid from './DataGrid';
 import Button from '../../atoms/Button/Button';
@@ -22,9 +22,9 @@ A data grid component for displaying tabular data with sorting, filtering, pagin
 
 | Event | Description | Parameters | When Fired |
 |-------|-------------|------------|------------|
-| \`onSort\` | Coluna ordenada | \`(column: string, direction: 'asc' \| 'desc') => void\` | Quando uma coluna é clicada para ordenar |
+| \`onSort\` | Coluna ordenada | \`(column: string, direction: 'asc' | 'desc') => void\` | Quando uma coluna é clicada para ordenar |
 | \`onSelectionChange\` | Seleção de linhas mudou | \`(selectedRows: string[]) => void\` | Quando linhas são selecionadas ou desselecionadas |
-| \`onExport\` | Exportação acionada | \`(format: 'csv' \| 'xlsx' \| 'json') => void\` | Quando exportação é solicitada |
+| \`onExport\` | Exportação acionada | \`(format: 'csv' | 'xlsx' | 'json') => void\` | Quando exportação é solicitada |
 | \`onFilter\` | Filtros mudaram | \`(filters: Record<string, unknown>) => void\` | Quando filtros são aplicados |
 
 ### States

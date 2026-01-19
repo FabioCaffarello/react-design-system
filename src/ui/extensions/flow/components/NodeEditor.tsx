@@ -93,6 +93,16 @@ export const NodeEditor = React.memo(function NodeEditor({ node, onUpdate, onDel
     );
   }, [localNode, showPreview]);
 
+  // Cleanup timeout on unmount - must be before any early returns
+  useEffect(() => {
+    return () => {
+      if (positionTimeoutRef.current) {
+        clearTimeout(positionTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Early return after all hooks
   if (!localNode) {
     return (
       <Card padding="md">
@@ -158,15 +168,6 @@ export const NodeEditor = React.memo(function NodeEditor({ node, onUpdate, onDel
       showFeedback(`Position updated: ${axis.toUpperCase()} = ${numValue}`);
     }, 300);
   };
-
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (positionTimeoutRef.current) {
-        clearTimeout(positionTimeoutRef.current);
-      }
-    };
-  }, []);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -440,7 +441,7 @@ export const NodeEditor = React.memo(function NodeEditor({ node, onUpdate, onDel
           onKeyDown={(e) => {
             if (e.key === 'Enter' && e.currentTarget.value) {
               const propName = e.currentTarget.value;
-              const updated = {
+              const _updated = {
                 ...localNode.data,
                 [propName]: '',
               };

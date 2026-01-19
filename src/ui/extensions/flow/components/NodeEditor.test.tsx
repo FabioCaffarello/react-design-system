@@ -153,7 +153,7 @@ describe('NodeEditor', () => {
     
     // Validation should show errors
     await waitFor(() => {
-      const errorSection = screen.queryByText(/Validation Errors/i);
+      const _errorSection = screen.queryByText(/Validation Errors/i);
       // Error might not show immediately due to debouncing
     });
   });

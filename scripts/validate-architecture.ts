@@ -14,8 +14,8 @@
  * Usage: npm run validate-architecture
  */
 
-import { readFileSync, existsSync, readdirSync, statSync } from 'fs';
-import { join, dirname, basename } from 'path';
+import { readFileSync, existsSync, readdirSync } from 'fs';
+import { join } from 'path';
 
 interface ComponentInfo {
   path: string;
@@ -63,7 +63,7 @@ function findComponentFiles(dir: string, category: string, files: ComponentInfo[
 /**
  * Extract imports from component file
  */
-function extractImports(content: string, currentCategory: string): string[] {
+function extractImports(content: string, _currentCategory: string): string[] {
   const imports: string[] = [];
   
   // Match import statements
@@ -87,7 +87,7 @@ function extractImports(content: string, currentCategory: string): string[] {
 /**
  * Validate component architecture rules
  */
-function validateComponent(component: ComponentInfo, allComponents: ComponentInfo[]): string[] {
+function validateComponent(component: ComponentInfo, _allComponents: ComponentInfo[]): string[] {
   const issues: string[] = [];
   const { category, imports } = component;
 

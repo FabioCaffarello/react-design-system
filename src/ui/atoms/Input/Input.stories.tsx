@@ -388,11 +388,11 @@ export const WithEvents: Story = {
       console.log('Value changed:', event.target.value);
     });
     
-    const handleFocus = fn((event: React.FocusEvent<HTMLInputElement>) => {
+    const handleFocus = fn((_event: React.FocusEvent<HTMLInputElement>) => {
       console.log('Input focused');
     });
     
-    const handleBlur = fn((event: React.FocusEvent<HTMLInputElement>) => {
+    const handleBlur = fn((_event: React.FocusEvent<HTMLInputElement>) => {
       console.log('Input blurred');
     });
     

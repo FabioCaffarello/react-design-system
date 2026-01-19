@@ -10,6 +10,7 @@
 
 'use client';
 
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
 
 /**

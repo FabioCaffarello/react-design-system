@@ -67,7 +67,7 @@ test.describe('App Builder', () => {
     await page.waitForTimeout(500);
     
     // Check if validation errors are shown (if implemented)
-    const errorIndicator = page.locator('text=/error/i').first();
+    const _errorIndicator = page.locator('text=/error/i').first();
     // This might not always be visible, so we just check if the input exists
     await expect(nameInput).toBeVisible();
   });

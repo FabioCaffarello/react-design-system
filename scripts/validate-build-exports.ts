@@ -8,8 +8,6 @@
 
 import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
-import * as path from 'path';
-import { createRequire } from 'module';
 
 interface ExportInfo {
   name: string;
@@ -63,7 +61,7 @@ function extractExportsFromSource(filePath: string): ExportInfo[] {
 /**
  * Extract exports from TypeScript declaration files by checking specific modules
  */
-function extractExportsFromDeclarations(filePath: string): string[] {
+function extractExportsFromDeclarations(_filePath: string): string[] {
   const exports: string[] = [];
   const basePath = join(process.cwd(), 'dist/ui');
   
@@ -89,7 +87,7 @@ function extractExportsFromDeclarations(filePath: string): string[] {
     }
     // Match: export type { ButtonProps } from "./Button/Button";
     const typeMatches = content.matchAll(/export\s+type\s+\{\s*([^}]+)\s*\}/g);
-    for (const match of typeMatches) {
+    for (const _match of typeMatches) {
       // Types are also exports, but we're mainly interested in values
     }
   }

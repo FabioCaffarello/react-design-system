@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useRef, useEffect, forwardRef, type ReactNode } from 'react';
-import Input from '../../atoms/Input/Input';
+import { useState, useRef, useEffect, forwardRef } from 'react';
 import Chip from '../../atoms/Chip/Chip';
-import { ChevronDown, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 import AutocompleteList from '../Autocomplete/AutocompleteList';
 import type { AutocompleteOptionType } from '../Autocomplete/AutocompleteOption';
 import { cn } from '../../utils';
-import { getColorClass, getFocusColorClass } from '../../tokens';
+import { getColorClass } from '../../tokens';
 import { getSpacingClass } from '../../tokens';
 import { getRadiusClass } from '../../tokens';
 

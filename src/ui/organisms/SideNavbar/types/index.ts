@@ -292,7 +292,7 @@ export interface SideNavbarToggleProps extends Omit<ButtonHTMLAttributes<HTMLBut
   enableKeyboardShortcut?: boolean;
 }
 
-export interface SideNavbarResizeHandleProps extends HTMLAttributes<HTMLDivElement> {}
+export type SideNavbarResizeHandleProps = HTMLAttributes<HTMLDivElement>;
 
 export interface SideNavbarBackdropProps extends HTMLAttributes<HTMLDivElement> {
   /** Whether the backdrop is visible */

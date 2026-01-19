@@ -5,6 +5,7 @@ Este diretório contém Request for Comments (RFCs) que documentam propostas de 
 ## O que são RFCs?
 
 RFCs são documentos que descrevem:
+
 - **Problema**: O que precisa ser resolvido
 - **Proposta**: Como resolver o problema
 - **Impacto**: Quem será afetado e como
@@ -13,12 +14,14 @@ RFCs são documentos que descrevem:
 ## RFCs Atuais
 
 ### [RFC-0001: Removal of Conditional Development Exports](./0001-conditional-exports-removal.md)
+
 **Status:** Draft  
 **Data:** 2026-01-19
 
 Proposta para remover exports condicionais que apontam para arquivos TypeScript fonte, eliminando a necessidade de `transpilePackages` no Next.js.
 
 **Benefícios:**
+
 - Zero configuração para consumidores
 - Comportamento consistente
 - Melhor performance

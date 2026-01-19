@@ -9,7 +9,7 @@
  * Note: Requires Design Systems MCP to be configured in .cursor/mcp.json
  */
 
-import { readFileSync, existsSync, readdirSync, writeFileSync } from 'fs';
+import { existsSync, readdirSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
 interface ArchitectureIssue {

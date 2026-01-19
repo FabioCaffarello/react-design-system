@@ -1,7 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Autocomplete from './Autocomplete';
-import { User, Settings } from 'lucide-react';
 
 const mockOptions = [
   { value: '1', label: 'Option 1' },

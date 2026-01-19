@@ -1,5 +1,6 @@
 'use client';
 
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext } from 'react';
 import type { ReactNode } from 'react';
 import type { TableColumn } from './TableTypes';

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
+import { expect, within, waitFor } from '@storybook/test';
 import { useState } from "react";
 import Table from "./Table";
 import { Badge, Button } from "../../atoms";
@@ -60,7 +60,7 @@ stateDiagram-v2
 
 | Event | Description | Parameters | When Fired |
 |-------|-------------|------------|------------|
-| \`onSort\` | Coluna ordenada | \`(column: string, direction: 'asc' \| 'desc') => void\` | Quando uma coluna é clicada para ordenar |
+| \`onSort\` | Coluna ordenada | \`(column: string, direction: 'asc' | 'desc') => void\` | Quando uma coluna é clicada para ordenar |
 | \`onSelectionChange\` | Seleção de linhas mudou | \`(selectedRows: string[]) => void\` | Quando linhas são selecionadas ou desselecionadas |
 | \`onFilter\` | Filtros mudaram | \`(filters: Record<string, unknown>) => void\` | Quando filtros são aplicados |
 

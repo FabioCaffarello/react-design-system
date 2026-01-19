@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from '@storybook/test';
 import ErrorMessage from "./ErrorMessage";
-import { Input, Label } from "../../atoms";
+import { Label, Input } from "../";
 
 const meta: Meta<typeof ErrorMessage> = {
   title: "Atoms/ErrorMessage",

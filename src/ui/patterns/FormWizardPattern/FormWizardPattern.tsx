@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Stepper } from '../../organisms';
-import { Button } from '../../atoms';
 import { Container } from '../../layouts/Container/Container';
 import { Stack } from '../../layouts/Stack/Stack';
+import { Button } from '../../atoms';
 import type { StepperStep } from '../../organisms';
 
 export interface FormWizardStep extends StepperStep {
@@ -59,10 +59,10 @@ export function FormWizardPattern({
   steps,
   onComplete,
   allowBackNavigation = true,
-  showStepNumbers = true,
+  showStepNumbers: _showStepNumbers = true,
 }: FormWizardPatternProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<Record<string, unknown>>({});
+  const [formData, _setFormData] = useState<Record<string, unknown>>({});
   const [errors, setErrors] = useState<Record<number, boolean>>({});
 
   const handleNext = async () => {

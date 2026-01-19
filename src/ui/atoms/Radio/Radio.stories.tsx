@@ -723,11 +723,11 @@ export const WithEvents: Story = {
       console.log('Radio selected:', e.target.value);
     });
     
-    const handleFocus = fn((e: React.FocusEvent<HTMLInputElement>) => {
+    const handleFocus = fn((_e: React.FocusEvent<HTMLInputElement>) => {
       console.log('Radio focused');
     });
     
-    const handleBlur = fn((e: React.FocusEvent<HTMLInputElement>) => {
+    const handleBlur = fn((_e: React.FocusEvent<HTMLInputElement>) => {
       console.log('Radio blurred');
     });
     

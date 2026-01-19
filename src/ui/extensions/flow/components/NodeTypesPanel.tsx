@@ -22,8 +22,7 @@ import {
   getSpacingClass, 
   getColorClass, 
   getTypographyClasses,
-  getRadiusClass,
-  getShadowClass 
+  getRadiusClass
 } from '../../../tokens';
 
 export interface NodeTypesPanelProps {
@@ -119,9 +118,9 @@ const NodeTypePreview = React.memo(function NodeTypePreview({
   nodeType: typeof nodeTypeDefinitions[0]; 
   onSelect?: () => void 
 }) {
-  const nodeTypes = React.useMemo(() => ({
+  const _nodeTypes = React.useMemo(() => ({
     [nodeType.id]: nodeType.component,
-  }), [nodeType.id]);
+  }), [nodeType.id, nodeType.component]);
 
   return (
     <Card

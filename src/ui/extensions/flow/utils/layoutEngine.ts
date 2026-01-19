@@ -4,7 +4,7 @@
  * Strategy pattern for different layout algorithms (Dagre, ELK, Force-Directed).
  */
 
-import type { Node, Edge, XYPosition } from '@xyflow/react';
+import type { Node, Edge } from '@xyflow/react';
 import type { LayoutOptions, LayoutResult } from '../organisms/FlowTypes';
 
 /**
@@ -153,7 +153,7 @@ export class ForceDirectedLayoutStrategy implements LayoutStrategy {
   async calculate(
     nodes: Node[],
     edges: Edge[],
-    options: LayoutOptions = {}
+    _options: LayoutOptions = {}
   ): Promise<LayoutResult> {
     // Dynamic import to make it optional
     const d3 = await import('d3-force').catch(() => null);

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
+import { expect, within, waitFor } from '@storybook/test';
 import { useState } from "react";
 import TablePagination from "./TablePagination";
 
@@ -139,7 +139,7 @@ export const WithEvents: StoryObj<typeof TablePagination> = {
     );
   },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+    const _canvas = within(canvasElement);
     // Wait for component to be rendered
     // The text is rendered as "Showing 1 to 10 of 100 results" but split across multiple elements
     // So we check for a parent element that contains the full text

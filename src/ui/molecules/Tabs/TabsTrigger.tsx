@@ -11,7 +11,7 @@ import {
   getTypographySize,
   getTypographyWeight
 } from '../../tokens';
-import { cn, cva } from '../../utils';
+import { cn } from '../../utils';
 
 export interface TabsTriggerProps extends HTMLAttributes<HTMLButtonElement> {
   value: string;

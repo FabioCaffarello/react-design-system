@@ -33,7 +33,7 @@ test.describe('Checkbox Component', () => {
   });
 
   test('should have proper ARIA attributes', async ({ page }) => {
-    const checkbox = page.getByRole('checkbox');
+    const _checkbox = page.getByRole('checkbox');
     
     // Check aria-invalid when error
     await page.goto('/?path=/story/atoms-checkbox--error');
@@ -45,12 +45,12 @@ test.describe('Checkbox Component', () => {
   test('should handle disabled state', async ({ page }) => {
     await page.goto('/?path=/story/atoms-checkbox--disabled');
     
-    const checkbox = page.getByRole('checkbox');
-    await expect(checkbox).toBeDisabled();
+    const _checkbox = page.getByRole('checkbox');
+    await expect(_checkbox).toBeDisabled();
   });
 
   test('should display label', async ({ page }) => {
-    const checkbox = page.getByRole('checkbox');
+    const _checkbox = page.getByRole('checkbox');
     const label = page.locator('label');
     await expect(label).toBeVisible();
   });

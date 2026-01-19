@@ -11,7 +11,7 @@
  * - MCP Design System Extractor configured
  */
 
-import { writeFileSync, mkdirSync, existsSync } from 'fs';
+import { writeFileSync, mkdirSync, existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 
 const STORYBOOK_URL = process.env.STORYBOOK_URL || 'http://localhost:6006';
@@ -85,7 +85,7 @@ async function extractAllMetadata(): Promise<ComponentMetadata[]> {
   let components: string[] = [];
 
   if (existsSync(registryPath)) {
-    const registry = JSON.parse(require('fs').readFileSync(registryPath, 'utf-8'));
+    const registry = JSON.parse(readFileSync(registryPath, 'utf-8'));
     components = Object.keys(registry.components || {});
   }
 

@@ -107,8 +107,8 @@ const DefaultResizeIcon = () => (
 export const ResizableNode = React.memo(({
   data,
   selected,
-  width,
-  height,
+  width: _width,
+  height: _height,
 }: ResizableNodeProps) => {
   const variant = data.variant || 'default';
   const size = data.size || 'md';

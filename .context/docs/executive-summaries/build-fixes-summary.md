@@ -10,11 +10,13 @@ Foram criados documentos técnicos completos (ADRs e RFCs) para resolver as issu
 ## 🎯 Problemas Identificados
 
 ### Problema 1: TypeScript Source Files em Exports
+
 - **Causa**: Exports condicionais apontam para arquivos `.ts` em desenvolvimento
 - **Impacto**: Next.js não consegue processar sem `transpilePackages`
 - **Severidade**: Bloqueante (P0)
 
 ### Problema 2: AppProvider Não Exportado
+
 - **Causa**: Providers não estão incluídos no build de produção
 - **Impacto**: Funcionalidades perdidas (theme, config, toast, dialog)
 - **Severidade**: Bloqueante (P0)
@@ -24,30 +26,36 @@ Foram criados documentos técnicos completos (ADRs e RFCs) para resolver as issu
 ### Architecture Decision Records (ADRs)
 
 #### [ADR-0001: Build and Distribution Strategy](./adr/0001-build-and-distribution-strategy.md)
+
 **Decisão Principal**: Implementar estratégia de build transpilado que elimina necessidade de configuração especial.
 
 **Principais Mudanças**:
+
 - Remover exports condicionais TypeScript
 - Usar apenas builds transpilados (ESM + CJS)
 - Excluir `src/` do pacote publicado
 - Garantir todos os exports no build
 
 **Benefícios**:
+
 - ✅ Zero configuração para consumidores
 - ✅ Builds mais rápidos
 - ✅ Melhor tree-shaking
 - ✅ Compatibilidade universal
 
 #### [ADR-0002: Provider Exports in Production Build](./adr/0002-provider-exports-in-build.md)
+
 **Decisão Principal**: Corrigir configuração do Vite para garantir que todos os providers sejam incluídos no build.
 
 **Principais Mudanças**:
+
 - Atualizar configuração do Vite/Rollup
 - Preservar todos os exports nomeados
 - Adicionar validação de build
 - Verificar dependências circulares
 
 **Benefícios**:
+
 - ✅ AppProvider disponível em produção
 - ✅ Todas as funcionalidades acessíveis
 - ✅ API consistente
@@ -55,9 +63,11 @@ Foram criados documentos técnicos completos (ADRs e RFCs) para resolver as issu
 ### Request for Comments (RFCs)
 
 #### [RFC-0001: Removal of Conditional Development Exports](./rfc/0001-conditional-exports-removal.md)
+
 **Proposta**: Remover exports condicionais que apontam para TypeScript source.
 
 **Impacto**:
+
 - Breaking change (requer v2.0.0)
 - Migração simples para consumidores
 - Melhor experiência de desenvolvimento
@@ -65,7 +75,9 @@ Foram criados documentos técnicos completos (ADRs e RFCs) para resolver as issu
 ### Plano de Implementação
 
 #### [build-fixes-implementation.md](../../plans/build-fixes-implementation.md)
+
 Plano detalhado de 2 semanas com:
+
 - Cronograma dia a dia
 - Tarefas específicas
 - Critérios de sucesso
@@ -77,6 +89,7 @@ Plano detalhado de 2 semanas com:
 ### Solução 1: Remover Exports Condicionais
 
 **Antes:**
+
 ```json
 {
   "exports": {
@@ -92,6 +105,7 @@ Plano detalhado de 2 semanas com:
 ```
 
 **Depois:**
+
 ```json
 {
   "exports": {
@@ -108,6 +122,7 @@ Plano detalhado de 2 semanas com:
 ### Solução 2: Corrigir Build do Vite
 
 **Configuração Atualizada:**
+
 ```typescript
 build: {
   lib: {
@@ -127,6 +142,7 @@ build: {
 ### Solução 3: Validação Automatizada
 
 **Script de Validação:**
+
 - Comparar exports fonte vs build
 - Falhar build se exports estiverem faltando
 - Integrar no CI/CD
@@ -136,6 +152,7 @@ build: {
 ### Para Consumidores
 
 **Antes:**
+
 ```javascript
 // next.config.js - REQUERIDO
 const nextConfig = {
@@ -144,6 +161,7 @@ const nextConfig = {
 ```
 
 **Depois:**
+
 ```javascript
 // next.config.js - NÃO NECESSÁRIO
 const nextConfig = {
@@ -161,11 +179,13 @@ const nextConfig = {
 ## 🗓️ Timeline
 
 ### Semana 1: Implementação
+
 - **Dia 1-2**: Análise e investigação
 - **Dia 3-4**: Correções de configuração
 - **Dia 5**: Validação e testes
 
 ### Semana 2: Documentação e Release
+
 - **Dia 6-7**: Documentação
 - **Dia 8-9**: Testes finais
 - **Dia 10**: Release v2.0.0
@@ -173,16 +193,19 @@ const nextConfig = {
 ## ✅ Próximos Passos
 
 ### Imediatos
+
 1. [ ] Revisar e aprovar ADRs e RFCs
 2. [ ] Iniciar implementação conforme plano
 3. [ ] Criar branch de feature: `fix/build-exports-v2`
 
 ### Curto Prazo (Semana 1)
+
 1. [ ] Implementar correções de configuração
 2. [ ] Criar script de validação
 3. [ ] Testar em ambiente limpo
 
 ### Médio Prazo (Semana 2)
+
 1. [ ] Completar documentação
 2. [ ] Preparar release v2.0.0
 3. [ ] Publicar e anunciar
@@ -190,16 +213,19 @@ const nextConfig = {
 ## 📝 Notas Importantes
 
 ### Breaking Changes
+
 - **Versão**: Requer bump para v2.0.0
 - **Migração**: Simples (remover `transpilePackages`)
 - **Suporte**: Manter v1.x por 3 meses para transição
 
 ### Riscos
+
 - **Bundle size**: Monitorar aumento (< 10% aceitável)
 - **Regressões**: Testes abrangentes necessários
 - **Adoção**: Comunicação clara sobre breaking changes
 
 ### Benefícios de Longo Prazo
+
 - **Manutenibilidade**: Build mais simples e previsível
 - **Escalabilidade**: Fácil adicionar novos exports
 - **Qualidade**: Validação automatizada previne regressões

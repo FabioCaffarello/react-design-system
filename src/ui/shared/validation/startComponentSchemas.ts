@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { RegistryEntrySchema, ReactComponentSchema } from './schemas';
+import { RegistryEntrySchema } from './schemas';
 
 /**
  * StartComponent Validation Schemas

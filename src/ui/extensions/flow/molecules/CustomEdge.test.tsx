@@ -1,16 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { ReactFlowProvider } from '@xyflow/react';
 import { FlowProvider } from '../organisms/FlowProvider';
 import { CustomEdge } from './CustomEdge';
-import type { Edge } from '@xyflow/react';
-import type { FlowEdgeData, CustomEdgeData } from '../organisms/FlowTypes';
+import type { Edge, Node } from '@xyflow/react';
+import type { FlowEdgeData, CustomEdgeData, FlowNodeData } from '../organisms/FlowTypes';
 import { MarkerType } from '@xyflow/react';
 
 describe('CustomEdge', () => {
-  const mockNodes: any[] = [
-    { id: '1', position: { x: 0, y: 0 } },
-    { id: '2', position: { x: 200, y: 0 } },
+  const mockNodes: Node<FlowNodeData>[] = [
+    { id: '1', position: { x: 0, y: 0 }, data: {} },
+    { id: '2', position: { x: 200, y: 0 }, data: {} },
   ];
   const mockEdges: Edge<FlowEdgeData>[] = [];
   

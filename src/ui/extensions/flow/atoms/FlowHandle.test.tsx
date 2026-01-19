@@ -2,11 +2,12 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render } from '@testing-library/react';
 import { FlowProvider } from '../organisms/FlowProvider';
 import { FlowHandle } from './FlowHandle';
-import type { Node } from '@xyflow/react';
+import type { Node, Edge } from '@xyflow/react';
+import type { FlowNodeData, FlowEdgeData } from '../organisms/FlowTypes';
 
 describe('FlowHandle', () => {
-  const mockNodes: Node[] = [];
-  const mockEdges: any[] = [];
+  const mockNodes: Node<FlowNodeData>[] = [];
+  const mockEdges: Edge<FlowEdgeData>[] = [];
   
   beforeEach(() => {
     vi.clearAllMocks();

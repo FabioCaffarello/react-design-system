@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type ReactNode, type HTMLAttributes, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSideNavbarStateRequired } from '../contexts/SideNavbarStateContext';
 import { useSideNavbarThemeRequired } from '../contexts/SideNavbarThemeContext';
 import { useSideNavbarConfigRequired } from '../contexts/SideNavbarConfigContext';
@@ -63,7 +63,7 @@ export default function SideNavbarRoot({
 
   const {
     collapsed,
-    setCollapsed,
+    setCollapsed: _setCollapsed,
     currentWidth,
     isResizing,
     sidebarRef,

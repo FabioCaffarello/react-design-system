@@ -4,8 +4,9 @@
  * Analyzes bundle size for components.
  */
 
-import { readFile } from 'fs/promises';
-import { join } from 'path';
+// Imports will be added when implementing bundle size analysis
+// import { readFile } from 'fs/promises';
+// import { join } from 'path';
 
 /**
  * Analyze bundle size
@@ -19,6 +20,5 @@ async function analyzeBundleSize() {
   console.log('Integration with bundler (webpack/vite) required');
 }
 
-if (require.main === module) {
-  analyzeBundleSize().catch(console.error);
-}
+// Run if executed directly (tsx handles this automatically)
+analyzeBundleSize().catch(console.error);

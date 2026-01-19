@@ -16,6 +16,7 @@ The React Design System currently has two critical build and distribution issues
 ### Current State
 
 **package.json exports configuration:**
+
 ```json
 {
   "exports": {
@@ -33,6 +34,7 @@ The React Design System currently has two critical build and distribution issues
 ```
 
 **Build process:**
+
 - TypeScript declarations are generated separately: `tsc --emitDeclarationOnly`
 - Vite builds JavaScript bundles: `vite build`
 - The build creates ESM, CJS, and UMD formats
@@ -76,6 +78,7 @@ We will implement a **dual-build strategy** that:
 #### Phase 2: Build Process Improvements
 
 1. **Unified build script**:
+
    ```json
    {
      "scripts": {
@@ -145,6 +148,7 @@ We will implement a **dual-build strategy** that:
 **Approach**: Keep conditional exports but ensure TypeScript is properly transpiled.
 
 **Rejected because**:
+
 - Still requires consumers to configure transpilation
 - Inconsistent behavior between environments
 - Doesn't solve the missing exports issue
@@ -154,6 +158,7 @@ We will implement a **dual-build strategy** that:
 **Approach**: Publish separate `@fabio.caffarello/react-design-system-dev` package with source files.
 
 **Rejected because**:
+
 - Adds complexity for consumers
 - Maintenance overhead for two packages
 - Doesn't align with industry best practices
@@ -163,6 +168,7 @@ We will implement a **dual-build strategy** that:
 **Approach**: Publish only TypeScript source and require all consumers to transpile.
 
 **Rejected because**:
+
 - Forces all consumers to configure transpilation
 - Poor developer experience
 - Not compatible with many build tools out-of-the-box
@@ -170,24 +176,28 @@ We will implement a **dual-build strategy** that:
 ## Implementation Plan
 
 ### Step 1: Update Build Configuration (Week 1)
+
 - [ ] Remove `development` exports from `package.json`
 - [ ] Update `files` array to exclude `src/`
 - [ ] Create build validation script
 - [ ] Update Vite config to ensure all exports are included
 
 ### Step 2: Fix Missing Exports (Week 1)
+
 - [ ] Investigate why providers are not in build
 - [ ] Fix Vite bundling to include all exports
 - [ ] Verify AppProvider is in dist/index.js
 - [ ] Test all exports are accessible
 
 ### Step 3: Testing (Week 2)
+
 - [ ] Create test Next.js project
 - [ ] Verify all imports work without transpilePackages
 - [ ] Test tree-shaking
 - [ ] Performance benchmarks
 
 ### Step 4: Documentation and Release (Week 2)
+
 - [ ] Update migration guide
 - [ ] Update package documentation
 - [ ] Release v2.0.0

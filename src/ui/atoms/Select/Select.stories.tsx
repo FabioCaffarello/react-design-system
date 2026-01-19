@@ -559,11 +559,11 @@ export const WithEvents: Story = {
       console.log('Value changed:', e.target.value);
     });
     
-    const handleFocus = fn((e: React.FocusEvent<HTMLSelectElement>) => {
+    const handleFocus = fn((_e: React.FocusEvent<HTMLSelectElement>) => {
       console.log('Select focused');
     });
     
-    const handleBlur = fn((e: React.FocusEvent<HTMLSelectElement>) => {
+    const handleBlur = fn((_e: React.FocusEvent<HTMLSelectElement>) => {
       console.log('Select blurred');
     });
     

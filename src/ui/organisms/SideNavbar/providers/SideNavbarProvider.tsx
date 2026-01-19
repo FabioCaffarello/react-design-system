@@ -1,6 +1,5 @@
 'use client';
 
-import { type ReactNode } from 'react';
 import { SideNavbarThemeProvider } from './SideNavbarThemeProvider';
 import { SideNavbarConfigProvider } from './SideNavbarConfigProvider';
 import { SideNavbarStateProvider } from './SideNavbarStateProvider';

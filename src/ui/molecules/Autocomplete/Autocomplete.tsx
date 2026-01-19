@@ -1,12 +1,7 @@
 'use client';
 
-import { useState, useRef, useEffect, forwardRef, type ReactNode } from 'react';
-import { createPortal } from 'react-dom';
+import { useState, useRef, useEffect, forwardRef } from 'react';
 import Input from '../../atoms/Input/Input';
-import { getRadiusClass } from '../../tokens/radius';
-import { getShadowClass } from '../../tokens/shadows';
-import { getZIndexClass } from '../../tokens/z-index';
-import { getSpacingClass } from '../../tokens/spacing';
 import { ChevronDown, Loader2 } from 'lucide-react';
 import AutocompleteOption from './AutocompleteOption';
 import AutocompleteList from './AutocompleteList';

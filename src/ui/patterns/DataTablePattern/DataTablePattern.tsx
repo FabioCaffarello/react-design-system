@@ -3,9 +3,8 @@
 import React, { useState, useMemo } from 'react';
 import { Table } from '../../organisms';
 import { Pagination, SearchInput } from '../../molecules';
-import { Button } from '../../atoms';
-import { Stack } from '../../layouts/Stack/Stack';
 import { Container } from '../../layouts/Container/Container';
+import { Stack } from '../../layouts/Stack/Stack';
 import type { TableColumn } from '../../organisms/Table/TableTypes';
 
 // Extended TableColumn type for DataTablePattern (supports accessor and header for backward compatibility)

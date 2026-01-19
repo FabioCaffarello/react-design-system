@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Dropdown from "./Dropdown";
 import { Button } from "../../atoms";
@@ -28,7 +28,9 @@ describe("Dropdown", () => {
     );
     
     const trigger = screen.getByText("Actions");
-    await user.click(trigger);
+    await act(async () => {
+      await user.click(trigger);
+    });
     
     await waitFor(() => {
       expect(screen.getByText("Edit")).toBeInTheDocument();
@@ -48,14 +50,18 @@ describe("Dropdown", () => {
     );
     
     const trigger = screen.getByText("Actions");
-    await user.click(trigger);
+    await act(async () => {
+      await user.click(trigger);
+    });
     
     await waitFor(() => {
       expect(screen.getByText("Edit")).toBeInTheDocument();
     });
     
     const item = screen.getByText("Edit");
-    await user.click(item);
+    await act(async () => {
+      await user.click(item);
+    });
     
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
@@ -72,14 +78,18 @@ describe("Dropdown", () => {
     );
     
     const trigger = screen.getByText("Actions");
-    await user.click(trigger);
+    await act(async () => {
+      await user.click(trigger);
+    });
     
     await waitFor(() => {
       expect(screen.getByText("Edit")).toBeInTheDocument();
     });
     
     // Click outside the dropdown
-    await user.click(document.body);
+    await act(async () => {
+      await user.click(document.body);
+    });
     
     await waitFor(() => {
       expect(screen.queryByText("Edit")).not.toBeInTheDocument();
@@ -99,7 +109,9 @@ describe("Dropdown", () => {
       
       const trigger = screen.getByText("Actions");
       trigger.focus();
-      fireEvent.keyDown(trigger, { key: 'Enter' });
+      await act(async () => {
+        fireEvent.keyDown(trigger, { key: 'Enter' });
+      });
       
       await waitFor(() => {
         expect(screen.getByText("Edit")).toBeInTheDocument();
@@ -118,7 +130,9 @@ describe("Dropdown", () => {
       
       const trigger = screen.getByText("Actions");
       trigger.focus();
-      fireEvent.keyDown(trigger, { key: ' ' });
+      await act(async () => {
+        fireEvent.keyDown(trigger, { key: ' ' });
+      });
       
       await waitFor(() => {
         expect(screen.getByText("Edit")).toBeInTheDocument();
@@ -137,7 +151,9 @@ describe("Dropdown", () => {
       );
       
       const trigger = screen.getByText("Actions");
-      await user.click(trigger);
+      await act(async () => {
+        await user.click(trigger);
+      });
       
       await waitFor(() => {
         expect(screen.getByText("Edit")).toBeInTheDocument();
@@ -145,7 +161,9 @@ describe("Dropdown", () => {
       
       // Escape key should be handled by the menu element
       const menu = screen.getByRole('menu');
-      fireEvent.keyDown(menu, { key: 'Escape' });
+      await act(async () => {
+        fireEvent.keyDown(menu, { key: 'Escape' });
+      });
       
       await waitFor(() => {
         expect(screen.queryByText("Edit")).not.toBeInTheDocument();
@@ -165,7 +183,9 @@ describe("Dropdown", () => {
       );
       
       const trigger = screen.getByText("Actions");
-      await userEvent.click(trigger);
+      await act(async () => {
+        await userEvent.click(trigger);
+      });
       
       await waitFor(() => {
         expect(screen.getByText("Edit")).toBeInTheDocument();
@@ -203,7 +223,9 @@ describe("Dropdown", () => {
       );
       
       const trigger = screen.getByText("Actions");
-      await user.click(trigger);
+      await act(async () => {
+        await user.click(trigger);
+      });
       
       await waitFor(() => {
         const menu = screen.getByRole('menu');
@@ -224,7 +246,9 @@ describe("Dropdown", () => {
       );
       
       const trigger = screen.getByText("Actions");
-      await user.click(trigger);
+      await act(async () => {
+        await user.click(trigger);
+      });
       
       await waitFor(() => {
         const items = screen.getAllByRole('menuitem');
@@ -244,7 +268,9 @@ describe("Dropdown", () => {
       );
       
       const trigger = screen.getByText("Actions");
-      await user.click(trigger);
+      await act(async () => {
+        await user.click(trigger);
+      });
       
       await waitFor(() => {
         const menu = screen.getByRole('menu');
@@ -267,7 +293,9 @@ describe("Dropdown", () => {
       const trigger = screen.getByText("Actions");
       expect(trigger).toHaveAttribute('aria-expanded', 'false');
       
-      await user.click(trigger);
+      await act(async () => {
+        await user.click(trigger);
+      });
       
       await waitFor(() => {
         expect(trigger).toHaveAttribute('aria-expanded', 'true');
@@ -300,7 +328,9 @@ describe("Dropdown", () => {
       );
       
       const trigger = screen.getByText("Actions");
-      await user.click(trigger);
+      await act(async () => {
+        await user.click(trigger);
+      });
       
       await waitFor(() => {
         const item = screen.getByText("Edit");
@@ -322,7 +352,9 @@ describe("Dropdown", () => {
       );
       
       const trigger = screen.getByText("Actions");
-      await user.click(trigger);
+      await act(async () => {
+        await user.click(trigger);
+      });
       
       await waitFor(() => {
         expect(screen.getByText("Edit")).toBeInTheDocument();

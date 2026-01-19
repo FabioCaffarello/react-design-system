@@ -25,13 +25,13 @@ export function usePlaygroundKeyboardNavigation({
   onNodeDelete,
   onEdgeDelete,
   onNodeSelect,
-  onEdgeSelect,
+  onEdgeSelect: _onEdgeSelect,
 }: PlaygroundKeyboardNavigationOptions = {}) {
   const {
     selectedNodeId,
     selectedEdgeId,
     nodes,
-    edges,
+    edges: _edges,
     setSelectedNodeId,
     setSelectedEdgeId,
   } = usePlaygroundContext();
@@ -123,13 +123,11 @@ export function usePlaygroundKeyboardNavigation({
     selectedNodeId,
     selectedEdgeId,
     nodes,
-    edges,
     setSelectedNodeId,
     setSelectedEdgeId,
     onNodeDelete,
     onEdgeDelete,
     onNodeSelect,
-    onEdgeSelect,
   ]);
 
   useEffect(() => {

@@ -69,7 +69,7 @@ function findTokenUsage(dir: string, usages: TokenUsage[] = []): TokenUsage[] {
             }
           });
         });
-      } catch (error) {
+      } catch {
         // Skip files that can't be read
       }
     }

@@ -6,28 +6,34 @@
 ## ✅ Issues Resolvidas
 
 ### ✅ Issue 1: TypeScript Source Files em Exports
+
 **Status:** RESOLVIDO
 
 **O que foi feito:**
+
 - Removidos exports condicionais `"development"` do `package.json`
 - Agora sempre usa builds transpilados (`./dist/index.js` e `./dist/index.cjs`)
 - Removido `"src"` do array `files` - apenas `dist/`, `README.md`, `LICENSE` são publicados
 
 **Resultado:**
+
 - ✅ Consumidores não precisam mais de `transpilePackages` no Next.js
 - ✅ Build funciona out-of-the-box
 - ✅ Compatível com Next.js 15.x sem configuração especial
 
 ### ✅ Issue 2: AppProvider Não Exportado
+
 **Status:** RESOLVIDO
 
 **O que foi feito:**
+
 - Configurado `vite.config.ts` para preservar todos os exports nomeados
 - Adicionado `exports: "named"` no rollupOptions
 - Configurado `treeshake.moduleSideEffects` para preservar exports de `src/ui/`
 - Criado script de validação que confirma exports críticos
 
 **Validação:**
+
 ```bash
 npm run build:validate
 # ✅ Build validation passed!
@@ -36,6 +42,7 @@ npm run build:validate
 ```
 
 **Resultado:**
+
 - ✅ AppProvider está no build
 - ✅ ConfigProvider está no build
 - ✅ ThemeProvider está no build
@@ -44,6 +51,7 @@ npm run build:validate
 ## 📊 Configuração Final
 
 ### package.json
+
 ```json
 {
   "exports": {
@@ -58,6 +66,7 @@ npm run build:validate
 ```
 
 ### vite.config.ts
+
 - ✅ Build sempre em modo library
 - ✅ Exports nomeados preservados
 - ✅ Tree-shaking configurado corretamente
@@ -66,6 +75,7 @@ npm run build:validate
 ## 🎯 Para Consumidores
 
 ### Antes (Requer Workaround)
+
 ```javascript
 // next.config.js
 const nextConfig = {
@@ -74,6 +84,7 @@ const nextConfig = {
 ```
 
 ### Depois (Sem Workaround)
+
 ```javascript
 // next.config.js
 const nextConfig = {
@@ -82,6 +93,7 @@ const nextConfig = {
 ```
 
 ### Uso
+
 ```typescript
 // Funciona sem transpilePackages
 import { 
@@ -105,6 +117,7 @@ function App() {
 ## ✅ Checklist de Resolução
 
 ### Build & Distribuição
+
 - [x] Build transpila TypeScript → JavaScript
 - [x] Arquivos `.d.ts` gerados
 - [x] `package.json` com exports corretos
@@ -112,6 +125,7 @@ function App() {
 - [x] Script de validação criado e funcionando
 
 ### Exports
+
 - [x] AppProvider exportado
 - [x] ConfigProvider exportado
 - [x] ThemeProvider exportado
@@ -119,6 +133,7 @@ function App() {
 - [x] Validação automatizada
 
 ### Compatibilidade
+
 - [x] Next.js 15.x compatível (sem transpilePackages)
 - [x] Builds ESM e CJS gerados
 - [x] Tree-shaking funciona
@@ -127,7 +142,9 @@ function App() {
 ## ⚠️ Notas
 
 ### Erros TypeScript no Código
+
 Existem alguns erros de TypeScript no código fonte (não relacionados às issues):
+
 - `TokenVisualizations.tsx` - erros de tipos
 - `Portal.stories.tsx` - imports não utilizados
 
@@ -138,12 +155,14 @@ Existem alguns erros de TypeScript no código fonte (não relacionados às issue
 ## 🚀 Próximos Passos
 
 ### Para o Time de Design System
+
 1. ✅ Issues resolvidas
 2. ⚠️ Corrigir erros TypeScript (opcional, não bloqueante)
 3. 📦 Publicar nova versão (v2.0.0 recomendado - breaking change)
 4. 📝 Atualizar changelog e release notes
 
 ### Para Consumidores
+
 1. Atualizar para versão mais recente do design system
 2. Remover `transpilePackages` do `next.config.js`
 3. Testar build do projeto
@@ -151,9 +170,10 @@ Existem alguns erros de TypeScript no código fonte (não relacionados às issue
 
 ## 📝 Conclusão
 
-**TODAS AS ISSUES FORAM RESOLVIDAS! ✅**
+### Todas as Issues Foram Resolvidas! ✅
 
 O design system agora:
+
 - ✅ Exporta apenas código JavaScript transpilado
 - ✅ Inclui AppProvider e todos os providers no build
 - ✅ Funciona sem `transpilePackages` no Next.js

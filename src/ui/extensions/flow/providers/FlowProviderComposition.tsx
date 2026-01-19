@@ -92,7 +92,7 @@ export function FlowProviderComposition({
   onMetricsUpdate,
   // FlowDebugProvider props
   initialDebugState,
-  ...rest
+  ..._rest
 }: FlowProviderCompositionProps) {
   // Determine theme from FlowProvider or FlowStyleProvider
   const finalTheme = theme || initialTheme || 'light';
