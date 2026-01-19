@@ -436,8 +436,29 @@ export const EdgeEditor = React.memo(function EdgeEditor({ edge, nodes, onUpdate
             variant="secondary"
             onClick={() => {
               if (localEdge) {
-                handleChange('source', localEdge.target);
-                handleChange('target', localEdge.source);
+                // Reverse both source and target simultaneously
+                const newSource = localEdge.target;
+                const newTarget = localEdge.source;
+                
+                // Validate before updating
+                if (newSource === newTarget) {
+                  showFeedback('Source and target cannot be the same');
+                  return;
+                }
+                
+                const updated = {
+                  ...localEdge,
+                  source: newSource,
+                  target: newTarget,
+                };
+                
+                setLocalEdge(updated);
+                
+                // Validate and update
+                if (validateEdge(updated)) {
+                  onUpdate(localEdge.id, { source: newSource, target: newTarget });
+                  showFeedback('Edge reversed');
+                }
               }
             }}
             style={{ width: '100%' }}

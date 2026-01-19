@@ -160,8 +160,9 @@ export const WithEvents: StoryObj<typeof Modal> = {
     const canvas = within(canvasElement);
     const button = canvas.getByRole('button', { name: /Open Modal/i });
     await userEvent.click(button);
-    await waitFor(async () => {
-      const title = await canvas.findByText('Event Demo');
+    // Modal renders in a portal (document.body), so search there
+    await waitFor(() => {
+      const title = within(document.body).getByText('Event Demo');
       expect(title).toBeInTheDocument();
     }, { timeout: 3000 });
   },

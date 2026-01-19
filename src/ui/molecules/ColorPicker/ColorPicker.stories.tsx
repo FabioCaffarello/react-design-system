@@ -238,10 +238,13 @@ export const WithEvents: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    // Wait for color picker to be interactive
+    // Wait for color picker to be interactive - use a more flexible text matcher
     await waitFor(async () => {
-      const selected = await canvas.findByText('Selected:');
-      expect(selected).toBeInTheDocument();
+      // Get all elements that contain "Selected:" and verify at least one exists
+      const selectedElements = canvas.getAllByText((content, element) => {
+        return element?.textContent?.includes('Selected:') || false;
+      });
+      expect(selectedElements.length).toBeGreaterThan(0);
     }, { timeout: 3000 });
   },
   parameters: {

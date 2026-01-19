@@ -440,10 +440,13 @@ export const WithEvents: Story = {
     });
     
     // Wait for dropdown to appear and select option
-    await waitFor(async () => {
-      const option = await canvas.findByText('Apple');
-      await userEvent.click(option);
+    // Autocomplete list renders in a portal (document.body), so search there
+    await waitFor(() => {
+      const option = within(document.body).getByText('Apple');
+      expect(option).toBeInTheDocument();
     }, { timeout: 3000 });
+    const option = within(document.body).getByText('Apple');
+    await userEvent.click(option);
   },
   parameters: {
     docs: {

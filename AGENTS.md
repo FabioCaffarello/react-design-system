@@ -23,7 +23,6 @@
 - `CONTRIBUTING.md/` — explain what lives here and when agents should edit it.
 - `docs/` — explain what lives here and when agents should edit it.
 - `eslint.config.js/` — explain what lives here and when agents should edit it.
-- `index.html/` — explain what lives here and when agents should edit it.
 - `package-lock.json/` — explain what lives here and when agents should edit it.
 - `package.json/` — explain what lives here and when agents should edit it.
 - `playwright.config.ts/` — explain what lives here and when agents should edit it.

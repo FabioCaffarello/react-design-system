@@ -15,10 +15,7 @@ const dirname =
     : path.dirname(fileURLToPath(import.meta.url));
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
-export default defineConfig(({ command, mode }) => {
-  // Check if we're running the app (dev server) or building the library
-  const isAppMode = command === 'serve' || process.env.VITE_APP_MODE === 'true';
-  
+export default defineConfig(() => {
   return {
     plugins: [tsConfigPaths(), react()],
     optimizeDeps: {
@@ -35,21 +32,8 @@ export default defineConfig(({ command, mode }) => {
       mainFields: ['module', 'main'],
       extensions: ['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json'],
     },
-    // Server configuration for the app mode
-    server: {
-      port: 5173,
-      open: isAppMode ? '/playground' : false,
-      proxy: {
-        // Proxy API requests if needed
-        '/api': {
-          target: 'http://localhost:3000',
-          changeOrigin: true,
-        },
-      },
-    },
-    // Build configuration - only for library mode
-    ...(isAppMode ? {} : {
-      build: {
+    // Build configuration for library mode
+    build: {
         lib: {
           entry: {
             index: "src/ui/index.ts",
@@ -66,12 +50,9 @@ export default defineConfig(({ command, mode }) => {
             if (format === 'cjs') {
               return entryName === 'index' ? 'index.cjs' : `${entryName}/index.cjs`;
             }
-            if (format === 'umd') {
-              return entryName === 'index' ? 'index.umd.js' : `${entryName}/index.umd.js`;
-            }
             return entryName === 'index' ? 'index.cjs' : `${entryName}/index.cjs`;
           },
-          formats: ["es", "cjs", "umd"],
+          formats: ["es", "cjs"],
         },
         // Minification configuration (using esbuild - faster and already included)
         minify: 'esbuild',
@@ -79,6 +60,8 @@ export default defineConfig(({ command, mode }) => {
         target: 'es2015',
         // Additional optimization
         cssMinify: true,
+        // CSS code splitting - false to generate single CSS bundle
+        cssCodeSplit: false,
         // Source maps configuration
         sourcemap: true,
         // Chunk size warnings
@@ -86,33 +69,57 @@ export default defineConfig(({ command, mode }) => {
         rollupOptions: {
           external: ["react", "react-dom"],
           output: {
+            // Preserve all named exports - critical for library mode
+            exports: "named",
             globals: {
               react: "React",
               "react-dom": "ReactDOM",
             },
             // Code splitting configuration
+            // Note: We don't use manualChunks for the main index entry to ensure all exports are preserved
             manualChunks: (id) => {
-              // Split by category
-              if (id.includes('/atoms/')) {
+              // Only split sub-entry points, not the main index
+              if (id.includes('/atoms/') && !id.includes('src/ui/index')) {
                 return 'atoms';
               }
-              if (id.includes('/molecules/')) {
+              if (id.includes('/molecules/') && !id.includes('src/ui/index')) {
                 return 'molecules';
               }
-              if (id.includes('/organisms/')) {
+              if (id.includes('/organisms/') && !id.includes('src/ui/index')) {
                 return 'organisms';
               }
-              if (id.includes('/tokens/')) {
+              if (id.includes('/tokens/') && !id.includes('src/ui/index')) {
                 return 'tokens';
               }
+              // Keep providers and all other exports in main bundle
+              return null;
             },
             // Source maps for production
             sourcemapExcludeSources: false,
+            // CSS file naming
+            assetFileNames: (assetInfo) => {
+              if (assetInfo.name && assetInfo.name.endsWith('.css')) {
+                return 'react-design-system.css';
+              }
+              return assetInfo.name || 'assets/[name]-[hash][extname]';
+            },
+          },
+          // Prevent aggressive tree-shaking of exports
+          // This is critical to ensure all exports from index.ts are preserved
+          treeshake: {
+            moduleSideEffects: (id) => {
+              // Preserve all side effects from our source files
+              if (id.includes('src/ui/')) {
+                return true;
+              }
+              return false;
+            },
+            propertyReadSideEffects: true,
+            tryCatchDeoptimization: false,
           },
         },
         emptyOutDir: false,
       },
-    }),
     test: {
       projects: [
         {

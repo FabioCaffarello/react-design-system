@@ -166,8 +166,9 @@ export const WithEvents: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await waitFor(async () => {
-      const dashboard = await canvas.findByText(/dashboard/i);
-      expect(dashboard).toBeInTheDocument();
+      // Use getAllByText since there are multiple "Dashboard" elements
+      const dashboardElements = canvas.getAllByText(/dashboard/i);
+      expect(dashboardElements.length).toBeGreaterThan(0);
     }, { timeout: 3000 });
   },
   parameters: {

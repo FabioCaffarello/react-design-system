@@ -43,50 +43,50 @@ describe('usePlaygroundHistory', () => {
     expect(result.current.canUndo).toBe(false); // First state, nothing to undo
   });
   
-  it('can undo after pushing multiple states', () => {
+  it('can undo after pushing multiple states', async () => {
     const { result } = renderHook(() => usePlaygroundHistory());
     
     const nodes1 = [createMockNode('1', 'Node 1')];
     const edges1: Edge<FlowEdgeData>[] = [];
     
-    act(() => {
+    await act(async () => {
       result.current.pushState(nodes1, edges1);
     });
     
     const nodes2 = [createMockNode('1', 'Node 1'), createMockNode('2', 'Node 2')];
     const edges2: Edge<FlowEdgeData>[] = [];
     
-    act(() => {
+    await act(async () => {
       result.current.pushState(nodes2, edges2);
     });
     
     expect(result.current.canUndo).toBe(true);
     
-    const undoState = act(() => result.current.undo());
+    const undoState = await act(async () => result.current.undo());
     
     expect(undoState).toBeTruthy();
     expect(undoState?.nodes).toEqual(nodes1);
   });
   
-  it('can redo after undo', () => {
+  it('can redo after undo', async () => {
     const { result } = renderHook(() => usePlaygroundHistory());
     
     const nodes1 = [createMockNode('1', 'Node 1')];
     const nodes2 = [createMockNode('1', 'Node 1'), createMockNode('2', 'Node 2')];
     const edges: Edge<FlowEdgeData>[] = [];
     
-    act(() => {
+    await act(async () => {
       result.current.pushState(nodes1, edges);
       result.current.pushState(nodes2, edges);
     });
     
-    act(() => {
+    await act(async () => {
       result.current.undo();
     });
     
     expect(result.current.canRedo).toBe(true);
     
-    const redoState = act(() => result.current.redo());
+    const redoState = await act(async () => result.current.redo());
     
     expect(redoState).toBeTruthy();
     expect(redoState?.nodes).toEqual(nodes2);

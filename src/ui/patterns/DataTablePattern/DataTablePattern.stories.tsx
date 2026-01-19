@@ -205,8 +205,12 @@ export const WithEvents: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await waitFor(async () => {
-      const user1 = await canvas.findByText(/user 1/i);
-      expect(user1).toBeInTheDocument();
+      // There might be multiple "User 1" elements (e.g., User 1 and User 10)
+      // Get all matching elements and verify at least one exists
+      const user1Elements = canvas.getAllByText((content, element) => {
+        return element?.textContent?.trim() === 'User 1' || false;
+      });
+      expect(user1Elements.length).toBeGreaterThan(0);
     }, { timeout: 3000 });
   },
   parameters: {

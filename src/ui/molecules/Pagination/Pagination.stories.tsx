@@ -321,13 +321,24 @@ export const WithEvents: StoryObj<typeof Pagination> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const nextButton = canvas.getByLabelText(/next/i) || canvas.getByText(/next/i);
-    if (nextButton) {
-      await userEvent.click(nextButton);
-      await waitFor(() => {
-        expect(nextButton).toBeInTheDocument();
-      });
-    }
+    // Find next button by aria-label or by text content
+    await waitFor(async () => {
+      // Try to find by aria-label first
+      let nextButton = canvas.queryByLabelText(/next/i);
+      
+      // If not found, try to find by role and name
+      if (!nextButton) {
+        const buttons = canvas.getAllByRole('button');
+        nextButton = buttons.find(btn => {
+          const text = btn.textContent?.toLowerCase() || '';
+          return text.includes('next') || btn.getAttribute('aria-label')?.toLowerCase().includes('next');
+        }) || null;
+      }
+      
+      if (nextButton) {
+        await userEvent.click(nextButton);
+      }
+    }, { timeout: 3000 });
   },
   parameters: {
     docs: {

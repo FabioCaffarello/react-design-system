@@ -310,9 +310,13 @@ export const WithEvents: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     // Wait for rating component to be interactive
-    await waitFor(async () => {
-      const rating = await canvas.findByText('Current rating:');
-      expect(rating).toBeInTheDocument();
+    await waitFor(() => {
+      // Use a more flexible text matcher for text that might be split across elements
+      // Get all elements that contain "Current rating:" and verify at least one exists
+      const ratingElements = canvas.getAllByText((content, element) => {
+        return element?.textContent?.includes('Current rating:') || false;
+      });
+      expect(ratingElements.length).toBeGreaterThan(0);
     }, { timeout: 3000 });
   },
   parameters: {

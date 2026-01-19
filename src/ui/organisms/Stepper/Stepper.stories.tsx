@@ -379,12 +379,21 @@ export const ComplexWorkflow: Story = {
     const emailInput = await canvas.findByLabelText(/email/i);
     await userEvent.type(emailInput, 'test@example.com');
     
-    const passwordInput = await canvas.findByLabelText(/password/i);
-    await userEvent.type(passwordInput, 'password123');
+    // There might be multiple password inputs, get the first one
+    const passwordInputs = canvas.getAllByLabelText((content, element) => {
+      return element?.getAttribute('type') === 'password' || false;
+    });
+    const passwordInput = passwordInputs[0];
+    if (passwordInput) {
+      await userEvent.type(passwordInput, 'password123');
+    }
     
     // Go to next step
-    const nextButton = await canvas.findByRole('button', { name: /next/i });
-    await userEvent.click(nextButton);
+    const nextButtons = canvas.getAllByRole('button', { name: /next/i });
+    const nextButton = nextButtons[0];
+    if (nextButton) {
+      await userEvent.click(nextButton);
+    }
     
     // Wait for second step
     await waitFor(async () => {
@@ -400,12 +409,18 @@ export const ComplexWorkflow: Story = {
     await userEvent.type(lastNameInput, 'Doe');
     
     // Go to review step
-    const nextButton2 = await canvas.findByRole('button', { name: /next/i });
-    await userEvent.click(nextButton2);
+    const nextButtons2 = canvas.getAllByRole('button', { name: /next/i });
+    const nextButton2 = nextButtons2[0];
+    if (nextButton2) {
+      await userEvent.click(nextButton2);
+    }
     
-    // Wait for review step
+    // Wait for review step - there might be multiple "review your information" elements
     await waitFor(() => {
-      expect(canvas.getByText(/review your information/i)).toBeInTheDocument();
+      const reviewElements = canvas.getAllByText((content, element) => {
+        return element?.textContent?.toLowerCase().includes('review your information') || false;
+      });
+      expect(reviewElements.length).toBeGreaterThan(0);
       expect(canvas.getByText(/test@example.com/i)).toBeInTheDocument();
       expect(canvas.getByText(/john doe/i)).toBeInTheDocument();
     });

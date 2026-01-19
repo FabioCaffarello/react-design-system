@@ -339,11 +339,16 @@ export const ManyItems: Story = {
     const canvas = within(canvasElement);
     
     // Check that timeline items are rendered
+    // There might be multiple "Event 1" elements, so get all and verify
     await waitFor(async () => {
-      const event1 = await canvas.findByText(/event 1/i);
-      const event20 = await canvas.findByText(/event 20/i);
-      expect(event1).toBeInTheDocument();
-      expect(event20).toBeInTheDocument();
+      const event1Elements = canvas.getAllByText((content, element) => {
+        return element?.textContent?.trim() === 'Event 1' || false;
+      });
+      const event20Elements = canvas.getAllByText((content, element) => {
+        return element?.textContent?.trim() === 'Event 20' || false;
+      });
+      expect(event1Elements.length).toBeGreaterThan(0);
+      expect(event20Elements.length).toBeGreaterThan(0);
     }, { timeout: 3000 });
   },
 };

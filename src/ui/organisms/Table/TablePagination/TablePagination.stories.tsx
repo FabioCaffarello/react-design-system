@@ -141,9 +141,12 @@ export const WithEvents: StoryObj<typeof TablePagination> = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     // Wait for component to be rendered
-    await waitFor(async () => {
-      const text = await canvas.findByText(/1-10 of 100/i);
-      expect(text).toBeInTheDocument();
+    // The text is rendered as "Showing 1 to 10 of 100 results" but split across multiple elements
+    // So we check for a parent element that contains the full text
+    await waitFor(() => {
+      const container = canvasElement.querySelector('div');
+      const text = container?.textContent || '';
+      expect(text).toMatch(/showing.*1.*to.*10.*of.*100.*results/i);
     }, { timeout: 3000 });
   },
   parameters: {

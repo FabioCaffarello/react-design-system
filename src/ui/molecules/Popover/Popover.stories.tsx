@@ -214,16 +214,15 @@ export const WithEvents: Story = {
     
     // Click to open
     await userEvent.click(button);
-    await waitFor(async () => {
-      const content = await canvas.findByText('This popover fires events when opened/closed.');
+    // Popover renders in a portal (document.body), so search there
+    await waitFor(() => {
+      const content = within(document.body).getByText('This popover fires events when opened/closed.');
       expect(content).toBeInTheDocument();
     }, { timeout: 3000 });
     
-    // Click close button
-    const closeButton = await canvas.findByRole('button', { name: /close/i });
-    if (closeButton) {
-      await userEvent.click(closeButton);
-    }
+    // Click close button (also in portal)
+    const closeButton = within(document.body).getByRole('button', { name: /close/i });
+    await userEvent.click(closeButton);
   },
   parameters: {
     docs: {

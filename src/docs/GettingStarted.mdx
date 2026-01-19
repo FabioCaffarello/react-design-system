@@ -46,12 +46,20 @@ function App() {
 
 ### 2. Importar Estilos
 
-Se você estiver usando TailwindCSS, certifique-se de que os estilos do design system estão incluídos:
+Importe os estilos do design system no seu arquivo principal de entrada da aplicação:
 
 ```tsx
-// No seu arquivo principal (ex: main.tsx)
-import '@fabio.caffarello/react-design-system/dist/style.css';
+// Opção 1: Via export (Recomendado)
+import '@fabio.caffarello/react-design-system/styles';
+
+// Opção 2: Via export com extensão
+import '@fabio.caffarello/react-design-system/styles.css';
+
+// Opção 3: Caminho direto (também funciona)
+import '@fabio.caffarello/react-design-system/dist/react-design-system.css';
 ```
+
+**Nota:** O design system usa Tailwind CSS 4. Certifique-se de que o Tailwind está configurado no seu projeto ou que os estilos do design system são importados antes dos seus componentes.
 
 ### 3. Primeiro Componente
 

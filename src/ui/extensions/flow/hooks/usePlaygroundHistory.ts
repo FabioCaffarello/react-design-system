@@ -6,7 +6,7 @@
  * Hook for managing undo/redo history in the playground
  */
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import type { Node, Edge } from '@xyflow/react';
 import type { FlowNodeData, FlowEdgeData } from '../organisms/FlowTypes';
 
@@ -34,6 +34,14 @@ export function usePlaygroundHistory(): UsePlaygroundHistoryReturn {
   const [history, setHistory] = useState<HistoryState[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const isPushingRef = useRef(false);
+  const historyRef = useRef<HistoryState[]>([]);
+  const historyIndexRef = useRef(-1);
+
+  // Sync refs with state - this ensures refs are always up to date
+  useEffect(() => {
+    historyRef.current = history;
+    historyIndexRef.current = historyIndex;
+  }, [history, historyIndex]);
 
   const pushState = useCallback((nodes: Node<FlowNodeData>[], edges: Edge<FlowEdgeData>[]) => {
     if (isPushingRef.current) return;
@@ -44,61 +52,93 @@ export function usePlaygroundHistory(): UsePlaygroundHistoryReturn {
       timestamp: Date.now(),
     };
 
-    setHistory((prev) => {
-      // Remove any states after current index (when we're in the middle of history)
-      const newHistory = prev.slice(0, historyIndex + 1);
-      
-      // Add new state
-      newHistory.push(newState);
-      
-      // Limit history size
-      if (newHistory.length > MAX_HISTORY_SIZE) {
-        newHistory.shift();
-        return newHistory;
-      }
-      
-      return newHistory;
-    });
+    // Coordinate both updates using functional updates
+    let finalHistory: HistoryState[] = [];
+    let finalIndex: number = -1;
     
-    setHistoryIndex((prev) => {
-      const newIndex = prev + 1;
-      return newIndex >= MAX_HISTORY_SIZE ? MAX_HISTORY_SIZE - 1 : newIndex;
+    setHistoryIndex((currentIndex) => {
+      setHistory((prevHistory) => {
+        // Remove any states after current index
+        const newHistory = prevHistory.slice(0, currentIndex + 1);
+        
+        // Add new state
+        newHistory.push(newState);
+        
+        // Limit history size
+        if (newHistory.length > MAX_HISTORY_SIZE) {
+          newHistory.shift();
+          finalIndex = MAX_HISTORY_SIZE - 1;
+        } else {
+          finalIndex = newHistory.length - 1;
+        }
+        
+        // Store for ref update
+        finalHistory = newHistory;
+        
+        return newHistory;
+      });
+      
+      // Update refs immediately with calculated values
+      historyRef.current = finalHistory;
+      historyIndexRef.current = finalIndex;
+      
+      return finalIndex;
     });
-  }, [historyIndex]);
+  }, []);
 
   const undo = useCallback((): HistoryState | null => {
-    if (historyIndex <= 0) return null;
+    // Read current values from refs (which are kept in sync by useEffect)
+    const currentIndex = historyIndexRef.current;
+    const currentHistory = historyRef.current;
     
-    const newIndex = historyIndex - 1;
+    if (currentIndex <= 0) return null;
+    
+    const newIndex = currentIndex - 1;
+    const state = currentHistory[newIndex];
+    
+    if (!state) return null;
+    
+    // Update both state and ref
     setHistoryIndex(newIndex);
+    historyIndexRef.current = newIndex;
     isPushingRef.current = true;
     
-    const state = history[newIndex];
     setTimeout(() => {
       isPushingRef.current = false;
     }, 0);
     
-    return state || null;
-  }, [history, historyIndex]);
+    return { ...state }; // Return a copy to avoid mutations
+  }, []);
 
   const redo = useCallback((): HistoryState | null => {
-    if (historyIndex >= history.length - 1) return null;
+    // Read current values from refs (which are kept in sync by useEffect)
+    const currentIndex = historyIndexRef.current;
+    const currentHistory = historyRef.current;
     
-    const newIndex = historyIndex + 1;
+    if (currentIndex >= currentHistory.length - 1) return null;
+    
+    const newIndex = currentIndex + 1;
+    const state = currentHistory[newIndex];
+    
+    if (!state) return null;
+    
+    // Update both state and ref
     setHistoryIndex(newIndex);
+    historyIndexRef.current = newIndex;
     isPushingRef.current = true;
     
-    const state = history[newIndex];
     setTimeout(() => {
       isPushingRef.current = false;
     }, 0);
     
-    return state || null;
-  }, [history, historyIndex]);
+    return { ...state }; // Return a copy to avoid mutations
+  }, []);
 
   const clearHistory = useCallback(() => {
     setHistory([]);
     setHistoryIndex(-1);
+    historyRef.current = [];
+    historyIndexRef.current = -1;
   }, []);
 
   return {

@@ -197,9 +197,13 @@ export const WithEvents: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     // Wait for time picker to be interactive
-    await waitFor(async () => {
-      const selected = await canvas.findByText('Selected:');
-      expect(selected).toBeInTheDocument();
+    await waitFor(() => {
+      // Use a more flexible text matcher for text that might be split across elements
+      // Get all elements that contain "Selected:" and verify at least one exists
+      const selectedElements = canvas.getAllByText((content, element) => {
+        return element?.textContent?.includes('Selected:') || false;
+      });
+      expect(selectedElements.length).toBeGreaterThan(0);
     }, { timeout: 3000 });
   },
   parameters: {

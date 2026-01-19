@@ -1,78 +1,65 @@
 {
   "name": "@fabio.caffarello/react-design-system",
   "private": false,
-  "version": "1.9.1",
+  "version": "1.9.2",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/ui/index.d.ts",
+  "style": "dist/react-design-system.css",
   "exports": {
     ".": {
       "types": "./dist/ui/index.d.ts",
-      "import": {
-        "development": "./src/ui/index.ts",
-        "default": "./dist/index.js"
-      },
-      "require": "./dist/index.cjs"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "style": "./dist/react-design-system.css"
     },
+    "./styles": "./dist/react-design-system.css",
+    "./styles.css": "./dist/react-design-system.css",
     "./atoms": {
       "types": "./dist/ui/atoms/index.d.ts",
-      "import": {
-        "development": "./src/ui/atoms/index.ts",
-        "default": "./dist/atoms/index.js"
-      },
+      "import": "./dist/atoms/index.js",
       "require": "./dist/atoms/index.cjs"
     },
     "./molecules": {
       "types": "./dist/ui/molecules/index.d.ts",
-      "import": {
-        "development": "./src/ui/molecules/index.ts",
-        "default": "./dist/molecules/index.js"
-      },
+      "import": "./dist/molecules/index.js",
       "require": "./dist/molecules/index.cjs"
     },
     "./organisms": {
       "types": "./dist/ui/organisms/index.d.ts",
-      "import": {
-        "development": "./src/ui/organisms/index.ts",
-        "default": "./dist/organisms/index.js"
-      },
+      "import": "./dist/organisms/index.js",
       "require": "./dist/organisms/index.cjs"
     },
     "./tokens": {
       "types": "./dist/ui/tokens/index.d.ts",
-      "import": {
-        "development": "./src/ui/tokens/index.ts",
-        "default": "./dist/tokens/index.js"
-      },
+      "import": "./dist/tokens/index.js",
       "require": "./dist/tokens/index.cjs"
     },
     "./extensions": {
       "types": "./dist/ui/extensions/index.d.ts",
-      "import": {
-        "development": "./src/ui/extensions/index.ts",
-        "default": "./dist/extensions/index.js"
-      },
+      "import": "./dist/extensions/index.js",
       "require": "./dist/extensions/index.cjs"
     },
     "./extensions/flow": {
       "types": "./dist/ui/extensions/flow/index.d.ts",
-      "import": {
-        "development": "./src/ui/extensions/flow/index.ts",
-        "default": "./dist/extensions/flow/index.js"
-      },
+      "import": "./dist/extensions/flow/index.js",
       "require": "./dist/extensions/flow/index.cjs"
     }
   },
   "files": [
     "dist",
-    "src"
+    "README.md",
+    "LICENSE"
   ],
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "npx tsc --project tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist && vite build",
+    "build": "npx tsc --project tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist && vite build && npm run build:validate",
+    "build:types": "npx tsc --project tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist",
+    "build:js": "vite build",
+    "build:validate": "tsx scripts/validate-build-exports.ts",
     "lint": "eslint .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",

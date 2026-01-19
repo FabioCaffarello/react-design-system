@@ -267,8 +267,9 @@ export const WithEvents: Story = {
     
     // Test opening drawer
     await userEvent.click(button);
+    // Wait for drawer to appear - it might be in a portal outside canvasElement
     await waitFor(async () => {
-      const drawer = await canvas.findByRole('dialog');
+      const drawer = within(document.body).queryByRole('dialog');
       expect(drawer).toBeInTheDocument();
     }, { timeout: 3000 });
   },
