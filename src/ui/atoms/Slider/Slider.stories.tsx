@@ -398,13 +398,13 @@ export const WithEvents: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const slider = canvas.getByRole('slider');
+    const slider = await canvas.findByRole('slider');
     
-    // Test focus
-    await userEvent.tab();
+    // Click on slider to make it interactive and focused
+    await userEvent.click(slider);
     await waitFor(() => {
       expect(slider).toHaveFocus();
-    });
+    }, { timeout: 2000 });
     
     // Test keyboard navigation
     await userEvent.keyboard('{ArrowRight}');

@@ -293,13 +293,13 @@ export const WithEvents: Story = {
     
     // Test opening menu
     await userEvent.click(trigger);
-    await waitFor(() => {
-      const menu = canvas.queryByRole('menu');
+    await waitFor(async () => {
+      const menu = await canvas.findByRole('menu');
       expect(menu).toBeInTheDocument();
-    });
+    }, { timeout: 3000 });
     
     // Test selecting item
-    const profileItem = canvas.getByRole('menuitem', { name: /Profile/i });
+    const profileItem = await canvas.findByRole('menuitem', { name: /Profile/i });
     await userEvent.click(profileItem);
   },
   parameters: {

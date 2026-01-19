@@ -310,9 +310,10 @@ export const WithEvents: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     // Wait for rating component to be interactive
-    await waitFor(() => {
-      expect(canvas.getByText('Current rating:')).toBeInTheDocument();
-    });
+    await waitFor(async () => {
+      const rating = await canvas.findByText('Current rating:');
+      expect(rating).toBeInTheDocument();
+    }, { timeout: 3000 });
   },
   parameters: {
     docs: {

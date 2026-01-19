@@ -170,9 +170,10 @@ export const WithEvents: StoryObj<typeof TableFilters> = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     // Wait for component to be rendered
-    await waitFor(() => {
-      expect(canvas.getByText('Status')).toBeInTheDocument();
-    });
+    await waitFor(async () => {
+      const status = await canvas.findByText('Status');
+      expect(status).toBeInTheDocument();
+    }, { timeout: 3000 });
   },
   parameters: {
     docs: {

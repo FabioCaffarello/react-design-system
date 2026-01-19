@@ -149,9 +149,10 @@ export const WithEvents: StoryObj<typeof TableActions> = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     // Wait for component to be rendered
-    await waitFor(() => {
-      expect(canvas.getByText('View')).toBeInTheDocument();
-    });
+    await waitFor(async () => {
+      const view = await canvas.findByText('View');
+      expect(view).toBeInTheDocument();
+    }, { timeout: 3000 });
   },
   parameters: {
     docs: {

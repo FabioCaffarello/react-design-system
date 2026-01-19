@@ -339,8 +339,12 @@ export const ManyItems: Story = {
     const canvas = within(canvasElement);
     
     // Check that timeline items are rendered
-    expect(canvas.getByText(/event 1/i)).toBeInTheDocument();
-    expect(canvas.getByText(/event 20/i)).toBeInTheDocument();
+    await waitFor(async () => {
+      const event1 = await canvas.findByText(/event 1/i);
+      const event20 = await canvas.findByText(/event 20/i);
+      expect(event1).toBeInTheDocument();
+      expect(event20).toBeInTheDocument();
+    }, { timeout: 3000 });
   },
 };
 

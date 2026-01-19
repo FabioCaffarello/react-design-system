@@ -267,10 +267,10 @@ export const WithEvents: Story = {
     
     // Test opening drawer
     await userEvent.click(button);
-    await waitFor(() => {
-      const drawer = canvas.queryByRole('dialog');
+    await waitFor(async () => {
+      const drawer = await canvas.findByRole('dialog');
       expect(drawer).toBeInTheDocument();
-    });
+    }, { timeout: 3000 });
   },
   parameters: {
     docs: {

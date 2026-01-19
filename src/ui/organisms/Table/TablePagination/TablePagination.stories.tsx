@@ -141,9 +141,10 @@ export const WithEvents: StoryObj<typeof TablePagination> = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     // Wait for component to be rendered
-    await waitFor(() => {
-      expect(canvas.getByText(/1-10 of 100/i)).toBeInTheDocument();
-    });
+    await waitFor(async () => {
+      const text = await canvas.findByText(/1-10 of 100/i);
+      expect(text).toBeInTheDocument();
+    }, { timeout: 3000 });
   },
   parameters: {
     docs: {

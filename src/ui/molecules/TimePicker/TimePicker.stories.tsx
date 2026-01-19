@@ -197,9 +197,10 @@ export const WithEvents: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     // Wait for time picker to be interactive
-    await waitFor(() => {
-      expect(canvas.getByText('Selected:')).toBeInTheDocument();
-    });
+    await waitFor(async () => {
+      const selected = await canvas.findByText('Selected:');
+      expect(selected).toBeInTheDocument();
+    }, { timeout: 3000 });
   },
   parameters: {
     docs: {

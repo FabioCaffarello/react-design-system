@@ -1,7 +1,7 @@
 {
   "name": "@fabio.caffarello/react-design-system",
   "private": false,
-  "version": "1.8.0",
+  "version": "1.9.1",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -72,12 +72,7 @@
     "access": "public"
   },
   "scripts": {
-    "dev": "vite",
-    "dev:playground": "VITE_APP_MODE=true vite",
     "build": "npx tsc --project tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist && vite build",
-    "build:playground": "VITE_APP_MODE=true vite build",
-    "preview": "vite preview",
-    "preview:playground": "VITE_APP_MODE=true vite preview",
     "lint": "eslint .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",

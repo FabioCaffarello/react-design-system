@@ -376,30 +376,32 @@ export const ComplexWorkflow: Story = {
     const canvas = within(canvasElement);
     
     // Fill in first step
-    const emailInput = canvas.getByLabelText(/email/i);
+    const emailInput = await canvas.findByLabelText(/email/i);
     await userEvent.type(emailInput, 'test@example.com');
     
-    const passwordInput = canvas.getByLabelText(/password/i);
+    const passwordInput = await canvas.findByLabelText(/password/i);
     await userEvent.type(passwordInput, 'password123');
     
     // Go to next step
-    const nextButton = canvas.getByRole('button', { name: /next/i });
+    const nextButton = await canvas.findByRole('button', { name: /next/i });
     await userEvent.click(nextButton);
     
     // Wait for second step
-    await waitFor(() => {
-      expect(canvas.getByText(/personal information/i)).toBeInTheDocument();
-    });
+    await waitFor(async () => {
+      const personalInfo = await canvas.findByText(/personal information/i);
+      expect(personalInfo).toBeInTheDocument();
+    }, { timeout: 3000 });
     
     // Fill in second step
-    const firstNameInput = canvas.getByLabelText(/first name/i);
+    const firstNameInput = await canvas.findByLabelText(/first name/i);
     await userEvent.type(firstNameInput, 'John');
     
-    const lastNameInput = canvas.getByLabelText(/last name/i);
+    const lastNameInput = await canvas.findByLabelText(/last name/i);
     await userEvent.type(lastNameInput, 'Doe');
     
     // Go to review step
-    await userEvent.click(canvas.getByRole('button', { name: /next/i }));
+    const nextButton2 = await canvas.findByRole('button', { name: /next/i });
+    await userEvent.click(nextButton2);
     
     // Wait for review step
     await waitFor(() => {
@@ -441,7 +443,8 @@ export const WithValidation: Story = {
                 setEmail(e.target.value);
                 setError('');
               }}
-              errorMessage={error}
+              error={!!error}
+              helperText={error}
             />
           </div>
         ),

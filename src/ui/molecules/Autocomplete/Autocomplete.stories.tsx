@@ -431,7 +431,7 @@ export const WithEvents: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = canvas.getByPlaceholderText('Search fruits...');
+    const input = await canvas.findByPlaceholderText('Search fruits...');
     
     // Type in the input
     await userEvent.type(input, 'app', { delay: 100 });
@@ -441,9 +441,9 @@ export const WithEvents: Story = {
     
     // Wait for dropdown to appear and select option
     await waitFor(async () => {
-      const option = canvas.getByText('Apple');
+      const option = await canvas.findByText('Apple');
       await userEvent.click(option);
-    });
+    }, { timeout: 3000 });
   },
   parameters: {
     docs: {

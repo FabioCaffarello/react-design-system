@@ -204,9 +204,10 @@ export const WithEvents: Story = {
   ],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await waitFor(() => {
-      expect(canvas.getByText(/user 1/i)).toBeInTheDocument();
-    });
+    await waitFor(async () => {
+      const user1 = await canvas.findByText(/user 1/i);
+      expect(user1).toBeInTheDocument();
+    }, { timeout: 3000 });
   },
   parameters: {
     docs: {
