@@ -26,7 +26,7 @@ export interface PlaygroundState {
 
 export interface StateUpdate {
   type: 'nodes' | 'edges' | 'config' | 'background' | 'layout' | 'theme' | 'selection' | 'pending' | 'tab' | 'reset';
-  payload: any;
+  payload: unknown;
 }
 
 export type StateMiddleware = (state: PlaygroundState, update: StateUpdate) => PlaygroundState | null;

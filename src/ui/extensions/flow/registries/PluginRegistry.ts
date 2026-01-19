@@ -12,10 +12,10 @@ export interface PluginDefinition {
   name: string;
   version: string;
   description?: string;
-  nodeTypes?: Record<string, React.ComponentType<any>>;
-  edgeTypes?: Record<string, React.ComponentType<any>>;
-  hooks?: Record<string, (...args: any[]) => any>;
-  utils?: Record<string, (...args: any[]) => any>;
+  nodeTypes?: Record<string, React.ComponentType<unknown>>;
+  edgeTypes?: Record<string, React.ComponentType<unknown>>;
+  hooks?: Record<string, (...args: unknown[]) => unknown>;
+  utils?: Record<string, (...args: unknown[]) => unknown>;
   onRegister?: () => void;
   onUnregister?: () => void;
   dependencies?: string[];
@@ -99,8 +99,8 @@ export class PluginRegistry {
   /**
    * Get all node types from all plugins
    */
-  static getAllNodeTypes(): Record<string, React.ComponentType<any>> {
-    const nodeTypes: Record<string, React.ComponentType<any>> = {};
+  static getAllNodeTypes(): Record<string, React.ComponentType<unknown>> {
+    const nodeTypes: Record<string, React.ComponentType<unknown>> = {};
     
     this.loadOrder.forEach((pluginId) => {
       const plugin = this.registry.get(pluginId);
@@ -115,8 +115,8 @@ export class PluginRegistry {
   /**
    * Get all edge types from all plugins
    */
-  static getAllEdgeTypes(): Record<string, React.ComponentType<any>> {
-    const edgeTypes: Record<string, React.ComponentType<any>> = {};
+  static getAllEdgeTypes(): Record<string, React.ComponentType<unknown>> {
+    const edgeTypes: Record<string, React.ComponentType<unknown>> = {};
     
     this.loadOrder.forEach((pluginId) => {
       const plugin = this.registry.get(pluginId);
@@ -131,7 +131,7 @@ export class PluginRegistry {
   /**
    * Get a hook from a plugin
    */
-  static getHook(pluginId: string, hookName: string): ((...args: any[]) => any) | undefined {
+  static getHook(pluginId: string, hookName: string): ((...args: unknown[]) => unknown) | undefined {
     const plugin = this.registry.get(pluginId);
     return plugin?.hooks?.[hookName];
   }
@@ -139,7 +139,7 @@ export class PluginRegistry {
   /**
    * Get a utility from a plugin
    */
-  static getUtil(pluginId: string, utilName: string): ((...args: any[]) => any) | undefined {
+  static getUtil(pluginId: string, utilName: string): ((...args: unknown[]) => unknown) | undefined {
     const plugin = this.registry.get(pluginId);
     return plugin?.utils?.[utilName];
   }

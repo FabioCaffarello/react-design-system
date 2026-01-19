@@ -153,7 +153,7 @@ function main() {
     } else {
       console.log('✅ Architecture validation passed!');
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Error validating architecture:', error.message);
     process.exit(1);
   }

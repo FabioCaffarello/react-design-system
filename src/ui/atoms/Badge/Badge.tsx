@@ -125,8 +125,8 @@ const Badge = memo(forwardRef<HTMLSpanElement, BadgeProps>(function Badge({
     if (typeof children === 'string') return children;
     // Try to extract text from ReactNode
     if (typeof children === 'object' && children !== null) {
-      if ('props' in children && typeof (children as any).props === 'object') {
-        const childProps = (children as any).props;
+      if ('props' in children && typeof (children as unknown).props === 'object') {
+        const childProps = (children as unknown).props;
         if (childProps?.children && typeof childProps.children === 'string') {
           return childProps.children;
         }

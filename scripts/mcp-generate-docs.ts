@@ -12,7 +12,7 @@ import { join } from 'path';
 const MCP_URL = process.env.STORYBOOK_MCP_URL || 'http://localhost:6006/mcp';
 const OUTPUT_DIR = join(process.cwd(), 'docs', 'generated');
 
-async function callMCP(method: string, params: any) {
+async function callMCP(method: string, params: unknown) {
   const response = await fetch(MCP_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -36,7 +36,7 @@ async function callMCP(method: string, params: any) {
   return data.result;
 }
 
-function generateComponentDoc(component: any, info: any): string {
+function generateComponentDoc(component: unknown, info: unknown): string {
   const props = info.props || [];
   const stories = info.stories || [];
 
@@ -72,13 +72,13 @@ ${component.category}
 `;
 }
 
-function generatePropsTable(props: any[]): string {
+function generatePropsTable(props: unknown[]): string {
   if (props.length === 0) return 'No props available.';
 
   let table = '| Prop | Type | Default | Required | Description |\n';
   table += '|------|------|---------|----------|-------------|\n';
 
-  props.forEach((prop: any) => {
+  props.forEach((prop: unknown) => {
     const name = prop.name || 'unknown';
     const type = prop.type || 'unknown';
     const defaultValue = prop.defaultValue || '-';
@@ -91,11 +91,11 @@ function generatePropsTable(props: any[]): string {
   return table;
 }
 
-function generateStoriesList(stories: any[]): string {
+function generateStoriesList(stories: unknown[]): string {
   if (stories.length === 0) return 'No stories available.';
 
   return stories
-    .map((story: any) => `- **${story.name}**: ${story.description || 'No description'}`)
+    .map((story: unknown) => `- **${story.name}**: ${story.description || 'No description'}`)
     .join('\n');
 }
 
@@ -139,7 +139,7 @@ async function generateDocs() {
         writeFileSync(filepath, doc, 'utf-8');
         console.log(`   ✅ Generated: ${filename}`);
         successCount++;
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error(`   ❌ Error processing ${component.name}: ${error.message}`);
         errorCount++;
       }
@@ -150,7 +150,7 @@ async function generateDocs() {
     console.log(`   ❌ Errors: ${errorCount}`);
     console.log(`\n📁 Documentation generated in: ${OUTPUT_DIR}`);
     console.log('\n✅ Documentation generation completed');
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('\n❌ Error generating documentation:', error.message);
     console.log('\n💡 Make sure Storybook is running:');
     console.log('   npm run storybook\n');

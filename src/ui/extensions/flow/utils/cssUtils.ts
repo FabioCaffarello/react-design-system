@@ -17,7 +17,7 @@ export function generateCSSVariables(theme: FlowThemeVariables): Record<string, 
 /**
  * Apply CSS variables to an element
  */
-export function applyCSSVariables(
+export function applyFlowCSSVariables(
   element: HTMLElement | null,
   variables: Record<string, string>
 ): void {
@@ -27,6 +27,7 @@ export function applyCSSVariables(
     element.style.setProperty(key, value);
   });
 }
+
 
 /**
  * Get CSS variable value

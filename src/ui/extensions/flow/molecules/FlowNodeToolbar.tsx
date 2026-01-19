@@ -53,7 +53,7 @@ export interface FlowNodeToolbarProps extends Omit<ReactFlowNodeToolbarProps, 'c
    * Whether toolbar is visible (defaults to true)
    * Can be a boolean or a function that receives node data and returns boolean
    */
-  visible?: boolean | ((nodeData: any) => boolean);
+  visible?: boolean | ((nodeData: unknown) => boolean);
   /**
    * Animation variant
    */

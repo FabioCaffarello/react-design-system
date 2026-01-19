@@ -33,9 +33,9 @@ const positionClasses: Record<SideNavbarTogglePosition, string> = {
 };
 
 const variantClasses: Record<SideNavbarToggleVariant, string> = {
-  default: 'bg-white border border-gray-200 shadow-sm hover:bg-gray-50 hover:shadow',
-  ghost: 'bg-transparent hover:bg-gray-100 border-0',
-  outline: 'bg-transparent border border-gray-300 hover:bg-gray-50',
+  default: 'bg-[var(--color-card)] border border-[var(--color-border)] shadow-sm hover:bg-[var(--color-accent)] hover:shadow',
+  ghost: 'bg-transparent hover:bg-[var(--color-accent)] border-0',
+  outline: 'bg-transparent border border-[var(--color-border)] hover:bg-[var(--color-accent)]',
 };
 
 const tooltipPositionMap: Record<SideNavbarTogglePosition, 'top' | 'right' | 'bottom' | 'left'> = {
@@ -94,7 +94,7 @@ export default function SideNavbarToggle({
   ...props
 }: SideNavbarToggleProps) {
   const { collapsed, toggle } = useSideNavbarStateRequired();
-  const { animationDuration, animationEasing } = useSideNavbarThemeRequired();
+  const { animationDuration, animationEasing, navigationWidth, contentWidth } = useSideNavbarThemeRequired();
   const config = useSideNavbarConfigRequired();
 
   // Use config values as defaults, allow prop overrides
@@ -121,9 +121,18 @@ export default function SideNavbarToggle({
       return collapseIcon;
     }
 
-    // Default Lucide icons
+    // Default Lucide icons - sem animação de transform
     const Icon = collapsed ? PanelLeftOpen : PanelLeftClose;
-    return <Icon className={`${iconSizeClasses[size]} transition-transform duration-200`} />;
+    return (
+      <Icon 
+        className={iconSizeClasses[size]} 
+        style={{
+          transition: 'none',
+          transform: 'none',
+          willChange: 'auto',
+        }}
+      />
+    );
   };
 
   const defaultAriaLabel = collapsed ? 'Expand sidebar' : 'Collapse sidebar';
@@ -143,15 +152,25 @@ export default function SideNavbarToggle({
   // Determine if this is an inline position (inside navigation)
   const isInlinePosition = position === 'inside' || position === 'navigation-top' || position === 'navigation-bottom';
 
-  // Edge-following toggle positioning (right edge of navbar, between navbar and sidebar)
-  // The toggle should be positioned at the right edge of the navbar, vertically centered
-  // It moves smoothly with the navbar width transition
-  // Position: right edge, vertically centered, half outside the navbar edge (between navbar and sidebar)
+  // Edge-following toggle positioning (right edge of sidebar)
+  // The toggle is now positioned in SideNavbarRoot (at <aside> level), not in <nav>
+  // This means it's positioned relative to the entire sidebar, not just the navbar
+  // When collapsed: sidebar width = nav width, toggle at right edge
+  // When expanded: sidebar width = nav + content, toggle at right edge of full sidebar
+  // Position: right edge of sidebar, aligned with first navbar item (home icon)
+  // The toggle will automatically follow the sidebar's width when resized
   const edgeFollowingStyle = position === 'floating' ? {
-    right: '0px',
-    top: '50%',
-    transform: 'translateX(50%) translateY(-50%)',
-    transition: `transform ${animationDuration}ms ${animationEasing}`,
+    // Toggle sempre na borda direita da sidebar completa (<aside>)
+    // O <aside> é o container pai, então right: -12px sempre posiciona na borda direita da sidebar
+    // Isso faz o toggle acompanhar o resize da sidebar automaticamente
+    right: '-12px',
+    // Posicionar na mesma altura do primeiro ícone (home)
+    // Usando 1rem (16px) para melhor alinhamento com o primeiro item
+    // Considerando p-2 (8px) + gap-2 (8px) + metade do primeiro item = ~16px
+    top: '1rem',
+    transform: 'translateY(-50%)',
+    // Transição suave para acompanhar o resize da sidebar
+    transition: `right ${animationDuration}ms ${animationEasing}`,
     ...offsetStyle,
   } : offsetStyle;
 
@@ -160,20 +179,32 @@ export default function SideNavbarToggle({
       type="button"
       onClick={toggle}
       className={`
-        ${positionClasses[position]}
         ${sizeClasses[size]}
         ${variantClasses[variant]}
         rounded-full
         flex items-center justify-center
-        text-gray-600 hover:text-gray-800
-        transition-all
-        focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1
+        text-[var(--color-neutral-600)] hover:text-[var(--color-neutral-800)]
+        focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-500)] focus:ring-offset-1
+        ${position === 'floating' ? '' : positionClasses[position]}
         ${className}
       `}
       style={{
-        transitionDuration: `${animationDuration}ms`,
-        transitionTimingFunction: 'ease-in-out',
-        ...edgeFollowingStyle,
+        ...(position === 'floating' ? { 
+          position: 'absolute', // Absolute within the floating wrapper
+          // The custom wrapper is at sidebar's content edge (right: 0 = 319px, sidebar has 1px border)
+          // The Tooltip wrapper (div.static.inline-block) is inside the custom wrapper and doesn't interfere
+          // Position button so its RIGHT edge is 12px outside sidebar's border edge
+          // Sidebar border edge: 320px, desired right edge: 320 - 12 = 308px
+          // Button width: 24px, so left edge should be: 308 - 24 = 284px
+          // Wrapper is at content edge (319px), so button right should be: 319 - (320 - 308) = 307px
+          // But we want right edge at 308px, so: right = -12px - 1px (border) = -13px
+          // Actually, if wrapper is at 319px and we want button right at 308px: 319 - 308 = 11px offset
+          // So: right = -11px (but this positions right edge at 319 - 11 = 308px ✓)
+          right: '-11px', // Position button's right edge 11px outside wrapper (319px) = 308px (12px outside sidebar border)
+          left: 'auto', // Ensure left doesn't interfere
+        } : {}),
+        ...(position !== 'floating' ? edgeFollowingStyle : {}),
+        ...(position === 'floating' ? { zIndex: 100 } : {}), // Ensure z-index is applied inline for floating position
         ...style,
       }}
       aria-label={ariaLabel || defaultAriaLabel}
@@ -185,6 +216,40 @@ export default function SideNavbarToggle({
       {renderIcon()}
     </button>
   );
+
+  // For floating position, wrap in a container positioned relative to the sidebar (<aside>)
+  // This ensures the toggle is always at the right edge of the entire sidebar, not just the nav
+  // The toggle will automatically follow the sidebar's width when resized
+  // The toggle should be positioned 12px outside the sidebar edge (half button width for visual balance)
+  if (position === 'floating') {
+    // Create a wrapper that positions the toggle at the sidebar's right edge
+    // The wrapper is positioned at sidebar's right edge (<aside>), and the button is positioned 12px outside
+    const floatingButton = showTooltip && tooltipContent ? (
+      <Tooltip 
+        content={tooltipContent} 
+        position={tooltipPosition}
+        preservePositioning={true}
+      >
+        {button}
+      </Tooltip>
+    ) : button;
+
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          right: '0', // Align to sidebar's content edge (319px with 1px border)
+          // Note: sidebar has box-sizing: border-box, so right: 0 positions at content edge
+          // We compensate by adjusting the button's right value
+          top: '1rem',
+          transform: 'translateY(-50%)',
+          zIndex: 100,
+        }}
+      >
+        {floatingButton}
+      </div>
+    );
+  }
 
   if (showTooltip && tooltipContent) {
     return (

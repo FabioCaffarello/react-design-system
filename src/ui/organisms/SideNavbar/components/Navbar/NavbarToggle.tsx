@@ -35,7 +35,16 @@ export default function NavbarToggle({
       return typeof icon === 'function' ? icon(collapsed) : icon;
     }
     const Icon = collapsed ? ChevronRight : ChevronLeft;
-    return <Icon className={iconSizeClasses[size]} />;
+    return (
+      <Icon 
+        className={iconSizeClasses[size]} 
+        style={{
+          transition: 'none',
+          transform: 'none',
+          willChange: 'auto',
+        }}
+      />
+    );
   };
 
   const sizeClasses = {
@@ -69,8 +78,6 @@ export default function NavbarToggle({
           items-center
           justify-center
           rounded-md
-          transition-colors
-          duration-150
           text-gray-600
           hover:text-gray-900
           focus:outline-none
@@ -79,8 +86,15 @@ export default function NavbarToggle({
           focus:ring-offset-1
           ${sizeClasses[size]}
           ${variantClasses[variant]}
+          [&:hover]:!transform-none
           ${className}
         `}
+        style={{
+          // Remover transições que possam causar movimento
+          willChange: 'auto',
+          transform: 'none',
+          transition: 'none',
+        }}
         aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         aria-expanded={!collapsed}
         {...props}

@@ -1,0 +1,218 @@
+/**
+ * AIppin Design System - Semantic Colors
+ *
+ * Meaningful color tokens that reference primitive values.
+ * These are the colors you use in components.
+ *
+ * @brand AIppin
+ * @version 1.0.0
+ */
+
+:root {
+  /* ============================================
+   * BRAND COLORS
+   * Core brand identity colors
+   * ============================================ */
+
+  --color-brand-primary: var(--color-indigo-500);
+  --color-brand-primary-light: var(--color-indigo-400);
+  --color-brand-primary-dark: var(--color-indigo-600);
+  --color-brand-primary-darker: var(--color-indigo-700);
+
+  --color-brand-secondary: var(--color-violet-500);
+  --color-brand-secondary-light: var(--color-violet-400);
+  --color-brand-secondary-dark: var(--color-violet-600);
+
+  --color-brand-accent: var(--color-cyan-500);
+  --color-brand-accent-light: var(--color-cyan-400);
+  --color-brand-accent-dark: var(--color-cyan-600);
+
+  /* ============================================
+   * TEXT COLORS
+   * For all text content
+   * ============================================ */
+
+  --color-text-primary: var(--color-slate-900);
+  --color-text-secondary: var(--color-slate-600);
+  --color-text-tertiary: var(--color-slate-500);
+  --color-text-quaternary: var(--color-slate-400);
+  --color-text-placeholder: var(--color-slate-400);
+  --color-text-disabled: var(--color-slate-300);
+  --color-text-inverse: var(--color-white);
+  --color-text-inverse-secondary: var(--color-slate-200);
+
+  /* Link colors */
+  --color-text-link: var(--color-indigo-600);
+  --color-text-link-hover: var(--color-indigo-700);
+  --color-text-link-active: var(--color-indigo-800);
+  --color-text-link-visited: var(--color-violet-600);
+
+  /* Brand text */
+  --color-text-brand: var(--color-brand-primary);
+  --color-text-brand-secondary: var(--color-brand-secondary);
+
+  /* Feedback text */
+  --color-text-success: var(--color-emerald-700);
+  --color-text-warning: var(--color-amber-700);
+  --color-text-error: var(--color-rose-700);
+  --color-text-info: var(--color-sky-700);
+
+  /* ============================================
+   * BACKGROUND COLORS
+   * For surfaces and containers
+   * ============================================ */
+
+  --color-bg-base: var(--color-white);
+  --color-bg-subtle: var(--color-slate-50);
+  --color-bg-muted: var(--color-slate-100);
+  --color-bg-emphasis: var(--color-slate-200);
+  --color-bg-strong: var(--color-slate-300);
+  --color-bg-inverse: var(--color-slate-900);
+  --color-bg-inverse-subtle: var(--color-slate-800);
+
+  /* Brand backgrounds */
+  --color-bg-brand-subtle: var(--color-indigo-50);
+  --color-bg-brand-muted: var(--color-indigo-100);
+  --color-bg-brand: var(--color-indigo-500);
+  --color-bg-brand-emphasis: var(--color-indigo-600);
+
+  --color-bg-secondary-subtle: var(--color-violet-50);
+  --color-bg-secondary: var(--color-violet-500);
+
+  --color-bg-accent-subtle: var(--color-cyan-50);
+  --color-bg-accent: var(--color-cyan-500);
+
+  /* ============================================
+   * SURFACE COLORS
+   * For cards, modals, panels
+   * ============================================ */
+
+  --color-surface-base: var(--color-white);
+  --color-surface-raised: var(--color-white);
+  --color-surface-overlay: var(--color-white);
+  --color-surface-sunken: var(--color-slate-50);
+  --color-surface-disabled: var(--color-slate-100);
+
+  /* ============================================
+   * BORDER COLORS
+   * For all border styles
+   * ============================================ */
+
+  --color-border-default: var(--color-slate-200);
+  --color-border-muted: var(--color-slate-100);
+  --color-border-subtle: var(--color-slate-100);
+  --color-border-emphasis: var(--color-slate-300);
+  --color-border-strong: var(--color-slate-400);
+  --color-border-inverse: var(--color-slate-700);
+
+  /* Focus borders */
+  --color-border-focus: var(--color-indigo-500);
+  --color-border-focus-ring: var(--color-indigo-500);
+
+  /* Brand borders */
+  --color-border-brand: var(--color-indigo-500);
+  --color-border-secondary: var(--color-violet-500);
+  --color-border-accent: var(--color-cyan-500);
+
+  /* ============================================
+   * STATE COLORS
+   * For interactive states
+   * ============================================ */
+
+  --color-state-hover: var(--color-slate-50);
+  --color-state-hover-subtle: var(--color-slate-50);
+  --color-state-active: var(--color-slate-100);
+  --color-state-selected: var(--color-indigo-50);
+  --color-state-selected-subtle: var(--color-indigo-50);
+  --color-state-disabled: var(--color-slate-100);
+  --color-state-disabled-subtle: var(--color-slate-50);
+  --color-state-focus: var(--color-indigo-100);
+
+  /* Brand state colors */
+  --color-state-hover-brand: var(--color-indigo-600);
+  --color-state-active-brand: var(--color-indigo-700);
+
+  /* ============================================
+   * FEEDBACK COLORS
+   * For success, warning, error, info states
+   * ============================================ */
+
+  /* Success */
+  --color-success: var(--color-emerald-500);
+  --color-success-light: var(--color-emerald-400);
+  --color-success-dark: var(--color-emerald-600);
+  --color-success-bg: var(--color-emerald-50);
+  --color-success-bg-emphasis: var(--color-emerald-100);
+  --color-success-border: var(--color-emerald-200);
+  --color-success-border-emphasis: var(--color-emerald-500);
+
+  /* Warning */
+  --color-warning: var(--color-amber-500);
+  --color-warning-light: var(--color-amber-400);
+  --color-warning-dark: var(--color-amber-600);
+  --color-warning-bg: var(--color-amber-50);
+  --color-warning-bg-emphasis: var(--color-amber-100);
+  --color-warning-border: var(--color-amber-200);
+  --color-warning-border-emphasis: var(--color-amber-500);
+
+  /* Error */
+  --color-error: var(--color-rose-500);
+  --color-error-light: var(--color-rose-400);
+  --color-error-dark: var(--color-rose-600);
+  --color-error-bg: var(--color-rose-50);
+  --color-error-bg-emphasis: var(--color-rose-100);
+  --color-error-border: var(--color-rose-200);
+  --color-error-border-emphasis: var(--color-rose-500);
+
+  /* Info */
+  --color-info: var(--color-sky-500);
+  --color-info-light: var(--color-sky-400);
+  --color-info-dark: var(--color-sky-600);
+  --color-info-bg: var(--color-sky-50);
+  --color-info-bg-emphasis: var(--color-sky-100);
+  --color-info-border: var(--color-sky-200);
+  --color-info-border-emphasis: var(--color-sky-500);
+
+  /* ============================================
+   * ICON COLORS
+   * For iconography
+   * ============================================ */
+
+  --color-icon-default: var(--color-slate-500);
+  --color-icon-muted: var(--color-slate-400);
+  --color-icon-subtle: var(--color-slate-300);
+  --color-icon-emphasis: var(--color-slate-700);
+  --color-icon-inverse: var(--color-white);
+  --color-icon-brand: var(--color-indigo-500);
+  --color-icon-success: var(--color-emerald-500);
+  --color-icon-warning: var(--color-amber-500);
+  --color-icon-error: var(--color-rose-500);
+  --color-icon-info: var(--color-sky-500);
+
+  /* ============================================
+   * OVERLAY COLORS
+   * For modals, drawers, backdrops
+   * ============================================ */
+
+  --color-overlay-light: rgb(255 255 255 / 0.8);
+  --color-overlay-dark: rgb(15 23 42 / 0.5);
+  --color-overlay-darker: rgb(15 23 42 / 0.75);
+  --color-overlay-backdrop: rgb(0 0 0 / 0.5);
+
+  /* ============================================
+   * SKELETON/LOADING COLORS
+   * For loading states
+   * ============================================ */
+
+  --color-skeleton-base: var(--color-slate-200);
+  --color-skeleton-shine: var(--color-slate-100);
+
+  /* ============================================
+   * DIVIDER COLORS
+   * For separators
+   * ============================================ */
+
+  --color-divider: var(--color-slate-200);
+  --color-divider-subtle: var(--color-slate-100);
+  --color-divider-emphasis: var(--color-slate-300);
+}

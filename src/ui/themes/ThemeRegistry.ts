@@ -6,7 +6,7 @@
  */
 
 import { ThemeBuilder } from './ThemeBuilder';
-import { createTokenSet } from '../tokens/tokens.factory';
+import { createTokenSet } from '../tokens';
 import type { CustomThemeConfig, Theme, ThemeRegistry } from './types';
 
 export class ThemeRegistryManager {

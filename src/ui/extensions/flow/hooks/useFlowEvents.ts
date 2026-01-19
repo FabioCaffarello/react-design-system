@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * useFlowEvents Hook
  * 
@@ -12,13 +14,13 @@ import type { FlowEventType, FlowEvent, FlowEventHandler } from '../context/Flow
  */
 export interface UseFlowEventsReturn {
   // Event bus operations
-  subscribe: <T = any>(eventType: FlowEventType, handler: FlowEventHandler<T>) => { unsubscribe: () => void };
+  subscribe: <T = unknown>(eventType: FlowEventType, handler: FlowEventHandler<T>) => { unsubscribe: () => void };
   unsubscribe: (eventType: FlowEventType, handler: FlowEventHandler) => void;
-  emit: <T = any>(eventType: FlowEventType, payload: T, source?: string) => void;
+  emit: <T = unknown>(eventType: FlowEventType, payload: T, source?: string) => void;
   
   // Event filtering
-  once: <T = any>(eventType: FlowEventType, handler: FlowEventHandler<T>) => { unsubscribe: () => void };
-  filter: <T = any>(
+  once: <T = unknown>(eventType: FlowEventType, handler: FlowEventHandler<T>) => { unsubscribe: () => void };
+  filter: <T = unknown>(
     eventType: FlowEventType,
     predicate: (event: FlowEvent<T>) => boolean,
     handler: FlowEventHandler<T>
@@ -31,7 +33,7 @@ export interface UseFlowEventsReturn {
   // Convenience methods
   onNodeAdd: (handler: FlowEventHandler<Node>) => { unsubscribe: () => void };
   onNodeRemove: (handler: FlowEventHandler<string>) => { unsubscribe: () => void };
-  onNodeUpdate: (handler: FlowEventHandler<{ nodeId: string; data: any }>) => { unsubscribe: () => void };
+  onNodeUpdate: (handler: FlowEventHandler<{ nodeId: string; data: unknown }>) => { unsubscribe: () => void };
   onEdgeAdd: (handler: FlowEventHandler<Edge>) => { unsubscribe: () => void };
   onEdgeRemove: (handler: FlowEventHandler<string>) => { unsubscribe: () => void };
   onSelectionChange: (handler: FlowEventHandler<{ nodes: Node[]; edges: Edge[] }>) => { unsubscribe: () => void };
@@ -44,27 +46,27 @@ export function useFlowEvents(): UseFlowEventsReturn {
   const context = useFlowEventContext();
   
   // Convenience methods for common events
-  const onNodeAdd = (handler: FlowEventHandler<any>) => {
+  const onNodeAdd = (handler: FlowEventHandler<unknown>) => {
     return context.subscribe('node:add', handler);
   };
   
-  const onNodeRemove = (handler: FlowEventHandler<any>) => {
+  const onNodeRemove = (handler: FlowEventHandler<unknown>) => {
     return context.subscribe('node:remove', handler);
   };
   
-  const onNodeUpdate = (handler: FlowEventHandler<any>) => {
+  const onNodeUpdate = (handler: FlowEventHandler<unknown>) => {
     return context.subscribe('node:update', handler);
   };
   
-  const onEdgeAdd = (handler: FlowEventHandler<any>) => {
+  const onEdgeAdd = (handler: FlowEventHandler<unknown>) => {
     return context.subscribe('edge:add', handler);
   };
   
-  const onEdgeRemove = (handler: FlowEventHandler<any>) => {
+  const onEdgeRemove = (handler: FlowEventHandler<unknown>) => {
     return context.subscribe('edge:remove', handler);
   };
   
-  const onSelectionChange = (handler: FlowEventHandler<any>) => {
+  const onSelectionChange = (handler: FlowEventHandler<unknown>) => {
     return context.subscribe('selection:change', handler);
   };
   

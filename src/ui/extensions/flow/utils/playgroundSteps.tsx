@@ -146,7 +146,7 @@ function ViewportPanel() {
  */
 function ValidationPanel() {
   const { nodes, edges } = usePlaygroundContext();
-  const [validationResult, setValidationResult] = React.useState<any>(null);
+  const [validationResult, setValidationResult] = React.useState<unknown>(null);
 
   const handleValidate = React.useCallback(() => {
     const result = validateFlow(nodes, edges);

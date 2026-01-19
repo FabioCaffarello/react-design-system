@@ -9,7 +9,7 @@ import { Container } from '../../layouts/Container/Container';
 import type { TableColumn } from '../../organisms/Table/TableTypes';
 
 // Extended TableColumn type for DataTablePattern (supports accessor and header for backward compatibility)
-export interface DataTableColumn<T = any> extends Omit<TableColumn<T>, 'key' | 'label'> {
+export interface DataTableColumn<T = unknown> extends Omit<TableColumn<T>, 'key' | 'label'> {
   key?: keyof T | string;
   label?: string;
   // Legacy support
@@ -17,7 +17,7 @@ export interface DataTableColumn<T = any> extends Omit<TableColumn<T>, 'key' | '
   header?: string;
 }
 
-export interface DataTablePatternProps<T = any> {
+export interface DataTablePatternProps<T = unknown> {
   /**
    * Table columns configuration
    * Supports both TableColumn format (key, label) and legacy format (accessor, header)
@@ -122,7 +122,7 @@ export function DataTablePattern<T extends Record<string, unknown> = Record<stri
     const query = searchQuery.toLowerCase();
     return data.filter((row) => {
       return tableColumns.some((column) => {
-        const value = (row as any)[column.key];
+        const value = (row as unknown)[column.key];
         return String(value).toLowerCase().includes(query);
       });
     });

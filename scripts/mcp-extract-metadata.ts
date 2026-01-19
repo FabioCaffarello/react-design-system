@@ -26,7 +26,7 @@ interface ComponentMetadata {
     name: string;
     type: string;
     required: boolean;
-    defaultValue?: any;
+    defaultValue?: unknown;
   }>;
   dependencies: string[];
   designTokens: {
@@ -104,7 +104,7 @@ async function extractAllMetadata(): Promise<ComponentMetadata[]> {
       if (componentMetadata) {
         metadata.push(componentMetadata);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.warn(`   ⚠️  Failed to extract ${componentName}: ${error.message}`);
     }
   }
@@ -189,7 +189,7 @@ async function main() {
     console.log('   1. Review extracted metadata');
     console.log('   2. Use for registry generation');
     console.log('   3. Validate consistency');
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('\n❌ Error extracting metadata:', error.message);
     console.log('\n💡 Troubleshooting:');
     console.log('   1. Verify Storybook is running');

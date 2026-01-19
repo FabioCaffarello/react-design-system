@@ -1,0 +1,186 @@
+/**
+ * AIppin Design System - Light Theme
+ *
+ * Light color scheme overrides.
+ * Default theme for the design system.
+ *
+ * @brand AIppin
+ * @version 1.0.0
+ */
+
+/* Light theme - default (no class needed) and explicit .light class */
+:root,
+[data-theme="light"],
+.light {
+  /* Theme indicator */
+  --theme-mode: light;
+  color-scheme: light;
+
+  /* ============================================
+   * TEXT COLORS
+   * ============================================ */
+
+  --color-text-primary: var(--color-slate-900);
+  --color-text-secondary: var(--color-slate-600);
+  --color-text-tertiary: var(--color-slate-500);
+  --color-text-quaternary: var(--color-slate-400);
+  --color-text-placeholder: var(--color-slate-400);
+  --color-text-disabled: var(--color-slate-300);
+  --color-text-inverse: var(--color-white);
+  --color-text-inverse-secondary: var(--color-slate-200);
+
+  /* Link colors */
+  --color-text-link: var(--color-indigo-600);
+  --color-text-link-hover: var(--color-indigo-700);
+  --color-text-link-active: var(--color-indigo-800);
+
+  /* Feedback text */
+  --color-text-success: var(--color-emerald-700);
+  --color-text-warning: var(--color-amber-700);
+  --color-text-error: var(--color-rose-700);
+  --color-text-info: var(--color-sky-700);
+
+  /* ============================================
+   * BACKGROUND COLORS
+   * ============================================ */
+
+  --color-bg-base: var(--color-white);
+  --color-bg-subtle: var(--color-slate-50);
+  --color-bg-muted: var(--color-slate-100);
+  --color-bg-emphasis: var(--color-slate-200);
+  --color-bg-strong: var(--color-slate-300);
+  --color-bg-inverse: var(--color-slate-900);
+  --color-bg-inverse-subtle: var(--color-slate-800);
+
+  /* Brand backgrounds */
+  --color-bg-brand-subtle: var(--color-indigo-50);
+  --color-bg-brand-muted: var(--color-indigo-100);
+  --color-bg-brand: var(--color-indigo-500);
+  --color-bg-brand-emphasis: var(--color-indigo-600);
+
+  /* ============================================
+   * SURFACE COLORS
+   * ============================================ */
+
+  --color-surface-base: var(--color-white);
+  --color-surface-raised: var(--color-white);
+  --color-surface-overlay: var(--color-white);
+  --color-surface-sunken: var(--color-slate-50);
+  --color-surface-disabled: var(--color-slate-100);
+
+  /* ============================================
+   * BORDER COLORS
+   * ============================================ */
+
+  --color-border-default: var(--color-slate-200);
+  --color-border-muted: var(--color-slate-100);
+  --color-border-subtle: var(--color-slate-100);
+  --color-border-emphasis: var(--color-slate-300);
+  --color-border-strong: var(--color-slate-400);
+  --color-border-inverse: var(--color-slate-700);
+  --color-border-focus: var(--color-indigo-500);
+
+  /* ============================================
+   * STATE COLORS
+   * ============================================ */
+
+  --color-state-hover: var(--color-slate-50);
+  --color-state-hover-subtle: var(--color-slate-50);
+  --color-state-active: var(--color-slate-100);
+  --color-state-selected: var(--color-indigo-50);
+  --color-state-selected-subtle: var(--color-indigo-50);
+  --color-state-disabled: var(--color-slate-100);
+  --color-state-focus: var(--color-indigo-100);
+
+  /* ============================================
+   * FEEDBACK COLORS
+   * ============================================ */
+
+  /* Success */
+  --color-success: var(--color-emerald-500);
+  --color-success-light: var(--color-emerald-400);
+  --color-success-dark: var(--color-emerald-600);
+  --color-success-bg: var(--color-emerald-50);
+  --color-success-bg-emphasis: var(--color-emerald-100);
+  --color-success-border: var(--color-emerald-200);
+
+  /* Warning */
+  --color-warning: var(--color-amber-500);
+  --color-warning-light: var(--color-amber-400);
+  --color-warning-dark: var(--color-amber-600);
+  --color-warning-bg: var(--color-amber-50);
+  --color-warning-bg-emphasis: var(--color-amber-100);
+  --color-warning-border: var(--color-amber-200);
+
+  /* Error */
+  --color-error: var(--color-rose-500);
+  --color-error-light: var(--color-rose-400);
+  --color-error-dark: var(--color-rose-600);
+  --color-error-bg: var(--color-rose-50);
+  --color-error-bg-emphasis: var(--color-rose-100);
+  --color-error-border: var(--color-rose-200);
+
+  /* Info */
+  --color-info: var(--color-sky-500);
+  --color-info-light: var(--color-sky-400);
+  --color-info-dark: var(--color-sky-600);
+  --color-info-bg: var(--color-sky-50);
+  --color-info-bg-emphasis: var(--color-sky-100);
+  --color-info-border: var(--color-sky-200);
+
+  /* ============================================
+   * ICON COLORS
+   * ============================================ */
+
+  --color-icon-default: var(--color-slate-500);
+  --color-icon-muted: var(--color-slate-400);
+  --color-icon-subtle: var(--color-slate-300);
+  --color-icon-emphasis: var(--color-slate-700);
+  --color-icon-inverse: var(--color-white);
+
+  /* ============================================
+   * OVERLAY COLORS
+   * ============================================ */
+
+  --color-overlay-light: rgb(255 255 255 / 0.8);
+  --color-overlay-dark: rgb(15 23 42 / 0.5);
+  --color-overlay-backdrop: rgb(0 0 0 / 0.5);
+
+  /* ============================================
+   * SHADOWS
+   * Light theme uses lighter shadows
+   * ============================================ */
+
+  --shadow-card: var(--shadow-sm);
+  --shadow-card-hover: var(--shadow-md);
+  --shadow-dropdown: var(--shadow-lg);
+  --shadow-modal: var(--shadow-xl);
+  --shadow-tooltip: var(--shadow-md);
+
+  /* ============================================
+   * SCROLLBAR
+   * ============================================ */
+
+  --scrollbar-track-bg: var(--color-slate-100);
+  --scrollbar-thumb-bg: var(--color-slate-300);
+  --scrollbar-thumb-hover-bg: var(--color-slate-400);
+
+  /* ============================================
+   * SKELETON
+   * ============================================ */
+
+  --color-skeleton-base: var(--color-slate-200);
+  --color-skeleton-shine: var(--color-slate-100);
+
+  /* ============================================
+   * CODE
+   * ============================================ */
+
+  --surface-code-bg: var(--color-slate-900);
+  --surface-code-border: var(--color-slate-700);
+  --surface-code-color: var(--color-slate-100);
+
+  --surface-code-inline-bg: var(--color-slate-100);
+  --surface-code-inline-border: var(--color-slate-200);
+  --surface-code-inline-color: var(--color-rose-600);
+}

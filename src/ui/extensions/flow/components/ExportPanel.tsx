@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Export Panel Component
  * 

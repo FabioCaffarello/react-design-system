@@ -184,6 +184,8 @@ export interface SideNavbarStateProviderProps {
   onWidthChange?: (width: number) => void;
   /** Callback when mobile state changes */
   onMobileChange?: (isMobile: boolean) => void;
+  /** Whether groups should be exclusive (only one open at a time, like ButtonGroup) */
+  exclusiveGroups?: boolean;
 }
 
 // ============================================================================
@@ -247,6 +249,8 @@ export interface SideNavbarProps extends Omit<HTMLAttributes<HTMLElement>, 'chil
   onWidthChange?: (width: number) => void;
   /** Callback when mobile state changes */
   onMobileChange?: (isMobile: boolean) => void;
+  /** Whether groups should be exclusive (only one open at a time, like ButtonGroup) */
+  exclusiveGroups?: boolean;
 
   // Toggle
   /** Whether to show the toggle button */

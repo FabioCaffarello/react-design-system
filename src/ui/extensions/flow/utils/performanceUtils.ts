@@ -7,7 +7,7 @@
 /**
  * Debounce function
  */
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
@@ -29,7 +29,7 @@ export function debounce<T extends (...args: any[]) => any>(
 /**
  * Throttle function
  */
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
 ): (...args: Parameters<T>) => void {
@@ -47,7 +47,7 @@ export function throttle<T extends (...args: any[]) => any>(
 /**
  * Request Animation Frame throttle
  */
-export function rafThrottle<T extends (...args: any[]) => any>(
+export function rafThrottle<T extends (...args: unknown[]) => unknown>(
   func: T
 ): (...args: Parameters<T>) => void {
   let rafId: number | null = null;
@@ -65,7 +65,7 @@ export function rafThrottle<T extends (...args: any[]) => any>(
 /**
  * Memoize function result
  */
-export function memoize<Args extends any[], Return>(
+export function memoize<Args extends unknown[], Return>(
   fn: (...args: Args) => Return,
   getKey?: (...args: Args) => string
 ): (...args: Args) => Return {

@@ -41,7 +41,7 @@ export function cssVarValue(category: string, ...parts: string[]): string {
  * })} />
  * ```
  */
-export function createCSSVars(vars: Record<string, Record<string, any>>): React.CSSProperties {
+export function createCSSVars(vars: Record<string, Record<string, unknown>>): React.CSSProperties {
   const styles: Record<string, string> = {};
   
   Object.entries(vars).forEach(([category, values]) => {

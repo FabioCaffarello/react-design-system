@@ -151,7 +151,7 @@ const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(
     if (typeof children === 'string') return children;
     // For non-string children, try to extract text content
     if (typeof children === 'object' && children !== null && 'props' in children) {
-      const childProps = (children as any).props;
+      const childProps = (children as unknown).props;
       if (childProps?.children && typeof childProps.children === 'string') {
         return childProps.children;
       }

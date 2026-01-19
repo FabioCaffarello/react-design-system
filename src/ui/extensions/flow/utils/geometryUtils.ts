@@ -101,7 +101,7 @@ export function createCircularFlow(
   center: XYPosition,
   radius: number,
   nodeCount: number,
-  centerNode?: { id: string; data: any }
+  centerNode?: { id: string; data: unknown }
 ): { nodes: Node[]; edges: Edge[] } {
   const nodes: Node[] = [];
   const edges: Edge[] = [];

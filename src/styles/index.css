@@ -1,0 +1,65 @@
+/**
+ * AIppin Design System - Main CSS Entry Point
+ *
+ * This file imports all design system styles in the correct order.
+ * Import this file in your application to get the complete design system.
+ *
+ * Order of imports:
+ * 1. Tailwind base (resets and base styles)
+ * 2. Primitives (raw design tokens)
+ * 3. Semantic tokens (meaningful abstractions)
+ * 4. Themes (light/dark + variants)
+ * 5. Utilities (helper classes)
+ *
+ * @brand AIppin
+ * @version 1.0.0
+ */
+
+/* ============================================
+ * TAILWIND CSS 4
+ * Import Tailwind and configure source scanning
+ * ============================================ */
+
+@import "tailwindcss";
+
+/* Scan all UI source files for Tailwind classes */
+@source "../../src/ui/**/*.{ts,tsx}";
+@source "../../src/ui/**/*.{js,jsx}";
+
+/* ============================================
+ * PRIMITIVE TOKENS
+ * Raw design values - colors, spacing, etc.
+ * These are the foundation of the design system.
+ * ============================================ */
+
+@import "./primitives/colors.css";
+@import "./primitives/spacing.css";
+@import "./primitives/typography.css";
+@import "./primitives/shadows.css";
+@import "./primitives/radius.css";
+@import "./primitives/animations.css";
+
+/* ============================================
+ * SEMANTIC TOKENS
+ * Meaningful design tokens that reference primitives.
+ * Use these in your components.
+ * ============================================ */
+
+@import "./semantic/colors.css";
+@import "./semantic/surfaces.css";
+@import "./semantic/borders.css";
+
+/* ============================================
+ * THEMES
+ * Color modes (light/dark) and visual variants.
+ * ============================================ */
+
+@import "./themes/index.css";
+
+/* ============================================
+ * UTILITIES
+ * Helper classes for common patterns.
+ * ============================================ */
+
+@import "./utilities/sr-only.css";
+@import "./utilities/animations.css";

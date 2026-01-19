@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Nodes & Edges Tab Content Component
  *
@@ -158,14 +160,14 @@ function NodeInspector() {
   );
 
   const handleNodeUpdate = React.useCallback(
-    (nodeId: string, updates: any) => {
+    (nodeId: string, updates: unknown) => {
       setNodes(nodes.map((n) => (n.id === nodeId ? { ...n, ...updates } : n)));
     },
     [nodes, setNodes]
   );
 
   const handleEdgeUpdate = React.useCallback(
-    (edgeId: string, updates: any) => {
+    (edgeId: string, updates: unknown) => {
       setEdges(edges.map((e) => (e.id === edgeId ? { ...e, ...updates } : e)));
     },
     [edges, setEdges]

@@ -330,6 +330,7 @@ const Input = memo(forwardRef<HTMLInputElement, InputProps>(function Input({
           aria-invalid={error}
           aria-required={props.required}
           aria-describedby={errorId || helperId}
+          suppressHydrationWarning
           {...props}
         />
         <div className="absolute right-3 top-0 bottom-0 flex items-center gap-1">

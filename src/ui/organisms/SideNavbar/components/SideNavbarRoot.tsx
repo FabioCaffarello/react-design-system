@@ -1,12 +1,14 @@
 'use client';
 
-import React, { type ReactNode, type HTMLAttributes } from 'react';
+import React, { type ReactNode, type HTMLAttributes, useState, useEffect } from 'react';
 import { useSideNavbarStateRequired } from '../contexts/SideNavbarStateContext';
 import { useSideNavbarThemeRequired } from '../contexts/SideNavbarThemeContext';
 import { useSideNavbarConfigRequired } from '../contexts/SideNavbarConfigContext';
-import { getColorClass } from '../../../tokens';
+import { useSideNavbarToggleContextRequired } from '../contexts/SideNavbarToggleContext';
+import { cn } from '../../../utils';
 import SideNavbarResizeHandle from './SideNavbarResizeHandle';
 import SideNavbarBackdrop from './SideNavbarBackdrop';
+import SideNavbarToggle from './SideNavbarToggle';
 import type { SideNavbarRootProps } from '../types';
 
 const variantClasses = {
@@ -57,6 +59,7 @@ export default function SideNavbarRoot({
   const state = useSideNavbarStateRequired();
   const theme = useSideNavbarThemeRequired();
   const config = useSideNavbarConfigRequired();
+  const toggleContext = useSideNavbarToggleContextRequired();
 
   const {
     collapsed,
@@ -109,31 +112,48 @@ export default function SideNavbarRoot({
   const displayedWidth = calculateWidth();
 
   // Mobile overlay mode
+  // Usar estado para evitar hydration mismatch - só renderizar backdrop após mount
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const isMobileOverlay = isMobile && mobileVariant === 'overlay';
+  
+  // Durante SSR e antes do mount, sempre usar 'relative' para evitar hydration mismatch
+  // Após mount, usar a classe correta baseada em isMobileOverlay
+  // IMPORTANTE: Em desktop, sempre usar 'relative' para ficar no mesmo plano do conteúdo
+  // Apenas em mobile overlay usar 'fixed' para sobrepor o conteúdo
+  const shouldUseFixed = isMounted && isMobileOverlay;
+  const positionClass = shouldUseFixed 
+    ? 'fixed left-0 top-0 z-50' 
+    : 'relative';
 
   return (
     <>
-      {/* Mobile overlay backdrop */}
-      {isMobileOverlay && overlayBackdrop && !collapsed && (
+      {/* Mobile overlay backdrop - só renderizar após mount para evitar hydration mismatch */}
+      {isMounted && isMobileOverlay && overlayBackdrop && !collapsed && (
         <SideNavbarBackdrop />
       )}
 
       <aside
         ref={sidebarRef as React.RefObject<HTMLElement>}
-        className={`
-          relative
-          flex
-          h-full
-          overflow-visible
-          ${getColorClass('neutral', 'light', 'bg')}
-          border-r
-          ${getColorClass('neutral', 'DEFAULT', 'border')}
-          ${variantClasses[variant]}
-          ${isMobileOverlay ? 'fixed left-0 top-0 z-50' : ''}
-          ${isMobileOverlay && collapsed ? '-translate-x-full' : 'translate-x-0'}
-          ${className}
-        `}
+        className={cn(
+          positionClass,
+          'flex',
+          'h-full',
+          'overflow-visible',
+          variantClasses[variant],
+          shouldUseFixed && collapsed ? '-translate-x-full' : 'translate-x-0',
+          className
+        )}
         style={{
+          // Em desktop: sempre 'relative' para ficar no mesmo plano do conteúdo
+          // Em mobile overlay: 'fixed' para sobrepor o conteúdo
+          position: shouldUseFixed ? 'fixed' : 'relative',
+          backgroundColor: 'var(--color-muted)',
+          borderRight: '1px solid var(--color-border)',
           width: displayedWidth,
           minWidth: displayedWidth,
           transitionProperty: isResizing ? 'none' : 'width, min-width, transform',
@@ -151,6 +171,11 @@ export default function SideNavbarRoot({
         {/* Resize handle */}
         {resizable && mode !== 'navigation' && !collapsed && (
           <SideNavbarResizeHandle />
+        )}
+
+        {/* Main toggle button at right edge of sidebar - positioned to follow resize */}
+        {toggleContext.showMainToggle && mode !== 'navigation' && (
+          <SideNavbarToggle position={toggleContext.mainTogglePosition} />
         )}
 
         {/* Content wrapper */}

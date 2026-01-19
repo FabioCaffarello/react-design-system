@@ -17,7 +17,7 @@ export interface FormWizardStep extends StepperStep {
   /**
    * Submit handler for this step
    */
-  onSubmit?: (data: any) => void | Promise<void>;
+  onSubmit?: (data: unknown) => void | Promise<void>;
 }
 
 export interface FormWizardPatternProps {
@@ -28,7 +28,7 @@ export interface FormWizardPatternProps {
   /**
    * Callback when wizard is completed
    */
-  onComplete?: (data: Record<string, any>) => void;
+  onComplete?: (data: Record<string, unknown>) => void;
   /**
    * Allow navigation to previous steps
    * @default true
@@ -62,7 +62,7 @@ export function FormWizardPattern({
   showStepNumbers = true,
 }: FormWizardPatternProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<Record<string, any>>({});
+  const [formData, setFormData] = useState<Record<string, unknown>>({});
   const [errors, setErrors] = useState<Record<number, boolean>>({});
 
   const handleNext = async () => {

@@ -139,7 +139,7 @@ function main() {
   }
 
   if (providers.length === 0) {
-    // eslint-disable-next-line no-console
+     
     console.error('No providers found');
     process.exit(1);
   }

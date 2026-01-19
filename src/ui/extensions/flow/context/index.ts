@@ -5,9 +5,10 @@
  */
 
 export { FlowContext, useFlowContext, useFlowContextOptional } from '../organisms/FlowContext';
-export { FlowStyleContext, FlowStyleProvider, useFlowStyleContext, useFlowStyleContextOptional } from './FlowStyleContext';
-export { FlowEventContext, FlowEventProvider, useFlowEventContext } from './FlowEventContext';
-export { FlowPerformanceContext, FlowPerformanceProvider, useFlowPerformanceContext } from './FlowPerformanceContext';
+// Export Providers and hooks, not the context objects themselves
+export { FlowStyleProvider, useFlowStyleContext, useFlowStyleContextOptional } from './FlowStyleContext';
+export { FlowEventProvider, useFlowEventContext } from './FlowEventContext';
+export { FlowPerformanceProvider, useFlowPerformanceContext } from './FlowPerformanceContext';
 export type { FlowStyleContextValue, FlowStyleProviderProps } from './FlowStyleContext';
 export type { FlowEventContextValue, FlowEventProviderProps, FlowEvent, FlowEventType, FlowEventHandler } from './FlowEventContext';
 export type { FlowPerformanceContextValue, FlowPerformanceProviderProps, PerformanceMetrics, PerformanceOptions } from './FlowPerformanceContext';

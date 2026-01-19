@@ -5,7 +5,7 @@
  * Supports theme inheritance and CSS variable generation.
  */
 
-import { TokensFactory, type TokenSet, type ThemeMode } from '../tokens/tokens.factory';
+import { TokensFactory, type TokenSet, type ThemeMode } from '../tokens';
 import type { CustomThemeConfig, Theme } from './types';
 
 export class ThemeBuilder {

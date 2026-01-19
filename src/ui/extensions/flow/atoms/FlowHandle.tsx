@@ -29,7 +29,7 @@ export interface FlowHandleProps extends HandleProps {
    * Whether to show the handle conditionally based on node data
    * If provided, handle will only render if this function returns true
    */
-  shouldRender?: (nodeData: any) => boolean;
+  shouldRender?: (nodeData: unknown) => boolean;
 }
 
 export function FlowHandle({

@@ -23,7 +23,7 @@ export interface NodeTypeDefinition {
     description?: string;
     author?: string;
     tags?: string[];
-    examples?: Array<{ label: string; data: any }>;
+    examples?: Array<{ label: string; data: unknown }>;
   };
   lazyLoad?: () => Promise<{ default: ComponentType<NodeProps> }>;
 }

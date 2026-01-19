@@ -46,10 +46,10 @@ export class BezierRoutingStrategy implements IEdgeRoutingStrategy {
     const [path] = getBezierPath({
       sourceX,
       sourceY,
-      sourcePosition: sourcePosition as any,
+      sourcePosition: sourcePosition as unknown,
       targetX,
       targetY,
-      targetPosition: targetPosition as any,
+      targetPosition: targetPosition as unknown,
     });
     return path;
   }
@@ -79,10 +79,10 @@ export class SmoothStepRoutingStrategy implements IEdgeRoutingStrategy {
     const [path] = getSmoothStepPath({
       sourceX,
       sourceY,
-      sourcePosition: sourcePosition as any,
+      sourcePosition: sourcePosition as unknown,
       targetX,
       targetY,
-      targetPosition: targetPosition as any,
+      targetPosition: targetPosition as unknown,
     });
     return path;
   }
@@ -112,10 +112,10 @@ export class StepRoutingStrategy implements IEdgeRoutingStrategy {
     const [path] = getSmoothStepPath({
       sourceX,
       sourceY,
-      sourcePosition: sourcePosition as any,
+      sourcePosition: sourcePosition as unknown,
       targetX,
       targetY,
-      targetPosition: targetPosition as any,
+      targetPosition: targetPosition as unknown,
       borderRadius: 0,
     });
     return path;

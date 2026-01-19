@@ -12,6 +12,7 @@ import SidebarFooter from './SidebarFooter';
 import SidebarGroup from './SidebarGroup';
 import { SidebarSlot } from './SidebarSlot';
 import { SidebarSlotContent } from './SidebarSlotContent';
+import { cn } from '../../../../utils';
 
 /**
  * Sidebar subcomponent for SideNavbar
@@ -92,16 +93,16 @@ function Sidebar({ children, className = '', style, ...props }: SidebarProps) {
       <aside
         ref={sidebarRef}
         id="side-navbar-sidebar"
-        className={`
-          flex
-          flex-col
-          h-full
-          bg-gray-50
-          border-r
-          border-gray-200
-          overflow-hidden
-          ${className}
-        `}
+        className={cn(
+          'flex',
+          'flex-col',
+          'h-full',
+          'bg-[var(--color-muted)]',
+          'border-r',
+          'border-[var(--color-border)]',
+          'overflow-hidden',
+          className
+        )}
         style={{
           width: rootState.collapsed ? 0 : sidebarWidth,
           opacity: rootState.collapsed ? 0 : 1,

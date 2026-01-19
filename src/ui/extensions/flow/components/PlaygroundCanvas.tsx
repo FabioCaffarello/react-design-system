@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Playground Canvas Component
  * 
@@ -186,11 +188,11 @@ function PlaygroundCanvasInner() {
   // Expose focus functions via effect to context (if needed)
   useEffect(() => {
     // Store focus functions in a way that can be accessed by search
-    (window as any).__playgroundFocusNode = focusNode;
-    (window as any).__playgroundFocusEdge = focusEdge;
+    (window as unknown).__playgroundFocusNode = focusNode;
+    (window as unknown).__playgroundFocusEdge = focusEdge;
     return () => {
-      delete (window as any).__playgroundFocusNode;
-      delete (window as any).__playgroundFocusEdge;
+      delete (window as unknown).__playgroundFocusNode;
+      delete (window as unknown).__playgroundFocusEdge;
     };
   }, [focusNode, focusEdge]);
   

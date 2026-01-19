@@ -56,7 +56,7 @@ async function main() {
         status: 'passed',
         output,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`   ❌ Failed\n`);
       results.push({
         name,

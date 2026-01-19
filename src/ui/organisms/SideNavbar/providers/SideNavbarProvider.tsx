@@ -58,6 +58,7 @@ export function SideNavbarProvider({
   onCollapseChange,
   onWidthChange,
   onMobileChange,
+  exclusiveGroups,
 }: SideNavbarProviderProps) {
   return (
     <SideNavbarThemeProvider
@@ -89,6 +90,7 @@ export function SideNavbarProvider({
           onCollapseChange={onCollapseChange}
           onWidthChange={onWidthChange}
           onMobileChange={onMobileChange}
+          exclusiveGroups={exclusiveGroups}
         >
           {children}
         </SideNavbarStateProvider>

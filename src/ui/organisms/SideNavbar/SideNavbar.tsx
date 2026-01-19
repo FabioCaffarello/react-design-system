@@ -122,6 +122,7 @@ function SideNavbar({
   onCollapseChange,
   onWidthChange,
   onMobileChange,
+  exclusiveGroups = false,
 
   // Toggle
   showToggle = true,
@@ -166,6 +167,7 @@ function SideNavbar({
       onCollapseChange={onCollapseChange}
       onWidthChange={onWidthChange}
       onMobileChange={onMobileChange}
+      exclusiveGroups={exclusiveGroups}
     >
       <SideNavbarRoot
         {...rootProps}

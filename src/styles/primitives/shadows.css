@@ -1,0 +1,122 @@
+/**
+ * AIppin Design System - Shadows
+ *
+ * Elevation system using box shadows.
+ * Creates depth and visual hierarchy.
+ *
+ * @brand AIppin
+ * @version 1.0.0
+ */
+
+@theme {
+  /* ============================================
+   * BASE SHADOWS
+   * Standard elevation levels
+   * ============================================ */
+
+  --shadow-none: none;
+
+  /* Extra small - subtle depth */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+
+  /* Small - cards, dropdowns (resting state) */
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+
+  /* Medium - hover states, popovers */
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+  /* Large - modals, dialogs */
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* Extra large - sticky elements, high elevation */
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* 2XL - maximum elevation */
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+  /* Inner shadow - pressed states, inputs */
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+
+  /* ============================================
+   * COLORED SHADOWS
+   * For brand-colored elements
+   * ============================================ */
+
+  /* Primary (Indigo) shadows */
+  --shadow-primary-sm: 0 1px 3px 0 rgb(99 102 241 / 0.2), 0 1px 2px -1px rgb(99 102 241 / 0.2);
+  --shadow-primary-md: 0 4px 6px -1px rgb(99 102 241 / 0.2), 0 2px 4px -2px rgb(99 102 241 / 0.2);
+  --shadow-primary-lg: 0 10px 15px -3px rgb(99 102 241 / 0.2), 0 4px 6px -4px rgb(99 102 241 / 0.2);
+
+  /* Secondary (Violet) shadows */
+  --shadow-secondary-sm: 0 1px 3px 0 rgb(139 92 246 / 0.2), 0 1px 2px -1px rgb(139 92 246 / 0.2);
+  --shadow-secondary-md: 0 4px 6px -1px rgb(139 92 246 / 0.2), 0 2px 4px -2px rgb(139 92 246 / 0.2);
+  --shadow-secondary-lg: 0 10px 15px -3px rgb(139 92 246 / 0.2), 0 4px 6px -4px rgb(139 92 246 / 0.2);
+
+  /* Success (Emerald) shadows */
+  --shadow-success-sm: 0 1px 3px 0 rgb(16 185 129 / 0.2), 0 1px 2px -1px rgb(16 185 129 / 0.2);
+  --shadow-success-md: 0 4px 6px -1px rgb(16 185 129 / 0.2), 0 2px 4px -2px rgb(16 185 129 / 0.2);
+
+  /* Warning (Amber) shadows */
+  --shadow-warning-sm: 0 1px 3px 0 rgb(245 158 11 / 0.2), 0 1px 2px -1px rgb(245 158 11 / 0.2);
+  --shadow-warning-md: 0 4px 6px -1px rgb(245 158 11 / 0.2), 0 2px 4px -2px rgb(245 158 11 / 0.2);
+
+  /* Error (Rose) shadows */
+  --shadow-error-sm: 0 1px 3px 0 rgb(244 63 94 / 0.2), 0 1px 2px -1px rgb(244 63 94 / 0.2);
+  --shadow-error-md: 0 4px 6px -1px rgb(244 63 94 / 0.2), 0 2px 4px -2px rgb(244 63 94 / 0.2);
+
+  /* ============================================
+   * SEMANTIC SHADOWS
+   * Named shadows for specific use cases
+   * ============================================ */
+
+  /* Component shadows */
+  --shadow-card: var(--shadow-sm);
+  --shadow-card-hover: var(--shadow-md);
+
+  --shadow-dropdown: var(--shadow-lg);
+  --shadow-popover: var(--shadow-lg);
+  --shadow-tooltip: var(--shadow-md);
+
+  --shadow-modal: var(--shadow-xl);
+  --shadow-dialog: var(--shadow-xl);
+
+  --shadow-sticky: var(--shadow-md);
+  --shadow-float: var(--shadow-lg);
+
+  /* Input shadows */
+  --shadow-input: var(--shadow-xs);
+  --shadow-input-focus: 0 0 0 3px rgb(99 102 241 / 0.1);
+  --shadow-input-error: 0 0 0 3px rgb(244 63 94 / 0.1);
+  --shadow-input-success: 0 0 0 3px rgb(16 185 129 / 0.1);
+
+  /* Button shadows */
+  --shadow-button: var(--shadow-xs);
+  --shadow-button-hover: var(--shadow-sm);
+  --shadow-button-active: var(--shadow-inner);
+  --shadow-button-primary: var(--shadow-primary-sm);
+  --shadow-button-primary-hover: var(--shadow-primary-md);
+
+  /* ============================================
+   * DARK MODE SHADOWS
+   * Adjusted for dark backgrounds
+   * ============================================ */
+
+  --shadow-dark-xs: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-dark-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+  --shadow-dark-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-dark-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+  --shadow-dark-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+  --shadow-dark-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.6);
+
+  /* ============================================
+   * GLOW EFFECTS
+   * For special emphasis
+   * ============================================ */
+
+  --glow-primary: 0 0 20px rgb(99 102 241 / 0.3);
+  --glow-secondary: 0 0 20px rgb(139 92 246 / 0.3);
+  --glow-accent: 0 0 20px rgb(6 182 212 / 0.3);
+  --glow-success: 0 0 20px rgb(16 185 129 / 0.3);
+  --glow-warning: 0 0 20px rgb(245 158 11 / 0.3);
+  --glow-error: 0 0 20px rgb(244 63 94 / 0.3);
+}

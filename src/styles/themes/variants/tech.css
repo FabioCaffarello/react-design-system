@@ -1,0 +1,123 @@
+/**
+ * AIppin Design System - Tech Variant
+ *
+ * Modern, professional, technology-focused aesthetic.
+ * Default variant for the design system.
+ *
+ * Characteristics:
+ * - Primary: Indigo (tech, innovation)
+ * - Secondary: Violet (complementary)
+ * - Accent: Cyan (fresh, modern)
+ * - Medium border radius
+ * - Subtle shadows
+ * - Clean, professional feel
+ *
+ * @brand AIppin
+ * @version 1.0.0
+ */
+
+:root,
+[data-variant="tech"],
+.variant-tech {
+  /* Variant indicator */
+  --theme-variant: tech;
+
+  /* ============================================
+   * BRAND COLORS
+   * ============================================ */
+
+  --color-brand-primary: var(--color-indigo-500);
+  --color-brand-primary-light: var(--color-indigo-400);
+  --color-brand-primary-dark: var(--color-indigo-600);
+  --color-brand-primary-darker: var(--color-indigo-700);
+
+  --color-brand-secondary: var(--color-violet-500);
+  --color-brand-secondary-light: var(--color-violet-400);
+  --color-brand-secondary-dark: var(--color-violet-600);
+
+  --color-brand-accent: var(--color-cyan-500);
+  --color-brand-accent-light: var(--color-cyan-400);
+  --color-brand-accent-dark: var(--color-cyan-600);
+
+  /* ============================================
+   * BORDER RADIUS
+   * Medium roundness - balanced, professional
+   * ============================================ */
+
+  --radius-button: var(--radius-lg);        /* 6px */
+  --radius-button-sm: var(--radius-md);     /* 4px */
+  --radius-button-lg: var(--radius-xl);     /* 8px */
+
+  --radius-input: var(--radius-lg);         /* 6px */
+  --radius-input-sm: var(--radius-md);      /* 4px */
+  --radius-input-lg: var(--radius-xl);      /* 8px */
+
+  --radius-card: var(--radius-xl);          /* 8px */
+  --radius-card-sm: var(--radius-lg);       /* 6px */
+  --radius-card-lg: var(--radius-2xl);      /* 12px */
+
+  --radius-modal: var(--radius-2xl);        /* 12px */
+  --radius-dropdown: var(--radius-xl);      /* 8px */
+  --radius-popover: var(--radius-xl);       /* 8px */
+  --radius-tooltip: var(--radius-lg);       /* 6px */
+
+  /* ============================================
+   * SHADOWS
+   * Subtle, professional shadows
+   * ============================================ */
+
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-card-hover: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-dropdown: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-modal: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-button: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-button-hover: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+
+  /* Brand shadows */
+  --shadow-button-primary: 0 1px 3px 0 rgb(99 102 241 / 0.2), 0 1px 2px -1px rgb(99 102 241 / 0.2);
+  --shadow-button-primary-hover: 0 4px 6px -1px rgb(99 102 241 / 0.2), 0 2px 4px -2px rgb(99 102 241 / 0.2);
+
+  /* ============================================
+   * GRADIENTS
+   * Subtle gradients for tech feel
+   * ============================================ */
+
+  --gradient-brand: linear-gradient(135deg, var(--color-indigo-500), var(--color-violet-500));
+  --gradient-brand-hover: linear-gradient(135deg, var(--color-indigo-600), var(--color-violet-600));
+  --gradient-accent: linear-gradient(135deg, var(--color-cyan-400), var(--color-indigo-400));
+
+  --gradient-surface: linear-gradient(180deg, var(--color-white), var(--color-slate-50));
+  --gradient-card: none; /* No gradient on cards */
+
+  /* Hero/Feature gradients */
+  --gradient-hero: linear-gradient(135deg, var(--color-indigo-600) 0%, var(--color-violet-600) 100%);
+  --gradient-hero-subtle: linear-gradient(135deg, var(--color-indigo-50) 0%, var(--color-violet-50) 100%);
+
+  /* ============================================
+   * TRANSITIONS
+   * Standard transition timing
+   * ============================================ */
+
+  --transition-button: all 150ms var(--ease-out);
+  --transition-card: all 200ms var(--ease-out);
+  --transition-input: all 150ms var(--ease-out);
+}
+
+/* ============================================
+ * DARK MODE ADJUSTMENTS FOR TECH VARIANT
+ * ============================================ */
+
+.dark[data-variant="tech"],
+[data-theme="dark"][data-variant="tech"],
+.dark.variant-tech {
+  --color-brand-primary: var(--color-indigo-400);
+  --color-brand-secondary: var(--color-violet-400);
+  --color-brand-accent: var(--color-cyan-400);
+
+  --shadow-button-primary: 0 1px 3px 0 rgb(129 140 248 / 0.3), 0 1px 2px -1px rgb(129 140 248 / 0.3);
+  --shadow-button-primary-hover: 0 4px 6px -1px rgb(129 140 248 / 0.3), 0 2px 4px -2px rgb(129 140 248 / 0.3);
+
+  --gradient-brand: linear-gradient(135deg, var(--color-indigo-400), var(--color-violet-400));
+  --gradient-hero: linear-gradient(135deg, var(--color-indigo-500) 0%, var(--color-violet-500) 100%);
+  --gradient-hero-subtle: linear-gradient(135deg, var(--color-indigo-950) 0%, var(--color-violet-950) 100%);
+}

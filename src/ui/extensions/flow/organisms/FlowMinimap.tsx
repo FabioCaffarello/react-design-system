@@ -14,7 +14,7 @@ import styles from '../styles/modules/FlowMinimap.module.css';
  */
 export interface FlowMinimapProps extends Omit<MiniMapProps, 'className'> {
   className?: string;
-  nodeColor?: (node: any) => string;
+  nodeColor?: (node: unknown) => string;
 }
 
 export function FlowMinimap({
@@ -45,7 +45,7 @@ export function FlowMinimap({
   `.trim().replace(/\s+/g, ' ');
   
   // Default node color function
-  const defaultNodeColor = (node: any) => {
+  const defaultNodeColor = (node: unknown) => {
     const variant = node.data?.variant || 'default';
     const colorRole = variant === 'default' ? 'neutral' : variant;
     return getColorClass(colorRole, 'DEFAULT', 'bg').replace('bg-', '');

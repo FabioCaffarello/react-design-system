@@ -14,6 +14,11 @@ export interface TooltipProps extends HTMLAttributes<HTMLDivElement> {
   position?: "top" | "bottom" | "left" | "right";
   delay?: number;
   'aria-label'?: string;
+  /**
+   * When true, the tooltip wrapper won't interfere with absolute positioning of children.
+   * The wrapper will use `position: static` instead of `position: relative`.
+   */
+  preservePositioning?: boolean;
 }
 
 /**
@@ -36,6 +41,7 @@ export default function Tooltip({
   delay = 200,
   className = "",
   'aria-label': _ariaLabel,
+  preservePositioning = false,
   ...props
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
@@ -200,9 +206,16 @@ export default function Tooltip({
       })()
     : children;
 
+  // When preservePositioning is true, use static positioning to avoid interfering
+  // with absolute positioned children. The tooltip will still be positioned correctly
+  // using absolute positioning relative to the viewport/nearest positioned ancestor.
+  const wrapperClassName = preservePositioning
+    ? cn('static', 'inline-block', className)
+    : cn('relative', 'inline-block', className);
+
   return (
     <div
-      className={cn('relative', 'inline-block', className)}
+      className={wrapperClassName}
       {...props}
     >
       {childrenWithProps}

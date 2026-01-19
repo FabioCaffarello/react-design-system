@@ -255,7 +255,7 @@ function generateRegistry(components: ComponentMetadata[]): string {
           dependenciesCount: comp.dependencies.length,
         };
         return acc;
-      }, {} as Record<string, any>),
+      }, {} as Record<string, unknown>),
       fullMetadata: components,
     },
     null,

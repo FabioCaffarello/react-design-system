@@ -143,7 +143,7 @@ export function FlowPerformanceProvider({
     monitoringIntervalRef.current = setInterval(() => {
       if (performance.memory) {
         updateMetrics({
-          memoryUsage: (performance.memory as any).usedJSHeapSize / 1048576, // MB
+          memoryUsage: (performance.memory as unknown).usedJSHeapSize / 1048576, // MB
         });
       }
     }, 1000);

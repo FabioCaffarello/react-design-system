@@ -58,12 +58,35 @@ export function useToast() {
     return show({ title, description, variant: 'info', ...options });
   }, [show]);
 
+  const withUndo = useCallback(
+    (
+      title: string,
+      description: string | undefined,
+      onUndo: () => void,
+      variant: ToastVariant = 'info',
+      duration?: number
+    ) => {
+      return show({
+        title,
+        description,
+        variant,
+        duration,
+        action: {
+          label: 'Undo',
+          onClick: onUndo,
+        },
+      });
+    },
+    [show]
+  );
+
   return {
     show,
     success,
     error,
     warning,
     info,
+    withUndo,
     dismiss: removeToast,
     clearAll,
   };

@@ -7,7 +7,7 @@ import { Stack } from '../../layouts/Stack/Stack';
 export interface FilterOption {
   id: string;
   label: string;
-  value: any;
+  value: unknown;
 }
 
 export interface FilterConfig {
@@ -18,7 +18,7 @@ export interface FilterConfig {
   placeholder?: string;
 }
 
-export interface SearchAndFilterPatternProps<T = any> {
+export interface SearchAndFilterPatternProps<T = unknown> {
   /**
    * Items to search and filter
    */
@@ -30,7 +30,7 @@ export interface SearchAndFilterPatternProps<T = any> {
   /**
    * Filter function - receives filter config and item, returns boolean
    */
-  filterFn?: (filters: Record<string, any>, item: T) => boolean;
+  filterFn?: (filters: Record<string, unknown>, item: T) => boolean;
   /**
    * Render function for each item
    */
@@ -70,7 +70,7 @@ export interface SearchAndFilterPatternProps<T = any> {
  * />
  * ```
  */
-export function SearchAndFilterPattern<T = any>({
+export function SearchAndFilterPattern<T = unknown>({
   items,
   searchFn,
   filterFn,
@@ -81,7 +81,7 @@ export function SearchAndFilterPattern<T = any>({
   showResultsCount = true,
 }: SearchAndFilterPatternProps<T>) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeFilters, setActiveFilters] = useState<Record<string, any>>({});
+  const [activeFilters, setActiveFilters] = useState<Record<string, unknown>>({});
 
   // Filter items based on search and filters
   const filteredItems = useMemo(() => {
@@ -101,7 +101,7 @@ export function SearchAndFilterPattern<T = any>({
     return result;
   }, [items, searchQuery, activeFilters, searchFn, filterFn]);
 
-  const handleFilterChange = (filterId: string, value: any) => {
+  const handleFilterChange = (filterId: string, value: unknown) => {
     setActiveFilters((prev) => ({
       ...prev,
       [filterId]: value,

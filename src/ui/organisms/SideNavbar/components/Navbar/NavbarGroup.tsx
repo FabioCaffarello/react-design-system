@@ -40,18 +40,18 @@ export function NavbarGroup({
       {label && (
         <div
           className={cn(
-            'px-2 py-1 text-xs text-gray-500 uppercase tracking-wider',
+            'px-2 py-1.5 text-xs text-gray-500 uppercase tracking-wider', // py-1.5 para melhor espaçamento vertical
             collapsible && 'cursor-pointer hover:text-gray-700'
           )}
           onClick={collapsible ? () => setIsCollapsed(!isCollapsed) : undefined}
         >
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5"> {/* gap-1.5 para melhor espaçamento entre chevron e label */}
             {collapsible && (
               <span className="shrink-0">
                 {isCollapsed ? (
-                  <ChevronRight className="w-3 h-3" />
+                  <ChevronRight className="w-3 h-3" style={{ transition: 'none', transform: 'none' }} />
                 ) : (
-                  <ChevronDown className="w-3 h-3" />
+                  <ChevronDown className="w-3 h-3" style={{ transition: 'none', transform: 'none' }} />
                 )}
               </span>
             )}
@@ -60,7 +60,7 @@ export function NavbarGroup({
         </div>
       )}
       {!isCollapsed && (
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-2"> {/* gap-2 para consistência com outros componentes */}
           {children}
         </div>
       )}

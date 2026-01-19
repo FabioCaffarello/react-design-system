@@ -1,0 +1,106 @@
+/**
+ * AIppin Design System - Border Tokens
+ *
+ * Border widths, styles, and complete border definitions.
+ *
+ * @brand AIppin
+ * @version 1.0.0
+ */
+
+@theme {
+  /* ============================================
+   * BORDER WIDTHS
+   * ============================================ */
+
+  --border-width-0: 0px;
+  --border-width-1: 1px;
+  --border-width-2: 2px;
+  --border-width-4: 4px;
+  --border-width-8: 8px;
+
+  /* Semantic widths */
+  --border-width-none: var(--border-width-0);
+  --border-width-thin: var(--border-width-1);
+  --border-width-default: var(--border-width-1);
+  --border-width-medium: var(--border-width-2);
+  --border-width-thick: var(--border-width-4);
+
+  /* ============================================
+   * BORDER STYLES
+   * ============================================ */
+
+  --border-style-solid: solid;
+  --border-style-dashed: dashed;
+  --border-style-dotted: dotted;
+  --border-style-double: double;
+  --border-style-none: none;
+
+  /* ============================================
+   * COMPLETE BORDERS
+   * Ready-to-use border definitions
+   * ============================================ */
+
+  /* Default border */
+  --border-default: var(--border-width-default) var(--border-style-solid) var(--color-border-default);
+  --border-muted: var(--border-width-default) var(--border-style-solid) var(--color-border-muted);
+  --border-subtle: var(--border-width-default) var(--border-style-solid) var(--color-border-subtle);
+  --border-emphasis: var(--border-width-default) var(--border-style-solid) var(--color-border-emphasis);
+  --border-strong: var(--border-width-default) var(--border-style-solid) var(--color-border-strong);
+
+  /* Brand borders */
+  --border-brand: var(--border-width-default) var(--border-style-solid) var(--color-border-brand);
+  --border-brand-emphasis: var(--border-width-medium) var(--border-style-solid) var(--color-border-brand);
+
+  /* Focus borders */
+  --border-focus: var(--border-width-medium) var(--border-style-solid) var(--color-border-focus);
+
+  /* Feedback borders */
+  --border-success: var(--border-width-default) var(--border-style-solid) var(--color-success-border);
+  --border-success-emphasis: var(--border-width-default) var(--border-style-solid) var(--color-success);
+  --border-warning: var(--border-width-default) var(--border-style-solid) var(--color-warning-border);
+  --border-warning-emphasis: var(--border-width-default) var(--border-style-solid) var(--color-warning);
+  --border-error: var(--border-width-default) var(--border-style-solid) var(--color-error-border);
+  --border-error-emphasis: var(--border-width-default) var(--border-style-solid) var(--color-error);
+  --border-info: var(--border-width-default) var(--border-style-solid) var(--color-info-border);
+  --border-info-emphasis: var(--border-width-default) var(--border-style-solid) var(--color-info);
+
+  /* Dashed borders */
+  --border-dashed: var(--border-width-default) var(--border-style-dashed) var(--color-border-default);
+  --border-dashed-emphasis: var(--border-width-default) var(--border-style-dashed) var(--color-border-emphasis);
+
+  /* Dotted borders */
+  --border-dotted: var(--border-width-default) var(--border-style-dotted) var(--color-border-default);
+
+  /* ============================================
+   * OUTLINE TOKENS
+   * For focus indicators
+   * ============================================ */
+
+  --outline-none: none;
+  --outline-default: 2px solid var(--color-border-focus);
+  --outline-offset: 2px;
+
+  /* Focus ring */
+  --ring-width: 3px;
+  --ring-color: var(--color-indigo-500);
+  --ring-opacity: 0.2;
+  --ring-offset-width: 2px;
+  --ring-offset-color: var(--color-white);
+
+  /* Focus ring compositions */
+  --ring-default: 0 0 0 var(--ring-width) rgb(99 102 241 / 0.2);
+  --ring-success: 0 0 0 var(--ring-width) rgb(16 185 129 / 0.2);
+  --ring-warning: 0 0 0 var(--ring-width) rgb(245 158 11 / 0.2);
+  --ring-error: 0 0 0 var(--ring-width) rgb(244 63 94 / 0.2);
+  --ring-info: 0 0 0 var(--ring-width) rgb(14 165 233 / 0.2);
+
+  /* ============================================
+   * DIVIDER TOKENS
+   * For visual separation
+   * ============================================ */
+
+  --divider-horizontal: var(--border-width-default) var(--border-style-solid) var(--color-divider);
+  --divider-vertical: var(--border-width-default) var(--border-style-solid) var(--color-divider);
+  --divider-subtle: var(--border-width-default) var(--border-style-solid) var(--color-divider-subtle);
+  --divider-emphasis: var(--border-width-default) var(--border-style-solid) var(--color-divider-emphasis);
+}

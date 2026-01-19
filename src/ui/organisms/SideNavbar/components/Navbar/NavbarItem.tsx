@@ -71,7 +71,7 @@ const BADGE_VARIANTS = {
 const LABEL_STYLES: Record<NavbarLabelMode, string> = {
   tooltip: '', // Uses existing tooltip behavior
   inline: 'flex-row gap-2 w-full px-3',
-  below: 'flex-col gap-1',
+  below: 'flex-col gap-1.5', // Aumentado de gap-1 para gap-1.5 para melhor espaçamento
 };
 
 export default function NavbarItem({
@@ -114,16 +114,28 @@ export default function NavbarItem({
 
   // Label element (for inline and below modes)
   const labelElement = effectiveLabelMode !== 'tooltip' && showLabel && label && (
-    <span className={cn(
-      'text-xs',
-      effectiveLabelMode === 'below' && 'text-center',
-      effectiveLabelMode === 'inline' && 'truncate'
-    )}>
+    <span 
+      className={cn(
+        'text-xs',
+        'flex-shrink-0', // Prevenir que label encolha
+        'relative z-10', // Garantir que label fique na frente do ícone
+        effectiveLabelMode === 'below' && 'text-center',
+        effectiveLabelMode === 'inline' && 'truncate'
+      )}
+      style={{
+        // Garantir que label não seja afetada por transformações
+        willChange: 'auto',
+        transform: 'none',
+        zIndex: 10, // Garantir que label fique na frente do ícone
+      }}
+    >
       {label}
     </span>
   );
 
   // Base classes for the item
+  // Removido transition-colors e duration-150 para eliminar animações
+  // Adicionado box-border para estabilidade dimensional
   const baseClasses = cn(
     'relative',
     'flex',
@@ -131,45 +143,74 @@ export default function NavbarItem({
     effectiveLabelMode === 'inline' ? 'justify-start' : 'justify-center',
     effectiveLabelMode === 'below' && 'flex-col',
     'rounded-lg',
-    'transition-colors',
-    'duration-150',
+    'box-border', // Garantir box-sizing consistente
     'focus:outline-none',
     'focus:ring-2',
-    'focus:ring-indigo-500',
+    'focus:ring-[var(--color-primary-500)]',
     'focus:ring-offset-1',
     'w-full', // Ensure full width for vertical layout
     'flex-shrink-0', // Prevent items from shrinking
     'min-w-0', // Prevent flex items from overflowing
+    // Remover todas as transições que possam causar movimento
+    '[&>*]:!transition-none',
+    '[&>*]:!transform-none',
     effectiveLabelMode === 'tooltip' ? sizeConfig.container : 'px-2 py-1.5',
     effectiveLabelMode !== 'tooltip' && LABEL_STYLES[effectiveLabelMode],
     disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
     className
   );
 
-  // Variant-specific classes
+  // Variant-specific classes usando variáveis CSS via Tailwind arbitrary values
+  // Estados hover/active sem transições para evitar movimento
   const variantClasses = {
     default: isActive
-      ? 'bg-indigo-100 text-indigo-600'
+      ? 'bg-[var(--color-primary-100)] text-[var(--color-primary-600)]'
       : disabled
-        ? 'text-gray-400'
-        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900',
+        ? 'text-[var(--color-neutral-400)]'
+        : 'text-[var(--color-neutral-600)] hover:bg-[var(--color-neutral-100)] hover:text-[var(--color-neutral-900)] [&:hover]:!transform-none',
     ghost: isActive
-      ? 'text-indigo-600'
+      ? 'text-[var(--color-primary-600)]'
       : disabled
-        ? 'text-gray-400'
-        : 'text-gray-600 hover:text-gray-900',
+        ? 'text-[var(--color-neutral-400)]'
+        : 'text-[var(--color-neutral-600)] hover:text-[var(--color-neutral-900)] [&:hover]:!transform-none',
     subtle: isActive
-      ? 'bg-gray-100 text-gray-900'
+      ? 'bg-[var(--color-neutral-100)] text-[var(--color-neutral-900)]'
       : disabled
-        ? 'text-gray-400'
-        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700',
+        ? 'text-[var(--color-neutral-400)]'
+        : 'text-[var(--color-neutral-500)] hover:bg-[var(--color-neutral-50)] hover:text-[var(--color-neutral-700)] [&:hover]:!transform-none',
   };
 
   const content = (
     <>
-      <span className={cn('flex-shrink-0', sizeConfig.icon)}>{icon}</span>
+      {/* Wrapper do ícone - sem animações, com estabilidade dimensional */}
+      <span 
+        className={cn(
+          'flex-shrink-0',
+          sizeConfig.icon,
+          '[&>svg]:transition-none',
+          '[&>svg]:!transform-none',
+          '[&>svg]:!will-change-auto',
+          'box-border',
+          'flex items-center justify-center',
+          // Garantir que ícone não sobreponha label - z-index menor que label
+          effectiveLabelMode === 'tooltip' ? 'relative z-0' : 'relative z-0'
+        )}
+        style={{
+          // Garantir dimensões mínimas fixas para evitar "pular"
+          minWidth: sizeConfig.icon === 'w-4 h-4' ? '1rem' : sizeConfig.icon === 'w-5 h-5' ? '1.25rem' : '1.5rem',
+          minHeight: sizeConfig.icon === 'w-4 h-4' ? '1rem' : sizeConfig.icon === 'w-5 h-5' ? '1.25rem' : '1.5rem',
+          // Forçar sem animações ou transformações
+          willChange: 'auto',
+          transform: 'none',
+          transition: 'none',
+          // Garantir que ícone fique atrás do label quando ambos estão visíveis
+          zIndex: effectiveLabelMode !== 'tooltip' ? 0 : 'auto',
+        }}
+      >
+        {icon}
+      </span>
       
-      {/* Label (for inline and below modes) */}
+      {/* Label (for inline and below modes) - posicionada após o ícone */}
       {labelElement}
 
       {/* Badge */}
@@ -197,6 +238,13 @@ export default function NavbarItem({
   );
 
   // Render as link if href is provided
+  // Adicionar style inline para garantir que não há transformações em hover
+  const elementStyle = {
+    willChange: 'auto',
+    transform: 'none',
+    transition: 'none',
+  };
+
   const element = href ? (
     <a
       href={href}
@@ -204,6 +252,7 @@ export default function NavbarItem({
       rel={target === '_blank' ? 'noopener noreferrer' : undefined}
       onClick={handleClick}
       className={cn(baseClasses, variantClasses[variant])}
+      style={elementStyle}
       aria-label={label}
       aria-current={isActive ? 'page' : undefined}
       aria-disabled={disabled}
@@ -216,6 +265,7 @@ export default function NavbarItem({
       onClick={handleClick}
       disabled={disabled}
       className={cn(baseClasses, variantClasses[variant])}
+      style={elementStyle}
       aria-label={label}
       aria-current={isActive ? 'page' : undefined}
       {...props}

@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Floating Edges Checkbox Component
  * 
@@ -15,7 +17,7 @@ export function FloatingEdgesCheckbox() {
   const { reactFlowConfig, setReactFlowConfig } = usePlaygroundContext();
   
   // Get current floating edges state from config or default
-  const floatingEdges = (reactFlowConfig as any)?.floatingEdges ?? false;
+  const floatingEdges = (reactFlowConfig as unknown)?.floatingEdges ?? false;
 
   const handleChange = (checked: boolean) => {
     setReactFlowConfig({

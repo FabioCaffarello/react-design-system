@@ -48,7 +48,7 @@ async function healthCheck() {
       console.error(`❌ MCP Server returned error: ${response.status} ${response.statusText}`);
       return false;
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ MCP Server is not available');
     console.error(`   Error: ${error.message}\n`);
     console.log('💡 Make sure Storybook is running:');

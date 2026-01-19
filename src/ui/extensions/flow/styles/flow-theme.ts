@@ -5,7 +5,7 @@
  * Provides theming support with light/dark modes and custom overrides.
  */
 
-import type { ThemeMode } from '../../../tokens/tokens.factory';
+import type { ThemeMode } from '../../../tokens';
 import { COLOR_TOKENS, COLOR_TOKENS_LIGHT, COLOR_TOKENS_DARK } from '../../../tokens/colors';
 import { SPACING_TOKENS } from '../../../tokens/spacing';
 import { SHADOW_TOKENS } from '../../../tokens/shadows';

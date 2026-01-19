@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Playground Dev Tools Component
  * 

@@ -96,13 +96,13 @@ function Navbar({
           'flex',
           'flex-col',
           'h-full',
-          'bg-white',
-          'border-r',
-          'border-gray-200',
           shouldExpand ? 'items-stretch' : 'items-center',
           className
         )}
         style={{
+          position: 'relative', // Ensure relative positioning for absolute children (toggle)
+          backgroundColor: 'var(--color-card)',
+          borderRight: '1px solid var(--color-border)',
           width: navbarWidth,
           transitionProperty: 'width',
           transitionDuration: `${rootTheme.animationDuration}ms`,
@@ -114,38 +114,45 @@ function Navbar({
         aria-label="Side navigation"
         {...props}
       >
-        {/* Main toggle button at right edge of navbar - rendered first for proper z-index */}
-        {shouldShowMainToggle && (
-          <SideNavbarToggle position={mainTogglePosition} />
-        )}
-
         {/* Top toggle position (internal) */}
         {showToggle && togglePosition === 'top' && (
-          <div className="flex-shrink-0 p-2 border-b border-gray-200">
+          <div 
+            className="flex-shrink-0 p-2"
+            style={{ borderBottom: '1px solid var(--color-border)' }}
+          >
             <NavbarToggle />
           </div>
         )}
 
         {/* Navigation items - vertical layout */}
-        <div className={cn(
-          'flex-1',
-          'flex',
-          'flex-col',
-          'overflow-y-auto',
-          'overflow-x-hidden',
-          'p-2',
-          'gap-2',
-          'w-full',
-          'min-w-0', // Prevent flex items from overflowing
-          shouldExpand ? 'items-stretch' : 'items-center',
-          'justify-start'
-        )}>
+        <div 
+          className={cn(
+            'relative', // Create new stacking context
+            'flex-1',
+            'flex',
+            'flex-col',
+            'overflow-y-auto',
+            'overflow-x-hidden',
+            'p-2', // Padding consistente de 0.5rem (8px)
+            'gap-2', // Gap consistente de 0.5rem (8px) entre itens
+            'w-full',
+            'min-w-0', // Prevent flex items from overflowing
+            shouldExpand ? 'items-stretch' : 'items-center',
+            'justify-start'
+          )}
+          style={{
+            zIndex: 1, // z-index: 1 to ensure content is above toggle
+          }}
+        >
           {children}
         </div>
 
         {/* Bottom toggle position (internal) */}
         {showToggle && togglePosition === 'bottom' && (
-          <div className="flex-shrink-0 p-2 border-t border-gray-200">
+          <div 
+            className="flex-shrink-0 p-2"
+            style={{ borderTop: '1px solid var(--color-border)' }}
+          >
             <NavbarToggle />
           </div>
         )}

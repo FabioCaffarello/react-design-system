@@ -33,3 +33,6 @@ export { getAnimationClass, getAnimation, getTransitionClass } from "./tokens/an
 export { getZIndexClass, getZIndex } from "./tokens/z-index";
 export { getOpacityClass, getOpacity } from "./tokens/opacity";
 export { getGradientClass, getGradient } from "./tokens/gradients";
+
+// Export utils
+export { cn } from "./utils";

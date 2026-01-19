@@ -250,13 +250,15 @@ const Button = memo(forwardRef<HTMLButtonElement, ButtonProps>(function Button({
   );
 
   // Build button props (spread props at the end to allow overrides)
+  // If type is explicitly provided in props, use it; otherwise default to 'button' for button elements
+  const defaultType = Component === 'button' && !props.type ? 'button' : undefined;
   const buttonProps = {
     className: classes,
     disabled: disabled || isLoading,
     'aria-busy': isLoading,
     'aria-label': finalAriaLabel,
     'aria-disabled': disabled || isLoading,
-    ...(Component === 'button' ? { type: 'button' as const } : {}),
+    ...(defaultType ? { type: defaultType } : {}),
     ...props,
   };
 
@@ -285,3 +287,4 @@ const Button = memo(forwardRef<HTMLButtonElement, ButtonProps>(function Button({
 Button.displayName = 'Button';
 
 export default Button;
+export { Button };

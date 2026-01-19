@@ -83,7 +83,7 @@ export const SelectorNode = React.memo(({
           {selectorType === 'select' && (
             <select
               value={data.value || ''}
-              onChange={data.onChange as any}
+              onChange={data.onChange as unknown}
               className="w-full px-2 py-1 rounded border"
             >
               {data.options?.map((option) => (
@@ -97,7 +97,7 @@ export const SelectorNode = React.memo(({
             <input
               type="text"
               value={data.value || ''}
-              onChange={data.onChange as any}
+              onChange={data.onChange as unknown}
               className="w-full px-2 py-1 rounded border"
               placeholder="Enter text..."
             />
@@ -106,7 +106,7 @@ export const SelectorNode = React.memo(({
             <input
               type="number"
               value={data.value || ''}
-              onChange={data.onChange as any}
+              onChange={data.onChange as unknown}
               className="w-full px-2 py-1 rounded border"
               placeholder="Enter number..."
             />
