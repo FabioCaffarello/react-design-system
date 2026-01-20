@@ -14,10 +14,10 @@ This document outlines the day-to-day engineering process for the React Design S
 The project uses a **trunk-based development** approach with feature branches:
 
 - **main**: Production-ready code (protected branch)
-- **feature/***: New features and enhancements
-- **fix/***: Bug fixes
-- **docs/***: Documentation updates
-- **refactor/***: Code refactoring
+- **feature/\***: New features and enhancements
+- **fix/\***: Bug fixes
+- **docs/\***: Documentation updates
+- **refactor/\***: Code refactoring
 
 ### Release Process
 
@@ -50,6 +50,96 @@ All commits must follow Conventional Commits format:
 ```
 
 **Types**: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `perf`, `ci`, `build`
+
+## Git Hooks with Husky
+
+The project uses **Husky** to enforce code quality and commit standards automatically through Git hooks.
+
+### Hooks Overview
+
+#### pre-commit Hook
+
+**When**: Before creating a commit  
+**What it does**:
+
+- Runs `lint-staged` to lint and format only staged files
+- Automatically fixes ESLint errors when possible
+- Formats code with Prettier
+- **Performance**: < 10 seconds
+
+**What gets checked**:
+
+- TypeScript/TSX files: ESLint + Prettier
+- JSON, Markdown, YAML, CSS files: Prettier
+
+#### commit-msg Hook
+
+**When**: When creating commit message  
+**What it does**:
+
+- Validates commit message format using commitlint
+- Ensures commits follow Conventional Commits specification
+- Blocks commits that don't match the pattern
+- **Performance**: < 1 second
+
+**Valid commit formats**:
+
+```bash
+feat: add new component
+fix(Button): resolve onClick issue
+docs: update README
+chore: update dependencies
+```
+
+#### pre-push Hook
+
+**When**: Before pushing to remote  
+**What it does**:
+
+- Runs unit tests (`npm run test:no-browser`)
+- Runs full lint check (`npm run lint`)
+- Blocks push if tests fail or lint errors exist
+- **Performance**: < 60 seconds
+
+### Bypassing Hooks (Emergency Only)
+
+In rare cases, you may need to bypass hooks:
+
+```bash
+# Skip pre-commit and commit-msg hooks
+git commit --no-verify -m "emergency fix"
+
+# Skip pre-push hook
+git push --no-verify
+```
+
+**⚠️ Warning**: Bypassing hooks will cause CI to fail. Only use in true emergencies and fix issues immediately after.
+
+### Troubleshooting
+
+**Hooks not running?**
+
+1. Ensure Husky is installed: `npm install`
+2. Check that `.husky/` directory exists
+3. Verify hooks are executable: `ls -la .husky/`
+
+**pre-commit is too slow?**
+
+- Only staged files are checked, so it should be fast
+- If slow, check for large files or many staged changes
+- Consider committing in smaller batches
+
+**commit-msg failing?**
+
+- Ensure your commit message follows Conventional Commits format
+- Check `commitlint.config.js` for allowed types
+- Example valid format: `feat: add new feature`
+
+**pre-push failing?**
+
+- Fix failing tests before pushing
+- Fix lint errors before pushing
+- Run `npm run test:no-browser` and `npm run lint` locally first
 
 ## Local Development
 

@@ -102,7 +102,8 @@
     "test:e2e:report": "playwright show-report",
     "chromatic": "npx chromatic --project-token=${CHROMATIC_PROJECT_TOKEN:-}",
     "chromatic:ci": "npx chromatic --exit-zero-on-changes --project-token=${CHROMATIC_PROJECT_TOKEN:-}",
-    "test:visual": "npm run build-storybook && npm run chromatic"
+    "test:visual": "npm run build-storybook && npm run chromatic",
+    "prepare": "husky"
   },
   "peerDependencies": {
     "@hookform/resolvers": "^3.0.0",
@@ -132,6 +133,8 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.10.0",
     "@chromatic-com/storybook": "^4.1.2",
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
     "@eslint/js": "^9.36.0",
     "@hookform/resolvers": "^3.0.0",
     "@playwright/test": "^1.56.1",
@@ -162,7 +165,9 @@
     "eslint-plugin-react-refresh": "^0.4.22",
     "eslint-plugin-storybook": "^10.0.3",
     "globals": "^16.4.0",
+    "husky": "^9.1.7",
     "jsdom": "^27.0.1",
+    "lint-staged": "^16.2.7",
     "lucide-react": "^0.552.0",
     "playwright": "^1.56.1",
     "plop": "^4.0.4",

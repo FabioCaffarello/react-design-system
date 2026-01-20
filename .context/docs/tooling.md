@@ -144,6 +144,71 @@ Follows prompts to generate:
 - **Storybook**: Auto-reloads on component changes
 - **Vite Dev**: Hot module replacement for fast feedback
 
+## Git Hooks with Husky
+
+The project uses **Husky** to automatically enforce code quality and commit standards.
+
+### Installation
+
+Husky is automatically set up when you run `npm install` (via the `prepare` script).
+
+### Configuration Files
+
+- **`.husky/`**: Git hooks directory (versioned in repository)
+- **`.lintstagedrc.json`**: Configuration for lint-staged (runs on staged files only)
+- **`commitlint.config.js`**: Configuration for commit message validation
+
+### Available Hooks
+
+#### pre-commit
+
+- **Location**: `.husky/pre-commit`
+- **Runs**: `lint-staged` (ESLint + Prettier on staged files)
+- **Performance**: < 10 seconds
+
+#### commit-msg
+
+- **Location**: `.husky/commit-msg`
+- **Runs**: `commitlint` (validates Conventional Commits format)
+- **Performance**: < 1 second
+
+#### pre-push
+
+- **Location**: `.husky/pre-push`
+- **Runs**: Tests + full lint check
+- **Performance**: < 60 seconds
+
+### Manual Setup (if needed)
+
+If hooks aren't working after `npm install`:
+
+```bash
+# Reinitialize Husky
+npx husky init
+
+# Or manually run prepare script
+npm run prepare
+```
+
+### Troubleshooting
+
+**Hooks not executing?**
+
+1. Check `.husky/` directory exists
+2. Verify hooks are executable: `chmod +x .husky/*`
+3. Run `npm run prepare` to reinstall hooks
+
+**Want to skip hooks temporarily?**
+
+```bash
+git commit --no-verify  # Skip pre-commit and commit-msg
+git push --no-verify    # Skip pre-push
+```
+
+⚠️ **Warning**: Skipping hooks will cause CI to fail. Only use in emergencies.
+
+See [Development Workflow](./development-workflow.md#git-hooks-with-husky) for detailed hook documentation.
+
 ## IDE / Editor Setup
 
 ### VS Code (Recommended)
