@@ -153,7 +153,14 @@ export const StartComponentDefinitionSchema = RegistryEntrySchema.extend({
 /**
  * Start Component Instance Schema
  */
-export const StartComponentInstanceSchema = z.object({
+export const StartComponentInstanceSchema: z.ZodType<{
+  id: string;
+  definitionId: string;
+  props: Record<string, unknown>;
+  parentId?: string;
+  slotId?: z.infer<typeof SlotIdSchema>;
+  children?: Array<z.infer<typeof StartComponentInstanceSchema>>;
+}> = z.object({
   id: z.string().min(1),
   definitionId: z.string().min(1),
   props: z.record(z.unknown()),

@@ -4,7 +4,6 @@
  * React components for visualizing design tokens in Storybook
  */
 
-import React from 'react';
 import { 
   COLOR_TOKENS_LIGHT,
   SPACING_TOKENS,
@@ -14,8 +13,8 @@ import {
   Z_INDEX_TOKENS,
   OPACITY_TOKENS,
   GRADIENT_TOKENS,
-  type ColorRole,
 } from './index';
+import type { ColorRole } from './colors';
 
 /**
  * Color Palette Visualization
@@ -34,17 +33,17 @@ export function ColorPalette() {
               <ColorSwatch
                 label="light"
                 color={color.light.hex}
-                textColor={color.light.contrast || '#000'}
+                textColor="#000"
               />
               <ColorSwatch
                 label="DEFAULT"
                 color={color.DEFAULT.hex}
-                textColor={color.DEFAULT.contrast || '#fff'}
+                textColor="#fff"
               />
               <ColorSwatch
                 label="dark"
                 color={color.dark.hex}
-                textColor={color.dark.contrast || '#fff'}
+                textColor="#fff"
               />
               <ColorSwatch
                 label="contrast"
@@ -190,16 +189,37 @@ export function AnimationReference() {
 
   return (
     <div className="space-y-4">
-      {animationEntries.map(([key, token]) => (
-        <div key={key} className="border-b border-gray-200 pb-4">
-          <div className="text-sm font-medium text-gray-700 mb-2">{key}</div>
-          <div className="space-y-1 text-xs text-gray-600">
-            <div>Duration: {token.duration.value} ({token.duration.ms}ms)</div>
-            <div>Easing: {token.easing.description}</div>
-            <div className="font-mono">{token.duration.tailwind} {token.easing.tailwind}</div>
-          </div>
-        </div>
-      ))}
+      {animationEntries.map(([key, token]) => {
+        // Type guard to check if it's an AnimationToken
+        const isAnimationToken = 'easing' in token && 'duration' in token && typeof token.duration === 'object';
+        
+        if (isAnimationToken) {
+          const animToken = token as import('./animations').AnimationToken;
+          return (
+            <div key={key} className="border-b border-gray-200 pb-4">
+              <div className="text-sm font-medium text-gray-700 mb-2">{key}</div>
+              <div className="space-y-1 text-xs text-gray-600">
+                <div>Duration: {animToken.duration.value} ({animToken.duration.ms}ms)</div>
+                <div>Easing: {animToken.easing.description}</div>
+                <div className="font-mono">{animToken.duration.tailwind} {animToken.easing.tailwind}</div>
+              </div>
+            </div>
+          );
+        } else {
+          const transToken = token as import('./animations').TransitionToken;
+          return (
+            <div key={key} className="border-b border-gray-200 pb-4">
+              <div className="text-sm font-medium text-gray-700 mb-2">{key}</div>
+              <div className="space-y-1 text-xs text-gray-600">
+                <div>Property: {transToken.property}</div>
+                <div>Duration: {transToken.duration}</div>
+                <div>Timing: {transToken.timingFunction}</div>
+                <div className="font-mono">{transToken.tailwind}</div>
+              </div>
+            </div>
+          );
+        }
+      })}
     </div>
   );
 }

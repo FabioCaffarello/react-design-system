@@ -18,7 +18,7 @@ export function mergeDeep<T extends Record<string, unknown>>(
     for (const key in source) {
       if (isObject(source[key])) {
         if (!target[key]) Object.assign(target, { [key]: {} });
-        mergeDeep(target[key], source[key]);
+        mergeDeep(target[key] as Record<string, unknown>, source[key] as Record<string, unknown>);
       } else {
         Object.assign(target, { [key]: source[key] });
       }
@@ -32,7 +32,7 @@ export function mergeDeep<T extends Record<string, unknown>>(
  * Check if value is an object
  */
 function isObject(item: unknown): item is Record<string, unknown> {
-  return item && typeof item === 'object' && !Array.isArray(item);
+  return Boolean(item && typeof item === 'object' && !Array.isArray(item));
 }
 
 /**
