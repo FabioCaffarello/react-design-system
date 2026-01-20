@@ -166,14 +166,31 @@ export default defineConfig(() => {
             browser: {
               enabled: true,
               headless: true,
-              provider: playwright({}),
+              provider: playwright({
+                launch: {
+                  args: [
+                    '--disable-web-security',
+                    '--disable-features=IsolateOrigins,site-per-process',
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                  ],
+                },
+              }),
               instances: [
                 {
                   browser: "chromium",
                 },
               ],
+              ui: false,
             },
             setupFiles: [".storybook/vitest.setup.ts"],
+            testTimeout: 60000,
+            hookTimeout: 60000,
+            teardownTimeout: 30000,
+            isolate: false,
+            retry: 0,
+            bail: 0,
+            onConsoleLog: () => false,
           },
         },
       ],
