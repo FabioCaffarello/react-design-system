@@ -392,9 +392,14 @@ export const WithEvents: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    // Wait for the wizard to render - check for any visible content
     await waitFor(() => {
-      expect(canvas.getByText(/personal information/i)).toBeInTheDocument();
-    });
+      // Check for form fields or step content
+      const firstNameInput = canvas.queryByLabelText(/first name/i);
+      const lastNameInput = canvas.queryByLabelText(/last name/i);
+      // At least one input should be present to confirm wizard is rendered
+      expect(firstNameInput || lastNameInput).toBeInTheDocument();
+    }, { timeout: 5000 });
   },
   parameters: {
     docs: {

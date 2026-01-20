@@ -131,14 +131,6 @@ A select component with support for single selection, option groups, and validat
         category: 'Events',
       },
     },
-    onOpenChange: {
-      description: 'Callback fired when the dropdown open state changes',
-      action: 'onOpenChange',
-      table: {
-        type: { summary: '(open: boolean) => void' },
-        category: 'Events',
-      },
-    },
   },
 };
 
@@ -306,6 +298,7 @@ export const WithOptionGroups: Story = {
       <div className="space-y-4">
         <Select
           label="Choose category"
+          options={[]}
           optionGroups={optionGroups}
           placeholder="Select a category"
           value={value}

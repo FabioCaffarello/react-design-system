@@ -102,30 +102,34 @@ const filters: FilterConfig[] = [
 export const Default: Story = {
   args: {
     items: mockProducts,
-    searchFn: (query, item) => item.name.toLowerCase().includes(query),
+    searchFn: (query, item) => (item as { name: string }).name.toLowerCase().includes(query),
     filterFn: (filters, item) => {
-      if (filters.category && item.category !== filters.category) return false;
-      if (filters.inStock !== undefined && item.inStock !== filters.inStock) return false;
+      const product = item as Product;
+      if (filters.category && product.category !== filters.category) return false;
+      if (filters.inStock !== undefined && product.inStock !== filters.inStock) return false;
       return true;
     },
-    renderItem: (item) => (
-      <Card padding="md">
-        <Stack spacing="sm">
-          <Text variant="heading" size="md">
-            {item.name}
-          </Text>
-          <Text size="sm" className="text-gray-600">
-            {item.category}
-          </Text>
-          <Text variant="heading" size="lg">
-            ${item.price}
-          </Text>
-          <Text size="sm" className={item.inStock ? 'text-green-600' : 'text-red-600'}>
-            {item.inStock ? 'In Stock' : 'Out of Stock'}
-          </Text>
-        </Stack>
-      </Card>
-    ),
+    renderItem: (item) => {
+      const product = item as Product;
+      return (
+        <Card padding="medium">
+          <Stack spacing="sm">
+            <Text variant="heading" className="text-base">
+              {product.name}
+            </Text>
+            <Text className="text-gray-600 text-sm">
+              {product.category}
+            </Text>
+            <Text variant="heading" className="text-lg">
+              ${product.price}
+            </Text>
+            <Text className={product.inStock ? 'text-green-600 text-sm' : 'text-red-600 text-sm'}>
+              {product.inStock ? 'In Stock' : 'Out of Stock'}
+            </Text>
+          </Stack>
+        </Card>
+      );
+    },
     filters,
     searchPlaceholder: 'Search products...',
     emptyMessage: 'No products found',
@@ -136,15 +140,18 @@ export const Default: Story = {
 export const SearchOnly: Story = {
   args: {
     items: mockProducts,
-    searchFn: (query, item) => item.name.toLowerCase().includes(query),
-    renderItem: (item) => (
-      <Card padding="md">
-        <Text variant="heading">{item.name}</Text>
-        <Text size="sm" className="text-gray-600">
-          {item.category} - ${item.price}
-        </Text>
-      </Card>
-    ),
+    searchFn: (query, item) => (item as { name: string }).name.toLowerCase().includes(query),
+    renderItem: (item) => {
+      const typedItem = item as { name: string; category: string; price: number };
+      return (
+        <Card padding="medium">
+          <Text variant="heading">{typedItem.name}</Text>
+          <Text className="text-gray-600 text-sm">
+            {typedItem.category} - ${typedItem.price}
+          </Text>
+        </Card>
+      );
+    },
     filters: [],
     searchPlaceholder: 'Search...',
   },
@@ -154,17 +161,21 @@ export const FiltersOnly: Story = {
   args: {
     items: mockProducts,
     filterFn: (filters, item) => {
-      if (filters.category && item.category !== filters.category) return false;
+      const typedItem = item as { category: string };
+      if (filters.category && typedItem.category !== filters.category) return false;
       return true;
     },
-    renderItem: (item) => (
-      <Card padding="md">
-        <Text variant="heading">{item.name}</Text>
-        <Text size="sm" className="text-gray-600">
-          {item.category}
-        </Text>
-      </Card>
-    ),
+    renderItem: (item) => {
+      const typedItem = item as { name: string; category: string };
+      return (
+        <Card padding="medium">
+          <Text variant="heading">{typedItem.name}</Text>
+          <Text className="text-gray-600 text-sm">
+            {typedItem.category}
+          </Text>
+        </Card>
+      );
+    },
     filters: [filters[0]], // Only category filter
     searchPlaceholder: 'Search...',
   },
@@ -173,9 +184,11 @@ export const FiltersOnly: Story = {
 // Event Stories
 export const WithEvents: Story = {
   render: () => {
+    // @ts-expect-error - Used for Storybook actions panel
     const _handleSearch = fn((query: string) => {
       console.log('Search:', query);
     });
+    // @ts-expect-error - Used for Storybook actions panel
     const _handleFilter = fn((filters: Record<string, unknown>) => {
       console.log('Filter:', filters);
     });
@@ -194,12 +207,12 @@ export const WithEvents: Story = {
             return true;
           }}
           renderItem={(item) => (
-            <Card padding="md">
+            <Card padding="medium">
               <Stack spacing="sm">
-                <Text variant="heading" size="md">
+                <Text variant="heading" className="text-base">
                   {item.name}
                 </Text>
-                <Text size="sm" className="text-gray-600">
+                <Text className="text-gray-600 text-sm">
                   {item.category}
                 </Text>
               </Stack>
@@ -232,24 +245,28 @@ export const WithEvents: Story = {
 export const DefaultState: Story = {
   args: {
     items: mockProducts,
-    searchFn: (query, item) => item.name.toLowerCase().includes(query),
+    searchFn: (query, item) => (item as { name: string }).name.toLowerCase().includes(query),
     filterFn: (filters, item) => {
-      if (filters.category && item.category !== filters.category) return false;
-      if (filters.inStock !== undefined && item.inStock !== filters.inStock) return false;
+      const typedItem = item as { category: string; inStock: boolean };
+      if (filters.category && typedItem.category !== filters.category) return false;
+      if (filters.inStock !== undefined && typedItem.inStock !== filters.inStock) return false;
       return true;
     },
-    renderItem: (item) => (
-      <Card padding="md">
-        <Stack spacing="sm">
-          <Text variant="heading" size="md">
-            {item.name}
-          </Text>
-          <Text size="sm" className="text-gray-600">
-            {item.category}
-          </Text>
-        </Stack>
-      </Card>
-    ),
+    renderItem: (item) => {
+      const typedItem = item as { name: string; category: string };
+      return (
+        <Card padding="medium">
+          <Stack spacing="sm">
+            <Text variant="heading" className="text-base">
+              {typedItem.name}
+            </Text>
+            <Text className="text-gray-600 text-sm">
+              {typedItem.category}
+            </Text>
+          </Stack>
+        </Card>
+      );
+    },
     filters,
     searchPlaceholder: 'Search products...',
     emptyMessage: 'No products found',
@@ -267,15 +284,18 @@ export const DefaultState: Story = {
 export const SearchOnlyState: Story = {
   args: {
     items: mockProducts,
-    searchFn: (query, item) => item.name.toLowerCase().includes(query),
-    renderItem: (item) => (
-      <Card padding="md">
-        <Text variant="heading">{item.name}</Text>
-        <Text size="sm" className="text-gray-600">
-          {item.category} - ${item.price}
-        </Text>
-      </Card>
-    ),
+    searchFn: (query, item) => (item as { name: string }).name.toLowerCase().includes(query),
+    renderItem: (item) => {
+      const typedItem = item as { name: string; category: string; price: number };
+      return (
+        <Card padding="medium">
+          <Text variant="heading">{typedItem.name}</Text>
+          <Text className="text-gray-600 text-sm">
+            {typedItem.category} - ${typedItem.price}
+          </Text>
+        </Card>
+      );
+    },
     filters: [],
     searchPlaceholder: 'Search...',
   },
@@ -292,17 +312,21 @@ export const FiltersOnlyState: Story = {
   args: {
     items: mockProducts,
     filterFn: (filters, item) => {
-      if (filters.category && item.category !== filters.category) return false;
+      const typedItem = item as { category: string };
+      if (filters.category && typedItem.category !== filters.category) return false;
       return true;
     },
-    renderItem: (item) => (
-      <Card padding="md">
-        <Text variant="heading">{item.name}</Text>
-        <Text size="sm" className="text-gray-600">
-          {item.category}
-        </Text>
-      </Card>
-    ),
+    renderItem: (item) => {
+      const typedItem = item as { name: string; category: string };
+      return (
+        <Card padding="medium">
+          <Text variant="heading">{typedItem.name}</Text>
+          <Text className="text-gray-600 text-sm">
+            {typedItem.category}
+          </Text>
+        </Card>
+      );
+    },
     filters: [filters[0]], // Only category filter
     searchPlaceholder: 'Search...',
   },
@@ -318,12 +342,15 @@ export const FiltersOnlyState: Story = {
 export const EmptyState: Story = {
   args: {
     items: [],
-    searchFn: (query, item) => item.name.toLowerCase().includes(query),
-    renderItem: (item) => (
-      <Card padding="md">
-        <Text variant="heading">{item.name}</Text>
-      </Card>
-    ),
+    searchFn: (query, item) => (item as { name: string }).name.toLowerCase().includes(query),
+    renderItem: (item) => {
+      const typedItem = item as { name: string };
+      return (
+        <Card padding="medium">
+          <Text variant="heading">{typedItem.name}</Text>
+        </Card>
+      );
+    },
     filters: [],
     searchPlaceholder: 'Search...',
     emptyMessage: 'No items found',

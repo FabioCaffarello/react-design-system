@@ -103,7 +103,7 @@ export const Default: Story = {
     const [value, setValue] = useState(args.defaultValue || 50);
     return (
       <div className="w-64">
-        <Slider {...args} value={value} onChange={setValue} />
+        <Slider {...args} value={value} onChange={(val) => setValue(Array.isArray(val) ? val[0] : val)} />
         <p className="mt-4 text-sm text-gray-600">Value: {value}</p>
       </div>
     );
@@ -121,7 +121,7 @@ export const WithLabel: Story = {
     const [value, setValue] = useState(args.defaultValue || 50);
     return (
       <div className="w-64">
-        <Slider {...args} value={value} onChange={setValue} />
+        <Slider {...args} value={value} onChange={(val) => setValue(Array.isArray(val) ? val[0] : val)} />
       </div>
     );
   },
@@ -139,7 +139,7 @@ export const Range: Story = {
     const [value, setValue] = useState<[number, number]>(args.defaultValue as [number, number] || [20, 80]);
     return (
       <div className="w-64">
-        <Slider {...args} value={value} onChange={setValue} />
+        <Slider {...args} value={value} onChange={(val) => setValue(Array.isArray(val) ? val : [val, val])} />
         <p className="mt-4 text-sm text-gray-600">
           Range: {value[0]} - {value[1]}
         </p>
@@ -168,7 +168,7 @@ export const Sizes: Story = {
             size="sm"
             label="Small"
             value={smValue}
-            onChange={setSmValue}
+            onChange={(val) => setSmValue(Array.isArray(val) ? val[0] : val)}
             showValue
           />
         </div>
@@ -177,7 +177,7 @@ export const Sizes: Story = {
             size="md"
             label="Medium"
             value={mdValue}
-            onChange={setMdValue}
+            onChange={(val) => setMdValue(Array.isArray(val) ? val[0] : val)}
             showValue
           />
         </div>
@@ -186,7 +186,7 @@ export const Sizes: Story = {
             size="lg"
             label="Large"
             value={lgValue}
-            onChange={setLgValue}
+            onChange={(val) => setLgValue(Array.isArray(val) ? val[0] : val)}
             showValue
           />
         </div>
@@ -200,7 +200,7 @@ export const WithMarks: Story = {
     const [value, setValue] = useState(args.defaultValue || 50);
     return (
       <div className="w-64">
-        <Slider {...args} value={value} onChange={setValue} />
+        <Slider {...args} value={value} onChange={(val) => setValue(Array.isArray(val) ? val[0] : val)} />
       </div>
     );
   },
@@ -220,7 +220,7 @@ export const WithSteps: Story = {
     const [value, setValue] = useState(args.defaultValue || 2);
     return (
       <div className="w-64">
-        <Slider {...args} value={value} onChange={setValue} />
+        <Slider {...args} value={value} onChange={(val) => setValue(Array.isArray(val) ? val[0] : val)} />
         <p className="mt-4 text-sm text-gray-600">Value: {value}</p>
       </div>
     );
@@ -258,7 +258,7 @@ export const CustomRange: Story = {
           max={10000}
           step={100}
           value={value}
-          onChange={setValue}
+          onChange={(val) => setValue(Array.isArray(val) ? val : [val, val])}
           showValue
         />
         <p className="mt-4 text-sm text-gray-600">
@@ -314,7 +314,7 @@ export const KeyboardNavigation: Story = {
         <Slider
           label="Keyboard Navigation"
           value={value}
-          onChange={setValue}
+          onChange={(val) => setValue(Array.isArray(val) ? val[0] : val)}
           showValue
         />
         <p className="text-xs text-gray-500">
@@ -341,12 +341,12 @@ export const RangeMode: Story = {
           <Slider
             label="Range Slider"
             variant="range"
-            value={value}
-            onChange={setValue}
-            showValue
-          />
-          <p className="mt-2 text-sm text-gray-600">
-            Range: {value[0]} - {value[1]}
+          value={value}
+          onChange={(val) => setValue(Array.isArray(val) ? val : [val, val])}
+          showValue
+        />
+        <p className="mt-2 text-sm text-gray-600">
+          Range: {value[0]} - {value[1]}
           </p>
         </div>
         <div>
@@ -354,7 +354,7 @@ export const RangeMode: Story = {
             label="Range with Marks"
             variant="range"
             value={value}
-            onChange={setValue}
+            onChange={(val) => setValue(Array.isArray(val) ? val : [val, val])}
             marks={[0, 25, 50, 75, 100]}
             showValue
           />
@@ -376,9 +376,10 @@ export const WithEvents: Story = {
   render: () => {
     const [value, setValue] = useState(50);
     
-    const handleChange = fn((newValue: number) => {
-      setValue(newValue);
-      console.log('Slider value changed:', newValue);
+    const handleChange = fn((newValue: number | [number, number]) => {
+      const numValue = Array.isArray(newValue) ? newValue[0] : newValue;
+      setValue(numValue);
+      console.log('Slider value changed:', numValue);
     });
     
     return (
