@@ -72,7 +72,7 @@ export default function TableRow<T extends Record<string, unknown> = Record<stri
       )}
       
       {columns.map((column) => (
-        <TableCell key={column.key} column={column} row={row} />
+        <TableCell key={String(column.key)} column={column} row={row} />
       ))}
       
       {actions && (

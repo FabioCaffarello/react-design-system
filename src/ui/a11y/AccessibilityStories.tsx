@@ -4,7 +4,7 @@ import { expect, userEvent, within, waitFor } from '@storybook/test';
 import { Button } from '../atoms';
 import { Input } from '../atoms';
 import { Label } from '../atoms';
-import { Modal } from '../organisms/Modal/Modal';
+import Modal from '../organisms/Modal/Modal';
 import { useState } from 'react';
 
 const meta: Meta = {

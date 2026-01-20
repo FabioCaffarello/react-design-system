@@ -12,7 +12,7 @@ export type BadgeVariant = 'success' | 'warning' | 'error' | 'info' | 'neutral' 
 export type BadgeSize = 'sm' | 'md' | 'lg';
 export type BadgeStyle = 'solid' | 'outline';
 
-export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
+export interface BadgeProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'style'> {
   variant?: BadgeVariant;
   size?: BadgeSize;
   style?: BadgeStyle;
@@ -125,8 +125,8 @@ const Badge = memo(forwardRef<HTMLSpanElement, BadgeProps>(function Badge({
     if (typeof children === 'string') return children;
     // Try to extract text from ReactNode
     if (typeof children === 'object' && children !== null) {
-      if ('props' in children && typeof (children as unknown).props === 'object') {
-        const childProps = (children as unknown).props;
+      if ('props' in children) {
+        const childProps = (children as { props?: { children?: unknown } }).props;
         if (childProps?.children && typeof childProps.children === 'string') {
           return childProps.children;
         }

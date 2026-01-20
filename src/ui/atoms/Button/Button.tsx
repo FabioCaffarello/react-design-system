@@ -21,6 +21,7 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   fullWidth?: boolean;
   as?: ElementType;
   href?: string;
+  target?: string;
 }
 
 /**

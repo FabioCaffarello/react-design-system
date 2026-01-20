@@ -20,7 +20,7 @@ export interface VirtualScrollingResult {
   scrollOffset: number;
   setScrollOffset: (offset: number) => void;
   scrollToIndex: (index: number) => void;
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
 }
 
 /**

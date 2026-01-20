@@ -1,13 +1,12 @@
 import "@testing-library/jest-dom";
 
 // Mock ResizeObserver for tests
-if (typeof global.ResizeObserver === 'undefined') {
-   
-  global.ResizeObserver = class ResizeObserver {
+if (typeof (globalThis as unknown).ResizeObserver === 'undefined') {
+  (globalThis as unknown).ResizeObserver = class ResizeObserver {
     observe(): void {}
     unobserve(): void {}
     disconnect(): void {}
-  } as typeof ResizeObserver;
+  };
 }
 
 // Mock localStorage for tests
@@ -34,24 +33,14 @@ Object.defineProperty(window, 'localStorage', {
 
 // Mock SVGElement.getBBox for tests (used by @xyflow/react)
 if (typeof SVGElement !== 'undefined' && !SVGElement.prototype.getBBox) {
-  SVGElement.prototype.getBBox = function() {
-    return {
-      x: 0,
-      y: 0,
-      width: 100,
-      height: 100,
-    };
+  SVGElement.prototype.getBBox = function(): DOMRect {
+    return new DOMRect(0, 0, 100, 100);
   };
 }
 
 // Mock SVGTextElement.getBBox specifically for edge text
 if (typeof SVGTextElement !== 'undefined' && !SVGTextElement.prototype.getBBox) {
-  SVGTextElement.prototype.getBBox = function() {
-    return {
-      x: 0,
-      y: 0,
-      width: 50,
-      height: 20,
-    };
+  SVGTextElement.prototype.getBBox = function(): DOMRect {
+    return new DOMRect(0, 0, 50, 20);
   };
 }

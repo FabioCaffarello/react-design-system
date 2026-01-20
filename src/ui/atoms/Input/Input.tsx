@@ -288,12 +288,26 @@ const Input = memo(forwardRef<HTMLInputElement, InputProps>(function Input({
       onClear();
     } else if (onChange) {
       // Create synthetic event to clear input
-      const syntheticEvent = {
-        ...e,
-        target: { ...e.target, value: '' },
-        currentTarget: { ...e.currentTarget, value: '' },
-      } as React.ChangeEvent<HTMLInputElement>;
-      onChange(syntheticEvent);
+      const inputElement = e.currentTarget.closest('.relative')?.querySelector('input') as HTMLInputElement;
+      if (inputElement) {
+        const syntheticEvent = {
+          target: inputElement,
+          currentTarget: inputElement,
+          bubbles: true,
+          cancelable: true,
+          defaultPrevented: false,
+          eventPhase: 2,
+          isTrusted: false,
+          nativeEvent: new Event('change'),
+          preventDefault: () => {},
+          stopPropagation: () => {},
+          persist: () => {},
+          timeStamp: Date.now(),
+        } as unknown as React.ChangeEvent<HTMLInputElement>;
+        Object.defineProperty(syntheticEvent.target, 'value', { value: '', writable: true });
+        Object.defineProperty(syntheticEvent.currentTarget, 'value', { value: '', writable: true });
+        onChange(syntheticEvent);
+      }
     }
   }, [onClear, onChange]);
 

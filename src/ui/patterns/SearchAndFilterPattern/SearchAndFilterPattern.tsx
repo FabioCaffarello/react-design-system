@@ -119,14 +119,14 @@ export function SearchAndFilterPattern<T = unknown>({
     <Container maxWidth="full" paddingX="base" paddingY="base">
       <Stack spacing="md">
         {/* Search and Filters */}
-        <Card padding="md">
+        <Card padding="medium">
           <Stack spacing="md">
             {/* Search */}
             <div>
               <SearchInput
                 placeholder={searchPlaceholder}
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onSearch={setSearchQuery}
               />
             </div>
 
@@ -135,19 +135,19 @@ export function SearchAndFilterPattern<T = unknown>({
               <div className="flex flex-wrap gap-2">
                 {filters.map((filter) => (
                   <div key={filter.id} className="flex items-center gap-2">
-                    <Text size="sm" className="text-gray-600">
+                    <Text className="text-gray-600 text-sm">
                       {filter.label}:
                     </Text>
                     <select
                       className="px-3 py-1 border rounded text-sm"
-                      value={activeFilters[filter.id] || ''}
+                      value={String(activeFilters[filter.id] || '')}
                       onChange={(e) =>
                         handleFilterChange(filter.id, e.target.value || undefined)
                       }
                     >
                       <option value="">All</option>
                       {filter.options?.map((option) => (
-                        <option key={option.id} value={option.value}>
+                        <option key={option.id} value={String(option.value || '')}>
                           {option.label}
                         </option>
                       ))}
@@ -178,7 +178,7 @@ export function SearchAndFilterPattern<T = unknown>({
 
         {/* Results */}
         {filteredItems.length === 0 ? (
-          <Card padding="lg">
+          <Card padding="large">
             <div className="text-center text-gray-500">
               <Text>{emptyMessage}</Text>
             </div>

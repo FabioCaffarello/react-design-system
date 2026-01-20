@@ -121,7 +121,7 @@ export function DataTablePattern<T extends Record<string, unknown> = Record<stri
     const query = searchQuery.toLowerCase();
     return data.filter((row) => {
       return tableColumns.some((column) => {
-        const value = (row as unknown)[column.key];
+        const value = (row as Record<string, unknown>)[String(column.key)];
         return String(value).toLowerCase().includes(query);
       });
     });
@@ -159,7 +159,7 @@ export function DataTablePattern<T extends Record<string, unknown> = Record<stri
               <SearchInput
                 placeholder={searchPlaceholder}
                 value={searchQuery}
-                onChange={(e) => handleSearchChange(e.target.value)}
+                onSearch={handleSearchChange}
               />
             </div>
           )}

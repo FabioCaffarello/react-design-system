@@ -120,7 +120,9 @@ export function FormWizardPattern({
         {/* Stepper */}
         <Stepper
           steps={steps.map((step, index) => ({
-            label: step.label,
+            id: step.id,
+            title: step.title,
+            content: step.content,
             description: step.description,
             status: index < currentStep
               ? 'completed'
@@ -139,7 +141,7 @@ export function FormWizardPattern({
         <div className="bg-white rounded-lg border p-6">
           <Stack spacing="md">
             <div>
-              <h2 className="text-2xl font-semibold">{currentStepData.label}</h2>
+              <h2 className="text-2xl font-semibold">{currentStepData.title}</h2>
               {currentStepData.description && (
                 <p className="text-gray-600 mt-1">{currentStepData.description}</p>
               )}
