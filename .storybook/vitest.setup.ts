@@ -11,7 +11,7 @@ setProjectAnnotations([a11yAddonAnnotations, projectAnnotations]);
 // before the RPC cleanup is complete - this is a known issue with Vitest browser mode
 if (typeof process !== "undefined") {
   const originalEmit = process.emit;
-  process.emit = function (event: string | symbol, ...args: any[]) {
+  process.emit = function (event: string | symbol, ...args: unknown[]) {
     // Suppress uncaughtException and unhandledRejection for browser connection errors
     if (event === "uncaughtException" || event === "unhandledRejection") {
       const error = args[0];
