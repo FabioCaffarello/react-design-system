@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
+import { renderWithFlowProvider } from '../test-utils';
 import { NodeEditor } from './NodeEditor';
 import type { Node } from '@xyflow/react';
 import type { FlowNodeData } from '../organisms/FlowTypes';
@@ -24,7 +25,7 @@ describe('NodeEditor', () => {
   });
   
   it('renders empty state when no node is selected', () => {
-    render(
+    renderWithFlowProvider(
       <NodeEditor
         node={null}
         onUpdate={mockOnUpdate}
@@ -37,13 +38,14 @@ describe('NodeEditor', () => {
   });
   
   it('renders node editor with node data', () => {
-    render(
+    renderWithFlowProvider(
       <NodeEditor
         node={mockNode}
         onUpdate={mockOnUpdate}
         onDelete={mockOnDelete}
         onDuplicate={mockOnDuplicate}
-      />
+      />,
+      { nodes: [mockNode] }
     );
     
     expect(screen.getByDisplayValue('Test Node')).toBeInTheDocument();
@@ -51,13 +53,14 @@ describe('NodeEditor', () => {
   });
   
   it('updates node label', async () => {
-    render(
+    renderWithFlowProvider(
       <NodeEditor
         node={mockNode}
         onUpdate={mockOnUpdate}
         onDelete={mockOnDelete}
         onDuplicate={mockOnDuplicate}
-      />
+      />,
+      { nodes: [mockNode] }
     );
     
     const labelInput = screen.getByDisplayValue('Test Node');
@@ -73,13 +76,14 @@ describe('NodeEditor', () => {
   });
   
   it('updates node position', async () => {
-    render(
+    renderWithFlowProvider(
       <NodeEditor
         node={mockNode}
         onUpdate={mockOnUpdate}
         onDelete={mockOnDelete}
         onDuplicate={mockOnDuplicate}
-      />
+      />,
+      { nodes: [mockNode] }
     );
     
     const xInput = screen.getByLabelText(/^X$/i);
@@ -91,13 +95,14 @@ describe('NodeEditor', () => {
   });
   
   it('duplicates node', () => {
-    render(
+    renderWithFlowProvider(
       <NodeEditor
         node={mockNode}
         onUpdate={mockOnUpdate}
         onDelete={mockOnDelete}
         onDuplicate={mockOnDuplicate}
-      />
+      />,
+      { nodes: [mockNode] }
     );
     
     const duplicateButton = screen.getByText(/Duplicate Node/i);
@@ -109,13 +114,14 @@ describe('NodeEditor', () => {
   it('deletes node with confirmation', () => {
     window.confirm = vi.fn(() => true);
     
-    render(
+    renderWithFlowProvider(
       <NodeEditor
         node={mockNode}
         onUpdate={mockOnUpdate}
         onDelete={mockOnDelete}
         onDuplicate={mockOnDuplicate}
-      />
+      />,
+      { nodes: [mockNode] }
     );
     
     const deleteButton = screen.getByText(/Delete Node/i);
@@ -131,13 +137,14 @@ describe('NodeEditor', () => {
       id: '', // Invalid empty ID
     };
     
-    render(
+    renderWithFlowProvider(
       <NodeEditor
         node={invalidNode}
         onUpdate={mockOnUpdate}
         onDelete={mockOnDelete}
         onDuplicate={mockOnDuplicate}
-      />
+      />,
+      { nodes: [invalidNode] }
     );
     
     // Try to update (which triggers validation)
@@ -146,7 +153,7 @@ describe('NodeEditor', () => {
     
     // Validation should show errors
     await waitFor(() => {
-      const errorSection = screen.queryByText(/Validation Errors/i);
+      const _errorSection = screen.queryByText(/Validation Errors/i);
       // Error might not show immediately due to debouncing
     });
   });

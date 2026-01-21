@@ -2,7 +2,7 @@
 
 import { useRef, useState, forwardRef } from 'react';
 import type { HTMLAttributes } from 'react';
-import { getColorClass, getFocusColorClass, getFocusRingClass } from '../../tokens/colors';
+import { getColorClass, getFocusRingClass } from '../../tokens/colors';
 import { getAnimationClass } from '../../tokens/animations';
 import { getRadiusClass } from '../../tokens/radius';
 import { getSpacingClass } from '../../tokens/spacing';
@@ -12,7 +12,7 @@ import { cn, cva } from '../../utils';
 export type SliderVariant = 'single' | 'range';
 export type SliderSize = 'sm' | 'md' | 'lg';
 
-export interface SliderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
+export interface SliderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
   value?: number | [number, number];
   defaultValue?: number | [number, number];
   min?: number;
@@ -207,10 +207,11 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider({
     }
   );
 
-  const config = {
-    track: sliderTrackVariants({ size, disabled }),
-    thumb: sliderThumbVariants({ size }),
-  };
+  // Configuration for styling variants
+  // const _config = {
+  //   track: sliderTrackVariants({ size, disabled }),
+  //   thumb: sliderThumbVariants({ size }),
+  // };
   const singleValue = typeof currentValue === 'number' ? currentValue : currentValue[0];
   const minValue = Array.isArray(currentValue) ? currentValue[0] : min;
   const maxValue = Array.isArray(currentValue) ? currentValue[1] : singleValue;

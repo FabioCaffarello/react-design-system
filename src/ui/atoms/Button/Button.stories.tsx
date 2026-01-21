@@ -441,14 +441,14 @@ export const WithEvents: Story = {
     await userEvent.hover(button);
     await userEvent.unhover(button);
     
-    // Test focus
-    await userEvent.tab();
+    // Test focus - focus directly on the button
+    button.focus();
     await waitFor(() => {
       expect(button).toHaveFocus();
     });
     
-    // Test blur
-    await userEvent.tab();
+    // Test blur - click outside or tab away
+    await userEvent.click(canvasElement);
     await waitFor(() => {
       expect(button).not.toHaveFocus();
     });

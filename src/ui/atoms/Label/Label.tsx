@@ -1,8 +1,7 @@
 import type { LabelHTMLAttributes } from "react";
 import { forwardRef, memo, useMemo } from "react";
-import { getTypographyClasses, getTypographySize, getTypographyWeight } from '../../tokens/typography';
+import { getTypographySize, getTypographyWeight } from '../../tokens/typography';
 import { getColorClass } from '../../tokens/colors';
-import { getSpacingClass } from '../../tokens/spacing';
 import { cn } from '../../utils';
 
 interface Props extends LabelHTMLAttributes<HTMLLabelElement> {

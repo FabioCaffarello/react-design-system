@@ -16,8 +16,8 @@ export function generateShareableLink(state: PlaygroundState): string {
       ? `${window.location.origin}${window.location.pathname}`
       : '';
     return `${baseUrl}?flow=${encoded}`;
-  } catch (error) {
-    console.error('Failed to generate shareable link:', error);
+  } catch {
+    console.error('Failed to generate shareable link');
     return '';
   }
 }
@@ -34,8 +34,8 @@ export function loadFromShareableLink(): PlaygroundState | null {
     if (flow) {
       return JSON.parse(atob(flow)) as PlaygroundState;
     }
-  } catch (error) {
-    console.error('Failed to load from shareable link:', error);
+  } catch {
+    console.error('Failed to load from shareable link');
   }
   return null;
 }
@@ -66,7 +66,7 @@ export function importPlaygroundState(file: File): Promise<PlaygroundState> {
       try {
         const json = JSON.parse(e.target?.result as string) as PlaygroundState;
         resolve(json);
-      } catch (error) {
+      } catch {
         reject(new Error('Invalid JSON file'));
       }
     };

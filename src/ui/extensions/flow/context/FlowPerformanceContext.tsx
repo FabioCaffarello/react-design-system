@@ -6,6 +6,7 @@
 
 'use client';
 
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import type { ReactNode } from 'react';
 
@@ -143,7 +144,7 @@ export function FlowPerformanceProvider({
     monitoringIntervalRef.current = setInterval(() => {
       if (performance.memory) {
         updateMetrics({
-          memoryUsage: (performance.memory as any).usedJSHeapSize / 1048576, // MB
+          memoryUsage: (performance.memory as unknown).usedJSHeapSize / 1048576, // MB
         });
       }
     }, 1000);

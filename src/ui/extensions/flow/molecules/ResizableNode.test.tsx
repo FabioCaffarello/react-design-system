@@ -3,8 +3,9 @@ import { render, screen } from '@testing-library/react';
 import { ReactFlowProvider } from '@xyflow/react';
 import { FlowProvider } from '../organisms/FlowProvider';
 import { ResizableNode } from './ResizableNode';
-import type { Node } from '@xyflow/react';
+import type { Node, Edge } from '@xyflow/react';
 import type { ResizableNodeData } from './ResizableNode';
+import type { FlowEdgeData } from '../organisms/FlowTypes';
 
 describe('ResizableNode', () => {
   const mockNodes: Node<ResizableNodeData>[] = [
@@ -21,7 +22,7 @@ describe('ResizableNode', () => {
       },
     },
   ];
-  const mockEdges: any[] = [];
+  const mockEdges: Edge<FlowEdgeData>[] = [];
   
   beforeEach(() => {
     vi.clearAllMocks();

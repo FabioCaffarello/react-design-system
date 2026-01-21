@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, type ReactNode } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../providers/ThemeProvider';
 import { useConfig } from '../providers/ConfigProvider';
 
@@ -87,7 +87,7 @@ export function ContextDevTools({
     ];
     
     // Add custom contexts
-    contexts.forEach(({ name, context, selector }) => {
+    contexts.forEach(({ name, context: _context, selector }) => {
       try {
         // This is a simplified version - in a real implementation,
         // you'd need to access the context value properly
@@ -96,7 +96,7 @@ export function ContextDevTools({
           value: selector ? selector({}) : {},
           timestamp: Date.now(),
         });
-      } catch (error) {
+      } catch {
         // Context not available
       }
     });

@@ -98,7 +98,7 @@ export const CustomNode = React.memo(({
   data,
   selected,
   isConnectable,
-  ...nodeProps
+  ..._nodeProps
 }: CustomNodeProps) => {
   const variant = data.variant || 'default';
   const size = data.size || 'md';
@@ -127,8 +127,8 @@ export const CustomNode = React.memo(({
   );
   
   // Handle connection callback
-  const handleConnect = useCallback((params: Connection | Edge) => {
-    console.log('handle onConnect', params);
+  const handleConnect = useCallback((_params: Connection | Edge) => {
+    // Connection handler - can be extended with actual logic
   }, []);
   
   // Render node content

@@ -266,11 +266,11 @@ export const GroupSpacing: Story = {
 // Event Stories
 export const WithEvents: Story = {
   render: () => {
-    const handleError = fn((e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const handleError = fn((_e: React.SyntheticEvent<HTMLImageElement, Event>) => {
       console.log('Image failed to load');
     });
     
-    const handleLoad = fn((e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const handleLoad = fn((_e: React.SyntheticEvent<HTMLImageElement, Event>) => {
       console.log('Image loaded successfully');
     });
     

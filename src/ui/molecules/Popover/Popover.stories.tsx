@@ -210,20 +210,19 @@ export const WithEvents: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByText('Toggle Popover');
+    const button = await canvas.findByRole('button', { name: /Toggle Popover/i });
     
     // Click to open
     await userEvent.click(button);
+    // Popover renders in a portal (document.body), so search there
     await waitFor(() => {
-      const content = canvas.getByText('This popover fires events when opened/closed.');
+      const content = within(document.body).getByText('This popover fires events when opened/closed.');
       expect(content).toBeInTheDocument();
-    });
+    }, { timeout: 3000 });
     
-    // Click close button
-    const closeButton = canvas.getByRole('button', { name: /close/i });
-    if (closeButton) {
-      await userEvent.click(closeButton);
-    }
+    // Click close button (also in portal)
+    const closeButton = within(document.body).getByRole('button', { name: /close/i });
+    await userEvent.click(closeButton);
   },
   parameters: {
     docs: {

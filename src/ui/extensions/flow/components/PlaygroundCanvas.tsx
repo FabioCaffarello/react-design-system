@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Playground Canvas Component
  * 
@@ -6,14 +8,13 @@
  */
 
 import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react';
-import { useNodesState, useEdgesState, addEdge, useReactFlow, type Connection, type Node } from '@xyflow/react';
+import { useNodesState, useEdgesState, addEdge, useReactFlow, type Connection } from '@xyflow/react';
 import { FlowProvider } from '../organisms/FlowProvider';
 import { FlowCanvas } from '../organisms/FlowCanvas';
 import { LayoutApplier } from './LayoutApplier';
 import { PlaygroundCanvasFooter } from './PlaygroundCanvasFooter';
 import { usePlaygroundContext } from '../context/PlaygroundContext';
 import type { FlowNodeData, FlowEdgeData } from '../organisms/FlowTypes';
-import type { Edge } from '@xyflow/react';
 import { generateNodeId } from '../utils/playgroundHelpers';
 
 /**
@@ -26,7 +27,7 @@ function PlaygroundCanvasInner() {
     reactFlowConfig,
     backgroundConfig,
     layoutConfig,
-    theme,
+    theme: _theme,
     selectedNodeId,
     selectedEdgeId,
     setNodes: setContextNodes,
@@ -186,11 +187,11 @@ function PlaygroundCanvasInner() {
   // Expose focus functions via effect to context (if needed)
   useEffect(() => {
     // Store focus functions in a way that can be accessed by search
-    (window as any).__playgroundFocusNode = focusNode;
-    (window as any).__playgroundFocusEdge = focusEdge;
+    (window as unknown).__playgroundFocusNode = focusNode;
+    (window as unknown).__playgroundFocusEdge = focusEdge;
     return () => {
-      delete (window as any).__playgroundFocusNode;
-      delete (window as any).__playgroundFocusEdge;
+      delete (window as unknown).__playgroundFocusNode;
+      delete (window as unknown).__playgroundFocusEdge;
     };
   }, [focusNode, focusEdge]);
   
@@ -456,49 +457,45 @@ function PlaygroundCanvasInner() {
  * Wraps the inner component with FlowProvider
  */
 export function PlaygroundCanvas() {
+  // All hooks must be called before any try/catch or early returns
+  let contextNodes, contextEdges, theme;
   try {
-    const {
-      nodes: contextNodes,
-      edges: contextEdges,
-      theme = 'light',
-    } = usePlaygroundContext();
-
-    const safeNodes = useMemo(() => {
-      if (!Array.isArray(contextNodes)) {
-        if (import.meta.env.DEV) {
-          console.warn('PlaygroundCanvas: contextNodes is not an array', contextNodes);
-        }
-        return [];
-      }
-      return contextNodes;
-    }, [contextNodes]);
-    
-    const safeEdges = useMemo(() => {
-      if (!Array.isArray(contextEdges)) {
-        if (import.meta.env.DEV) {
-          console.warn('PlaygroundCanvas: contextEdges is not an array', contextEdges);
-        }
-        return [];
-      }
-      return contextEdges;
-    }, [contextEdges]);
-
-    return (
-      <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-        <FlowProvider nodes={safeNodes} edges={safeEdges} theme={theme}>
-          <PlaygroundCanvasInner />
-        </FlowProvider>
-      </div>
-    );
+    const context = usePlaygroundContext();
+    contextNodes = context.nodes;
+    contextEdges = context.edges;
+    theme = context.theme || 'light';
   } catch (error) {
-    console.error('PlaygroundCanvas error:', error);
-    return (
-      <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ padding: '20px', textAlign: 'center' }}>
-          <h3 style={{ color: 'red' }}>Error loading canvas</h3>
-          <p>{error instanceof Error ? error.message : 'Unknown error'}</p>
-        </div>
-      </div>
-    );
+    console.error('PlaygroundCanvas error accessing context:', error);
+    contextNodes = [];
+    contextEdges = [];
+    theme = 'light';
   }
+
+  const safeNodes = useMemo(() => {
+    if (!Array.isArray(contextNodes)) {
+      if (import.meta.env.DEV) {
+        console.warn('PlaygroundCanvas: contextNodes is not an array', contextNodes);
+      }
+      return [];
+    }
+    return contextNodes;
+  }, [contextNodes]);
+  
+  const safeEdges = useMemo(() => {
+    if (!Array.isArray(contextEdges)) {
+      if (import.meta.env.DEV) {
+        console.warn('PlaygroundCanvas: contextEdges is not an array', contextEdges);
+      }
+      return [];
+    }
+    return contextEdges;
+  }, [contextEdges]);
+
+  return (
+    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+      <FlowProvider nodes={safeNodes} edges={safeEdges} theme={theme}>
+        <PlaygroundCanvasInner />
+      </FlowProvider>
+    </div>
+  );
 }

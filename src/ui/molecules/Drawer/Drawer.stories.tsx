@@ -4,7 +4,6 @@ import { fn } from '@storybook/test';
 import { expect, userEvent, within, waitFor } from '@storybook/test';
 import { Drawer, DrawerContent, DrawerHeader, DrawerFooter } from './index';
 import { Button } from '../../atoms';
-import { X } from 'lucide-react';
 
 const meta: Meta<typeof Drawer> = {
   title: 'Molecules/Drawer',
@@ -267,10 +266,11 @@ export const WithEvents: Story = {
     
     // Test opening drawer
     await userEvent.click(button);
-    await waitFor(() => {
-      const drawer = canvas.queryByRole('dialog');
+    // Wait for drawer to appear - it might be in a portal outside canvasElement
+    await waitFor(async () => {
+      const drawer = within(document.body).queryByRole('dialog');
       expect(drawer).toBeInTheDocument();
-    });
+    }, { timeout: 3000 });
   },
   parameters: {
     docs: {

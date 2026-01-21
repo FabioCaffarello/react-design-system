@@ -4,7 +4,7 @@
  * Type definitions for the advanced theme system.
  */
 
-import type { TokenSet, ThemeMode } from '../tokens/tokens.factory';
+import type { TokenSet, ThemeMode } from '../tokens';
 import type { ColorRole, SemanticColor } from '../tokens/colors';
 
 /**

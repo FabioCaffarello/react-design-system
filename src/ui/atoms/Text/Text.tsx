@@ -33,7 +33,7 @@ function TextComponent<T extends ElementType = "p">({
   colorRole = 'neutral',
   colorShade = 'dark',
   ...rest
-}: ReturnProps<T>, ref: React.Ref<any>) {
+}: ReturnProps<T>, ref: React.Ref<unknown>) {
   const classNames: string[] = [];
   let Tag: ElementType;
 

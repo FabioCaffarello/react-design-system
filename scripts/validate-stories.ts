@@ -10,8 +10,8 @@
  * Usage: npm run validate-stories
  */
 
-import { readFileSync, existsSync, readdirSync, statSync } from 'fs';
-import { join, dirname, basename, extname } from 'path';
+import { readFileSync, existsSync, readdirSync } from 'fs';
+import { join } from 'path';
 
 interface ValidationResult {
   file: string;

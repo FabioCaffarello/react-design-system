@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Handle Positions Dropdown Component
  * 
@@ -23,7 +25,7 @@ export function HandlePositionsDropdown() {
   const { reactFlowConfig, setReactFlowConfig } = usePlaygroundContext();
   
   // Get current handle position from config or default
-  const currentPosition = (reactFlowConfig as any)?.handlePositions || 'top-bottom';
+  const currentPosition = (reactFlowConfig as unknown)?.handlePositions || 'top-bottom';
 
   const handleChange = (value: string) => {
     setReactFlowConfig({

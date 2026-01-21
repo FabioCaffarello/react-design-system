@@ -69,7 +69,7 @@ function findTokenUsage(dir: string, usages: TokenUsage[] = []): TokenUsage[] {
             }
           });
         });
-      } catch (error) {
+      } catch {
         // Skip files that can't be read
       }
     }
@@ -83,7 +83,7 @@ function findTokenUsage(dir: string, usages: TokenUsage[] = []): TokenUsage[] {
  */
 function checkTokenUsage(
   usages: TokenUsage[],
-  breakingChanges: any[]
+  breakingChanges: unknown[]
 ): { affected: TokenUsage[]; report: string } {
   const affected: TokenUsage[] = [];
   let report = '# Token Migration Report\n\n';

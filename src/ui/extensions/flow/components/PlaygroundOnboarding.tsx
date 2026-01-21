@@ -7,7 +7,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Card } from '../../../molecules';
 import { Button } from '../../../atoms';
-import Tooltip from '../../../atoms/Tooltip/Tooltip';
 import { 
   getSpacingClass, 
   getColorClass, 
@@ -75,13 +74,21 @@ export function PlaygroundOnboarding({
     }
   }, [showOnFirstVisit]);
 
+  const handleComplete = useCallback(() => {
+    setIsVisible(false);
+    localStorage.setItem('playground-onboarding-seen', 'true');
+    if (onComplete) {
+      onComplete();
+    }
+  }, [onComplete]);
+
   const handleNext = useCallback(() => {
     if (currentStep < onboardingSteps.length - 1) {
       setCurrentStep(prev => prev + 1);
     } else {
       handleComplete();
     }
-  }, [currentStep]);
+  }, [currentStep, handleComplete]);
 
   const handlePrevious = useCallback(() => {
     if (currentStep > 0) {
@@ -91,15 +98,7 @@ export function PlaygroundOnboarding({
 
   const handleSkip = useCallback(() => {
     handleComplete();
-  }, []);
-
-  const handleComplete = useCallback(() => {
-    setIsVisible(false);
-    localStorage.setItem('playground-onboarding-seen', 'true');
-    if (onComplete) {
-      onComplete();
-    }
-  }, [onComplete]);
+  }, [handleComplete]);
 
   if (!isVisible && hasSeenOnboarding) {
     return null;

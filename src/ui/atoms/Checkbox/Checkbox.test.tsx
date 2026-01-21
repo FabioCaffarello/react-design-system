@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { useState } from 'react';
@@ -64,9 +64,13 @@ describe('Checkbox', () => {
     const checkbox = screen.getByLabelText('Controlled') as HTMLInputElement;
     
     expect(checkbox.checked).toBe(false);
-    await userEvent.click(checkbox);
+    await act(async () => {
+      await userEvent.click(checkbox);
+    });
     // Wait for state update
-    await new Promise(resolve => setTimeout(resolve, 0));
+    await act(async () => {
+      await new Promise(resolve => setTimeout(resolve, 0));
+    });
     expect(checkbox.checked).toBe(true);
   });
 

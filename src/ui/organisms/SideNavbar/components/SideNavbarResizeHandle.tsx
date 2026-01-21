@@ -5,7 +5,7 @@ import { GripVertical } from 'lucide-react';
 import { useSideNavbarStateRequired } from '../contexts/SideNavbarStateContext';
 import { useSideNavbarConfigRequired } from '../contexts/SideNavbarConfigContext';
 
-export interface SideNavbarResizeHandleProps extends HTMLAttributes<HTMLDivElement> {}
+export type SideNavbarResizeHandleProps = HTMLAttributes<HTMLDivElement>;
 
 /**
  * SideNavbar Resize Handle Component

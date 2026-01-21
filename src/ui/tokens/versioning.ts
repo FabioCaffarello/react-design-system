@@ -16,8 +16,8 @@ export interface TokenChange {
   type: 'added' | 'modified' | 'removed' | 'deprecated';
   category: string;
   token: string;
-  oldValue?: any;
-  newValue?: any;
+  oldValue?: unknown;
+  newValue?: unknown;
   description?: string;
 }
 

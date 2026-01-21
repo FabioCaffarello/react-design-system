@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, type KeyboardEvent } from 'react';
+import { useState, useEffect, useRef, useCallback, type KeyboardEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { Search, Command } from 'lucide-react';
 import { getColorClass } from '../../tokens/colors';
@@ -88,7 +88,7 @@ export default function CommandPalette({
     return acc;
   }, {} as Record<string, CommandItem[]>);
 
-  const handleOpenChange = (newOpen: boolean) => {
+  const handleOpenChange = useCallback((newOpen: boolean) => {
     if (!isControlled) {
       setInternalOpen(newOpen);
     }
@@ -98,7 +98,7 @@ export default function CommandPalette({
       setSelectedIndex(0);
       setTimeout(() => inputRef.current?.focus(), 0);
     }
-  };
+  }, [isControlled, onOpenChange]);
 
   const handleSelect = (item: CommandItem) => {
     item.action();
@@ -158,7 +158,7 @@ export default function CommandPalette({
 
     document.addEventListener('keydown', handleKeyDown as unknown as EventListener);
     return () => document.removeEventListener('keydown', handleKeyDown as unknown as EventListener);
-  }, [isOpen]);
+  }, [isOpen, handleOpenChange]);
 
   const commandPaletteContent = isOpen ? (
     <div

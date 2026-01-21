@@ -92,8 +92,8 @@ export function useColumnResizing(
   }, []);
 
   // Handle mouse move and mouse up globally during resize
-  const handleMouseMoveRef = useRef<(e: MouseEvent) => void>();
-  const handleMouseUpRef = useRef<() => void>();
+  const handleMouseMoveRef = useRef<((e: MouseEvent) => void) | undefined>(undefined);
+  const handleMouseUpRef = useRef<(() => void) | undefined>(undefined);
 
   if (typeof window !== 'undefined') {
     handleMouseMoveRef.current = (e: MouseEvent) => {

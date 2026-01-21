@@ -9,7 +9,7 @@
  * Note: Requires Design Systems MCP to be configured in .cursor/mcp.json
  */
 
-import { readFileSync, existsSync, readdirSync, writeFileSync } from 'fs';
+import { existsSync, readdirSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
 interface ArchitectureIssue {
@@ -153,7 +153,7 @@ function main() {
     } else {
       console.log('✅ Architecture validation passed!');
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Error validating architecture:', error.message);
     process.exit(1);
   }

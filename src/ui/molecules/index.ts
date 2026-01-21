@@ -50,6 +50,15 @@ export type { AccordionProps, AccordionItem, AccordionType } from "./Accordion/A
 export { default as Popover } from "./Popover/Popover";
 export type { PopoverProps, PopoverPlacement } from "./Popover/Popover";
 
+export * from "./Header";
+export type { HeaderProps, HeaderVariant, HeaderMaxWidth } from "./Header";
+
+export * from "./Navigation";
+export type { NavigationProps, NavigationOrientation, NavigationVariant, NavItem } from "./Navigation";
+
+export * from "./PageHeader";
+export type { PageHeaderProps, PageHeaderVariant } from "./PageHeader";
+
 // Flow components have been moved to extensions/flow
 // Use: import { CustomNode } from '@fabio.caffarello/react-design-system/extensions/flow'
 // or: import { CustomNode } from '@fabio.caffarello/react-design-system/extensions'

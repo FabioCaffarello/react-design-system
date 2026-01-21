@@ -1,6 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
 import { useState } from 'react';
 import { Portal } from './Portal';
 import { Button } from '../../atoms';

@@ -107,7 +107,7 @@ describe('cva', () => {
   });
 
   it('works with VariantProps type inference', () => {
-    const buttonVariants = cva('base', {
+    const _buttonVariants = cva('base', {
       variants: {
         variant: {
           primary: 'bg-blue-500',
@@ -116,7 +116,7 @@ describe('cva', () => {
       },
     });
 
-    type ButtonProps = VariantProps<typeof buttonVariants>;
+    type ButtonProps = VariantProps<typeof _buttonVariants>;
     const props: ButtonProps = { variant: 'primary' };
     expect(props.variant).toBe('primary');
   });

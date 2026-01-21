@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { expect, userEvent, within, waitFor } from '@storybook/test';
 import { fn } from '@storybook/test';
-import CommandPalette, { type CommandItem } from './CommandPalette';
+import CommandPalette from './CommandPalette';
 import Button from '../../atoms/Button/Button';
 import {
   FileText,
@@ -144,15 +144,22 @@ export const Default: Story = {
     // Click to open
     await userEvent.click(button);
     
-    // Wait for palette to appear
-    await expect(canvas.getByPlaceholderText(/type a command or search/i)).toBeInTheDocument();
+    // Wait for palette to appear in document.body (portal)
+    await waitFor(() => {
+      const input = within(document.body).getByPlaceholderText(/type a command or search/i);
+      expect(input).toBeInTheDocument();
+    });
     
     // Type to search
-    const input = canvas.getByPlaceholderText(/type a command or search/i);
+    const input = within(document.body).getByPlaceholderText(/type a command or search/i);
     await userEvent.type(input, 'save');
     
-    // Check that filtered results appear
-    await expect(canvas.getByText(/save/i)).toBeInTheDocument();
+    // Check that filtered results appear (look for button with "Save" text in the command palette)
+    await waitFor(() => {
+      const buttons = within(document.body).getAllByRole('button');
+      const saveButton = buttons.find(btn => btn.textContent?.toLowerCase().includes('save'));
+      expect(saveButton).toBeDefined();
+    });
   },
 };
 
@@ -343,7 +350,9 @@ export const EmptyState: Story = {
     await userEvent.click(button);
     
     // Wait for empty message
-    await expect(canvas.getByText(/no commands available/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(within(document.body).getByText(/no commands available/i)).toBeInTheDocument();
+    });
   },
 };
 
@@ -385,7 +394,13 @@ export const KeyboardNavigation: Story = {
     
     await userEvent.click(button);
     
-    const input = canvas.getByPlaceholderText(/type a command or search/i);
+    // Wait for palette to appear in document.body (portal)
+    await waitFor(() => {
+      const input = within(document.body).getByPlaceholderText(/type a command or search/i);
+      expect(input).toBeInTheDocument();
+    });
+    
+    const input = within(document.body).getByPlaceholderText(/type a command or search/i);
     await expect(input).toHaveFocus();
     
     // Navigate with arrow keys
@@ -394,7 +409,9 @@ export const KeyboardNavigation: Story = {
     await userEvent.keyboard('{Enter}');
     
     // Should close after selection
-    await expect(input).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(within(document.body).queryByPlaceholderText(/type a command or search/i)).not.toBeInTheDocument();
+    });
   },
 };
 
@@ -448,14 +465,24 @@ export const SearchWithKeywords: Story = {
     
     await userEvent.click(button);
     
-    const input = canvas.getByPlaceholderText(/type a command or search/i);
+    // Wait for palette to appear in document.body (portal)
+    await waitFor(() => {
+      const input = within(document.body).getByPlaceholderText(/type a command or search/i);
+      expect(input).toBeInTheDocument();
+    });
+    
+    const input = within(document.body).getByPlaceholderText(/type a command or search/i);
     
     // Search by keyword
     await userEvent.clear(input);
     await userEvent.type(input, 'logout');
     
-    // Should find "Sign Out" via keyword
-    await expect(canvas.getByText(/sign out/i)).toBeInTheDocument();
+    // Should find "Sign Out" via keyword (in document.body portal)
+    await waitFor(() => {
+      const buttons = within(document.body).getAllByRole('button');
+      const signOutButton = buttons.find(btn => btn.textContent?.toLowerCase().includes('sign out'));
+      expect(signOutButton).toBeDefined();
+    });
   },
 };
 
@@ -498,7 +525,7 @@ export const WithEvents: Story = {
     
     await userEvent.click(button);
     await waitFor(() => {
-      const input = canvas.getByPlaceholderText(/type a command or search/i);
+      const input = within(document.body).getByPlaceholderText(/type a command or search/i);
       expect(input).toBeInTheDocument();
     });
   },

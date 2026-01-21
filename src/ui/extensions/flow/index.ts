@@ -69,6 +69,13 @@ export { NodeFactory } from './utils/nodeFactory';
 export { EdgeFactory } from './utils/edgeFactory';
 export { FlowValidator } from './utils/validation';
 export { LayoutEngine, layoutEngine, DagreLayoutStrategy, ELKLayoutStrategy, ForceDirectedLayoutStrategy } from './utils/layoutEngine';
-export * from './utils/cssUtils';
+// Export cssUtils functions individually to avoid conflict with themes/utils
+export { 
+  generateCSSVariables,
+  applyFlowCSSVariables,
+  getCSSVariable,
+  setCSSVariable,
+  tokenToCSSVariable
+} from './utils/cssUtils';
 export * from './utils/geometryUtils';
 export * from './utils/performanceUtils';

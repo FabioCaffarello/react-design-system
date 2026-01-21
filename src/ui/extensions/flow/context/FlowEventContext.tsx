@@ -6,9 +6,9 @@
 
 'use client';
 
-import { createContext, useContext, useCallback, useMemo, useRef, useEffect } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import { useContext, useCallback, useMemo } from 'react';
 import type { ReactNode } from 'react';
-import type { Node, Edge } from '@xyflow/react';
 
 /**
  * Flow Event Types
@@ -32,7 +32,7 @@ export type FlowEventType =
 /**
  * Flow Event
  */
-export interface FlowEvent<T = any> {
+export interface FlowEvent<T = unknown> {
   type: FlowEventType;
   payload: T;
   timestamp: number;
@@ -42,7 +42,7 @@ export interface FlowEvent<T = any> {
 /**
  * Event Handler
  */
-export type FlowEventHandler<T = any> = (event: FlowEvent<T>) => void;
+export type FlowEventHandler<T = unknown> = (event: FlowEvent<T>) => void;
 
 /**
  * Event Subscription
@@ -56,13 +56,13 @@ export interface EventSubscription {
  */
 export interface FlowEventContextValue {
   // Event bus operations
-  subscribe: <T = any>(eventType: FlowEventType, handler: FlowEventHandler<T>) => EventSubscription;
+  subscribe: <T = unknown>(eventType: FlowEventType, handler: FlowEventHandler<T>) => EventSubscription;
   unsubscribe: (eventType: FlowEventType, handler: FlowEventHandler) => void;
-  emit: <T = any>(eventType: FlowEventType, payload: T, source?: string) => void;
+  emit: <T = unknown>(eventType: FlowEventType, payload: T, source?: string) => void;
   
   // Event filtering
-  once: <T = any>(eventType: FlowEventType, handler: FlowEventHandler<T>) => EventSubscription;
-  filter: <T = any>(
+  once: <T = unknown>(eventType: FlowEventType, handler: FlowEventHandler<T>) => EventSubscription;
+  filter: <T = unknown>(
     eventType: FlowEventType,
     predicate: (event: FlowEvent<T>) => boolean,
     handler: FlowEventHandler<T>
@@ -109,7 +109,7 @@ export function FlowEventProvider({
   const historyRef = useRef<FlowEvent[]>([]);
   
   // Subscribe to events
-  const subscribe = useCallback(<T = any>(
+  const subscribe = useCallback(<T = unknown>(
     eventType: FlowEventType,
     handler: FlowEventHandler<T>
   ): EventSubscription => {
@@ -135,7 +135,7 @@ export function FlowEventProvider({
   }, []);
   
   // Emit event
-  const emit = useCallback(<T = any>(
+  const emit = useCallback(<T = unknown>(
     eventType: FlowEventType,
     payload: T,
     source?: string
@@ -183,7 +183,7 @@ export function FlowEventProvider({
   }, [enableHistory, maxHistorySize]);
   
   // Subscribe once
-  const once = useCallback(<T = any>(
+  const once = useCallback(<T = unknown>(
     eventType: FlowEventType,
     handler: FlowEventHandler<T>
   ): EventSubscription => {
@@ -196,7 +196,7 @@ export function FlowEventProvider({
   }, [subscribe, unsubscribe]);
   
   // Filter events
-  const filter = useCallback(<T = any>(
+  const filter = useCallback(<T = unknown>(
     eventType: FlowEventType,
     predicate: (event: FlowEvent<T>) => boolean,
     handler: FlowEventHandler<T>

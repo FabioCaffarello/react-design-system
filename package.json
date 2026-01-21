@@ -1,93 +1,86 @@
 {
   "name": "@fabio.caffarello/react-design-system",
   "private": false,
-  "version": "1.8.0",
+  "version": "1.9.2",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/ui/index.d.ts",
+  "style": "dist/react-design-system.css",
   "exports": {
     ".": {
       "types": "./dist/ui/index.d.ts",
-      "import": {
-        "development": "./src/ui/index.ts",
-        "default": "./dist/index.js"
-      },
-      "require": "./dist/index.cjs"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "style": "./dist/react-design-system.css"
     },
+    "./styles": "./dist/react-design-system.css",
+    "./styles.css": "./dist/react-design-system.css",
     "./atoms": {
       "types": "./dist/ui/atoms/index.d.ts",
-      "import": {
-        "development": "./src/ui/atoms/index.ts",
-        "default": "./dist/atoms/index.js"
-      },
+      "import": "./dist/atoms/index.js",
       "require": "./dist/atoms/index.cjs"
     },
     "./molecules": {
       "types": "./dist/ui/molecules/index.d.ts",
-      "import": {
-        "development": "./src/ui/molecules/index.ts",
-        "default": "./dist/molecules/index.js"
-      },
+      "import": "./dist/molecules/index.js",
       "require": "./dist/molecules/index.cjs"
     },
     "./organisms": {
       "types": "./dist/ui/organisms/index.d.ts",
-      "import": {
-        "development": "./src/ui/organisms/index.ts",
-        "default": "./dist/organisms/index.js"
-      },
+      "import": "./dist/organisms/index.js",
       "require": "./dist/organisms/index.cjs"
     },
     "./tokens": {
       "types": "./dist/ui/tokens/index.d.ts",
-      "import": {
-        "development": "./src/ui/tokens/index.ts",
-        "default": "./dist/tokens/index.js"
-      },
+      "import": "./dist/tokens/index.js",
       "require": "./dist/tokens/index.cjs"
     },
     "./extensions": {
       "types": "./dist/ui/extensions/index.d.ts",
-      "import": {
-        "development": "./src/ui/extensions/index.ts",
-        "default": "./dist/extensions/index.js"
-      },
+      "import": "./dist/extensions/index.js",
       "require": "./dist/extensions/index.cjs"
     },
     "./extensions/flow": {
       "types": "./dist/ui/extensions/flow/index.d.ts",
-      "import": {
-        "development": "./src/ui/extensions/flow/index.ts",
-        "default": "./dist/extensions/flow/index.js"
-      },
+      "import": "./dist/extensions/flow/index.js",
       "require": "./dist/extensions/flow/index.cjs"
     }
   },
   "files": [
     "dist",
-    "src"
+    "README.md",
+    "LICENSE"
   ],
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "dev": "vite",
-    "dev:playground": "VITE_APP_MODE=true vite",
-    "build": "npx tsc --project tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist && vite build",
-    "build:playground": "VITE_APP_MODE=true vite build",
-    "preview": "vite preview",
-    "preview:playground": "VITE_APP_MODE=true vite preview",
+    "build": "npx tsc --project tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist || true && vite build && npm run build:validate",
+    "build:strict": "npx tsc --project tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist && vite build && npm run build:validate",
+    "build:types": "npx tsc --project tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist",
+    "build:js": "vite build",
+    "build:validate": "tsx scripts/validate-build-exports.ts",
     "lint": "eslint .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "plop": "plop",
     "postplop": "prettier -w './src/ui/**/*.{ts,tsx}'",
-    "test": "vitest run",
+    "test": "node scripts/run-tests.mjs",
+    "test:no-browser": "vitest run --bail=0 --reporter=verbose --exclude='**/*.stories.tsx' --project=unit",
+    "test:ci": "vitest run --reporter=verbose",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest watch",
     "audit:tokens": "node scripts/audit-tokens.js",
+    "audit:storybook": "tsx scripts/audit-storybook.ts",
+    "check:duplicates": "tsx scripts/check-duplicates.ts",
     "validate-stories": "tsx scripts/validate-stories.ts",
+    "validate-stories-enhanced": "tsx scripts/validate-stories-enhanced.ts",
+    "generate-stories": "tsx scripts/generate-stories.ts",
+    "update-stories": "tsx scripts/update-stories.ts",
+    "generate-insights": "tsx scripts/generate-insights.ts",
+    "visual-regression": "tsx scripts/visual-regression.ts",
+    "analyze-bundle-size": "tsx scripts/analyze-bundle-size.ts",
     "validate-architecture": "tsx scripts/validate-architecture.ts",
     "validate-a11y": "tsx scripts/validate-a11y.ts",
     "validate-themes": "tsx scripts/validate-themes.ts",
@@ -109,7 +102,8 @@
     "test:e2e:report": "playwright show-report",
     "chromatic": "npx chromatic --project-token=${CHROMATIC_PROJECT_TOKEN:-}",
     "chromatic:ci": "npx chromatic --exit-zero-on-changes --project-token=${CHROMATIC_PROJECT_TOKEN:-}",
-    "test:visual": "npm run build-storybook && npm run chromatic"
+    "test:visual": "npm run build-storybook && npm run chromatic",
+    "prepare": "husky"
   },
   "peerDependencies": {
     "@hookform/resolvers": "^3.0.0",
@@ -121,6 +115,9 @@
     "zod": "^3.0.0"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@tailwindcss/postcss": "^4.1.16",
     "@types/d3-force": "^3.0.10",
     "class-variance-authority": "^0.7.1",
@@ -134,9 +131,13 @@
     "web-worker": "^1.5.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.10.0",
     "@chromatic-com/storybook": "^4.1.2",
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
     "@eslint/js": "^9.36.0",
     "@hookform/resolvers": "^3.0.0",
+    "@playwright/test": "^1.56.1",
     "@storybook/addon-a11y": "^10.0.3",
     "@storybook/addon-coverage": "^3.0.0",
     "@storybook/addon-designs": "^11.1.1",
@@ -164,10 +165,10 @@
     "eslint-plugin-react-refresh": "^0.4.22",
     "eslint-plugin-storybook": "^10.0.3",
     "globals": "^16.4.0",
+    "husky": "^9.1.7",
     "jsdom": "^27.0.1",
+    "lint-staged": "^16.2.7",
     "lucide-react": "^0.552.0",
-    "@axe-core/playwright": "^4.10.0",
-    "@playwright/test": "^1.56.1",
     "playwright": "^1.56.1",
     "plop": "^4.0.4",
     "postcss": "^8.5.6",

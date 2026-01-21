@@ -7,8 +7,7 @@
 
 import type { Meta, StoryObj, ArgTypes } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
-import type { ReactElement } from 'react';
+import { userEvent, within } from '@storybook/test';
 
 /**
  * Event definition for component documentation
@@ -34,14 +33,14 @@ export interface StateDefinition {
 /**
  * Configuration for creating a component story
  */
-export interface ComponentStoryConfig {
+export interface ComponentStoryConfig<TProps = Record<string, unknown>> {
   title: string;
-  component: React.ComponentType<any>;
+  component: React.ComponentType<TProps>;
   description: string;
   events?: EventDefinition[];
   states?: StateDefinition[];
   argTypes?: ArgTypes;
-  defaultArgs?: Record<string, any>;
+  defaultArgs?: Partial<TProps>;
 }
 
 /**
@@ -107,7 +106,9 @@ export function createEventArgTypes(events: EventDefinition[]): ArgTypes {
 /**
  * Create a complete Meta configuration for a component story
  */
-export function createComponentMeta(config: ComponentStoryConfig): Meta<any> {
+export function createComponentMeta<TProps = Record<string, unknown>>(
+  config: ComponentStoryConfig<TProps>
+): Meta<TProps> {
   const { title, component, description, events = [], states = [], argTypes = {} } = config;
 
   // Generate documentation with events and states
@@ -144,14 +145,14 @@ ${statesTable}
 /**
  * Create a story that demonstrates events
  */
-export function createEventStory(
-  component: React.ComponentType<any>,
+export function createEventStory<TProps = Record<string, unknown>>(
+  component: React.ComponentType<TProps>,
   eventName: string,
-  props: Record<string, any> = {}
-): StoryObj<any> {
+  props: Partial<TProps> = {}
+): StoryObj<TProps> {
   return {
     render: () => {
-      const eventHandler = fn((...args: any[]) => {
+      const eventHandler = fn((...args: unknown[]) => {
         console.log(`${eventName} fired:`, args);
       });
 
@@ -176,11 +177,11 @@ export function createEventStory(
 /**
  * Create a story that demonstrates a specific state
  */
-export function createStateStory(
+export function createStateStory<TProps = Record<string, unknown>>(
   stateName: string,
-  props: Record<string, any>,
+  props: Partial<TProps>,
   playFunction?: (canvas: ReturnType<typeof within>) => Promise<void>
-): StoryObj<any> {
+): StoryObj<TProps> {
   return {
     args: props,
     play: playFunction
@@ -195,14 +196,14 @@ export function createStateStory(
 /**
  * Create interaction test story with steps
  */
-export function createInteractionTestStory(
-  component: React.ComponentType<any>,
-  props: Record<string, any>,
+export function createInteractionTestStory<TProps = Record<string, unknown>>(
+  component: React.ComponentType<TProps>,
+  props: Partial<TProps>,
   steps: Array<{
     name: string;
     action: (canvas: ReturnType<typeof within>) => Promise<void>;
   }>
-): StoryObj<any> {
+): StoryObj<TProps> {
   return {
     render: () => React.createElement(component, props),
     play: async ({ canvasElement, step }) => {

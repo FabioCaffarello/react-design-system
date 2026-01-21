@@ -20,7 +20,7 @@ export interface VirtualScrollingResult {
   scrollOffset: number;
   setScrollOffset: (offset: number) => void;
   scrollToIndex: (index: number) => void;
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
 }
 
 /**
@@ -81,7 +81,7 @@ export function useVirtualScrolling<T>(
       });
     }
     return result;
-  }, [items.length, itemHeight, scrollOffset, containerHeight, overscan, enabled]);
+  }, [items, itemHeight, scrollOffset, containerHeight, overscan, enabled]);
 
   const totalHeight = items.length * itemHeight;
 

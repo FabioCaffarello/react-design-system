@@ -12,7 +12,7 @@
  * - Figma MCP server configured
  */
 
-import { writeFileSync, readFileSync, existsSync } from 'fs';
+import { writeFileSync } from 'fs';
 import { join } from 'path';
 
 const FIGMA_ACCESS_TOKEN = process.env.FIGMA_ACCESS_TOKEN;
@@ -22,7 +22,7 @@ interface FigmaVariable {
   id: string;
   name: string;
   type: 'COLOR' | 'FLOAT' | 'STRING';
-  valuesByMode: Record<string, any>;
+  valuesByMode: Record<string, unknown>;
 }
 
 /**
@@ -63,9 +63,9 @@ async function fetchFigmaVariables(): Promise<FigmaVariable[]> {
  * Convert Figma variables to token format
  */
 function convertToTokens(figmaVariables: FigmaVariable[]): {
-  colors: Record<string, any>;
-  spacing: Record<string, any>;
-  typography: Record<string, any>;
+  colors: Record<string, unknown>;
+  spacing: Record<string, unknown>;
+  typography: Record<string, unknown>;
 } {
   const tokens = {
     colors: {},
@@ -108,9 +108,9 @@ function convertToTokens(figmaVariables: FigmaVariable[]): {
  * Update token files
  */
 function updateTokenFiles(tokens: {
-  colors: Record<string, any>;
-  spacing: Record<string, any>;
-  typography: Record<string, any>;
+  colors: Record<string, unknown>;
+  spacing: Record<string, unknown>;
+  typography: Record<string, unknown>;
 }) {
   console.log('📝 Updating token files...');
 
@@ -158,7 +158,7 @@ async function main() {
     console.log('   2. Validate changes');
     console.log('   3. Run tests: npm run test');
     console.log('   4. Commit changes if valid');
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('\n❌ Error syncing tokens:', error.message);
     console.log('\n💡 Troubleshooting:');
     console.log('   1. Verify FIGMA_ACCESS_TOKEN is set');

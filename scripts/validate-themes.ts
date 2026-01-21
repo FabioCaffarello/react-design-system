@@ -45,7 +45,7 @@ function getLuminance(r: number, g: number, b: number): number {
 /**
  * Calculate contrast ratio
  */
-function getContrastRatio(color1: string, color2: string): number | null {
+function _getContrastRatio(color1: string, color2: string): number | null {
   const rgb1 = hexToRgb(color1);
   const rgb2 = hexToRgb(color2);
   
@@ -86,8 +86,8 @@ function validateTheme(filePath: string): ThemeValidationResult {
   }
 
   // Validate contrast ratios for semantic colors
-  const semanticColorPattern = /(?:DEFAULT|contrast):\s*\{[^}]*hex:\s*['"](#[0-9a-fA-F]{6})['"]/g;
-  const semanticColors: { default: string; contrast: string }[] = [];
+  const _semanticColorPattern = /(?:DEFAULT|contrast):\s*\{[^}]*hex:\s*['"](#[0-9a-fA-F]{6})['"]/g;
+  const _semanticColors: { default: string; contrast: string }[] = [];
   
   // This is a simplified check - in production, parse the actual structure
   if (colors.length > 0) {

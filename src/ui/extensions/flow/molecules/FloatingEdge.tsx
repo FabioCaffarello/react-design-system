@@ -30,6 +30,7 @@ export const FloatingEdge = React.memo(({
   data,
   selected,
 }: FloatingEdgeProps) => {
+  // All hooks must be called before any early returns
   const { sourceNode, targetNode } = useStore((s) => {
     const sourceNode = s.nodeLookup.get(source);
     const targetNode = s.nodeLookup.get(target);
@@ -37,13 +38,14 @@ export const FloatingEdge = React.memo(({
     return { sourceNode, targetNode };
   });
 
-  if (!sourceNode || !targetNode) {
-    return null;
-  }
-
   // Get edge parameters with improved intersection calculation
   const { sx, sy, tx, ty, sourcePos, targetPos } = useMemo(
-    () => getEdgeParams(sourceNode, targetNode),
+    () => {
+      if (!sourceNode || !targetNode) {
+        return { sx: 0, sy: 0, tx: 0, ty: 0, sourcePos: 'top' as const, targetPos: 'top' as const };
+      }
+      return getEdgeParams(sourceNode, targetNode);
+    },
     [sourceNode, targetNode]
   );
 
@@ -88,6 +90,11 @@ export const FloatingEdge = React.memo(({
     ].filter(Boolean).join(' ');
     return classes;
   }, [selected, animated]);
+
+  // Early return after all hooks
+  if (!sourceNode || !targetNode) {
+    return null;
+  }
 
   return (
     <g className="react-flow__connection">

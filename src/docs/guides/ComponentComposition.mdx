@@ -1,0 +1,381 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Design System/Guides/Component Composition" />
+
+# Component Composition Guide
+
+Este guia explica como compor componentes do React Design System para criar interfaces complexas e reutilizáveis.
+
+## Princípios de Composição
+
+### 1. Atomic Design Hierarchy
+
+Sempre respeite a hierarquia do Atomic Design:
+
+```
+Atoms → Molecules → Organisms → Pages
+```
+
+### 2. Composição sobre Configuração
+
+Prefira compor componentes simples em vez de criar componentes super configuráveis:
+
+```tsx
+// ✅ Correto: Compor
+function UserCard({ user }) {
+  return (
+    <Card padding="large">
+      <Avatar src={user.avatar} />
+      <Text>{user.name}</Text>
+      <Button>View Profile</Button>
+    </Card>
+  );
+}
+
+// ❌ Evitar: Super configurável
+function UserCard({ user, showAvatar, showName, showButton, ... }) {
+  // Muitas props condicionais
+}
+```
+
+## Padrões de Composição
+
+### Padrão 1: Container + Content
+
+```tsx
+import { Card, Text, Button } from '@fabio.caffarello/react-design-system';
+
+function ProductCard({ product }) {
+  return (
+    <Card padding="large" variant="hover">
+      <img src={product.image} alt={product.name} />
+      <Text variant="heading">{product.name}</Text>
+      <Text>{product.description}</Text>
+      <Button variant="primary">Add to Cart</Button>
+    </Card>
+  );
+}
+```
+
+### Padrão 2: Form Composition
+
+```tsx
+import { Form, Input, Label, Button, Card } from '@fabio.caffarello/react-design-system';
+
+function LoginForm() {
+  return (
+    <Card padding="large">
+      <Form onSubmit={handleSubmit}>
+        <Label htmlFor="email">Email</Label>
+        <Input id="email" type="email" required />
+        
+        <Label htmlFor="password">Password</Label>
+        <Input id="password" type="password" required />
+        
+        <Button type="submit" variant="primary">Login</Button>
+      </Form>
+    </Card>
+  );
+}
+```
+
+### Padrão 3: List Composition
+
+```tsx
+import { Card, Text, Button, Separator } from '@fabio.caffarello/react-design-system';
+
+function UserList({ users }) {
+  return (
+    <div>
+      {users.map((user, index) => (
+        <div key={user.id}>
+          <Card padding="medium">
+            <Text>{user.name}</Text>
+            <Text variant="caption">{user.email}</Text>
+            <Button size="small">View</Button>
+          </Card>
+          {index < users.length - 1 && <Separator />}
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+### Padrão 4: Layout Composition
+
+```tsx
+import { Card, Separator } from '@fabio.caffarello/react-design-system';
+
+function DashboardLayout({ header, sidebar, content, footer }) {
+  return (
+    <div className="flex h-screen">
+      <aside className="w-64">
+        {sidebar}
+      </aside>
+      <main className="flex-1 flex flex-col">
+        <header className="p-4">
+          {header}
+        </header>
+        <Separator />
+        <div className="flex-1 p-4 overflow-auto">
+          {content}
+        </div>
+        <Separator />
+        <footer className="p-4">
+          {footer}
+        </footer>
+      </main>
+    </div>
+  );
+}
+```
+
+## Composição Avançada
+
+### Wrapper Components
+
+Crie wrappers que combinam múltiplos componentes:
+
+```tsx
+import { Card, Input, Label, ErrorMessage } from '@fabio.caffarello/react-design-system';
+
+interface FormFieldProps {
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+}
+
+function FormField({ label, error, children }: FormFieldProps) {
+  return (
+    <div>
+      <Label>{label}</Label>
+      {children}
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+    </div>
+  );
+}
+
+// Uso
+<FormField label="Email" error={errors.email}>
+  <Input type="email" />
+</FormField>
+```
+
+### Compound Components
+
+Use compound components para componentes relacionados:
+
+```tsx
+import { Card, Text, Button } from '@fabio.caffarello/react-design-system';
+
+interface ModalProps {
+  children: React.ReactNode;
+}
+
+function Modal({ children }: ModalProps) {
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <Card padding="large" className="max-w-md w-full">
+        {children}
+      </Card>
+    </div>
+  );
+}
+
+Modal.Header = function ModalHeader({ children }) {
+  return <Text variant="heading">{children}</Text>;
+};
+
+Modal.Body = function ModalBody({ children }) {
+  return <div>{children}</div>;
+};
+
+Modal.Footer = function ModalFooter({ children }) {
+  return <div className="flex justify-end gap-2">{children}</div>;
+};
+
+// Uso
+<Modal>
+  <Modal.Header>Confirm Action</Modal.Header>
+  <Modal.Body>Are you sure?</Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary">Cancel</Button>
+    <Button variant="primary">Confirm</Button>
+  </Modal.Footer>
+</Modal>
+```
+
+## Composição com Hooks
+
+### Custom Hooks para Composição
+
+```tsx
+import { useState } from 'react';
+import { Input, Button, Card } from '@fabio.caffarello/react-design-system';
+
+function useFormField(initialValue = '') {
+  const [value, setValue] = useState(initialValue);
+  const [error, setError] = useState<string | undefined>();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    setError(undefined);
+  };
+
+  return { value, error, handleChange, setError };
+}
+
+function LoginForm() {
+  const email = useFormField();
+  const password = useFormField();
+
+  return (
+    <Card padding="large">
+      <Input
+        type="email"
+        value={email.value}
+        onChange={email.handleChange}
+        error={email.error}
+      />
+      <Input
+        type="password"
+        value={password.value}
+        onChange={password.handleChange}
+        error={password.error}
+      />
+      <Button>Login</Button>
+    </Card>
+  );
+}
+```
+
+## Composição de Organisms
+
+### Usando Organisms Existentes
+
+```tsx
+import { Table, DataGrid, Stepper } from '@fabio.caffarello/react-design-system';
+
+function DataManagementPage() {
+  return (
+    <div>
+      <Stepper
+        steps={['Upload', 'Review', 'Confirm']}
+        currentStep={0}
+      />
+      <DataGrid
+        data={data}
+        columns={columns}
+        onExport={handleExport}
+      />
+    </div>
+  );
+}
+```
+
+## Melhores Práticas
+
+### 1. Mantenha Componentes Pequenos
+
+```tsx
+// ✅ Correto: Componente focado
+function UserAvatar({ user }) {
+  return <Avatar src={user.avatar} alt={user.name} />;
+}
+
+// ❌ Evitar: Componente fazendo muitas coisas
+function UserCardWithEverything({ user, showStats, showActions, ... }) {
+  // Muito código
+}
+```
+
+### 2. Use Props para Variação
+
+```tsx
+// ✅ Correto: Props para variar comportamento
+function Button({ variant, size, children, ...props }) {
+  // Usa Button do design system com props
+  return <Button variant={variant} size={size} {...props}>{children}</Button>;
+}
+
+// ❌ Evitar: Múltiplos componentes para variações
+function PrimaryButton() { }
+function SecondaryButton() { }
+function SmallButton() { }
+```
+
+### 3. Compose, Don't Modify
+
+```tsx
+// ✅ Correto: Compor componentes
+function CustomCard({ children }) {
+  return (
+    <Card padding="large" variant="hover">
+      {children}
+    </Card>
+  );
+}
+
+// ❌ Incorreto: Modificar componentes diretamente
+// Não modifique os componentes do design system
+```
+
+## Exemplos Completos
+
+### Exemplo: Dashboard Completo
+
+```tsx
+import {
+  Card,
+  Button,
+  Input,
+  Table,
+  Text,
+  Separator,
+} from '@fabio.caffarello/react-design-system';
+
+function Dashboard() {
+  return (
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <Text variant="heading">Dashboard</Text>
+        <Button variant="primary">New Item</Button>
+      </div>
+
+      <Separator />
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-3 gap-4">
+        <Card padding="medium">
+          <Text variant="caption">Total Users</Text>
+          <Text variant="heading">1,234</Text>
+        </Card>
+        <Card padding="medium">
+          <Text variant="caption">Active Now</Text>
+          <Text variant="heading">567</Text>
+        </Card>
+        <Card padding="medium">
+          <Text variant="caption">Revenue</Text>
+          <Text variant="heading">$12,345</Text>
+        </Card>
+      </div>
+
+      {/* Data Table */}
+      <Card padding="large">
+        <Table
+          data={data}
+          columns={columns}
+        />
+      </Card>
+    </div>
+  );
+}
+```
+
+## Recursos Adicionais
+
+- [Best Practices](./Design%20System/Best%20Practices)
+- [Getting Started](./Design%20System/Getting%20Started)
+- [Component Status](./Design%20System/Component%20Status)

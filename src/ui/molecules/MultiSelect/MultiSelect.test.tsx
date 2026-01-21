@@ -41,7 +41,7 @@ describe('MultiSelect', () => {
     render(<MultiSelect options={mockOptions} defaultValue={['1']} onChange={handleChange} />);
     
     await waitFor(() => {
-      const removeButton = screen.getByLabelText('Remove');
+      const removeButton = screen.getByLabelText(/Remove Option 1/i);
       fireEvent.click(removeButton);
       expect(handleChange).toHaveBeenCalledWith([]);
     });

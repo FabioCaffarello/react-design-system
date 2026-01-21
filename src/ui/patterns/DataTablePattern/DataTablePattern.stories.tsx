@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
+import { expect, within, waitFor } from '@storybook/test';
 import { DataTablePattern, type DataTableColumn } from './DataTablePattern';
 import { Button } from '../../atoms';
 
@@ -204,9 +203,14 @@ export const WithEvents: Story = {
   ],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await waitFor(() => {
-      expect(canvas.getByText(/user 1/i)).toBeInTheDocument();
-    });
+    await waitFor(async () => {
+      // There might be multiple "User 1" elements (e.g., User 1 and User 10)
+      // Get all matching elements and verify at least one exists
+      const user1Elements = canvas.getAllByText((content, element) => {
+        return element?.textContent?.trim() === 'User 1' || false;
+      });
+      expect(user1Elements.length).toBeGreaterThan(0);
+    }, { timeout: 3000 });
   },
   parameters: {
     docs: {

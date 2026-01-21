@@ -123,11 +123,11 @@ function main() {
   const srcDir = join(process.cwd(), 'src', 'ui');
   const outputFile = join(process.cwd(), 'docs', 'CONTEXT_HIERARCHY.md');
 
-  // eslint-disable-next-line no-console
+   
   console.log('🔍 Finding provider files...\n');
 
   const providerFiles = findProviderFiles(srcDir);
-  // eslint-disable-next-line no-console
+   
   console.log(`Found ${providerFiles.length} provider files\n`);
 
   const providers: ProviderInfo[] = [];
@@ -139,7 +139,7 @@ function main() {
   }
 
   if (providers.length === 0) {
-    // eslint-disable-next-line no-console
+     
     console.error('No providers found');
     process.exit(1);
   }
@@ -184,12 +184,12 @@ ${providers.map(p => `### ${p.name}
 `;
 
   writeFileSync(outputFile, markdown);
-  // eslint-disable-next-line no-console
+   
   console.log(`✅ Context hierarchy diagram generated: ${outputFile}\n`);
-  // eslint-disable-next-line no-console
+   
   console.log(`Found ${providers.length} providers:`);
   providers.forEach(p => {
-    // eslint-disable-next-line no-console
+     
     console.log(`  - ${p.name} (level ${p.level})`);
   });
 }

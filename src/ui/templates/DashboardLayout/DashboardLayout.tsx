@@ -1,7 +1,6 @@
 import React from 'react';
 import { SideNavbar } from '../../organisms';
 import { Container } from '../../layouts/Container/Container';
-import { Stack } from '../../layouts/Stack/Stack';
 
 export interface DashboardLayoutProps {
   /**

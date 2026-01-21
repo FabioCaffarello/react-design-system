@@ -143,7 +143,7 @@ export function loadFlowFromFile(
       try {
         const json = JSON.parse(e.target?.result as string) as ReactFlowJsonObject;
         resolve(importFlowFromJSON(json));
-      } catch (error) {
+      } catch {
         reject(new Error('Invalid JSON file'));
       }
     };

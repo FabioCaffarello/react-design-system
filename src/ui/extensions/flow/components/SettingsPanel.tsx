@@ -4,9 +4,9 @@
  * Panel for general playground settings (theme, performance, debug).
  */
 
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import { Card } from '../../../molecules';
-import { Label, Select, Button, Checkbox } from '../../../atoms';
+import { Label, Select, Checkbox } from '../../../atoms';
 import { 
   getSpacingClass, 
   getColorClass, 

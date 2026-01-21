@@ -7,7 +7,7 @@ import { Stack } from '../../layouts/Stack/Stack';
 export interface FilterOption {
   id: string;
   label: string;
-  value: any;
+  value: unknown;
 }
 
 export interface FilterConfig {
@@ -18,7 +18,7 @@ export interface FilterConfig {
   placeholder?: string;
 }
 
-export interface SearchAndFilterPatternProps<T = any> {
+export interface SearchAndFilterPatternProps<T = unknown> {
   /**
    * Items to search and filter
    */
@@ -30,7 +30,7 @@ export interface SearchAndFilterPatternProps<T = any> {
   /**
    * Filter function - receives filter config and item, returns boolean
    */
-  filterFn?: (filters: Record<string, any>, item: T) => boolean;
+  filterFn?: (filters: Record<string, unknown>, item: T) => boolean;
   /**
    * Render function for each item
    */
@@ -70,7 +70,7 @@ export interface SearchAndFilterPatternProps<T = any> {
  * />
  * ```
  */
-export function SearchAndFilterPattern<T = any>({
+export function SearchAndFilterPattern<T = unknown>({
   items,
   searchFn,
   filterFn,
@@ -81,7 +81,7 @@ export function SearchAndFilterPattern<T = any>({
   showResultsCount = true,
 }: SearchAndFilterPatternProps<T>) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeFilters, setActiveFilters] = useState<Record<string, any>>({});
+  const [activeFilters, setActiveFilters] = useState<Record<string, unknown>>({});
 
   // Filter items based on search and filters
   const filteredItems = useMemo(() => {
@@ -101,7 +101,7 @@ export function SearchAndFilterPattern<T = any>({
     return result;
   }, [items, searchQuery, activeFilters, searchFn, filterFn]);
 
-  const handleFilterChange = (filterId: string, value: any) => {
+  const handleFilterChange = (filterId: string, value: unknown) => {
     setActiveFilters((prev) => ({
       ...prev,
       [filterId]: value,
@@ -119,14 +119,14 @@ export function SearchAndFilterPattern<T = any>({
     <Container maxWidth="full" paddingX="base" paddingY="base">
       <Stack spacing="md">
         {/* Search and Filters */}
-        <Card padding="md">
+        <Card padding="medium">
           <Stack spacing="md">
             {/* Search */}
             <div>
               <SearchInput
                 placeholder={searchPlaceholder}
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onSearch={setSearchQuery}
               />
             </div>
 
@@ -135,19 +135,19 @@ export function SearchAndFilterPattern<T = any>({
               <div className="flex flex-wrap gap-2">
                 {filters.map((filter) => (
                   <div key={filter.id} className="flex items-center gap-2">
-                    <Text size="sm" className="text-gray-600">
+                    <Text className="text-gray-600 text-sm">
                       {filter.label}:
                     </Text>
                     <select
                       className="px-3 py-1 border rounded text-sm"
-                      value={activeFilters[filter.id] || ''}
+                      value={String(activeFilters[filter.id] || '')}
                       onChange={(e) =>
                         handleFilterChange(filter.id, e.target.value || undefined)
                       }
                     >
                       <option value="">All</option>
                       {filter.options?.map((option) => (
-                        <option key={option.id} value={option.value}>
+                        <option key={option.id} value={String(option.value || '')}>
                           {option.label}
                         </option>
                       ))}
@@ -178,7 +178,7 @@ export function SearchAndFilterPattern<T = any>({
 
         {/* Results */}
         {filteredItems.length === 0 ? (
-          <Card padding="lg">
+          <Card padding="large">
             <div className="text-center text-gray-500">
               <Text>{emptyMessage}</Text>
             </div>

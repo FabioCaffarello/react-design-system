@@ -7,7 +7,6 @@
 
 import React, { DragEvent } from 'react';
 import { Card } from '../../../molecules';
-import { Button } from '../../../atoms';
 import type { Node } from '@xyflow/react';
 import styles from '../styles/modules/DragNDropSidebar.module.css';
 

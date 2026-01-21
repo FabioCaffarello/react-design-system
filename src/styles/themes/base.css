@@ -1,0 +1,237 @@
+/**
+ * AIppin Design System - Theme Base
+ *
+ * Shared theme configuration and utilities.
+ * This file sets up the theme system foundation.
+ *
+ * @brand AIppin
+ * @version 1.0.0
+ */
+
+/* ============================================
+ * THEME DATA ATTRIBUTES
+ * The design system uses data-theme and data-variant
+ * attributes to control theming
+ *
+ * Usage:
+ * <html data-theme="light" data-variant="tech">
+ * <html data-theme="dark" data-variant="creative">
+ * ============================================ */
+
+:root {
+  /* ============================================
+   * SHARED THEME VARIABLES
+   * These don't change between light/dark
+   * ============================================ */
+
+  /* Color scheme hint for browsers */
+  color-scheme: light dark;
+
+  /* Default theme - light */
+  --theme-mode: light;
+
+  /* Default variant - tech */
+  --theme-variant: tech;
+
+  /* ============================================
+   * Z-INDEX SCALE
+   * Consistent layering across themes
+   * ============================================ */
+
+  --z-behind: -1;
+  --z-base: 0;
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-fixed: 30;
+  --z-modal-backdrop: 40;
+  --z-modal: 50;
+  --z-popover: 60;
+  --z-tooltip: 70;
+  --z-toast: 80;
+  --z-max: 9999;
+
+  /* ============================================
+   * OPACITY SCALE
+   * Consistent transparency values
+   * ============================================ */
+
+  --opacity-0: 0;
+  --opacity-5: 0.05;
+  --opacity-10: 0.1;
+  --opacity-20: 0.2;
+  --opacity-25: 0.25;
+  --opacity-30: 0.3;
+  --opacity-40: 0.4;
+  --opacity-50: 0.5;
+  --opacity-60: 0.6;
+  --opacity-70: 0.7;
+  --opacity-75: 0.75;
+  --opacity-80: 0.8;
+  --opacity-90: 0.9;
+  --opacity-95: 0.95;
+  --opacity-100: 1;
+
+  /* ============================================
+   * ASPECT RATIOS
+   * Common aspect ratios for media
+   * ============================================ */
+
+  --aspect-auto: auto;
+  --aspect-square: 1 / 1;
+  --aspect-video: 16 / 9;
+  --aspect-portrait: 3 / 4;
+  --aspect-landscape: 4 / 3;
+  --aspect-wide: 21 / 9;
+
+  /* ============================================
+   * CONTAINER SIZES
+   * Max widths for content containers
+   * ============================================ */
+
+  --container-xs: 20rem;    /* 320px */
+  --container-sm: 24rem;    /* 384px */
+  --container-md: 28rem;    /* 448px */
+  --container-lg: 32rem;    /* 512px */
+  --container-xl: 36rem;    /* 576px */
+  --container-2xl: 42rem;   /* 672px */
+  --container-3xl: 48rem;   /* 768px */
+  --container-4xl: 56rem;   /* 896px */
+  --container-5xl: 64rem;   /* 1024px */
+  --container-6xl: 72rem;   /* 1152px */
+  --container-7xl: 80rem;   /* 1280px */
+  --container-full: 100%;
+  --container-prose: 65ch;  /* Optimal reading width */
+
+  /* ============================================
+   * BREAKPOINTS
+   * Responsive design breakpoints
+   * ============================================ */
+
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  /* ============================================
+   * SCROLLBAR STYLING
+   * Consistent scrollbar appearance
+   * ============================================ */
+
+  --scrollbar-width: 8px;
+  --scrollbar-width-thin: 4px;
+  --scrollbar-track-bg: var(--color-bg-subtle);
+  --scrollbar-thumb-bg: var(--color-slate-300);
+  --scrollbar-thumb-hover-bg: var(--color-slate-400);
+  --scrollbar-radius: var(--radius-full);
+}
+
+/* ============================================
+ * SCROLLBAR STYLES
+ * Custom scrollbar for WebKit browsers
+ * ============================================ */
+
+/* Webkit scrollbar */
+::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+  height: var(--scrollbar-width);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track-bg);
+  border-radius: var(--scrollbar-radius);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-bg);
+  border-radius: var(--scrollbar-radius);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover-bg);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg);
+}
+
+/* Thin scrollbar variant */
+.scrollbar-thin::-webkit-scrollbar {
+  width: var(--scrollbar-width-thin);
+  height: var(--scrollbar-width-thin);
+}
+
+/* Hidden scrollbar (still scrollable) */
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================
+ * FOCUS STYLES
+ * Accessible focus indicators
+ * ============================================ */
+
+/* Remove default focus outline */
+*:focus {
+  outline: none;
+}
+
+/* Keyboard focus only (not mouse/touch) */
+*:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+/* Focus ring utility class */
+.focus-ring:focus-visible {
+  box-shadow: var(--ring-default);
+}
+
+/* Skip to main content link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-bg-base);
+  color: var(--color-text-primary);
+  padding: var(--spacing-2) var(--spacing-4);
+  z-index: var(--z-max);
+  transition: top var(--duration-fast) var(--ease-default);
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* ============================================
+ * SELECTION STYLES
+ * Text selection appearance
+ * ============================================ */
+
+::selection {
+  background-color: var(--color-indigo-200);
+  color: var(--color-slate-900);
+}
+
+/* ============================================
+ * REDUCED MOTION
+ * Respect user preferences
+ * ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

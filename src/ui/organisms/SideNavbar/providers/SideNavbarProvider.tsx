@@ -1,6 +1,5 @@
 'use client';
 
-import { type ReactNode } from 'react';
 import { SideNavbarThemeProvider } from './SideNavbarThemeProvider';
 import { SideNavbarConfigProvider } from './SideNavbarConfigProvider';
 import { SideNavbarStateProvider } from './SideNavbarStateProvider';
@@ -58,6 +57,7 @@ export function SideNavbarProvider({
   onCollapseChange,
   onWidthChange,
   onMobileChange,
+  exclusiveGroups,
 }: SideNavbarProviderProps) {
   return (
     <SideNavbarThemeProvider
@@ -89,6 +89,7 @@ export function SideNavbarProvider({
           onCollapseChange={onCollapseChange}
           onWidthChange={onWidthChange}
           onMobileChange={onMobileChange}
+          exclusiveGroups={exclusiveGroups}
         >
           {children}
         </SideNavbarStateProvider>

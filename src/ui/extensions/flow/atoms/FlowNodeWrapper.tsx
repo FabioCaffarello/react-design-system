@@ -49,12 +49,12 @@ export function FlowNodeWrapper({
   children,
   isChild = false,
   isParent = false,
-  resizable = false,
+  resizable: _resizable = false,
   animation = 'fade',
   customStyle,
   ...props
 }: FlowNodeWrapperProps) {
-  const { theme } = useFlowContext();
+  const { theme: _theme } = useFlowContext();
   
   // Base color - use transparent for wrapper when Card is used inside
   const colorRole = variant === 'default' ? 'neutral' : variant;
@@ -62,10 +62,10 @@ export function FlowNodeWrapper({
   const bgColorClass = 'bg-transparent';
   
   // Border color - removed as Card handles borders
-  const borderColorClass = '';
+  const _borderColorClass = '';
   
   // Spacing based on size
-  const spacingClasses = {
+  const _spacingClasses = {
     sm: getSpacingClass('sm', 'p'),
     md: getSpacingClass('md', 'p'),
     lg: getSpacingClass('lg', 'p'),
@@ -73,21 +73,21 @@ export function FlowNodeWrapper({
   };
   
   // Radius
-  const radiusClass = getRadiusClass('lg');
+  const _radiusClass = getRadiusClass('lg');
   
   // Shadow
-  const shadowClass = selected ? getShadowClass('lg') : getShadowClass('md');
+  const _shadowClass = selected ? getShadowClass('lg') : getShadowClass('md');
   
   // Selection indicator
-  const selectionClass = selected
+  const _selectionClass = selected
     ? `ring-2 ring-offset-2 ${getColorClass(colorRole, 'DEFAULT', 'ring')}`
     : '';
   
   // Child node styling (lighter, smaller)
-  const childNodeClass = isChild ? 'opacity-90 scale-95' : '';
+  const _childNodeClass = isChild ? 'opacity-90 scale-95' : '';
   
   // Parent node styling (stronger border, more padding)
-  const parentNodeClass = isParent ? 'border-2' : '';
+  const _parentNodeClass = isParent ? 'border-2' : '';
   
   // CSS module classes
   const moduleClasses = [

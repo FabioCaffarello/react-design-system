@@ -19,7 +19,7 @@ A flexible date picker component with single date and range selection. Supports 
 
 | Event | Description | Parameters | When Fired |
 |-------|-------------|------------|------------|
-| \`onValueChange\` | Data selecionada mudou | \`(value: Date \| { start: Date, end: Date } \| null) => void\` | Quando uma data é selecionada ou alterada |
+| \`onValueChange\` | Data selecionada mudou | \`(value: Date | { start: Date, end: Date } | null) => void\` | Quando uma data é selecionada ou alterada |
 
 ### States
 

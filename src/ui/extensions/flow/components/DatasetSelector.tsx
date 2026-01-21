@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Dataset Selector Component
  * 
@@ -11,14 +13,11 @@ import Collapsible from '../../../atoms/Collapsible/Collapsible';
 import { 
   flowTemplates, 
   getTemplatesByCategory,
-  getTemplatesByTag,
   searchTemplates,
   type FlowTemplate 
 } from '../utils/playgroundTemplates';
 import { usePlaygroundContext } from '../context/PlaygroundContext';
 import { generateNodeId } from '../utils/playgroundHelpers';
-import type { Node, Edge } from '@xyflow/react';
-import type { FlowNodeData, FlowEdgeData } from '../organisms/FlowTypes';
 import { 
   getSpacingClass, 
   getColorClass, 

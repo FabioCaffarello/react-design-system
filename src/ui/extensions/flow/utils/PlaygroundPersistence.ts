@@ -217,7 +217,7 @@ export function useAutoSave(
   snapshot: Omit<PlaygroundSnapshot, 'id' | 'timestamp'>,
   options: PlaygroundPersistenceOptions = {}
 ) {
-  const opts = { ...DEFAULT_OPTIONS, ...options };
+  const opts = React.useMemo(() => ({ ...DEFAULT_OPTIONS, ...options }), [options]);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   const lastSnapshotRef = React.useRef<string>('');
 
@@ -252,7 +252,7 @@ export function useAutoSave(
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [snapshot, opts.autoSaveEnabled, opts.autoSaveInterval, opts.storageKey, opts.maxVersions]);
+  }, [snapshot, opts]);
 }
 
 // Import React for useAutoSave hook

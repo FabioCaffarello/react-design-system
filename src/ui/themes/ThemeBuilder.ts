@@ -5,7 +5,7 @@
  * Supports theme inheritance and CSS variable generation.
  */
 
-import { TokensFactory, type TokenSet, type ThemeMode } from '../tokens/tokens.factory';
+import { TokensFactory, type TokenSet, type ThemeMode } from '../tokens';
 import type { CustomThemeConfig, Theme } from './types';
 
 export class ThemeBuilder {
@@ -26,19 +26,19 @@ export class ThemeBuilder {
     const baseTokenSet = this.baseFactory.createTokenSet();
 
     // Merge custom overrides
-    const mergedTokens: TokenSet = {
-      spacing: { ...baseTokenSet.spacing, ...this.config.spacing },
-      typography: { ...baseTokenSet.typography, ...this.config.typography },
+    const mergedTokens = {
+      spacing: { ...baseTokenSet.spacing, ...(this.config.spacing || {}) },
+      typography: { ...baseTokenSet.typography, ...(this.config.typography || {}) },
       colors: this.mergeColors(baseTokenSet.colors, this.config.colors),
       breakpoints: baseTokenSet.breakpoints, // Breakpoints are usually not customized
-      shadows: { ...baseTokenSet.shadows, ...this.config.shadows },
-      radius: { ...baseTokenSet.radius, ...this.config.radius },
-      borders: { ...baseTokenSet.borders, ...this.config.borders },
-      animations: { ...baseTokenSet.animations, ...this.config.animations },
-      zIndex: { ...baseTokenSet.zIndex, ...this.config.zIndex },
-      opacity: { ...baseTokenSet.opacity, ...this.config.opacity },
-      gradients: { ...baseTokenSet.gradients, ...this.config.gradients },
-    };
+      shadows: { ...baseTokenSet.shadows, ...(this.config.shadows || {}) },
+      radius: { ...baseTokenSet.radius, ...(this.config.radius || {}) },
+      borders: { ...baseTokenSet.borders, ...(this.config.borders || {}) },
+      animations: { ...baseTokenSet.animations, ...(this.config.animations || {}) },
+      zIndex: { ...baseTokenSet.zIndex, ...(this.config.zIndex || {}) },
+      opacity: { ...baseTokenSet.opacity, ...(this.config.opacity || {}) },
+      gradients: { ...baseTokenSet.gradients, ...(this.config.gradients || {}) },
+    } as TokenSet;
 
     // Generate CSS variables
     const cssVariables = this.generateCSSVariables(mergedTokens);
@@ -100,13 +100,22 @@ export class ThemeBuilder {
     for (const [name, token] of Object.entries(tokens.typography)) {
       if (token && typeof token === 'object') {
         if ('fontSize' in token) {
-          variables[`--font-size-${name}`] = (token as { fontSize: string }).fontSize;
+          const fontSize = (token as { fontSize: unknown }).fontSize;
+          if (typeof fontSize === 'string') {
+            variables[`--font-size-${name}`] = fontSize;
+          }
         }
         if ('lineHeight' in token) {
-          variables[`--line-height-${name}`] = (token as { lineHeight: string }).lineHeight;
+          const lineHeight = (token as { lineHeight: unknown }).lineHeight;
+          if (typeof lineHeight === 'string') {
+            variables[`--line-height-${name}`] = lineHeight;
+          }
         }
         if ('fontWeight' in token) {
-          variables[`--font-weight-${name}`] = (token as { fontWeight: string }).fontWeight;
+          const fontWeight = (token as { fontWeight: unknown }).fontWeight;
+          if (typeof fontWeight === 'string') {
+            variables[`--font-weight-${name}`] = fontWeight;
+          }
         }
       }
     }
@@ -121,7 +130,8 @@ export class ThemeBuilder {
     // Radius variables
     for (const [name, token] of Object.entries(tokens.radius)) {
       if (token && typeof token === 'object' && 'value' in token) {
-        variables[`--radius-${name}`] = (token as { value: string }).value;
+        const value = (token as { value: unknown }).value;
+        variables[`--radius-${name}`] = typeof value === 'string' ? value : String(value);
       }
     }
 
@@ -129,10 +139,20 @@ export class ThemeBuilder {
     for (const [name, token] of Object.entries(tokens.animations)) {
       if (token && typeof token === 'object') {
         if ('duration' in token) {
-          variables[`--animation-duration-${name}`] = (token as { duration: string }).duration;
+          const duration = (token as { duration: unknown }).duration;
+          if (typeof duration === 'string') {
+            variables[`--animation-duration-${name}`] = duration;
+          } else if (duration && typeof duration === 'object' && 'value' in duration) {
+            variables[`--animation-duration-${name}`] = (duration as { value: string }).value;
+          }
         }
         if ('easing' in token) {
-          variables[`--animation-easing-${name}`] = (token as { easing: string }).easing;
+          const easing = (token as { easing: unknown }).easing;
+          if (typeof easing === 'string') {
+            variables[`--animation-easing-${name}`] = easing;
+          } else if (easing && typeof easing === 'object' && 'value' in easing) {
+            variables[`--animation-easing-${name}`] = (easing as { value: string }).value;
+          }
         }
       }
     }

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Stepper } from '../../organisms';
-import { Button } from '../../atoms';
 import { Container } from '../../layouts/Container/Container';
 import { Stack } from '../../layouts/Stack/Stack';
+import { Button } from '../../atoms';
 import type { StepperStep } from '../../organisms';
 
 export interface FormWizardStep extends StepperStep {
@@ -17,7 +17,7 @@ export interface FormWizardStep extends StepperStep {
   /**
    * Submit handler for this step
    */
-  onSubmit?: (data: any) => void | Promise<void>;
+  onSubmit?: (data: unknown) => void | Promise<void>;
 }
 
 export interface FormWizardPatternProps {
@@ -28,7 +28,7 @@ export interface FormWizardPatternProps {
   /**
    * Callback when wizard is completed
    */
-  onComplete?: (data: Record<string, any>) => void;
+  onComplete?: (data: Record<string, unknown>) => void;
   /**
    * Allow navigation to previous steps
    * @default true
@@ -59,10 +59,10 @@ export function FormWizardPattern({
   steps,
   onComplete,
   allowBackNavigation = true,
-  showStepNumbers = true,
+  showStepNumbers: _showStepNumbers = true,
 }: FormWizardPatternProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<Record<string, any>>({});
+  const [formData, _setFormData] = useState<Record<string, unknown>>({});
   const [errors, setErrors] = useState<Record<number, boolean>>({});
 
   const handleNext = async () => {
@@ -120,7 +120,9 @@ export function FormWizardPattern({
         {/* Stepper */}
         <Stepper
           steps={steps.map((step, index) => ({
-            label: step.label,
+            id: step.id,
+            title: step.title,
+            content: step.content,
             description: step.description,
             status: index < currentStep
               ? 'completed'
@@ -139,7 +141,7 @@ export function FormWizardPattern({
         <div className="bg-white rounded-lg border p-6">
           <Stack spacing="md">
             <div>
-              <h2 className="text-2xl font-semibold">{currentStepData.label}</h2>
+              <h2 className="text-2xl font-semibold">{currentStepData.title}</h2>
               {currentStepData.description && (
                 <p className="text-gray-600 mt-1">{currentStepData.description}</p>
               )}

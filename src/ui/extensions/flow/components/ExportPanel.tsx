@@ -1,10 +1,12 @@
+'use client';
+
 /**
  * Export Panel Component
  * 
  * Panel for exporting flows in multiple formats
  */
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { X } from 'lucide-react';
 import { Card } from '../../../molecules';
 import { Button, Label, Input, Select, Badge } from '../../../atoms';
@@ -40,7 +42,7 @@ export interface ExportPanelProps {
 /**
  * Export flow as JSON
  */
-function exportAsJSON(nodes: Node<FlowNodeData>[], edges: Edge<FlowEdgeData>[]) {
+function _exportAsJSON(nodes: Node<FlowNodeData>[], edges: Edge<FlowEdgeData>[]) {
   const data = {
     nodes,
     edges,
@@ -209,9 +211,12 @@ export function ExportPanel({ className }: ExportPanelProps) {
         const json = e.target?.result as string;
         const snapshot = importFromJSON(json);
         // Load the snapshot - would need to integrate with context
-        console.log('Imported snapshot:', snapshot);
+        if (process.env.NODE_ENV === 'development') {
+          // eslint-disable-next-line no-console
+          console.log('Imported snapshot:', snapshot);
+        }
         alert('Flow imported successfully!');
-      } catch (error) {
+      } catch {
         alert('Failed to import flow. Please check the file format.');
       }
     };
@@ -222,7 +227,10 @@ export function ExportPanel({ className }: ExportPanelProps) {
     const version = getVersionById(versionId);
     if (version) {
       // Load version - would need to integrate with context
-      console.log('Loading version:', version);
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.log('Loading version:', version);
+      }
       alert('Version loaded!');
     }
   }, []);

@@ -131,14 +131,6 @@ A select component with support for single selection, option groups, and validat
         category: 'Events',
       },
     },
-    onOpenChange: {
-      description: 'Callback fired when the dropdown open state changes',
-      action: 'onOpenChange',
-      table: {
-        type: { summary: '(open: boolean) => void' },
-        category: 'Events',
-      },
-    },
   },
 };
 
@@ -306,6 +298,7 @@ export const WithOptionGroups: Story = {
       <div className="space-y-4">
         <Select
           label="Choose category"
+          options={[]}
           optionGroups={optionGroups}
           placeholder="Select a category"
           value={value}
@@ -559,11 +552,11 @@ export const WithEvents: Story = {
       console.log('Value changed:', e.target.value);
     });
     
-    const handleFocus = fn((e: React.FocusEvent<HTMLSelectElement>) => {
+    const handleFocus = fn((_e: React.FocusEvent<HTMLSelectElement>) => {
       console.log('Select focused');
     });
     
-    const handleBlur = fn((e: React.FocusEvent<HTMLSelectElement>) => {
+    const handleBlur = fn((_e: React.FocusEvent<HTMLSelectElement>) => {
       console.log('Select blurred');
     });
     

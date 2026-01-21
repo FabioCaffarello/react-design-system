@@ -22,14 +22,14 @@ export interface ExtensionMetadata {
  * Extension Exports
  */
 export interface ExtensionExports {
-  components?: Record<string, ComponentType<any>>;
-  hooks?: Record<string, (...args: any[]) => any>;
-  utils?: Record<string, (...args: any[]) => any>;
-  types?: Record<string, any>;
-  providers?: Record<string, ComponentType<any>>;
-  factories?: Record<string, any>;
-  registries?: Record<string, any>;
-  strategies?: Record<string, any>;
+  components?: Record<string, ComponentType<unknown>>;
+  hooks?: Record<string, (...args: unknown[]) => unknown>;
+  utils?: Record<string, (...args: unknown[]) => unknown>;
+  types?: Record<string, unknown>;
+  providers?: Record<string, ComponentType<unknown>>;
+  factories?: Record<string, unknown>;
+  registries?: Record<string, unknown>;
+  strategies?: Record<string, unknown>;
 }
 
 /**

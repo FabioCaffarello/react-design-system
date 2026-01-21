@@ -1,0 +1,295 @@
+/**
+ * AIppin Design System - Dark Theme
+ *
+ * Dark color scheme overrides.
+ * Activated via data-theme="dark" or .dark class.
+ *
+ * @brand AIppin
+ * @version 1.0.0
+ */
+
+[data-theme="dark"],
+.dark {
+  /* Theme indicator */
+  --theme-mode: dark;
+  color-scheme: dark;
+
+  /* ============================================
+   * BRAND COLORS
+   * Slightly lighter for dark backgrounds
+   * ============================================ */
+
+  --color-brand-primary: var(--color-indigo-400);
+  --color-brand-primary-light: var(--color-indigo-300);
+  --color-brand-primary-dark: var(--color-indigo-500);
+  --color-brand-primary-darker: var(--color-indigo-600);
+
+  --color-brand-secondary: var(--color-violet-400);
+  --color-brand-secondary-light: var(--color-violet-300);
+  --color-brand-secondary-dark: var(--color-violet-500);
+
+  --color-brand-accent: var(--color-cyan-400);
+  --color-brand-accent-light: var(--color-cyan-300);
+  --color-brand-accent-dark: var(--color-cyan-500);
+
+  /* ============================================
+   * TEXT COLORS
+   * Inverted for dark backgrounds
+   * ============================================ */
+
+  --color-text-primary: var(--color-slate-50);
+  --color-text-secondary: var(--color-slate-300);
+  --color-text-tertiary: var(--color-slate-400);
+  --color-text-quaternary: var(--color-slate-500);
+  --color-text-placeholder: var(--color-slate-500);
+  --color-text-disabled: var(--color-slate-600);
+  --color-text-inverse: var(--color-slate-900);
+  --color-text-inverse-secondary: var(--color-slate-700);
+
+  /* Link colors */
+  --color-text-link: var(--color-indigo-400);
+  --color-text-link-hover: var(--color-indigo-300);
+  --color-text-link-active: var(--color-indigo-200);
+  --color-text-link-visited: var(--color-violet-400);
+
+  /* Brand text */
+  --color-text-brand: var(--color-indigo-400);
+  --color-text-brand-secondary: var(--color-violet-400);
+
+  /* Feedback text */
+  --color-text-success: var(--color-emerald-400);
+  --color-text-warning: var(--color-amber-400);
+  --color-text-error: var(--color-rose-400);
+  --color-text-info: var(--color-sky-400);
+
+  /* ============================================
+   * BACKGROUND COLORS
+   * Dark scale
+   * ============================================ */
+
+  --color-bg-base: var(--color-slate-950);
+  --color-bg-subtle: var(--color-slate-900);
+  --color-bg-muted: var(--color-slate-800);
+  --color-bg-emphasis: var(--color-slate-700);
+  --color-bg-strong: var(--color-slate-600);
+  --color-bg-inverse: var(--color-slate-50);
+  --color-bg-inverse-subtle: var(--color-slate-100);
+
+  /* Brand backgrounds */
+  --color-bg-brand-subtle: var(--color-indigo-950);
+  --color-bg-brand-muted: var(--color-indigo-900);
+  --color-bg-brand: var(--color-indigo-500);
+  --color-bg-brand-emphasis: var(--color-indigo-400);
+
+  --color-bg-secondary-subtle: var(--color-violet-950);
+  --color-bg-secondary: var(--color-violet-500);
+
+  --color-bg-accent-subtle: var(--color-cyan-950);
+  --color-bg-accent: var(--color-cyan-500);
+
+  /* ============================================
+   * SURFACE COLORS
+   * Elevated dark surfaces
+   * ============================================ */
+
+  --color-surface-base: var(--color-slate-900);
+  --color-surface-raised: var(--color-slate-800);
+  --color-surface-overlay: var(--color-slate-800);
+  --color-surface-sunken: var(--color-slate-950);
+  --color-surface-disabled: var(--color-slate-800);
+
+  /* Surface levels */
+  --surface-0-bg: var(--color-slate-950);
+  --surface-1-bg: var(--color-slate-900);
+  --surface-2-bg: var(--color-slate-800);
+  --surface-3-bg: var(--color-slate-700);
+  --surface-4-bg: var(--color-slate-800);
+  --surface-5-bg: var(--color-slate-800);
+
+  /* ============================================
+   * BORDER COLORS
+   * Lighter borders on dark backgrounds
+   * ============================================ */
+
+  --color-border-default: var(--color-slate-700);
+  --color-border-muted: var(--color-slate-800);
+  --color-border-subtle: var(--color-slate-800);
+  --color-border-emphasis: var(--color-slate-600);
+  --color-border-strong: var(--color-slate-500);
+  --color-border-inverse: var(--color-slate-200);
+  --color-border-focus: var(--color-indigo-400);
+
+  /* ============================================
+   * STATE COLORS
+   * Adjusted for dark theme
+   * ============================================ */
+
+  --color-state-hover: var(--color-slate-800);
+  --color-state-hover-subtle: var(--color-slate-850);
+  --color-state-active: var(--color-slate-700);
+  --color-state-selected: var(--color-indigo-950);
+  --color-state-selected-subtle: var(--color-indigo-900);
+  --color-state-disabled: var(--color-slate-800);
+  --color-state-focus: var(--color-indigo-900);
+
+  /* Brand state colors */
+  --color-state-hover-brand: var(--color-indigo-500);
+  --color-state-active-brand: var(--color-indigo-600);
+
+  /* ============================================
+   * FEEDBACK COLORS
+   * Brighter for dark backgrounds
+   * ============================================ */
+
+  /* Success */
+  --color-success: var(--color-emerald-400);
+  --color-success-light: var(--color-emerald-300);
+  --color-success-dark: var(--color-emerald-500);
+  --color-success-bg: var(--color-emerald-950);
+  --color-success-bg-emphasis: var(--color-emerald-900);
+  --color-success-border: var(--color-emerald-800);
+  --color-success-border-emphasis: var(--color-emerald-400);
+
+  /* Warning */
+  --color-warning: var(--color-amber-400);
+  --color-warning-light: var(--color-amber-300);
+  --color-warning-dark: var(--color-amber-500);
+  --color-warning-bg: var(--color-amber-950);
+  --color-warning-bg-emphasis: var(--color-amber-900);
+  --color-warning-border: var(--color-amber-800);
+  --color-warning-border-emphasis: var(--color-amber-400);
+
+  /* Error */
+  --color-error: var(--color-rose-400);
+  --color-error-light: var(--color-rose-300);
+  --color-error-dark: var(--color-rose-500);
+  --color-error-bg: var(--color-rose-950);
+  --color-error-bg-emphasis: var(--color-rose-900);
+  --color-error-border: var(--color-rose-800);
+  --color-error-border-emphasis: var(--color-rose-400);
+
+  /* Info */
+  --color-info: var(--color-sky-400);
+  --color-info-light: var(--color-sky-300);
+  --color-info-dark: var(--color-sky-500);
+  --color-info-bg: var(--color-sky-950);
+  --color-info-bg-emphasis: var(--color-sky-900);
+  --color-info-border: var(--color-sky-800);
+  --color-info-border-emphasis: var(--color-sky-400);
+
+  /* ============================================
+   * ICON COLORS
+   * ============================================ */
+
+  --color-icon-default: var(--color-slate-400);
+  --color-icon-muted: var(--color-slate-500);
+  --color-icon-subtle: var(--color-slate-600);
+  --color-icon-emphasis: var(--color-slate-200);
+  --color-icon-inverse: var(--color-slate-900);
+  --color-icon-brand: var(--color-indigo-400);
+  --color-icon-success: var(--color-emerald-400);
+  --color-icon-warning: var(--color-amber-400);
+  --color-icon-error: var(--color-rose-400);
+  --color-icon-info: var(--color-sky-400);
+
+  /* ============================================
+   * OVERLAY COLORS
+   * ============================================ */
+
+  --color-overlay-light: rgb(255 255 255 / 0.1);
+  --color-overlay-dark: rgb(0 0 0 / 0.6);
+  --color-overlay-darker: rgb(0 0 0 / 0.8);
+  --color-overlay-backdrop: rgb(0 0 0 / 0.7);
+
+  /* ============================================
+   * SHADOWS
+   * Darker, more intense shadows for dark theme
+   * ============================================ */
+
+  --shadow-card: var(--shadow-dark-sm);
+  --shadow-card-hover: var(--shadow-dark-md);
+  --shadow-dropdown: var(--shadow-dark-lg);
+  --shadow-modal: var(--shadow-dark-xl);
+  --shadow-tooltip: var(--shadow-dark-md);
+
+  /* ============================================
+   * SCROLLBAR
+   * Darker scrollbar for dark theme
+   * ============================================ */
+
+  --scrollbar-track-bg: var(--color-slate-900);
+  --scrollbar-thumb-bg: var(--color-slate-600);
+  --scrollbar-thumb-hover-bg: var(--color-slate-500);
+
+  /* ============================================
+   * SKELETON
+   * ============================================ */
+
+  --color-skeleton-base: var(--color-slate-700);
+  --color-skeleton-shine: var(--color-slate-600);
+
+  /* ============================================
+   * DIVIDER
+   * ============================================ */
+
+  --color-divider: var(--color-slate-700);
+  --color-divider-subtle: var(--color-slate-800);
+  --color-divider-emphasis: var(--color-slate-600);
+
+  /* ============================================
+   * CODE
+   * ============================================ */
+
+  --surface-code-bg: var(--color-slate-950);
+  --surface-code-border: var(--color-slate-800);
+  --surface-code-color: var(--color-slate-100);
+
+  --surface-code-inline-bg: var(--color-slate-800);
+  --surface-code-inline-border: var(--color-slate-700);
+  --surface-code-inline-color: var(--color-pink-400);
+
+  /* ============================================
+   * TOOLTIP
+   * Inverted for dark theme
+   * ============================================ */
+
+  --surface-tooltip-bg: var(--color-slate-100);
+  --surface-tooltip-color: var(--color-slate-900);
+
+  /* ============================================
+   * FOCUS RING
+   * More visible on dark backgrounds
+   * ============================================ */
+
+  --ring-color: var(--color-indigo-400);
+  --ring-default: 0 0 0 var(--ring-width) rgb(129 140 248 / 0.3);
+
+  /* ============================================
+   * SELECTION
+   * ============================================ */
+
+  ::selection {
+    background-color: var(--color-indigo-700);
+    color: var(--color-white);
+  }
+}
+
+/* ============================================
+ * SYSTEM PREFERENCE: DARK
+ * Automatically apply dark theme if user prefers
+ * ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not(.light) {
+    --theme-mode: dark;
+    color-scheme: dark;
+
+    /* Apply all dark theme variables */
+    --color-brand-primary: var(--color-indigo-400);
+    --color-text-primary: var(--color-slate-50);
+    --color-bg-base: var(--color-slate-950);
+    --color-surface-base: var(--color-slate-900);
+    --color-border-default: var(--color-slate-700);
+    /* ... other variables would inherit from .dark */
+  }
+}

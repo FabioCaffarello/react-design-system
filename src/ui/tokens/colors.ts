@@ -1,16 +1,26 @@
 /**
  * Color Tokens
- * 
+ *
  * Semantic color system for consistent theming.
  * Uses Strategy Pattern for different color strategies (light, dark, custom).
+ *
+ * NOTE: This file maintains backward compatibility with the old API.
+ * For the new color system, use imports from './colors/index.ts'
+ *
+ * @brand AIppin
+ * @version 2.0.0
  */
 
-export type ColorRole = 
-  | 'primary' 
-  | 'secondary' 
-  | 'success' 
-  | 'warning' 
-  | 'error' 
+// Re-export everything from the new color system
+export * from './colors/index';
+
+// Legacy type aliases for backward compatibility
+export type ColorRole =
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'warning'
+  | 'error'
   | 'info'
   | 'neutral';
 

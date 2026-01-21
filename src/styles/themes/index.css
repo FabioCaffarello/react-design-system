@@ -1,0 +1,20 @@
+/**
+ * AIppin Design System - Theme Aggregator
+ *
+ * Imports all theme files in the correct order.
+ *
+ * @brand AIppin
+ * @version 1.0.0
+ */
+
+/* Base theme utilities and shared variables */
+@import "./base.css";
+
+/* Color modes */
+@import "./light.css";
+@import "./dark.css";
+
+/* Visual style variants */
+@import "./variants/tech.css";
+@import "./variants/creative.css";
+@import "./variants/minimal.css";

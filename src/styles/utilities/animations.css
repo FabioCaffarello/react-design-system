@@ -1,0 +1,200 @@
+/**
+ * AIppin Design System - Animation Utilities
+ *
+ * Utility classes for common animations.
+ *
+ * @brand AIppin
+ * @version 1.0.0
+ */
+
+/* ============================================
+ * ANIMATION UTILITY CLASSES
+ * ============================================ */
+
+/* Fade animations */
+.animate-fade-in {
+  animation: fade-in var(--duration-normal) var(--ease-out) forwards;
+}
+
+.animate-fade-out {
+  animation: fade-out var(--duration-normal) var(--ease-in) forwards;
+}
+
+/* Slide animations */
+.animate-slide-in-up {
+  animation: slide-in-up var(--duration-normal) var(--ease-out) forwards;
+}
+
+.animate-slide-in-down {
+  animation: slide-in-down var(--duration-normal) var(--ease-out) forwards;
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left var(--duration-normal) var(--ease-out) forwards;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right var(--duration-normal) var(--ease-out) forwards;
+}
+
+/* Scale animations */
+.animate-scale-in {
+  animation: scale-in var(--duration-normal) var(--ease-out) forwards;
+}
+
+.animate-scale-out {
+  animation: scale-out var(--duration-fast) var(--ease-in) forwards;
+}
+
+/* Continuous animations */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-ping {
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+/* Modal animations */
+.animate-modal-enter {
+  animation: modal-enter var(--duration-normal) var(--ease-out) forwards;
+}
+
+.animate-modal-exit {
+  animation: modal-exit var(--duration-fast) var(--ease-in) forwards;
+}
+
+/* Toast animations */
+.animate-toast-enter {
+  animation: toast-enter var(--duration-normal) var(--ease-out) forwards;
+}
+
+.animate-toast-exit {
+  animation: toast-exit var(--duration-fast) var(--ease-in) forwards;
+}
+
+/* Shake animation (for errors) */
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* ============================================
+ * SKELETON LOADING
+ * ============================================ */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-skeleton-base) 25%,
+    var(--color-skeleton-shine) 50%,
+    var(--color-skeleton-base) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton 1.5s ease-in-out infinite;
+}
+
+/* ============================================
+ * ANIMATION DELAYS
+ * ============================================ */
+
+.delay-75 {
+  animation-delay: 75ms;
+}
+
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-150 {
+  animation-delay: 150ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
+
+.delay-500 {
+  animation-delay: 500ms;
+}
+
+.delay-700 {
+  animation-delay: 700ms;
+}
+
+.delay-1000 {
+  animation-delay: 1000ms;
+}
+
+/* ============================================
+ * ANIMATION DURATION MODIFIERS
+ * ============================================ */
+
+.duration-fast {
+  animation-duration: var(--duration-fast);
+}
+
+.duration-normal {
+  animation-duration: var(--duration-normal);
+}
+
+.duration-slow {
+  animation-duration: var(--duration-slow);
+}
+
+.duration-slower {
+  animation-duration: var(--duration-slower);
+}
+
+/* ============================================
+ * ANIMATION PAUSE/PLAY
+ * ============================================ */
+
+.animate-pause {
+  animation-play-state: paused;
+}
+
+.animate-play {
+  animation-play-state: running;
+}
+
+/* ============================================
+ * HOVER ANIMATIONS
+ * ============================================ */
+
+.hover-lift {
+  transition: transform var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.hover-scale {
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+.hover-glow {
+  transition: box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.hover-glow:hover {
+  box-shadow: var(--glow-primary);
+}

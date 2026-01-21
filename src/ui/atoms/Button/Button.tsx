@@ -1,10 +1,10 @@
 import { forwardRef, memo, useMemo } from 'react';
 import type { ButtonHTMLAttributes, ReactNode, ElementType } from 'react';
-import { getColorClass, getHoverColorClass, getFocusColorClass, getFocusRingClass } from '../../tokens/colors';
+import { getColorClass, getHoverColorClass, getFocusRingClass } from '../../tokens/colors';
 import { getRadiusClass } from '../../tokens/radius';
 import { getSpacingClass } from '../../tokens/spacing';
 import { getTypographyClasses, getTypographySize } from '../../tokens/typography';
-import { cn, cva, type VariantProps } from '../../utils';
+import { cn, cva } from '../../utils';
 import Spinner from '../Spinner/Spinner';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'error' | 'outline' | 'ghost' | 'iconOnly';
@@ -21,6 +21,7 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   fullWidth?: boolean;
   as?: ElementType;
   href?: string;
+  target?: string;
 }
 
 /**
@@ -250,13 +251,15 @@ const Button = memo(forwardRef<HTMLButtonElement, ButtonProps>(function Button({
   );
 
   // Build button props (spread props at the end to allow overrides)
+  // If type is explicitly provided in props, use it; otherwise default to 'button' for button elements
+  const defaultType = Component === 'button' && !props.type ? 'button' : undefined;
   const buttonProps = {
     className: classes,
     disabled: disabled || isLoading,
     'aria-busy': isLoading,
     'aria-label': finalAriaLabel,
     'aria-disabled': disabled || isLoading,
-    ...(Component === 'button' ? { type: 'button' as const } : {}),
+    ...(defaultType ? { type: defaultType } : {}),
     ...props,
   };
 
@@ -285,3 +288,4 @@ const Button = memo(forwardRef<HTMLButtonElement, ButtonProps>(function Button({
 Button.displayName = 'Button';
 
 export default Button;
+export { Button };

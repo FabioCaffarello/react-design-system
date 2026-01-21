@@ -15,126 +15,136 @@ const dirname =
     : path.dirname(fileURLToPath(import.meta.url));
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
-export default defineConfig(({ command, mode }) => {
-  // Check if we're running the app (dev server) or building the library
-  const isAppMode = command === 'serve' || process.env.VITE_APP_MODE === 'true';
-  
+export default defineConfig(() => {
   return {
     plugins: [tsConfigPaths(), react()],
     optimizeDeps: {
       include: [
-        'lucide-react',
-        'react-hook-form',
-        '@testing-library/dom',
-        '@testing-library/react',
-        '@xyflow/react',
+        "lucide-react",
+        "react-hook-form",
+        "@testing-library/dom",
+        "@testing-library/react",
+        "@xyflow/react",
       ],
     },
     resolve: {
       // Ensure barrel exports are resolved correctly
-      mainFields: ['module', 'main'],
-      extensions: ['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json'],
+      mainFields: ["module", "main"],
+      extensions: [".mjs", ".js", ".mts", ".ts", ".jsx", ".tsx", ".json"],
     },
-    // Server configuration for the app mode
-    server: {
-      port: 5173,
-      open: isAppMode ? '/playground' : false,
-      proxy: {
-        // Proxy API requests if needed
-        '/api': {
-          target: 'http://localhost:3000',
-          changeOrigin: true,
+    // Build configuration for library mode
+    build: {
+      lib: {
+        entry: {
+          index: "src/ui/index.ts",
+          atoms: "src/ui/atoms/index.ts",
+          molecules: "src/ui/molecules/index.ts",
+          organisms: "src/ui/organisms/index.ts",
+          tokens: "src/ui/tokens/index.ts",
+        },
+        name: "ReactDesignSystem",
+        fileName: (format, entryName) => {
+          if (format === "es") {
+            return entryName === "index" ? "index.js" : `${entryName}/index.js`;
+          }
+          if (format === "cjs") {
+            return entryName === "index"
+              ? "index.cjs"
+              : `${entryName}/index.cjs`;
+          }
+          return entryName === "index" ? "index.cjs" : `${entryName}/index.cjs`;
+        },
+        formats: ["es", "cjs"],
+      },
+      // Minification configuration (using esbuild - faster and already included)
+      minify: "esbuild",
+      // esbuild minification options
+      target: "es2015",
+      // Additional optimization
+      cssMinify: true,
+      // CSS code splitting - false to generate single CSS bundle
+      cssCodeSplit: false,
+      // Source maps configuration
+      sourcemap: true,
+      // Chunk size warnings
+      chunkSizeWarningLimit: 1000,
+      rollupOptions: {
+        external: ["react", "react-dom"],
+        output: {
+          // Preserve all named exports - critical for library mode
+          exports: "named",
+          globals: {
+            react: "React",
+            "react-dom": "ReactDOM",
+          },
+          // Code splitting configuration
+          // Note: We don't use manualChunks for the main index entry to ensure all exports are preserved
+          manualChunks: (id) => {
+            // Only split sub-entry points, not the main index
+            if (id.includes("/atoms/") && !id.includes("src/ui/index")) {
+              return "atoms";
+            }
+            if (id.includes("/molecules/") && !id.includes("src/ui/index")) {
+              return "molecules";
+            }
+            if (id.includes("/organisms/") && !id.includes("src/ui/index")) {
+              return "organisms";
+            }
+            if (id.includes("/tokens/") && !id.includes("src/ui/index")) {
+              return "tokens";
+            }
+            // Keep providers and all other exports in main bundle
+            return null;
+          },
+          // Source maps for production
+          sourcemapExcludeSources: false,
+          // CSS file naming
+          assetFileNames: (assetInfo) => {
+            if (assetInfo.name && assetInfo.name.endsWith(".css")) {
+              return "react-design-system.css";
+            }
+            return assetInfo.name || "assets/[name]-[hash][extname]";
+          },
+        },
+        // Prevent aggressive tree-shaking of exports
+        // This is critical to ensure all exports from index.ts are preserved
+        treeshake: {
+          moduleSideEffects: (id) => {
+            // Preserve all side effects from our source files
+            if (id.includes("src/ui/")) {
+              return true;
+            }
+            return false;
+          },
+          propertyReadSideEffects: true,
+          tryCatchDeoptimization: false,
         },
       },
+      emptyOutDir: false,
     },
-    // Build configuration - only for library mode
-    ...(isAppMode ? {} : {
-      build: {
-        lib: {
-          entry: {
-            index: "src/ui/index.ts",
-            atoms: "src/ui/atoms/index.ts",
-            molecules: "src/ui/molecules/index.ts",
-            organisms: "src/ui/organisms/index.ts",
-            tokens: "src/ui/tokens/index.ts",
-          },
-          name: "ReactDesignSystem",
-          fileName: (format, entryName) => {
-            if (format === 'es') {
-              return entryName === 'index' ? 'index.js' : `${entryName}/index.js`;
-            }
-            if (format === 'cjs') {
-              return entryName === 'index' ? 'index.cjs' : `${entryName}/index.cjs`;
-            }
-            if (format === 'umd') {
-              return entryName === 'index' ? 'index.umd.js' : `${entryName}/index.umd.js`;
-            }
-            return entryName === 'index' ? 'index.cjs' : `${entryName}/index.cjs`;
-          },
-          formats: ["es", "cjs", "umd"],
-        },
-        // Minification configuration (using esbuild - faster and already included)
-        minify: 'esbuild',
-        // esbuild minification options
-        target: 'es2015',
-        // Additional optimization
-        cssMinify: true,
-        // Source maps configuration
-        sourcemap: true,
-        // Chunk size warnings
-        chunkSizeWarningLimit: 1000,
-        rollupOptions: {
-          external: ["react", "react-dom"],
-          output: {
-            globals: {
-              react: "React",
-              "react-dom": "ReactDOM",
-            },
-            // Code splitting configuration
-            manualChunks: (id) => {
-              // Split by category
-              if (id.includes('/atoms/')) {
-                return 'atoms';
-              }
-              if (id.includes('/molecules/')) {
-                return 'molecules';
-              }
-              if (id.includes('/organisms/')) {
-                return 'organisms';
-              }
-              if (id.includes('/tokens/')) {
-                return 'tokens';
-              }
-            },
-            // Source maps for production
-            sourcemapExcludeSources: false,
-          },
-        },
-        emptyOutDir: false,
-      },
-    }),
     test: {
       projects: [
         {
           extends: true,
           test: {
+            name: "unit",
             include: ["src/**/*.test.{ts,tsx}"],
             environment: "jsdom",
             setupFiles: ["src/setupTests.ts"],
             globals: true,
             coverage: {
-              provider: 'v8',
-              reporter: ['text', 'json', 'html', 'lcov'],
+              provider: "v8",
+              reporter: ["text", "json", "html", "lcov"],
               exclude: [
-                'node_modules/',
-                'dist/',
-                '**/*.stories.{ts,tsx}',
-                '**/*.test.{ts,tsx}',
-                '**/index.ts',
-                '.storybook/',
-                'storybook-static/',
-                'src/setupTests.ts',
-                'src/vitest.shims.d.ts',
+                "node_modules/",
+                "dist/",
+                "**/*.stories.{ts,tsx}",
+                "**/*.test.{ts,tsx}",
+                "**/index.ts",
+                ".storybook/",
+                "storybook-static/",
+                "src/setupTests.ts",
+                "src/vitest.shims.d.ts",
               ],
               thresholds: {
                 lines: 80,
@@ -159,14 +169,38 @@ export default defineConfig(({ command, mode }) => {
             browser: {
               enabled: true,
               headless: true,
-              provider: playwright({}),
-              instances: [
-                {
-                  browser: "chromium",
+              provider: playwright({
+                launch: {
+                  args: [
+                    "--disable-web-security",
+                    "--disable-features=IsolateOrigins,site-per-process",
+                    "--no-sandbox",
+                    "--disable-setuid-sandbox",
+                    "--disable-dev-shm-usage",
+                    "--disable-gpu",
+                  ],
                 },
-              ],
+              }),
+              instances: process.env.CI
+                ? 1
+                : [
+                    {
+                      browser: "chromium",
+                    },
+                  ],
+              ui: false,
             },
             setupFiles: [".storybook/vitest.setup.ts"],
+            testTimeout: process.env.CI ? 120000 : 60000,
+            hookTimeout: process.env.CI ? 120000 : 60000,
+            teardownTimeout: process.env.CI ? 120000 : 60000,
+            isolate: !process.env.CI,
+            retry: process.env.CI ? 2 : 0,
+            bail: 0,
+            onConsoleLog: () => false,
+            // Browser mode doesn't work well with forks pool in CI
+            // Use default pool for browser mode
+            maxConcurrency: process.env.CI ? 1 : undefined,
           },
         },
       ],

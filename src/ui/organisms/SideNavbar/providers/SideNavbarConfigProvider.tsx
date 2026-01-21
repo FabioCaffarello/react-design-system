@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, type ReactNode } from 'react';
+import { useMemo } from 'react';
 import { SideNavbarConfigContext, defaultConfigValues } from '../contexts/SideNavbarConfigContext';
 import type { SideNavbarConfigProviderProps } from '../types';
 

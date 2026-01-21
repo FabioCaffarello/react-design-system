@@ -63,27 +63,27 @@ export class NodeBuilder<T extends FlowNodeData = FlowNodeData> {
   }
 
   withLabel(label: string): this {
-    this.data.label = label as any;
+    this.data.label = label as unknown;
     return this;
   }
 
   withDescription(description: string): this {
-    this.data.description = description as any;
+    this.data.description = description as unknown;
     return this;
   }
 
   withVariant(variant: FlowNodeData['variant']): this {
-    this.data.variant = variant as any;
+    this.data.variant = variant as unknown;
     return this;
   }
 
   withSize(size: FlowNodeData['size']): this {
-    this.data.size = size as any;
+    this.data.size = size as unknown;
     return this;
   }
 
   withIcon(icon: React.ReactNode): this {
-    this.data.icon = icon as any;
+    this.data.icon = icon as unknown;
     return this;
   }
 

@@ -1,3 +1,5 @@
+'use client';
+
 import { memo, useMemo, useCallback } from 'react';
 import type { HTMLAttributes } from "react";
 import { cn, cva } from '../../utils';

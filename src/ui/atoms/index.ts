@@ -9,6 +9,11 @@ export type { InputProps, InputSize, InputVariant, InputState } from "./Input/In
 export { default as Button } from "./Button/Button";
 export type { ButtonProps, ButtonVariant, ButtonSize } from "./Button/Button";
 
+export { default as NavLink } from "./NavLink/NavLink";
+export type { NavLinkProps, NavLinkVariant, NavLinkSize } from "./NavLink";
+export { useNavLink } from "./NavLink";
+export type { UseNavLinkOptions, UseNavLinkResult } from "./NavLink";
+
 
 export { default as Badge } from "./Badge/Badge";
 

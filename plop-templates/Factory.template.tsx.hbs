@@ -1,0 +1,46 @@
+/**
+ * {{pascalCase name}} Factory
+ * 
+ * Factory pattern implementation for {{pascalCase name}} component.
+ */
+
+import type { {{pascalCase name}}Props } from './{{pascalCase name}}';
+import {{pascalCase name}} from './{{pascalCase name}}';
+
+export interface {{pascalCase name}}FactoryConfig {
+  variant?: {{pascalCase name}}Props['variant'];
+  size?: {{pascalCase name}}Props['size'];
+  {{#if children}}
+  children?: React.ReactNode;
+  {{/if}}
+}
+
+/**
+ * {{pascalCase name}} Factory
+ * 
+ * Factory for creating {{pascalCase name}} components with predefined configurations.
+ */
+export class {{pascalCase name}}Factory {
+  /**
+   * Create a {{pascalCase name}} with default configuration
+   */
+  static createDefault(config?: Partial<{{pascalCase name}}FactoryConfig>): JSX.Element {
+    return <{{pascalCase name}} {{#if hasVariants}}variant={config?.variant || '{{defaultVariant}}'}{{/if}} {{#if hasSizes}}size={config?.size || '{{defaultSize}}'}{{/if}} {...config} />;
+  }
+
+  /**
+   * Create a {{pascalCase name}} with primary variant
+   */
+  {{#if hasVariants}}
+  static createPrimary(config?: Partial<{{pascalCase name}}FactoryConfig>): JSX.Element {
+    return <{{pascalCase name}} variant="primary" {{#if hasSizes}}size={config?.size || '{{defaultSize}}'}{{/if}} {...config} />;
+  }
+  {{/if}}
+
+  /**
+   * Create a {{pascalCase name}} with custom configuration
+   */
+  static create(config: {{pascalCase name}}FactoryConfig): JSX.Element {
+    return <{{pascalCase name}} {...config} />;
+  }
+}

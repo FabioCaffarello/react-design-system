@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
-import { ChevronDown } from 'lucide-react';
 import { useSidebarRequired } from '../../contexts/SidebarContext';
 import { useSideNavbarStateRequired } from '../../contexts/SideNavbarStateContext';
 import { useSideNavbarThemeRequired } from '../../contexts/SideNavbarThemeContext';
@@ -58,7 +57,7 @@ export default function SidebarGroup({
   const isCollapsed = groupStates[id] ?? defaultCollapsed;
   const isActive = activeGroup === id;
 
-  const handleToggle = () => {
+  const _handleToggle = () => {
     if (collapsible) {
       toggleGroup(id);
     }

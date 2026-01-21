@@ -1,0 +1,168 @@
+/**
+ * AIppin Design System - Creative Variant
+ *
+ * Vibrant, playful, expressive aesthetic.
+ * For creative tools, design apps, or artistic products.
+ *
+ * Characteristics:
+ * - Primary: Indigo (base brand)
+ * - Secondary: Fuchsia (vibrant, playful)
+ * - Accent: Yellow (energy, creativity)
+ * - Larger border radius
+ * - More pronounced shadows
+ * - Bold gradients
+ * - Expressive animations
+ *
+ * @brand AIppin
+ * @version 1.0.0
+ */
+
+[data-variant="creative"],
+.variant-creative {
+  /* Variant indicator */
+  --theme-variant: creative;
+
+  /* ============================================
+   * BRAND COLORS
+   * More vibrant secondary and accent
+   * ============================================ */
+
+  --color-brand-primary: var(--color-indigo-500);
+  --color-brand-primary-light: var(--color-indigo-400);
+  --color-brand-primary-dark: var(--color-indigo-600);
+  --color-brand-primary-darker: var(--color-indigo-700);
+
+  /* Fuchsia instead of violet - more vibrant */
+  --color-brand-secondary: var(--color-fuchsia-500);
+  --color-brand-secondary-light: var(--color-fuchsia-400);
+  --color-brand-secondary-dark: var(--color-fuchsia-600);
+
+  /* Yellow accent - energetic */
+  --color-brand-accent: var(--color-yellow-400);
+  --color-brand-accent-light: var(--color-yellow-300);
+  --color-brand-accent-dark: var(--color-yellow-500);
+
+  /* Background subtle colors */
+  --color-bg-brand-subtle: var(--color-fuchsia-50);
+  --color-bg-secondary-subtle: var(--color-fuchsia-50);
+  --color-bg-accent-subtle: var(--color-yellow-50);
+
+  /* ============================================
+   * BORDER RADIUS
+   * Larger, more playful roundness
+   * ============================================ */
+
+  --radius-button: var(--radius-xl);        /* 8px */
+  --radius-button-sm: var(--radius-lg);     /* 6px */
+  --radius-button-lg: var(--radius-2xl);    /* 12px */
+
+  --radius-input: var(--radius-xl);         /* 8px */
+  --radius-input-sm: var(--radius-lg);      /* 6px */
+  --radius-input-lg: var(--radius-2xl);     /* 12px */
+
+  --radius-card: var(--radius-2xl);         /* 12px */
+  --radius-card-sm: var(--radius-xl);       /* 8px */
+  --radius-card-lg: var(--radius-3xl);      /* 16px */
+
+  --radius-modal: var(--radius-3xl);        /* 16px */
+  --radius-dropdown: var(--radius-2xl);     /* 12px */
+  --radius-popover: var(--radius-2xl);      /* 12px */
+  --radius-tooltip: var(--radius-xl);       /* 8px */
+
+  /* ============================================
+   * SHADOWS
+   * More dramatic, expressive shadows
+   * ============================================ */
+
+  --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-card-hover: 0 10px 15px -3px rgb(0 0 0 / 0.15), 0 4px 6px -4px rgb(0 0 0 / 0.15);
+  --shadow-dropdown: 0 20px 25px -5px rgb(0 0 0 / 0.15), 0 8px 10px -6px rgb(0 0 0 / 0.15);
+  --shadow-modal: 0 25px 50px -12px rgb(0 0 0 / 0.3);
+  --shadow-button: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-button-hover: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+  /* Colorful shadows */
+  --shadow-button-primary: 0 4px 14px -3px rgb(99 102 241 / 0.4);
+  --shadow-button-primary-hover: 0 8px 20px -5px rgb(99 102 241 / 0.5);
+  --shadow-button-secondary: 0 4px 14px -3px rgb(217 70 239 / 0.4);
+  --shadow-button-secondary-hover: 0 8px 20px -5px rgb(217 70 239 / 0.5);
+
+  /* Glow effects */
+  --glow-primary: 0 0 30px rgb(99 102 241 / 0.4);
+  --glow-secondary: 0 0 30px rgb(217 70 239 / 0.4);
+  --glow-accent: 0 0 30px rgb(250 204 21 / 0.4);
+
+  /* ============================================
+   * GRADIENTS
+   * Bold, expressive gradients
+   * ============================================ */
+
+  --gradient-brand: linear-gradient(135deg, var(--color-indigo-500), var(--color-fuchsia-500));
+  --gradient-brand-hover: linear-gradient(135deg, var(--color-indigo-600), var(--color-fuchsia-600));
+  --gradient-accent: linear-gradient(135deg, var(--color-fuchsia-400), var(--color-yellow-400));
+
+  /* Multi-color gradients */
+  --gradient-rainbow: linear-gradient(
+    135deg,
+    var(--color-indigo-500),
+    var(--color-violet-500),
+    var(--color-fuchsia-500),
+    var(--color-pink-500)
+  );
+
+  --gradient-sunset: linear-gradient(
+    135deg,
+    var(--color-orange-400),
+    var(--color-rose-500),
+    var(--color-fuchsia-500)
+  );
+
+  /* Hero gradients */
+  --gradient-hero: linear-gradient(135deg, var(--color-indigo-600) 0%, var(--color-fuchsia-600) 50%, var(--color-pink-500) 100%);
+  --gradient-hero-subtle: linear-gradient(135deg, var(--color-indigo-50) 0%, var(--color-fuchsia-50) 50%, var(--color-pink-50) 100%);
+
+  /* Card gradients */
+  --gradient-card: linear-gradient(180deg, var(--color-white), var(--color-slate-50));
+  --gradient-card-hover: linear-gradient(180deg, var(--color-slate-50), var(--color-indigo-50));
+
+  /* ============================================
+   * TRANSITIONS
+   * More dynamic, playful animations
+   * ============================================ */
+
+  --transition-button: all 200ms var(--ease-spring);
+  --transition-card: all 300ms var(--ease-spring);
+  --transition-input: all 200ms var(--ease-out);
+
+  /* Animation timings */
+  --duration-fast: 200ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+}
+
+/* ============================================
+ * DARK MODE ADJUSTMENTS FOR CREATIVE VARIANT
+ * ============================================ */
+
+.dark[data-variant="creative"],
+[data-theme="dark"][data-variant="creative"],
+.dark.variant-creative {
+  --color-brand-primary: var(--color-indigo-400);
+  --color-brand-secondary: var(--color-fuchsia-400);
+  --color-brand-accent: var(--color-yellow-300);
+
+  --color-bg-brand-subtle: var(--color-fuchsia-950);
+  --color-bg-secondary-subtle: var(--color-fuchsia-950);
+  --color-bg-accent-subtle: var(--color-yellow-950);
+
+  --shadow-button-primary: 0 4px 14px -3px rgb(129 140 248 / 0.5);
+  --shadow-button-secondary: 0 4px 14px -3px rgb(232 121 249 / 0.5);
+
+  --glow-primary: 0 0 40px rgb(129 140 248 / 0.5);
+  --glow-secondary: 0 0 40px rgb(232 121 249 / 0.5);
+  --glow-accent: 0 0 40px rgb(253 224 71 / 0.5);
+
+  --gradient-brand: linear-gradient(135deg, var(--color-indigo-400), var(--color-fuchsia-400));
+  --gradient-hero: linear-gradient(135deg, var(--color-indigo-500) 0%, var(--color-fuchsia-500) 50%, var(--color-pink-500) 100%);
+  --gradient-hero-subtle: linear-gradient(135deg, var(--color-indigo-950) 0%, var(--color-fuchsia-950) 50%, var(--color-pink-950) 100%);
+}

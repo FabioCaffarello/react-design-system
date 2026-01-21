@@ -5,6 +5,7 @@
  * Each tab maps to a component that will be rendered.
  */
 
+/* eslint-disable react-refresh/only-export-components */
 import React, { lazy, Suspense } from 'react';
 import { CheckCircle2, XCircle } from 'lucide-react';
 import { usePlaygroundContext } from '../context/PlaygroundContext';
@@ -146,7 +147,7 @@ function ViewportPanel() {
  */
 function ValidationPanel() {
   const { nodes, edges } = usePlaygroundContext();
-  const [validationResult, setValidationResult] = React.useState<any>(null);
+  const [validationResult, setValidationResult] = React.useState<unknown>(null);
 
   const handleValidate = React.useCallback(() => {
     const result = validateFlow(nodes, edges);

@@ -3,13 +3,12 @@
 import React, { useState, useMemo } from 'react';
 import { Table } from '../../organisms';
 import { Pagination, SearchInput } from '../../molecules';
-import { Button } from '../../atoms';
-import { Stack } from '../../layouts/Stack/Stack';
 import { Container } from '../../layouts/Container/Container';
+import { Stack } from '../../layouts/Stack/Stack';
 import type { TableColumn } from '../../organisms/Table/TableTypes';
 
 // Extended TableColumn type for DataTablePattern (supports accessor and header for backward compatibility)
-export interface DataTableColumn<T = any> extends Omit<TableColumn<T>, 'key' | 'label'> {
+export interface DataTableColumn<T = unknown> extends Omit<TableColumn<T>, 'key' | 'label'> {
   key?: keyof T | string;
   label?: string;
   // Legacy support
@@ -17,7 +16,7 @@ export interface DataTableColumn<T = any> extends Omit<TableColumn<T>, 'key' | '
   header?: string;
 }
 
-export interface DataTablePatternProps<T = any> {
+export interface DataTablePatternProps<T = unknown> {
   /**
    * Table columns configuration
    * Supports both TableColumn format (key, label) and legacy format (accessor, header)
@@ -122,7 +121,7 @@ export function DataTablePattern<T extends Record<string, unknown> = Record<stri
     const query = searchQuery.toLowerCase();
     return data.filter((row) => {
       return tableColumns.some((column) => {
-        const value = (row as any)[column.key];
+        const value = (row as Record<string, unknown>)[String(column.key)];
         return String(value).toLowerCase().includes(query);
       });
     });
@@ -160,7 +159,7 @@ export function DataTablePattern<T extends Record<string, unknown> = Record<stri
               <SearchInput
                 placeholder={searchPlaceholder}
                 value={searchQuery}
-                onChange={(e) => handleSearchChange(e.target.value)}
+                onSearch={handleSearchChange}
               />
             </div>
           )}

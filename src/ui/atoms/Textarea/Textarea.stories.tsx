@@ -410,11 +410,11 @@ export const WithEvents: Story = {
       console.log('Value changed:', e.target.value);
     });
     
-    const handleFocus = fn((e: React.FocusEvent<HTMLTextAreaElement>) => {
+    const handleFocus = fn((_e: React.FocusEvent<HTMLTextAreaElement>) => {
       console.log('Textarea focused');
     });
     
-    const handleBlur = fn((e: React.FocusEvent<HTMLTextAreaElement>) => {
+    const handleBlur = fn((_e: React.FocusEvent<HTMLTextAreaElement>) => {
       console.log('Textarea blurred');
     });
     

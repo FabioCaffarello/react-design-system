@@ -5,8 +5,8 @@
  * Provides theming support with light/dark modes and custom overrides.
  */
 
-import type { ThemeMode } from '../../../tokens/tokens.factory';
-import { COLOR_TOKENS, COLOR_TOKENS_LIGHT, COLOR_TOKENS_DARK } from '../../../tokens/colors';
+import type { ThemeMode } from '../../../tokens';
+import { COLOR_TOKENS_LIGHT, COLOR_TOKENS_DARK } from '../../../tokens/colors';
 import { SPACING_TOKENS } from '../../../tokens/spacing';
 import { SHADOW_TOKENS } from '../../../tokens/shadows';
 import { RADIUS_TOKENS } from '../../../tokens/radius';
@@ -86,7 +86,7 @@ export interface FlowThemeVariables {
  */
 export function getDefaultLightTheme(): FlowThemeVariables {
   const colors = COLOR_TOKENS_LIGHT;
-  const spacing = SPACING_TOKENS;
+  const _spacing = SPACING_TOKENS;
   const shadows = SHADOW_TOKENS;
   const radius = RADIUS_TOKENS;
   
@@ -155,7 +155,7 @@ export function getDefaultLightTheme(): FlowThemeVariables {
  */
 export function getDefaultDarkTheme(): FlowThemeVariables {
   const colors = COLOR_TOKENS_DARK;
-  const spacing = SPACING_TOKENS;
+  const _spacing = SPACING_TOKENS;
   const shadows = SHADOW_TOKENS;
   const radius = RADIUS_TOKENS;
   

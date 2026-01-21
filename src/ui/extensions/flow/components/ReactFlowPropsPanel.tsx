@@ -8,7 +8,6 @@ import React, { useMemo, useState } from 'react';
 import { Card } from '../../../molecules';
 import { Label, Input, Select, Button } from '../../../atoms';
 import Collapsible from '../../../atoms/Collapsible/Collapsible';
-import Tooltip from '../../../atoms/Tooltip/Tooltip';
 import { REACT_FLOW_PROP_DEFINITIONS, getPropsByCategory } from '../utils/reactFlowPropsDefinitions';
 import { validateReactFlowConfig } from '../utils/playgroundHelpers';
 import type { ReactFlowConfig } from '../types/playgroundTypes';
@@ -55,7 +54,7 @@ export const ReactFlowPropsPanel = React.memo(function ReactFlowPropsPanel({ con
     other: false,
   });
   
-  const toggleSection = (section: keyof typeof sectionStates) => {
+  const _toggleSection = (section: keyof typeof sectionStates) => {
     setSectionStates(prev => ({
       ...prev,
       [section]: !prev[section],
@@ -123,7 +122,7 @@ export const ReactFlowPropsPanel = React.memo(function ReactFlowPropsPanel({ con
           </div>
         );
 
-      case 'number':
+      case 'number': {
         const numValue = value !== undefined ? value : defaultValue;
         const min = prop.key === 'minZoom' ? 0.1 : prop.key === 'maxZoom' ? 0.5 : undefined;
         const max = prop.key === 'minZoom' ? 1 : prop.key === 'maxZoom' ? 4 : undefined;
@@ -152,6 +151,7 @@ export const ReactFlowPropsPanel = React.memo(function ReactFlowPropsPanel({ con
             />
           </div>
         );
+      }
 
       case 'select':
         return (

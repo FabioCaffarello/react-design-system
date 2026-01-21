@@ -7,7 +7,7 @@
 
 import { SpacingTokenFactory, type SpacingScale, type SpacingToken } from './spacing';
 import { TypographyTokenFactory, type TypographyToken, type FontSize, type LineHeight, type FontWeight } from './typography';
-import { ColorTokenFactory, type ColorRole, type SemanticColor, LightColorStrategy, DarkColorStrategy } from './colors';
+import { ColorTokenFactory, type ColorRole, type SemanticColor, LightColorStrategy, DarkColorStrategy, type ThemeMode } from './colors';
 import { BreakpointTokenFactory, type BreakpointName, type BreakpointToken } from './breakpoints';
 import { ShadowTokenFactory, type ShadowSize, type ShadowToken } from './shadows';
 import { RadiusTokenFactory, type RadiusSize, type RadiusToken } from './radius';
@@ -16,8 +16,6 @@ import { AnimationTokenFactory, type AnimationDuration, type EasingFunction, typ
 import { ZIndexTokenFactory, type ZIndexLayer, type ZIndexToken } from './z-index';
 import { OpacityTokenFactory, type OpacityValue, type OpacityToken } from './opacity';
 import { GradientTokenFactory, type GradientRole, type GradientDirection, type GradientToken } from './gradients';
-
-export type ThemeMode = 'light' | 'dark';
 
 export interface TokenSet {
   spacing: Record<string, SpacingToken>;

@@ -102,11 +102,11 @@ export function getSpacing(scale: keyof typeof SPACING_TOKENS): SpacingToken {
 /**
  * Helper function to get spacing as Tailwind class
  */
-export function getSpacingClass(scale: keyof typeof SPACING_TOKENS, direction: 'p' | 'm' | 'px' | 'mx' | 'py' | 'my' | 'pt' | 'mt' | 'pr' | 'mr' | 'pb' | 'mb' | 'pl' | 'ml' = 'p'): string {
+export function getSpacingClass(scale: keyof typeof SPACING_TOKENS, direction: 'p' | 'm' | 'px' | 'mx' | 'py' | 'my' | 'pt' | 'mt' | 'pr' | 'mr' | 'pb' | 'mb' | 'pl' | 'ml' | 'gap' | 'gap-x' | 'gap-y' | 'space-y' = 'p'): string {
   const token = SPACING_TOKENS[scale];
   const value = token.tailwind;
   
-  const prefixMap: Record<typeof direction, string> = {
+  const prefixMap: Record<string, string> = {
     p: 'p',
     m: 'm',
     px: 'px',
@@ -121,6 +121,10 @@ export function getSpacingClass(scale: keyof typeof SPACING_TOKENS, direction: '
     mb: 'mb',
     pl: 'pl',
     ml: 'ml',
+    gap: 'gap',
+    'gap-x': 'gap-x',
+    'gap-y': 'gap-y',
+    'space-y': 'space-y',
   };
 
   return `${prefixMap[direction]}-${value}`;

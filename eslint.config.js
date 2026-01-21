@@ -110,4 +110,30 @@ export default defineConfig([
       "@typescript-eslint/no-explicit-any": "warn",
     },
   },
+  {
+    // Scripts - allow console.log for debugging and output
+    files: ["scripts/**/*.{ts,js}"],
+    extends: [
+      js.configs.recommended,
+      ...tseslint.configs.recommended,
+    ],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.node,
+    },
+    rules: {
+      "no-console": "off", // Allow all console methods in scripts
+      "@typescript-eslint/no-require-imports": "off", // Allow require() in scripts
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/no-unsafe-return": "off",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-unused-vars": ["warn", {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+      }],
+    },
+  },
 ]);

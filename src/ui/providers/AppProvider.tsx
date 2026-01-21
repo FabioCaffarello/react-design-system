@@ -1,5 +1,6 @@
 'use client';
 
+/* eslint-disable react-refresh/only-export-components */
 import { type ReactNode } from 'react';
 import { ThemeProvider, type ThemeProviderProps } from './ThemeProvider';
 import { ConfigProvider, type ConfigProviderProps } from './ConfigProvider';

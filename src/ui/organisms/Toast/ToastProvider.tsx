@@ -17,7 +17,7 @@ export function ToastProvider({
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const addToast = useCallback((toast: Omit<Toast, 'id'>): string => {
-    const id = `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const id = `toast-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
     const newToast: Toast = {
       ...toast,
       id,

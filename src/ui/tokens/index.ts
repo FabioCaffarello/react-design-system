@@ -1,11 +1,16 @@
 /**
  * Design Tokens Index
- * 
+ *
  * Centralized exports for all design tokens.
+ *
+ * @brand AIppin
+ * @version 2.0.0
  */
 
-// Colors
-export * from './colors';
+// Colors - New modular system
+export * from './colors/index';
+
+// Colors - Legacy exports for backward compatibility
 export { COLOR_TOKENS, COLOR_TOKENS_LIGHT, COLOR_TOKENS_DARK, getColor, getColorClass, getHoverColorClass, getFocusColorClass, getFocusRingClass } from './colors';
 
 // Spacing

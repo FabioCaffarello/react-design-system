@@ -532,16 +532,16 @@ export const WithEvents: Story = {
   render: () => {
     const [checked, setChecked] = useState(false);
     
-    const handleChange = fn((checked: boolean) => {
-      setChecked(checked);
-      console.log('Checkbox changed:', checked);
+    const handleChange = fn((event: React.ChangeEvent<HTMLInputElement>) => {
+      setChecked(event.target.checked);
+      console.log('Checkbox changed:', event.target.checked);
     });
     
-    const handleFocus = fn((event: React.FocusEvent<HTMLInputElement>) => {
+    const handleFocus = fn((_event: React.FocusEvent<HTMLInputElement>) => {
       console.log('Checkbox focused');
     });
     
-    const handleBlur = fn((event: React.FocusEvent<HTMLInputElement>) => {
+    const handleBlur = fn((_event: React.FocusEvent<HTMLInputElement>) => {
       console.log('Checkbox blurred');
     });
     

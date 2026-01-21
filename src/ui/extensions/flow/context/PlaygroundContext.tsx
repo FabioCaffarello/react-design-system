@@ -1,10 +1,13 @@
+'use client';
+
 /**
  * Playground Context
  * 
  * Context for managing global playground state across tabs and steps.
  */
 
-import React, { createContext, useContext, useState, useCallback, useMemo, useRef, useEffect } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import React, { createContext, useContext, useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import type { Node, Edge } from '@xyflow/react';
 import type { FlowNodeData, FlowEdgeData } from '../organisms/FlowTypes';
 import type { ReactFlowConfig, BackgroundConfig, LayoutConfig } from '../types/playgroundTypes';
@@ -12,9 +15,6 @@ import { treeTemplate } from '../utils/playgroundTemplates';
 import { generateNodeId } from '../utils/playgroundHelpers';
 import { usePlaygroundHistory } from '../hooks/usePlaygroundHistory';
 import { 
-  usePlaygroundStateManager, 
-  createLoggingMiddleware, 
-  createPersistenceMiddleware,
   loadPersistedState 
 } from '../utils/PlaygroundStateManager';
 import { useAutoSave } from '../utils/PlaygroundPersistence';

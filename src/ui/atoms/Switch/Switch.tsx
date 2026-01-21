@@ -142,7 +142,7 @@ const Switch = memo(forwardRef<HTMLInputElement, SwitchProps>(function Switch({
                 ...e,
                 target: { ...e.target, checked: !checked },
                 currentTarget: { ...e.currentTarget, checked: !checked },
-              } as React.ChangeEvent<HTMLInputElement>;
+              } as unknown as React.ChangeEvent<HTMLInputElement>;
               onChange(syntheticEvent);
             }
           }, [disabled, onChange, checked])}
@@ -153,7 +153,7 @@ const Switch = memo(forwardRef<HTMLInputElement, SwitchProps>(function Switch({
                 ...e,
                 target: { ...e.target, checked: !checked },
                 currentTarget: { ...e.currentTarget, checked: !checked },
-              } as React.ChangeEvent<HTMLInputElement>;
+              } as unknown as React.ChangeEvent<HTMLInputElement>;
               onChange(syntheticEvent);
             }
           }, [disabled, onChange, checked])}

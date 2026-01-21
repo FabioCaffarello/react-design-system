@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Playground Header Component
  * 
@@ -8,9 +10,6 @@
 import React, { useState, useCallback } from 'react';
 import { FileText, CheckCircle2 } from 'lucide-react';
 import { Button, Badge } from '../../../atoms';
-import Tooltip from '../../../atoms/Tooltip/Tooltip';
-import { PlaygroundBreadcrumbs } from './PlaygroundBreadcrumbs';
-import { PlaygroundSearch } from './PlaygroundSearch';
 import { usePlaygroundContext } from '../context/PlaygroundContext';
 import { useKeyboardShortcuts, PLAYGROUND_SHORTCUTS } from '../hooks/useKeyboardShortcuts';
 import { 
@@ -29,10 +28,10 @@ export function PlaygroundHeader() {
     canRedo,
     undo,
     redo,
-    searchQuery,
-    setSearchQuery,
-    searchResults,
-    activeTab = 'nodes-edges',
+    searchQuery: _searchQuery,
+    setSearchQuery: _setSearchQuery,
+    searchResults: _searchResults,
+    activeTab: _activeTab = 'nodes-edges',
   } = usePlaygroundContext();
   
   const [showSearch, setShowSearch] = useState(false);

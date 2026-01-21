@@ -283,11 +283,11 @@ export const WithEvents: Story = {
       console.log('Switch toggled:', e.target.checked);
     });
     
-    const handleFocus = fn((e: React.FocusEvent<HTMLInputElement>) => {
+    const handleFocus = fn((_e: React.FocusEvent<HTMLInputElement>) => {
       console.log('Switch focused');
     });
     
-    const handleBlur = fn((e: React.FocusEvent<HTMLInputElement>) => {
+    const handleBlur = fn((_e: React.FocusEvent<HTMLInputElement>) => {
       console.log('Switch blurred');
     });
     

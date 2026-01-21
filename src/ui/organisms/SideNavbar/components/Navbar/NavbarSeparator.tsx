@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { cn } from '../../../../utils';
 import type { NavbarSeparatorProps } from '../../types';
 
 /**
@@ -25,13 +26,13 @@ export default function NavbarSeparator({
   if (orientation === 'vertical') {
     return (
       <div
-        className={`
-          w-px
-          h-6
-          bg-gray-200
-          mx-auto
-          ${className}
-        `}
+        className={cn(
+          'w-px',
+          'h-6',
+          'bg-[var(--color-border)]',
+          'mx-auto',
+          className
+        )}
         role="separator"
         aria-orientation="vertical"
         {...props}
@@ -41,15 +42,21 @@ export default function NavbarSeparator({
 
   return (
     <div
-      className={`
-        w-full
-        h-px
-        bg-gray-200
-        my-2
-        ${className}
-      `}
+      className={cn(
+        'w-full',
+        'h-px',
+        'bg-[var(--color-border)]',
+        'my-2', // my-2 (8px) para consistência com gap-2 usado em outros lugares
+        'flex-shrink-0', // Prevenir que separator encolha
+        className
+      )}
       role="separator"
       aria-orientation="horizontal"
+      style={{
+        // Garantir que separator não seja afetado por transformações
+        willChange: 'auto',
+        transform: 'none',
+      }}
       {...props}
     />
   );

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
+import { expect, within, waitFor } from '@storybook/test';
 import { useState } from 'react';
 import Timeline, { type TimelineItem } from './Timeline';
 import { CheckCircle2, XCircle, Package, Truck, CheckCircle } from 'lucide-react';
@@ -306,7 +306,7 @@ export const InteractiveTimeline: Story = {
       },
     ]);
 
-    const handleItemClick = (itemId: string) => {
+    const _handleItemClick = (itemId: string) => {
       setItems(items.map(item => 
         item.id === itemId 
           ? { ...item, status: item.status === 'completed' ? 'default' : 'completed' as const }
@@ -339,8 +339,17 @@ export const ManyItems: Story = {
     const canvas = within(canvasElement);
     
     // Check that timeline items are rendered
-    expect(canvas.getByText(/event 1/i)).toBeInTheDocument();
-    expect(canvas.getByText(/event 20/i)).toBeInTheDocument();
+    // There might be multiple "Event 1" elements, so get all and verify
+    await waitFor(async () => {
+      const event1Elements = canvas.getAllByText((content, element) => {
+        return element?.textContent?.trim() === 'Event 1' || false;
+      });
+      const event20Elements = canvas.getAllByText((content, element) => {
+        return element?.textContent?.trim() === 'Event 20' || false;
+      });
+      expect(event1Elements.length).toBeGreaterThan(0);
+      expect(event20Elements.length).toBeGreaterThan(0);
+    }, { timeout: 3000 });
   },
 };
 
@@ -348,7 +357,7 @@ export const ManyItems: Story = {
 export const WithEvents: Story = {
   render: () => {
     const [items, setItems] = useState<TimelineItem[]>(basicItems);
-    const handleItemClick = fn((itemId: string) => {
+    const _handleItemClick = fn((itemId: string) => {
       setItems(items.map(item => 
         item.id === itemId 
           ? { ...item, status: item.status === 'completed' ? 'default' as const : 'completed' as const }

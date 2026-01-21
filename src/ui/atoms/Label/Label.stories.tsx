@@ -214,7 +214,7 @@ export const WithDifferentInputs: StoryObj<typeof Label> = {
 // Event Stories
 export const WithEvents: StoryObj<typeof Label> = {
   render: () => {
-    const handleClick = fn((e: React.MouseEvent<HTMLLabelElement>) => {
+    const handleClick = fn((_e: React.MouseEvent<HTMLLabelElement>) => {
       console.log('Label clicked');
     });
     

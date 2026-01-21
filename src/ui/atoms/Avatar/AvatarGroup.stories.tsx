@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from '@storybook/test';
 import Avatar from "./Avatar";
 import { AvatarGroup } from "./AvatarGroup";
 

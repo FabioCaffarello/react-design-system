@@ -70,7 +70,7 @@ export class EdgeBuilder<T extends FlowEdgeData = FlowEdgeData> {
 
   withLabel(label: string | React.ReactNode): this {
     this.label = label;
-    this.data.label = label as any;
+    this.data.label = label as unknown;
     return this;
   }
 
@@ -94,7 +94,7 @@ export class EdgeBuilder<T extends FlowEdgeData = FlowEdgeData> {
 
   withAnimated(animated: boolean = true): this {
     this.animated = animated;
-    this.data.animated = animated as any;
+    this.data.animated = animated as unknown;
     return this;
   }
 

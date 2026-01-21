@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
+import { expect, within, waitFor } from '@storybook/test';
 import { useState } from 'react';
 import TimePicker from './TimePicker';
 
@@ -198,8 +198,13 @@ export const WithEvents: Story = {
     const canvas = within(canvasElement);
     // Wait for time picker to be interactive
     await waitFor(() => {
-      expect(canvas.getByText('Selected:')).toBeInTheDocument();
-    });
+      // Use a more flexible text matcher for text that might be split across elements
+      // Get all elements that contain "Selected:" and verify at least one exists
+      const selectedElements = canvas.getAllByText((content, element) => {
+        return element?.textContent?.includes('Selected:') || false;
+      });
+      expect(selectedElements.length).toBeGreaterThan(0);
+    }, { timeout: 3000 });
   },
   parameters: {
     docs: {

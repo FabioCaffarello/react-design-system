@@ -4,7 +4,7 @@
  * Strategy pattern for different layout algorithms (Dagre, ELK, Force-Directed).
  */
 
-import type { Node, Edge, XYPosition } from '@xyflow/react';
+import type { Node, Edge } from '@xyflow/react';
 import type { LayoutOptions, LayoutResult } from '../organisms/FlowTypes';
 
 /**
@@ -36,7 +36,7 @@ export class DagreLayoutStrategy implements LayoutStrategy {
     }
     
     const dagre = dagreModule.default || dagreModule;
-    const Graph = dagre.graphlib?.Graph || (dagre as any).Graph;
+    const Graph = dagre.graphlib?.Graph || (dagre as unknown).Graph;
     const g = new Graph();
     if (g.setDefaultEdgeLabel) {
       g.setDefaultEdgeLabel(() => ({}));
@@ -66,8 +66,8 @@ export class DagreLayoutStrategy implements LayoutStrategy {
     
     if (dagre.layout) {
       dagre.layout(g);
-    } else if ((dagre as any).layout) {
-      (dagre as any).layout(g);
+    } else if ((dagre as unknown).layout) {
+      (dagre as unknown).layout(g);
     }
     
     const layoutedNodes = nodes.map((node) => {
@@ -153,7 +153,7 @@ export class ForceDirectedLayoutStrategy implements LayoutStrategy {
   async calculate(
     nodes: Node[],
     edges: Edge[],
-    options: LayoutOptions = {}
+    _options: LayoutOptions = {}
   ): Promise<LayoutResult> {
     // Dynamic import to make it optional
     const d3 = await import('d3-force').catch(() => null);
@@ -162,15 +162,15 @@ export class ForceDirectedLayoutStrategy implements LayoutStrategy {
       throw new Error('d3-force is not installed. Install it with: npm install d3-force @types/d3-force');
     }
     
-    const simulation = d3.forceSimulation(nodes.map((n) => ({ id: n.id } as any)))
-      .force('link', (d3.forceLink as any)(edges).id((d: any) => d.id))
-      .force('charge', (d3.forceManyBody as any)().strength(-300))
-      .force('center', (d3.forceCenter as any)(400, 400));
+    const simulation = d3.forceSimulation(nodes.map((n) => ({ id: n.id } as unknown)))
+      .force('link', (d3.forceLink as unknown)(edges).id((d: unknown) => d.id))
+      .force('charge', (d3.forceManyBody as unknown)().strength(-300))
+      .force('center', (d3.forceCenter as unknown)(400, 400));
     
     return new Promise((resolve) => {
       simulation.on('end', () => {
         const layoutedNodes = nodes.map((node, i) => {
-          const simNode = simulation.nodes()[i] as any;
+          const simNode = simulation.nodes()[i] as unknown;
           return {
             ...node,
             position: {

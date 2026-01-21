@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useEffect, useRef, useMemo, type ReactNode, createContext } from 'react';
+import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { SideNavbarStateContext } from '../contexts/SideNavbarStateContext';
 import { useSideNavbarThemeRequired } from '../contexts/SideNavbarThemeContext';
 import { useSideNavbarConfigRequired } from '../contexts/SideNavbarConfigContext';
@@ -37,6 +37,7 @@ export function SideNavbarStateProvider({
   onCollapseChange,
   onWidthChange,
   onMobileChange,
+  exclusiveGroups = false,
 }: SideNavbarStateProviderProps) {
   const theme = useSideNavbarThemeRequired();
   const config = useSideNavbarConfigRequired();
@@ -154,11 +155,42 @@ export function SideNavbarStateProvider({
 
   // Group state handlers
   const toggleGroup = useCallback((groupId: string) => {
-    setGroupStates((prev) => ({
-      ...prev,
-      [groupId]: !prev[groupId],
-    }));
-  }, []);
+    if (exclusiveGroups) {
+      // Exclusive behavior: only one group open at a time (like ButtonGroup)
+      // When clicking a group:
+      // - If it's open (false = expanded), close it (all groups closed)
+      // - If it's closed (true = collapsed or undefined), open it and close all others
+      // - After closing, user can click any group (including the same one) to open it again
+      setGroupStates((prev) => {
+        const currentState = prev[groupId];
+        const isCurrentlyOpen = currentState === false; // false means expanded (not collapsed)
+        const newStates: Record<string, boolean> = {};
+        
+        // Get all group IDs (from current state and the one being toggled)
+        const allGroupIds = new Set([...Object.keys(prev), groupId]);
+        
+        if (isCurrentlyOpen) {
+          // Group is currently open, close it (and all others remain closed)
+          allGroupIds.forEach((id) => {
+            newStates[id] = true; // true = collapsed
+          });
+        } else {
+          // Group is currently closed, open it and close all others
+          allGroupIds.forEach((id) => {
+            newStates[id] = id !== groupId; // true = collapsed, false = expanded
+          });
+        }
+        
+        return newStates;
+      });
+    } else {
+      // Default behavior: toggle individual group state
+      setGroupStates((prev) => ({
+        ...prev,
+        [groupId]: !prev[groupId],
+      }));
+    }
+  }, [exclusiveGroups]);
 
   const setGroupCollapsed = useCallback((groupId: string, isCollapsed: boolean) => {
     setGroupStates((prev) => ({

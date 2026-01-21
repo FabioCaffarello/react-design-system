@@ -6,12 +6,12 @@
 
 'use client';
 
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useCallback, useMemo, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import {
   getFlowTheme,
   themeToCSSVariables,
-  applyFlowTheme,
   type FlowThemeVariables,
   type ThemeMode,
 } from '../styles/flow-theme';

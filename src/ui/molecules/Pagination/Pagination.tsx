@@ -6,9 +6,7 @@ import { cn } from '../../utils';
 import { 
   getColorClass, 
   getSpacingClass, 
-  getRadiusClass,
-  getTypographySizeFromFontSize,
-  getHoverColorClass
+  getTypographySizeFromFontSize
 } from '../../tokens';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {

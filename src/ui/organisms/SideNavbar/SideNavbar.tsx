@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type ReactNode, type HTMLAttributes, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { SideNavbarProvider } from './providers/SideNavbarProvider';
 import { SideNavbarThemeProvider } from './providers/SideNavbarThemeProvider';
 import { SideNavbarConfigProvider } from './providers/SideNavbarConfigProvider';
@@ -122,6 +122,7 @@ function SideNavbar({
   onCollapseChange,
   onWidthChange,
   onMobileChange,
+  exclusiveGroups = false,
 
   // Toggle
   showToggle = true,
@@ -166,6 +167,7 @@ function SideNavbar({
       onCollapseChange={onCollapseChange}
       onWidthChange={onWidthChange}
       onMobileChange={onMobileChange}
+      exclusiveGroups={exclusiveGroups}
     >
       <SideNavbarRoot
         {...rootProps}

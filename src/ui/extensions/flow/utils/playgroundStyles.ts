@@ -9,7 +9,6 @@ import {
   getSpacingClass, 
   getColorClass, 
   getTypographyClasses,
-  getShadowClass,
   getRadiusClass 
 } from '../../../tokens';
 
@@ -97,7 +96,7 @@ export const playgroundStyles = {
 /**
  * Get preview grid style with custom columns
  */
-export function getPreviewGridStyle(minWidth: string = '140px'): string {
+export function getPreviewGridStyle(_minWidth: string = '140px'): string {
   return `
     ${playgroundStyles.previewGrid}
   `;

@@ -33,7 +33,7 @@ test.describe('Select Component', () => {
   });
 
   test('should have proper ARIA attributes', async ({ page }) => {
-    const select = page.getByRole('combobox');
+    const _select = page.getByRole('combobox');
     
     // Check aria-invalid when error
     await page.goto('/?path=/story/atoms-select--error');

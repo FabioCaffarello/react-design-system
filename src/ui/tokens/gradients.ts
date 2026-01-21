@@ -112,11 +112,13 @@ export class GradientTokenFactory {
   /**
    * Convert hex color to approximate Tailwind color class
    * This is a helper for documentation, actual implementation uses arbitrary values
+   * @deprecated Not currently used, kept for potential future use
    */
-  private static hexToTailwindColor(hex: string): string {
+  // @ts-expect-error - Method kept for potential future use
+  private static hexToTailwindColor(_hex: string): string {
     // This is a simplified mapping for documentation purposes
     // In practice, we use arbitrary values like from-[#hex]
-    return hex;
+    return _hex;
   }
 }
 

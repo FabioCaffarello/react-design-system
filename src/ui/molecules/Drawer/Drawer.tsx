@@ -87,3 +87,6 @@ export default function Drawer({
 Drawer.Content = DrawerContent;
 Drawer.Header = DrawerHeader;
 Drawer.Footer = DrawerFooter;
+
+// Also export as named exports for easier imports
+export { DrawerContent, DrawerHeader, DrawerFooter };

@@ -1,10 +1,13 @@
+'use client';
+
 /**
  * Playground History Hook
  * 
  * Hook for managing undo/redo history in the playground
+ * Uses useReducer for atomic state management to avoid synchronization issues
  */
 
-import { useState, useCallback, useRef } from 'react';
+import { useReducer, useCallback, useRef } from 'react';
 import type { Node, Edge } from '@xyflow/react';
 import type { FlowNodeData, FlowEdgeData } from '../organisms/FlowTypes';
 
@@ -26,11 +29,71 @@ export interface UsePlaygroundHistoryReturn {
 const MAX_HISTORY_SIZE = 50;
 
 /**
+ * Reducer state for history management
+ */
+interface HistoryReducerState {
+  history: HistoryState[];
+  index: number;
+}
+
+/**
+ * Actions for history reducer
+ */
+type HistoryAction =
+  | { type: 'PUSH_STATE'; payload: HistoryState }
+  | { type: 'UNDO' }
+  | { type: 'REDO' }
+  | { type: 'CLEAR' };
+
+/**
+ * Reducer for managing history state atomically
+ */
+function historyReducer(
+  state: HistoryReducerState,
+  action: HistoryAction
+): HistoryReducerState {
+  switch (action.type) {
+    case 'PUSH_STATE': {
+      // Remove any states after current index (when user made changes after undo)
+      const newHistory = state.history.slice(0, state.index + 1);
+      
+      // Add new state
+      newHistory.push(action.payload);
+      
+      // Limit history size
+      if (newHistory.length > MAX_HISTORY_SIZE) {
+        newHistory.shift();
+        return { history: newHistory, index: MAX_HISTORY_SIZE - 1 };
+      }
+      
+      return { history: newHistory, index: newHistory.length - 1 };
+    }
+    
+    case 'UNDO': {
+      if (state.index <= 0) return state;
+      return { ...state, index: state.index - 1 };
+    }
+    
+    case 'REDO': {
+      if (state.index >= state.history.length - 1) return state;
+      return { ...state, index: state.index + 1 };
+    }
+    
+    case 'CLEAR': {
+      return { history: [], index: -1 };
+    }
+    
+    default:
+      return state;
+  }
+}
+
+/**
  * Hook for managing playground history
+ * Uses useReducer for atomic state management to ensure consistency
  */
 export function usePlaygroundHistory(): UsePlaygroundHistoryReturn {
-  const [history, setHistory] = useState<HistoryState[]>([]);
-  const [historyIndex, setHistoryIndex] = useState(-1);
+  const [state, dispatch] = useReducer(historyReducer, { history: [], index: -1 });
   const isPushingRef = useRef(false);
 
   const pushState = useCallback((nodes: Node<FlowNodeData>[], edges: Edge<FlowEdgeData>[]) => {
@@ -42,66 +105,62 @@ export function usePlaygroundHistory(): UsePlaygroundHistoryReturn {
       timestamp: Date.now(),
     };
 
-    setHistory((prev) => {
-      // Remove any states after current index (when we're in the middle of history)
-      const newHistory = prev.slice(0, historyIndex + 1);
-      
-      // Add new state
-      newHistory.push(newState);
-      
-      // Limit history size
-      if (newHistory.length > MAX_HISTORY_SIZE) {
-        newHistory.shift();
-        return newHistory;
-      }
-      
-      return newHistory;
-    });
-    
-    setHistoryIndex((prev) => {
-      const newIndex = prev + 1;
-      return newIndex >= MAX_HISTORY_SIZE ? MAX_HISTORY_SIZE - 1 : newIndex;
-    });
-  }, [historyIndex]);
+    dispatch({ type: 'PUSH_STATE', payload: newState });
+  }, []);
 
   const undo = useCallback((): HistoryState | null => {
-    if (historyIndex <= 0) return null;
+    if (state.index <= 0) return null;
     
-    const newIndex = historyIndex - 1;
-    setHistoryIndex(newIndex);
+    const newIndex = state.index - 1;
+    const historyState = state.history[newIndex];
+    
+    if (!historyState) return null;
+    
+    dispatch({ type: 'UNDO' });
     isPushingRef.current = true;
     
-    const state = history[newIndex];
     setTimeout(() => {
       isPushingRef.current = false;
     }, 0);
     
-    return state || null;
-  }, [history, historyIndex]);
+    // Return a copy to avoid mutations
+    return {
+      nodes: JSON.parse(JSON.stringify(historyState.nodes)),
+      edges: JSON.parse(JSON.stringify(historyState.edges)),
+      timestamp: historyState.timestamp,
+    };
+  }, [state]);
 
   const redo = useCallback((): HistoryState | null => {
-    if (historyIndex >= history.length - 1) return null;
+    if (state.index >= state.history.length - 1) return null;
     
-    const newIndex = historyIndex + 1;
-    setHistoryIndex(newIndex);
+    const newIndex = state.index + 1;
+    const historyState = state.history[newIndex];
+    
+    if (!historyState) return null;
+    
+    dispatch({ type: 'REDO' });
     isPushingRef.current = true;
     
-    const state = history[newIndex];
     setTimeout(() => {
       isPushingRef.current = false;
     }, 0);
     
-    return state || null;
-  }, [history, historyIndex]);
+    // Return a copy to avoid mutations
+    return {
+      nodes: JSON.parse(JSON.stringify(historyState.nodes)),
+      edges: JSON.parse(JSON.stringify(historyState.edges)),
+      timestamp: historyState.timestamp,
+    };
+  }, [state]);
 
   const clearHistory = useCallback(() => {
-    setHistory([]);
-    setHistoryIndex(-1);
+    dispatch({ type: 'CLEAR' });
   }, []);
 
   return {
-    canUndo: historyIndex > 0,
-    canRedo: historyIndex < history.length - 1,
+    canUndo: state.index > 0,
+    canRedo: state.index < state.history.length - 1,
     undo,
     redo,
     pushState,

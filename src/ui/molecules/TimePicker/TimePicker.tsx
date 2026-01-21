@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Clock } from 'lucide-react';
 import Input from '../../atoms/Input/Input';
 import Popover from '../Popover/Popover';
@@ -57,7 +57,7 @@ export default function TimePicker({
   const currentValue = isControlled ? controlledValue : internalValue;
 
   // Parse time value
-  const parseTime = (timeStr: string) => {
+  const parseTime = useCallback((timeStr: string) => {
     if (!timeStr) return { hours: 12, minutes: 0, amPm: 'AM' as const };
 
     if (format === '24h') {
@@ -74,7 +74,7 @@ export default function TimePicker({
       }
       return { hours: 12, minutes: 0, amPm: 'AM' as const };
     }
-  };
+  }, [format]);
 
   // Format time value
   const formatTime = (h: number, m: number, ap?: 'AM' | 'PM'): string => {
@@ -94,7 +94,7 @@ export default function TimePicker({
       setMinutes(parsed.minutes);
       setAmPm(parsed.amPm);
     }
-  }, [currentValue]);
+  }, [currentValue, parseTime]);
 
   const handleHoursChange = (newHours: number) => {
     const validHours = format === '24h'

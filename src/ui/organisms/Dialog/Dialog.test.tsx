@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Dialog from './Dialog';
 import Button from '../../atoms/Button/Button';
@@ -68,7 +68,9 @@ describe('Dialog', () => {
       );
       
       const trigger = screen.getByText('Open Dialog');
-      await user.click(trigger);
+      await act(async () => {
+        await user.click(trigger);
+      });
       
       await waitFor(() => {
         expect(screen.getByText('Test Dialog')).toBeInTheDocument();
@@ -93,7 +95,9 @@ describe('Dialog', () => {
       const overlay = document.querySelector('[aria-hidden="true"].bg-black');
       if (overlay) {
         // Click directly on the overlay
-        await user.click(overlay as HTMLElement);
+        await act(async () => {
+          await user.click(overlay as HTMLElement);
+        });
         
         await waitFor(() => {
           expect(screen.queryByText('Test Dialog')).not.toBeInTheDocument();
@@ -147,7 +151,9 @@ describe('Dialog', () => {
       
       // DialogClose renders a button with aria-label="Close dialog"
       const closeButton = screen.getByLabelText('Close dialog');
-      await user.click(closeButton);
+      await act(async () => {
+        await user.click(closeButton);
+      });
       
       await waitFor(() => {
         expect(screen.queryByText('Test Dialog')).not.toBeInTheDocument();
@@ -209,13 +215,17 @@ describe('Dialog', () => {
       );
       
       const trigger = screen.getByText('Open Dialog');
-      await user.click(trigger);
+      await act(async () => {
+        await user.click(trigger);
+      });
       
       await waitFor(() => {
         expect(screen.getByText('Test Dialog')).toBeInTheDocument();
       });
       
-      fireEvent.keyDown(document, { key: 'Escape' });
+      await act(async () => {
+        fireEvent.keyDown(document, { key: 'Escape' });
+      });
       
       await waitFor(() => {
         expect(screen.queryByText('Test Dialog')).not.toBeInTheDocument();
@@ -309,7 +319,9 @@ describe('Dialog', () => {
       );
       
       const trigger = screen.getByText('Open');
-      await user.click(trigger);
+      await act(async () => {
+        await user.click(trigger);
+      });
       
       await waitFor(() => {
         expect(screen.getByText('Test Dialog')).toBeInTheDocument();

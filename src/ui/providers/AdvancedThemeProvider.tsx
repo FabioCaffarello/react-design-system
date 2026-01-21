@@ -10,6 +10,7 @@
 
 'use client';
 
+/* eslint-disable react-refresh/only-export-components */
 import {
   createContext,
   useContext,
@@ -119,7 +120,7 @@ export function AdvancedThemeProvider({
   // Get all themes
   const themes = useMemo(() => {
     return themeRegistry.getAll();
-  }, [currentThemeName]);
+  }, []);
 
   // Apply CSS variables
   useEffect(() => {

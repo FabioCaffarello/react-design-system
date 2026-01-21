@@ -17,6 +17,7 @@
  */
 
 import { type VariantProps, cva as cvaLib } from 'class-variance-authority';
+import type { ClassValue } from 'clsx';
 import { cn } from './cn';
 
 /**
@@ -28,6 +29,8 @@ export type { VariantProps };
  * Creates a type-safe variant function with compound variants support.
  * 
  * Integrates with our cn() utility for proper Tailwind conflict resolution.
+ * This is a thin wrapper around class-variance-authority's cva function
+ * that ensures cn() is used for final class merging.
  * 
  * @param base - Base classes that always apply
  * @param config - Variant configuration with variants, compoundVariants, and defaultVariants
@@ -69,12 +72,15 @@ export type { VariantProps };
  * });
  * ```
  */
-export function cva(base: string, config?: Parameters<typeof cvaLib>[1]) {
+export const cva = <T extends Record<string, Record<string, ClassValue>>>(
+  base?: ClassValue,
+  config?: Parameters<typeof cvaLib<T>>[1]
+) => {
   const variantFn = cvaLib(base, config);
   
   // Wrap to ensure cn() is used for final merge
-  return (props?: Parameters<typeof variantFn>[0]) => {
+  return ((props?: Parameters<typeof variantFn>[0]) => {
     const variantClasses = variantFn(props);
     return cn(variantClasses);
-  };
-}
+  }) as typeof variantFn;
+};

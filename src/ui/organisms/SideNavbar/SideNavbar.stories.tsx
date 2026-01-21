@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
+import { expect, within, waitFor } from '@storybook/test';
 import React, { useState } from 'react';
 import SideNavbar from './SideNavbar';
 import { SidebarSlot, SidebarSlotContent } from './components/Sidebar';

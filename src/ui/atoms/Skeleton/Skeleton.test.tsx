@@ -17,7 +17,8 @@ describe("Skeleton", () => {
 
   it("renders multiple lines for text variant", () => {
     const { container } = render(<Skeleton variant="text" lines={3} />);
-    const lines = container.querySelectorAll(".animate-pulse");
+    // Each line has motion-safe:animate-pulse class, and they're inside a wrapper div
+    const lines = container.querySelectorAll('[aria-hidden="true"]');
     expect(lines.length).toBe(3);
   });
 

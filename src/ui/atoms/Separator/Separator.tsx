@@ -33,28 +33,30 @@ const Separator = memo(function Separator({
   className = '',
   ...props
 }: SeparatorProps) {
-  const baseClasses = [
-    'border-0',
-    getColorClass('neutral', 'DEFAULT', 'border'),
-  ];
+  const classes = useMemo(() => {
+    const baseClasses = [
+      'border-0',
+      getColorClass('neutral', 'DEFAULT', 'border'),
+    ];
 
-  const orientationClasses = {
-    horizontal: 'w-full border-t',
-    vertical: 'h-full border-l self-stretch',
-  };
+    const orientationClasses = {
+      horizontal: 'w-full border-t',
+      vertical: 'h-full border-l self-stretch',
+    };
 
-  const variantClasses = {
-    solid: 'border-solid',
-    dashed: 'border-dashed',
-    dotted: 'border-dotted',
-  };
+    const variantClasses = {
+      solid: 'border-solid',
+      dashed: 'border-dashed',
+      dotted: 'border-dotted',
+    };
 
-  const classes = useMemo(() => cn(
-    ...baseClasses,
-    orientationClasses[orientation],
-    variantClasses[variant],
-    className
-  ), [orientation, variant, className]);
+    return cn(
+      ...baseClasses,
+      orientationClasses[orientation],
+      variantClasses[variant],
+      className
+    );
+  }, [orientation, variant, className]);
 
   if (orientation === 'vertical') {
     return (

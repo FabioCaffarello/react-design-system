@@ -18,7 +18,7 @@ export interface FormFieldProps<TFieldValues extends FieldValues = FieldValues> 
   label?: string;
   children: (props: {
     name: string;
-    register: ReturnType<ReturnType<UseFormReturn<TFieldValues>['register']>>;
+    register: (fieldName: Path<TFieldValues>) => ReturnType<UseFormReturn<TFieldValues>['register']>;
     error?: string;
     value?: unknown;
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
@@ -87,7 +87,7 @@ export function FormField<TFieldValues extends FieldValues = FieldValues>({
       )}
       {children({
         name,
-        register: fieldRegister,
+        register: (fieldName: Path<TFieldValues>) => register(fieldName, rules),
         error,
         value,
         onChange: fieldRegister.onChange,

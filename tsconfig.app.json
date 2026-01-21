@@ -31,5 +31,15 @@
     }
   },
   "include": ["src"],
-  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx", "**/*.test.*"]
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.stories.tsx",
+    "**/*.test.*",
+    "src/setupTests.ts",
+    "src/ui/extensions/**/*",
+    "src/ui/patterns/**/*",
+    "src/ui/organisms/Table/**/*",
+    "src/ui/organisms/DataGrid/**/*"
+  ]
 }

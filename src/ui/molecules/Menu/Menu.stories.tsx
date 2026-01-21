@@ -289,17 +289,22 @@ export const WithEvents: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const trigger = canvas.getByRole('button', { name: /Interactive Menu/i });
+    // Get the first button with "Interactive Menu" text (there might be multiple)
+    const triggers = canvas.getAllByRole('button', { name: /Interactive Menu/i });
+    const trigger = triggers[0]; // Use the first one
     
     // Test opening menu
     await userEvent.click(trigger);
-    await waitFor(() => {
-      const menu = canvas.queryByRole('menu');
+    await waitFor(async () => {
+      // Menu might be in a portal, check document.body
+      const menu = within(document.body).queryByRole('menu') || 
+                   await canvas.findByRole('menu').catch(() => null);
       expect(menu).toBeInTheDocument();
-    });
+    }, { timeout: 3000 });
     
-    // Test selecting item
-    const profileItem = canvas.getByRole('menuitem', { name: /Profile/i });
+    // Test selecting item - menu might be in portal
+    const menuContainer = within(document.body);
+    const profileItem = await menuContainer.findByRole('menuitem', { name: /Profile/i });
     await userEvent.click(profileItem);
   },
   parameters: {

@@ -1,8 +1,9 @@
 'use client';
 
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { COLOR_TOKENS_LIGHT, COLOR_TOKENS_DARK, type ColorRole, type SemanticColor } from '../tokens/colors';
-import type { ThemeMode } from '../tokens/tokens.factory';
+import type { ThemeMode } from '../tokens';
 
 export interface ThemeContextValue {
   theme: ThemeMode;

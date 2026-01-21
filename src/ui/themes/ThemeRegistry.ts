@@ -6,7 +6,7 @@
  */
 
 import { ThemeBuilder } from './ThemeBuilder';
-import { createTokenSet } from '../tokens/tokens.factory';
+import { createTokenSet } from '../tokens';
 import type { CustomThemeConfig, Theme, ThemeRegistry } from './types';
 
 export class ThemeRegistryManager {
@@ -55,9 +55,10 @@ export class ThemeRegistryManager {
    */
   private generateCSSVariables(tokens: unknown): Record<string, string> {
     const variables: Record<string, string> = {};
+    const tokenSet = tokens as Record<string, unknown>;
 
     // Color variables
-    for (const [role, color] of Object.entries(tokens.colors || {})) {
+    for (const [role, color] of Object.entries((tokenSet.colors || {}) as Record<string, unknown>)) {
       if (color && typeof color === 'object') {
         for (const [shade, value] of Object.entries(color)) {
           if (value && typeof value === 'object' && 'hex' in value) {
@@ -69,14 +70,14 @@ export class ThemeRegistryManager {
     }
 
     // Spacing variables
-    for (const [name, token] of Object.entries(tokens.spacing || {})) {
+    for (const [name, token] of Object.entries((tokenSet.spacing || {}) as Record<string, unknown>)) {
       if (token && typeof token === 'object' && 'px' in token) {
         variables[`--spacing-${name}`] = (token as { px: string }).px;
       }
     }
 
     // Typography variables
-    for (const [name, token] of Object.entries(tokens.typography || {})) {
+    for (const [name, token] of Object.entries((tokenSet.typography || {}) as Record<string, unknown>)) {
       if (token && typeof token === 'object') {
         if ('fontSize' in token) {
           variables[`--font-size-${name}`] = (token as { fontSize: string }).fontSize;
@@ -91,21 +92,21 @@ export class ThemeRegistryManager {
     }
 
     // Shadow variables
-    for (const [name, token] of Object.entries(tokens.shadows || {})) {
+    for (const [name, token] of Object.entries((tokenSet.shadows || {}) as Record<string, unknown>)) {
       if (token && typeof token === 'object' && 'value' in token) {
         variables[`--shadow-${name}`] = (token as { value: string }).value;
       }
     }
 
     // Radius variables
-    for (const [name, token] of Object.entries(tokens.radius || {})) {
+    for (const [name, token] of Object.entries((tokenSet.radius || {}) as Record<string, unknown>)) {
       if (token && typeof token === 'object' && 'value' in token) {
         variables[`--radius-${name}`] = (token as { value: string }).value;
       }
     }
 
     // Animation variables
-    for (const [name, token] of Object.entries(tokens.animations || {})) {
+    for (const [name, token] of Object.entries((tokenSet.animations || {}) as Record<string, unknown>)) {
       if (token && typeof token === 'object') {
         if ('duration' in token) {
           variables[`--animation-duration-${name}`] = (token as { duration: string }).duration;

@@ -1,9 +1,10 @@
+/* eslint-disable react-refresh/only-export-components */
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, userEvent, within, waitFor } from '@storybook/test';
 import { Button } from '../atoms';
 import { Input } from '../atoms';
 import { Label } from '../atoms';
-import { Modal } from '../organisms/Modal/Modal';
+import Modal from '../organisms/Modal/Modal';
 import { useState } from 'react';
 
 const meta: Meta = {
@@ -105,31 +106,38 @@ export const KeyboardNavigation: Story = {
 };
 
 /**
+ * Focus Management Example Component
+ * 
+ * Demonstrates proper focus trapping in modals.
+ */
+function FocusManagementExample() {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  return (
+    <div style={{ padding: '1rem' }}>
+      <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="Focus Management Test"
+      >
+        <p>This modal traps focus. Press Tab to cycle through elements, Escape to close.</p>
+        <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+          <Button onClick={() => setIsOpen(false)}>Cancel</Button>
+          <Button variant="primary" onClick={() => setIsOpen(false)}>Confirm</Button>
+        </div>
+      </Modal>
+    </div>
+  );
+}
+
+/**
  * Focus Management Example
  * 
  * Demonstrates proper focus trapping in modals.
  */
 export const FocusManagement: Story = {
-  render: () => {
-    const [isOpen, setIsOpen] = useState(false);
-    
-    return (
-      <div style={{ padding: '1rem' }}>
-        <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
-        <Modal
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          title="Focus Management Test"
-        >
-          <p>This modal traps focus. Press Tab to cycle through elements, Escape to close.</p>
-          <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-            <Button onClick={() => setIsOpen(false)}>Cancel</Button>
-            <Button variant="primary" onClick={() => setIsOpen(false)}>Confirm</Button>
-          </div>
-        </Modal>
-      </div>
-    );
-  },
+  render: () => <FocusManagementExample />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     

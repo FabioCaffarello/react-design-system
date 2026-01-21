@@ -114,7 +114,7 @@ describe('EdgeEditor', () => {
     });
   });
   
-  it('reverses edge', () => {
+  it('reverses edge', async () => {
     render(
       <EdgeEditor
         edge={mockEdge}
@@ -127,7 +127,9 @@ describe('EdgeEditor', () => {
     const reverseButton = screen.getByText(/Reverse Edge/i);
     fireEvent.click(reverseButton);
     
-    expect(mockOnUpdate).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(mockOnUpdate).toHaveBeenCalled();
+    });
   });
   
   it('deletes edge with confirmation', () => {

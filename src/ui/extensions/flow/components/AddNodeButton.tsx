@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Add Node Button Component
  * 

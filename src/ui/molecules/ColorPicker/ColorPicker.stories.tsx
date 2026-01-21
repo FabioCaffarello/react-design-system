@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
+import { expect, within, waitFor } from '@storybook/test';
 import { useState } from 'react';
 import ColorPicker from './ColorPicker';
 
@@ -238,10 +238,14 @@ export const WithEvents: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    // Wait for color picker to be interactive
-    await waitFor(() => {
-      expect(canvas.getByText('Selected:')).toBeInTheDocument();
-    });
+    // Wait for color picker to be interactive - use a more flexible text matcher
+    await waitFor(async () => {
+      // Get all elements that contain "Selected:" and verify at least one exists
+      const selectedElements = canvas.getAllByText((content, element) => {
+        return element?.textContent?.includes('Selected:') || false;
+      });
+      expect(selectedElements.length).toBeGreaterThan(0);
+    }, { timeout: 3000 });
   },
   parameters: {
     docs: {

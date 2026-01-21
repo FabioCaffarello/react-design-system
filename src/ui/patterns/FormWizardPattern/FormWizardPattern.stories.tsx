@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
+import { expect, within, waitFor } from '@storybook/test';
 import { useState } from 'react';
 import { FormWizardPattern } from './FormWizardPattern';
-import { Input, Checkbox, Select } from '../../atoms';
+import { Input, Checkbox } from '../../atoms';
 import type { FormWizardStep } from './FormWizardPattern';
 
 const meta: Meta<typeof FormWizardPattern> = {
@@ -89,7 +89,7 @@ export default meta;
 type Story = StoryObj<typeof FormWizardPattern>;
 
 // Example steps
-const createBasicSteps = (): FormWizardStep[] => {
+const _createBasicSteps = (): FormWizardStep[] => {
   const [personalInfo, setPersonalInfo] = useState({
     firstName: '',
     lastName: '',
@@ -101,7 +101,7 @@ const createBasicSteps = (): FormWizardStep[] => {
     notifications: false,
   });
 
-  const [review, setReview] = useState({});
+  const [_review, _setReview] = useState({});
 
   return [
     {
@@ -336,7 +336,7 @@ export const WithEvents: Story = {
     const handleComplete = fn((data: Record<string, unknown>) => {
       console.log('Wizard completed!', data);
     });
-    const handleStepChange = fn((stepIndex: number) => {
+    const _handleStepChange = fn((stepIndex: number) => {
       console.log('Step changed:', stepIndex);
     });
 
@@ -392,9 +392,14 @@ export const WithEvents: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    // Wait for the wizard to render - check for any visible content
     await waitFor(() => {
-      expect(canvas.getByText(/personal information/i)).toBeInTheDocument();
-    });
+      // Check for form fields or step content
+      const firstNameInput = canvas.queryByLabelText(/first name/i);
+      const lastNameInput = canvas.queryByLabelText(/last name/i);
+      // At least one input should be present to confirm wizard is rendered
+      expect(firstNameInput || lastNameInput).toBeInTheDocument();
+    }, { timeout: 5000 });
   },
   parameters: {
     docs: {

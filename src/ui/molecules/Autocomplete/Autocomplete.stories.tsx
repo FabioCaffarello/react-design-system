@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import { expect, userEvent, within, waitFor } from '@storybook/test';
 import Autocomplete from './Autocomplete';
-import { User, Settings, Mail, Search } from 'lucide-react';
+import { Mail, User, Settings } from 'lucide-react';
 
 const meta: Meta<typeof Autocomplete> = {
   title: 'Molecules/Autocomplete',
@@ -431,7 +431,7 @@ export const WithEvents: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = canvas.getByPlaceholderText('Search fruits...');
+    const input = await canvas.findByPlaceholderText('Search fruits...');
     
     // Type in the input
     await userEvent.type(input, 'app', { delay: 100 });
@@ -440,10 +440,13 @@ export const WithEvents: Story = {
     });
     
     // Wait for dropdown to appear and select option
-    await waitFor(async () => {
-      const option = canvas.getByText('Apple');
-      await userEvent.click(option);
-    });
+    // Autocomplete list renders in a portal (document.body), so search there
+    await waitFor(() => {
+      const option = within(document.body).getByText('Apple');
+      expect(option).toBeInTheDocument();
+    }, { timeout: 3000 });
+    const option = within(document.body).getByText('Apple');
+    await userEvent.click(option);
   },
   parameters: {
     docs: {

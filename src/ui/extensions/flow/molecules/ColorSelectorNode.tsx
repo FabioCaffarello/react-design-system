@@ -5,7 +5,6 @@ import { Position, type NodeProps, type Connection, type Edge } from '@xyflow/re
 import { FlowNodeWrapper } from '../atoms/FlowNodeWrapper';
 import { FlowHandle } from '../atoms/FlowHandle';
 import type { FlowNodeData } from '../organisms/FlowTypes';
-import { Input } from '../../../atoms';
 
 /**
  * ColorSelectorNode Component
@@ -45,8 +44,8 @@ const sourceHandleStyleB: React.CSSProperties = {
   top: 'auto',
 };
 
-const onConnect = (params: Connection | Edge) => {
-  console.log('handle onConnect', params);
+const onConnect = (_params: Connection | Edge) => {
+  // Connection handler - can be extended with actual logic
 };
 
 export const ColorSelectorNode = React.memo(({
@@ -91,8 +90,8 @@ export const ColorSelectorNode = React.memo(({
         id="a"
         style={sourceHandleStyleA}
         isConnectable={isConnectable}
-        onMouseDown={(e) => {
-          console.log('You trigger mousedown event', e);
+        onMouseDown={(_e) => {
+          // Mouse down handler - can be extended with actual logic
         }}
       />
       <FlowHandle

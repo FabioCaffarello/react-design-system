@@ -12,7 +12,7 @@
  * Usage: npm run generate-component-registry
  */
 
-import { readFileSync, existsSync, readdirSync, writeFileSync, statSync } from 'fs';
+import { readFileSync, existsSync, readdirSync, writeFileSync } from 'fs';
 import { join, dirname, basename } from 'path';
 
 interface ComponentMetadata {
@@ -255,7 +255,7 @@ function generateRegistry(components: ComponentMetadata[]): string {
           dependenciesCount: comp.dependencies.length,
         };
         return acc;
-      }, {} as Record<string, any>),
+      }, {} as Record<string, unknown>),
       fullMetadata: components,
     },
     null,

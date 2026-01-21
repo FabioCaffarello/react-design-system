@@ -6,7 +6,7 @@
  */
 
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import React from 'react';
@@ -21,19 +21,8 @@ import Textarea from '../Textarea/Textarea';
 import Switch from '../Switch/Switch';
 import Chip from '../Chip/Chip';
 import Badge from '../Badge/Badge';
-import Text from '../Text/Text';
-import Label from '../Label/Label';
-import ErrorMessage from '../ErrorMessage/ErrorMessage';
-import Info from '../Info/Info';
 import Spinner from '../Spinner/Spinner';
 import Progress from '../Progress/Progress';
-import Skeleton from '../Skeleton/Skeleton';
-import Tooltip from '../Tooltip/Tooltip';
-import Separator from '../Separator/Separator';
-import Slider from '../Slider/Slider';
-import Collapsible from '../Collapsible/Collapsible';
-import Avatar from '../Avatar/Avatar';
-import { AvatarGroup } from '../Avatar/AvatarGroup';
 
 describe('Atoms Regression Tests', () => {
   describe('Form Inputs - Controlled/Uncontrolled', () => {
@@ -52,8 +41,12 @@ describe('Atoms Regression Tests', () => {
       render(<ControlledCheckbox />);
       const checkbox = screen.getByLabelText('Test') as HTMLInputElement;
       expect(checkbox.checked).toBe(false);
-      await userEvent.click(checkbox);
-      await new Promise(resolve => setTimeout(resolve, 0));
+      await act(async () => {
+        await userEvent.click(checkbox);
+      });
+      await act(async () => {
+        await new Promise(resolve => setTimeout(resolve, 0));
+      });
       expect(checkbox.checked).toBe(true);
     });
 
@@ -82,8 +75,12 @@ describe('Atoms Regression Tests', () => {
 
       render(<ControlledRadio />);
       const radio1 = screen.getByLabelText('Option 1') as HTMLInputElement;
-      await userEvent.click(radio1);
-      await new Promise(resolve => setTimeout(resolve, 0));
+      await act(async () => {
+        await userEvent.click(radio1);
+      });
+      await act(async () => {
+        await new Promise(resolve => setTimeout(resolve, 0));
+      });
       expect(radio1.checked).toBe(true);
     });
 
@@ -101,7 +98,9 @@ describe('Atoms Regression Tests', () => {
 
       render(<ControlledInput />);
       const input = screen.getByPlaceholderText('Type here') as HTMLInputElement;
-      await userEvent.type(input, 'test');
+      await act(async () => {
+        await userEvent.type(input, 'test');
+      });
       expect(input.value).toBe('test');
     });
   });
@@ -141,7 +140,9 @@ describe('Atoms Regression Tests', () => {
       render(<Checkbox label="Test" onChange={handleChange} />);
       const checkbox = screen.getByLabelText('Test');
       checkbox.focus();
-      await userEvent.keyboard(' ');
+      await act(async () => {
+        await userEvent.keyboard(' ');
+      });
       expect(handleChange).toHaveBeenCalled();
     });
 
@@ -150,7 +151,9 @@ describe('Atoms Regression Tests', () => {
       render(<Button onClick={handleClick}>Click me</Button>);
       const button = screen.getByRole('button');
       button.focus();
-      await userEvent.keyboard('{Enter}');
+      await act(async () => {
+        await userEvent.keyboard('{Enter}');
+      });
       expect(handleClick).toHaveBeenCalled();
     });
   });

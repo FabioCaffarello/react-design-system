@@ -210,7 +210,7 @@ const Input = memo(forwardRef<HTMLInputElement, InputProps>(function Input({
             'border-0',
             'focus:bg-white',
             'focus:ring-2',
-            getFocusRingColor()
+            getFocusRingColor
           ),
         },
         size: {
@@ -259,6 +259,7 @@ const Input = memo(forwardRef<HTMLInputElement, InputProps>(function Input({
     leftIcon && (size === 'sm' ? 'pl-9' : size === 'lg' ? 'pl-12' : 'pl-10'),
     (rightIcon || shouldShowClear || isPassword) && (size === 'sm' ? 'pr-9' : size === 'lg' ? 'pr-12' : 'pr-10'),
     className
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   ), [variant, size, state, leftIcon, rightIcon, shouldShowClear, isPassword, className]);
 
   // Memoize label classes
@@ -287,12 +288,26 @@ const Input = memo(forwardRef<HTMLInputElement, InputProps>(function Input({
       onClear();
     } else if (onChange) {
       // Create synthetic event to clear input
-      const syntheticEvent = {
-        ...e,
-        target: { ...e.target, value: '' },
-        currentTarget: { ...e.currentTarget, value: '' },
-      } as React.ChangeEvent<HTMLInputElement>;
-      onChange(syntheticEvent);
+      const inputElement = e.currentTarget.closest('.relative')?.querySelector('input') as HTMLInputElement;
+      if (inputElement) {
+        const syntheticEvent = {
+          target: inputElement,
+          currentTarget: inputElement,
+          bubbles: true,
+          cancelable: true,
+          defaultPrevented: false,
+          eventPhase: 2,
+          isTrusted: false,
+          nativeEvent: new Event('change'),
+          preventDefault: () => {},
+          stopPropagation: () => {},
+          persist: () => {},
+          timeStamp: Date.now(),
+        } as unknown as React.ChangeEvent<HTMLInputElement>;
+        Object.defineProperty(syntheticEvent.target, 'value', { value: '', writable: true });
+        Object.defineProperty(syntheticEvent.currentTarget, 'value', { value: '', writable: true });
+        onChange(syntheticEvent);
+      }
     }
   }, [onClear, onChange]);
 
@@ -330,6 +345,7 @@ const Input = memo(forwardRef<HTMLInputElement, InputProps>(function Input({
           aria-invalid={error}
           aria-required={props.required}
           aria-describedby={errorId || helperId}
+          suppressHydrationWarning
           {...props}
         />
         <div className="absolute right-3 top-0 bottom-0 flex items-center gap-1">

@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run tests before push
+echo "Running unit tests..."
+npm run test:no-browser
+
+# Run full lint check
+echo "Running lint check..."
+npm run lint

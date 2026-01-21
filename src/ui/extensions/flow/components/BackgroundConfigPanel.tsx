@@ -7,15 +7,14 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import { Card } from '../../../molecules';
-import { Label, Input, Select, Button, Checkbox } from '../../../atoms';
+import { Label, Input, Select, Checkbox } from '../../../atoms';
 import { FlowBackground } from '../organisms/FlowBackground';
 import { FlowProvider } from '../organisms/FlowProvider';
 import { FlowCanvas } from '../organisms/FlowCanvas';
 import type { BackgroundConfig } from '../types/playgroundTypes';
 import { 
   backgroundPresets, 
-  type BackgroundPreset,
-  getBackgroundPreset 
+  type BackgroundPreset
 } from '../utils/backgroundPresets';
 import { useFlowStylesOptional } from '../hooks/useFlowStyles';
 import { 
@@ -123,11 +122,11 @@ function PresetCard({
 export function BackgroundConfigPanel({
   config,
   onChange,
-  theme = 'light',
+  theme: _theme = 'light',
 }: BackgroundConfigPanelProps) {
   const flowStyles = useFlowStylesOptional();
   const [selectedPresetId, setSelectedPresetId] = useState<string | null>(null);
-  const [useCustomColors, setUseCustomColors] = useState(false);
+  const [_useCustomColors, setUseCustomColors] = useState(false);
 
   // Check if current config matches a preset
   const currentPresetId = useMemo(() => {

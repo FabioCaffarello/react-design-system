@@ -1,5 +1,6 @@
 'use client';
 
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useMemo, type ReactNode } from 'react';
 import { SPACING_TOKENS } from '../tokens/spacing';
 import { TYPOGRAPHY_TOKENS } from '../tokens/typography';
@@ -7,8 +8,6 @@ import { BREAKPOINT_TOKENS } from '../tokens/breakpoints';
 import { ANIMATION_TOKENS } from '../tokens/animations';
 import type { BreakpointName, BreakpointToken } from '../tokens/breakpoints';
 import type { SpacingToken } from '../tokens/spacing';
-import type { TypographyToken } from '../tokens/typography';
-import type { AnimationToken } from '../tokens/animations';
 
 /**
  * Design System Configuration
@@ -151,7 +150,7 @@ export interface ConfigProviderProps {
 export function ConfigProvider({
   children,
   config: customConfig,
-  strategy = 'default',
+  strategy: _strategy = 'default',
 }: ConfigProviderProps) {
   // Merge custom config with defaults
   const config = useMemo<DesignSystemConfig>(() => {
@@ -219,7 +218,7 @@ export function ConfigProvider({
   );
 
   const updateConfig = useMemo(
-    () => (updates: Partial<DesignSystemConfig>) => {
+    () => (_updates: Partial<DesignSystemConfig>) => {
       // This is a placeholder - in a real implementation, you'd use state
       // For now, config is immutable. Future enhancement could add state management.
       console.warn('ConfigProvider: updateConfig called but config is immutable. Consider using state management for dynamic updates.');

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
+import { expect, within, waitFor } from '@storybook/test';
 import { PlaygroundLayout } from '../components/PlaygroundLayout';
 import { treeTemplate } from '../utils/playgroundTemplates';
 import type { Node, Edge } from '@xyflow/react';
@@ -72,7 +72,7 @@ export const Playground: Story = {
     );
   },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+    const _canvas = within(canvasElement);
     // Wait for playground to be rendered
     await waitFor(() => {
       expect(canvasElement).toBeInTheDocument();

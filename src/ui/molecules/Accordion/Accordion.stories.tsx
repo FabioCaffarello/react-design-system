@@ -20,7 +20,7 @@ An accordion component for displaying collapsible content sections.
 
 | Event | Description | Parameters | When Fired |
 |-------|-------------|------------|------------|
-| \`onValueChange\` | Valor do accordion mudou | \`(value: string \| string[]) => void\` | Quando um item é expandido/colapsado |
+| \`onValueChange\` | Valor do accordion mudou | \`(value: string | string[]) => void\` | Quando um item é expandido/colapsado |
 
 ### States
 

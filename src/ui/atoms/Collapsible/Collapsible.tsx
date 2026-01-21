@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type HTMLAttributes, type ReactNode, type KeyboardEvent } from 'react';
 import { useCollapsible, type UseCollapsibleOptions } from '../../hooks/useCollapsible';
-import { getColorClass, getFocusColorClass, getFocusRingClass } from '../../tokens/colors';
+import { getFocusRingClass } from '../../tokens/colors';
 import { getRadiusClass } from '../../tokens/radius';
 import { cn } from '../../utils';
 
