@@ -51,6 +51,9 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install
 
+      - name: Clear Storybook cache
+        run: rm -rf node_modules/.cache/storybook
+
       - name: Run ESLint
         run: npm run lint
 

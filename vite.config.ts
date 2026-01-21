@@ -181,27 +181,26 @@ export default defineConfig(() => {
                   ],
                 },
               }),
-              instances: [
-                {
-                  browser: "chromium",
-                },
-              ],
+              instances: process.env.CI
+                ? 1
+                : [
+                    {
+                      browser: "chromium",
+                    },
+                  ],
               ui: false,
             },
             setupFiles: [".storybook/vitest.setup.ts"],
             testTimeout: process.env.CI ? 120000 : 60000,
             hookTimeout: process.env.CI ? 120000 : 60000,
             teardownTimeout: process.env.CI ? 120000 : 60000,
-            isolate: true,
+            isolate: !process.env.CI,
             retry: process.env.CI ? 2 : 0,
             bail: 0,
             onConsoleLog: () => false,
-            pool: "forks",
-            poolOptions: {
-              forks: {
-                singleFork: true,
-              },
-            },
+            // Browser mode doesn't work well with forks pool in CI
+            // Use default pool for browser mode
+            maxConcurrency: process.env.CI ? 1 : undefined,
           },
         },
       ],
