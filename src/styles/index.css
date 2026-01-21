@@ -20,11 +20,11 @@
  * Import Tailwind and configure source scanning
  * ============================================ */
 
-@import "tailwindcss";
-
 /* Scan all UI source files for Tailwind classes */
 @source "../../src/ui/**/*.{ts,tsx}";
 @source "../../src/ui/**/*.{js,jsx}";
+
+@import "tailwindcss";
 
 /* ============================================
  * PRIMITIVE TOKENS
