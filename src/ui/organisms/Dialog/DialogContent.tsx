@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, type HTMLAttributes, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { useDialogContext } from './DialogContext';
+import { useDialogContext } from '../../providers/DialogContext';
 import { getRadiusClass, getShadowClass } from '../../tokens';
 
 export interface DialogContentProps extends Omit<HTMLAttributes<HTMLDivElement>, 'role'> {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useId, type HTMLAttributes } from 'react';
-import { useDialogContext } from './DialogContext';
+import { useDialogContext } from '../../providers/DialogContext';
 import { getTypographyClasses } from '../../tokens';
 
 export type DialogDescriptionProps = HTMLAttributes<HTMLParagraphElement>;

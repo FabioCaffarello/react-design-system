@@ -37,6 +37,7 @@ export default defineConfig(() => {
       lib: {
         entry: {
           index: "src/ui/index.ts",
+          providers: "src/ui/providers/index.ts", // Separate entry point for providers
           atoms: "src/ui/atoms/index.ts",
           molecules: "src/ui/molecules/index.ts",
           organisms: "src/ui/organisms/index.ts",
@@ -78,8 +79,22 @@ export default defineConfig(() => {
             "react-dom": "ReactDOM",
           },
           // Code splitting configuration
-          // Note: We don't use manualChunks for the main index entry to ensure all exports are preserved
+          // CRITICAL: All providers MUST be in the same chunk to preserve initialization order
+          // This is essential for Next.js SSR/prerendering compatibility
           manualChunks: (id) => {
+            // CRITICAL: Force all providers into the same chunk (main bundle)
+            // This prevents Next.js from code-splitting providers, which breaks initialization order
+            // Include all provider-related files to ensure they're in the same module boundary
+            if (id.includes("/providers/") || 
+                id.includes("ThemeProvider") ||
+                id.includes("ConfigProvider") ||
+                id.includes("AppProvider") ||
+                id.includes("ToastProvider") ||
+                id.includes("DialogProvider") ||
+                id.includes("ToastContext") ||
+                id.includes("DialogContext")) {
+              return null; // Keep in main bundle - CRITICAL for initialization order
+            }
             // Only split sub-entry points, not the main index
             if (id.includes("/atoms/") && !id.includes("src/ui/index")) {
               return "atoms";
@@ -87,13 +102,19 @@ export default defineConfig(() => {
             if (id.includes("/molecules/") && !id.includes("src/ui/index")) {
               return "molecules";
             }
-            if (id.includes("/organisms/") && !id.includes("src/ui/index")) {
+            // Split other organisms, but not providers
+            if (id.includes("/organisms/") && 
+                !id.includes("src/ui/index") &&
+                !id.includes("/Toast/ToastProvider") &&
+                !id.includes("/Dialog/DialogProvider") &&
+                !id.includes("/Toast/ToastContext") &&
+                !id.includes("/Dialog/DialogContext")) {
               return "organisms";
             }
             if (id.includes("/tokens/") && !id.includes("src/ui/index")) {
               return "tokens";
             }
-            // Keep providers and all other exports in main bundle
+            // Keep all other exports in main bundle
             return null;
           },
           // Source maps for production
@@ -107,17 +128,33 @@ export default defineConfig(() => {
           },
         },
         // Prevent aggressive tree-shaking of exports
-        // This is critical to ensure all exports from index.ts are preserved
+        // CRITICAL: Preserve all side effects for providers to maintain initialization order
         treeshake: {
           moduleSideEffects: (id) => {
             // Preserve all side effects from our source files
             if (id.includes("src/ui/")) {
               return true;
             }
+            // CRITICAL: Preserve side effects for ALL provider-related files
+            // This prevents tree-shaking from breaking the initialization chain
+            if (id.includes("providers") ||
+                id.includes("ThemeProvider") ||
+                id.includes("ConfigProvider") ||
+                id.includes("AppProvider") ||
+                id.includes("ToastProvider") ||
+                id.includes("DialogProvider") ||
+                id.includes("ToastContext") ||
+                id.includes("DialogContext")) {
+              return true;
+            }
             return false;
           },
+          // CRITICAL: Preserve property reads to ensure provider references are not removed
           propertyReadSideEffects: true,
+          // CRITICAL: Disable try-catch deoptimization to preserve initialization order
           tryCatchDeoptimization: false,
+          // CRITICAL: Preserve all exports from provider modules
+          preserveEntrySignatures: 'strict',
         },
       },
       emptyOutDir: false,

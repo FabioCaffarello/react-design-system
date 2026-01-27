@@ -1,7 +1,7 @@
 'use client';
 
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useMemo, type ReactNode } from 'react';
+import { createContext, useContext, useMemo, useEffect, type ReactNode } from 'react';
 import { SPACING_TOKENS } from '../tokens/spacing';
 import { TYPOGRAPHY_TOKENS } from '../tokens/typography';
 import { BREAKPOINT_TOKENS } from '../tokens/breakpoints';
@@ -178,20 +178,28 @@ export function ConfigProvider({
     return baseConfig;
   }, [customConfig]);
 
-  // Apply reduced motion if enabled
-  useMemo(() => {
-    if (config.features.reducedMotion && typeof document !== 'undefined') {
+  // Apply reduced motion if enabled (SSR-safe)
+  useEffect(() => {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    if (config.features.reducedMotion) {
       document.documentElement.style.setProperty('--motion-reduce', '1');
-    } else if (typeof document !== 'undefined') {
+    } else {
       document.documentElement.style.removeProperty('--motion-reduce');
     }
   }, [config.features.reducedMotion]);
 
-  // Apply high contrast if enabled
-  useMemo(() => {
-    if (config.features.highContrast && typeof document !== 'undefined') {
+  // Apply high contrast if enabled (SSR-safe)
+  useEffect(() => {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    if (config.features.highContrast) {
       document.documentElement.classList.add('high-contrast');
-    } else if (typeof document !== 'undefined') {
+    } else {
       document.documentElement.classList.remove('high-contrast');
     }
   }, [config.features.highContrast]);

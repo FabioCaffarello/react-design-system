@@ -1,7 +1,7 @@
 'use client';
 
 import { useId, type ReactNode } from 'react';
-import { DialogProvider } from './DialogProvider';
+import { DialogProvider } from '../../providers/DialogProvider';
 import { DialogTrigger } from './DialogTrigger';
 import { DialogContent } from './DialogContent';
 import { DialogHeader } from './DialogHeader';

@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback } from 'react';
-import { useToastContext, type ToastVariant } from './ToastContext';
+import { useToastContext, type ToastVariant } from '../../providers/ToastContext';
 
 export interface ToastOptions {
   title: string;

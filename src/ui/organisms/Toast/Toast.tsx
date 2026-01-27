@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type HTMLAttributes } from 'react';
 import { X, CheckCircle2, AlertCircle, AlertTriangle, Info } from 'lucide-react';
-import { type Toast as ToastType } from './ToastContext';
+import { type Toast as ToastType } from '../../providers/ToastContext';
 import { getColorClass, getRadiusClass, getShadowClass } from '../../tokens';
 import Button from '../../atoms/Button/Button';
 
