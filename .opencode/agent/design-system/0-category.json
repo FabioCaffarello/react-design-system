@@ -1,0 +1,11 @@
+{
+  "name": "Design System",
+  "description": "Specialized agents for React design system development following Atomic Design principles",
+  "agents": [
+    {
+      "id": "design-system-architect",
+      "name": "DesignSystemArchitect",
+      "description": "Orchestrator for design system component development"
+    }
+  ]
+}

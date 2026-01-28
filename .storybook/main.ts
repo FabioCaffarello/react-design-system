@@ -24,57 +24,69 @@ const config: StorybookConfig = {
     // Ensure proper module resolution
     config.resolve = config.resolve || {};
     config.resolve.dedupe = config.resolve.dedupe || [];
-    config.resolve.dedupe.push('react', 'react-dom');
-    
+    config.resolve.dedupe.push("react", "react-dom");
+
     // Optimize dependencies
     config.optimizeDeps = config.optimizeDeps || {};
     config.optimizeDeps.include = config.optimizeDeps.include || [];
-    config.optimizeDeps.include.push(
-      'react',
-      'react-dom',
-      'lucide-react'
-    );
-    
+    config.optimizeDeps.include.push("react", "react-dom", "lucide-react");
+
     // Improve module resolution for complex imports
     config.resolve.alias = config.resolve.alias || {};
-    
+
+    // CRITICAL: Ensure PostCSS is configured for Tailwind CSS v4
+    // Explicitly configure PostCSS to use @tailwindcss/postcss
+    config.css = config.css || {};
+    if (!config.css.postcss) {
+      // Use the same configuration as postcss.config.mjs
+      const tailwindcssPlugin = (await import("@tailwindcss/postcss")).default;
+      config.css.postcss = {
+        plugins: [tailwindcssPlugin()],
+      };
+    }
+
     // Ensure proper handling of client directives (Next.js compatibility)
     // Vite will ignore 'use client' directives, but we need to ensure they don't break module resolution
     config.esbuild = config.esbuild || {};
-    config.esbuild.jsx = 'automatic';
-    config.esbuild.legalComments = 'none';
-    
+    config.esbuild.jsx = "automatic";
+    config.esbuild.legalComments = "none";
+
     // Better handling of dynamic imports
     config.build = config.build || {};
     config.build.rollupOptions = config.build.rollupOptions || {};
     config.build.rollupOptions.output = config.build.rollupOptions.output || {};
-    
+
     // Improve chunk splitting for better dynamic import handling
     if (Array.isArray(config.build.rollupOptions.output)) {
-      config.build.rollupOptions.output = config.build.rollupOptions.output.map((output) => ({
-        ...output,
-        manualChunks: undefined, // Let Vite handle chunking automatically
-      }));
+      config.build.rollupOptions.output = config.build.rollupOptions.output.map(
+        (output) => ({
+          ...output,
+          manualChunks: undefined, // Let Vite handle chunking automatically
+        }),
+      );
     } else if (config.build.rollupOptions.output) {
       config.build.rollupOptions.output.manualChunks = undefined;
     }
-    
+
     // Add plugin to handle 'use client' directives
     const plugins = config.plugins || [];
     const existingPluginIndex = plugins.findIndex(
-      (p: unknown): p is { name: string } => 
-        typeof p === 'object' && p !== null && 'name' in p && (p as { name: unknown }).name === 'vite-plugin-client-directive'
+      (p: unknown): p is { name: string } =>
+        typeof p === "object" &&
+        p !== null &&
+        "name" in p &&
+        (p as { name: unknown }).name === "vite-plugin-client-directive",
     );
-    
+
     // If there's no existing plugin, add a simple transform to strip 'use client'
     if (existingPluginIndex === -1) {
       plugins.push({
-        name: 'strip-client-directive',
+        name: "strip-client-directive",
         transform(code: string, id: string) {
           // Only process .tsx and .ts files
           if (id.match(/\.(tsx?|jsx?)$/)) {
             // Remove 'use client' directive if present
-            const cleanedCode = code.replace(/^['"]use client['"];?\s*/gm, '');
+            const cleanedCode = code.replace(/^['"]use client['"];?\s*/gm, "");
             if (cleanedCode !== code) {
               return {
                 code: cleanedCode,
@@ -87,15 +99,11 @@ const config: StorybookConfig = {
       });
       config.plugins = plugins;
     }
-    
+
     return config;
   },
   core: {
     disableTelemetry: true,
   },
-  features: {
-    buildStoriesJson: true,
-  },
 };
 export default config;
-

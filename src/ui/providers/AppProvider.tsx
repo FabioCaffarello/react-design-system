@@ -1,42 +1,38 @@
-'use client';
+"use client";
 
 /* eslint-disable react-refresh/only-export-components */
-import { type ReactNode, useMemo } from 'react';
+import { type ReactNode, useMemo } from "react";
 
 /**
  * STRUCTURAL SOLUTION: Module Boundary Isolation with Explicit Initialization
- * 
+ *
  * This solution ensures providers are initialized in the correct order by:
  * 1. Using a single atomic function that references all providers
  * 2. Ensuring all providers are in the same module boundary (no code splitting)
  * 3. Using explicit initialization order that cannot be broken by bundler
- * 
+ *
  * The key: All provider references are in a single function execution context,
  * creating a module boundary that the bundler cannot break.
  */
 
 /**
  * TURBOPACK COMPATIBILITY: Import all providers from a single bundle
- * 
+ *
  * By importing all providers from providers-bundle.ts, we ensure they're
  * all in the same module boundary. This prevents Turbopack from code-splitting
  * them incorrectly, which causes initialization order issues.
  */
 import {
   ProvidersBundle,
-  ThemeProvider,
-  ConfigProvider,
-  ToastProvider,
-  DialogProvider,
   type ThemeProviderProps,
   type ConfigProviderProps,
   type ToastProviderProps,
   type DialogProviderProps,
-} from './providers-bundle';
+} from "./providers-bundle";
 
 /**
  * Provider Initialization Guard
- * 
+ *
  * Use ProvidersBundle to ensure all providers are in the same module boundary.
  * This prevents Turbopack from code-splitting providers incorrectly.
  */
@@ -46,10 +42,10 @@ const PROVIDER_INITIALIZATION_GUARD = ProvidersBundle;
  * AppProvider Configuration
  */
 export interface AppProviderConfig {
-  theme?: Omit<ThemeProviderProps, 'children'>;
-  config?: Omit<ConfigProviderProps, 'children'>;
-  toast?: Omit<ToastProviderProps, 'children'>;
-  dialog?: Omit<DialogProviderProps, 'children'>;
+  theme?: Omit<ThemeProviderProps, "children">;
+  config?: Omit<ConfigProviderProps, "children">;
+  toast?: Omit<ToastProviderProps, "children">;
+  dialog?: Omit<DialogProviderProps, "children">;
   providers?: {
     theme?: boolean;
     config?: boolean;
@@ -65,14 +61,14 @@ export interface AppProviderProps {
 
 /**
  * Create provider stack with guaranteed initialization order
- * 
+ *
  * This function uses the PROVIDER_INITIALIZATION_GUARD to ensure
  * all providers are initialized in the correct order. The guard object
  * creates a module boundary that prevents code splitting.
  */
 function createProviderStack(
   children: ReactNode,
-  config: AppProviderConfig | undefined
+  config: AppProviderConfig | undefined,
 ): ReactNode {
   const {
     theme: themeConfig,
@@ -90,7 +86,7 @@ function createProviderStack(
   // CRITICAL: Use providers from the guard object
   // This ensures they're all in the same module boundary
   // The bundler cannot code-split or reorder code within this function
-  
+
   let content: ReactNode = children;
 
   // Step 1: DialogProvider (most specific, wraps content)
@@ -134,10 +130,10 @@ function createProviderStack(
 
 /**
  * AppProvider Component
- * 
+ *
  * Root provider that composes all global providers of the design system.
  * Uses module boundary isolation to ensure correct initialization order.
- * 
+ *
  * Provider Hierarchy:
  * ```
  * AppProvider (Root)
@@ -147,14 +143,14 @@ function createProviderStack(
  *       ├── ToastProvider
  *       └── DialogProvider
  * ```
- * 
+ *
  * @example
  * ```tsx
  * <AppProvider>
  *   <App />
  * </AppProvider>
  * ```
- * 
+ *
  * @example With custom configuration
  * ```tsx
  * <AppProvider config={{
@@ -171,7 +167,7 @@ export function AppProvider({ children, config }: AppProviderProps) {
   // This prevents React from re-evaluating and ensures stable reference
   const providerStack = useMemo(
     () => createProviderStack(children, config),
-    [children, config]
+    [children, config],
   );
 
   return <>{providerStack}</>;
@@ -179,7 +175,7 @@ export function AppProvider({ children, config }: AppProviderProps) {
 
 /**
  * Hook to access AppProvider context
- * 
+ *
  * This is a convenience hook that provides access to all provider contexts.
  * Individual hooks (useTheme, useConfig, etc.) should be used for specific contexts.
  */

@@ -42,13 +42,13 @@ Configure tokens e temas diretamente no Storybook:
 Gere stories automaticamente:
 
 ```typescript
-import { ComponentBuilder } from '@fabio.caffarello/react-design-system/builders';
+import { ComponentBuilder } from "@fabio.caffarello/react-design-system/builders";
 
 // No painel Component Builder, configure o componente
 const config = {
-  name: 'Button',
-  category: 'atom',
-  variants: ['primary', 'secondary'],
+  name: "Button",
+  category: "atom",
+  variants: ["primary", "secondary"],
 };
 
 // A story será gerada automaticamente
@@ -59,7 +59,7 @@ const config = {
 Embed playgrounds nas stories:
 
 ```tsx
-import { PlaygroundEmbed } from '@fabio.caffarello/react-design-system/playgrounds';
+import { PlaygroundEmbed } from "@fabio.caffarello/react-design-system/playgrounds";
 
 export const TypographyExample = {
   render: () => <PlaygroundEmbed type="Typography" />,
@@ -73,16 +73,16 @@ export const TypographyExample = {
 Use o template avançado para stories completas:
 
 ```typescript
-import { createAdvancedStories } from '.storybook/templates/AdvancedStoryTemplate';
+import { createAdvancedStories } from ".storybook/templates/AdvancedStoryTemplate";
 
 const { meta, stories } = createAdvancedStories({
-  title: 'UI/Atoms/Button',
+  title: "UI/Atoms/Button",
   component: Button,
-  description: 'Button component description',
+  description: "Button component description",
   componentConfig: {
-    name: 'Button',
-    category: 'atom',
-    variants: ['primary', 'secondary'],
+    name: "Button",
+    category: "atom",
+    variants: ["primary", "secondary"],
   },
   includeInteractionTests: true,
   includeAccessibilityTests: true,
@@ -106,20 +106,18 @@ npm run validate-stories-enhanced
 ```
 
 Valida stories com verificações avançadas:
+
 - Estrutura correta
 - Events e States documentados
 - Sintaxe válida
 - Tags e tipos corretos
 
-### Gerar Relatórios
+### Relatórios
 
-```bash
-# Coverage report
-npm run generate-coverage-report
+Os relatórios de coverage e performance são gerados automaticamente:
 
-# Performance analysis
-npm run analyze-performance
-```
+- **Coverage**: Use `npm run test:coverage` para gerar relatórios de cobertura
+- **Performance**: Métricas são coletadas automaticamente pelo addon Performance Monitor no Storybook
 
 ## Performance Monitoring
 
@@ -259,4 +257,4 @@ parameters: {
 
 - [Storybook Guide](./STORYBOOK_GUIDE.md)
 - [Storybook Addons](./STORYBOOK_ADDONS.md)
-- [Developer Journey](./DEVELOPER_JOURNEY.md)
+- [STORYBOOK_GUIDE.md](./STORYBOOK_GUIDE.md) - Guia completo do Storybook

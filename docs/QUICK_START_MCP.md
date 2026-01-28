@@ -17,6 +17,7 @@ npm run mcp:health-check
 ```
 
 Se tudo estiver OK, você verá:
+
 ```
 ✅ MCP Server is available
 📦 Available tools: X
@@ -42,6 +43,7 @@ Reinicie o Cursor/Claude Code.
 ### 3. Testar com AI Agent
 
 Agora você pode perguntar ao AI agent:
+
 - "List all components in Storybook"
 - "Get information about Button component"
 - "Generate documentation for all components"
@@ -143,7 +145,7 @@ Para acesso a best practices:
 - [MCP_STRATEGY.md](./MCP_STRATEGY.md) - Estratégia completa
 - [MCP_SETUP.md](./MCP_SETUP.md) - Setup detalhado
 - [MCP_AUTOMATIONS.md](./MCP_AUTOMATIONS.md) - Automações disponíveis
-- [FIGMA_MCP_INTEGRATION.md](./FIGMA_MCP_INTEGRATION.md) - Figma MCP
+- [MCP_AUTOMATIONS.md](./MCP_AUTOMATIONS.md) - Automações MCP (inclui Figma)
 - [DESIGN_SYSTEMS_MCP.md](./DESIGN_SYSTEMS_MCP.md) - Design Systems MCP
 - [MCP_EXTRACTOR.md](./MCP_EXTRACTOR.md) - MCP Extractor
 
