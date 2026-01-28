@@ -26,7 +26,6 @@
 - [**MCP_STRATEGY.md**](./MCP_STRATEGY.md) - Estratégia completa de MCPs
 - [**MCP_SETUP.md**](./MCP_SETUP.md) - Setup e configuração
 - [**MCP_AUTOMATIONS.md**](./MCP_AUTOMATIONS.md) - Automações disponíveis
-- [**FIGMA_MCP_INTEGRATION.md**](./FIGMA_MCP_INTEGRATION.md) - Integração Figma MCP
 - [**DESIGN_SYSTEMS_MCP.md**](./DESIGN_SYSTEMS_MCP.md) - Design Systems MCP
 - [**MCP_EXTRACTOR.md**](./MCP_EXTRACTOR.md) - MCP Design System Extractor
 
@@ -42,7 +41,6 @@
 
 ### Integração
 
-- [**FIGMA_INTEGRATION.md**](./FIGMA_INTEGRATION.md) - Integração com Figma
 - [**CDN_DISTRIBUTION.md**](./CDN_DISTRIBUTION.md) - Distribuição via CDN
 
 ### Acessibilidade
@@ -59,10 +57,6 @@
 - [**RELEASE_PROCESS.md**](./RELEASE_PROCESS.md) - Processo de release
 - [**CI_CD_PIPELINE.md**](./CI_CD_PIPELINE.md) - Pipeline CI/CD
 - [**MIGRATION_GUIDES.md**](./MIGRATION_GUIDES.md) - Guias de migração
-
-### Roadmap
-
-- [**ROADMAP.md**](./ROADMAP.md) - Roadmap público de evolução
 
 ## 🔧 Scripts Disponíveis
 
@@ -109,28 +103,29 @@ npm run test:visual              # Visual regression
 
 ### Migração
 
-```bash
-npm run migrate:tokens            # Migra tokens entre versões
-```
+A migração de tokens é gerenciada através da API de versioning em `src/ui/tokens/versioning.ts`.
 
 ## 📚 Por Tópico
 
 ### Para Começar
+
 1. [QUICK_START_MCP.md](./QUICK_START_MCP.md)
 2. [STORYBOOK_GUIDE.md](./STORYBOOK_GUIDE.md)
 3. [ARCHITECTURE.md](./ARCHITECTURE.md)
 
 ### Para Desenvolvedores
+
 1. [ADVANCED_COMPOSITION.md](./ADVANCED_COMPOSITION.md)
 2. [TESTING_STRATEGY.md](./TESTING_STRATEGY.md)
 3. [PERFORMANCE_GUIDE.md](./PERFORMANCE_GUIDE.md)
 
 ### Para Designers
-1. [FIGMA_INTEGRATION.md](./FIGMA_INTEGRATION.md)
-2. [FIGMA_MCP_INTEGRATION.md](./FIGMA_MCP_INTEGRATION.md)
-3. [TOKENS_VERSIONING.md](./TOKENS_VERSIONING.md)
+
+1. [TOKENS_VERSIONING.md](./TOKENS_VERSIONING.md)
+2. [CATEGORIZATION_GUIDE.md](./CATEGORIZATION_GUIDE.md)
 
 ### Para Automação
+
 1. [MCP_STRATEGY.md](./MCP_STRATEGY.md)
 2. [MCP_AUTOMATIONS.md](./MCP_AUTOMATIONS.md)
 3. [MCP_SETUP.md](./MCP_SETUP.md)
@@ -147,7 +142,7 @@ npm run migrate:tokens            # Migra tokens entre versões
 
 **...otimizar performance**: [PERFORMANCE_GUIDE.md](./PERFORMANCE_GUIDE.md)
 
-**...integrar Figma**: [FIGMA_INTEGRATION.md](./FIGMA_INTEGRATION.md)
+**...integrar Figma**: [MCP_AUTOMATIONS.md](./MCP_AUTOMATIONS.md) (via MCP)
 
 **...migrar tokens**: [TOKENS_VERSIONING.md](./TOKENS_VERSIONING.md)
 
@@ -157,21 +152,18 @@ npm run migrate:tokens            # Migra tokens entre versões
 
 **...automatizar tarefas**: [MCP_AUTOMATIONS.md](./MCP_AUTOMATIONS.md)
 
-**...ver roadmap**: [ROADMAP.md](./ROADMAP.md)
-
 ## 📊 Estatísticas
 
-- **26 documentos** de documentação
+- **Documentação completa** de todos os aspectos do design system
 - **9 scripts** de automação MCP
 - **8 scripts** de geração/validação
-- **3 arquivos** de teste E2E
-- **100% de cobertura** dos tópicos do plano
+- **Testes E2E** configurados com Playwright
 
 ## 🆘 Precisa de Ajuda?
 
 1. Consulte o documento relevante acima
 2. Verifique [Troubleshooting](./STORYBOOK_ADDONS.md#troubleshooting) nos guias
-3. Veja [IMPLEMENTATION_COMPLETE.md](./IMPLEMENTATION_COMPLETE.md) para visão geral
+3. Veja [ARCHITECTURE.md](./ARCHITECTURE.md) para visão geral da arquitetura
 
 ## 🔗 Links Externos
 

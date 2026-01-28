@@ -2,7 +2,7 @@
 
 import { cloneElement, isValidElement, type ReactElement } from 'react';
 import { X } from 'lucide-react';
-import { useDialogContext } from './DialogContext';
+import { useDialogContext } from '../../providers/DialogContext';
 import Button from '../../atoms/Button/Button';
 
 export interface DialogCloseProps {

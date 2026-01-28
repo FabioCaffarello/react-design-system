@@ -17,6 +17,7 @@ O Storybook do React Design System utiliza vários addons para melhorar a experi
 **Descrição**: Visual regression testing com Chromatic. Captura screenshots automáticos de todas as stories e detecta mudanças visuais.
 
 **Funcionalidades**:
+
 - Screenshots automáticos de todas as stories
 - Detecção de mudanças visuais
 - Comparação pixel a pixel
@@ -24,6 +25,7 @@ O Storybook do React Design System utiliza vários addons para melhorar a experi
 - Integração com CI/CD
 
 **Como Usar**:
+
 ```bash
 # Executar Chromatic localmente
 npm run chromatic
@@ -36,6 +38,7 @@ npm run test:visual
 ```
 
 **Configuração**:
+
 - Token configurado via variável de ambiente `CHROMATIC_PROJECT_TOKEN`
 - Configuração adicional em `.chromatic.config.js`
 
@@ -50,6 +53,7 @@ npm run test:visual
 **Descrição**: Suporte completo de documentação. Inclui Controls, Actions, Viewport e Interactions no Storybook 10.
 
 **Funcionalidades**:
+
 - Documentação automática de componentes
 - Controls interativos para props
 - Actions para eventos
@@ -58,20 +62,22 @@ npm run test:visual
 - Tabelas de props geradas automaticamente
 
 **Como Usar**:
+
 - Automático: Todas as stories com tag `autodocs` geram documentação
 - Controls aparecem automaticamente no painel lateral
 - Actions capturam eventos automaticamente
 
 **Exemplo**:
+
 ```tsx
 const meta: Meta<typeof Button> = {
-  title: 'Atoms/Button',
+  title: "Atoms/Button",
   component: Button,
-  tags: ['autodocs'], // Gera documentação automática
+  tags: ["autodocs"], // Gera documentação automática
   parameters: {
     docs: {
       description: {
-        component: 'Button component description',
+        component: "Button component description",
       },
     },
   },
@@ -89,6 +95,7 @@ const meta: Meta<typeof Button> = {
 **Descrição**: Testes de acessibilidade com verificação WCAG 2.1 AA.
 
 **Funcionalidades**:
+
 - Verificação automática de acessibilidade
 - 60+ regras WCAG 2.1 AA configuradas
 - Relatórios detalhados de violações
@@ -97,11 +104,13 @@ const meta: Meta<typeof Button> = {
 - Keyboard navigation testing
 
 **Como Usar**:
+
 - Painel "Accessibility" aparece automaticamente em cada story
 - Violações são mostradas em tempo real
 - Configurado para modo "todo" (não falha CI, apenas mostra)
 
 **Regras Configuradas**:
+
 - Text Alternatives (image-alt, object-alt, etc.)
 - Keyboard Accessible (keyboard, keyboard-navigation, etc.)
 - Color Contrast (4.5:1 para texto normal)
@@ -121,12 +130,14 @@ const meta: Meta<typeof Button> = {
 **Descrição**: Integração com Vitest para testes unitários nas stories.
 
 **Funcionalidades**:
+
 - Executar testes Vitest dentro do Storybook
 - Testes de stories com Playwright
 - Integração com coverage reports
 - Testes em browser real
 
 **Como Usar**:
+
 ```bash
 # Testes unitários
 npm run test
@@ -149,6 +160,7 @@ npm run test:watch
 **Descrição**: Model Context Protocol para integração com AI agents.
 
 **Funcionalidades**:
+
 - API MCP server em `http://localhost:6006/mcp`
 - AI agents podem interagir com Storybook
 - Listagem de componentes e stories
@@ -156,18 +168,22 @@ npm run test:watch
 - Metadata de componentes
 
 **Como Usar**:
+
 1. Iniciar Storybook: `npm run storybook`
 2. MCP server disponível em `http://localhost:6006/mcp`
 3. Configurar AI agents para conectar ao endpoint
 
 **API Endpoints Disponíveis**:
+
 - `list-all-components` - Lista todos os componentes
 - `get-component-info` - Metadata detalhada
 - `capture-screenshot` - Screenshots para visual testing
 - `get-story-info` - Informações de stories
 
-**Configuração**: 
+**Configuração**:
+
 - Adicionar ao `.cursor/mcp.json`:
+
 ```json
 {
   "mcpServers": {
@@ -190,17 +206,20 @@ npm run test:watch
 **Descrição**: Medição de elementos na tela. Útil para verificar dimensões, espaçamentos e alinhamentos.
 
 **Funcionalidades**:
+
 - Medir distâncias entre elementos
 - Verificar dimensões de componentes
 - Validar espaçamentos
 - Verificar alinhamentos
 
 **Como Usar**:
+
 - Painel "Measure" aparece na toolbar do Storybook
 - Ativar/desativar com o botão na toolbar
 - Clicar e arrastar para medir elementos
 
 **Casos de Uso**:
+
 - Validar espaçamentos do design system
 - Verificar alinhamentos
 - Medir gaps entre elementos
@@ -215,17 +234,20 @@ npm run test:watch
 **Descrição**: Visualização de outlines de elementos. Útil para debug de layout e estrutura.
 
 **Funcionalidades**:
+
 - Mostrar outlines de todos os elementos
 - Visualizar estrutura de componentes
 - Debug de layout
 - Identificar elementos sem conteúdo
 
 **Como Usar**:
+
 - Painel "Outline" aparece na toolbar
 - Ativar/desativar com o botão
 - Visualiza outlines de todos os elementos DOM
 
 **Casos de Uso**:
+
 - Debug de layout
 - Verificar estrutura de componentes
 - Identificar elementos vazios
@@ -240,34 +262,38 @@ npm run test:watch
 **Descrição**: Integração com designs do Figma. Permite visualizar designs lado a lado com implementação.
 
 **Funcionalidades**:
+
 - Embed de designs do Figma
 - Comparação visual design vs código
 - Links para designs originais
 - Sincronização de design tokens
 
 **Como Usar**:
+
 ```tsx
 export const Primary: Story = {
   parameters: {
     design: {
-      type: 'figma',
-      url: 'https://www.figma.com/file/...',
+      type: "figma",
+      url: "https://www.figma.com/file/...",
     },
   },
 };
 ```
 
 **Configuração**:
+
 - Requer token do Figma (opcional para designs públicos)
 - Configurar em cada story que precisa de design link
 
 **Casos de Uso**:
+
 - Comparar implementação com design
 - Referência rápida ao design original
 - Validação visual
 - Documentação de design decisions
 
-**Documentação**: [FIGMA_INTEGRATION.md](./FIGMA_INTEGRATION.md) (a ser criado)
+**Documentação**: Integração via MCP - veja [MCP_AUTOMATIONS.md](./MCP_AUTOMATIONS.md)
 
 ---
 
@@ -278,21 +304,25 @@ export const Primary: Story = {
 **Descrição**: Visualização de code coverage dentro do Storybook.
 
 **Funcionalidades**:
+
 - Mostrar coverage de código
 - Identificar código não testado
 - Visualizar coverage por componente
 - Integração com Vitest coverage
 
 **Como Usar**:
+
 1. Executar testes com coverage: `npm run test:coverage`
 2. Painel "Coverage" aparece no Storybook
 3. Visualizar coverage por arquivo/componente
 
 **Configuração**:
+
 - Integrado com Vitest coverage
 - Configurado em `vite.config.ts`
 
 **Casos de Uso**:
+
 - Identificar componentes sem testes
 - Validar cobertura de testes
 - Priorizar testes
@@ -307,17 +337,20 @@ export const Primary: Story = {
 **Descrição**: Métricas de performance de componentes. Mede render time, re-renders e performance.
 
 **Funcionalidades**:
+
 - Medir tempo de renderização
 - Detectar re-renders desnecessários
 - Métricas de performance
 - Comparar performance entre versões
 
 **Como Usar**:
+
 - Painel "Performance" aparece automaticamente
 - Métricas são coletadas automaticamente
 - Visualizar métricas por componente
 
 **Casos de Uso**:
+
 - Identificar componentes lentos
 - Otimizar performance
 - Validar otimizações
@@ -330,6 +363,7 @@ export const Primary: Story = {
 ### Viewport
 
 Configurado em `.storybook/preview.tsx`:
+
 - Mobile: 375x667
 - Tablet: 768x1024
 - Desktop: 1280x800
@@ -338,6 +372,7 @@ Configurado em `.storybook/preview.tsx`:
 ### Backgrounds
 
 Backgrounds configurados:
+
 - Light: #ffffff
 - Dark: #1a1a1a
 - Gray: #f5f5f5
@@ -359,12 +394,13 @@ Backgrounds configurados:
 ### 1. Sempre Use autodocs
 
 ```tsx
-tags: ['autodocs'] // Gera documentação automática
+tags: ["autodocs"]; // Gera documentação automática
 ```
 
 ### 2. Configure Design Links
 
 Para componentes com design no Figma:
+
 ```tsx
 parameters: {
   design: {
@@ -377,12 +413,14 @@ parameters: {
 ### 3. Teste Acessibilidade
 
 Sempre verifique o painel de acessibilidade:
+
 - Corrija violações críticas
 - Documente violações conhecidas se necessário
 
 ### 4. Use Measure para Espaçamentos
 
 Valide espaçamentos usando o addon Measure:
+
 - Verifique padding/margin
 - Valide gaps
 - Confirme alinhamentos
@@ -390,6 +428,7 @@ Valide espaçamentos usando o addon Measure:
 ### 5. Monitore Performance
 
 Use o addon Performance para:
+
 - Identificar componentes lentos
 - Validar otimizações
 - Monitorar regressões

@@ -167,7 +167,13 @@ testProcess.on('close', (code) => {
     const testsSuccessRate = testsPassed / testsTotal;
     
     // If success rate is very high (>99%) and only browser errors exist, consider it success
-    if (testFilesSuccessRate >= 0.99 && testsSuccessRate >= 0.99 && hasBrowserError && !hasRealFailures) {
+    // Also check if the error count is only 1 (browser connection error)
+    const errorMatch = combinedOutput.match(/Errors\s+(\d+)\s+error/);
+    const errorCount = errorMatch ? parseInt(errorMatch[1]) : 0;
+    const isOnlyBrowserError = hasBrowserError && errorCount <= 1 && !hasRealFailures;
+    
+    if ((testFilesSuccessRate >= 0.99 && testsSuccessRate >= 0.99 && isOnlyBrowserError) || 
+        (testFilesPassed === testFilesTotal && testsPassed === testsTotal && isOnlyBrowserError)) {
       console.log(`\n✅ Tests passed: ${testFilesPassed}/${testFilesTotal} files, ${testsPassed}/${testsTotal} tests`);
       console.log('   (Browser connection error ignored - non-critical)');
       process.exit(0);

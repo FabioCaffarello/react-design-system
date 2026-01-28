@@ -58,6 +58,11 @@ export function ThemeProvider({
   });
 
   useEffect(() => {
+    // Only run in browser (SSR-safe)
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     try {
       localStorage.setItem(storageKey, theme);
     } catch (error) {
@@ -65,8 +70,10 @@ export function ThemeProvider({
     }
 
     // Apply theme class to document root
-    document.documentElement.classList.remove('light', 'dark');
-    document.documentElement.classList.add(theme);
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.remove('light', 'dark');
+      document.documentElement.classList.add(theme);
+    }
   }, [theme, storageKey]);
 
   const toggleTheme = () => {

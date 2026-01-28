@@ -1,7 +1,7 @@
 'use client';
 
 import { createPortal } from 'react-dom';
-import { useToastContext } from './ToastContext';
+import { useToastContext } from '../../providers/ToastContext';
 import { Toast } from './Toast';
 
 export interface ToastContainerProps {

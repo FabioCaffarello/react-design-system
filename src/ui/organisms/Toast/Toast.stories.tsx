@@ -1,53 +1,78 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
-import { fn } from '@storybook/test';
-import { ToastProvider, ToastContainer, useToast } from './index';
-import { Button } from '../../atoms';
+import type { Meta, StoryObj } from "@storybook/react";
+import { expect, userEvent, within, waitFor } from "@storybook/test";
+import { fn } from "@storybook/test";
+import { ToastContainer, useToast } from "./index";
+import { ToastProvider } from "../../providers/ToastProvider";
+import { Button } from "../../atoms";
 
 // Wrapper component for stories
-function ToastDemo({ position = 'top-right' as const }: { position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center' }) {
+function ToastDemo({
+  position = "top-right" as const,
+}: {
+  position?:
+    | "top-right"
+    | "top-left"
+    | "bottom-right"
+    | "bottom-left"
+    | "top-center"
+    | "bottom-center";
+}) {
   const toast = useToast();
 
   return (
     <div className="space-y-4 p-8">
       <div className="space-x-2">
-        <Button onClick={() => toast.success('Success!', 'Operation completed successfully')}>
+        <Button
+          onClick={() =>
+            toast.success("Success!", "Operation completed successfully")
+          }
+        >
           Show Success
         </Button>
-        <Button variant="error" onClick={() => toast.error('Error!', 'Something went wrong')}>
+        <Button
+          variant="error"
+          onClick={() => toast.error("Error!", "Something went wrong")}
+        >
           Show Error
         </Button>
-        <Button variant="secondary" onClick={() => toast.warning('Warning!', 'Please be careful')}>
+        <Button
+          variant="secondary"
+          onClick={() => toast.warning("Warning!", "Please be careful")}
+        >
           Show Warning
         </Button>
-        <Button variant="outline" onClick={() => toast.info('Info', 'Here is some information')}>
+        <Button
+          variant="outline"
+          onClick={() => toast.info("Info", "Here is some information")}
+        >
           Show Info
         </Button>
       </div>
       <div className="space-x-2">
         <Button
           variant="outline"
-          onClick={() => toast.success('With Action', 'Click the action button', {
-            action: {
-              label: 'View Details',
-              onClick: () => alert('Action clicked!'),
-            },
-          })}
+          onClick={() =>
+            toast.success("With Action", "Click the action button", {
+              action: {
+                label: "View Details",
+                onClick: () => alert("Action clicked!"),
+              },
+            })
+          }
         >
           Toast with Action
         </Button>
         <Button
           variant="outline"
-          onClick={() => toast.info('Persistent', 'This toast will not auto-dismiss', {
-            duration: undefined,
-          })}
+          onClick={() =>
+            toast.info("Persistent", "This toast will not auto-dismiss", {
+              duration: undefined,
+            })
+          }
         >
           Persistent Toast
         </Button>
-        <Button
-          variant="outline"
-          onClick={() => toast.clearAll()}
-        >
+        <Button variant="outline" onClick={() => toast.clearAll()}>
           Clear All
         </Button>
       </div>
@@ -57,7 +82,7 @@ function ToastDemo({ position = 'top-right' as const }: { position?: 'top-right'
 }
 
 const meta: Meta<typeof ToastProvider> = {
-  title: 'Organisms/Toast',
+  title: "Organisms/Toast",
   component: ToastProvider,
   parameters: {
     docs: {
@@ -95,10 +120,10 @@ A toast notification system with provider, hook, and container. Supports multipl
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     children: {
-      description: 'Child components that can use the toast context',
+      description: "Child components that can use the toast context",
       control: false,
     },
   },
@@ -118,10 +143,10 @@ export const Default: Story = {
   render: () => <ToastDemo />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const successButton = canvas.getByRole('button', { name: /show success/i });
-    
+    const successButton = canvas.getByRole("button", { name: /show success/i });
+
     await userEvent.click(successButton);
-    
+
     // Wait for toast to appear
     await waitFor(() => {
       expect(within(document.body).getByText(/success!/i)).toBeInTheDocument();
@@ -156,10 +181,22 @@ export const MultipleToasts: Story = {
       <div className="space-y-4 p-8">
         <Button
           onClick={() => {
-            toast.success('First Toast', 'This is the first notification');
-            setTimeout(() => toast.info('Second Toast', 'This is the second notification'), 200);
-            setTimeout(() => toast.warning('Third Toast', 'This is the third notification'), 400);
-            setTimeout(() => toast.error('Fourth Toast', 'This is the fourth notification'), 600);
+            toast.success("First Toast", "This is the first notification");
+            setTimeout(
+              () =>
+                toast.info("Second Toast", "This is the second notification"),
+              200,
+            );
+            setTimeout(
+              () =>
+                toast.warning("Third Toast", "This is the third notification"),
+              400,
+            );
+            setTimeout(
+              () =>
+                toast.error("Fourth Toast", "This is the fourth notification"),
+              600,
+            );
           }}
         >
           Show Multiple Toasts
@@ -176,12 +213,18 @@ export const WithActions: Story = {
     return (
       <div className="space-y-4 p-8">
         <Button
-          onClick={() => toast.success('File Uploaded', 'Your file has been uploaded successfully', {
-            action: {
-              label: 'View File',
-              onClick: () => alert('Opening file...'),
-            },
-          })}
+          onClick={() =>
+            toast.success(
+              "File Uploaded",
+              "Your file has been uploaded successfully",
+              {
+                action: {
+                  label: "View File",
+                  onClick: () => alert("Opening file..."),
+                },
+              },
+            )
+          }
         >
           Toast with Action
         </Button>
@@ -197,16 +240,20 @@ export const CustomDuration: Story = {
     return (
       <div className="space-y-4 p-8">
         <Button
-          onClick={() => toast.info('Quick Toast', 'This will disappear in 2 seconds', {
-            duration: 2000,
-          })}
+          onClick={() =>
+            toast.info("Quick Toast", "This will disappear in 2 seconds", {
+              duration: 2000,
+            })
+          }
         >
           Short Duration (2s)
         </Button>
         <Button
-          onClick={() => toast.info('Long Toast', 'This will disappear in 10 seconds', {
-            duration: 10000,
-          })}
+          onClick={() =>
+            toast.info("Long Toast", "This will disappear in 10 seconds", {
+              duration: 10000,
+            })
+          }
         >
           Long Duration (10s)
         </Button>
@@ -216,21 +263,23 @@ export const CustomDuration: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const quickButton = canvas.getByRole('button', { name: /short duration/i });
-    
+    const quickButton = canvas.getByRole("button", { name: /short duration/i });
+
     await userEvent.click(quickButton);
-    
+
     // Wait for toast to appear
     await waitFor(() => {
-      expect(within(document.body).getByText(/quick toast/i)).toBeInTheDocument();
+      expect(
+        within(document.body).getByText(/quick toast/i),
+      ).toBeInTheDocument();
     });
-    
+
     // Wait for toast to disappear (after 2 seconds)
     await waitFor(
       () => {
         expect(canvas.queryByText(/quick toast/i)).not.toBeInTheDocument();
       },
-      { timeout: 3000 }
+      { timeout: 3000 },
     );
   },
 };
@@ -239,18 +288,24 @@ export const WithAction: Story = {
   render: () => {
     const toast = useToast();
     const handleActionClick = fn(() => {
-      alert('Action clicked!');
+      alert("Action clicked!");
     });
-    
+
     return (
       <div className="space-y-4 p-8">
         <Button
-          onClick={() => toast.success('File Uploaded', 'Your file has been uploaded successfully', {
-            action: {
-              label: 'View File',
-              onClick: handleActionClick,
-            },
-          })}
+          onClick={() =>
+            toast.success(
+              "File Uploaded",
+              "Your file has been uploaded successfully",
+              {
+                action: {
+                  label: "View File",
+                  onClick: handleActionClick,
+                },
+              },
+            )
+          }
         >
           Toast with Action
         </Button>
@@ -260,18 +315,25 @@ export const WithAction: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button', { name: /toast with action/i });
-    
+    const button = canvas.getByRole("button", { name: /toast with action/i });
+
     await userEvent.click(button);
-    
+
     // Wait for toast to appear with action button
-    await waitFor(() => {
-      expect(within(document.body).getByText(/file uploaded/i)).toBeInTheDocument();
-      // Verify action button exists (even if not immediately clickable due to animations)
-      const actionButton = within(document.body).getByRole('button', { name: /view file/i });
-      expect(actionButton).toBeInTheDocument();
-    }, { timeout: 2000 });
-    
+    await waitFor(
+      () => {
+        expect(
+          within(document.body).getByText(/file uploaded/i),
+        ).toBeInTheDocument();
+        // Verify action button exists (even if not immediately clickable due to animations)
+        const actionButton = within(document.body).getByRole("button", {
+          name: /view file/i,
+        });
+        expect(actionButton).toBeInTheDocument();
+      },
+      { timeout: 2000 },
+    );
+
     // Note: The action button click is tested in the "With Events" story
     // This story just verifies the toast with action appears correctly
   },
@@ -283,9 +345,15 @@ export const PersistentToast: Story = {
     return (
       <div className="space-y-4 p-8">
         <Button
-          onClick={() => toast.info('Persistent Toast', 'This toast will not auto-dismiss. Click X to close.', {
-            duration: undefined,
-          })}
+          onClick={() =>
+            toast.info(
+              "Persistent Toast",
+              "This toast will not auto-dismiss. Click X to close.",
+              {
+                duration: undefined,
+              },
+            )
+          }
         >
           Show Persistent Toast
         </Button>
@@ -295,25 +363,27 @@ export const PersistentToast: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button', { name: /show persistent toast/i });
-    
+    const button = canvas.getByRole("button", {
+      name: /show persistent toast/i,
+    });
+
     await userEvent.click(button);
-    
+
     // Wait for toast to appear
     await waitFor(() => {
       const toasts = within(document.body).getAllByText(/persistent toast/i);
       // Should find the toast message, not the button
-      const toastMessage = toasts.find(el => !el.closest('button'));
+      const toastMessage = toasts.find((el) => !el.closest("button"));
       expect(toastMessage).toBeDefined();
     });
-    
+
     // Wait a bit to ensure it doesn't auto-dismiss
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     // Toast should still be visible
     await waitFor(() => {
       const toasts = within(document.body).getAllByText(/persistent toast/i);
-      const toastMessage = toasts.find(el => !el.closest('button'));
+      const toastMessage = toasts.find((el) => !el.closest("button"));
       expect(toastMessage).toBeDefined();
     });
   },
@@ -325,16 +395,33 @@ export const AllVariants: Story = {
     return (
       <div className="space-y-4 p-8">
         <div className="space-x-2">
-          <Button onClick={() => toast.success('Success Toast', 'This is a success message')}>
+          <Button
+            onClick={() =>
+              toast.success("Success Toast", "This is a success message")
+            }
+          >
             Success
           </Button>
-          <Button variant="error" onClick={() => toast.error('Error Toast', 'This is an error message')}>
+          <Button
+            variant="error"
+            onClick={() =>
+              toast.error("Error Toast", "This is an error message")
+            }
+          >
             Error
           </Button>
-          <Button variant="secondary" onClick={() => toast.warning('Warning Toast', 'This is a warning message')}>
+          <Button
+            variant="secondary"
+            onClick={() =>
+              toast.warning("Warning Toast", "This is a warning message")
+            }
+          >
             Warning
           </Button>
-          <Button variant="outline" onClick={() => toast.info('Info Toast', 'This is an info message')}>
+          <Button
+            variant="outline"
+            onClick={() => toast.info("Info Toast", "This is an info message")}
+          >
             Info
           </Button>
         </div>
@@ -344,19 +431,27 @@ export const AllVariants: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Show all variants
-    await userEvent.click(canvas.getByRole('button', { name: /success/i }));
-    await userEvent.click(canvas.getByRole('button', { name: /error/i }));
-    await userEvent.click(canvas.getByRole('button', { name: /warning/i }));
-    await userEvent.click(canvas.getByRole('button', { name: /info/i }));
-    
+    await userEvent.click(canvas.getByRole("button", { name: /success/i }));
+    await userEvent.click(canvas.getByRole("button", { name: /error/i }));
+    await userEvent.click(canvas.getByRole("button", { name: /warning/i }));
+    await userEvent.click(canvas.getByRole("button", { name: /info/i }));
+
     // Wait for all toasts to appear
     await waitFor(() => {
-      expect(within(document.body).getByText(/success toast/i)).toBeInTheDocument();
-      expect(within(document.body).getByText(/error toast/i)).toBeInTheDocument();
-      expect(within(document.body).getByText(/warning toast/i)).toBeInTheDocument();
-      expect(within(document.body).getByText(/info toast/i)).toBeInTheDocument();
+      expect(
+        within(document.body).getByText(/success toast/i),
+      ).toBeInTheDocument();
+      expect(
+        within(document.body).getByText(/error toast/i),
+      ).toBeInTheDocument();
+      expect(
+        within(document.body).getByText(/warning toast/i),
+      ).toBeInTheDocument();
+      expect(
+        within(document.body).getByText(/info toast/i),
+      ).toBeInTheDocument();
     });
   },
 };
@@ -367,13 +462,13 @@ export const ClearAll: Story = {
     return (
       <div className="space-y-4 p-8">
         <div className="space-x-2">
-          <Button onClick={() => toast.success('Toast 1', 'First toast')}>
+          <Button onClick={() => toast.success("Toast 1", "First toast")}>
             Add Toast 1
           </Button>
-          <Button onClick={() => toast.info('Toast 2', 'Second toast')}>
+          <Button onClick={() => toast.info("Toast 2", "Second toast")}>
             Add Toast 2
           </Button>
-          <Button onClick={() => toast.warning('Toast 3', 'Third toast')}>
+          <Button onClick={() => toast.warning("Toast 3", "Third toast")}>
             Add Toast 3
           </Button>
         </div>
@@ -388,42 +483,54 @@ export const ClearAll: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Add multiple toasts
-    await userEvent.click(canvas.getByRole('button', { name: /add toast 1/i }));
-    await userEvent.click(canvas.getByRole('button', { name: /add toast 2/i }));
-    await userEvent.click(canvas.getByRole('button', { name: /add toast 3/i }));
-    
+    await userEvent.click(canvas.getByRole("button", { name: /add toast 1/i }));
+    await userEvent.click(canvas.getByRole("button", { name: /add toast 2/i }));
+    await userEvent.click(canvas.getByRole("button", { name: /add toast 3/i }));
+
     // Wait for toasts to appear (in document.body, not in buttons)
     await waitFor(() => {
       const toast1Elements = within(document.body).getAllByText(/toast 1/i);
-      const toast1 = toast1Elements.find(el => !el.closest('button') || el.closest('[role="alert"]'));
+      const toast1 = toast1Elements.find(
+        (el) => !el.closest("button") || el.closest('[role="alert"]'),
+      );
       expect(toast1).toBeDefined();
-      
+
       const toast2Elements = within(document.body).getAllByText(/toast 2/i);
-      const toast2 = toast2Elements.find(el => !el.closest('button') || el.closest('[role="alert"]'));
+      const toast2 = toast2Elements.find(
+        (el) => !el.closest("button") || el.closest('[role="alert"]'),
+      );
       expect(toast2).toBeDefined();
-      
+
       const toast3Elements = within(document.body).getAllByText(/toast 3/i);
-      const toast3 = toast3Elements.find(el => !el.closest('button') || el.closest('[role="alert"]'));
+      const toast3 = toast3Elements.find(
+        (el) => !el.closest("button") || el.closest('[role="alert"]'),
+      );
       expect(toast3).toBeDefined();
     });
-    
+
     // Clear all
-    await userEvent.click(canvas.getByRole('button', { name: /clear all/i }));
-    
+    await userEvent.click(canvas.getByRole("button", { name: /clear all/i }));
+
     // Wait for all toasts to disappear (check in document.body, excluding buttons)
     await waitFor(() => {
       const toast1Elements = within(document.body).queryAllByText(/toast 1/i);
-      const toast1 = toast1Elements.find(el => !el.closest('button') || el.closest('[role="alert"]'));
+      const toast1 = toast1Elements.find(
+        (el) => !el.closest("button") || el.closest('[role="alert"]'),
+      );
       expect(toast1).toBeUndefined();
-      
+
       const toast2Elements = within(document.body).queryAllByText(/toast 2/i);
-      const toast2 = toast2Elements.find(el => !el.closest('button') || el.closest('[role="alert"]'));
+      const toast2 = toast2Elements.find(
+        (el) => !el.closest("button") || el.closest('[role="alert"]'),
+      );
       expect(toast2).toBeUndefined();
-      
+
       const toast3Elements = within(document.body).queryAllByText(/toast 3/i);
-      const toast3 = toast3Elements.find(el => !el.closest('button') || el.closest('[role="alert"]'));
+      const toast3 = toast3Elements.find(
+        (el) => !el.closest("button") || el.closest('[role="alert"]'),
+      );
       expect(toast3).toBeUndefined();
     });
   },
@@ -434,21 +541,28 @@ export const WithEvents: Story = {
   render: () => {
     const toast = useToast();
     const handleActionClick = fn(() => {
-      console.log('Action clicked!');
+      console.log("Action clicked!");
     });
-    
+
     return (
       <div className="space-y-4 p-8">
         <p className="text-sm text-gray-600">
-          Show toasts and click action buttons. Check the Actions panel to see events being fired.
+          Show toasts and click action buttons. Check the Actions panel to see
+          events being fired.
         </p>
         <Button
-          onClick={() => toast.success('File Uploaded', 'Your file has been uploaded successfully', {
-            action: {
-              label: 'View File',
-              onClick: handleActionClick,
-            },
-          })}
+          onClick={() =>
+            toast.success(
+              "File Uploaded",
+              "Your file has been uploaded successfully",
+              {
+                action: {
+                  label: "View File",
+                  onClick: handleActionClick,
+                },
+              },
+            )
+          }
         >
           Toast with Action
         </Button>
@@ -458,16 +572,19 @@ export const WithEvents: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button', { name: /toast with action/i });
+    const button = canvas.getByRole("button", { name: /toast with action/i });
     await userEvent.click(button);
     await waitFor(() => {
-      expect(within(document.body).getByText(/file uploaded/i)).toBeInTheDocument();
+      expect(
+        within(document.body).getByText(/file uploaded/i),
+      ).toBeInTheDocument();
     });
   },
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates toast events. Show toasts and click actions, then check the Actions panel to see events being logged.',
+        story:
+          "Demonstrates toast events. Show toasts and click actions, then check the Actions panel to see events being logged.",
       },
     },
   },
@@ -479,7 +596,11 @@ export const SuccessState: Story = {
     const toast = useToast();
     return (
       <div className="space-y-4 p-8">
-        <Button onClick={() => toast.success('Success!', 'Operation completed successfully')}>
+        <Button
+          onClick={() =>
+            toast.success("Success!", "Operation completed successfully")
+          }
+        >
           Show Success Toast
         </Button>
         <ToastContainer />
@@ -489,7 +610,7 @@ export const SuccessState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Success state - green success toast.',
+        story: "Success state - green success toast.",
       },
     },
   },
@@ -500,7 +621,10 @@ export const ErrorState: Story = {
     const toast = useToast();
     return (
       <div className="space-y-4 p-8">
-        <Button variant="error" onClick={() => toast.error('Error!', 'Something went wrong')}>
+        <Button
+          variant="error"
+          onClick={() => toast.error("Error!", "Something went wrong")}
+        >
           Show Error Toast
         </Button>
         <ToastContainer />
@@ -510,7 +634,7 @@ export const ErrorState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Error state - red error toast.',
+        story: "Error state - red error toast.",
       },
     },
   },
@@ -522,12 +646,18 @@ export const WithActionState: Story = {
     return (
       <div className="space-y-4 p-8">
         <Button
-          onClick={() => toast.success('File Uploaded', 'Your file has been uploaded successfully', {
-            action: {
-              label: 'View File',
-              onClick: () => alert('Opening file...'),
-            },
-          })}
+          onClick={() =>
+            toast.success(
+              "File Uploaded",
+              "Your file has been uploaded successfully",
+              {
+                action: {
+                  label: "View File",
+                  onClick: () => alert("Opening file..."),
+                },
+              },
+            )
+          }
         >
           Toast with Action
         </Button>
@@ -538,7 +668,7 @@ export const WithActionState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'With action state - toast with action button.',
+        story: "With action state - toast with action button.",
       },
     },
   },
@@ -550,9 +680,11 @@ export const PersistentState: Story = {
     return (
       <div className="space-y-4 p-8">
         <Button
-          onClick={() => toast.info('Persistent', 'This toast will not auto-dismiss', {
-            duration: undefined,
-          })}
+          onClick={() =>
+            toast.info("Persistent", "This toast will not auto-dismiss", {
+              duration: undefined,
+            })
+          }
         >
           Persistent Toast
         </Button>
@@ -563,7 +695,7 @@ export const PersistentState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Persistent state - toast that does not auto-dismiss.',
+        story: "Persistent state - toast that does not auto-dismiss.",
       },
     },
   },

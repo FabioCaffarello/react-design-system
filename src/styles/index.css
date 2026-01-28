@@ -1,3 +1,13 @@
+/* ============================================
+ * TAILWIND CSS 4
+ * IMPORTANT: @import must be the very first statement (after comments)
+ * ============================================ */
+@import "tailwindcss";
+
+/* Scan all UI source files for Tailwind classes */
+@source "../../src/ui/**/*.{ts,tsx}";
+@source "../../src/ui/**/*.{js,jsx}";
+
 /**
  * AIppin Design System - Main CSS Entry Point
  *
@@ -14,17 +24,6 @@
  * @brand AIppin
  * @version 1.0.0
  */
-
-/* ============================================
- * TAILWIND CSS 4
- * Import Tailwind and configure source scanning
- * ============================================ */
-
-/* Scan all UI source files for Tailwind classes */
-@source "../../src/ui/**/*.{ts,tsx}";
-@source "../../src/ui/**/*.{js,jsx}";
-
-@import "tailwindcss";
 
 /* ============================================
  * PRIMITIVE TOKENS

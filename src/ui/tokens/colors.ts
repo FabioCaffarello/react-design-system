@@ -228,44 +228,57 @@ export class ColorTokenFactory {
 }
 
 /**
+ * Initialize color tokens with error handling
+ * Using IIFE to ensure proper initialization order and avoid TDZ errors
+ */
+const initializeColorTokens = (() => {
+  let light: Record<ColorRole, SemanticColor>;
+  let dark: Record<ColorRole, SemanticColor>;
+
+  try {
+    const lightFactory = new ColorTokenFactory(new LightColorStrategy());
+    light = lightFactory.generatePalette();
+  } catch (error) {
+    console.error('Failed to initialize COLOR_TOKENS_LIGHT:', error);
+    // Fallback: create minimal palette
+    const fallbackStrategy = new LightColorStrategy();
+    light = {
+      primary: fallbackStrategy.generatePrimary(),
+      secondary: fallbackStrategy.generateSecondary(),
+      success: fallbackStrategy.generateSuccess(),
+      warning: fallbackStrategy.generateWarning(),
+      error: fallbackStrategy.generateError(),
+      info: fallbackStrategy.generateInfo(),
+      neutral: fallbackStrategy.generateNeutral(),
+    };
+  }
+
+  try {
+    const darkFactory = new ColorTokenFactory(new DarkColorStrategy());
+    dark = darkFactory.generatePalette();
+  } catch (error) {
+    console.error('Failed to initialize COLOR_TOKENS_DARK:', error);
+    // Fallback: use light theme as fallback
+    dark = light;
+  }
+
+  return { light, dark };
+})();
+
+/**
  * Light theme colors (default)
  */
-let COLOR_TOKENS_LIGHT: Record<ColorRole, SemanticColor>;
-let COLOR_TOKENS_DARK: Record<ColorRole, SemanticColor>;
+export const COLOR_TOKENS_LIGHT: Record<ColorRole, SemanticColor> = initializeColorTokens.light;
 
-try {
-  const lightFactory = new ColorTokenFactory(new LightColorStrategy());
-  COLOR_TOKENS_LIGHT = lightFactory.generatePalette();
-} catch (error) {
-  console.error('Failed to initialize COLOR_TOKENS_LIGHT:', error);
-  // Fallback: create minimal palette
-  const fallbackStrategy = new LightColorStrategy();
-  COLOR_TOKENS_LIGHT = {
-    primary: fallbackStrategy.generatePrimary(),
-    secondary: fallbackStrategy.generateSecondary(),
-    success: fallbackStrategy.generateSuccess(),
-    warning: fallbackStrategy.generateWarning(),
-    error: fallbackStrategy.generateError(),
-    info: fallbackStrategy.generateInfo(),
-    neutral: fallbackStrategy.generateNeutral(),
-  };
-}
-
-try {
-  const darkFactory = new ColorTokenFactory(new DarkColorStrategy());
-  COLOR_TOKENS_DARK = darkFactory.generatePalette();
-} catch (error) {
-  console.error('Failed to initialize COLOR_TOKENS_DARK:', error);
-  // Fallback: use light theme as fallback
-  COLOR_TOKENS_DARK = COLOR_TOKENS_LIGHT;
-}
-
-export { COLOR_TOKENS_LIGHT, COLOR_TOKENS_DARK };
+/**
+ * Dark theme colors
+ */
+export const COLOR_TOKENS_DARK: Record<ColorRole, SemanticColor> = initializeColorTokens.dark;
 
 /**
  * Default color tokens (light theme)
  */
-export const COLOR_TOKENS = COLOR_TOKENS_LIGHT;
+export const COLOR_TOKENS: Record<ColorRole, SemanticColor> = COLOR_TOKENS_LIGHT;
 
 /**
  * Helper function to get color token

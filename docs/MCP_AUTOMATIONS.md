@@ -5,6 +5,7 @@ Este documento descreve todas as automações disponíveis usando MCPs (Model Co
 ## Visão Geral
 
 As automações MCP permitem:
+
 - Geração automática de documentação
 - Validação automática de componentes
 - Sincronização automática design-code
@@ -18,6 +19,7 @@ As automações MCP permitem:
 **Script**: `npm run mcp:generate-docs`
 
 **O que faz**:
+
 - Usa Storybook MCP para listar todos os componentes
 - Extrai informações de cada componente
 - Gera documentação MDX automaticamente
@@ -25,9 +27,11 @@ As automações MCP permitem:
 - Cria exemplos de uso
 
 **Output**:
+
 - `docs/generated/*.md` - Documentação de cada componente
 
 **Quando usar**:
+
 - Após adicionar novos componentes
 - Após mudanças significativas
 - Antes de releases
@@ -38,15 +42,18 @@ As automações MCP permitem:
 **Script**: `npm run mcp:health-check`
 
 **O que faz**:
+
 - Verifica se Storybook MCP server está disponível
 - Lista ferramentas disponíveis
 - Valida conexão
 
 **Output**:
+
 - Status da conexão
 - Lista de ferramentas disponíveis
 
 **Quando usar**:
+
 - Antes de usar outras automações MCP
 - Para debug de problemas de conexão
 - Para validar setup
@@ -56,6 +63,7 @@ As automações MCP permitem:
 **Script**: `npm run mcp:figma-sync-tokens`
 
 **O que faz**:
+
 - Conecta ao Figma via MCP
 - Extrai variáveis de design tokens
 - Converte para formato de tokens do design system
@@ -63,14 +71,17 @@ As automações MCP permitem:
 - Valida mudanças
 
 **Requisitos**:
+
 - `FIGMA_ACCESS_TOKEN` environment variable
 - `FIGMA_FILE_KEY` environment variable
 - Figma MCP server configurado
 
 **Output**:
+
 - `docs/figma-sync-report.json` - Relatório de sync
 
 **Quando usar**:
+
 - Após mudanças em tokens no Figma
 - Para manter tokens sincronizados
 - Antes de releases
@@ -80,15 +91,18 @@ As automações MCP permitem:
 **Script**: `npm run mcp:validate-architecture`
 
 **O que faz**:
+
 - Analisa estrutura de componentes
 - Valida contra best practices (via Design Systems MCP)
 - Detecta violações de regras
 - Gera recomendações
 
 **Output**:
+
 - `docs/architecture-validation-report.md` - Relatório de validação
 
 **Quando usar**:
+
 - Após mudanças na arquitetura
 - Antes de adicionar novas categorias
 - Para validar PRs
@@ -99,6 +113,7 @@ As automações MCP permitem:
 **Script**: `npm run mcp:extract-metadata`
 
 **O que faz**:
+
 - Extrai HTML renderizado de componentes
 - Extrai estilos CSS aplicados
 - Extrai props e tipos
@@ -106,14 +121,17 @@ As automações MCP permitem:
 - Extrai design tokens usados
 
 **Requisitos**:
+
 - Storybook rodando
 - MCP Design System Extractor configurado
 
 **Output**:
+
 - `docs/extracted-metadata/metadata.json` - Metadata em JSON
 - `docs/extracted-metadata/metadata-report.md` - Relatório
 
 **Quando usar**:
+
 - Para gerar registry completo
 - Para validar consistência
 - Para detectar breaking changes
@@ -134,6 +152,7 @@ graph TD
 ```
 
 **Implementação**:
+
 - GitHub Action que monitora mudanças
 - Usa MCPs para gerar código
 - Cria PR com tudo pronto
@@ -153,6 +172,7 @@ graph TD
 ```
 
 **Implementação**:
+
 - Pre-commit hook ou GitHub Action
 - Detecta mudanças em componentes
 - Atualiza documentação automaticamente
@@ -172,6 +192,7 @@ graph TD
 ```
 
 **Implementação**:
+
 - GitHub Action em PRs
 - Executa todas as validações
 - Gera relatório e comenta no PR
@@ -189,6 +210,7 @@ graph TD
 ```
 
 **Implementação**:
+
 - Webhook do Figma
 - GitHub Action que processa webhook
 - Cria PR com tokens atualizados
@@ -222,8 +244,8 @@ name: MCP Automations
 on:
   pull_request:
     paths:
-      - 'src/**/*.tsx'
-      - 'src/**/*.ts'
+      - "src/**/*.tsx"
+      - "src/**/*.ts"
   push:
     branches: [main]
 
@@ -301,6 +323,7 @@ jobs:
 **Problema**: Scripts MCP não funcionam
 
 **Soluções**:
+
 1. Verifique se Storybook está rodando
 2. Execute `npm run mcp:health-check`
 3. Verifique configuração em `.cursor/mcp.json`
@@ -311,6 +334,7 @@ jobs:
 **Problema**: Sync do Figma não funciona
 
 **Soluções**:
+
 1. Verifique tokens de acesso
 2. Verifique file key
 3. Verifique permissões
@@ -321,6 +345,7 @@ jobs:
 **Problema**: Validações sempre falham
 
 **Soluções**:
+
 1. Revise regras de validação
 2. Verifique se são falsos positivos
 3. Ajuste thresholds se necessário
@@ -337,6 +362,6 @@ jobs:
 
 - [MCP_STRATEGY.md](./MCP_STRATEGY.md) - Estratégia completa
 - [MCP_SETUP.md](./MCP_SETUP.md) - Setup detalhado
-- [FIGMA_MCP_INTEGRATION.md](./FIGMA_MCP_INTEGRATION.md) - Figma MCP
+- Figma MCP - Veja seção "Figma Token Sync" acima
 - [DESIGN_SYSTEMS_MCP.md](./DESIGN_SYSTEMS_MCP.md) - Design Systems MCP
 - [MCP_EXTRACTOR.md](./MCP_EXTRACTOR.md) - MCP Extractor

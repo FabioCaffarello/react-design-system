@@ -5,6 +5,7 @@ Este documento descreve o sistema de versionamento de design tokens e como migra
 ## Visão Geral
 
 O sistema de versionamento de tokens permite:
+
 - Rastrear mudanças em tokens
 - Detectar breaking changes
 - Gerar guias de migração automáticos
@@ -19,6 +20,7 @@ A versão atual dos tokens é: **1.8.0**
 ### Formato de Versão
 
 Seguimos [Semantic Versioning](https://semver.org/):
+
 - **MAJOR**: Breaking changes (tokens removidos, APIs mudadas)
 - **MINOR**: Novos tokens adicionados (backward compatible)
 - **PATCH**: Correções e ajustes (backward compatible)
@@ -109,7 +111,7 @@ getColorClass('primary', 'DEFAULT', 'bg')`,
 ### Verificar Versão Atual
 
 ```typescript
-import { CURRENT_TOKENS_VERSION } from './tokens/versioning';
+import { CURRENT_TOKENS_VERSION } from "./tokens/versioning";
 
 console.log(CURRENT_TOKENS_VERSION); // '1.8.0'
 ```
@@ -117,39 +119,39 @@ console.log(CURRENT_TOKENS_VERSION); // '1.8.0'
 ### Obter Mudanças Entre Versões
 
 ```typescript
-import { getChangesBetweenVersions } from './tokens/versioning';
+import { getChangesBetweenVersions } from "./tokens/versioning";
 
-const changes = getChangesBetweenVersions('1.7.0', '1.8.0');
+const changes = getChangesBetweenVersions("1.7.0", "1.8.0");
 console.log(changes);
 ```
 
 ### Obter Breaking Changes
 
 ```typescript
-import { getBreakingChangesBetweenVersions } from './tokens/versioning';
+import { getBreakingChangesBetweenVersions } from "./tokens/versioning";
 
-const breakingChanges = getBreakingChangesBetweenVersions('1.7.0', '1.8.0');
+const breakingChanges = getBreakingChangesBetweenVersions("1.7.0", "1.8.0");
 if (breakingChanges.length > 0) {
-  console.warn('Breaking changes detected!');
+  console.warn("Breaking changes detected!");
 }
 ```
 
 ### Verificar se Migração é Necessária
 
 ```typescript
-import { needsMigration } from './tokens/versioning';
+import { needsMigration } from "./tokens/versioning";
 
-if (needsMigration('1.7.0', '1.8.0')) {
-  console.log('Migration required');
+if (needsMigration("1.7.0", "1.8.0")) {
+  console.log("Migration required");
 }
 ```
 
 ### Gerar Guia de Migração
 
 ```typescript
-import { generateMigrationGuide } from './tokens/versioning';
+import { generateMigrationGuide } from "./tokens/versioning";
 
-const guide = generateMigrationGuide('1.7.0', '1.8.0');
+const guide = generateMigrationGuide("1.7.0", "1.8.0");
 console.log(guide);
 ```
 
@@ -157,11 +159,17 @@ console.log(guide);
 
 ### Gerar Guia de Migração
 
-```bash
-npm run migrate:tokens
+Para migrar tokens entre versões, use a API de versioning diretamente:
+
+```typescript
+import {
+  getBreakingChangesBetweenVersions,
+  generateMigrationGuide,
+} from "../src/ui/tokens/versioning";
 ```
 
 Este script:
+
 - Detecta breaking changes
 - Gera guia de migração
 - Escaneia código para uso de tokens
@@ -170,11 +178,11 @@ Este script:
 ### Validar Compatibilidade
 
 ```typescript
-import { validateTokenCompatibility } from './tokens/versioning';
+import { validateTokenCompatibility } from "./tokens/versioning";
 
-const isValid = validateTokenCompatibility('primary', 'colors', '1.8.0');
+const isValid = validateTokenCompatibility("primary", "colors", "1.8.0");
 if (!isValid) {
-  console.warn('Token is deprecated or removed');
+  console.warn("Token is deprecated or removed");
 }
 ```
 
@@ -187,26 +195,26 @@ Quando fazer mudanças nos tokens:
 ```typescript
 export const TOKEN_VERSIONS: TokenVersion[] = [
   {
-    version: '1.9.0',
+    version: "1.9.0",
     timestamp: new Date().toISOString(),
     changes: [
       {
-        type: 'added',
-        category: 'colors',
-        token: 'primary.lightest',
-        newValue: '#e0e7ff',
-        description: 'New lightest shade'
-      }
+        type: "added",
+        category: "colors",
+        token: "primary.lightest",
+        newValue: "#e0e7ff",
+        description: "New lightest shade",
+      },
     ],
-    breakingChanges: []
-  }
+    breakingChanges: [],
+  },
 ];
 ```
 
 2. **Atualizar versão atual**:
 
 ```typescript
-export const CURRENT_TOKENS_VERSION = '1.9.0';
+export const CURRENT_TOKENS_VERSION = "1.9.0";
 ```
 
 3. **Documentar mudanças**:
@@ -250,5 +258,4 @@ Teste os scripts de migração antes de fazer release.
 ## Recursos
 
 - [Semantic Versioning](https://semver.org/)
-- [Token Migration Scripts](../scripts/migrate-tokens.ts)
 - [Token Versioning API](../src/ui/tokens/versioning.ts)

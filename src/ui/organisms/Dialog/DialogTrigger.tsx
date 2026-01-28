@@ -1,7 +1,7 @@
 'use client';
 
 import { cloneElement, isValidElement, type ReactElement } from 'react';
-import { useDialogContext } from './DialogContext';
+import { useDialogContext } from '../../providers/DialogContext';
 
 export interface DialogTriggerProps {
   children: ReactElement;
