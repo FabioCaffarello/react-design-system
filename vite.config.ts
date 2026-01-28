@@ -234,7 +234,7 @@ export default defineConfig(() => {
             testTimeout: process.env.CI ? 120000 : 60000,
             hookTimeout: process.env.CI ? 120000 : 60000,
             teardownTimeout: process.env.CI ? 120000 : 60000,
-            isolate: !process.env.CI,
+            isolate: false, // Disable isolation to prevent module loading issues in browser mode
             retry: process.env.CI ? 2 : 0,
             bail: 0,
             onConsoleLog: () => false,

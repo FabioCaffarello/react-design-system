@@ -51,8 +51,11 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install
 
-      - name: Clear Storybook cache
-        run: rm -rf node_modules/.cache/storybook
+      - name: Clear Storybook and Vite cache
+        run: |
+          rm -rf node_modules/.cache/storybook
+          rm -rf node_modules/.vite
+          rm -rf .storybook-static
 
       - name: Run ESLint
         run: npm run lint
