@@ -85,14 +85,16 @@ export default defineConfig(() => {
             // CRITICAL: Force all providers into the same chunk (main bundle)
             // This prevents Next.js from code-splitting providers, which breaks initialization order
             // Include all provider-related files to ensure they're in the same module boundary
-            if (id.includes("/providers/") || 
-                id.includes("ThemeProvider") ||
-                id.includes("ConfigProvider") ||
-                id.includes("AppProvider") ||
-                id.includes("ToastProvider") ||
-                id.includes("DialogProvider") ||
-                id.includes("ToastContext") ||
-                id.includes("DialogContext")) {
+            if (
+              id.includes("/providers/") ||
+              id.includes("ThemeProvider") ||
+              id.includes("ConfigProvider") ||
+              id.includes("AppProvider") ||
+              id.includes("ToastProvider") ||
+              id.includes("DialogProvider") ||
+              id.includes("ToastContext") ||
+              id.includes("DialogContext")
+            ) {
               return null; // Keep in main bundle - CRITICAL for initialization order
             }
             // Only split sub-entry points, not the main index
@@ -103,12 +105,14 @@ export default defineConfig(() => {
               return "molecules";
             }
             // Split other organisms, but not providers
-            if (id.includes("/organisms/") && 
-                !id.includes("src/ui/index") &&
-                !id.includes("/Toast/ToastProvider") &&
-                !id.includes("/Dialog/DialogProvider") &&
-                !id.includes("/Toast/ToastContext") &&
-                !id.includes("/Dialog/DialogContext")) {
+            if (
+              id.includes("/organisms/") &&
+              !id.includes("src/ui/index") &&
+              !id.includes("/Toast/ToastProvider") &&
+              !id.includes("/Dialog/DialogProvider") &&
+              !id.includes("/Toast/ToastContext") &&
+              !id.includes("/Dialog/DialogContext")
+            ) {
               return "organisms";
             }
             if (id.includes("/tokens/") && !id.includes("src/ui/index")) {
@@ -137,14 +141,16 @@ export default defineConfig(() => {
             }
             // CRITICAL: Preserve side effects for ALL provider-related files
             // This prevents tree-shaking from breaking the initialization chain
-            if (id.includes("providers") ||
-                id.includes("ThemeProvider") ||
-                id.includes("ConfigProvider") ||
-                id.includes("AppProvider") ||
-                id.includes("ToastProvider") ||
-                id.includes("DialogProvider") ||
-                id.includes("ToastContext") ||
-                id.includes("DialogContext")) {
+            if (
+              id.includes("providers") ||
+              id.includes("ThemeProvider") ||
+              id.includes("ConfigProvider") ||
+              id.includes("AppProvider") ||
+              id.includes("ToastProvider") ||
+              id.includes("DialogProvider") ||
+              id.includes("ToastContext") ||
+              id.includes("DialogContext")
+            ) {
               return true;
             }
             return false;
@@ -154,7 +160,7 @@ export default defineConfig(() => {
           // CRITICAL: Disable try-catch deoptimization to preserve initialization order
           tryCatchDeoptimization: false,
           // CRITICAL: Preserve all exports from provider modules
-          preserveEntrySignatures: 'strict',
+          preserveEntrySignatures: "strict",
         },
       },
       emptyOutDir: false,
@@ -206,25 +212,22 @@ export default defineConfig(() => {
             browser: {
               enabled: true,
               headless: true,
-              provider: playwright({
-                launch: {
-                  args: [
-                    "--disable-web-security",
-                    "--disable-features=IsolateOrigins,site-per-process",
-                    "--no-sandbox",
-                    "--disable-setuid-sandbox",
-                    "--disable-dev-shm-usage",
-                    "--disable-gpu",
-                  ],
+              provider: playwright(),
+              instances: [
+                {
+                  browser: "chromium",
+                  launch: {
+                    args: [
+                      "--disable-web-security",
+                      "--disable-features=IsolateOrigins,site-per-process",
+                      "--no-sandbox",
+                      "--disable-setuid-sandbox",
+                      "--disable-dev-shm-usage",
+                      "--disable-gpu",
+                    ],
+                  },
                 },
-              }),
-              instances: process.env.CI
-                ? 1
-                : [
-                    {
-                      browser: "chromium",
-                    },
-                  ],
+              ],
               ui: false,
             },
             setupFiles: [".storybook/vitest.setup.ts"],
