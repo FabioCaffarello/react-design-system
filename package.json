@@ -10,9 +10,9 @@
   "exports": {
     ".": {
       "types": "./dist/ui/index.d.ts",
+      "style": "./dist/react-design-system.css",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "style": "./dist/react-design-system.css"
+      "require": "./dist/index.cjs"
     },
     "./styles": "./dist/react-design-system.css",
     "./styles.css": "./dist/react-design-system.css",
@@ -72,7 +72,7 @@
     "plop": "plop",
     "postplop": "prettier -w './src/ui/**/*.{ts,tsx}'",
     "test": "node scripts/run-tests.mjs",
-    "test:no-browser": "vitest run --bail=0 --reporter=verbose --exclude='**/*.stories.tsx' --project=unit",
+    "test:no-browser": "vitest run --bail=0 --reporter=verbose --exclude='**/*.stories.tsx'",
     "test:ci": "vitest run --reporter=verbose",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest watch",
