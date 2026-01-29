@@ -3,17 +3,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tsConfigPaths from "vite-tsconfig-paths";
 
-// https://vite.dev/config/
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
-import { playwright } from "@vitest/browser-playwright";
-
-const dirname =
-  typeof __dirname !== "undefined"
-    ? __dirname
-    : path.dirname(fileURLToPath(import.meta.url));
-
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig(() => {
   return {
@@ -166,84 +155,31 @@ export default defineConfig(() => {
       emptyOutDir: false,
     },
     test: {
-      projects: [
-        {
-          extends: true,
-          test: {
-            name: "unit",
-            include: ["src/**/*.test.{ts,tsx}"],
-            environment: "jsdom",
-            setupFiles: ["src/setupTests.ts"],
-            globals: true,
-            coverage: {
-              provider: "v8",
-              reporter: ["text", "json", "html", "lcov"],
-              exclude: [
-                "node_modules/",
-                "dist/",
-                "**/*.stories.{ts,tsx}",
-                "**/*.test.{ts,tsx}",
-                "**/index.ts",
-                ".storybook/",
-                "storybook-static/",
-                "src/setupTests.ts",
-                "src/vitest.shims.d.ts",
-              ],
-              thresholds: {
-                lines: 80,
-                functions: 80,
-                branches: 80,
-                statements: 80,
-              },
-            },
-          },
+      include: ["src/**/*.test.{ts,tsx}"],
+      environment: "jsdom",
+      setupFiles: ["src/setupTests.ts"],
+      globals: true,
+      coverage: {
+        provider: "v8",
+        reporter: ["text", "json", "html", "lcov"],
+        exclude: [
+          "node_modules/",
+          "dist/",
+          "**/*.stories.{ts,tsx}",
+          "**/*.test.{ts,tsx}",
+          "**/index.ts",
+          ".storybook/",
+          "storybook-static/",
+          "src/setupTests.ts",
+          "src/vitest.shims.d.ts",
+        ],
+        thresholds: {
+          lines: 80,
+          functions: 80,
+          branches: 80,
+          statements: 80,
         },
-        {
-          extends: true,
-          plugins: [
-            // The plugin will run tests for the stories defined in your Storybook config
-            // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
-            storybookTest({
-              configDir: path.join(dirname, ".storybook"),
-            }),
-          ],
-          test: {
-            name: "storybook",
-            browser: {
-              enabled: true,
-              headless: true,
-              provider: playwright(),
-              instances: [
-                {
-                  browser: "chromium",
-                  launch: {
-                    args: [
-                      "--disable-web-security",
-                      "--disable-features=IsolateOrigins,site-per-process",
-                      "--no-sandbox",
-                      "--disable-setuid-sandbox",
-                      "--disable-dev-shm-usage",
-                      "--disable-gpu",
-                    ],
-                  },
-                },
-              ],
-              ui: false,
-            },
-            setupFiles: [".storybook/vitest.setup.ts"],
-            testTimeout: process.env.CI ? 120000 : 60000,
-            hookTimeout: process.env.CI ? 120000 : 60000,
-            teardownTimeout: process.env.CI ? 120000 : 60000,
-            isolate: false, // Disable isolation to prevent module loading issues in browser mode
-            retry: process.env.CI ? 2 : 0,
-            bail: 0,
-            onConsoleLog: () => false,
-            // Browser mode doesn't work well with forks pool in CI
-            // Use default pool for browser mode
-            maxConcurrency: process.env.CI ? 1 : undefined,
-          },
-        },
-      ],
+      },
     },
   };
 });

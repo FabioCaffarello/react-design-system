@@ -10,9 +10,9 @@
   "exports": {
     ".": {
       "types": "./dist/ui/index.d.ts",
+      "style": "./dist/react-design-system.css",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "style": "./dist/react-design-system.css"
+      "require": "./dist/index.cjs"
     },
     "./styles": "./dist/react-design-system.css",
     "./styles.css": "./dist/react-design-system.css",

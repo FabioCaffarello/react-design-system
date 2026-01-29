@@ -1,3 +1,5 @@
+@import "./styles/index.css";
+
 /**
  * AIppin Design System - Root Style Entry
  *
@@ -7,5 +9,3 @@
  * @brand AIppin
  * @version 1.0.0
  */
-
-@import "./styles/index.css";

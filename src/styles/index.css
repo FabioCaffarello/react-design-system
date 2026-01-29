@@ -1,7 +1,8 @@
 /* ============================================
  * TAILWIND CSS 4
- * IMPORTANT: @import must be the very first statement (after comments)
+ * IMPORTANT: @source and @import must be the first statements (after comments)
  * ============================================ */
+
 @import "tailwindcss";
 
 /* Scan all UI source files for Tailwind classes */
