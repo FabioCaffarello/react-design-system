@@ -97,9 +97,9 @@ function Sidebar({ children, className = "", style, ...props }: SidebarProps) {
           "flex",
           "flex-col",
           "h-full",
-          "bg-[var(--color-muted)]",
+          "bg-surface-subtle",
           "border-r",
-          "border-[var(--color-border)]",
+          "border-line-default",
           "overflow-hidden",
           className,
         )}
