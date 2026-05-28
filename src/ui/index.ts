@@ -77,9 +77,6 @@ export {
   type AppProviderConfig,
 } from "./providers/AppProvider";
 
-// 4. THEMES (may depend on providers)
-export * from "./themes";
-
 // 5. COMPONENTS (depend on providers, tokens, and utils)
 export * from "./atoms";
 export * from "./molecules";
