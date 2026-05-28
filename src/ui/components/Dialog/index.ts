@@ -16,6 +16,7 @@
  */
 
 // Export dialog components
+export { default } from "./Dialog";
 export { default as Dialog } from "./Dialog";
 export { DialogTrigger } from "./DialogTrigger";
 export { DialogContent } from "./DialogContent";
