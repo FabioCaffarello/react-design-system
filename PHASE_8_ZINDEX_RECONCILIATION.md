@@ -1,8 +1,40 @@
 # Fase 8 — Reconciliação do sistema de z-index
 
-**Status:** planejada, adiada para depois do cleanup pós-prune.
+**Status:** ✅ concluída em 2026-05-28 na branch
+`phase/08-zindex-reconciliation`.
 **Origem:** descoberta no #3b durante a investigação do `z-[100]` do
 `SideNavbarToggle` (item B1 do plano).
+
+## Resultado
+
+- 4 commits feat/docs + 1 commit doc de pré-achados:
+  - `73523e1` docs: registro de achados pré-commit
+  - `4afc0bf` feat(tokens): consumo de z semântico de topo (Toast,
+    Tooltip, Modal/Dialog, DatePicker popover) — 7 sites
+  - `49af09b` feat(tokens): consumo estrutural (sticky, fixed,
+    modal-backdrop, base) — 5 sites + 4 testes do Header
+  - `f7e22ed` docs: 14 comentários `// micro-z:` justificando
+    exceções remanescentes
+  - `3b406c6` feat(tokens): SideNavbarToggle floating `z-[100]` →
+    `fixed` (1030) — fecha o último magic number
+- Critério de pronto atendido: zero raw `z-N`/`z-[N]` em código de
+  componente fora das 14 exceções `// micro-z:` documentadas
+  (Dropdown internals, Toggle non-floating, ResizeHandle, NavbarItem
+  label, AvatarGroup stacking, Navbar item gap).
+- Pareou com o achado da Phase 7 (consumo de cor semântica): mesma
+  patologia — tokens definidos, código não consome — agora fechado
+  no domínio Z.
+
+## Follow-ups deixados pra polish
+
+- `Dialog/DialogContent.tsx:128` `relative z-[1050]` redundante
+  (já registrado no BACKLOG).
+- `NavbarItem.tsx` z-index duplicado em className + style inline
+  (já registrado no BACKLOG; marcado com cross-refs em ambos os
+  sítios).
+- `modal-backdrop` como camada Z separada serve só 1 componente —
+  decisão futura de manter, mover pra `tokens/sidebar.ts`, ou
+  consolidar com `modal` (achado lateral abaixo).
 
 ## Problema
 

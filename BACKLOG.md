@@ -62,9 +62,11 @@ precise de z-index próprio.
 **Por que importa:** código defensivo desnecessário; após a migração
 da Phase 8, ambos viram `getZIndexClass("modal")` — o segundo continua
 redundante, agora gritando mais alto.
-**Abordagem:** PR pequeno separado removendo o `relative z-50` da
-linha 128. Polish, não blocker. Não tocar durante a Phase 8 pra não
-misturar refator com migração de tokens.
+**Abordagem:** PR pequeno separado removendo o `relative
+${getZIndexClass("modal")}` da linha 128. Polish, não blocker.
+Phase 8 já fechou; agora os dois sítios estão simétricos como
+`getZIndexClass("modal")` — a redundância do interno ficou ainda
+mais visível.
 
 ## Phase 9 — Color shim consolidation
 
