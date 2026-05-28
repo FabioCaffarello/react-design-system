@@ -6,7 +6,6 @@ import {
   getTypographyClasses,
   getTypographySize,
 } from "../../tokens/typography";
-import { getColorClass } from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import { cn, cva } from "../../utils";
@@ -37,7 +36,7 @@ const HelperText = memo(function HelperText({
         getTypographyClasses("caption"),
         error && "text-fg-error",
         success && "text-fg-success",
-        !error && !success && getColorClass("neutral", "DEFAULT", "text"),
+        !error && !success && "text-fg-secondary",
       ),
     [error, success],
   );
@@ -203,18 +202,18 @@ const Input = memo(
             default: cn(
               "border-0",
               "border-b-2",
-              getColorClass("neutral", "DEFAULT", "border"),
+              "border-line-default",
               "focus:border-line-focus",
             ),
             outlined: cn(
               "border",
-              getColorClass("neutral", "DEFAULT", "border"),
+              "border-line-default",
               "focus:border-line-focus",
             ),
             filled: cn(
-              getColorClass("neutral", "light", "bg"),
+              "bg-surface-muted",
               "border-0",
-              "focus:bg-white",
+              "focus:bg-surface-base",
               "focus:ring-2",
               getFocusRingColor,
             ),
@@ -361,7 +360,7 @@ const Input = memo(
         <div className="relative">
           {leftIcon && (
             <div
-              className={`absolute left-3 ${iconPosition} ${getColorClass("neutral", "DEFAULT", "text")} opacity-60 pointer-events-none`}
+              className={`absolute left-3 ${iconPosition} text-fg-secondary opacity-60 pointer-events-none`}
             >
               <div className={iconSize}>{leftIcon}</div>
             </div>
@@ -409,7 +408,7 @@ const Input = memo(
             )}
             {rightIcon && !shouldShowClear && !isPassword && (
               <div
-                className={`${getColorClass("neutral", "DEFAULT", "text")} opacity-60 pointer-events-none ${iconSize}`}
+                className={`text-fg-secondary opacity-60 pointer-events-none ${iconSize}`}
               >
                 {rightIcon}
               </div>
