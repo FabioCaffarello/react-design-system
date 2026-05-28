@@ -7,14 +7,14 @@
  * @version 2.0.0
  */
 
-// Colors - New modular system
+// Colors - canonical exports from the modular new system
 export * from "./colors/index";
 
-// Colors - Legacy exports for backward compatibility
+// LEGACY: re-exports below point to ./colors.ts (shim) to support
+// 113 neutral-role call sites scheduled for Phase 7 migration. Will
+// be repointed and the shim deleted once Phase 7 closes. See
+// PHASE_7_CANDIDATES.md for the full call-site inventory.
 export {
-  COLOR_TOKENS,
-  COLOR_TOKENS_LIGHT,
-  COLOR_TOKENS_DARK,
   getColor,
   getColorClass,
   getHoverColorClass,
