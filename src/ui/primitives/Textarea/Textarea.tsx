@@ -1,6 +1,6 @@
 import { forwardRef, memo, useMemo } from "react";
 import type { TextareaHTMLAttributes } from "react";
-import { getColorClass, getFocusColorClass } from "../../tokens/colors";
+import { getColorClass } from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getTypographySize } from "../../tokens/typography";
@@ -31,15 +31,9 @@ const Textarea = memo(
     ref,
   ) {
     // Memoize focus ring colors
-    const primaryFocusRing = useMemo(
-      () => getFocusColorClass("primary", "DEFAULT", "border"),
-      [],
-    );
+    const primaryFocusRing = useMemo(() => "focus:border-line-focus", []);
 
-    const errorFocusRing = useMemo(
-      () => getFocusColorClass("error", "DEFAULT", "border"),
-      [],
-    );
+    const errorFocusRing = useMemo(() => "focus:border-error", []);
 
     const focusRingColor = useMemo(
       () =>
@@ -76,7 +70,7 @@ const Textarea = memo(
           "focus:ring-offset-2",
           resizeClasses[resize],
           error
-            ? cn(getColorClass("error", "DEFAULT", "border"), focusRingColor)
+            ? cn("border-error", focusRingColor)
             : cn(getColorClass("neutral", "DEFAULT", "border"), focusRingColor),
           className,
         ),

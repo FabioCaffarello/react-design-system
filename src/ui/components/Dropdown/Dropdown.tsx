@@ -307,12 +307,9 @@ export default function Dropdown({
                       )
                     : item.variant === "danger"
                       ? cn(
-                          getColorClass("error", "dark", "text"),
-                          getHoverColorClass("error", "light", "bg"),
-                          getFocusColorClass("error", "light", "bg").replace(
-                            "focus:border-",
-                            "focus:bg-",
-                          ),
+                          "text-error-dark",
+                          "hover:bg-error-bg-emphasis",
+                          "focus:bg-error-bg-emphasis",
                         )
                       : cn(
                           getColorClass("neutral", "dark", "text"),

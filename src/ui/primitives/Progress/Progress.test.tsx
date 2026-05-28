@@ -44,27 +44,27 @@ describe("Progress", () => {
       <Progress value={50} variant="primary" />,
     );
     let fill = container.querySelector('div[aria-hidden="true"]');
-    expect(fill).toHaveClass("bg-indigo-500");
+    expect(fill).toHaveClass("bg-surface-brand");
 
     rerender(<Progress value={50} variant="secondary" />);
     fill = container.querySelector('div[aria-hidden="true"]');
-    expect(fill).toHaveClass("bg-pink-500");
+    expect(fill).toHaveClass("bg-surface-secondary");
 
     rerender(<Progress value={50} variant="success" />);
     fill = container.querySelector('div[aria-hidden="true"]');
-    expect(fill).toHaveClass("bg-green-500");
+    expect(fill).toHaveClass("bg-success");
 
     rerender(<Progress value={50} variant="error" />);
     fill = container.querySelector('div[aria-hidden="true"]');
-    expect(fill).toHaveClass("bg-red-500");
+    expect(fill).toHaveClass("bg-error");
 
     rerender(<Progress value={50} variant="warning" />);
     fill = container.querySelector('div[aria-hidden="true"]');
-    expect(fill).toHaveClass("bg-yellow-500");
+    expect(fill).toHaveClass("bg-warning");
 
     rerender(<Progress value={50} variant="info" />);
     fill = container.querySelector('div[aria-hidden="true"]');
-    expect(fill).toHaveClass("bg-blue-500");
+    expect(fill).toHaveClass("bg-info");
   });
 
   it("applies correct size classes", () => {

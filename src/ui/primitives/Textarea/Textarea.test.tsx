@@ -18,7 +18,7 @@ describe("Textarea", () => {
   it("applies error styling when error is true", () => {
     render(<Textarea error />);
     const textarea = screen.getByRole("textbox");
-    expect(textarea).toHaveClass("border-red-500");
+    expect(textarea).toHaveClass("border-error");
     expect(textarea).toHaveAttribute("aria-invalid", "true");
   });
 

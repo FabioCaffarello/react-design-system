@@ -12,7 +12,7 @@
 export * from "./tokens/sidebar";
 export * from "./tokens/spacing";
 export * from "./tokens/typography";
-export * from "./tokens/colors";
+export * from "./tokens/colors/index";
 export * from "./tokens/breakpoints";
 export * from "./tokens/tokens.factory";
 export * from "./tokens/themes/light";
@@ -22,7 +22,7 @@ export * from "./tokens/themes/dark";
 export { cn } from "./utils";
 export { getSpacingClass, getSpacing } from "./tokens/spacing";
 export { getTypographyClasses, getTypography } from "./tokens/typography";
-export { getColorClass, getColor } from "./tokens/colors";
+export { getColorClass, getColor } from "./tokens/colors/index";
 export { getBreakpoint, getMediaQuery } from "./tokens/breakpoints";
 export {
   getAnimationClass,

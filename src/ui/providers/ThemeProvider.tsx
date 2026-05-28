@@ -9,18 +9,18 @@ import {
   type ReactNode,
 } from "react";
 import {
-  COLOR_TOKENS_LIGHT,
-  COLOR_TOKENS_DARK,
-  type ColorRole,
+  SEMANTIC_COLORS_LIGHT,
+  SEMANTIC_COLORS_DARK,
+  type SemanticColorName,
   type SemanticColor,
-} from "../tokens/colors";
+} from "../tokens/colors/index";
 import type { ThemeMode } from "../tokens";
 
 export interface ThemeContextValue {
   theme: ThemeMode;
   toggleTheme: () => void;
   setTheme: (theme: ThemeMode) => void;
-  colors: Record<ColorRole, SemanticColor>;
+  colors: Record<SemanticColorName, SemanticColor>;
   isDark: boolean;
 }
 
@@ -95,7 +95,8 @@ export function ThemeProvider({
     setThemeState(newTheme);
   };
 
-  const colors = theme === "light" ? COLOR_TOKENS_LIGHT : COLOR_TOKENS_DARK;
+  const colors =
+    theme === "light" ? SEMANTIC_COLORS_LIGHT : SEMANTIC_COLORS_DARK;
 
   const value: ThemeContextValue = {
     theme,

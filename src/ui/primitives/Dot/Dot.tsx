@@ -56,12 +56,12 @@ const dotVariants = cva(
     },
     compoundVariants: [
       // Map semantic variants to color tokens
-      { variant: "online", class: getColorClass("success", "DEFAULT", "bg") },
+      { variant: "online", class: "bg-success" },
       { variant: "offline", class: getColorClass("neutral", "DEFAULT", "bg") },
-      { variant: "pending", class: getColorClass("warning", "DEFAULT", "bg") },
-      { variant: "warning", class: getColorClass("warning", "DEFAULT", "bg") },
-      { variant: "error", class: getColorClass("error", "DEFAULT", "bg") },
-      { variant: "info", class: getColorClass("info", "DEFAULT", "bg") },
+      { variant: "pending", class: "bg-warning" },
+      { variant: "warning", class: "bg-warning" },
+      { variant: "error", class: "bg-error" },
+      { variant: "info", class: "bg-info" },
     ],
     defaultVariants: {
       variant: "offline",

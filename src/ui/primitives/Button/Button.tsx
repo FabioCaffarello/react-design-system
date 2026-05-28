@@ -61,22 +61,22 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: cn(
-          getColorClass("primary", "DEFAULT", "bg"),
-          getColorClass("primary", "contrast", "text"),
+          "bg-surface-brand",
+          "text-fg-inverse",
           "hover:opacity-90",
-          getFocusRingClass("primary", "DEFAULT"),
+          "focus:ring-line-brand",
         ),
         secondary: cn(
-          getColorClass("secondary", "DEFAULT", "bg"),
-          getColorClass("secondary", "contrast", "text"),
+          "bg-surface-secondary",
+          "text-fg-inverse",
           "hover:opacity-90",
-          getFocusRingClass("secondary", "DEFAULT"),
+          "focus:ring-line-secondary",
         ),
         error: cn(
-          getColorClass("error", "DEFAULT", "bg"),
-          getColorClass("error", "contrast", "text"),
+          "bg-error",
+          "text-fg-inverse",
           "hover:opacity-90",
-          getFocusRingClass("error", "DEFAULT"),
+          "focus:ring-error",
         ),
         outline: cn(
           "border-2",

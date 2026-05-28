@@ -43,9 +43,9 @@
   --color-brand-accent-dark: var(--color-yellow-500);
 
   /* Background subtle colors */
-  --color-bg-brand-subtle: var(--color-fuchsia-50);
-  --color-bg-secondary-subtle: var(--color-fuchsia-50);
-  --color-bg-accent-subtle: var(--color-yellow-50);
+  --color-surface-brand-subtle: var(--color-fuchsia-50);
+  --color-surface-secondary-subtle: var(--color-fuchsia-50);
+  --color-surface-accent-subtle: var(--color-yellow-50);
 
   /* ============================================
    * BORDER RADIUS
@@ -186,9 +186,9 @@
   --color-brand-secondary: var(--color-fuchsia-400);
   --color-brand-accent: var(--color-yellow-300);
 
-  --color-bg-brand-subtle: var(--color-fuchsia-950);
-  --color-bg-secondary-subtle: var(--color-fuchsia-950);
-  --color-bg-accent-subtle: var(--color-yellow-950);
+  --color-surface-brand-subtle: var(--color-fuchsia-950);
+  --color-surface-secondary-subtle: var(--color-fuchsia-950);
+  --color-surface-accent-subtle: var(--color-yellow-950);
 
   --shadow-button-primary: 0 4px 14px -3px rgb(129 140 248 / 0.5);
   --shadow-button-secondary: 0 4px 14px -3px rgb(232 121 249 / 0.5);

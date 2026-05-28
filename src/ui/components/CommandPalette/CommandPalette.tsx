@@ -317,11 +317,7 @@ export default function CommandPalette({
                         ${getSpacingClass("md", "py")}
                         text-left
                         ${getAnimationClass("base")}
-                        ${
-                          isSelected
-                            ? getColorClass("primary", "light", "bg")
-                            : "hover:bg-gray-50"
-                        }
+                        ${isSelected ? "bg-indigo-400" : "hover:bg-gray-50"}
                       `}
                     >
                       {item.icon && (
@@ -329,7 +325,7 @@ export default function CommandPalette({
                           className={`
                           ${
                             isSelected
-                              ? getColorClass("primary", "DEFAULT", "text")
+                              ? "text-fg-brand"
                               : getColorClass("neutral", "DEFAULT", "text")
                           }
                         `}
@@ -342,11 +338,7 @@ export default function CommandPalette({
                           className={`
                           text-sm
                           font-medium
-                          ${
-                            isSelected
-                              ? getColorClass("primary", "DEFAULT", "text")
-                              : "text-gray-900"
-                          }
+                          ${isSelected ? "text-fg-brand" : "text-gray-900"}
                         `}
                         >
                           {item.label}

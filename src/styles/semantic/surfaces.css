@@ -15,38 +15,38 @@
    * ============================================ */
 
   /* Level 0 - Base/Page background */
-  --surface-0-bg: var(--color-bg-base);
+  --surface-0-bg: var(--color-surface-canvas);
   --surface-0-border: transparent;
   --surface-0-shadow: none;
 
   /* Level 1 - Subtle elevation (sunken areas, input fields) */
   --surface-1-bg: var(--color-surface-sunken);
-  --surface-1-border: var(--color-border-subtle);
+  --surface-1-border: var(--color-line-subtle);
   --surface-1-shadow: var(--shadow-inner);
 
   /* Level 2 - Cards, panels (resting state) */
   --surface-2-bg: var(--color-surface-base);
-  --surface-2-border: var(--color-border-default);
+  --surface-2-border: var(--color-line-default);
   --surface-2-shadow: var(--shadow-sm);
 
   /* Level 3 - Raised cards (hover state) */
   --surface-3-bg: var(--color-surface-raised);
-  --surface-3-border: var(--color-border-default);
+  --surface-3-border: var(--color-line-default);
   --surface-3-shadow: var(--shadow-md);
 
   /* Level 4 - Dropdowns, popovers */
   --surface-4-bg: var(--color-surface-overlay);
-  --surface-4-border: var(--color-border-default);
+  --surface-4-border: var(--color-line-default);
   --surface-4-shadow: var(--shadow-lg);
 
   /* Level 5 - Modals, dialogs */
   --surface-5-bg: var(--color-surface-overlay);
-  --surface-5-border: var(--color-border-subtle);
+  --surface-5-border: var(--color-line-subtle);
   --surface-5-shadow: var(--shadow-xl);
 
   /* Level 6 - Maximum elevation (toasts, notifications) */
   --surface-6-bg: var(--color-surface-overlay);
-  --surface-6-border: var(--color-border-subtle);
+  --surface-6-border: var(--color-line-subtle);
   --surface-6-shadow: var(--shadow-2xl);
 
   /* ============================================
@@ -66,36 +66,36 @@
 
   /* Card interactive (clickable) */
   --surface-card-interactive-bg: var(--surface-2-bg);
-  --surface-card-interactive-border: var(--color-border-default);
+  --surface-card-interactive-border: var(--color-line-default);
   --surface-card-interactive-shadow: var(--shadow-sm);
 
-  --surface-card-interactive-hover-bg: var(--color-bg-subtle);
-  --surface-card-interactive-hover-border: var(--color-border-emphasis);
+  --surface-card-interactive-hover-bg: var(--color-surface-subtle);
+  --surface-card-interactive-hover-border: var(--color-line-emphasis);
   --surface-card-interactive-hover-shadow: var(--shadow-md);
 
-  --surface-card-interactive-active-bg: var(--color-bg-muted);
-  --surface-card-interactive-active-border: var(--color-border-emphasis);
+  --surface-card-interactive-active-bg: var(--color-surface-muted);
+  --surface-card-interactive-active-border: var(--color-line-emphasis);
   --surface-card-interactive-active-shadow: var(--shadow-sm);
 
   /* Panel */
-  --surface-panel-bg: var(--color-bg-subtle);
-  --surface-panel-border: var(--color-border-default);
+  --surface-panel-bg: var(--color-surface-subtle);
+  --surface-panel-border: var(--color-line-default);
   --surface-panel-shadow: none;
   --surface-panel-radius: var(--radius-xl);
 
   /* Sidebar */
-  --surface-sidebar-bg: var(--color-bg-base);
-  --surface-sidebar-border: var(--color-border-default);
+  --surface-sidebar-bg: var(--color-surface-canvas);
+  --surface-sidebar-border: var(--color-line-default);
   --surface-sidebar-shadow: var(--shadow-sm);
 
   /* Header */
-  --surface-header-bg: var(--color-bg-base);
-  --surface-header-border: var(--color-border-default);
+  --surface-header-bg: var(--color-surface-canvas);
+  --surface-header-border: var(--color-line-default);
   --surface-header-shadow: var(--shadow-sm);
 
   /* Footer */
-  --surface-footer-bg: var(--color-bg-subtle);
-  --surface-footer-border: var(--color-border-default);
+  --surface-footer-bg: var(--color-surface-subtle);
+  --surface-footer-border: var(--color-line-default);
   --surface-footer-shadow: none;
 
   /* Modal */
@@ -137,20 +137,20 @@
   --surface-toast-radius: var(--radius-xl);
 
   /* Input */
-  --surface-input-bg: var(--color-bg-base);
-  --surface-input-border: var(--color-border-default);
+  --surface-input-bg: var(--color-surface-canvas);
+  --surface-input-border: var(--color-line-default);
   --surface-input-shadow: var(--shadow-xs);
   --surface-input-radius: var(--radius-input);
 
-  --surface-input-hover-border: var(--color-border-emphasis);
-  --surface-input-focus-border: var(--color-border-focus);
+  --surface-input-hover-border: var(--color-line-emphasis);
+  --surface-input-focus-border: var(--color-line-focus);
   --surface-input-focus-shadow: var(--shadow-input-focus);
 
   --surface-input-error-border: var(--color-error);
   --surface-input-error-shadow: var(--shadow-input-error);
 
-  --surface-input-disabled-bg: var(--color-bg-muted);
-  --surface-input-disabled-border: var(--color-border-muted);
+  --surface-input-disabled-bg: var(--color-surface-muted);
+  --surface-input-disabled-border: var(--color-line-muted);
 
   /* Button surfaces */
   --surface-button-primary-bg: var(--color-brand-primary);
@@ -161,19 +161,19 @@
   --surface-button-primary-hover-shadow: var(--shadow-button-primary-hover);
 
   --surface-button-secondary-bg: transparent;
-  --surface-button-secondary-border: var(--color-border-default);
+  --surface-button-secondary-border: var(--color-line-default);
   --surface-button-secondary-shadow: var(--shadow-button);
 
   --surface-button-ghost-bg: transparent;
   --surface-button-ghost-border: transparent;
 
   /* Table */
-  --surface-table-bg: var(--color-bg-base);
-  --surface-table-border: var(--color-border-default);
-  --surface-table-header-bg: var(--color-bg-subtle);
-  --surface-table-row-hover-bg: var(--color-state-hover);
-  --surface-table-row-selected-bg: var(--color-state-selected);
-  --surface-table-row-stripe-bg: var(--color-bg-subtle);
+  --surface-table-bg: var(--color-surface-canvas);
+  --surface-table-border: var(--color-line-default);
+  --surface-table-header-bg: var(--color-surface-subtle);
+  --surface-table-row-hover-bg: var(--color-surface-hover);
+  --surface-table-row-selected-bg: var(--color-surface-selected);
+  --surface-table-row-stripe-bg: var(--color-surface-subtle);
 
   /* Code block */
   --surface-code-bg: var(--color-slate-900);

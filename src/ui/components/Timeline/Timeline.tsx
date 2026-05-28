@@ -2,7 +2,6 @@
 
 import type { ReactNode } from "react";
 import { CheckCircle2 } from "lucide-react";
-import { getColorClass } from "../../tokens/colors";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getRadiusClass } from "../../tokens/radius";
 
@@ -74,11 +73,11 @@ export default function Timeline({
                   border-2
                   ${
                     status === "completed"
-                      ? `${getColorClass("success", "DEFAULT", "bg")} ${getColorClass("success", "DEFAULT", "border")} text-white`
+                      ? `${"bg-success"} ${"border-success"} text-white`
                       : status === "active"
-                        ? `${getColorClass("primary", "DEFAULT", "bg")} ${getColorClass("primary", "DEFAULT", "border")} text-white`
+                        ? `${"bg-surface-brand"} ${"border-line-brand"} text-white`
                         : status === "error"
-                          ? `${getColorClass("error", "DEFAULT", "bg")} ${getColorClass("error", "DEFAULT", "border")} text-white`
+                          ? `${"bg-error"} ${"border-error"} text-white`
                           : "bg-white border-gray-300 text-gray-400"
                   }
                 `}
@@ -98,7 +97,7 @@ export default function Timeline({
                       w-full
                       h-0.5
                       mt-2
-                      ${status === "completed" ? getColorClass("success", "DEFAULT", "bg") : "bg-gray-300"}
+                      ${status === "completed" ? "bg-success" : "bg-gray-300"}
                     `}
                   />
                 )}
@@ -158,11 +157,11 @@ export default function Timeline({
                 border-2
                 ${
                   status === "completed"
-                    ? `${getColorClass("success", "DEFAULT", "bg")} ${getColorClass("success", "DEFAULT", "border")} text-white`
+                    ? `${"bg-success"} ${"border-success"} text-white`
                     : status === "active"
-                      ? `${getColorClass("primary", "DEFAULT", "bg")} ${getColorClass("primary", "DEFAULT", "border")} text-white`
+                      ? `${"bg-surface-brand"} ${"border-line-brand"} text-white`
                       : status === "error"
-                        ? `${getColorClass("error", "DEFAULT", "bg")} ${getColorClass("error", "DEFAULT", "border")} text-white`
+                        ? `${"bg-error"} ${"border-error"} text-white`
                         : "bg-white border-gray-300 text-gray-400"
                 }
               `}
@@ -181,7 +180,7 @@ export default function Timeline({
                     flex-1
                     min-h-16
                     mt-2
-                    ${status === "completed" ? getColorClass("success", "DEFAULT", "bg") : "bg-gray-300"}
+                    ${status === "completed" ? "bg-success" : "bg-gray-300"}
                   `}
                 />
               )}
@@ -196,7 +195,7 @@ export default function Timeline({
                 className={`
                 text-base
                 font-semibold
-                ${status === "active" ? getColorClass("primary", "DEFAULT", "text") : "text-gray-900"}
+                ${status === "active" ? "text-fg-brand" : "text-gray-900"}
               `}
               >
                 {item.title}

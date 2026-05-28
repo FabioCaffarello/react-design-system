@@ -2,7 +2,7 @@
 
 import { forwardRef, memo, useMemo, useCallback } from "react";
 import type { InputHTMLAttributes } from "react";
-import { getColorClass, getFocusColorClass } from "../../tokens/colors";
+import { getColorClass } from "../../tokens/colors";
 import { getAnimationClass } from "../../tokens/animations";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getSwitchClasses } from "../../tokens/switch";
@@ -77,11 +77,7 @@ const Switch = memo(
 
     // Memoize focus ring color
     const focusRingColor = useMemo(
-      () =>
-        getFocusColorClass("primary", "DEFAULT", "border").replace(
-          "focus:border-",
-          "focus:ring-",
-        ),
+      () => "focus:border-line-focus".replace("focus:border-", "focus:ring-"),
       [],
     );
 
@@ -103,9 +99,9 @@ const Switch = memo(
           "focus:ring-offset-2",
           config.track,
           checked
-            ? getColorClass("primary", "DEFAULT", "bg")
+            ? "bg-surface-brand"
             : getColorClass("neutral", "light", "bg"),
-          error && !checked && getColorClass("error", "DEFAULT", "border"),
+          error && !checked && "border-error",
           disabled && "opacity-50 cursor-not-allowed",
           className,
         ),
@@ -196,7 +192,7 @@ const Switch = memo(
                   getTypographySize("bodySmall"),
                   getTypographyWeight("label"),
                   error
-                    ? getColorClass("error", "DEFAULT", "text")
+                    ? "text-fg-error"
                     : getColorClass("neutral", "dark", "text"),
                   disabled ? "opacity-50" : "cursor-pointer",
                 )}
@@ -211,7 +207,7 @@ const Switch = memo(
                   getSpacingClass("xs", "mt"),
                   getTypographySize("bodySmall"),
                   error
-                    ? getColorClass("error", "DEFAULT", "text")
+                    ? "text-fg-error"
                     : getColorClass("neutral", "DEFAULT", "text"),
                 )}
               >

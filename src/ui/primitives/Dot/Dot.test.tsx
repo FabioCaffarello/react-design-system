@@ -27,7 +27,7 @@ describe("Dot", () => {
     it("renders online variant with success/green color", () => {
       const { container } = render(<Dot variant="online" />);
       const dot = container.querySelector("span");
-      expect(dot).toHaveClass("bg-green-500");
+      expect(dot).toHaveClass("bg-success");
     });
 
     it("renders offline variant with neutral/gray color", () => {
@@ -39,25 +39,25 @@ describe("Dot", () => {
     it("renders pending variant with warning/yellow color", () => {
       const { container } = render(<Dot variant="pending" />);
       const dot = container.querySelector("span");
-      expect(dot).toHaveClass("bg-yellow-500");
+      expect(dot).toHaveClass("bg-warning");
     });
 
     it("renders warning variant with warning/yellow color", () => {
       const { container } = render(<Dot variant="warning" />);
       const dot = container.querySelector("span");
-      expect(dot).toHaveClass("bg-yellow-500");
+      expect(dot).toHaveClass("bg-warning");
     });
 
     it("renders error variant with error/red color", () => {
       const { container } = render(<Dot variant="error" />);
       const dot = container.querySelector("span");
-      expect(dot).toHaveClass("bg-red-500");
+      expect(dot).toHaveClass("bg-error");
     });
 
     it("renders info variant with info/blue color", () => {
       const { container } = render(<Dot variant="info" />);
       const dot = container.querySelector("span");
-      expect(dot).toHaveClass("bg-blue-500");
+      expect(dot).toHaveClass("bg-info");
     });
 
     it("renders all variants correctly", () => {
@@ -190,7 +190,7 @@ describe("Dot", () => {
     it("combines variant and size correctly", () => {
       const { container } = render(<Dot variant="error" size="lg" />);
       const dot = container.querySelector("span");
-      expect(dot).toHaveClass("bg-red-500"); // error variant
+      expect(dot).toHaveClass("bg-error"); // error variant
       expect(dot).toHaveClass("w-2.5", "h-2.5"); // lg size
     });
 

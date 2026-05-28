@@ -6,7 +6,7 @@ import {
   getTypographyClasses,
   getTypographySize,
 } from "../../tokens/typography";
-import { getColorClass, getFocusColorClass } from "../../tokens/colors";
+import { getColorClass } from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import { cn, cva } from "../../utils";
@@ -33,8 +33,8 @@ const HelperText = memo(function HelperText({
       cn(
         getSpacingClass("xs", "mt"),
         getTypographyClasses("caption"),
-        error && getColorClass("error", "DEFAULT", "text"),
-        success && getColorClass("success", "DEFAULT", "text"),
+        error && "text-fg-error",
+        success && "text-fg-success",
         !error && !success && getColorClass("neutral", "DEFAULT", "text"),
       ),
     [error, success],
@@ -135,20 +135,11 @@ const Select = memo(
     );
 
     // Memoize focus ring colors
-    const primaryFocusRing = useMemo(
-      () => getFocusColorClass("primary", "DEFAULT", "border"),
-      [],
-    );
+    const primaryFocusRing = useMemo(() => "focus:border-line-focus", []);
 
-    const errorFocusRing = useMemo(
-      () => getFocusColorClass("error", "DEFAULT", "border"),
-      [],
-    );
+    const errorFocusRing = useMemo(() => "focus:border-error", []);
 
-    const successFocusRing = useMemo(
-      () => getFocusColorClass("success", "DEFAULT", "border"),
-      [],
-    );
+    const successFocusRing = useMemo(() => "focus:border-success", []);
 
     // Memoize focus ring color function
     const getFocusRingColor = useCallback(
@@ -204,14 +195,8 @@ const Select = memo(
               getColorClass("neutral", "DEFAULT", "border"),
               getFocusRingColor(),
             ),
-            error: cn(
-              getColorClass("error", "DEFAULT", "border"),
-              getFocusRingColor("error"),
-            ),
-            success: cn(
-              getColorClass("success", "DEFAULT", "border"),
-              getFocusRingColor("success"),
-            ),
+            error: cn("border-error", getFocusRingColor("error")),
+            success: cn("border-success", getFocusRingColor("success")),
           },
         },
         defaultVariants: {
@@ -229,12 +214,7 @@ const Select = memo(
 
     // Memoize classes
     const selectClasses = useMemo(
-      () =>
-        cn(
-          selectVariants({ size, state: selectState }),
-          className,
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-        ),
+      () => cn(selectVariants({ size, state: selectState }), className),
       [size, selectState, className],
     );
 

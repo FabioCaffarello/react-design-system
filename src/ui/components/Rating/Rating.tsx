@@ -102,7 +102,7 @@ export default function Rating({
       getAnimationClass("base"),
       !readOnly && "cursor-pointer",
       isFilled || isHalf
-        ? getColorClass("warning", "DEFAULT", "text")
+        ? "text-fg-warning"
         : getColorClass("neutral", "light", "text"),
     );
 

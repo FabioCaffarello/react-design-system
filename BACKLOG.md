@@ -68,21 +68,73 @@ Phase 8 já fechou; agora os dois sítios estão simétricos como
 `getZIndexClass("modal")` — a redundância do interno ficou ainda
 mais visível.
 
-## Phase 9 — Color shim consolidation
+## Phase 7 — Semantic color migration (próxima fase, desbloqueada)
 
-**Descoberto em:** #4.
-**Estado:** registrado como fase própria em
-`PHASE_9_COLOR_SHIM_CONSOLIDATION.md`. `tokens/colors.ts` é um shim
-legacy de 451 linhas que sombreia o sistema novo em `tokens/colors/`
-via resolução de módulo do TS. Os 37 imports de `'tokens/colors'`
-caem no shim, não no sistema novo, e `colors/utils.ts` é
-efetivamente dead code.
-**Por que está aqui:** ponteiro pro arquivo de fase pra manter
-rastreável junto dos outros itens não-blockers.
-**Dependência crítica:** Phase 9 **deve vir antes** da Phase 7. Se
-Phase 7 rodar primeiro, ela vai escrever contra a API do shim
-(currently live) e ter que ser refeita pós-consolidação. Detalhes
-no doc da Phase 9.
+**Estado:** desbloqueada pela Phase 9 (closure 2026-05-28). Doc:
+`PHASE_7_SEMANTIC_COLORS.md`. Checklist de partida pra frente (b):
+`PHASE_7_CANDIDATES.md`.
+**Escopo consolidado** em 3 frentes: (a) 129 cores cruas originais,
+(b) 113 neutrais sobreviventes do shim, (c) 25 arbitrary syntax na
+SideNavbar. Total ~267 sítios em ~50 arquivos.
+**Inclui:** deletar `tokens/colors.ts` como último passo (substitui
+o item "Phase 9" que estava aqui antes).
+
+## `Text.tsx` accepts `color` prop with no effect
+
+**Descoberto em:** Phase 9, ao migrar Text.tsx pra lookup table (PASSO 6,
+commit 5). O `color` prop existia na API pública mas o branch
+`else if (color)` chamava exatamente o mesmo `getColorClass("neutral",
+"dark", "text")` que o branch `else` final — fallback idêntico, sem
+nunca aplicar a cor passada. Comentário inline no código antigo
+admitia "we can't dynamically construct Tailwind classes" e
+literalmente devolvia o default.
+**Estado pós-migração:** o prop continua na API pra preservar
+back-compat de tipos, e o componente faz `void color` pra silenciar
+warning de unused. Redundância explícita, sem efeito visual.
+**Decidir:** remover da API pública (breaking change menor — improvável
+que alguém esteja usando) OU implementar o comportamento esperado
+(suporte a cor literal arbitrária via style inline, já que Tailwind v4
+não permite classe dinâmica). Provavelmente a primeira opção — API
+stale. PR pequeno.
+
+## `--color-slate-850` referenced but undefined
+
+**Descoberto em:** Phase 9, durante o rename de namespace (PASSO 3).
+**Estado:** `themes/dark.css:128` referencia `var(--color-slate-850)` na
+declaração de `--color-surface-hover-subtle` (anteriormente
+`--color-state-hover-subtle`). A escala primitiva de slate em
+`primitives/colors.css` vai de `50/100/200/.../900/950` — não há
+`slate-850`. A var resolve como `unset`, herdando o valor inicial pra
+`background-color` (transparente) ou cascateando por especificidade.
+**Por que importa:** hover-subtle no dark mode provavelmente não tem o
+visual pretendido. Fallback silencioso, fácil de não notar até alguém
+inspecionar.
+**Pré-existente, fora do escopo da Phase 9 — o rename só preservou a
+referência quebrada.**
+**Cleanup:** ou trocar pra um valor existente (`slate-800` ou
+`slate-900`, dependendo do contraste desejado com `hover` = `slate-800`)
+ou adicionar `slate-850` à escala primitiva se houver intent (Tailwind
+não tem `850` nativo, então seria token custom). PR pequeno.
+
+## Tailwind v4 markdown auto-scan generates orphan utilities
+
+**Descoberto em:** Phase 9, durante verificação empírica do PASSO 4.
+**Estado:** Tailwind v4 auto-scan está capturando exemplos de classe
+citados em prosa nos docs `PHASE_*.md`, gerando utilities inofensivas
+mas órfãs no bundle. Ex.: após Phase 9, o storybook-static CSS contém
+`.bg-\[var\(--color-bg-base\)\]` mesmo após o rename eliminar
+`--color-bg-base` da escala — porque o doc da Phase 9 cita essa string
+em backticks como exemplo do antes da migração. Tailwind enxerga a
+string e gera o utility. A var apontada não existe mais, então
+`var(--color-bg-base)` resolve como `unset` em runtime.
+**Por que importa:** poluição silenciosa do CSS bundle. Tamanho
+desprezível mas cria ruído em auditorias futuras ("essa classe
+ainda existe? por quê?").
+**Cleanup:** configurar `@source not "*.md"` no `styles/index.css`
+(v4 suporta `@source not` pra exclusão), ou padronizar exemplos de
+classe nos docs pra usar fences que não casem com pattern Tailwind
+(ex.: envolver em `\`` invertido ou prefixar com `~`). PR pequeno
+isolado.
 
 ## Coverage gap: subcomponents (SideNavbar internals)
 

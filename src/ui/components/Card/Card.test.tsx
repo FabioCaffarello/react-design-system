@@ -32,7 +32,7 @@ describe("Card", () => {
   it("applies selected variant classes", () => {
     const { container } = render(<Card variant="selected">Content</Card>);
     const card = container.firstChild as HTMLElement;
-    expect(card).toHaveClass("border-indigo-500", "shadow-md");
+    expect(card).toHaveClass("border-line-brand", "shadow-md");
   });
 
   it("applies medium padding by default", () => {

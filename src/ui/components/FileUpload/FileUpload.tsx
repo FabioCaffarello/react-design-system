@@ -5,7 +5,6 @@ import { Upload, X, File, CheckCircle2, AlertCircle } from "lucide-react";
 import { cn } from "../../utils";
 import {
   getColorClass,
-  getFocusColorClass,
   getHoverColorClass,
   getSpacingClass,
   getRadiusClass,
@@ -229,14 +228,14 @@ export default function FileUpload({
           "border-2",
           "border-dashed",
           isDragging
-            ? getColorClass("primary", "DEFAULT", "border")
+            ? "border-line-brand"
             : getColorClass("neutral", "DEFAULT", "border"),
           getRadiusClass("lg"),
           getSpacingClass("lg", "p"),
           "text-center",
           "cursor-pointer",
           getAnimationClass("base"),
-          getFocusColorClass("primary", "DEFAULT", "border"),
+          "focus:border-line-focus",
           disabled
             ? "opacity-50 cursor-not-allowed"
             : cn(
@@ -274,7 +273,7 @@ export default function FileUpload({
               "h-8",
               "w-8",
               isDragging
-                ? getColorClass("primary", "DEFAULT", "text")
+                ? "text-fg-brand"
                 : getColorClass("neutral", "DEFAULT", "text"),
             )}
           />
@@ -329,7 +328,7 @@ export default function FileUpload({
                 getColorClass("neutral", "DEFAULT", "border"),
                 getRadiusClass("md"),
                 fileUpload.error
-                  ? getColorClass("error", "light", "bg")
+                  ? "bg-error-bg"
                   : getColorClass("neutral", "light", "bg"),
               )}
             >
@@ -383,16 +382,12 @@ export default function FileUpload({
                     )}
                   >
                     <AlertCircle
-                      className={cn(
-                        "h-3",
-                        "w-3",
-                        getColorClass("error", "DEFAULT", "text"),
-                      )}
+                      className={cn("h-3", "w-3", "text-fg-error")}
                     />
                     <span
                       className={cn(
                         getTypographySizeFromFontSize("xs"),
-                        getColorClass("error", "DEFAULT", "text"),
+                        "text-fg-error",
                       )}
                     >
                       {fileUpload.error}
@@ -407,13 +402,7 @@ export default function FileUpload({
               </div>
 
               {!fileUpload.error && !showProgress && (
-                <CheckCircle2
-                  className={cn(
-                    "h-5",
-                    "w-5",
-                    getColorClass("success", "DEFAULT", "text"),
-                  )}
-                />
+                <CheckCircle2 className={cn("h-5", "w-5", "text-fg-success")} />
               )}
 
               <Button

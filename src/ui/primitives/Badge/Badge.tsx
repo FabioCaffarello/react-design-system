@@ -94,38 +94,22 @@ const badgeVariants = cva(
       {
         variant: "success",
         style: "solid",
-        class: cn(
-          getColorClass("success", "light", "bg"),
-          getColorClass("success", "dark", "text"),
-          getColorClass("success", "DEFAULT", "border"),
-        ),
+        class: cn("bg-success-bg", "text-success-dark", "border-success"),
       },
       {
         variant: "warning",
         style: "solid",
-        class: cn(
-          getColorClass("warning", "light", "bg"),
-          getColorClass("warning", "dark", "text"),
-          getColorClass("warning", "DEFAULT", "border"),
-        ),
+        class: cn("bg-warning-bg", "text-warning-dark", "border-warning"),
       },
       {
         variant: "error",
         style: "solid",
-        class: cn(
-          getColorClass("error", "light", "bg"),
-          getColorClass("error", "dark", "text"),
-          getColorClass("error", "DEFAULT", "border"),
-        ),
+        class: cn("bg-error-bg", "text-error-dark", "border-error"),
       },
       {
         variant: "info",
         style: "solid",
-        class: cn(
-          getColorClass("info", "light", "bg"),
-          getColorClass("info", "dark", "text"),
-          getColorClass("info", "DEFAULT", "border"),
-        ),
+        class: cn("bg-info-bg", "text-info-dark", "border-info"),
       },
       {
         variant: "neutral",
@@ -139,57 +123,33 @@ const badgeVariants = cva(
       {
         variant: "primary",
         style: "solid",
-        class: cn(
-          getColorClass("primary", "light", "bg"),
-          getColorClass("primary", "dark", "text"),
-          getColorClass("primary", "DEFAULT", "border"),
-        ),
+        class: cn("bg-indigo-400", "text-indigo-600", "border-line-brand"),
       },
       {
         variant: "secondary",
         style: "solid",
-        class: cn(
-          getColorClass("secondary", "light", "bg"),
-          getColorClass("secondary", "dark", "text"),
-          getColorClass("secondary", "DEFAULT", "border"),
-        ),
+        class: cn("bg-pink-300", "text-pink-600", "border-line-secondary"),
       },
       // Outline style variants
       {
         variant: "success",
         style: "outline",
-        class: cn(
-          "bg-transparent",
-          getColorClass("success", "DEFAULT", "border"),
-          getColorClass("success", "DEFAULT", "text"),
-        ),
+        class: cn("bg-transparent", "border-success", "text-fg-success"),
       },
       {
         variant: "warning",
         style: "outline",
-        class: cn(
-          "bg-transparent",
-          getColorClass("warning", "DEFAULT", "border"),
-          getColorClass("warning", "DEFAULT", "text"),
-        ),
+        class: cn("bg-transparent", "border-warning", "text-fg-warning"),
       },
       {
         variant: "error",
         style: "outline",
-        class: cn(
-          "bg-transparent",
-          getColorClass("error", "DEFAULT", "border"),
-          getColorClass("error", "DEFAULT", "text"),
-        ),
+        class: cn("bg-transparent", "border-error", "text-fg-error"),
       },
       {
         variant: "info",
         style: "outline",
-        class: cn(
-          "bg-transparent",
-          getColorClass("info", "DEFAULT", "border"),
-          getColorClass("info", "DEFAULT", "text"),
-        ),
+        class: cn("bg-transparent", "border-info", "text-fg-info"),
       },
       {
         variant: "neutral",
@@ -203,19 +163,15 @@ const badgeVariants = cva(
       {
         variant: "primary",
         style: "outline",
-        class: cn(
-          "bg-transparent",
-          getColorClass("primary", "DEFAULT", "border"),
-          getColorClass("primary", "DEFAULT", "text"),
-        ),
+        class: cn("bg-transparent", "border-line-brand", "text-fg-brand"),
       },
       {
         variant: "secondary",
         style: "outline",
         class: cn(
           "bg-transparent",
-          getColorClass("secondary", "DEFAULT", "border"),
-          getColorClass("secondary", "DEFAULT", "text"),
+          "border-line-secondary",
+          "text-fg-brand-secondary",
         ),
       },
     ],

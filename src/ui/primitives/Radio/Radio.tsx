@@ -3,7 +3,7 @@
 import { forwardRef, memo, useMemo } from "react";
 import type { InputHTMLAttributes, ReactNode } from "react";
 import { getTypographyClasses } from "../../tokens/typography";
-import { getColorClass, getFocusColorClass } from "../../tokens/colors";
+import { getColorClass } from "../../tokens/colors";
 import { getSpacingClass } from "../../tokens/spacing";
 import { cn } from "../../utils";
 
@@ -63,15 +63,9 @@ const Radio = memo(
     );
 
     // Memoize focus ring colors
-    const primaryFocusRing = useMemo(
-      () => getFocusColorClass("primary", "DEFAULT", "border"),
-      [],
-    );
+    const primaryFocusRing = useMemo(() => "focus:border-line-focus", []);
 
-    const errorFocusRing = useMemo(
-      () => getFocusColorClass("error", "DEFAULT", "border"),
-      [],
-    );
+    const errorFocusRing = useMemo(() => "focus:border-error", []);
 
     const focusRingColor = useMemo(
       () =>
@@ -89,14 +83,14 @@ const Radio = memo(
           "w-4",
           "border",
           getColorClass("neutral", "DEFAULT", "border"),
-          getColorClass("primary", "DEFAULT", "text"),
+          "text-fg-brand",
           "focus:ring-2",
           focusRingColor,
           "focus:ring-offset-2",
           "disabled:opacity-50",
           "disabled:cursor-not-allowed",
           "cursor-pointer",
-          error && getColorClass("error", "DEFAULT", "border"),
+          error && "border-error",
           className,
         ),
       [focusRingColor, error, className],
@@ -139,7 +133,7 @@ const Radio = memo(
               getSpacingClass("xs", "mt"),
               getTypographyClasses("caption"),
               error
-                ? getColorClass("error", "DEFAULT", "text")
+                ? "text-fg-error"
                 : getColorClass("neutral", "DEFAULT", "text"),
             )}
             role={error ? "alert" : undefined}

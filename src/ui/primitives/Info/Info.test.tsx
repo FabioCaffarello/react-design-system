@@ -17,7 +17,7 @@ describe("Info", () => {
   it("applies info variant classes by default", () => {
     const { container } = render(<Info>Info message</Info>);
     const info = container.querySelector('div[role="alert"]');
-    expect(info).toHaveClass("bg-blue-300", "text-blue-600", "border-blue-500");
+    expect(info).toHaveClass("bg-info-bg", "text-info-dark", "border-info");
   });
 
   it("applies warning variant classes", () => {
@@ -26,16 +26,16 @@ describe("Info", () => {
     );
     const info = container.querySelector('div[role="alert"]');
     expect(info).toHaveClass(
-      "bg-yellow-300",
-      "text-yellow-600",
-      "border-yellow-500",
+      "bg-warning-bg",
+      "text-warning-dark",
+      "border-warning",
     );
   });
 
   it("applies error variant classes", () => {
     const { container } = render(<Info variant="error">Error message</Info>);
     const info = container.querySelector('div[role="alert"]');
-    expect(info).toHaveClass("bg-red-300", "text-red-600", "border-red-500");
+    expect(info).toHaveClass("bg-error-bg", "text-error-dark", "border-error");
   });
 
   it("applies custom className", () => {

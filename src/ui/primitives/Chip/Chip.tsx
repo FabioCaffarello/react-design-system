@@ -62,7 +62,7 @@ const chipVariants = cva(
           getColorClass("neutral", "DEFAULT", "border"),
         ),
         filled: cn(
-          getColorClass("primary", "DEFAULT", "bg"),
+          "bg-surface-brand",
           "text-white",
           "border",
           "border-transparent",
@@ -87,10 +87,10 @@ const chipVariants = cva(
       },
       selected: {
         true: cn(
-          getColorClass("primary", "DEFAULT", "bg"),
+          "bg-surface-brand",
           "text-white",
           "border",
-          getColorClass("primary", "DEFAULT", "border"),
+          "border-line-brand",
         ),
         false: "",
       },

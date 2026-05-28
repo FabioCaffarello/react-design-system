@@ -2,7 +2,7 @@
 
 import { useRef, useState, forwardRef } from "react";
 import type { HTMLAttributes } from "react";
-import { getColorClass, getFocusRingClass } from "../../tokens/colors";
+import { getColorClass } from "../../tokens/colors";
 import { getAnimationClass } from "../../tokens/animations";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
@@ -163,7 +163,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
 
   // Get focus ring color using design system helper
   const getFocusRingColor = (): string => {
-    return getFocusRingClass("primary", "DEFAULT") + " ring-offset-2";
+    return "focus:ring-line-brand" + " ring-offset-2";
   };
 
   // Slider variants using CVA
@@ -188,7 +188,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
   const sliderThumbVariants = cva(
     cn(
       "absolute",
-      getColorClass("primary", "DEFAULT", "bg"),
+      "bg-surface-brand",
       "rounded-full",
       "border-2",
       "border-white",
@@ -277,7 +277,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
           className={cn(
             "absolute",
             sliderTrackVariants({ size }),
-            getColorClass("primary", "DEFAULT", "bg"),
+            "bg-surface-brand",
             getRadiusClass("full"),
             getAnimationClass("base"),
           )}

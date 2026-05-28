@@ -1,7 +1,6 @@
 import type { HTMLAttributes } from "react";
 import { AlertCircle } from "lucide-react";
 import { getTypographySize } from "../../tokens/typography";
-import { getColorClass } from "../../tokens/colors";
 import { getSpacingClass } from "../../tokens/spacing";
 import { cn } from "../../utils";
 
@@ -30,7 +29,7 @@ export default function ErrorMessage({
   const baseClasses = [
     getSpacingClass("xs", "mt"),
     getTypographySize("bodySmall"),
-    getColorClass("error", "DEFAULT", "text"),
+    "text-fg-error",
     "flex",
     "items-center",
     getSpacingClass("xs", "gap"),
