@@ -178,6 +178,52 @@ DrawerFooter):**
     193, hover forte); close button Modal (Modal:155/167, hover
     discreto).
 
+**Precedentes do batch Feedback (Badge/Chip/Progress/Tooltip):**
+
+- **Track de progress role-colored → `bg-{role}-bg-emphasis`.** Quando
+  o "track" (fundo) de um Progress bar tem variant colorida (success/
+  error/warning/info), o track usa a shade -100 (`bg-success-bg-
+emphasis` etc.), preservando role colorido e dando contraste claro
+  contra o bar (`bg-{role}`, shade -500). Variants primary/secondary
+  continuam com track neutro (`bg-surface-muted`) por convenção do
+  design original.
+- **Arrow de tooltip → `border-{direction}-surface-inverse`.** Arrow
+  CSS triangle deve usar o token de cor do body como border-color, em
+  TODAS as direções, para que a "ponta" funda visualmente no body.
+  Aplicar quando o body migrar para `surface-inverse`.
+- **`fg-brand-secondary-emphasis`** registrado como simétrico de
+  `fg-brand-emphasis` para selected/active em contexto secondary
+  brand. Token criado quando o batch Feedback (Badge secondary solid)
+  expôs o gap.
+
+**PRINCÍPIO — Exceção literal documentada > token forçado.**
+
+Quando a alternativa tokenizada exige:
+
+- shift visual significativo (≥ 2 shades), **E**
+- não há papel semântico real para o caso (criar token cobriria apenas
+  shade isolada, não papel),
+
+então MANTÉM primitive literal com comentário inline explicando o
+porquê. Formato do comentário:
+
+```
+// bg-{color}-{shade}: <componente/contexto> — no semantic equivalent
+// (would shift X shades to <token alternativo>). Kept literal until
+// <condição que destravaria criação de token>.
+```
+
+Mesma família dos micro-z (Phase 8) — exceção explícita preserva a
+disciplina do vocabulário. Casos registrados: Badge secondary solid
+bg (`bg-pink-300`); micro-z internals (Phase 8).
+
+Casos NÃO se aplicam:
+
+- Shifts de 1 shade — aceita (precedente Decisão 2 do piloto-B).
+- Valores idiomáticos de overlay/scrim (`bg-black/50`, `bg-black/10`)
+  — mantém literal por motivo diferente (falta de papel no sistema
+  pra scrim, não shade isolada). Tracked no BACKLOG.
+
 ## Mesma família da Phase 8
 
 Tokens semânticos existem mas não são consumidos. Mesma patologia,
