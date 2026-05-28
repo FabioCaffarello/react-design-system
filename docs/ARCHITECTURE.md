@@ -1,211 +1,117 @@
-# Arquitetura do Design System
+# Architecture
 
-Este documento descreve a arquitetura completa do design system.
+Mono-brand React design system in 3 layers. No more.
 
-## Visão Geral
-
-O design system é organizado em categorias hierárquicas baseadas no Atomic Design, expandido com categorias adicionais para maior flexibilidade e poder.
-
-## Estrutura de Diretórios
+## Layout
 
 ```
 src/ui/
-├── atoms/          # Componentes básicos indivisíveis
-├── molecules/      # Combinações de atoms
-├── organisms/      # Componentes complexos
-├── templates/      # Layouts de página completos
-├── patterns/       # Padrões de design reutilizáveis
-├── layouts/        # Componentes de estrutura
-├── utilities/      # Componentes utilitários
-├── providers/      # Context providers
-├── extensions/     # Extensões especializadas
-├── tokens/         # Design tokens
-└── hooks/          # Custom hooks
+  primitives/   # indivisible UI
+  components/   # composed UI (built from primitives)
+  layouts/      # structural wrappers
+  tokens/       # color, spacing, typography, radius, shadow, …
+  hooks/        # shared behavior hooks
+  providers/    # AppProvider + theme/config/toast/dialog providers
+  utils/        # cn, cva, variants, css-variables
 ```
 
-## Categorias
+Every component directory carries four files and nothing else:
 
-### Atoms
-
-Componentes básicos e indivisíveis que formam a base do sistema.
-
-**Características:**
-- Não podem ser quebrados em componentes menores do design system
-- Sem dependências de outros componentes do design system
-- Funcionalidade única e simples
-- Altamente reutilizáveis
-
-**Exemplos:** Button, Input, Text, Badge, Avatar
-
-### Molecules
-
-Combinações de atoms que formam componentes mais complexos.
-
-**Características:**
-- Combina apenas atoms
-- Resolve um problema de UI específico
-- Reutilizável em múltiplos contextos
-
-**Exemplos:** SearchInput, Card, Form
-
-### Organisms
-
-Componentes complexos que combinam molecules e atoms.
-
-**Características:**
-- Combina molecules e atoms
-- Componente único e complexo
-- Pode ter lógica de negócio
-- Resolve problemas complexos de UI
-
-**Exemplos:** Table, DataGrid, CommandPalette, SideNavbar
-
-### Templates
-
-Layouts completos de página que combinam organisms, molecules e atoms.
-
-**Características:**
-- Combina múltiplos organisms
-- Define estrutura de página completa
-- Configurável mas com padrões sensatos
-- Inclui slots para conteúdo customizado
-
-**Exemplos:** DashboardLayout, AuthLayout, FormLayout
-
-### Patterns
-
-Padrões de design reutilizáveis que combinam múltiplos componentes.
-
-**Características:**
-- Combina múltiplos componentes de forma específica
-- Resolve um problema de UX comum
-- Documentado com casos de uso
-- Inclui exemplos de variações
-
-**Exemplos:** DataTablePattern, FormWizardPattern, SearchAndFilterPattern
-
-### Layouts
-
-Componentes de estrutura de página e grid systems.
-
-**Características:**
-- Focam em estrutura e espaçamento
-- Não têm lógica de negócio
-- Altamente reutilizáveis
-- Base para templates
-
-**Exemplos:** Container, Grid, Stack, Flex
-
-### Utilities
-
-Componentes utilitários e helpers visuais.
-
-**Características:**
-- Funcionalidade pura, sem UI visual
-- Reutilizáveis em múltiplos contextos
-- Hooks ou componentes wrapper
-
-**Exemplos:** Portal, FocusTrap, ClickOutside, ScrollLock
-
-### Providers
-
-Context providers para estado global e configuração.
-
-**Características:**
-- Gerenciam estado global
-- Configuração do design system
-- Temas, toast, dialogs, etc.
-
-**Exemplos:** ThemeProvider, ToastProvider, DialogProvider
-
-### Extensions
-
-Extensões especializadas do design system.
-
-**Características:**
-- Funcionalidades avançadas
-- Dependências externas específicas
-- Casos de uso especializados
-
-**Exemplos:** flow/ (React Flow), charts/ (futuro), maps/ (futuro)
-
-## Regras de Importação
-
-### Atoms
-- ❌ NÃO pode importar outros atoms, molecules, ou organisms
-- ✅ Pode importar tokens, utils, hooks
-
-### Molecules
-- ✅ Pode importar atoms
-- ❌ NÃO pode importar molecules ou organisms
-
-### Organisms
-- ✅ Pode importar molecules e atoms
-- ✅ Pode importar organisms (com cuidado)
-
-### Templates
-- ✅ Pode importar organisms, molecules, atoms
-- ✅ Deve importar pelo menos um organism
-
-### Patterns
-- ✅ Pode importar organisms, molecules, atoms
-- ✅ Deve combinar pelo menos 2 componentes
-
-### Layouts
-- ✅ Pode importar tokens, utils
-- ❌ NÃO deve importar componentes de negócio
-
-### Utilities
-- ✅ Pode importar tokens, utils, hooks
-- ❌ NÃO deve importar componentes visuais
-
-## Design Tokens
-
-Os design tokens são a base visual do sistema:
-
-- **Colors**: Sistema semântico de cores
-- **Typography**: Escala tipográfica
-- **Spacing**: Sistema de espaçamento (base 4px)
-- **Shadows**: Sistema de elevação
-- **Radius**: Bordas arredondadas
-- **Animations**: Durações e easing
-
-## Hooks
-
-Hooks customizados para funcionalidades reutilizáveis:
-
-- `useCollapsible`: Gerenciamento de estado colapsável
-- (outros hooks conforme necessário)
-
-## Validação
-
-Use o script de validação para verificar a arquitetura:
-
-```bash
-npm run validate-architecture
+```
+ComponentName/
+  ComponentName.tsx          # implementation
+  ComponentName.test.tsx     # vitest + testing-library
+  ComponentName.stories.tsx  # storybook
+  index.ts                   # single explicit export
 ```
 
-## Princípios
+## The three layers
 
-1. **Composição sobre Configuração**: Prefira compor componentes simples
-2. **Reutilização**: Componentes devem ser reutilizáveis
-3. **Consistência**: Use design tokens para consistência
-4. **Acessibilidade**: Todos os componentes devem ser acessíveis (WCAG 2.1 AA)
-5. **Type Safety**: TypeScript estrito em todo o código
-6. **Documentação**: Cada componente deve ter stories completas
+### `primitives/`
 
-## Evolução
+Indivisible UI: takes props in, renders DOM, no composition of other DS components.
 
-A arquitetura evolui conforme necessário. Quando adicionar novos componentes:
+Examples: Button, Input, Text, Badge, Avatar, Checkbox, Radio, Switch, Tooltip, Spinner, Skeleton, Chip, Progress, Separator, Slider, Label, ErrorMessage, Info, NavLink, Collapsible, Select, Textarea.
 
-1. Determine a categoria usando o [Guia de Categorização](./CATEGORIZATION_GUIDE.md)
-2. Siga as regras de importação
-3. Crie stories completas
-4. Execute validação
-5. Documente mudanças
+Rules:
 
-## Referências
+- forwardRef + spread `...rest` onto the root element.
+- Tailwind classes driven by tokens. Never a raw hex/px.
+- Accessible name, keyboard support, visible focus ring.
+- No imports from `components/` or `layouts/`.
 
-- [Atomic Design](https://atomicdesign.bradfrost.com/)
-- [Guia de Categorização](./CATEGORIZATION_GUIDE.md)
-- [Guia do Storybook](./STORYBOOK_GUIDE.md)
+### `components/`
+
+Composed UI: at least one primitive or other component under the hood.
+
+Examples: Card, Form (+FormField), Tabs, Dropdown, Menu, Drawer, Dialog, Modal, Toast, Table, DataGrid, Stepper, Timeline, Breadcrumb, Pagination, Popover, ColorPicker, DatePicker, TimePicker, MultiSelect, Autocomplete, EmptyState, FileUpload, Header, Navigation, PageHeader, Rating, SearchInput, SideNavbar, ButtonGroup, Accordion, CommandPalette, LoginBox, DashboardLayout, DataTablePattern, FormWizardPattern, SearchAndFilterPattern.
+
+Rules:
+
+- May import from `primitives/`, `layouts/`, `tokens/`, `hooks/`, `utils/`.
+- No imports from peer components except through their public barrel.
+
+### `layouts/`
+
+Structural wrappers — no domain content, no business logic.
+
+Examples: Stack, Container.
+
+Rules:
+
+- Imports from `primitives/` allowed (rare). Nothing from `components/`.
+
+## Support directories
+
+### `tokens/`
+
+Single source of visual truth. Semantic tokens (`--color-surface`, `--color-text-muted`) sit on top of primitive scales. Light/dark are CSS variable variants of one token set.
+
+When something new is needed, extend the scale. Never hardcode in a component.
+
+### `providers/`
+
+Top-level React context providers. `AppProvider` composes the rest in the documented order: `ThemeProvider` → `ConfigProvider` → `ToastProvider` → `DialogProvider`. They are re-exported from `providers/providers-bundle.ts` to keep them in the same module boundary (Next.js / Turbopack initialization order).
+
+### `hooks/`
+
+Pure behavior hooks reused across components: `useCollapsible`, `useContextSelector`, `useProviderComposition`, `shallowEqual`.
+
+### `utils/`
+
+Pure helpers: `cn` (class merge), `cva` (class-variance-authority wrapper), `variants`, `css-variables`, `tailwind-safelist`.
+
+## Build output
+
+`vite build` emits one entry per surface so consumers can pick subpaths:
+
+```
+dist/
+  index.js         # everything
+  primitives/
+  components/
+  tokens/
+  providers/
+  react-design-system.css
+```
+
+`package.json` `exports` mirrors these. `./styles` is a CSS-only entry.
+
+## The rules CLAUDE.md enforces
+
+- One source of visual values (tokens). No raw hex/px in a component.
+- A new component ships `.tsx` + `.test.tsx` + `.stories.tsx` + `index.ts`.
+- Zero `any`. Props are typed and exported as `ComponentNameProps`.
+- WCAG 2.1 AA: keyboard nav, ARIA, focus ring.
+- Coverage ≥ 80% per component.
+
+The per-rule details live in `.claude/rules/components.md`, `.claude/rules/testing.md`, `.claude/rules/tokens.md`. They are read by the `component-reviewer` agent and the `new-component` skill.
+
+## What this architecture does **not** include
+
+- No `atoms/`, `molecules/`, `organisms/`, `templates/`, `patterns/` layers. They collapsed into the three above.
+- No `extensions/`, no flow/playground/theme-builder. Heavy product features live in the consuming app, not in the library.
+- No component registry, no token versioning, no Figma sync, no MCP server. The repo is mono-brand solo; those are multi-tenant problems.
+- No CDN distribution channel. Consumers install from npm.
+
+If you find yourself reaching for one of the above, that is the signal the design system is being asked to solve a problem outside its scope. Push the feature into the consumer or skip it.

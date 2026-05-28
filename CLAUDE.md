@@ -6,9 +6,9 @@ Built by me, maintained mainly through Claude Code prompts.
 ## Stack
 
 - React 19 + TypeScript 5 (strict)
-- Vite (build), Vitest + Testing Library (test), Playwright (e2e)
+- Vite (build), Vitest + Testing Library (test)
 - TailwindCSS (utility-first, tokens in `src/style.css`)
-- Storybook (docs + visual testing), Chromatic (visual regression)
+- Storybook (docs)
 - Plop (scaffolding new components)
 
 ## Architecture (3 layers — keep it this simple)
@@ -36,17 +36,18 @@ If unsure where something goes: composed of other UI → `components/`; pure str
 ## Commands
 
 ```
-npm run dev          # vite dev
-npm run storybook    # storybook
-npm run test         # vitest
-npm run lint         # eslint + prettier check
-npm run plop         # scaffold component
-npm run build        # production build
+npm run storybook         # local dev / docs
+npm run test              # vitest
+npm run test:coverage     # vitest with coverage
+npm run lint              # eslint
+npm run plop              # scaffold component
+npm run build             # library build
+npm run build-storybook   # static storybook
 ```
 
 ## What NOT to do
 
 - Do not add features for external consumers (token versioning, component registry, migration tooling, Figma sync, MCP). This is mono-brand and solo.
 - Do not add dependencies without asking. Especially heavy ones.
-- Do not create new top-level scripts. The six above are the full surface.
+- Do not grow the npm script surface beyond what is listed above (plus `build:validate` and `prepare`).
 - Do not write barrel files that re-export everything; keep exports explicit.
