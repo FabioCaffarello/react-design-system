@@ -195,3 +195,32 @@ mais baixa que o número de bugs detectados sugere. Decisão entre
 **baixar threshold pra 65-70%** vs. **subir coverage real pra 80%**
 é parte do trabalho desses três itens, não pré-requisito — atacar
 um ou outro ajuda a aproximar o número.
+
+## Vocabulário de feedback não cobre "notification/attention"
+
+**Descoberto em:** Phase 7 piloto-B (NavbarItem badges).
+**Estado:** O badge default do `NavbarItem` (`bg-red-500`) foi mapeado
+para `bg-error` (rose-500) por ser a melhor aproximação no vocabulário
+semântico atual — mas o intent original do badge é "há algo novo
+aqui" (notificação/atenção), não "algo deu errado" (erro). A paleta de
+feedback (`success`/`warning`/`error`/`info`) cobre estados, não
+chamadas-de-atenção neutras.
+**Por que importa:** dois usos colidem no mesmo token. Badge de
+notificação numa UI saudável vai parecer "estado de erro" semântico
+para quem lê o código, mesmo que o pixel renderizado seja o que o
+design quer.
+**Opções:**
+
+- (a) Adicionar `--color-notification` (ex.: amber/orange) como
+  token semântico de "atenção neutra". Cria papel distinto de
+  warning (que carrega conotação de "atenção a algo problemático").
+- (b) Aceitar que notification coexiste com warning (mesmo
+  vocabulário; documentar que `bg-warning` cobre notificação
+  passiva).
+- (c) Aceitar que notification coexiste com error (status quo da
+  migração Phase 7); documentar.
+
+**Decidir:** decisão tem efeito retroativo nos badges já migrados em
+Phase 7 (NavbarItem e todos os componentes futuros com badge
+genérico). Adia até alguém precisar de notification semântica
+explícita em outro componente.
