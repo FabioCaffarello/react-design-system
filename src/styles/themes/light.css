@@ -17,7 +17,7 @@
   color-scheme: light;
 
   /* ============================================
-   * TEXT COLORS
+   * FOREGROUND COLORS
    * ============================================ */
 
   --color-fg-primary: var(--color-slate-900);
@@ -41,7 +41,7 @@
   --color-fg-info: var(--color-sky-700);
 
   /* ============================================
-   * BACKGROUND COLORS
+   * SURFACE COLORS — Backgrounds
    * ============================================ */
 
   --color-surface-canvas: var(--color-white);
@@ -59,7 +59,7 @@
   --color-surface-brand-emphasis: var(--color-indigo-600);
 
   /* ============================================
-   * SURFACE COLORS
+   * SURFACE COLORS — Elevation layers
    * ============================================ */
 
   --color-surface-base: var(--color-white);
@@ -69,7 +69,7 @@
   --color-surface-disabled: var(--color-slate-100);
 
   /* ============================================
-   * BORDER COLORS
+   * LINE COLORS
    * ============================================ */
 
   --color-line-default: var(--color-slate-200);
@@ -81,7 +81,7 @@
   --color-line-focus: var(--color-indigo-500);
 
   /* ============================================
-   * STATE COLORS
+   * SURFACE COLORS — Interactive states
    * ============================================ */
 
   --color-surface-hover: var(--color-slate-50);

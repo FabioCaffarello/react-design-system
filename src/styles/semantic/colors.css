@@ -2,13 +2,16 @@
  * AIppin Design System - Semantic Colors
  *
  * Meaningful color tokens that reference primitive values.
- * These are the colors you use in components.
+ * Declared in @theme so Tailwind v4 generates native utility classes
+ * (bg-surface-base, text-fg-primary, border-line-strong, etc.).
+ * Theme overrides (light/dark/variants) remain in selectors —
+ * see themes/{light,dark}.css and themes/variants/*.css.
  *
  * @brand AIppin
  * @version 1.0.0
  */
 
-:root {
+@theme {
   /* ============================================
    * BRAND COLORS
    * Core brand identity colors
@@ -28,8 +31,8 @@
   --color-brand-accent-dark: var(--color-cyan-600);
 
   /* ============================================
-   * TEXT COLORS
-   * For all text content
+   * FOREGROUND COLORS
+   * Text, icons, and content
    * ============================================ */
 
   --color-fg-primary: var(--color-slate-900);
@@ -58,8 +61,8 @@
   --color-fg-info: var(--color-sky-700);
 
   /* ============================================
-   * BACKGROUND COLORS
-   * For surfaces and containers
+   * SURFACE COLORS — Backgrounds
+   * Page and container backgrounds (canvas, subtle, muted, ...)
    * ============================================ */
 
   --color-surface-canvas: var(--color-white);
@@ -83,8 +86,8 @@
   --color-surface-accent: var(--color-cyan-500);
 
   /* ============================================
-   * SURFACE COLORS
-   * For cards, modals, panels
+   * SURFACE COLORS — Elevation layers
+   * Cards, modals, panels (canvas/base/raised/overlay/sunken)
    * ============================================ */
 
   --color-surface-base: var(--color-white);
@@ -94,8 +97,8 @@
   --color-surface-disabled: var(--color-slate-100);
 
   /* ============================================
-   * BORDER COLORS
-   * For all border styles
+   * LINE COLORS
+   * Borders, dividers, separators
    * ============================================ */
 
   --color-line-default: var(--color-slate-200);
@@ -115,8 +118,8 @@
   --color-line-accent: var(--color-cyan-500);
 
   /* ============================================
-   * STATE COLORS
-   * For interactive states
+   * SURFACE COLORS — Interactive states
+   * Hover, active, selected, focus (fused from old state namespace)
    * ============================================ */
 
   --color-surface-hover: var(--color-slate-50);

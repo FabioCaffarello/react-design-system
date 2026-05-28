@@ -33,7 +33,7 @@
   --color-brand-accent-dark: var(--color-cyan-500);
 
   /* ============================================
-   * TEXT COLORS
+   * FOREGROUND COLORS
    * Inverted for dark backgrounds
    * ============================================ */
 
@@ -63,8 +63,7 @@
   --color-fg-info: var(--color-sky-400);
 
   /* ============================================
-   * BACKGROUND COLORS
-   * Dark scale
+   * SURFACE COLORS — Backgrounds (dark scale)
    * ============================================ */
 
   --color-surface-canvas: var(--color-slate-950);
@@ -88,8 +87,7 @@
   --color-surface-accent: var(--color-cyan-500);
 
   /* ============================================
-   * SURFACE COLORS
-   * Elevated dark surfaces
+   * SURFACE COLORS — Elevation layers (dark)
    * ============================================ */
 
   --color-surface-base: var(--color-slate-900);
@@ -107,7 +105,7 @@
   --surface-5-bg: var(--color-slate-800);
 
   /* ============================================
-   * BORDER COLORS
+   * LINE COLORS
    * Lighter borders on dark backgrounds
    * ============================================ */
 
@@ -120,8 +118,7 @@
   --color-line-focus: var(--color-indigo-400);
 
   /* ============================================
-   * STATE COLORS
-   * Adjusted for dark theme
+   * SURFACE COLORS — Interactive states (dark)
    * ============================================ */
 
   --color-surface-hover: var(--color-slate-800);
