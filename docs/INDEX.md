@@ -73,7 +73,6 @@ npm run validate-themes           # Valida temas
 ```bash
 npm run generate-story-index      # Índice de stories
 npm run generate-context-diagram # Diagrama de contextos
-npm run generate-component-registry # Registry de componentes
 ```
 
 ### MCP

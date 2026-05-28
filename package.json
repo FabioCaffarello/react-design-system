@@ -91,7 +91,6 @@
     "validate-themes": "tsx scripts/validate-themes.ts",
     "generate-story-index": "tsx scripts/generate-story-index.ts",
     "generate-context-diagram": "tsx scripts/generate-context-diagram.ts",
-    "generate-component-registry": "tsx scripts/generate-component-registry.ts",
     "analyze-component": "tsx scripts/analyze-component.ts",
     "validate:all": "npm run validate-stories && npm run validate-architecture && npm run validate-a11y && npm run validate-themes",
     "mcp:health-check": "tsx scripts/mcp-health-check.ts",
