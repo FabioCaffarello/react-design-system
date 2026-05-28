@@ -36,6 +36,21 @@ Se a intenção original do design era 18×20 (não-quadrado), reverter
 **Como decidir:** olhar o design original ou o componente renderizado;
 quadrado é mais provavelmente o intent.
 
+## Dialog:128 `relative z-50` é redundante
+
+**Descoberto em:** Phase 8, mapeamento do passo 2.
+**Estado:** `DialogContent.tsx:128` tem `relative z-50` no inner content,
+mas o wrapper pai (`DialogContent.tsx:109`) já está em `z-50` e o
+overlay é sibling DOM renderizado ANTES do content. Empilhamento via
+DOM order já garante content acima do overlay sem que o content
+precise de z-index próprio.
+**Por que importa:** código defensivo desnecessário; após a migração
+da Phase 8, ambos viram `getZIndexClass("modal")` — o segundo continua
+redundante, agora gritando mais alto.
+**Abordagem:** PR pequeno separado removendo o `relative z-50` da
+linha 128. Polish, não blocker. Não tocar durante a Phase 8 pra não
+misturar refator com migração de tokens.
+
 ## Phase 9 — Color shim consolidation
 
 **Descoberto em:** #4.

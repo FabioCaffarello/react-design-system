@@ -115,3 +115,24 @@ componentes consomem `text-gray-500` cru). Mesma patologia, domínio
 diferente: o design system **define** o sistema mas o código **não usa**.
 A solução é a mesma — propagar consumo, fechar com lint rule pra
 impedir regressão.
+
+## Achado lateral — `modal-backdrop` como layer Z separada é underused
+
+Durante o mapeamento (passo 2), só **um** componente em todo o
+`src/ui/` justifica `modal-backdrop` como camada Z separada:
+`SideNavbarBackdrop.tsx:69`. Modal e Dialog **não** layeram backdrop e
+content em z-indexes diferentes — ambos colocam tudo num mesmo wrapper
+`fixed inset-0 z-50`, com overlay e content como siblings DOM (overlay
+renderizado primeiro), contando com DOM order pro empilhamento.
+
+Implicação: a escala de z-index atual (9 layers, `base/dropdown/sticky/
+fixed/modal-backdrop/modal/popover/tooltip/toast`) foi desenhada com
+um perfil de uso que o código real não confirma. `modal-backdrop`
+existe como conceito mas só serve UM componente. Os outros 8 níveis
+têm 1+ consumidor real (após a migração da Phase 8).
+
+Vale revisar a escala numa próxima rodada de polish — possíveis ações:
+manter `modal-backdrop` só como reserva pro caso `SideNavbarBackdrop`,
+mover pra `tokens/sidebar.ts` se virar único uso isolado, ou consolidar
+a camada com `modal` se decidir que backdrops sempre acompanham o modal
+no mesmo z. Não bloqueia Phase 8.
