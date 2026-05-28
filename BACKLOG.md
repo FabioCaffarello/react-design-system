@@ -224,3 +224,27 @@ design quer.
 Phase 7 (NavbarItem e todos os componentes futuros com badge
 genérico). Adia até alguém precisar de notification semântica
 explícita em outro componente.
+
+## Token de scrim/overlay backdrop ausente
+
+**Descoberto em:** Phase 7 batch Overlay (Modal, DrawerContent).
+**Estado:** o backdrop preto+opacity do Modal e do Drawer foi mantido
+literal (`bg-black/50`) porque o vocabulário semântico atual não tem
+token de scrim. Os candidatos invertem no dark mode (`surface-inverse`,
+`fg-primary` etc. ficam claros no dark), o que é errado para um
+backdrop — scrim deve permanecer escuro nos dois temas pra cumprir a
+função de focar atenção no overlay.
+**Por que importa:** assim que mais 1–2 overlays surgirem (Popover,
+Dropdown, CommandPalette), vamos repetir `bg-black/50` literal em
+vários sítios. Hora de promover pra token.
+**Nomenclatura definida:** quando criar, **use `--color-scrim`**
+(termo técnico canônico — Material, iOS, accessibility specs), NÃO
+`--color-overlay`. "Overlay" já está sobrecarregado no projeto
+(`surface-overlay` existe pra modal/popover container, não pra
+backdrop).
+**Critério de criação:** avaliar quando aparecer o 4º+ consumidor.
+Hoje são 2 (Modal, DrawerContent); Popover/Dropdown/CommandPalette
+provavelmente dobram ou triplicam esse número durante Phase 7.
+**Forma sugerida:** `--color-scrim: rgb(0 0 0 / 0.5)` ou pareada
+(`--color-scrim` + `--color-scrim-emphasis` para variantes de
+intensidade) — decisão na hora de criar.
