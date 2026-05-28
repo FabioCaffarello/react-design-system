@@ -5,7 +5,7 @@ import { useState } from "react";
 import TablePagination from "./TablePagination";
 
 const meta: Meta<typeof TablePagination> = {
-  title: "Organisms/Table/TablePagination",
+  title: "Components/Table/TablePagination",
   component: TablePagination,
   parameters: {
     docs: {

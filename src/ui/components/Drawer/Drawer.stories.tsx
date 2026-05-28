@@ -6,7 +6,7 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerFooter } from "./index";
 import { Button } from "../../primitives";
 
 const meta: Meta<typeof Drawer> = {
-  title: "Molecules/Drawer",
+  title: "Components/Drawer",
   component: Drawer,
   tags: ["autodocs"],
   parameters: {

@@ -16,7 +16,7 @@ const sampleRow: SampleRow = {
 };
 
 const meta: Meta<typeof TableActions> = {
-  title: "Organisms/Table/TableActions",
+  title: "Components/Table/TableActions",
   component: TableActions,
   parameters: {
     docs: {

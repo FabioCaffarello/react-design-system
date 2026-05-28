@@ -5,7 +5,7 @@ import { useState } from "react";
 import DatePicker from "./DatePicker";
 
 const meta: Meta<typeof DatePicker> = {
-  title: "Molecules/DatePicker",
+  title: "Components/DatePicker",
   component: DatePicker,
   parameters: {
     docs: {

@@ -6,7 +6,7 @@ import Modal from "./Modal";
 import { Button, Text } from "../../primitives";
 
 const meta: Meta<typeof Modal> = {
-  title: "Organisms/Modal",
+  title: "Components/Modal",
   component: Modal,
   parameters: {
     docs: {

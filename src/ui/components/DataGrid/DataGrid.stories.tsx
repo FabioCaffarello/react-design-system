@@ -6,7 +6,7 @@ import DataGrid from "./DataGrid";
 import Button from "../../primitives/Button/Button";
 
 const meta: Meta<typeof DataGrid> = {
-  title: "Organisms/DataGrid",
+  title: "Components/DataGrid",
   component: DataGrid,
   tags: ["autodocs"],
   parameters: {

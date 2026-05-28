@@ -8,7 +8,7 @@ import { Stack } from "../../layouts/Stack/Stack";
 import type { FilterConfig } from "./SearchAndFilterPattern";
 
 const meta: Meta<typeof SearchAndFilterPattern> = {
-  title: "Patterns/SearchAndFilterPattern",
+  title: "Components/SearchAndFilterPattern",
   component: SearchAndFilterPattern,
   tags: ["autodocs"],
   parameters: {

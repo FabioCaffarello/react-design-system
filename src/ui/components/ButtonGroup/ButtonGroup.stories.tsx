@@ -4,7 +4,7 @@ import ButtonGroup from "./ButtonGroup";
 import Button from "../../primitives/Button/Button";
 
 const meta: Meta<typeof ButtonGroup> = {
-  title: "Molecules/ButtonGroup",
+  title: "Components/ButtonGroup",
   component: ButtonGroup,
   tags: ["autodocs"],
   parameters: {

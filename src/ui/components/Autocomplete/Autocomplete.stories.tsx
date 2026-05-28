@@ -6,7 +6,7 @@ import Autocomplete from "./Autocomplete";
 import { Mail, User, Settings } from "lucide-react";
 
 const meta: Meta<typeof Autocomplete> = {
-  title: "Molecules/Autocomplete",
+  title: "Components/Autocomplete",
   component: Autocomplete,
   tags: ["autodocs"],
   parameters: {

@@ -6,7 +6,7 @@ import Collapsible from "./Collapsible";
 import { Button, Text } from "../../primitives";
 
 const meta: Meta<typeof Collapsible> = {
-  title: "Atoms/Collapsible",
+  title: "Primitives/Collapsible",
   component: Collapsible,
   parameters: {
     docs: {

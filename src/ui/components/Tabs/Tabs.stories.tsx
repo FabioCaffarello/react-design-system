@@ -6,7 +6,7 @@ import Tabs from "./Tabs";
 import Card from "../Card/Card";
 
 const meta: Meta<typeof Tabs> = {
-  title: "Molecules/Tabs",
+  title: "Components/Tabs",
   component: Tabs,
   parameters: {
     docs: {

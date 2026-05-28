@@ -9,7 +9,7 @@ import { fn } from "@storybook/test";
 import { NavLink } from "./NavLink";
 
 const meta: Meta<typeof NavLink> = {
-  title: "Atoms/NavLink",
+  title: "Primitives/NavLink",
   component: NavLink,
   tags: ["autodocs"],
   parameters: {

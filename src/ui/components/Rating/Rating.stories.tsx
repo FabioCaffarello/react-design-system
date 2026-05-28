@@ -5,7 +5,7 @@ import { useState } from "react";
 import Rating from "./Rating";
 
 const meta: Meta<typeof Rating> = {
-  title: "Molecules/Rating",
+  title: "Components/Rating",
   component: Rating,
   tags: ["autodocs"],
   parameters: {

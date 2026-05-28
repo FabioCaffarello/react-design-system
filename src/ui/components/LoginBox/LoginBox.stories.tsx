@@ -5,7 +5,7 @@ import { useState } from "react";
 import LoginBox from "./LoginBox";
 
 const meta: Meta<typeof LoginBox> = {
-  title: "Organisms/LoginBox",
+  title: "Components/LoginBox",
   component: LoginBox,
   tags: ["autodocs"],
   parameters: {

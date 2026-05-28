@@ -5,7 +5,7 @@ import { useState } from "react";
 import ColorPicker from "./ColorPicker";
 
 const meta: Meta<typeof ColorPicker> = {
-  title: "Molecules/ColorPicker",
+  title: "Components/ColorPicker",
   component: ColorPicker,
   tags: ["autodocs"],
   parameters: {

@@ -10,7 +10,7 @@ import type { NavItem } from "./types";
 import { Home, Settings, User, FileText, Bell } from "lucide-react";
 
 const meta: Meta<typeof Navigation> = {
-  title: "Molecules/Navigation",
+  title: "Components/Navigation",
   component: Navigation,
   tags: ["autodocs"],
   parameters: {

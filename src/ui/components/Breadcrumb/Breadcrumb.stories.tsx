@@ -5,7 +5,7 @@ import { useState } from "react";
 import Breadcrumb from "./Breadcrumb";
 
 const meta: Meta<typeof Breadcrumb> = {
-  title: "Molecules/Breadcrumb",
+  title: "Components/Breadcrumb",
   component: Breadcrumb,
   parameters: {
     docs: {

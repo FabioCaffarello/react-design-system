@@ -6,7 +6,7 @@ import { SideNavbar } from "../../components";
 import { Home, Settings, Users, FileText } from "lucide-react";
 
 const meta: Meta<typeof DashboardLayout> = {
-  title: "Templates/DashboardLayout",
+  title: "Components/DashboardLayout",
   component: DashboardLayout,
   tags: ["autodocs"],
   parameters: {

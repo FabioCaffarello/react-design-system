@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 
 const meta: Meta<typeof CommandPalette> = {
-  title: "Organisms/CommandPalette",
+  title: "Components/CommandPalette",
   component: CommandPalette,
   tags: ["autodocs"],
   parameters: {

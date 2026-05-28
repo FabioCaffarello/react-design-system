@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 
 const meta: Meta<typeof SideNavbar> = {
-  title: "Organisms/SideNavbar",
+  title: "Components/SideNavbar",
   component: SideNavbar,
   parameters: {
     docs: {

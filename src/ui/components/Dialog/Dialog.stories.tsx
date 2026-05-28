@@ -8,7 +8,7 @@ import { Button } from "../../primitives";
 import { Input, Label } from "../../primitives";
 
 const meta: Meta<typeof Dialog> = {
-  title: "Organisms/Dialog",
+  title: "Components/Dialog",
   component: Dialog,
   parameters: {
     docs: {
@@ -214,7 +214,7 @@ export const WithoutOverlayClose: Story = {
 
 // AlertDialog Stories
 const _alertDialogMeta: Meta<typeof AlertDialog> = {
-  title: "Organisms/Dialog/AlertDialog",
+  title: "Components/Dialog/AlertDialog",
   component: AlertDialog,
   parameters: {
     docs: {
