@@ -1,3 +1,10 @@
+## [1.10.5](https://github.com/FabioCaffarello/react-design-system/compare/v1.10.4...v1.10.5) (2026-05-28)
+
+
+### 🐛 Bug Fixes
+
+* **release:** rename release.config.js to .cjs ([929863a](https://github.com/FabioCaffarello/react-design-system/commit/929863a024ebaba3e24a1aaf24c2fbec51297094))
+
 # Changelog
 
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.

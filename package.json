@@ -1,7 +1,7 @@
 {
   "name": "@fabio.caffarello/react-design-system",
   "private": false,
-  "version": "1.10.4",
+  "version": "1.10.5",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -129,5 +129,8 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
+  },
+  "volta": {
+    "node": "23.11.1"
   }
 }
