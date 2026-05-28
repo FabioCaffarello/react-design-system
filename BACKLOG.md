@@ -84,6 +84,24 @@ Phase 7 rodar primeiro, ela vai escrever contra a API do shim
 (currently live) e ter que ser refeita pós-consolidação. Detalhes
 no doc da Phase 9.
 
+## `Text.tsx` accepts `color` prop with no effect
+
+**Descoberto em:** Phase 9, ao migrar Text.tsx pra lookup table (PASSO 6,
+commit 5). O `color` prop existia na API pública mas o branch
+`else if (color)` chamava exatamente o mesmo `getColorClass("neutral",
+"dark", "text")` que o branch `else` final — fallback idêntico, sem
+nunca aplicar a cor passada. Comentário inline no código antigo
+admitia "we can't dynamically construct Tailwind classes" e
+literalmente devolvia o default.
+**Estado pós-migração:** o prop continua na API pra preservar
+back-compat de tipos, e o componente faz `void color` pra silenciar
+warning de unused. Redundância explícita, sem efeito visual.
+**Decidir:** remover da API pública (breaking change menor — improvável
+que alguém esteja usando) OU implementar o comportamento esperado
+(suporte a cor literal arbitrária via style inline, já que Tailwind v4
+não permite classe dinâmica). Provavelmente a primeira opção — API
+stale. PR pequeno.
+
 ## `--color-slate-850` referenced but undefined
 
 **Descoberto em:** Phase 9, durante o rename de namespace (PASSO 3).
