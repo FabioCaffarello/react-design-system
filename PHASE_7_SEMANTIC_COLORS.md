@@ -139,6 +139,21 @@ decisão "média"/"baixa" confiança e consultar).
   (emerald-500). Sistema escolheu rose/emerald como paleta canônica de
   feedback — manter red/green literal é inconsistência.
 
+**Precedentes do batch Form primitives (Input/Label/Textarea/Checkbox/
+Radio/Select):**
+
+- **`bg-white` literal em primitivo de formulário → `bg-surface-base`.**
+  Input é elemento _contido_ em superfície de formulário, não canvas da
+  página. `surface-base` preserva o contraste correto no dark mode
+  (slate-900 vs slate-950 do canvas), mantendo o input visível como
+  elemento elevado sobre o fundo da página.
+- **`after:text-*` em marcadores auxiliares de label →
+  `after:text-fg-{role}`.** Asterisco required (`after:text-red-500`)
+  usa `after:text-fg-error` (paleta rose canônica). Marcador "(optional)"
+  (`after:text-gray-400`) usa `after:text-fg-tertiary` — papel "marcador
+  auxiliar / caption-like", NÃO `fg-quaternary` mesmo com o valor mais
+  próximo. Papel vence shade (precedente do piloto-B, Decisão 2).
+
 ## Mesma família da Phase 8
 
 Tokens semânticos existem mas não são consumidos. Mesma patologia,
