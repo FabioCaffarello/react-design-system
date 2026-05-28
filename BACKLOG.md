@@ -227,24 +227,40 @@ explícita em outro componente.
 
 ## Token de scrim/overlay backdrop ausente
 
-**Descoberto em:** Phase 7 batch Overlay (Modal, DrawerContent).
+**Descoberto em:** Phase 7 batch Overlay (Modal, DrawerContent),
+ampliado no batch Feedback (Chip remove button hover).
 **Estado:** o backdrop preto+opacity do Modal e do Drawer foi mantido
 literal (`bg-black/50`) porque o vocabulário semântico atual não tem
 token de scrim. Os candidatos invertem no dark mode (`surface-inverse`,
 `fg-primary` etc. ficam claros no dark), o que é errado para um
 backdrop — scrim deve permanecer escuro nos dois temas pra cumprir a
 função de focar atenção no overlay.
+
+Mesma família mas em escala menor: o botão de remover do Chip usa
+`hover:bg-black/10` para escurecer translucidamente o elemento sobre
+qualquer fundo de chip (default/filled/selected). Mesma natureza de
+"darken overlay theme-agnostic" — vai compartilhar o futuro token (com
+variante de intensidade) quando for criado.
+
 **Por que importa:** assim que mais 1–2 overlays surgirem (Popover,
-Dropdown, CommandPalette), vamos repetir `bg-black/50` literal em
-vários sítios. Hora de promover pra token.
+Dropdown, CommandPalette), vamos repetir `bg-black/{50,10,...}`
+literal em vários sítios. Hora de promover pra token.
 **Nomenclatura definida:** quando criar, **use `--color-scrim`**
 (termo técnico canônico — Material, iOS, accessibility specs), NÃO
 `--color-overlay`. "Overlay" já está sobrecarregado no projeto
 (`surface-overlay` existe pra modal/popover container, não pra
 backdrop).
+
+**Consumidores atuais e potenciais:**
+
+- Atuais: Modal:99, DrawerContent:87 (backdrop, opacity 50), Chip:221
+  (remove btn hover, opacity 10) — 3 sítios em 3 componentes.
+- Potenciais (vão surgir em batches futuros): Popover, Dropdown,
+  CommandPalette (backdrops); MultiSelect remove chip, Toast close,
+  outros remove/dismiss buttons (hover sutil sobre cor variável).
+
 **Critério de criação:** avaliar quando aparecer o 4º+ consumidor.
-Hoje são 2 (Modal, DrawerContent); Popover/Dropdown/CommandPalette
-provavelmente dobram ou triplicam esse número durante Phase 7.
-**Forma sugerida:** `--color-scrim: rgb(0 0 0 / 0.5)` ou pareada
-(`--color-scrim` + `--color-scrim-emphasis` para variantes de
-intensidade) — decisão na hora de criar.
+**Forma sugerida:** par de tokens com variantes de intensidade —
+`--color-scrim` (default 50%, opacity de backdrop modal/drawer) e
+`--color-scrim-subtle` (10%, hover translúcido) — decisão na hora de
+criar.
