@@ -63,6 +63,24 @@ const borderClass = getColorClass("neutral", "DEFAULT", "border"); // 'border-gr
 
 <ColorPalette />
 
+### Semantic Brand Foreground
+
+The brand foreground vocabulary exposes two roles:
+
+- `text-fg-brand` — Default brand foreground. Use for brand-colored
+  text/icons in their idle/neutral presentation (e.g., a brand-colored
+  link in body copy, the brand logotype).
+- `text-fg-brand-emphasis` — Emphasis variant of brand foreground.
+  Used for selected/active states where the brand color is intensified
+  relative to its default (e.g., the icon/label of the currently
+  active item in a navbar).
+
+Light theme uses `indigo-500` for `fg-brand` and `indigo-600` for
+`fg-brand-emphasis` (darker). Dark theme uses `indigo-400` for
+`fg-brand` and `indigo-300` for `fg-brand-emphasis` (lighter), preserving
+the "emphasis is more contrasted against the surface" relationship in
+both modes.
+
 ## Spacing Tokens
 
 Spacing tokens are based on a 4px base unit, providing consistent spacing throughout the design system.

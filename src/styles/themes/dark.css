@@ -54,6 +54,7 @@
 
   /* Brand text */
   --color-fg-brand: var(--color-indigo-400);
+  --color-fg-brand-emphasis: var(--color-indigo-300);
   --color-fg-brand-secondary: var(--color-pink-400);
 
   /* Feedback text */
