@@ -15,7 +15,6 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git rm:*)",
-      "Bash(git push:*)",
       "Read",
       "Edit",
       "Write",
@@ -24,6 +23,7 @@
     ],
     "deny": [
       "Bash(rm -rf /:*)",
+      "Bash(git push:*)",
       "Bash(npm publish:*)",
       "Read(./.env)",
       "Read(./.env.*)",
@@ -37,7 +37,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "npx prettier --write \"$CLAUDE_FILE_PATHS\" 2>/dev/null || true",
+            "command": "bash .claude/hooks/format-touched.sh",
             "timeout": 30
           }
         ]
