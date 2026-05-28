@@ -19,6 +19,15 @@ const config: StorybookConfig = {
     options: {},
   },
   async viteFinal(config) {
+    // When deploying under a subpath (e.g. GitHub Pages project site at
+    // /react-design-system/), STORYBOOK_BASE_PATH is set so the preview
+    // iframe's Vite-built assets resolve correctly. Manager assets are
+    // rewritten in a post-build step.
+    if (process.env.STORYBOOK_BASE_PATH) {
+      const base = process.env.STORYBOOK_BASE_PATH;
+      config.base = base.endsWith("/") ? base : `${base}/`;
+    }
+
     // Ensure proper module resolution
     config.resolve = config.resolve || {};
     config.resolve.dedupe = config.resolve.dedupe || [];
