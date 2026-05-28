@@ -5,7 +5,6 @@ import type { HTMLAttributes, ReactNode, KeyboardEvent } from "react";
 import {
   getColorClass,
   getRadiusClass,
-  getFocusColorClass,
   getHoverColorClass,
   getSpacingClass,
   getTypographySize,
@@ -108,17 +107,11 @@ export function TabsTrigger({
         "transition-colors",
         "focus:outline-none",
         "focus:ring-2",
-        getFocusColorClass("primary", "DEFAULT", "border").replace(
-          "focus:border-",
-          "focus:ring-",
-        ),
+        "focus:border-line-focus".replace("focus:border-", "focus:ring-"),
         "focus:ring-offset-2",
         getRadiusClass("sm"),
         isActive
-          ? cn(
-              getColorClass("primary", "DEFAULT", "bg"),
-              getColorClass("primary", "contrast", "text"),
-            )
+          ? cn("bg-surface-brand", "text-fg-inverse")
           : cn(
               getColorClass("neutral", "light", "text"),
               getHoverColorClass("neutral", "DEFAULT", "bg"),

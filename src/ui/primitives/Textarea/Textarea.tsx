@@ -31,10 +31,7 @@ const Textarea = memo(
     ref,
   ) {
     // Memoize focus ring colors
-    const primaryFocusRing = useMemo(
-      () => getFocusColorClass("primary", "DEFAULT", "border"),
-      [],
-    );
+    const primaryFocusRing = useMemo(() => "focus:border-line-focus", []);
 
     const errorFocusRing = useMemo(
       () => getFocusColorClass("error", "DEFAULT", "border"),

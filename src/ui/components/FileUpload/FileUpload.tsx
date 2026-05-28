@@ -5,7 +5,6 @@ import { Upload, X, File, CheckCircle2, AlertCircle } from "lucide-react";
 import { cn } from "../../utils";
 import {
   getColorClass,
-  getFocusColorClass,
   getHoverColorClass,
   getSpacingClass,
   getRadiusClass,
@@ -229,14 +228,14 @@ export default function FileUpload({
           "border-2",
           "border-dashed",
           isDragging
-            ? getColorClass("primary", "DEFAULT", "border")
+            ? "border-line-brand"
             : getColorClass("neutral", "DEFAULT", "border"),
           getRadiusClass("lg"),
           getSpacingClass("lg", "p"),
           "text-center",
           "cursor-pointer",
           getAnimationClass("base"),
-          getFocusColorClass("primary", "DEFAULT", "border"),
+          "focus:border-line-focus",
           disabled
             ? "opacity-50 cursor-not-allowed"
             : cn(
@@ -274,7 +273,7 @@ export default function FileUpload({
               "h-8",
               "w-8",
               isDragging
-                ? getColorClass("primary", "DEFAULT", "text")
+                ? "text-fg-brand"
                 : getColorClass("neutral", "DEFAULT", "text"),
             )}
           />

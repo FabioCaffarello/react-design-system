@@ -71,10 +71,7 @@ const Checkbox = memo(
     );
 
     // Memoize focus ring colors
-    const primaryFocusRing = useMemo(
-      () => getFocusColorClass("primary", "DEFAULT", "border"),
-      [],
-    );
+    const primaryFocusRing = useMemo(() => "focus:border-line-focus", []);
 
     const errorFocusRing = useMemo(
       () => getFocusColorClass("error", "DEFAULT", "border"),
@@ -98,7 +95,7 @@ const Checkbox = memo(
           getRadiusClass("sm"),
           "border",
           getColorClass("neutral", "DEFAULT", "border"),
-          getColorClass("primary", "DEFAULT", "text"),
+          "text-fg-brand",
           "focus:ring-2",
           focusRingColor,
           "focus:ring-offset-2",

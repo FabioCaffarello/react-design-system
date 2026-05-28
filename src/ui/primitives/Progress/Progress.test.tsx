@@ -44,11 +44,11 @@ describe("Progress", () => {
       <Progress value={50} variant="primary" />,
     );
     let fill = container.querySelector('div[aria-hidden="true"]');
-    expect(fill).toHaveClass("bg-indigo-500");
+    expect(fill).toHaveClass("bg-surface-brand");
 
     rerender(<Progress value={50} variant="secondary" />);
     fill = container.querySelector('div[aria-hidden="true"]');
-    expect(fill).toHaveClass("bg-pink-500");
+    expect(fill).toHaveClass("bg-surface-secondary");
 
     rerender(<Progress value={50} variant="success" />);
     fill = container.querySelector('div[aria-hidden="true"]');

@@ -141,7 +141,7 @@ export default function Stepper({
                         status === "completed"
                           ? `${getColorClass("success", "DEFAULT", "bg")} ${getColorClass("success", "DEFAULT", "border")} text-white`
                           : status === "active"
-                            ? `${getColorClass("primary", "DEFAULT", "bg")} ${getColorClass("primary", "DEFAULT", "border")} text-white`
+                            ? `${"bg-surface-brand"} ${"border-line-brand"} text-white`
                             : status === "error"
                               ? `${getColorClass("error", "DEFAULT", "bg")} ${getColorClass("error", "DEFAULT", "border")} text-white`
                               : "bg-white border-gray-300 text-gray-400"
@@ -176,7 +176,7 @@ export default function Stepper({
                     className={`
                       text-left
                       ${isActive ? "font-semibold" : "font-medium"}
-                      ${status === "active" ? getColorClass("primary", "DEFAULT", "text") : "text-gray-700"}
+                      ${status === "active" ? "text-fg-brand" : "text-gray-700"}
                       ${!allowNavigation || step.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
                     `}
                   >
@@ -256,7 +256,7 @@ export default function Stepper({
                       status === "completed"
                         ? `${getColorClass("success", "DEFAULT", "bg")} ${getColorClass("success", "DEFAULT", "border")} text-white`
                         : status === "active"
-                          ? `${getColorClass("primary", "DEFAULT", "bg")} ${getColorClass("primary", "DEFAULT", "border")} text-white`
+                          ? `${"bg-surface-brand"} ${"border-line-brand"} text-white`
                           : status === "error"
                             ? `${getColorClass("error", "DEFAULT", "bg")} ${getColorClass("error", "DEFAULT", "border")} text-white`
                             : "bg-white border-gray-300 text-gray-400"
@@ -277,7 +277,7 @@ export default function Stepper({
                     className={`
                       text-sm
                       font-medium
-                      ${isActive ? getColorClass("primary", "DEFAULT", "text") : "text-gray-600"}
+                      ${isActive ? "text-fg-brand" : "text-gray-600"}
                     `}
                   >
                     {step.title}

@@ -245,7 +245,7 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
     const shouldShowList = isOpen && (hasOptions || loading || emptyMessage);
 
     // Get focus-within classes using primary color
-    const primaryBorderColor = getColorClass("primary", "DEFAULT", "border");
+    const primaryBorderColor = "border-line-brand";
     const primaryRingColor = getColorClass(
       "primary",
       "DEFAULT",
@@ -314,13 +314,7 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
             options={filteredOptions.map((opt) => ({
               ...opt,
               icon: selectedValues.includes(opt.value) ? (
-                <Check
-                  className={cn(
-                    "h-4",
-                    "w-4",
-                    getColorClass("primary", "DEFAULT", "text"),
-                  )}
-                />
+                <Check className={cn("h-4", "w-4", "text-fg-brand")} />
               ) : (
                 opt.icon
               ),

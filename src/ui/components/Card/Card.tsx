@@ -52,10 +52,7 @@ const Card = memo(function Card({
         variant: {
           default: "",
           hover: cn("hover:shadow-md", "transition-shadow", "cursor-pointer"),
-          selected: cn(
-            getColorClass("primary", "DEFAULT", "border"),
-            "shadow-md",
-          ),
+          selected: cn("border-line-brand", "shadow-md"),
         },
         padding: {
           none: "",

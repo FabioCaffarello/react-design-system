@@ -105,7 +105,7 @@ export default function Accordion({
                 focus:ring-2
                 focus:ring-offset-2
                 ${(() => {
-                  const primaryBg = getColorClass("primary", "DEFAULT", "bg");
+                  const primaryBg = "bg-surface-brand";
                   const parts = primaryBg.split("-");
                   return parts.length >= 3
                     ? `focus:ring-${parts[1]}-${parts[2]}`

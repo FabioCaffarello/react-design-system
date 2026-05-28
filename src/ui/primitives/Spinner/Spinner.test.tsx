@@ -30,6 +30,6 @@ describe("Spinner", () => {
   it("applies variant classes correctly", () => {
     const { container } = render(<Spinner variant="primary" />);
     const svg = container.querySelector("svg");
-    expect(svg).toHaveClass("text-indigo-500");
+    expect(svg).toHaveClass("text-fg-brand");
   });
 });

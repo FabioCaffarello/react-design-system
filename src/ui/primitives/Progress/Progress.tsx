@@ -75,8 +75,8 @@ const progressTrackVariants = cva("w-full", {
 const progressBarVariants = cva("transition-all", {
   variants: {
     variant: {
-      primary: getColorClass("primary", "DEFAULT", "bg"),
-      secondary: getColorClass("secondary", "DEFAULT", "bg"),
+      primary: "bg-surface-brand",
+      secondary: "bg-surface-secondary",
       success: getColorClass("success", "DEFAULT", "bg"),
       error: getColorClass("error", "DEFAULT", "bg"),
       warning: getColorClass("warning", "DEFAULT", "bg"),

@@ -10,7 +10,7 @@ import {
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useDatePickerContext } from "./DatePickerContext";
 import Button from "../../primitives/Button/Button";
-import { getColorClass, getRadiusClass } from "../../tokens";
+import { getRadiusClass } from "../../tokens";
 
 export interface DatePickerCalendarProps
   extends HTMLAttributes<HTMLDivElement> {
@@ -317,13 +317,13 @@ export function DatePickerCalendar({
                   isDisabled
                     ? "text-gray-300 cursor-not-allowed"
                     : isSelected
-                      ? `${getColorClass("primary", "DEFAULT", "bg")} text-white font-semibold`
+                      ? `${"bg-surface-brand"} text-white font-semibold`
                       : isInRange
-                        ? `${getColorClass("primary", "light", "bg")} ${getColorClass("primary", "DEFAULT", "text")}`
+                        ? `${"bg-indigo-400"} ${"text-fg-brand"}`
                         : isToday
                           ? "border-2 border-indigo-500 font-semibold"
                           : isFocused
-                            ? `${getColorClass("primary", "light", "bg")}`
+                            ? `${"bg-indigo-400"}`
                             : "hover:bg-gray-100"
                 }
               `}

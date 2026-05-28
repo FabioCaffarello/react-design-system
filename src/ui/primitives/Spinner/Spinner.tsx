@@ -38,8 +38,8 @@ const spinnerVariants = cva("motion-safe:animate-spin", {
       lg: "h-8 w-8",
     },
     variant: {
-      primary: getColorClass("primary", "DEFAULT", "text"),
-      secondary: getColorClass("secondary", "DEFAULT", "text"),
+      primary: "text-fg-brand",
+      secondary: "text-fg-brand-secondary",
       neutral: getColorClass("neutral", "DEFAULT", "text"),
     },
   },

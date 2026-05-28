@@ -12,7 +12,6 @@ import {
   useCollapsible,
   type UseCollapsibleOptions,
 } from "../../hooks/useCollapsible";
-import { getFocusRingClass } from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
 import { cn } from "../../utils";
 
@@ -121,7 +120,7 @@ export default function Collapsible({
           "text-left",
           "focus:outline-none",
           "focus:ring-2",
-          getFocusRingClass("primary", "DEFAULT"),
+          "focus:ring-line-brand",
           "focus:ring-offset-2",
           getRadiusClass("md"),
         )}

@@ -164,10 +164,7 @@ const Input = memo(
     );
 
     // Memoize focus ring colors
-    const primaryFocusRing = useMemo(
-      () => getFocusColorClass("primary", "DEFAULT", "border"),
-      [],
-    );
+    const primaryFocusRing = useMemo(() => "focus:border-line-focus", []);
 
     const errorFocusRing = useMemo(
       () => getFocusColorClass("error", "DEFAULT", "border"),
@@ -213,12 +210,12 @@ const Input = memo(
               "border-0",
               "border-b-2",
               getColorClass("neutral", "DEFAULT", "border"),
-              getFocusColorClass("primary", "DEFAULT", "border"),
+              "focus:border-line-focus",
             ),
             outlined: cn(
               "border",
               getColorClass("neutral", "DEFAULT", "border"),
-              getFocusColorClass("primary", "DEFAULT", "border"),
+              "focus:border-line-focus",
             ),
             filled: cn(
               getColorClass("neutral", "light", "bg"),
@@ -278,7 +275,6 @@ const Input = memo(
           (rightIcon || shouldShowClear || isPassword) &&
             (size === "sm" ? "pr-9" : size === "lg" ? "pr-12" : "pr-10"),
           className,
-          // eslint-disable-next-line react-hooks/exhaustive-deps
         ),
       [
         variant,

@@ -135,10 +135,7 @@ const Select = memo(
     );
 
     // Memoize focus ring colors
-    const primaryFocusRing = useMemo(
-      () => getFocusColorClass("primary", "DEFAULT", "border"),
-      [],
-    );
+    const primaryFocusRing = useMemo(() => "focus:border-line-focus", []);
 
     const errorFocusRing = useMemo(
       () => getFocusColorClass("error", "DEFAULT", "border"),
@@ -229,12 +226,7 @@ const Select = memo(
 
     // Memoize classes
     const selectClasses = useMemo(
-      () =>
-        cn(
-          selectVariants({ size, state: selectState }),
-          className,
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-        ),
+      () => cn(selectVariants({ size, state: selectState }), className),
       [size, selectState, className],
     );
 

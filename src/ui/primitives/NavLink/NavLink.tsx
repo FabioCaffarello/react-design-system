@@ -15,11 +15,7 @@ import React, { useMemo, useCallback } from "react";
 import type { NavLinkProps } from "./types";
 import { useNavLink } from "./hooks/useNavLink";
 import { cn, cva } from "../../utils";
-import {
-  getColorClass,
-  getHoverColorClass,
-  getFocusRingClass,
-} from "../../tokens/colors";
+import { getColorClass, getHoverColorClass } from "../../tokens/colors";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getTypographySize } from "../../tokens/typography";
 import { getRadiusClass } from "../../tokens/radius";
@@ -49,7 +45,7 @@ const navLinkVariants = cva(
           getColorClass("neutral", "dark", "text"),
           "hover:opacity-80",
           "focus-visible:opacity-100",
-          getFocusRingClass("primary", "DEFAULT"),
+          "focus:ring-line-brand",
         ),
         underline: cn(
           getColorClass("neutral", "dark", "text"),
@@ -58,14 +54,14 @@ const navLinkVariants = cva(
           "border-b-2",
           "border-transparent",
           "hover:border-current",
-          getFocusRingClass("primary", "DEFAULT"),
+          "focus:ring-line-brand",
         ),
         background: cn(
           getColorClass("neutral", "dark", "text"),
           getHoverColorClass("neutral", "light", "bg"),
           "rounded-md",
           getRadiusClass("md"),
-          getFocusRingClass("primary", "DEFAULT"),
+          "focus:ring-line-brand",
         ),
       },
       size: {
@@ -183,19 +179,12 @@ export function NavLink({
 
     switch (variant) {
       case "underline":
-        return cn(
-          "border-b-2",
-          getColorClass("primary", "DEFAULT", "border"),
-          getColorClass("primary", "DEFAULT", "text"),
-        );
+        return cn("border-b-2", "border-line-brand", "text-fg-brand");
       case "background":
-        return cn(
-          getColorClass("primary", "light", "bg"),
-          getColorClass("primary", "DEFAULT", "text"),
-        );
+        return cn("bg-indigo-400", "text-fg-brand");
       case "default":
       default:
-        return cn(getColorClass("primary", "DEFAULT", "text"), "font-semibold");
+        return cn("text-fg-brand", "font-semibold");
     }
   }, [calculatedActive, variant]);
 

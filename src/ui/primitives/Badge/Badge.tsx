@@ -139,20 +139,12 @@ const badgeVariants = cva(
       {
         variant: "primary",
         style: "solid",
-        class: cn(
-          getColorClass("primary", "light", "bg"),
-          getColorClass("primary", "dark", "text"),
-          getColorClass("primary", "DEFAULT", "border"),
-        ),
+        class: cn("bg-indigo-400", "text-indigo-600", "border-line-brand"),
       },
       {
         variant: "secondary",
         style: "solid",
-        class: cn(
-          getColorClass("secondary", "light", "bg"),
-          getColorClass("secondary", "dark", "text"),
-          getColorClass("secondary", "DEFAULT", "border"),
-        ),
+        class: cn("bg-pink-300", "text-pink-600", "border-line-secondary"),
       },
       // Outline style variants
       {
@@ -203,19 +195,15 @@ const badgeVariants = cva(
       {
         variant: "primary",
         style: "outline",
-        class: cn(
-          "bg-transparent",
-          getColorClass("primary", "DEFAULT", "border"),
-          getColorClass("primary", "DEFAULT", "text"),
-        ),
+        class: cn("bg-transparent", "border-line-brand", "text-fg-brand"),
       },
       {
         variant: "secondary",
         style: "outline",
         class: cn(
           "bg-transparent",
-          getColorClass("secondary", "DEFAULT", "border"),
-          getColorClass("secondary", "DEFAULT", "text"),
+          "border-line-secondary",
+          "text-fg-brand-secondary",
         ),
       },
     ],
