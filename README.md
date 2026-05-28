@@ -58,33 +58,33 @@ plop-templates/   # Component and story templates
 
 1. **Install dependencies:**
 
-    ```sh
-    npm install
-    ```
+   ```sh
+   npm install
+   ```
 
 2. **Start development server:**
 
-    ```sh
-    npm run dev
-    ```
+   ```sh
+   npm run dev
+   ```
 
 3. **View and document components in Storybook:**
 
-    ```sh
-    npm run storybook
-    ```
+   ```sh
+   npm run storybook
+   ```
 
 4. **Run unit and story tests:**
 
-    ```sh
-    npm run test
-    ```
+   ```sh
+   npm run test
+   ```
 
 5. **Lint and format code:**
 
-    ```sh
-    npm run lint
-    ```
+   ```sh
+   npm run lint
+   ```
 
 ## Component Generation
 
@@ -192,6 +192,7 @@ See [Architecture Documentation](./docs/ARCHITECTURE.md) for system architecture
 ## Scripts
 
 ### Development
+
 - `npm run dev` - Start development server
 - `npm run storybook` - Start Storybook
 - `npm run test` - Run tests
@@ -200,10 +201,12 @@ See [Architecture Documentation](./docs/ARCHITECTURE.md) for system architecture
 - `npm run lint` - Lint code
 
 ### Build
+
 - `npm run build` - Build for production
 - `npm run build-storybook` - Build static Storybook
 
 ### Validation
+
 - `npm run validate:all` - Run all validation scripts
 - `npm run validate-stories` - Validate story structure
 - `npm run validate-architecture` - Validate component architecture
@@ -211,6 +214,7 @@ See [Architecture Documentation](./docs/ARCHITECTURE.md) for system architecture
 - `npm run validate-themes` - Validate theme tokens
 
 ### Generation
+
 - `npm run plop` - Generate new components
 - `npm run generate-story-index` - Generate story index
 - `npm run generate-context-diagram` - Generate context hierarchy diagram
@@ -237,13 +241,16 @@ The design system includes a comprehensive Flow/Graph system built on React Flow
 ### Quick Start with Flow
 
 ```tsx
-import { FlowCanvas, FlowProvider } from '@fabio.caffarello/react-design-system';
-import { useNodesState, useEdgesState } from '@xyflow/react';
+import {
+  FlowCanvas,
+  FlowProvider,
+} from "@fabio.caffarello/react-design-system";
+import { useNodesState, useEdgesState } from "@xyflow/react";
 
 function MyFlow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  
+
   return (
     <FlowProvider nodes={nodes} edges={edges}>
       <FlowCanvas.Root>
@@ -261,10 +268,12 @@ See [Flow Documentation](./src/ui/organisms/Flow/Flow.mdx) for complete API refe
 ## Documentation
 
 ### Quick Start
+
 - [**Documentation Index**](./docs/INDEX.md) - Índice completo de documentação
 - [**Quick Start MCP**](./docs/QUICK_START_MCP.md) - Comece a usar MCPs em 5 minutos
 
 ### Core Documentation
+
 - [Architecture Guide](./docs/ARCHITECTURE.md) - System architecture and component organization
 - [Accessibility Guide](./docs/ACCESSIBILITY.md) - WCAG 2.1 AA compliance and patterns
 - [Storybook Guide](./docs/STORYBOOK_GUIDE.md) - Storybook usage and best practices
@@ -274,6 +283,7 @@ See [Flow Documentation](./src/ui/organisms/Flow/Flow.mdx) for complete API refe
 - [Advanced Composition](./docs/ADVANCED_COMPOSITION.md) - Advanced composition patterns
 
 ### MCP & Automation
+
 - [MCP Strategy](./docs/MCP_STRATEGY.md) - Complete MCP strategy
 - [MCP Setup](./docs/MCP_SETUP.md) - MCP configuration guide
 - [MCP Automations](./docs/MCP_AUTOMATIONS.md) - Available automations
@@ -281,17 +291,19 @@ See [Flow Documentation](./src/ui/organisms/Flow/Flow.mdx) for complete API refe
 - [Design Systems MCP](./docs/DESIGN_SYSTEMS_MCP.md) - Design Systems MCP
 
 ### Testing & Quality
+
 - [Testing Strategy](./docs/TESTING_STRATEGY.md) - Complete testing strategy
 - [E2E Testing](./docs/E2E_TESTING.md) - End-to-end testing with Playwright
 - [Performance Guide](./docs/PERFORMANCE_GUIDE.md) - Performance optimization
 - [Visual Regression Testing](./docs/VISUAL_REGRESSION_TESTING.md) - Chromatic setup
 
 ### Integration & Migration
+
 - [Figma Integration](./docs/FIGMA_INTEGRATION.md) - Figma integration guide
-- [Migration Guides](./docs/MIGRATION_GUIDES.md) - Version migration guides
 - [Token Versioning](./docs/TOKENS_VERSIONING.md) - Design token versioning
 
 ### Processes
+
 - [Release Process](./docs/RELEASE_PROCESS.md) - Release and versioning process
 - [CI/CD Pipeline](./docs/CI_CD_PIPELINE.md) - Continuous integration and deployment
 - [Roadmap](./docs/ROADMAP.md) - Public roadmap

@@ -56,7 +56,6 @@
 
 - [**RELEASE_PROCESS.md**](./RELEASE_PROCESS.md) - Processo de release
 - [**CI_CD_PIPELINE.md**](./CI_CD_PIPELINE.md) - Pipeline CI/CD
-- [**MIGRATION_GUIDES.md**](./MIGRATION_GUIDES.md) - Guias de migração
 
 ## 🔧 Scripts Disponíveis
 
