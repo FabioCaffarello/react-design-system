@@ -27,8 +27,7 @@ export default defineConfig(() => {
           index: "src/ui/index.ts",
           providers: "src/ui/providers/index.ts", // Separate entry point for providers
           primitives: "src/ui/primitives/index.ts",
-          molecules: "src/ui/molecules/index.ts",
-          organisms: "src/ui/organisms/index.ts",
+          components: "src/ui/components/index.ts",
           tokens: "src/ui/tokens/index.ts",
         },
         name: "ReactDesignSystem",
@@ -89,19 +88,16 @@ export default defineConfig(() => {
             if (id.includes("/primitives/") && !id.includes("src/ui/index")) {
               return "primitives";
             }
-            if (id.includes("/molecules/") && !id.includes("src/ui/index")) {
-              return "molecules";
-            }
-            // Split other organisms, but not providers
+            // Split components, but keep provider-adjacent ones in main bundle
             if (
-              id.includes("/organisms/") &&
+              id.includes("/components/") &&
               !id.includes("src/ui/index") &&
               !id.includes("/Toast/ToastProvider") &&
               !id.includes("/Dialog/DialogProvider") &&
               !id.includes("/Toast/ToastContext") &&
               !id.includes("/Dialog/DialogContext")
             ) {
-              return "organisms";
+              return "components";
             }
             if (id.includes("/tokens/") && !id.includes("src/ui/index")) {
               return "tokens";

@@ -1,0 +1,151 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Molecules/Form" />
+
+# Form
+
+A comprehensive form wrapper component that provides validation states, error handling, success messages, and consistent layout.
+
+## Features
+
+- **Validation States**: Visual feedback for error, success, and loading states
+- **Error Handling**: Global and field-level error messages
+- **Accessibility**: Full ARIA support and keyboard navigation
+- **Layout**: Consistent spacing and structure
+- **Loading States**: Built-in loading indicator support
+
+## Basic Usage
+
+```tsx
+import {
+  Form,
+  Input,
+  Label,
+  Button,
+} from "@fabio.caffarello/react-design-system";
+
+<Form onSubmit={handleSubmit}>
+  <div className="space-y-2">
+    <Label htmlFor="email" variant="required">
+      Email
+    </Label>
+    <Input id="email" name="email" type="email" required />
+  </div>
+  <Button type="submit">Submit</Button>
+</Form>;
+```
+
+## Validation States
+
+### Error State
+
+Display global or field-level errors:
+
+```tsx
+<Form error="Please fix the errors below">{/* Form fields */}</Form>
+```
+
+### Success State
+
+Show success messages:
+
+```tsx
+<Form success="Form submitted successfully!">{/* Form fields */}</Form>
+```
+
+### Loading State
+
+Indicate form submission in progress:
+
+```tsx
+<Form loading={isSubmitting}>
+  <Button type="submit" disabled={isSubmitting}>
+    {isSubmitting ? "Submitting..." : "Submit"}
+  </Button>
+</Form>
+```
+
+## Field-Level Validation
+
+Use individual field components with error states:
+
+```tsx
+import { Input, ErrorMessage } from "@fabio.caffarello/react-design-system";
+
+<div className="space-y-2">
+  <Label htmlFor="email">Email</Label>
+  <Input id="email" error={!!errors.email} helperText={errors.email} />
+  {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
+</div>;
+```
+
+## Form Layout
+
+The Form component provides consistent spacing:
+
+```tsx
+<Form className="max-w-md space-y-4">
+  <div className="space-y-2">
+    <Label htmlFor="name">Name</Label>
+    <Input id="name" />
+  </div>
+  <div className="space-y-2">
+    <Label htmlFor="email">Email</Label>
+    <Input id="email" type="email" />
+  </div>
+  <Button type="submit">Submit</Button>
+</Form>
+```
+
+## Integration with React Hook Form
+
+```tsx
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  Input,
+  Label,
+  Button,
+} from "@fabio.caffarello/react-design-system";
+
+function MyForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  return (
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          {...register("email", { required: "Email is required" })}
+          error={!!errors.email}
+          helperText={errors.email?.message}
+        />
+      </div>
+      <Button type="submit">Submit</Button>
+    </Form>
+  );
+}
+```
+
+## Accessibility
+
+The Form component ensures accessibility:
+
+- Proper form structure with `role="form"`
+- ARIA labels and descriptions
+- Error messages associated with fields via `aria-describedby`
+- Keyboard navigation support
+- Focus management
+
+### Best Practices
+
+1. **Labels**: Always provide labels for form fields
+2. **Error Messages**: Associate error messages with fields
+3. **Required Fields**: Clearly indicate required fields
+4. **Loading States**: Provide feedback during submission
+5. **Validation**: Validate on both client and server side

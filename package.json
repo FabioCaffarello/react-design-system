@@ -21,15 +21,10 @@
       "import": "./dist/primitives/index.js",
       "require": "./dist/primitives/index.cjs"
     },
-    "./molecules": {
-      "types": "./dist/ui/molecules/index.d.ts",
-      "import": "./dist/molecules/index.js",
-      "require": "./dist/molecules/index.cjs"
-    },
-    "./organisms": {
-      "types": "./dist/ui/organisms/index.d.ts",
-      "import": "./dist/organisms/index.js",
-      "require": "./dist/organisms/index.cjs"
+    "./components": {
+      "types": "./dist/ui/components/index.d.ts",
+      "import": "./dist/components/index.js",
+      "require": "./dist/components/index.cjs"
     },
     "./tokens": {
       "types": "./dist/ui/tokens/index.d.ts",

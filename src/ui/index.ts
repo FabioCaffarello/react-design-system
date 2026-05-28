@@ -79,5 +79,4 @@ export {
 
 // 5. COMPONENTS (depend on providers, tokens, and utils)
 export * from "./primitives";
-export * from "./molecules";
-export * from "./organisms";
+export * from "./components";

@@ -37,9 +37,10 @@
     "src/**/*.stories.tsx",
     "**/*.test.*",
     "src/setupTests.ts",
-    "src/ui/extensions/**/*",
-    "src/ui/patterns/**/*",
-    "src/ui/organisms/Table/**/*",
-    "src/ui/organisms/DataGrid/**/*"
+    "src/ui/components/DataTablePattern/**/*",
+    "src/ui/components/FormWizardPattern/**/*",
+    "src/ui/components/SearchAndFilterPattern/**/*",
+    "src/ui/components/Table/**/*",
+    "src/ui/components/DataGrid/**/*"
   ]
 }
