@@ -3,7 +3,6 @@ import type { StorybookConfig } from "@storybook/react-vite";
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
-    "@chromatic-com/storybook", // Visual regression testing with Chromatic
     "@storybook/addon-docs", // Documentation support (includes Controls, Actions, Viewport, and Interactions in Storybook 10)
     "@storybook/addon-a11y", // Accessibility testing
     "@storybook/addon-vitest", // Vitest integration
