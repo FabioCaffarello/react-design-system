@@ -54,6 +54,7 @@
   --color-fg-brand: var(--color-brand-primary);
   --color-fg-brand-emphasis: var(--color-indigo-600);
   --color-fg-brand-secondary: var(--color-brand-secondary);
+  --color-fg-brand-secondary-emphasis: var(--color-pink-600);
 
   /* Feedback text */
   --color-fg-success: var(--color-emerald-700);
