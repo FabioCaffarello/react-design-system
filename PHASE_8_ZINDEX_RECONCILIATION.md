@@ -136,3 +136,18 @@ manter `modal-backdrop` só como reserva pro caso `SideNavbarBackdrop`,
 mover pra `tokens/sidebar.ts` se virar único uso isolado, ou consolidar
 a camada com `modal` se decidir que backdrops sempre acompanham o modal
 no mesmo z. Não bloqueia Phase 8.
+
+### Achado lateral — `zIndex: 'auto'` deliberado em NavbarItem
+
+Durante a documentação dos 14 micro-z (commit 3), apareceu um caso
+conceitualmente diferente dos demais: `NavbarItem.tsx` tem
+`zIndex: effectiveLabelMode !== "tooltip" ? 0 : "auto"` — valor não
+numérico no branch tooltip. `'auto'` é usado deliberadamente para
+**evitar criação de stacking context** quando o item está em modo
+tooltip; o tooltip portala para o `<body>` e qualquer stacking context
+intermediário no caminho do componente até a raiz pode atrapalhar o
+layering global do tooltip.
+
+Registrado como micro-z pra inventário, mas é uma técnica de
+_stacking suppression_ — não "uma layer interna". Vale categoria
+própria se a Phase 8 voltar pra revisão futura.

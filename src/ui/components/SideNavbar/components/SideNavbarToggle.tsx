@@ -28,10 +28,15 @@ const iconSizeClasses = {
 
 const positionClasses: Record<SideNavbarTogglePosition, string> = {
   floating: "absolute z-[100]", // Right edge of navbar, vertically centered - position set via style
+  // micro-z: toggle above adjacent siblings in absolute corner position
   top: "absolute top-2 right-2 z-10",
+  // micro-z: toggle above adjacent siblings in absolute corner position
   bottom: "absolute bottom-2 right-2 z-10",
+  // micro-z: toggle above sibling content in relative inside position
   inside: "relative z-10",
+  // micro-z: toggle above sibling content in relative inside position
   "navigation-top": "relative mt-2 mx-auto z-10",
+  // micro-z: toggle above sibling content in relative inside position
   "navigation-bottom": "relative mt-auto mb-2 mx-auto z-10",
 };
 

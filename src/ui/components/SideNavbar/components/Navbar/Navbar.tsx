@@ -144,7 +144,8 @@ function Navbar({
             "justify-start",
           )}
           style={{
-            zIndex: 1, // z-index: 1 to ensure content is above toggle
+            // micro-z: navbar content above toggle within parent container
+            zIndex: 1,
           }}
         >
           {children}

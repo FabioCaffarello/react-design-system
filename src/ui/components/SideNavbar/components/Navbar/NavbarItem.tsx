@@ -126,7 +126,8 @@ export default function NavbarItem({
         className={cn(
           "text-xs",
           "flex-shrink-0", // Prevenir que label encolha
-          "relative z-10", // Garantir que label fique na frente do ícone
+          // micro-z: redundant with inline zIndex:10 below — see BACKLOG
+          "relative z-10",
           effectiveLabelMode === "below" && "text-center",
           effectiveLabelMode === "inline" && "truncate",
         )}
@@ -134,7 +135,9 @@ export default function NavbarItem({
           // Garantir que label não seja afetada por transformações
           willChange: "auto",
           transform: "none",
-          zIndex: 10, // Garantir que label fique na frente do ícone
+          // micro-z: label above icon within navbar item (wins CSS
+          // specificity over the className z-10 above)
+          zIndex: 10,
         }}
       >
         {label}
@@ -223,7 +226,9 @@ export default function NavbarItem({
           willChange: "auto",
           transform: "none",
           transition: "none",
-          // Garantir que ícone fique atrás do label quando ambos estão visíveis
+          // micro-z: conditional stacking per label mode — base layer when
+          // label visible inline; 'auto' when in tooltip mode to skip
+          // stacking context creation (tooltip portals to body).
           zIndex: effectiveLabelMode !== "tooltip" ? 0 : "auto",
         }}
       >

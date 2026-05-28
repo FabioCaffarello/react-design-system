@@ -257,6 +257,7 @@ export default function Dropdown({
       {isOpen && (
         <>
           <div
+            // micro-z: dropdown click-outside backdrop internal to dropdown scope
             className={cn("fixed", "inset-0", "z-10")}
             onClick={() => {
               setIsOpen(false);
@@ -269,6 +270,7 @@ export default function Dropdown({
             id={menuId}
             className={cn(
               "absolute",
+              // micro-z: dropdown content above its own backdrop
               "z-20",
               getSpacingClass("sm", "mt"),
               "w-48", // Fixed width for dropdown menu - justified as layout constraint

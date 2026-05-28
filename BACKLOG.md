@@ -36,6 +36,21 @@ Se a intenção original do design era 18×20 (não-quadrado), reverter
 **Como decidir:** olhar o design original ou o componente renderizado;
 quadrado é mais provavelmente o intent.
 
+## NavbarItem — z-index duplicado em className e style inline
+
+**Descoberto em:** Phase 8 commit 3 (micro-z documentation).
+**Estado:** `NavbarItem.tsx` tem `"relative z-10"` no `className` E
+`zIndex: 10` no `style` inline — mesmo elemento `<span>` do label,
+mesmo valor, definição dupla. Inline `style` ganha precedência CSS,
+então o className `z-10` é no-op silencioso.
+**Por que importa:** quem chega no arquivo pra debugar stacking pode
+modificar o className achando que está mudando comportamento — e nada
+muda porque o style inline sobrescreve. Trap futuro.
+**Abordagem:** escolher UMA forma (className OU inline) e remover a
+outra. Comentários `// micro-z:` adjacentes em ambos os sítios
+referenciam mutuamente o problema, então o trap está sinalizado até a
+limpeza. Polish, não blocker.
+
 ## Dialog:128 `relative z-50` é redundante
 
 **Descoberto em:** Phase 8, mapeamento do passo 2.

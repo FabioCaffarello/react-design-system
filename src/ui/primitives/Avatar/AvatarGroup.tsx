@@ -80,6 +80,7 @@ export function AvatarGroup({
           <div
             key={index}
             className="ring-2 ring-white"
+            // micro-z: avatar stacking computed by position in group
             style={{ zIndex: avatars.length - index }}
           >
             {avatarElement}
@@ -93,6 +94,7 @@ export function AvatarGroup({
           fallback={`+${remainingCount}`}
           aria-label={`${remainingCount} more avatars`}
           className="ring-2 ring-white"
+          // micro-z: avatar group fallback base layer
           style={{ zIndex: 0 }}
         />
       )}

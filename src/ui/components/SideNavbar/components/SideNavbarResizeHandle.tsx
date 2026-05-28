@@ -34,6 +34,7 @@ export default function SideNavbarResizeHandle({
   }
 
   return (
+    // micro-z: resize handle above sidebar border for grab affordance (see z-10 below)
     <div
       className={`
         group
