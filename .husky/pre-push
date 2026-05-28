@@ -1,6 +1,6 @@
 # Run tests before push
 echo "Running unit tests..."
-npm run test:no-browser
+npm run test
 
 # Run full lint check
 echo "Running lint check..."
