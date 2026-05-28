@@ -1,6 +1,6 @@
 # Fase 9 — Consolidação do shim de cores
 
-**Status:** planejada, adiada para depois do cleanup pós-prune.
+**Status:** em execução na branch `phase/09-color-shim-consolidation`.
 **Origem:** #4 (Coverage / órfãos). Triagem de dead code em
 `src/ui/tokens/colors/utils.ts` revelou que o arquivo **não tem
 nenhum consumidor real** — não porque ficou sem uso, mas porque um
@@ -41,57 +41,127 @@ do sistema novo. As 5 funções `getColor*` no shim **sombreiam** o
 `export * from "./colors/index"` que o próprio shim faz, porque em
 ESM exportações nomeadas explícitas têm precedência sobre `export *`.
 
-## Escopo da consolidação
+## Achado da investigação
 
-1. **Decidir versão canônica.** As 5 funções `getColor*` existem em
-   duas implementações (shim local vs `colors/utils.ts`). Auditar as
-   duas, decidir qual fica. Provavelmente o sistema novo — é o
-   destino arquitetural já indicado pelo próprio cabeçalho do shim
-   (`"For the new color system, use imports from './colors/index.ts'"`).
-2. **Mover ativos do shim pro sistema novo.** Classes Strategy
-   (`LightColorStrategy`, `DarkColorStrategy`), `ColorTokenFactory`,
-   constantes `COLOR_TOKENS_LIGHT/DARK/COLOR_TOKENS` — mover pra
-   `colors/` no arquivo apropriado (`types.ts` pros types já
-   movidos, `factory` ou novo `strategies.ts` pras classes).
-3. **Atualizar os 37 imports.** `from '../tokens/colors'` →
-   `from '../tokens/colors/index'` (ou simplesmente `from '../tokens'`
-   se o barrel raiz já cobrir, o que é o caso hoje).
-4. **Deletar o shim `colors.ts`.** Sem caminho de migração reverso —
-   é uma quebra silenciosa pra qualquer consumidor externo que
-   dependa do path antigo, mas mono-brand solo não tem esses.
-5. **Lidar com `colors/utils.ts`** depois do shim morrer. Se
-   manteve-se durante a consolidação como home das 5 funções
-   `getColor*`, vira load-bearing de verdade — sai do estado dead
-   code. As 8 funções extras (`withOpacity`, `lighten`, `darken`,
-   etc.) entram em triagem própria de "manter ou deletar" caso a
-   caso.
+A triagem inicial detectou que a fase é **mais profunda que um
+rename de imports**. O repo está com **três migrações inacabadas
+em sequência**:
+
+1. **Cor** (Phases 7 + 9): tokens semânticos definidos, código
+   ainda usa cores cruas (Phase 7) E o shim legacy ainda sombreia
+   o sistema novo de cores (Phase 9).
+2. **Z-index** (Phase 8, fechada): tokens semânticos definidos,
+   código usava Tailwind cru. Reconciliada em 2026-05.
+3. **Tailwind v3 → v4** (descoberto durante Phase 9): primitivas
+   já em `@theme` (utilitários nativos gerados), mas o vocabulário
+   semântico inteiro (text/bg/surface/border/state/feedback
+   contextuais) ficou em `:root` — não promovido. Só consumível
+   via `var()` ou arbitrary values do tipo
+   `bg-[var(--color-bg-base)]`.
+
+A migração v3→v4 parcial é a TERCEIRA migração inacabada no repo —
+mesma família estrutural. Phase 9 fecha as duas pendências de cor
+de uma vez: promove o vocabulário semântico pra `@theme` (corrigindo
+v3→v4) e elimina o shim (consolidando o sistema novo).
+
+## Convenção de consumo decidida
+
+**Cor é consumida via classe Tailwind nativa.** Não via getters JS,
+não via arbitrary values, não via `@utility` custom. Os utilitários
+existem porque as vars estão em `@theme`. Convenção pública:
+
+```
+bg-surface-base, bg-surface-muted, bg-surface-hover    (do --color-surface-*)
+text-fg-primary, text-fg-secondary, text-fg-muted      (do --color-fg-*)
+border-line-default, border-line-strong, border-line-focus (do --color-line-*)
+bg-success, text-success, border-success-emphasis      (do --color-success*)
+```
+
+Pra essas classes existirem como utilitárias, as vars semânticas
+precisam estar em `@theme`. **Phase 9 faz essa promoção.** Phase 7
+(migração das 129 ocorrências de cores cruas) depende dela.
+
+## Decisão de naming
+
+Tailwind v4 gera utilitários com nome `{prefixo}-{nome-da-var-menos-"--color-"}`.
+Os nomes atuais (`--color-bg-*`, `--color-text-*`, `--color-border-*`,
+`--color-state-*`) foram desenhados pra consumo via `var()`, com o
+prefixo encodando a intenção de uso. Promover as-is produziria
+utilitários feios (`bg-bg-base`, `text-text-secondary`,
+`border-border-strong`) com duplo prefixo redundante.
+
+**Decisão:** renomear o vocabulário antes de promover. Mapeamento:
+
+| Namespace antigo   | Namespace novo                | Justificativa                                                                                                                 |
+| ------------------ | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `--color-bg-*`     | `--color-surface-*`           | `bg-*` já sobrepunha semanticamente `surface-*` no repo; separação não justificada arquiteturalmente.                         |
+| `--color-text-*`   | `--color-fg-*`                | Evita `text-text-*` duplo prefixo. `fg` é vocabulário reconhecível por quem conhece Radix/Primer.                             |
+| `--color-border-*` | `--color-line-*`              | Evita `border-border-*` duplo prefixo. `line` é o termo usado em Material e Adobe Spectrum.                                   |
+| `--color-state-*`  | `--color-surface-*` (fundido) | Estados de cor são variações de superfície (hover/active/selected/focus aplicam-se a backgrounds). Merecem o mesmo namespace. |
+
+### Achado durante o rename: canvas vs base
+
+O rename revelou que `--color-bg-base` e `--color-surface-base`
+codificavam conceitos diferentes — **canvas** (chão da página) e
+**resting surface** (cards/painéis) — distinguíveis por elevação no
+dark mode:
+
+- `bg-base` em dark = `slate-950` (canvas, camada mais escura)
+- `surface-base` em dark = `slate-900` (resting surface, um nível
+  acima do canvas)
+
+Fundir ambos teria descartado a hierarquia de elevação dark. Decisão:
+renomear `bg-base` pra **`--color-surface-canvas`**, mantendo
+`--color-surface-base` intacto.
+
+Vocabulário público resultante: **canvas / base / raised / overlay /
+sunken** — convenção de design systems modernos (Material elevation,
+iOS layers).
+
+### Conflito fundido: surface-disabled
+
+`--color-state-disabled` e `--color-surface-disabled` tinham valores
+idênticos em todos os temas (`slate-100` light, `slate-800` dark).
+Fundidos em `--color-surface-disabled` sem perda.
+
+## Escopo expandido (4 grandes etapas)
+
+1. **Verificar `@theme` + override de tema (PASSO 0 — feito).** Movi
+   `--color-bg-base` pra `@theme` em experimento isolado, build
+   verde, inspeção do CSS confirmou que `[data-theme="dark"]`
+   override é preservado intacto e cascade opera. `@theme` não
+   "tranca" valores. Caminho A é viável.
+2. **Rename + promover vocabulário semântico pra `@theme`.**
+   Aplica o mapa de rename acima (sem fundir surface-canvas com
+   surface-base), depois move as declarações de `:root` pra `@theme`
+   em `semantic/colors.css`. `themes/{light,dark}.css` e
+   `variants/*.css` continuam declarando overrides em seletores
+   específicos.
+3. **Repointar consumidores do shim e remover arbitrary syntax.** Os
+   37 imports de `'../tokens/colors'` apontam pro sistema novo
+   (`'../tokens/colors/index'` ou via barrel raiz). Os 6 arquivos em
+   `SideNavbar/` que usam `bg-[var(--color-X)]` migram pras classes
+   nativas agora que existem.
+4. **Deletar o shim.** `git rm src/ui/tokens/colors.ts`. Build verde.
 
 ## Dependência com Phase 7
 
-**Phase 9 DEVE vir antes da Phase 7.**
+**Phase 9 desbloqueia Phase 7.** Antes da promoção pra `@theme`,
+o vocabulário-alvo da Phase 7 (`text-fg-muted`, `bg-surface-base`,
+`border-line-strong`, `bg-success-bg`) NÃO existe como classe
+utilitária no build — só como CSS variable em `:root`. Phase 7
+ficaria sem alvo de classe pra escrever.
 
-Phase 7 (`PHASE_7_SEMANTIC_COLORS.md`) é a migração das 129
-ocorrências de cores cruas (`text-gray-500`, `bg-gray-50`, etc.)
-para a API semântica de cores. Essa API é exatamente o que está
-duplicado entre o shim e o sistema novo. Se Phase 7 for executada
-primeiro:
+Phase 9 transforma esse vocabulário em utilitários nativos. Phase 7
+passa a ser substituição direta de classe (`text-gray-500` →
+`text-fg-muted`), commit por grupo coeso, sem cerimônia de getter
+JS ou arbitrary syntax.
 
-- O critério "trocar `text-gray-500` por chamada à API semântica"
-  vai usar a API atual, que é a do shim (porque é o que está
-  vivo no grafo de imports).
-- Quando Phase 9 finalmente consolidar e migrar pro sistema novo,
-  TODAS as chamadas escritas na Phase 7 vão ter que ser revisitadas
-  pra apontar pro path correto.
-- Possível regressão silenciosa: um helper semântico no shim pode
-  diferir do equivalente no sistema novo (já que são implementações
-  separadas), produzindo mudanças visuais inesperadas na migração
-  Phase 9.
-
-Ordem correta: **Phase 9 → Phase 7**.
+Ordem firme: **Phase 9 → Phase 7**.
 
 ## Critério de pronto
 
-- Zero arquivos `tokens/colors.ts` (shim eliminado).
+- Zero arquivo `src/ui/tokens/colors.ts` (shim eliminado).
 - Zero duplicação de nomes de função entre shim e sistema novo.
 - Os 37 imports apontam pra paths não-ambíguos
   (`tokens/colors/index` ou o barrel `tokens`).
@@ -100,6 +170,14 @@ Ordem correta: **Phase 9 → Phase 7**.
   acordou colocar).
 - Coverage de `tokens/colors/utils.ts` reflete uso real (deixa de
   ser dead code).
+- `--color-{surface,fg,line}-*` declarados em `@theme` em
+  `semantic/colors.css`. Light/dark/variants overrides intactos em
+  seletores específicos.
+- Utilitários nativos `bg-surface-*`, `text-fg-*`, `border-line-*`
+  presentes no CSS compilado e consumíveis em JSX sem arbitrary
+  syntax.
+- Zero ocorrência de `bg-[var(--color-X)]` em código de componente
+  onde houver classe nativa equivalente.
 
 ## Mesma família das Phases 7 e 8
 
@@ -108,7 +186,7 @@ migração estrutural, parou no meio, deixou os dois sistemas
 convivendo. Phase 7 (color tokens semânticos definidos, código
 usa cores cruas), Phase 8 (z-index tokens semânticos definidos,
 código usa Tailwind cru), Phase 9 (sistema novo de cores
-definido, código usa shim legacy). Mesmo gesto arquitetural três
-vezes; cada migração inacabada virou uma fase própria por causa
-do tamanho do refactor + necessidade de triagem componente a
-componente.
+definido, código usa shim legacy + vocabulário semântico não
+promovido pra v4). Mesmo gesto arquitetural três vezes; cada
+migração inacabada virou uma fase própria por causa do tamanho
+do refactor + necessidade de triagem componente a componente.
