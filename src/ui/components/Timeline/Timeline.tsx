@@ -179,7 +179,7 @@ export default function Timeline({
                   className={`
                     w-0.5
                     flex-1
-                    min-h-[60px]
+                    min-h-16
                     mt-2
                     ${status === "completed" ? getColorClass("success", "DEFAULT", "bg") : "bg-gray-300"}
                   `}

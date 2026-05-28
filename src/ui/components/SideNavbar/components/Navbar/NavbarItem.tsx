@@ -14,17 +14,17 @@ const SIZE_CLASSES = {
   sm: {
     container: "w-8 h-8",
     icon: "w-4 h-4",
-    badge: "min-w-[14px] h-[14px] text-[10px]",
+    badge: "min-w-3.5 h-3.5 text-2xs",
   },
   md: {
     container: "w-10 h-10",
     icon: "w-5 h-5",
-    badge: "min-w-[18px] h-[18px] text-xs",
+    badge: "min-w-5 h-5 text-xs",
   },
   lg: {
     container: "w-12 h-12",
     icon: "w-6 h-6",
-    badge: "min-w-[20px] h-[20px] text-xs",
+    badge: "min-w-5 h-5 text-xs",
   },
 } as const;
 

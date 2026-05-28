@@ -170,7 +170,7 @@ export default function TablePagination({
                     variant={page === pageNum ? "primary" : "ghost"}
                     size="sm"
                     onClick={() => onPageChange(pageNum)}
-                    className="min-w-[2.5rem]"
+                    className="min-w-10"
                     aria-label={`Page ${pageNum}`}
                     aria-current={page === pageNum ? "page" : undefined}
                   >

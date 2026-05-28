@@ -238,8 +238,8 @@ export default function Popover({
         ${getShadowClass("lg")}
         border
         ${getColorClass("neutral", "DEFAULT", "border")}
-        min-w-[200px]
-        max-w-[400px]
+        min-w-48
+        max-w-96
         ${getAnimationClass("base")}
         ${contentClassName}
       `}

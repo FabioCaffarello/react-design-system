@@ -300,7 +300,7 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
             disabled={disabled}
             className={cn(
               "flex-1",
-              "min-w-[120px]",
+              "min-w-32",
               "outline-none",
               "bg-transparent",
               inputClassName,

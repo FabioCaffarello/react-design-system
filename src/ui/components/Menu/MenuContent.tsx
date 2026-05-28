@@ -175,7 +175,7 @@ export default function MenuContent({
         ${getShadowClass("lg")}
         border
         ${getColorClass("neutral", "DEFAULT", "border")}
-        min-w-[160px]
+        min-w-40
         ${getSpacingClass("xs", "py")}
         ${className}
       `}

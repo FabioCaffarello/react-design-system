@@ -172,7 +172,7 @@ export default function TimePicker({
   };
 
   const timePickerContent = (
-    <div className={`${getSpacingClass("base", "p")} min-w-[200px]`}>
+    <div className={`${getSpacingClass("base", "p")} min-w-48`}>
       <div className="flex items-center justify-center gap-4">
         {/* Hours */}
         <div className="flex flex-col items-center gap-2">
