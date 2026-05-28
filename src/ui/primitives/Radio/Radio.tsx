@@ -3,7 +3,6 @@
 import { forwardRef, memo, useMemo } from "react";
 import type { InputHTMLAttributes, ReactNode } from "react";
 import { getTypographyClasses } from "../../tokens/typography";
-import { getColorClass } from "../../tokens/colors";
 import { getSpacingClass } from "../../tokens/spacing";
 import { cn } from "../../utils";
 
@@ -82,7 +81,7 @@ const Radio = memo(
           "h-4",
           "w-4",
           "border",
-          getColorClass("neutral", "DEFAULT", "border"),
+          "border-line-default",
           "text-fg-brand",
           "focus:ring-2",
           focusRingColor,
@@ -132,9 +131,7 @@ const Radio = memo(
             className={cn(
               getSpacingClass("xs", "mt"),
               getTypographyClasses("caption"),
-              error
-                ? "text-fg-error"
-                : getColorClass("neutral", "DEFAULT", "text"),
+              error ? "text-fg-error" : "text-fg-secondary",
             )}
             role={error ? "alert" : undefined}
           >
