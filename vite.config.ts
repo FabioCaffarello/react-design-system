@@ -13,7 +13,6 @@ export default defineConfig(() => {
         "react-hook-form",
         "@testing-library/dom",
         "@testing-library/react",
-        "@xyflow/react",
       ],
     },
     resolve: {

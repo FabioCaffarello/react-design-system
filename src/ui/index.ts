@@ -24,7 +24,11 @@ export { getSpacingClass, getSpacing } from "./tokens/spacing";
 export { getTypographyClasses, getTypography } from "./tokens/typography";
 export { getColorClass, getColor } from "./tokens/colors";
 export { getBreakpoint, getMediaQuery } from "./tokens/breakpoints";
-export { getAnimationClass, getAnimation, getTransitionClass } from "./tokens/animations";
+export {
+  getAnimationClass,
+  getAnimation,
+  getTransitionClass,
+} from "./tokens/animations";
 export { getZIndexClass, getZIndex } from "./tokens/z-index";
 export { getOpacityClass, getOpacity } from "./tokens/opacity";
 export { getGradientClass, getGradient } from "./tokens/gradients";
@@ -33,7 +37,7 @@ export { getGradientClass, getGradient } from "./tokens/gradients";
 // CRITICAL: All providers are exported from providers-bundle.ts to ensure they're
 // in the same module boundary. This prevents Turbopack from code-splitting them
 // incorrectly, which causes initialization order issues.
-// 
+//
 // The bundle ensures all providers are initialized together, maintaining correct
 // dependency order regardless of how Turbopack processes the modules.
 
@@ -66,7 +70,12 @@ export {
 
 // 3.4 AppProvider (depends on all above providers - must be last)
 // AppProvider imports from providers-bundle, ensuring all providers are in the same module
-export { AppProvider, useApp, type AppProviderProps, type AppProviderConfig } from "./providers/AppProvider";
+export {
+  AppProvider,
+  useApp,
+  type AppProviderProps,
+  type AppProviderConfig,
+} from "./providers/AppProvider";
 
 // 4. THEMES (may depend on providers)
 export * from "./themes";
@@ -75,8 +84,3 @@ export * from "./themes";
 export * from "./atoms";
 export * from "./molecules";
 export * from "./organisms";
-
-// 6. EXTENSIONS (may depend on components and providers)
-// NOTE: Extensions are exported separately to avoid Turbopack code-splitting issues
-// Import extensions from '@fabio.caffarello/react-design-system/extensions' instead
-// export * from "./extensions";

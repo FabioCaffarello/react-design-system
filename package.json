@@ -36,16 +36,6 @@
       "import": "./dist/tokens/index.js",
       "require": "./dist/tokens/index.cjs"
     },
-    "./extensions": {
-      "types": "./dist/ui/extensions/index.d.ts",
-      "import": "./dist/extensions/index.js",
-      "require": "./dist/extensions/index.cjs"
-    },
-    "./extensions/flow": {
-      "types": "./dist/ui/extensions/flow/index.d.ts",
-      "import": "./dist/extensions/flow/index.js",
-      "require": "./dist/extensions/flow/index.cjs"
-    },
     "./providers": {
       "types": "./dist/ui/providers/index.d.ts",
       "import": "./dist/providers/index.js",
@@ -107,7 +97,6 @@
   },
   "peerDependencies": {
     "@hookform/resolvers": "^3.0.0",
-    "@xyflow/react": "^12.0.0",
     "lucide-react": "^0.552.0",
     "react": ">=19",
     "react-dom": ">=19",
@@ -115,20 +104,12 @@
     "zod": "^3.0.0"
   },
   "dependencies": {
-    "@dnd-kit/core": "^6.3.1",
-    "@dnd-kit/sortable": "^10.0.0",
-    "@dnd-kit/utilities": "^3.2.2",
     "@tailwindcss/postcss": "^4.1.16",
-    "@types/d3-force": "^3.0.10",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "d3-force": "^3.0.0",
-    "dagre": "^0.8.5",
-    "elkjs": "^0.11.0",
     "react": ">=19",
     "react-dom": ">=19",
-    "tailwind-merge": "^3.4.0",
-    "web-worker": "^1.5.0"
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.0",
@@ -157,7 +138,6 @@
     "@vitejs/plugin-react": "^5.0.4",
     "@vitest/browser-playwright": "^4.0.6",
     "@vitest/coverage-v8": "^4.0.6",
-    "@xyflow/react": "^12.0.0",
     "autoprefixer": "^10.4.21",
     "baseline-browser-mapping": "^2.9.14",
     "dependency-cruiser": "^17.3.6",
