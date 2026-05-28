@@ -137,47 +137,78 @@ Fundidos em `--color-surface-disabled` sem perda.
    em `semantic/colors.css`. `themes/{light,dark}.css` e
    `variants/*.css` continuam declarando overrides em seletores
    específicos.
-3. **Repointar consumidores do shim e remover arbitrary syntax.** Os
-   37 imports de `'../tokens/colors'` apontam pro sistema novo
-   (`'../tokens/colors/index'` ou via barrel raiz). Os 6 arquivos em
-   `SideNavbar/` que usam `bg-[var(--color-X)]` migram pras classes
-   nativas agora que existem.
-4. **Deletar o shim.** `git rm src/ui/tokens/colors.ts`. Build verde.
+3. **Repointar API pública pro sistema novo, isolar shim como
+   compat layer.** `src/ui/index.ts` e a parte da barrel
+   `tokens/index.ts` que não tem mais consumers internos passam a
+   apontar pra `./tokens/colors/index` (sistema novo). Os re-exports
+   de `getColorClass`/etc. continuam apontando pro shim sob comentário
+   "legacy until Phase 7", servindo os 113 call sites neutrais
+   restantes (categoria d, documentados em `PHASE_7_CANDIDATES.md`).
+4. **Migração da SideNavbar arbitrary syntax e deleção física do
+   shim ficam pra Phase 7.** Razão na seção "Significado de
+   consolidation" abaixo.
+
+## Significado de "consolidation" nesta fase
+
+Consolidation aqui significa **tornar o sistema novo
+(`tokens/colors/`) o canônico do design system, isolando o shim
+(`tokens/colors.ts`) como compat layer explícita com vida útil
+limitada**. A deleção física do shim é responsabilidade da Phase 7,
+que migra os 113 call sites neutrais restantes — únicos consumidores
+remanescentes do shim pós-Phase 9.
+
+Esta fronteira é deliberada. A migração dos 113 sítios é triagem
+semântica componente-a-componente (cada `getColorClass("neutral",
+"DEFAULT", "text")` pode virar `text-fg-secondary`, `text-fg-tertiary`,
+ou outra classe conforme contexto). Esse trabalho é literalmente o
+objetivo da Phase 7. Forçar dentro de Phase 9 seria scope creep e
+duplicaria a triagem.
 
 ## Dependência com Phase 7
 
 **Phase 9 desbloqueia Phase 7.** Antes da promoção pra `@theme`,
-o vocabulário-alvo da Phase 7 (`text-fg-muted`, `bg-surface-base`,
+o vocabulário-alvo da Phase 7 (`text-fg-secondary`, `bg-surface-base`,
 `border-line-strong`, `bg-success-bg`) NÃO existe como classe
 utilitária no build — só como CSS variable em `:root`. Phase 7
 ficaria sem alvo de classe pra escrever.
 
 Phase 9 transforma esse vocabulário em utilitários nativos. Phase 7
 passa a ser substituição direta de classe (`text-gray-500` →
-`text-fg-muted`), commit por grupo coeso, sem cerimônia de getter
+`text-fg-secondary`), commit por grupo coeso, sem cerimônia de getter
 JS ou arbitrary syntax.
 
 Ordem firme: **Phase 9 → Phase 7**.
 
-## Critério de pronto
+## Critério de pronto da Phase 9
 
-- Zero arquivo `src/ui/tokens/colors.ts` (shim eliminado).
-- Zero duplicação de nomes de função entre shim e sistema novo.
-- Os 37 imports apontam pra paths não-ambíguos
-  (`tokens/colors/index` ou o barrel `tokens`).
-- Função `getColor*` tem **uma** implementação canônica, no sistema
-  novo (`colors/utils.ts` ou onde o trabalho de consolidação
-  acordou colocar).
-- Coverage de `tokens/colors/utils.ts` reflete uso real (deixa de
-  ser dead code).
+- API pública (`src/ui/index.ts`) exporta cor a partir do sistema
+  novo (`./tokens/colors/index`).
+- `ThemeProvider`, brand/feedback consumers, `Text`/`Toast` dynamic
+  resolution: todos migrados pro sistema novo.
+- `tokens/index.ts` barrel: símbolos exclusivos do shim removidos
+  (`COLOR_TOKENS_LIGHT/DARK`, `ColorRole`). `getColorClass` e
+  similares mantidos apontando pro shim com comentário "legacy until
+  Phase 7".
 - `--color-{surface,fg,line}-*` declarados em `@theme` em
   `semantic/colors.css`. Light/dark/variants overrides intactos em
   seletores específicos.
 - Utilitários nativos `bg-surface-*`, `text-fg-*`, `border-line-*`
   presentes no CSS compilado e consumíveis em JSX sem arbitrary
   syntax.
-- Zero ocorrência de `bg-[var(--color-X)]` em código de componente
-  onde houver classe nativa equivalente.
+- Shim `tokens/colors.ts` continua existindo fisicamente, com
+  consumers (113 neutral call sites) documentados em
+  `PHASE_7_CANDIDATES.md`.
+
+## Critério de pronto da Phase 7 (atualizado)
+
+- 113 call sites neutrais migrados conforme `PHASE_7_CANDIDATES.md`.
+- Demais cores cruas (`text-gray-500` etc., 129 ocorrências
+  originais) também migradas.
+- 25 sítios em `SideNavbar/` que usam `bg-[var(--color-*)]`
+  arbitrary syntax migrados pra classes nativas (categoria B do
+  escopo Phase 7).
+- Shim `tokens/colors.ts` deletado (`git rm`) — sem consumers
+  restantes.
 
 ## Mesma família das Phases 7 e 8
 
