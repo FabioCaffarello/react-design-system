@@ -1,6 +1,28 @@
 # Fase 9 — Consolidação do shim de cores
 
-**Status:** em execução na branch `phase/09-color-shim-consolidation`.
+**Status:** **DONE** (2026-05-28). Branch
+`phase/09-color-shim-consolidation`, 14 commits, PR aberto.
+Critério de pronto da Phase 9 (ver seção homônima) cumprido. Deleção
+física do shim e migração dos 113 consumers neutrais ficam na
+Phase 7.
+
+## Commits desta fase
+
+- `5ccf9fb` docs: refine Phase 9 namespace rename map
+- `7f1b783` refactor(theme): rename color namespaces
+- `b512254` docs(backlog): register slate-850 reference bug
+- `3556154` feat(theme): promote semantic colors to @theme
+- `61a654f` docs(backlog): register markdown auto-scan artifact
+- `b4b5a5e` docs: register Phase 7 candidate sites
+- `5b3754a` feat(theme): set brand secondary to pink
+- `0081b3b` feat: migrate brand role consumers
+- `e411acf` feat: migrate feedback role consumers
+- `e776bff` feat: migrate Text and Toast dynamic resolution
+- `f726718` feat: migrate ThemeProvider to new color system
+- `cefb1c3` docs(backlog): register Text.tsx 'color' prop dead code
+- `eb64b82` docs: clarify Phase 9 scope — shim isolation
+- `8dcbe1a` refactor: repoint public color exports, isolate shim
+
 **Origem:** #4 (Coverage / órfãos). Triagem de dead code em
 `src/ui/tokens/colors/utils.ts` revelou que o arquivo **não tem
 nenhum consumidor real** — não porque ficou sem uso, mas porque um

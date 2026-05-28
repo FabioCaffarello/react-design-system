@@ -68,21 +68,16 @@ Phase 8 já fechou; agora os dois sítios estão simétricos como
 `getZIndexClass("modal")` — a redundância do interno ficou ainda
 mais visível.
 
-## Phase 9 — Color shim consolidation
+## Phase 7 — Semantic color migration (próxima fase, desbloqueada)
 
-**Descoberto em:** #4.
-**Estado:** registrado como fase própria em
-`PHASE_9_COLOR_SHIM_CONSOLIDATION.md`. `tokens/colors.ts` é um shim
-legacy de 451 linhas que sombreia o sistema novo em `tokens/colors/`
-via resolução de módulo do TS. Os 37 imports de `'tokens/colors'`
-caem no shim, não no sistema novo, e `colors/utils.ts` é
-efetivamente dead code.
-**Por que está aqui:** ponteiro pro arquivo de fase pra manter
-rastreável junto dos outros itens não-blockers.
-**Dependência crítica:** Phase 9 **deve vir antes** da Phase 7. Se
-Phase 7 rodar primeiro, ela vai escrever contra a API do shim
-(currently live) e ter que ser refeita pós-consolidação. Detalhes
-no doc da Phase 9.
+**Estado:** desbloqueada pela Phase 9 (closure 2026-05-28). Doc:
+`PHASE_7_SEMANTIC_COLORS.md`. Checklist de partida pra frente (b):
+`PHASE_7_CANDIDATES.md`.
+**Escopo consolidado** em 3 frentes: (a) 129 cores cruas originais,
+(b) 113 neutrais sobreviventes do shim, (c) 25 arbitrary syntax na
+SideNavbar. Total ~267 sítios em ~50 arquivos.
+**Inclui:** deletar `tokens/colors.ts` como último passo (substitui
+o item "Phase 9" que estava aqui antes).
 
 ## `Text.tsx` accepts `color` prop with no effect
 

@@ -1,16 +1,43 @@
 # Fase 7 — Migração de cores cruas → tokens semânticos
 
-**Status:** planejada, adiada para depois do cleanup pós-prune.
-**Origem:** Categoria H da varredura de valores off-scale (#3).
+**Status:** desbloqueada pela Phase 9 (closure 2026-05-28). Próxima
+fase a executar.
+**Origem:** Categoria H da varredura de valores off-scale (#3),
+expandida pela Phase 9 (categoria d) e absorção do escopo SideNavbar
+(categoria B).
 
-## Problema
+## Problema — três frentes consolidadas
 
-129 ocorrências de cores cruas do Tailwind (`text-gray-500`, `bg-gray-50`,
-`border-indigo-500`, `bg-red-50`, etc.) em 36 arquivos de componente
-(excluindo stories/tests). Elas bypassam o sistema de tokens semânticos
-(`--color-surface`, `--color-text-muted`, `--color-border`,
-`--color-primary-*`) — é a maior violação residual da regra de tokens do
-projeto.
+Phase 7 consolida três frentes de "cor não-semântica em código de
+componente":
+
+### Frente (a) — Cores cruas Tailwind originais (~129 sítios)
+
+129 ocorrências de cores cruas do Tailwind (`text-gray-500`,
+`bg-gray-50`, `border-indigo-500`, `bg-red-50`, etc.) em 36 arquivos
+de componente (excluindo stories/tests). Elas bypassam o sistema de
+tokens semânticos (`text-fg-secondary`, `bg-surface-muted`,
+`border-line-default`, etc.) que a Phase 9 promoveu pra `@theme`.
+
+### Frente (b) — Neutral consumers do shim legacy (113 sítios)
+
+Phase 9 isolou o shim `tokens/colors.ts` como compat layer mas não
+deletou — 113 call sites em ~40 arquivos ainda chamam
+`getColorClass("neutral", shade, type)` esperando a assinatura
+antiga. Cada um precisa virar classe semântica contextual (`text-fg-*`,
+`bg-surface-*`, `border-line-*`) conforme intenção. Lista completa
+em `PHASE_7_CANDIDATES.md`, agrupada por padrão de consumo com
+sugestão semântica e nível de confiança.
+
+### Frente (c) — Arbitrary syntax na SideNavbar (~25 sítios)
+
+6 arquivos em `src/ui/components/SideNavbar/` usam
+`bg-[var(--color-X)]` direto (Tailwind v4 arbitrary value syntax).
+Inconsistente com o resto do código que usa classe semântica nativa.
+Substituir pelas equivalentes (`bg-surface-X`, etc.) agora que a
+Phase 9 promoveu o vocabulário pra `@theme`.
+
+**Total estimado: ~267 sítios em ~50 arquivos.**
 
 ## Por que é fase própria, não um commit
 
@@ -20,40 +47,54 @@ semânticos diferentes conforme o contexto: `text-gray-500` pode ser
 atenuado num título. Cada ocorrência exige triagem semântica — decidir o
 _papel_ da cor, não traduzir o valor.
 
-## Escopo (36 arquivos conhecidos)
+## Escopo (~50 arquivos conhecidos)
 
-Inclui, entre outros: Modal, Dialog/DialogDescription, Autocomplete/\*,
-DatePicker/DatePickerCalendar, CommandPalette, FormWizardPattern,
-ColorPicker, e ~30 outros. A Categoria B (SideNavbar
-`bg-[var(--color-X)]`, ~25 ocorrências via bracket Tailwind) entra junto —
-é token-driven mas inconsistente com a forma usada no resto do código;
-padronizar para classe semântica nativa.
+Inclui as 3 frentes acima. Entre os componentes afetados: Modal,
+Dialog, Autocomplete, DatePicker, CommandPalette, FormWizardPattern,
+ColorPicker, e os ~40 arquivos listados em `PHASE_7_CANDIDATES.md`
+(neutrals da frente b), além dos 6 arquivos de SideNavbar
+(frente c).
 
 ## Procedimento (quando executar)
 
-1. **Mapear o vocabulário semântico primeiro.** Antes de tocar componente,
-   confirme que os tokens semânticos cobrem todos os papéis necessários
-   (text: strong/default/muted/disabled; surface: base/raised/sunken;
-   border: default/strong; feedback: success/warning/danger/info em
-   bg+text+border). Se faltar papel, adicione ao token set ANTES de migrar.
+1. **Vocabulário semântico já mapeado.** Phase 9 promoveu pra
+   `@theme`: text (`text-fg-{primary,secondary,tertiary,quaternary,
+placeholder,disabled,inverse,link*,brand,success,warning,error,
+info}`), surface (`bg-surface-{canvas,base,raised,overlay,sunken,
+subtle,muted,emphasis,strong,inverse,brand*,secondary*,accent*,
+hover,active,selected,focus,disabled}`), line (`border-line-
+{default,muted,subtle,emphasis,strong,inverse,focus,brand,
+secondary,accent}`), feedback (`bg-{success,warning,error,info}{,-bg,-bg-emphasis,-light,-dark}`).
+   Antes de migrar, confirmar que toda intenção tem token; se faltar,
+   adicionar primeiro.
 
-2. **Triagem arquivo por arquivo.** Para cada cor crua, decidir o papel
+2. **Frente (b) usa PHASE_7_CANDIDATES.md como checklist.** Cada
+   sítio neutral lá tem sugestão semântica + confiança. Triagem é
+   confirmar ou substituir a sugestão conforme contexto.
+
+3. **Triagem arquivo por arquivo nas demais frentes.** Pra cada cor
+   crua (frente a) e cada `bg-[var(...)]` (frente c), decidir o papel
    semântico — não o valor equivalente. Usar o subagente
-   `component-reviewer` para flagrar ocorrências e propor o papel; você
-   confirma.
+   `component-reviewer` pra flagrar ocorrências e propor o papel;
+   confirmar.
 
-3. **Um commit por grupo coeso** (ex.: todos os feedback colors de uma vez;
-   todos os text-gray de um cluster de componentes relacionados). Build
-   verde entre commits.
+4. **Um commit por grupo coeso** (ex.: todos os feedback de uma vez;
+   todos os text-gray de um cluster de componentes relacionados; toda
+   a SideNavbar de uma vez). Build verde entre commits.
 
-4. **Padronizar a Categoria B junto:** trocar
-   `bg-[var(--color-primary-100)]` por `bg-primary-100` (classe nativa)
-   onde o token existir como classe.
+5. **Padronizar a frente (c) junto:** trocar
+   `bg-[var(--color-primary-100)]` por `bg-brand-primary-muted` (ou
+   o token semântico equivalente) onde o token existir como classe.
 
-5. **Fechar com regra:** após a migração, considerar um lint rule (eslint
-   plugin tailwind ou regex no CI) que barre cores cruas em `src/ui/`,
-   pra impedir regressão. Isso transforma a disciplina em enforcement
-   automático, no espírito do resto do ambiente .claude.
+6. **Deletar o shim como último passo da fase.** Após zero call sites
+   neutrais restantes (frente b completa), `git rm
+src/ui/tokens/colors.ts`. Remover também os 4 re-exports legacy
+   em `src/ui/tokens/index.ts` (marcados como "LEGACY until Phase 7").
+   Build verde fecha a fase.
+
+7. **Fechar com regra:** após a migração, considerar um lint rule
+   (eslint plugin tailwind ou regex no CI) que barre cores cruas em
+   `src/ui/`, pra impedir regressão.
 
 ## Mesma família da Phase 8
 
@@ -64,6 +105,12 @@ outra antes pra ver se aplicam regras comuns.
 
 ## Critério de pronto
 
-Zero cores cruas do Tailwind em código de componente (`src/ui/**/*.tsx`,
-exceto stories/tests e dados intencionais como o ColorPicker). Toda cor
-referencia um token semântico.
+- Zero cores cruas do Tailwind em código de componente
+  (`src/ui/**/*.tsx`, exceto stories/tests e dados intencionais como
+  o ColorPicker). Toda cor referencia um token semântico.
+- Zero `getColorClass("neutral", ...)` (frente b consumida).
+- Zero `bg-[var(--color-*)]` arbitrary syntax na SideNavbar (frente c
+  consumida).
+- `src/ui/tokens/colors.ts` deletado.
+- Bloco "LEGACY" em `src/ui/tokens/index.ts` removido.
+- Build verde, tests verdes.
