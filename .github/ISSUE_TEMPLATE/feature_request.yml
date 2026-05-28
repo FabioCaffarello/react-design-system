@@ -1,0 +1,62 @@
+name: Feature request
+description: Propose a new component, primitive, layout, token, or behavior.
+title: "feat: <short description>"
+labels:
+  - enhancement
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This design system is mono-brand and solo-maintained — features that
+        primarily serve external consumers (token versioning, migration tooling,
+        Figma sync, etc.) are out of scope. See CLAUDE.md.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What are you proposing?
+      options:
+        - new primitive
+        - new component
+        - new layout
+        - new token / token scale extension
+        - new hook / provider
+        - tooling / CI
+        - other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem does this solve? Who hits it?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API / sketch
+      description: A snippet of the proposed component / hook usage, or a token name and value.
+      render: tsx
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Composition of existing primitives? Token-only solution? Why is that not enough?
+
+  - type: textarea
+    id: a11y
+    attributes:
+      label: Accessibility considerations
+      description: Keyboard model, ARIA roles/states, focus behavior, contrast.
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
