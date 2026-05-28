@@ -3,7 +3,7 @@
 import { useEffect, useRef, type HTMLAttributes, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useDialogContext } from "../../providers/DialogContext";
-import { getRadiusClass, getShadowClass } from "../../tokens";
+import { getRadiusClass, getShadowClass, getZIndexClass } from "../../tokens";
 
 export interface DialogContentProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "role"> {
@@ -106,7 +106,7 @@ export function DialogContent({
 
   const dialogContent = (
     <div
-      className="fixed inset-0 z-50 overflow-y-auto"
+      className={`fixed inset-0 ${getZIndexClass("modal")} overflow-y-auto`}
       onClick={handleOverlayClick}
     >
       {/* Overlay */}
@@ -125,7 +125,7 @@ export function DialogContent({
           aria-labelledby={titleId}
           aria-describedby={descriptionId}
           className={`
-            relative z-50 w-full
+            relative ${getZIndexClass("modal")} w-full
             ${sizeClasses[size]}
             bg-white
             ${getRadiusClass("lg")}

@@ -9,7 +9,12 @@ import {
   Info,
 } from "lucide-react";
 import { type Toast as ToastType } from "../../providers/ToastContext";
-import { getColorClass, getRadiusClass, getShadowClass } from "../../tokens";
+import {
+  getColorClass,
+  getRadiusClass,
+  getShadowClass,
+  getZIndexClass,
+} from "../../tokens";
 import Button from "../../primitives/Button/Button";
 
 export interface ToastProps
@@ -93,7 +98,7 @@ export function Toast({
   return (
     <div
       className={`
-        fixed ${positionClasses[position]} z-50
+        fixed ${positionClasses[position]} ${getZIndexClass("toast")}
         w-full max-w-sm
         transition-all duration-300 ease-in-out
         ${isVisible && !isExiting ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"}

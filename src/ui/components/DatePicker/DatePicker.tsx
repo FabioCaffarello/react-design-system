@@ -11,7 +11,7 @@ import { createPortal } from "react-dom";
 import { DatePickerProvider } from "./DatePickerProvider";
 import { DatePickerInput } from "./DatePickerInput";
 import { DatePickerCalendar } from "./DatePickerCalendar";
-import { getRadiusClass, getShadowClass } from "../../tokens";
+import { getRadiusClass, getShadowClass, getZIndexClass } from "../../tokens";
 
 export interface DatePickerProps {
   children?: ReactNode;
@@ -198,7 +198,7 @@ function DatePickerPopup({
     <div
       ref={popupRef}
       className={`
-        fixed z-50
+        fixed ${getZIndexClass("popover")}
         bg-white
         ${getRadiusClass("lg")}
         ${getShadowClass("xl")}
