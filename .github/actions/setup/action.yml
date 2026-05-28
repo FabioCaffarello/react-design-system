@@ -20,8 +20,12 @@ runs:
     - name: Set up Node via Volta
       uses: volta-cli/action@v4
       with:
+        # NOTE: `package-json-path` intentionally omitted. With it, volta-cli
+        # rewrites the package.json to pin `volta.node`, leaving uncommitted
+        # changes that `@semantic-release/git` then bundles into release
+        # commits. ci-settings.yml is already the single source of truth for
+        # the Node version.
         node-version: ${{ steps.settings-parser.outputs.node-version }}
-        package-json-path: ${{ github.workspace }}/package.json
 
     - name: Print runtime versions
       id: versions
