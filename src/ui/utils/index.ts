@@ -6,12 +6,3 @@
 
 export { cn } from "./cn";
 export { cva, type VariantProps } from "./cva";
-export {
-  variant,
-  size,
-  state,
-  responsive,
-  typography,
-  radius,
-  combine,
-} from "./variants";
