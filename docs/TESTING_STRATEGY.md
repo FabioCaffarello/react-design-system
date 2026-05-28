@@ -5,6 +5,7 @@ Este documento descreve a estratégia completa de testes do React Design System.
 ## Visão Geral
 
 O design system utiliza múltiplas camadas de testes:
+
 - **Unit Tests**: Testes de componentes individuais
 - **Integration Tests**: Testes de interação entre componentes
 - **E2E Tests**: Testes end-to-end no Storybook
@@ -35,14 +36,15 @@ src/
 **Cobertura**: > 80% (target: 90%)
 
 **Exemplo**:
-```tsx
-import { render, screen } from '@testing-library/react';
-import { Button } from './Button';
 
-describe('Button', () => {
-  it('renders with text', () => {
+```tsx
+import { render, screen } from "@testing-library/react";
+import { Button } from "./Button";
+
+describe("Button", () => {
+  it("renders with text", () => {
     render(<Button>Click me</Button>);
-    expect(screen.getByText('Click me')).toBeInTheDocument();
+    expect(screen.getByText("Click me")).toBeInTheDocument();
   });
 });
 ```
@@ -56,13 +58,14 @@ describe('Button', () => {
 **Execução**: `npm run test`
 
 **Exemplo**:
+
 ```tsx
 export const InteractionTest: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button');
+    const button = canvas.getByRole("button");
     await userEvent.click(button);
-    await expect(canvas.getByText('Clicked')).toBeInTheDocument();
+    await expect(canvas.getByText("Clicked")).toBeInTheDocument();
   },
 };
 ```
@@ -122,6 +125,7 @@ npm run test:coverage
 **Foco**: Renderização, props, estados básicos
 
 **Exemplos**:
+
 - Renderiza corretamente
 - Aceita todas as props
 - Estados (disabled, loading, etc.)
@@ -132,6 +136,7 @@ npm run test:coverage
 **Foco**: Interação entre atoms, comportamento composto
 
 **Exemplos**:
+
 - Interação entre componentes
 - Validação de formulários
 - Estados complexos
@@ -141,6 +146,7 @@ npm run test:coverage
 **Foco**: Fluxos completos, integração
 
 **Exemplos**:
+
 - Fluxos de usuário
 - Gerenciamento de estado
 - Integração com APIs
@@ -179,6 +185,7 @@ npm run test:coverage
 ### GitHub Actions
 
 Testes são executados automaticamente em:
+
 - Pull requests
 - Pushes para main
 - Releases
@@ -199,11 +206,13 @@ Testes são executados automaticamente em:
 ### 1. Teste Comportamento, Não Implementação
 
 ✅ **Bom**:
+
 ```tsx
-expect(screen.getByRole('button')).toBeEnabled();
+expect(screen.getByRole("button")).toBeEnabled();
 ```
 
 ❌ **Evitar**:
+
 ```tsx
 expect(button.props.disabled).toBe(false);
 ```
@@ -211,13 +220,15 @@ expect(button.props.disabled).toBe(false);
 ### 2. Use Seletores Semânticos
 
 ✅ **Bom**:
+
 ```tsx
-screen.getByRole('button', { name: 'Submit' });
+screen.getByRole("button", { name: "Submit" });
 ```
 
 ❌ **Evitar**:
+
 ```tsx
-screen.getByTestId('submit-button');
+screen.getByTestId("submit-button");
 ```
 
 ### 3. Teste Estados e Edge Cases
@@ -236,6 +247,7 @@ screen.getByTestId('submit-button');
 ### 5. Teste Acessibilidade
 
 Sempre inclua testes de acessibilidade:
+
 - ARIA attributes
 - Keyboard navigation
 - Screen reader support
@@ -245,6 +257,7 @@ Sempre inclua testes de acessibilidade:
 ### Testes falham intermitentemente
 
 **Soluções**:
+
 1. Adicione `waitFor` para estados assíncronos
 2. Use `findBy*` queries
 3. Aumente timeout se necessário
@@ -253,6 +266,7 @@ Sempre inclua testes de acessibilidade:
 ### Coverage não aumenta
 
 **Soluções**:
+
 1. Identifique código não testado
 2. Adicione testes para edge cases
 3. Verifique se testes estão sendo executados
@@ -261,6 +275,7 @@ Sempre inclua testes de acessibilidade:
 ### E2E tests são lentos
 
 **Soluções**:
+
 1. Execute apenas testes relevantes
 2. Use parallel execution
 3. Otimize seletores

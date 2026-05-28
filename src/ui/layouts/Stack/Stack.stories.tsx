@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Stack } from './Stack';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Stack } from "./Stack";
 
 const meta: Meta<typeof Stack> = {
-  title: 'Layouts/Stack',
+  title: "Layouts/Stack",
   component: Stack,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -42,24 +42,24 @@ Focused on structure and spacing without business logic.
   },
   argTypes: {
     spacing: {
-      control: 'select',
-      options: ['xs', 'sm', 'md', 'base', 'lg', 'xl', '2xl'],
-      description: 'Spacing between children',
+      control: "select",
+      options: ["xs", "sm", "md", "base", "lg", "xl", "2xl"],
+      description: "Spacing between children",
     },
     align: {
-      control: 'select',
-      options: ['start', 'center', 'end', 'stretch'],
-      description: 'Alignment of children',
+      control: "select",
+      options: ["start", "center", "end", "stretch"],
+      description: "Alignment of children",
     },
     justify: {
-      control: 'select',
-      options: ['start', 'center', 'end', 'between', 'around', 'evenly'],
-      description: 'Justification of children',
+      control: "select",
+      options: ["start", "center", "end", "between", "around", "evenly"],
+      description: "Justification of children",
     },
     direction: {
-      control: 'select',
-      options: ['row', 'column'],
-      description: 'Direction of stack',
+      control: "select",
+      options: ["row", "column"],
+      description: "Direction of stack",
     },
   },
 };
@@ -82,7 +82,7 @@ export const Default: Story = {
 export const SpacingVariations: Story = {
   render: () => (
     <div className="space-y-8">
-      {(['xs', 'sm', 'md', 'base', 'lg', 'xl'] as const).map((spacing) => (
+      {(["xs", "sm", "md", "base", "lg", "xl"] as const).map((spacing) => (
         <div key={spacing}>
           <p className="text-sm text-gray-600 mb-2">Spacing: {spacing}</p>
           <Stack spacing={spacing}>
@@ -98,7 +98,7 @@ export const SpacingVariations: Story = {
 
 export const Horizontal: Story = {
   args: {
-    direction: 'row',
+    direction: "row",
     children: (
       <>
         <div className="bg-green-100 p-4 rounded">Item 1</div>
@@ -112,7 +112,7 @@ export const Horizontal: Story = {
 export const Alignments: Story = {
   render: () => (
     <div className="space-y-8">
-      {(['start', 'center', 'end', 'stretch'] as const).map((align) => (
+      {(["start", "center", "end", "stretch"] as const).map((align) => (
         <div key={align}>
           <p className="text-sm text-gray-600 mb-2">Align: {align}</p>
           <Stack align={align} className="h-32">
@@ -139,7 +139,7 @@ export const DefaultState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Default state - vertical stack with base spacing.',
+        story: "Default state - vertical stack with base spacing.",
       },
     },
   },
@@ -147,7 +147,7 @@ export const DefaultState: Story = {
 
 export const HorizontalState: Story = {
   args: {
-    direction: 'row',
+    direction: "row",
     children: (
       <>
         <div className="bg-green-100 p-4 rounded">Item 1</div>
@@ -159,7 +159,7 @@ export const HorizontalState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Horizontal state - items arranged horizontally.',
+        story: "Horizontal state - items arranged horizontally.",
       },
     },
   },
@@ -167,7 +167,7 @@ export const HorizontalState: Story = {
 
 export const VerticalState: Story = {
   args: {
-    direction: 'column',
+    direction: "column",
     children: (
       <>
         <div className="bg-blue-100 p-4 rounded">Item 1</div>
@@ -179,7 +179,7 @@ export const VerticalState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Vertical state - items arranged vertically (default).',
+        story: "Vertical state - items arranged vertically (default).",
       },
     },
   },
@@ -187,8 +187,8 @@ export const VerticalState: Story = {
 
 export const CenteredAlignmentState: Story = {
   args: {
-    align: 'center',
-    className: 'h-32',
+    align: "center",
+    className: "h-32",
     children: (
       <>
         <div className="bg-purple-100 p-4 rounded w-24">Item 1</div>
@@ -199,7 +199,7 @@ export const CenteredAlignmentState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Centered alignment state - items centered.',
+        story: "Centered alignment state - items centered.",
       },
     },
   },
@@ -207,7 +207,7 @@ export const CenteredAlignmentState: Story = {
 
 export const SmallSpacingState: Story = {
   args: {
-    spacing: 'sm',
+    spacing: "sm",
     children: (
       <>
         <div className="bg-blue-100 p-4 rounded">Item 1</div>
@@ -219,7 +219,7 @@ export const SmallSpacingState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Small spacing state - minimal spacing between items.',
+        story: "Small spacing state - minimal spacing between items.",
       },
     },
   },
@@ -227,7 +227,7 @@ export const SmallSpacingState: Story = {
 
 export const LargeSpacingState: Story = {
   args: {
-    spacing: 'lg',
+    spacing: "lg",
     children: (
       <>
         <div className="bg-blue-100 p-4 rounded">Item 1</div>
@@ -239,7 +239,7 @@ export const LargeSpacingState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Large spacing state - large spacing between items.',
+        story: "Large spacing state - large spacing between items.",
       },
     },
   },

@@ -44,22 +44,22 @@
    * Medium roundness - balanced, professional
    * ============================================ */
 
-  --radius-button: var(--radius-lg);        /* 6px */
-  --radius-button-sm: var(--radius-md);     /* 4px */
-  --radius-button-lg: var(--radius-xl);     /* 8px */
+  --radius-button: var(--radius-lg); /* 6px */
+  --radius-button-sm: var(--radius-md); /* 4px */
+  --radius-button-lg: var(--radius-xl); /* 8px */
 
-  --radius-input: var(--radius-lg);         /* 6px */
-  --radius-input-sm: var(--radius-md);      /* 4px */
-  --radius-input-lg: var(--radius-xl);      /* 8px */
+  --radius-input: var(--radius-lg); /* 6px */
+  --radius-input-sm: var(--radius-md); /* 4px */
+  --radius-input-lg: var(--radius-xl); /* 8px */
 
-  --radius-card: var(--radius-xl);          /* 8px */
-  --radius-card-sm: var(--radius-lg);       /* 6px */
-  --radius-card-lg: var(--radius-2xl);      /* 12px */
+  --radius-card: var(--radius-xl); /* 8px */
+  --radius-card-sm: var(--radius-lg); /* 6px */
+  --radius-card-lg: var(--radius-2xl); /* 12px */
 
-  --radius-modal: var(--radius-2xl);        /* 12px */
-  --radius-dropdown: var(--radius-xl);      /* 8px */
-  --radius-popover: var(--radius-xl);       /* 8px */
-  --radius-tooltip: var(--radius-lg);       /* 6px */
+  --radius-modal: var(--radius-2xl); /* 12px */
+  --radius-dropdown: var(--radius-xl); /* 8px */
+  --radius-popover: var(--radius-xl); /* 8px */
+  --radius-tooltip: var(--radius-lg); /* 6px */
 
   /* ============================================
    * SHADOWS
@@ -67,31 +67,61 @@
    * ============================================ */
 
   --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-card-hover: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-dropdown: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-modal: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-card-hover:
+    0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-dropdown:
+    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-modal:
+    0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   --shadow-button: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-button-hover: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-button-hover:
+    0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
 
   /* Brand shadows */
-  --shadow-button-primary: 0 1px 3px 0 rgb(99 102 241 / 0.2), 0 1px 2px -1px rgb(99 102 241 / 0.2);
-  --shadow-button-primary-hover: 0 4px 6px -1px rgb(99 102 241 / 0.2), 0 2px 4px -2px rgb(99 102 241 / 0.2);
+  --shadow-button-primary:
+    0 1px 3px 0 rgb(99 102 241 / 0.2), 0 1px 2px -1px rgb(99 102 241 / 0.2);
+  --shadow-button-primary-hover:
+    0 4px 6px -1px rgb(99 102 241 / 0.2), 0 2px 4px -2px rgb(99 102 241 / 0.2);
 
   /* ============================================
    * GRADIENTS
    * Subtle gradients for tech feel
    * ============================================ */
 
-  --gradient-brand: linear-gradient(135deg, var(--color-indigo-500), var(--color-violet-500));
-  --gradient-brand-hover: linear-gradient(135deg, var(--color-indigo-600), var(--color-violet-600));
-  --gradient-accent: linear-gradient(135deg, var(--color-cyan-400), var(--color-indigo-400));
+  --gradient-brand: linear-gradient(
+    135deg,
+    var(--color-indigo-500),
+    var(--color-violet-500)
+  );
+  --gradient-brand-hover: linear-gradient(
+    135deg,
+    var(--color-indigo-600),
+    var(--color-violet-600)
+  );
+  --gradient-accent: linear-gradient(
+    135deg,
+    var(--color-cyan-400),
+    var(--color-indigo-400)
+  );
 
-  --gradient-surface: linear-gradient(180deg, var(--color-white), var(--color-slate-50));
+  --gradient-surface: linear-gradient(
+    180deg,
+    var(--color-white),
+    var(--color-slate-50)
+  );
   --gradient-card: none; /* No gradient on cards */
 
   /* Hero/Feature gradients */
-  --gradient-hero: linear-gradient(135deg, var(--color-indigo-600) 0%, var(--color-violet-600) 100%);
-  --gradient-hero-subtle: linear-gradient(135deg, var(--color-indigo-50) 0%, var(--color-violet-50) 100%);
+  --gradient-hero: linear-gradient(
+    135deg,
+    var(--color-indigo-600) 0%,
+    var(--color-violet-600) 100%
+  );
+  --gradient-hero-subtle: linear-gradient(
+    135deg,
+    var(--color-indigo-50) 0%,
+    var(--color-violet-50) 100%
+  );
 
   /* ============================================
    * TRANSITIONS
@@ -114,10 +144,24 @@
   --color-brand-secondary: var(--color-violet-400);
   --color-brand-accent: var(--color-cyan-400);
 
-  --shadow-button-primary: 0 1px 3px 0 rgb(129 140 248 / 0.3), 0 1px 2px -1px rgb(129 140 248 / 0.3);
-  --shadow-button-primary-hover: 0 4px 6px -1px rgb(129 140 248 / 0.3), 0 2px 4px -2px rgb(129 140 248 / 0.3);
+  --shadow-button-primary:
+    0 1px 3px 0 rgb(129 140 248 / 0.3), 0 1px 2px -1px rgb(129 140 248 / 0.3);
+  --shadow-button-primary-hover:
+    0 4px 6px -1px rgb(129 140 248 / 0.3), 0 2px 4px -2px rgb(129 140 248 / 0.3);
 
-  --gradient-brand: linear-gradient(135deg, var(--color-indigo-400), var(--color-violet-400));
-  --gradient-hero: linear-gradient(135deg, var(--color-indigo-500) 0%, var(--color-violet-500) 100%);
-  --gradient-hero-subtle: linear-gradient(135deg, var(--color-indigo-950) 0%, var(--color-violet-950) 100%);
+  --gradient-brand: linear-gradient(
+    135deg,
+    var(--color-indigo-400),
+    var(--color-violet-400)
+  );
+  --gradient-hero: linear-gradient(
+    135deg,
+    var(--color-indigo-500) 0%,
+    var(--color-violet-500) 100%
+  );
+  --gradient-hero-subtle: linear-gradient(
+    135deg,
+    var(--color-indigo-950) 0%,
+    var(--color-violet-950) 100%
+  );
 }

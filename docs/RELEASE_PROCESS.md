@@ -58,6 +58,7 @@ feat!: change component API
 ### 1. CI (`ci.yml`)
 
 Executa em cada push e pull request:
+
 - Lint do código
 - Testes unitários
 - Testes de stories
@@ -65,6 +66,7 @@ Executa em cada push e pull request:
 ### 2. Release (`release.yml`)
 
 Executa em push para `main` (exceto mudanças em `.md`, `.github/**`, `docs/**`):
+
 - Executa testes
 - Build do pacote
 - **Semantic Release**:
@@ -78,6 +80,7 @@ Executa em push para `main` (exceto mudanças em `.md`, `.github/**`, `docs/**`)
 ### 3. Deploy Storybook (`deploy-storybook.yml`)
 
 Executa em push para `main`:
+
 - Build do Storybook
 - Deploy para GitHub Pages
 
@@ -89,15 +92,15 @@ O semantic release está configurado em `release.config.js`:
 
 ```javascript
 module.exports = {
-  branches: ['main', 'beta', 'alpha'],
+  branches: ["main", "beta", "alpha"],
   plugins: [
-    '@semantic-release/commit-analyzer',
-    '@semantic-release/release-notes-generator',
-    '@semantic-release/changelog',
-    '@semantic-release/npm',
-    '@semantic-release/git',
-    '@semantic-release/github'
-  ]
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    "@semantic-release/npm",
+    "@semantic-release/git",
+    "@semantic-release/github",
+  ],
 };
 ```
 
@@ -112,16 +115,19 @@ No GitHub, configure os seguintes secrets:
 Se precisar fazer um release manual:
 
 1. **Atualizar a versão no package.json**:
+
    ```bash
    npm version patch|minor|major
    ```
 
 2. **Criar changelog manualmente** (se necessário):
+
    ```bash
    # Editar CHANGELOG.md
    ```
 
 3. **Publicar**:
+
    ```bash
    npm publish --access public
    ```

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect, type ReactNode } from 'react';
-import { DialogContext, type DialogContextValue } from './DialogContext';
+import { useState, useRef, useEffect, type ReactNode } from "react";
+import { DialogContext, type DialogContextValue } from "./DialogContext";
 
 export interface DialogProviderProps {
   children: ReactNode;
@@ -24,7 +24,8 @@ export function DialogProvider({
   const previousActiveElement = useRef<HTMLElement | null>(null);
 
   // Use controlled or uncontrolled state
-  const isOpen = controlledOpen !== undefined ? controlledOpen : uncontrolledOpen;
+  const isOpen =
+    controlledOpen !== undefined ? controlledOpen : uncontrolledOpen;
   const setIsOpen = (newOpen: boolean) => {
     if (controlledOpen === undefined) {
       setUncontrolledOpen(newOpen);
@@ -48,12 +49,12 @@ export function DialogProvider({
   // Prevent body scroll when dialog is open
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
 

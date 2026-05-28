@@ -1,10 +1,10 @@
 /**
  * Providers Export
- * 
+ *
  * TURBOPACK COMPATIBILITY: All providers are re-exported from providers-bundle.ts
  * to ensure they're in the same module boundary. This prevents Turbopack from
  * code-splitting them incorrectly.
- * 
+ *
  * IMPORTANT: Do NOT import providers directly from individual files.
  * Always import from this index or from providers-bundle.ts.
  */
@@ -34,7 +34,12 @@ export {
   type ToastContextValue,
   type ToastVariant,
   type DialogContextValue,
-} from './providers-bundle';
+} from "./providers-bundle";
 
 // AppProvider must be exported separately as it depends on the bundle
-export { AppProvider, useApp, type AppProviderProps, type AppProviderConfig } from './AppProvider';
+export {
+  AppProvider,
+  useApp,
+  type AppProviderProps,
+  type AppProviderConfig,
+} from "./AppProvider";

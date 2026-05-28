@@ -1,13 +1,13 @@
 /**
  * CSS Variables System
- * 
+ *
  * Utility functions for working with CSS custom properties (variables).
  * Provides type-safe access to design tokens as CSS variables.
  */
 
 /**
  * Get CSS variable name for a design token
- * 
+ *
  * @example
  * ```tsx
  * cssVar('color', 'primary', 'DEFAULT') // '--color-primary-DEFAULT'
@@ -15,12 +15,12 @@
  * ```
  */
 export function cssVar(category: string, ...parts: string[]): string {
-  return `--${category}-${parts.join('-')}`;
+  return `--${category}-${parts.join("-")}`;
 }
 
 /**
  * Get CSS variable value as inline style
- * 
+ *
  * @example
  * ```tsx
  * style={{ [cssVarValue('color', 'primary', 'DEFAULT')]: '#3b82f6' }}
@@ -32,7 +32,7 @@ export function cssVarValue(category: string, ...parts: string[]): string {
 
 /**
  * Create CSS variable object for inline styles
- * 
+ *
  * @example
  * ```tsx
  * <div style={createCSSVars({
@@ -41,12 +41,14 @@ export function cssVarValue(category: string, ...parts: string[]): string {
  * })} />
  * ```
  */
-export function createCSSVars(vars: Record<string, Record<string, unknown>>): React.CSSProperties {
+export function createCSSVars(
+  vars: Record<string, Record<string, unknown>>,
+): React.CSSProperties {
   const styles: Record<string, string> = {};
-  
+
   Object.entries(vars).forEach(([category, values]) => {
     Object.entries(values).forEach(([key, value]) => {
-      if (typeof value === 'object' && value !== null) {
+      if (typeof value === "object" && value !== null) {
         Object.entries(value).forEach(([subKey, subValue]) => {
           styles[cssVar(category, key, subKey)] = String(subValue);
         });
@@ -55,7 +57,7 @@ export function createCSSVars(vars: Record<string, Record<string, unknown>>): Re
       }
     });
   });
-  
+
   return styles as React.CSSProperties;
 }
 
@@ -64,16 +66,16 @@ export function createCSSVars(vars: Record<string, Record<string, unknown>>): Re
  */
 export const CSS_VARS = {
   color: {
-    primary: (shade: string) => cssVar('color', 'primary', shade),
-    secondary: (shade: string) => cssVar('color', 'secondary', shade),
-    success: (shade: string) => cssVar('color', 'success', shade),
-    warning: (shade: string) => cssVar('color', 'warning', shade),
-    error: (shade: string) => cssVar('color', 'error', shade),
-    info: (shade: string) => cssVar('color', 'info', shade),
-    neutral: (shade: string) => cssVar('color', 'neutral', shade),
+    primary: (shade: string) => cssVar("color", "primary", shade),
+    secondary: (shade: string) => cssVar("color", "secondary", shade),
+    success: (shade: string) => cssVar("color", "success", shade),
+    warning: (shade: string) => cssVar("color", "warning", shade),
+    error: (shade: string) => cssVar("color", "error", shade),
+    info: (shade: string) => cssVar("color", "info", shade),
+    neutral: (shade: string) => cssVar("color", "neutral", shade),
   },
-  spacing: (scale: string) => cssVar('spacing', scale),
-  typography: (variant: string) => cssVar('typography', variant),
-  radius: (size: string) => cssVar('radius', size),
-  shadow: (size: string) => cssVar('shadow', size),
+  spacing: (scale: string) => cssVar("spacing", scale),
+  typography: (variant: string) => cssVar("typography", variant),
+  radius: (size: string) => cssVar("radius", size),
+  shadow: (size: string) => cssVar("shadow", size),
 } as const;

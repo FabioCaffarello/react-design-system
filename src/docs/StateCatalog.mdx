@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/addon-docs/blocks';
+import { Meta } from "@storybook/addon-docs/blocks";
 
 <Meta title="Design System/State Catalog" />
 
@@ -10,16 +10,17 @@ Este catálogo documenta todos os estados possíveis dos componentes do design s
 
 ### Button
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `default` | Estado padrão | Estado inicial | Botão com estilo padrão |
-| `hover` | Mouse sobre o botão | Passar mouse sobre o botão | Botão com estilo de hover |
-| `active` | Botão pressionado | Clicar e segurar o botão | Botão com estilo de active |
-| `focus` | Botão com foco | Tab ou clique | Botão com outline de foco |
-| `disabled` | Botão desabilitado | `disabled={true}` | Botão com opacidade reduzida, não clicável |
-| `loading` | Botão carregando | `loading={true}` | Botão com spinner, desabilitado |
+| Estado     | Descrição           | Como Ativar                | Visual                                     |
+| ---------- | ------------------- | -------------------------- | ------------------------------------------ |
+| `default`  | Estado padrão       | Estado inicial             | Botão com estilo padrão                    |
+| `hover`    | Mouse sobre o botão | Passar mouse sobre o botão | Botão com estilo de hover                  |
+| `active`   | Botão pressionado   | Clicar e segurar o botão   | Botão com estilo de active                 |
+| `focus`    | Botão com foco      | Tab ou clique              | Botão com outline de foco                  |
+| `disabled` | Botão desabilitado  | `disabled={true}`          | Botão com opacidade reduzida, não clicável |
+| `loading`  | Botão carregando    | `loading={true}`           | Botão com spinner, desabilitado            |
 
 **Variantes:**
+
 - `primary`: Botão primário (azul)
 - `secondary`: Botão secundário (cinza)
 - `error`: Botão de erro (vermelho)
@@ -28,198 +29,204 @@ Este catálogo documenta todos os estados possíveis dos componentes do design s
 
 ### Input
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `default` | Estado padrão | Estado inicial | Input com borda padrão |
-| `focus` | Input com foco | Clicar no input ou Tab | Input com borda destacada e outline |
-| `error` | Input com erro | `error={true}` ou `errorMessage` definido | Input com borda vermelha e mensagem de erro |
-| `disabled` | Input desabilitado | `disabled={true}` | Input com opacidade reduzida, não editável |
-| `readonly` | Input somente leitura | `readOnly={true}` | Input sem borda destacada, não editável |
+| Estado     | Descrição             | Como Ativar                               | Visual                                      |
+| ---------- | --------------------- | ----------------------------------------- | ------------------------------------------- |
+| `default`  | Estado padrão         | Estado inicial                            | Input com borda padrão                      |
+| `focus`    | Input com foco        | Clicar no input ou Tab                    | Input com borda destacada e outline         |
+| `error`    | Input com erro        | `error={true}` ou `errorMessage` definido | Input com borda vermelha e mensagem de erro |
+| `disabled` | Input desabilitado    | `disabled={true}`                         | Input com opacidade reduzida, não editável  |
+| `readonly` | Input somente leitura | `readOnly={true}`                         | Input sem borda destacada, não editável     |
 
 ### Checkbox
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `unchecked` | Não marcado | Estado inicial | Checkbox vazio |
-| `checked` | Marcado | `checked={true}` ou clicar | Checkbox com check |
-| `indeterminate` | Indeterminado | `indeterminate={true}` | Checkbox com linha horizontal |
-| `disabled` | Desabilitado | `disabled={true}` | Checkbox com opacidade reduzida |
-| `focus` | Com foco | Tab ou clique | Checkbox com outline de foco |
+| Estado          | Descrição     | Como Ativar                | Visual                          |
+| --------------- | ------------- | -------------------------- | ------------------------------- |
+| `unchecked`     | Não marcado   | Estado inicial             | Checkbox vazio                  |
+| `checked`       | Marcado       | `checked={true}` ou clicar | Checkbox com check              |
+| `indeterminate` | Indeterminado | `indeterminate={true}`     | Checkbox com linha horizontal   |
+| `disabled`      | Desabilitado  | `disabled={true}`          | Checkbox com opacidade reduzida |
+| `focus`         | Com foco      | Tab ou clique              | Checkbox com outline de foco    |
 
 ### Radio
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `unselected` | Não selecionado | Estado inicial | Radio vazio |
-| `selected` | Selecionado | `checked={true}` ou clicar | Radio com ponto preenchido |
-| `disabled` | Desabilitado | `disabled={true}` | Radio com opacidade reduzida |
-| `focus` | Com foco | Tab ou clique | Radio com outline de foco |
+| Estado       | Descrição       | Como Ativar                | Visual                       |
+| ------------ | --------------- | -------------------------- | ---------------------------- |
+| `unselected` | Não selecionado | Estado inicial             | Radio vazio                  |
+| `selected`   | Selecionado     | `checked={true}` ou clicar | Radio com ponto preenchido   |
+| `disabled`   | Desabilitado    | `disabled={true}`          | Radio com opacidade reduzida |
+| `focus`      | Com foco        | Tab ou clique              | Radio com outline de foco    |
 
 ### Select
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `closed` | Dropdown fechado | Estado inicial | Select com valor selecionado visível |
-| `open` | Dropdown aberto | Clicar no select | Select com lista de opções visível |
-| `focus` | Com foco | Tab ou clique | Select com outline de foco |
-| `disabled` | Desabilitado | `disabled={true}` | Select com opacidade reduzida |
+| Estado     | Descrição        | Como Ativar       | Visual                               |
+| ---------- | ---------------- | ----------------- | ------------------------------------ |
+| `closed`   | Dropdown fechado | Estado inicial    | Select com valor selecionado visível |
+| `open`     | Dropdown aberto  | Clicar no select  | Select com lista de opções visível   |
+| `focus`    | Com foco         | Tab ou clique     | Select com outline de foco           |
+| `disabled` | Desabilitado     | `disabled={true}` | Select com opacidade reduzida        |
 
 ### Accordion
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `collapsed` | Item colapsado | Estado inicial | Item com conteúdo oculto |
-| `expanded` | Item expandido | Clicar no header | Item com conteúdo visível |
-| `disabled` | Desabilitado | `disabled={true}` | Item não clicável |
+| Estado      | Descrição      | Como Ativar       | Visual                    |
+| ----------- | -------------- | ----------------- | ------------------------- |
+| `collapsed` | Item colapsado | Estado inicial    | Item com conteúdo oculto  |
+| `expanded`  | Item expandido | Clicar no header  | Item com conteúdo visível |
+| `disabled`  | Desabilitado   | `disabled={true}` | Item não clicável         |
 
 ### Collapsible
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `closed` | Fechado | Estado inicial | Conteúdo oculto |
-| `open` | Aberto | `open={true}` | Conteúdo visível |
+| Estado      | Descrição   | Como Ativar       | Visual                |
+| ----------- | ----------- | ----------------- | --------------------- |
+| `closed`    | Fechado     | Estado inicial    | Conteúdo oculto       |
+| `open`      | Aberto      | `open={true}`     | Conteúdo visível      |
 | `animating` | Em animação | Durante transição | Conteúdo em transição |
 
 ### Popover
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `closed` | Fechado | Estado inicial | Popover oculto |
-| `open` | Aberto | `open={true}` | Popover visível |
+| Estado        | Descrição    | Como Ativar                | Visual                     |
+| ------------- | ------------ | -------------------------- | -------------------------- |
+| `closed`      | Fechado      | Estado inicial             | Popover oculto             |
+| `open`        | Aberto       | `open={true}`              | Popover visível            |
 | `positioning` | Posicionando | Durante cálculo de posição | Popover calculando posição |
 
 ## Molecules
 
 ### Menu
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `closed` | Menu fechado | Estado inicial | Menu oculto |
-| `open` | Menu aberto | Clicar no trigger | Menu visível com itens |
-| `hover` | Item com hover | Passar mouse sobre item | Item destacado |
+| Estado   | Descrição      | Como Ativar             | Visual                 |
+| -------- | -------------- | ----------------------- | ---------------------- |
+| `closed` | Menu fechado   | Estado inicial          | Menu oculto            |
+| `open`   | Menu aberto    | Clicar no trigger       | Menu visível com itens |
+| `hover`  | Item com hover | Passar mouse sobre item | Item destacado         |
 
 ### Dropdown
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `closed` | Dropdown fechado | Estado inicial | Dropdown oculto |
-| `open` | Dropdown aberto | Clicar no trigger | Dropdown visível |
-| `loading` | Carregando opções | `loading={true}` | Dropdown com spinner |
+| Estado    | Descrição         | Como Ativar       | Visual               |
+| --------- | ----------------- | ----------------- | -------------------- |
+| `closed`  | Dropdown fechado  | Estado inicial    | Dropdown oculto      |
+| `open`    | Dropdown aberto   | Clicar no trigger | Dropdown visível     |
+| `loading` | Carregando opções | `loading={true}`  | Dropdown com spinner |
 
 ### DatePicker
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `closed` | Calendário fechado | Estado inicial | Input com data selecionada |
-| `open` | Calendário aberto | Clicar no input | Calendário visível |
-| `selected` | Data selecionada | Selecionar data | Data destacada no calendário |
-| `today` | Data de hoje | Automático | Data de hoje destacada |
-| `disabled` | Data desabilitada | `disabledDates` | Data não selecionável |
+| Estado     | Descrição          | Como Ativar     | Visual                       |
+| ---------- | ------------------ | --------------- | ---------------------------- |
+| `closed`   | Calendário fechado | Estado inicial  | Input com data selecionada   |
+| `open`     | Calendário aberto  | Clicar no input | Calendário visível           |
+| `selected` | Data selecionada   | Selecionar data | Data destacada no calendário |
+| `today`    | Data de hoje       | Automático      | Data de hoje destacada       |
+| `disabled` | Data desabilitada  | `disabledDates` | Data não selecionável        |
 
 ### FileUpload
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `idle` | Aguardando upload | Estado inicial | Área de drop visível |
-| `dragging` | Arrastando arquivo | Arrastar arquivo sobre área | Área destacada |
-| `uploading` | Fazendo upload | `uploading={true}` | Barra de progresso visível |
-| `success` | Upload concluído | Upload bem-sucedido | Mensagem de sucesso |
-| `error` | Erro no upload | Upload falhou | Mensagem de erro |
-| `disabled` | Desabilitado | `disabled={true}` | Área não interativa |
+| Estado      | Descrição          | Como Ativar                 | Visual                     |
+| ----------- | ------------------ | --------------------------- | -------------------------- |
+| `idle`      | Aguardando upload  | Estado inicial              | Área de drop visível       |
+| `dragging`  | Arrastando arquivo | Arrastar arquivo sobre área | Área destacada             |
+| `uploading` | Fazendo upload     | `uploading={true}`          | Barra de progresso visível |
+| `success`   | Upload concluído   | Upload bem-sucedido         | Mensagem de sucesso        |
+| `error`     | Erro no upload     | Upload falhou               | Mensagem de erro           |
+| `disabled`  | Desabilitado       | `disabled={true}`           | Área não interativa        |
 
 ### Drawer
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `closed` | Drawer fechado | Estado inicial | Drawer oculto |
-| `open` | Drawer aberto | `open={true}` | Drawer visível |
-| `animating` | Em animação | Durante transição | Drawer em transição |
+| Estado      | Descrição      | Como Ativar       | Visual              |
+| ----------- | -------------- | ----------------- | ------------------- |
+| `closed`    | Drawer fechado | Estado inicial    | Drawer oculto       |
+| `open`      | Drawer aberto  | `open={true}`     | Drawer visível      |
+| `animating` | Em animação    | Durante transição | Drawer em transição |
 
 ## Organisms
 
 ### CommandPalette
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `closed` | Fechado | Estado inicial | Command palette oculto |
-| `open` | Aberto | `open={true}` ou Cmd/Ctrl+K | Command palette visível com overlay |
-| `searching` | Buscando | Digitar no input | Resultados filtrados visíveis |
-| `empty` | Sem resultados | Busca sem resultados | Mensagem "No commands found" |
-| `selected` | Item selecionado | Navegar com setas | Item destacado na lista |
+| Estado      | Descrição        | Como Ativar                 | Visual                              |
+| ----------- | ---------------- | --------------------------- | ----------------------------------- |
+| `closed`    | Fechado          | Estado inicial              | Command palette oculto              |
+| `open`      | Aberto           | `open={true}` ou Cmd/Ctrl+K | Command palette visível com overlay |
+| `searching` | Buscando         | Digitar no input            | Resultados filtrados visíveis       |
+| `empty`     | Sem resultados   | Busca sem resultados        | Mensagem "No commands found"        |
+| `selected`  | Item selecionado | Navegar com setas           | Item destacado na lista             |
 
 **Estados Internos:**
+
 - `searchQuery`: String da busca atual
 - `selectedIndex`: Índice do item selecionado
 - `filteredItems`: Array de itens filtrados
 
 ### Toast
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `entering` | Entrando | Toast sendo exibido | Animação de entrada |
-| `visible` | Visível | Toast ativo | Toast visível na tela |
-| `exiting` | Saindo | Toast sendo removido | Animação de saída |
-| `dismissed` | Fechado | Toast removido | Toast não visível |
+| Estado      | Descrição | Como Ativar          | Visual                |
+| ----------- | --------- | -------------------- | --------------------- |
+| `entering`  | Entrando  | Toast sendo exibido  | Animação de entrada   |
+| `visible`   | Visível   | Toast ativo          | Toast visível na tela |
+| `exiting`   | Saindo    | Toast sendo removido | Animação de saída     |
+| `dismissed` | Fechado   | Toast removido       | Toast não visível     |
 
 **Variantes:**
+
 - `success`: Toast verde (sucesso)
 - `error`: Toast vermelho (erro)
 - `warning`: Toast amarelo (aviso)
 - `info`: Toast azul (informação)
 
 **Estados de Duração:**
+
 - `auto-dismiss`: Fecha automaticamente após duração
 - `persistent`: Permanece até fechar manualmente
 
 ### Timeline
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `default` | Item padrão | Estado inicial | Item com estilo padrão |
-| `active` | Item ativo | `status: 'active'` | Item destacado |
-| `completed` | Item completado | `status: 'completed'` | Item com check |
-| `error` | Item com erro | `status: 'error'` | Item com ícone de erro |
+| Estado      | Descrição       | Como Ativar           | Visual                 |
+| ----------- | --------------- | --------------------- | ---------------------- |
+| `default`   | Item padrão     | Estado inicial        | Item com estilo padrão |
+| `active`    | Item ativo      | `status: 'active'`    | Item destacado         |
+| `completed` | Item completado | `status: 'completed'` | Item com check         |
+| `error`     | Item com erro   | `status: 'error'`     | Item com ícone de erro |
 
 **Orientação:**
+
 - `horizontal`: Timeline horizontal
 - `vertical`: Timeline vertical
 
 ### Stepper
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `pending` | Step pendente | Step ainda não alcançado | Step com número, não preenchido |
-| `active` | Step ativo | Step atual | Step destacado |
-| `completed` | Step completado | Step já concluído | Step com check |
-| `error` | Step com erro | Step com erro de validação | Step com ícone de erro |
-| `disabled` | Step desabilitado | `allowNavigation={false}` | Step não clicável |
+| Estado      | Descrição         | Como Ativar                | Visual                          |
+| ----------- | ----------------- | -------------------------- | ------------------------------- |
+| `pending`   | Step pendente     | Step ainda não alcançado   | Step com número, não preenchido |
+| `active`    | Step ativo        | Step atual                 | Step destacado                  |
+| `completed` | Step completado   | Step já concluído          | Step com check                  |
+| `error`     | Step com erro     | Step com erro de validação | Step com ícone de erro          |
+| `disabled`  | Step desabilitado | `allowNavigation={false}`  | Step não clicável               |
 
 **Estados de Navegação:**
+
 - `allowNavigation`: Permite clicar em steps anteriores
 - `noNavigation`: Só permite avançar sequencialmente
 
 **Estados de Validação:**
+
 - `valid`: Step válido, pode avançar
 - `invalid`: Step inválido, não pode avançar
 
 ### Dialog
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `closed` | Dialog fechado | Estado inicial | Dialog oculto |
-| `open` | Dialog aberto | `open={true}` | Dialog visível com overlay |
-| `animating` | Em animação | Durante transição | Dialog em transição |
+| Estado      | Descrição      | Como Ativar       | Visual                     |
+| ----------- | -------------- | ----------------- | -------------------------- |
+| `closed`    | Dialog fechado | Estado inicial    | Dialog oculto              |
+| `open`      | Dialog aberto  | `open={true}`     | Dialog visível com overlay |
+| `animating` | Em animação    | Durante transição | Dialog em transição        |
 
 ### DataGrid
 
-| Estado | Descrição | Como Ativar | Visual |
-|--------|-----------|-------------|--------|
-| `idle` | Aguardando | Estado inicial | Grid com dados |
-| `loading` | Carregando | `loading={true}` | Grid com skeleton/spinner |
-| `empty` | Sem dados | Array vazio | Mensagem "No data" |
-| `error` | Erro ao carregar | `error={true}` | Mensagem de erro |
-| `sorting` | Ordenando | Clicar no header | Indicador de ordenação |
-| `selecting` | Selecionando | Clicar em checkboxes | Linhas selecionadas destacadas |
+| Estado      | Descrição        | Como Ativar          | Visual                         |
+| ----------- | ---------------- | -------------------- | ------------------------------ |
+| `idle`      | Aguardando       | Estado inicial       | Grid com dados                 |
+| `loading`   | Carregando       | `loading={true}`     | Grid com skeleton/spinner      |
+| `empty`     | Sem dados        | Array vazio          | Mensagem "No data"             |
+| `error`     | Erro ao carregar | `error={true}`       | Mensagem de erro               |
+| `sorting`   | Ordenando        | Clicar no header     | Indicador de ordenação         |
+| `selecting` | Selecionando     | Clicar em checkboxes | Linhas selecionadas destacadas |
 
 ## Transições de Estados
 
@@ -233,6 +240,7 @@ Este catálogo documenta todos os estados possíveis dos componentes do design s
 ### Exemplos de Transições
 
 #### Button
+
 ```
 default → hover → active → default
 default → focus → default
@@ -240,23 +248,27 @@ default → disabled
 ```
 
 #### Input
+
 ```
 default → focus → typing → blur → default
 default → error → focus → typing → blur → default
 ```
 
 #### CommandPalette
+
 ```
 closed → open → searching → selected → action → closed
 ```
 
 #### Toast
+
 ```
 entering → visible → (auto-dismiss) → exiting → dismissed
 entering → visible → (manual dismiss) → exiting → dismissed
 ```
 
 #### Stepper
+
 ```
 pending → active → completed → (next step) active
 pending → active → error → (fix) active → completed

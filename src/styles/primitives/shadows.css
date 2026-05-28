@@ -26,10 +26,12 @@
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 
   /* Large - modals, dialogs */
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-lg:
+    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 
   /* Extra large - sticky elements, high elevation */
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-xl:
+    0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 
   /* 2XL - maximum elevation */
   --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
@@ -43,26 +45,38 @@
    * ============================================ */
 
   /* Primary (Indigo) shadows */
-  --shadow-primary-sm: 0 1px 3px 0 rgb(99 102 241 / 0.2), 0 1px 2px -1px rgb(99 102 241 / 0.2);
-  --shadow-primary-md: 0 4px 6px -1px rgb(99 102 241 / 0.2), 0 2px 4px -2px rgb(99 102 241 / 0.2);
-  --shadow-primary-lg: 0 10px 15px -3px rgb(99 102 241 / 0.2), 0 4px 6px -4px rgb(99 102 241 / 0.2);
+  --shadow-primary-sm:
+    0 1px 3px 0 rgb(99 102 241 / 0.2), 0 1px 2px -1px rgb(99 102 241 / 0.2);
+  --shadow-primary-md:
+    0 4px 6px -1px rgb(99 102 241 / 0.2), 0 2px 4px -2px rgb(99 102 241 / 0.2);
+  --shadow-primary-lg:
+    0 10px 15px -3px rgb(99 102 241 / 0.2), 0 4px 6px -4px rgb(99 102 241 / 0.2);
 
   /* Secondary (Violet) shadows */
-  --shadow-secondary-sm: 0 1px 3px 0 rgb(139 92 246 / 0.2), 0 1px 2px -1px rgb(139 92 246 / 0.2);
-  --shadow-secondary-md: 0 4px 6px -1px rgb(139 92 246 / 0.2), 0 2px 4px -2px rgb(139 92 246 / 0.2);
-  --shadow-secondary-lg: 0 10px 15px -3px rgb(139 92 246 / 0.2), 0 4px 6px -4px rgb(139 92 246 / 0.2);
+  --shadow-secondary-sm:
+    0 1px 3px 0 rgb(139 92 246 / 0.2), 0 1px 2px -1px rgb(139 92 246 / 0.2);
+  --shadow-secondary-md:
+    0 4px 6px -1px rgb(139 92 246 / 0.2), 0 2px 4px -2px rgb(139 92 246 / 0.2);
+  --shadow-secondary-lg:
+    0 10px 15px -3px rgb(139 92 246 / 0.2), 0 4px 6px -4px rgb(139 92 246 / 0.2);
 
   /* Success (Emerald) shadows */
-  --shadow-success-sm: 0 1px 3px 0 rgb(16 185 129 / 0.2), 0 1px 2px -1px rgb(16 185 129 / 0.2);
-  --shadow-success-md: 0 4px 6px -1px rgb(16 185 129 / 0.2), 0 2px 4px -2px rgb(16 185 129 / 0.2);
+  --shadow-success-sm:
+    0 1px 3px 0 rgb(16 185 129 / 0.2), 0 1px 2px -1px rgb(16 185 129 / 0.2);
+  --shadow-success-md:
+    0 4px 6px -1px rgb(16 185 129 / 0.2), 0 2px 4px -2px rgb(16 185 129 / 0.2);
 
   /* Warning (Amber) shadows */
-  --shadow-warning-sm: 0 1px 3px 0 rgb(245 158 11 / 0.2), 0 1px 2px -1px rgb(245 158 11 / 0.2);
-  --shadow-warning-md: 0 4px 6px -1px rgb(245 158 11 / 0.2), 0 2px 4px -2px rgb(245 158 11 / 0.2);
+  --shadow-warning-sm:
+    0 1px 3px 0 rgb(245 158 11 / 0.2), 0 1px 2px -1px rgb(245 158 11 / 0.2);
+  --shadow-warning-md:
+    0 4px 6px -1px rgb(245 158 11 / 0.2), 0 2px 4px -2px rgb(245 158 11 / 0.2);
 
   /* Error (Rose) shadows */
-  --shadow-error-sm: 0 1px 3px 0 rgb(244 63 94 / 0.2), 0 1px 2px -1px rgb(244 63 94 / 0.2);
-  --shadow-error-md: 0 4px 6px -1px rgb(244 63 94 / 0.2), 0 2px 4px -2px rgb(244 63 94 / 0.2);
+  --shadow-error-sm:
+    0 1px 3px 0 rgb(244 63 94 / 0.2), 0 1px 2px -1px rgb(244 63 94 / 0.2);
+  --shadow-error-md:
+    0 4px 6px -1px rgb(244 63 94 / 0.2), 0 2px 4px -2px rgb(244 63 94 / 0.2);
 
   /* ============================================
    * SEMANTIC SHADOWS
@@ -102,10 +116,14 @@
    * ============================================ */
 
   --shadow-dark-xs: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-  --shadow-dark-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4);
-  --shadow-dark-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
-  --shadow-dark-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
-  --shadow-dark-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+  --shadow-dark-sm:
+    0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+  --shadow-dark-md:
+    0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-dark-lg:
+    0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+  --shadow-dark-xl:
+    0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4);
   --shadow-dark-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.6);
 
   /* ============================================

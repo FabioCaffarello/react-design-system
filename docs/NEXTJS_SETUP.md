@@ -18,6 +18,7 @@ ReferenceError: Cannot access 'aN' before initialization
 Este é um problema conhecido relacionado ao code splitting do Next.js durante o bundling. O problema persiste mesmo com Turbopack (Next.js 15+).
 
 **Status Atual:**
+
 - ❌ Problema persiste com Turbopack (`next build --turbo`)
 - ⚠️ Configurações de webpack não se aplicam ao Turbopack
 - 🔍 Investigação em andamento
@@ -36,7 +37,7 @@ Adicione a seguinte configuração ao seu `next.config.js`:
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // ... suas configurações existentes
-  
+
   webpack: (config, { isServer }) => {
     // Force design system providers into a single chunk
     // This prevents code splitting that breaks initialization order
@@ -48,18 +49,18 @@ const nextConfig = {
           ...config.optimization.splitChunks.cacheGroups,
           designSystemProviders: {
             test: /[\\/]node_modules[\\/]@fabio\.caffarello[\\/]react-design-system[\\/].*providers/,
-            name: 'design-system-providers',
-            chunks: 'all',
+            name: "design-system-providers",
+            chunks: "all",
             enforce: true,
             priority: 20, // High priority to ensure it's created
           },
         },
       },
     };
-    
+
     // Use deterministic module IDs to ensure consistent builds
-    config.optimization.moduleIds = 'deterministic';
-    
+    config.optimization.moduleIds = "deterministic";
+
     return config;
   },
 };
@@ -90,17 +91,26 @@ O problema estava nas **extensions** (especialmente React Flow) sendo code-split
 ### Como Usar com Turbopack
 
 **✅ Componentes Principais (funcionam normalmente):**
+
 ```typescript
-import { AppProvider, Button, Input } from '@fabio.caffarello/react-design-system';
+import {
+  AppProvider,
+  Button,
+  Input,
+} from "@fabio.caffarello/react-design-system";
 ```
 
 **✅ Extensions (importar do entry point separado):**
+
 ```typescript
 // Importar extensions do entry point separado
-import { FlowProvider, FlowCanvas } from '@fabio.caffarello/react-design-system/extensions/flow';
+import {
+  FlowProvider,
+  FlowCanvas,
+} from "@fabio.caffarello/react-design-system/extensions/flow";
 
 // Ou do entry point geral de extensions
-import { ExtensionRegistry } from '@fabio.caffarello/react-design-system/extensions';
+import { ExtensionRegistry } from "@fabio.caffarello/react-design-system/extensions";
 ```
 
 ### Build com Turbopack
@@ -128,7 +138,7 @@ Se a configuração acima não resolver, tente esta versão mais agressiva:
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // ... suas configurações existentes
-  
+
   webpack: (config, { isServer }) => {
     // Prevent code splitting of design system entirely
     config.optimization = {
@@ -145,17 +155,17 @@ const nextConfig = {
           },
           designSystem: {
             test: /[\\/]node_modules[\\/]@fabio\.caffarello[\\/]react-design-system/,
-            name: 'design-system',
-            chunks: 'all',
+            name: "design-system",
+            chunks: "all",
             enforce: true,
             priority: 30, // Very high priority
             minChunks: 1,
           },
         },
       },
-      moduleIds: 'deterministic',
+      moduleIds: "deterministic",
     };
-    
+
     return config;
   },
 };
@@ -171,7 +181,7 @@ Após configurar o Next.js, você pode usar o `AppProvider` normalmente:
 
 ```tsx
 // app/layout.tsx
-import { AppProvider } from '@fabio.caffarello/react-design-system';
+import { AppProvider } from "@fabio.caffarello/react-design-system";
 
 export default function RootLayout({ children }) {
   return (
@@ -179,7 +189,7 @@ export default function RootLayout({ children }) {
       <body>
         <AppProvider
           config={{
-            theme: { defaultTheme: 'light' },
+            theme: { defaultTheme: "light" },
             providers: {
               theme: true,
               config: true,
@@ -206,25 +216,26 @@ Se a configuração não resolver, use este workaround:
 
 ```tsx
 // app/providers.tsx
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 const AppProvider = dynamic(
-  () => import('@fabio.caffarello/react-design-system').then(m => ({ 
-    default: m.AppProvider 
-  })),
-  { 
+  () =>
+    import("@fabio.caffarello/react-design-system").then((m) => ({
+      default: m.AppProvider,
+    })),
+  {
     ssr: false, // Disable SSR for AppProvider
     loading: () => <div>Loading...</div>, // Optional loading state
-  }
+  },
 );
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <AppProvider
       config={{
-        theme: { defaultTheme: 'light' },
+        theme: { defaultTheme: "light" },
         providers: {
           theme: true,
           config: true,
@@ -241,7 +252,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
 ```tsx
 // app/layout.tsx
-import { Providers } from './providers';
+import { Providers } from "./providers";
 
 export default function RootLayout({ children }) {
   return (
@@ -255,6 +266,7 @@ export default function RootLayout({ children }) {
 ```
 
 **Limitações do Workaround:**
+
 - ⚠️ AppProvider não está disponível durante SSR
 - ⚠️ Pode causar flash de conteúdo
 - ⚠️ Funcionalidades SSR limitadas

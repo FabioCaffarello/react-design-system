@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/addon-docs/blocks';
+import { Meta } from "@storybook/addon-docs/blocks";
 import {
   ColorPalette,
   SpacingReference,
@@ -9,7 +9,7 @@ import {
   ZIndexReference,
   OpacityReference,
   GradientReference,
-} from './TokenVisualizations';
+} from "./TokenVisualizations";
 
 <Meta title="Design System/Tokens" />
 
@@ -38,6 +38,7 @@ Color tokens provide semantic color values with support for light and dark theme
 ### Color Shades
 
 Each color role has four shades:
+
 - `light` - Lightest variant
 - `DEFAULT` - Default/main color
 - `dark` - Darkest variant
@@ -46,16 +47,16 @@ Each color role has four shades:
 ### Usage
 
 ```tsx
-import { getColorClass } from '@fabio.caffarello/react-design-system';
+import { getColorClass } from "@fabio.caffarello/react-design-system";
 
 // Background color
-const bgClass = getColorClass('primary', 'DEFAULT', 'bg'); // 'bg-indigo-500'
+const bgClass = getColorClass("primary", "DEFAULT", "bg"); // 'bg-indigo-500'
 
 // Text color
-const textClass = getColorClass('error', 'dark', 'text'); // 'text-red-600'
+const textClass = getColorClass("error", "dark", "text"); // 'text-red-600'
 
 // Border color
-const borderClass = getColorClass('neutral', 'DEFAULT', 'border'); // 'border-gray-300'
+const borderClass = getColorClass("neutral", "DEFAULT", "border"); // 'border-gray-300'
 ```
 
 ### Color Palette
@@ -83,16 +84,16 @@ Spacing tokens are based on a 4px base unit, providing consistent spacing throug
 ### Usage
 
 ```tsx
-import { getSpacingClass } from '@fabio.caffarello/react-design-system';
+import { getSpacingClass } from "@fabio.caffarello/react-design-system";
 
 // Padding
-const paddingClass = getSpacingClass('md', 'p'); // 'p-3'
+const paddingClass = getSpacingClass("md", "p"); // 'p-3'
 
 // Margin
-const marginClass = getSpacingClass('lg', 'mx'); // 'mx-6'
+const marginClass = getSpacingClass("lg", "mx"); // 'mx-6'
 
 // Gap
-const gapClass = getSpacingClass('base', 'gap'); // 'gap-4'
+const gapClass = getSpacingClass("base", "gap"); // 'gap-4'
 ```
 
 ### Spacing Reference
@@ -127,12 +128,12 @@ Typography tokens define font sizes, weights, and line heights for consistent te
 ### Usage
 
 ```tsx
-import { getTypographyClasses } from '@fabio.caffarello/react-design-system';
+import { getTypographyClasses } from "@fabio.caffarello/react-design-system";
 
 // Heading styles
-const h1Classes = getTypographyClasses('h1'); // 'text-4xl leading-tight font-bold'
-const h2Classes = getTypographyClasses('h2'); // 'text-3xl leading-tight font-bold'
-const bodyClasses = getTypographyClasses('body'); // 'text-base leading-relaxed font-normal'
+const h1Classes = getTypographyClasses("h1"); // 'text-4xl leading-tight font-bold'
+const h2Classes = getTypographyClasses("h2"); // 'text-3xl leading-tight font-bold'
+const bodyClasses = getTypographyClasses("body"); // 'text-base leading-relaxed font-normal'
 ```
 
 ### Typography Reference
@@ -156,9 +157,9 @@ Shadow tokens provide consistent elevation and depth.
 ### Usage
 
 ```tsx
-import { getShadowClass } from '@fabio.caffarello/react-design-system';
+import { getShadowClass } from "@fabio.caffarello/react-design-system";
 
-const shadowClass = getShadowClass('lg'); // 'shadow-lg'
+const shadowClass = getShadowClass("lg"); // 'shadow-lg'
 ```
 
 ### Shadow Reference
@@ -183,9 +184,9 @@ Radius tokens define border radius values for rounded corners.
 ### Usage
 
 ```tsx
-import { getRadiusClass } from '@fabio.caffarello/react-design-system';
+import { getRadiusClass } from "@fabio.caffarello/react-design-system";
 
-const radiusClass = getRadiusClass('lg'); // 'rounded-lg'
+const radiusClass = getRadiusClass("lg"); // 'rounded-lg'
 ```
 
 ## Animation Tokens
@@ -209,13 +210,19 @@ Animation tokens define consistent timing and easing for transitions and animati
 ### Usage
 
 ```tsx
-import { getAnimationClass, getTransitionClass } from '@fabio.caffarello/react-design-system';
+import {
+  getAnimationClass,
+  getTransitionClass,
+} from "@fabio.caffarello/react-design-system";
 
 // Animation classes
-const animClass = getAnimationClass('base', 'ease-in-out'); // 'duration-200 ease-in-out'
+const animClass = getAnimationClass("base", "ease-in-out"); // 'duration-200 ease-in-out'
 
 // Transition classes
-const transitionClass = getTransitionClass(['color', 'background-color'], 'base'); // 'duration-200 ease-in-out'
+const transitionClass = getTransitionClass(
+  ["color", "background-color"],
+  "base",
+); // 'duration-200 ease-in-out'
 ```
 
 ## Z-Index Tokens
@@ -237,9 +244,9 @@ Z-index tokens provide consistent layering for overlapping elements.
 ### Usage
 
 ```tsx
-import { getZIndexClass } from '@fabio.caffarello/react-design-system';
+import { getZIndexClass } from "@fabio.caffarello/react-design-system";
 
-const zIndexClass = getZIndexClass('modal'); // 'z-[1050]'
+const zIndexClass = getZIndexClass("modal"); // 'z-[1050]'
 ```
 
 ## Opacity Tokens
@@ -260,7 +267,7 @@ Opacity tokens define consistent transparency values.
 ### Usage
 
 ```tsx
-import { getOpacityClass } from '@fabio.caffarello/react-design-system';
+import { getOpacityClass } from "@fabio.caffarello/react-design-system";
 
 const opacityClass = getOpacityClass(50); // 'opacity-50'
 ```
@@ -292,9 +299,9 @@ Gradient tokens provide semantic color gradients.
 ### Usage
 
 ```tsx
-import { getGradientClass } from '@fabio.caffarello/react-design-system';
+import { getGradientClass } from "@fabio.caffarello/react-design-system";
 
-const gradientClass = getGradientClass('primary', 'to-r'); // 'bg-gradient-to-r from-[...] via-[...] to-[...]'
+const gradientClass = getGradientClass("primary", "to-r"); // 'bg-gradient-to-r from-[...] via-[...] to-[...]'
 ```
 
 ## Best Practices
@@ -303,12 +310,16 @@ const gradientClass = getGradientClass('primary', 'to-r'); // 'bg-gradient-to-r 
 
 ```tsx
 // ✅ Good - Using tokens
-import { getColorClass, getSpacingClass, getRadiusClass } from '@fabio.caffarello/react-design-system';
+import {
+  getColorClass,
+  getSpacingClass,
+  getRadiusClass,
+} from "@fabio.caffarello/react-design-system";
 
 const className = `
-  ${getColorClass('primary', 'DEFAULT', 'bg')}
-  ${getSpacingClass('md', 'p')}
-  ${getRadiusClass('lg')}
+  ${getColorClass("primary", "DEFAULT", "bg")}
+  ${getSpacingClass("md", "p")}
+  ${getRadiusClass("lg")}
 `;
 ```
 
@@ -316,7 +327,7 @@ const className = `
 
 ```tsx
 // ❌ Bad - Hardcoded classes
-const className = 'bg-indigo-500 p-3 rounded-lg';
+const className = "bg-indigo-500 p-3 rounded-lg";
 ```
 
 ## Token Factory
@@ -324,9 +335,9 @@ const className = 'bg-indigo-500 p-3 rounded-lg';
 The `TokensFactory` provides a unified interface for creating all types of tokens:
 
 ```tsx
-import { TokensFactory } from '@fabio.caffarello/react-design-system';
+import { TokensFactory } from "@fabio.caffarello/react-design-system";
 
-const factory = new TokensFactory('light');
+const factory = new TokensFactory("light");
 const tokenSet = factory.createTokenSet();
 
 // Access all tokens

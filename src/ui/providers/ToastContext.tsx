@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from "react";
 
-export type ToastVariant = 'success' | 'error' | 'warning' | 'info';
+export type ToastVariant = "success" | "error" | "warning" | "info";
 
 export interface Toast {
   id: string;
@@ -18,17 +18,19 @@ export interface Toast {
 
 export interface ToastContextValue {
   toasts: Toast[];
-  addToast: (toast: Omit<Toast, 'id'>) => string;
+  addToast: (toast: Omit<Toast, "id">) => string;
   removeToast: (id: string) => void;
   clearAll: () => void;
 }
 
-export const ToastContext = createContext<ToastContextValue | undefined>(undefined);
+export const ToastContext = createContext<ToastContextValue | undefined>(
+  undefined,
+);
 
 export function useToastContext(): ToastContextValue {
   const context = useContext(ToastContext);
   if (!context) {
-    throw new Error('Toast components must be used within a ToastProvider');
+    throw new Error("Toast components must be used within a ToastProvider");
   }
   return context;
 }

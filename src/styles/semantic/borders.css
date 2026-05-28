@@ -41,35 +41,54 @@
    * ============================================ */
 
   /* Default border */
-  --border-default: var(--border-width-default) var(--border-style-solid) var(--color-border-default);
-  --border-muted: var(--border-width-default) var(--border-style-solid) var(--color-border-muted);
-  --border-subtle: var(--border-width-default) var(--border-style-solid) var(--color-border-subtle);
-  --border-emphasis: var(--border-width-default) var(--border-style-solid) var(--color-border-emphasis);
-  --border-strong: var(--border-width-default) var(--border-style-solid) var(--color-border-strong);
+  --border-default: var(--border-width-default) var(--border-style-solid)
+    var(--color-border-default);
+  --border-muted: var(--border-width-default) var(--border-style-solid)
+    var(--color-border-muted);
+  --border-subtle: var(--border-width-default) var(--border-style-solid)
+    var(--color-border-subtle);
+  --border-emphasis: var(--border-width-default) var(--border-style-solid)
+    var(--color-border-emphasis);
+  --border-strong: var(--border-width-default) var(--border-style-solid)
+    var(--color-border-strong);
 
   /* Brand borders */
-  --border-brand: var(--border-width-default) var(--border-style-solid) var(--color-border-brand);
-  --border-brand-emphasis: var(--border-width-medium) var(--border-style-solid) var(--color-border-brand);
+  --border-brand: var(--border-width-default) var(--border-style-solid)
+    var(--color-border-brand);
+  --border-brand-emphasis: var(--border-width-medium) var(--border-style-solid)
+    var(--color-border-brand);
 
   /* Focus borders */
-  --border-focus: var(--border-width-medium) var(--border-style-solid) var(--color-border-focus);
+  --border-focus: var(--border-width-medium) var(--border-style-solid)
+    var(--color-border-focus);
 
   /* Feedback borders */
-  --border-success: var(--border-width-default) var(--border-style-solid) var(--color-success-border);
-  --border-success-emphasis: var(--border-width-default) var(--border-style-solid) var(--color-success);
-  --border-warning: var(--border-width-default) var(--border-style-solid) var(--color-warning-border);
-  --border-warning-emphasis: var(--border-width-default) var(--border-style-solid) var(--color-warning);
-  --border-error: var(--border-width-default) var(--border-style-solid) var(--color-error-border);
-  --border-error-emphasis: var(--border-width-default) var(--border-style-solid) var(--color-error);
-  --border-info: var(--border-width-default) var(--border-style-solid) var(--color-info-border);
-  --border-info-emphasis: var(--border-width-default) var(--border-style-solid) var(--color-info);
+  --border-success: var(--border-width-default) var(--border-style-solid)
+    var(--color-success-border);
+  --border-success-emphasis: var(--border-width-default)
+    var(--border-style-solid) var(--color-success);
+  --border-warning: var(--border-width-default) var(--border-style-solid)
+    var(--color-warning-border);
+  --border-warning-emphasis: var(--border-width-default)
+    var(--border-style-solid) var(--color-warning);
+  --border-error: var(--border-width-default) var(--border-style-solid)
+    var(--color-error-border);
+  --border-error-emphasis: var(--border-width-default) var(--border-style-solid)
+    var(--color-error);
+  --border-info: var(--border-width-default) var(--border-style-solid)
+    var(--color-info-border);
+  --border-info-emphasis: var(--border-width-default) var(--border-style-solid)
+    var(--color-info);
 
   /* Dashed borders */
-  --border-dashed: var(--border-width-default) var(--border-style-dashed) var(--color-border-default);
-  --border-dashed-emphasis: var(--border-width-default) var(--border-style-dashed) var(--color-border-emphasis);
+  --border-dashed: var(--border-width-default) var(--border-style-dashed)
+    var(--color-border-default);
+  --border-dashed-emphasis: var(--border-width-default)
+    var(--border-style-dashed) var(--color-border-emphasis);
 
   /* Dotted borders */
-  --border-dotted: var(--border-width-default) var(--border-style-dotted) var(--color-border-default);
+  --border-dotted: var(--border-width-default) var(--border-style-dotted)
+    var(--color-border-default);
 
   /* ============================================
    * OUTLINE TOKENS
@@ -99,8 +118,12 @@
    * For visual separation
    * ============================================ */
 
-  --divider-horizontal: var(--border-width-default) var(--border-style-solid) var(--color-divider);
-  --divider-vertical: var(--border-width-default) var(--border-style-solid) var(--color-divider);
-  --divider-subtle: var(--border-width-default) var(--border-style-solid) var(--color-divider-subtle);
-  --divider-emphasis: var(--border-width-default) var(--border-style-solid) var(--color-divider-emphasis);
+  --divider-horizontal: var(--border-width-default) var(--border-style-solid)
+    var(--color-divider);
+  --divider-vertical: var(--border-width-default) var(--border-style-solid)
+    var(--color-divider);
+  --divider-subtle: var(--border-width-default) var(--border-style-solid)
+    var(--color-divider-subtle);
+  --divider-emphasis: var(--border-width-default) var(--border-style-solid)
+    var(--color-divider-emphasis);
 }

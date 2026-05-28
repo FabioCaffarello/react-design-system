@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from "react";
 
 export interface DialogContextValue {
   isOpen: boolean;
@@ -10,12 +10,14 @@ export interface DialogContextValue {
   descriptionId?: string;
 }
 
-export const DialogContext = createContext<DialogContextValue | undefined>(undefined);
+export const DialogContext = createContext<DialogContextValue | undefined>(
+  undefined,
+);
 
 export function useDialogContext(): DialogContextValue {
   const context = useContext(DialogContext);
   if (!context) {
-    throw new Error('Dialog components must be used within a Dialog component');
+    throw new Error("Dialog components must be used within a Dialog component");
   }
   return context;
 }

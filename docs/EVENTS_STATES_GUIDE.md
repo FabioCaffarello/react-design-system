@@ -12,9 +12,9 @@ Adicione tabelas de Events e States na descrição do componente:
 
 ```tsx
 const meta: Meta<typeof ComponentName> = {
-  title: 'Category/ComponentName',
+  title: "Category/ComponentName",
   component: ComponentName,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -77,16 +77,14 @@ Crie stories específicas para demonstrar eventos:
 export const WithEvents: Story = {
   render: () => {
     const handleClick = fn((event: MouseEvent) => {
-      console.log('Clicked:', event);
+      console.log("Clicked:", event);
     });
-    
-    return (
-      <ComponentName onClick={handleClick} />
-    );
+
+    return <ComponentName onClick={handleClick} />;
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button');
+    const button = canvas.getByRole("button");
     await userEvent.click(button);
     // Event will appear in Actions panel
   },
@@ -110,7 +108,7 @@ export const HoverState: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const component = canvas.getByRole('button');
+    const component = canvas.getByRole("button");
     await userEvent.hover(component);
   },
 };
@@ -125,11 +123,13 @@ export const DisabledState: Story = {
 ## Padrões de Nomenclatura
 
 ### Eventos
+
 - Use `on` prefix: `onClick`, `onChange`, `onFocus`
 - Seja específico: `onOpenChange` em vez de `onToggle`
 - Documente parâmetros: `(event: MouseEvent) => void`
 
 ### Estados
+
 - Use nomes descritivos: `default`, `hover`, `active`, `disabled`, `loading`
 - Seja consistente: use os mesmos nomes em todos os componentes
 - Documente como ativar: `disabled={true}`, `hover` (mouse over)
@@ -137,15 +137,15 @@ export const DisabledState: Story = {
 ## Exemplo Completo
 
 ```tsx
-import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
-import Button from './Button';
+import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
+import { expect, userEvent, within, waitFor } from "@storybook/test";
+import Button from "./Button";
 
 const meta: Meta<typeof Button> = {
-  title: 'Atoms/Button',
+  title: "Atoms/Button",
   component: Button,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -174,11 +174,11 @@ A versatile button component.
   },
   argTypes: {
     onClick: {
-      description: 'Callback fired when button is clicked',
-      action: 'onClick',
+      description: "Callback fired when button is clicked",
+      action: "onClick",
       table: {
-        type: { summary: '(event: MouseEvent) => void' },
-        category: 'Events',
+        type: { summary: "(event: MouseEvent) => void" },
+        category: "Events",
       },
     },
   },
@@ -190,25 +190,25 @@ type Story = StoryObj<typeof Button>;
 export const WithEvents: Story = {
   render: () => {
     const handleClick = fn((event: React.MouseEvent) => {
-      console.log('Clicked');
+      console.log("Clicked");
     });
-    
+
     return <Button onClick={handleClick}>Click me</Button>;
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button');
+    const button = canvas.getByRole("button");
     await userEvent.click(button);
   },
 };
 
 export const HoverState: Story = {
   args: {
-    children: 'Hover over me',
+    children: "Hover over me",
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button');
+    const button = canvas.getByRole("button");
     await userEvent.hover(button);
   },
 };
@@ -239,16 +239,24 @@ Após migrar todos os eventos e estados para as stories individuais:
 Use o template helper para facilitar a criação:
 
 ```tsx
-import { createComponentMeta, generateEventsTable } from '../../.storybook/templates/ComponentStoryTemplate';
+import {
+  createComponentMeta,
+  generateEventsTable,
+} from "../../.storybook/templates/ComponentStoryTemplate";
 
 const events = [
-  { name: 'onClick', description: 'Click event', parameters: '(event: MouseEvent) => void', whenFired: 'When clicked' },
+  {
+    name: "onClick",
+    description: "Click event",
+    parameters: "(event: MouseEvent) => void",
+    whenFired: "When clicked",
+  },
 ];
 
 const meta = createComponentMeta({
-  title: 'Atoms/Button',
+  title: "Atoms/Button",
   component: Button,
-  description: 'A button component',
+  description: "A button component",
   events,
   // ...
 });

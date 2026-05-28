@@ -11,112 +11,125 @@
  * Color scale values (50-950)
  * Standard Tailwind-compatible color scale
  */
-export type ColorScale = 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 950;
+export type ColorScale =
+  | 50
+  | 100
+  | 200
+  | 300
+  | 400
+  | 500
+  | 600
+  | 700
+  | 800
+  | 900
+  | 950;
 
 /**
  * All available color scale values as array
  */
-export const COLOR_SCALES: ColorScale[] = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+export const COLOR_SCALES: ColorScale[] = [
+  50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950,
+];
 
 /**
  * Primitive color names (raw color palettes)
  */
 export type PrimitiveColorName =
-  | 'indigo'
-  | 'violet'
-  | 'cyan'
-  | 'slate'
-  | 'gray'
-  | 'emerald'
-  | 'green'
-  | 'amber'
-  | 'yellow'
-  | 'orange'
-  | 'rose'
-  | 'red'
-  | 'sky'
-  | 'blue'
-  | 'fuchsia'
-  | 'pink'
-  | 'purple'
-  | 'teal'
-  | 'lime';
+  | "indigo"
+  | "violet"
+  | "cyan"
+  | "slate"
+  | "gray"
+  | "emerald"
+  | "green"
+  | "amber"
+  | "yellow"
+  | "orange"
+  | "rose"
+  | "red"
+  | "sky"
+  | "blue"
+  | "fuchsia"
+  | "pink"
+  | "purple"
+  | "teal"
+  | "lime";
 
 /**
  * Semantic color names (meaningful colors)
  */
 export type SemanticColorName =
-  | 'primary'
-  | 'secondary'
-  | 'accent'
-  | 'success'
-  | 'warning'
-  | 'error'
-  | 'info'
-  | 'neutral';
+  | "primary"
+  | "secondary"
+  | "accent"
+  | "success"
+  | "warning"
+  | "error"
+  | "info"
+  | "neutral";
 
 /**
  * Text color semantic names
  */
 export type TextColorName =
-  | 'primary'
-  | 'secondary'
-  | 'tertiary'
-  | 'quaternary'
-  | 'placeholder'
-  | 'disabled'
-  | 'inverse'
-  | 'link'
-  | 'success'
-  | 'warning'
-  | 'error'
-  | 'info';
+  | "primary"
+  | "secondary"
+  | "tertiary"
+  | "quaternary"
+  | "placeholder"
+  | "disabled"
+  | "inverse"
+  | "link"
+  | "success"
+  | "warning"
+  | "error"
+  | "info";
 
 /**
  * Background color semantic names
  */
 export type BgColorName =
-  | 'base'
-  | 'subtle'
-  | 'muted'
-  | 'emphasis'
-  | 'strong'
-  | 'inverse'
-  | 'brand'
-  | 'secondary'
-  | 'accent';
+  | "base"
+  | "subtle"
+  | "muted"
+  | "emphasis"
+  | "strong"
+  | "inverse"
+  | "brand"
+  | "secondary"
+  | "accent";
 
 /**
  * Border color semantic names
  */
 export type BorderColorName =
-  | 'default'
-  | 'muted'
-  | 'subtle'
-  | 'emphasis'
-  | 'strong'
-  | 'focus'
-  | 'brand';
+  | "default"
+  | "muted"
+  | "subtle"
+  | "emphasis"
+  | "strong"
+  | "focus"
+  | "brand";
 
 /**
  * State color names
  */
 export type StateColorName =
-  | 'hover'
-  | 'active'
-  | 'selected'
-  | 'disabled'
-  | 'focus';
+  | "hover"
+  | "active"
+  | "selected"
+  | "disabled"
+  | "focus";
 
 /**
  * Theme mode
  */
-export type ThemeMode = 'light' | 'dark';
+export type ThemeMode = "light" | "dark";
 
 /**
  * Theme variant (visual style)
  */
-export type ThemeVariant = 'tech' | 'creative' | 'minimal';
+export type ThemeVariant = "tech" | "creative" | "minimal";
 
 /**
  * Single color token with multiple formats
@@ -201,7 +214,7 @@ export interface ThemeColors {
  */
 export interface GetColorOptions {
   /** Output format */
-  format?: 'hex' | 'rgb' | 'hsl' | 'cssVar' | 'tailwind';
+  format?: "hex" | "rgb" | "hsl" | "cssVar" | "tailwind";
   /** Include opacity */
   opacity?: number;
 }
@@ -211,7 +224,7 @@ export interface GetColorOptions {
  */
 export interface GetColorClassOptions {
   /** Class type */
-  type?: 'text' | 'bg' | 'border' | 'ring' | 'fill' | 'stroke';
+  type?: "text" | "bg" | "border" | "ring" | "fill" | "stroke";
   /** Include hover variant */
   hover?: boolean;
   /** Include focus variant */

@@ -1,7 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useCallback, type ReactNode } from 'react';
-import { ToastContext, type Toast, type ToastContextValue } from './ToastContext';
+import { useState, useCallback, type ReactNode } from "react";
+import {
+  ToastContext,
+  type Toast,
+  type ToastContextValue,
+} from "./ToastContext";
 
 export interface ToastProviderProps {
   children: ReactNode;
@@ -16,22 +20,25 @@ export function ToastProvider({
 }: ToastProviderProps) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const addToast = useCallback((toast: Omit<Toast, 'id'>): string => {
-    const id = `toast-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
-    const newToast: Toast = {
-      ...toast,
-      id,
-      duration: toast.duration ?? defaultDuration,
-    };
+  const addToast = useCallback(
+    (toast: Omit<Toast, "id">): string => {
+      const id = `toast-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
+      const newToast: Toast = {
+        ...toast,
+        id,
+        duration: toast.duration ?? defaultDuration,
+      };
 
-    setToasts((prev) => {
-      const updated = [newToast, ...prev];
-      // Limit number of toasts
-      return updated.slice(0, maxToasts);
-    });
+      setToasts((prev) => {
+        const updated = [newToast, ...prev];
+        // Limit number of toasts
+        return updated.slice(0, maxToasts);
+      });
 
-    return id;
-  }, [defaultDuration, maxToasts]);
+      return id;
+    },
+    [defaultDuration, maxToasts],
+  );
 
   const removeToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));

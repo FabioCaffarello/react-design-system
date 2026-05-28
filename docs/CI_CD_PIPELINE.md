@@ -5,6 +5,7 @@ Este documento descreve o pipeline de CI/CD configurado para o React Design Syst
 ## Visão Geral
 
 O projeto utiliza GitHub Actions para automatizar:
+
 - ✅ Testes e linting em cada PR
 - ✅ Build e publicação automática no NPM
 - ✅ Geração automática de changelog
@@ -18,6 +19,7 @@ O projeto utiliza GitHub Actions para automatizar:
 **Trigger**: Push e Pull Requests para `main`
 
 **Ações**:
+
 - Instala dependências
 - Executa ESLint
 - Executa testes unitários e de stories
@@ -30,6 +32,7 @@ O projeto utiliza GitHub Actions para automatizar:
 **Trigger**: Push para `main` (ignorando mudanças em `.md`, `.github/**`, `docs/**`)
 
 **Ações**:
+
 - Executa testes e lint
 - Build do pacote
 - **Semantic Release**:
@@ -41,6 +44,7 @@ O projeto utiliza GitHub Actions para automatizar:
   - Cria GitHub Release
 
 **Plugins do Semantic Release**:
+
 - `@semantic-release/commit-analyzer` - Analisa commits
 - `@semantic-release/release-notes-generator` - Gera notas de release
 - `@semantic-release/changelog` - Atualiza CHANGELOG.md
@@ -55,6 +59,7 @@ O projeto utiliza GitHub Actions para automatizar:
 **Trigger**: Push para `main`
 
 **Ações**:
+
 - Build do Storybook
 - Deploy para GitHub Pages
 
@@ -115,17 +120,21 @@ O changelog é gerado automaticamente pelo `@semantic-release/changelog` baseado
 **Arquivo**: `CHANGELOG.md`
 
 **Formato**:
+
 ```markdown
 ## [1.9.0] - 2024-01-15
 
 ### Added
+
 - New Switch component
 - New Rating component
 
 ### Fixed
+
 - Table import paths corrected
 
 ### Changed
+
 - Improved Button performance
 ```
 
@@ -136,6 +145,7 @@ O changelog é gerado automaticamente pelo `@semantic-release/changelog` baseado
 Token do NPM para publicação automática.
 
 **Como obter**:
+
 1. Acesse https://www.npmjs.com/settings/{username}/tokens
 2. Crie um token "Automation"
 3. Adicione como secret no GitHub: `Settings > Secrets > Actions > New repository secret`
@@ -149,6 +159,7 @@ Token automático fornecido pelo GitHub Actions. Não precisa ser configurado ma
 ## Fluxo Completo
 
 1. **Desenvolvedor faz commit**:
+
    ```bash
    git commit -m "feat: add new component"
    git push origin main

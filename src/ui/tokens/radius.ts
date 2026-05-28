@@ -1,11 +1,19 @@
 /**
  * Border Radius Tokens
- * 
+ *
  * Centralized border radius system for consistent rounded corners.
  * Uses Factory Pattern for type-safe token creation.
  */
 
-export type RadiusSize = 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full';
+export type RadiusSize =
+  | "none"
+  | "sm"
+  | "md"
+  | "lg"
+  | "xl"
+  | "2xl"
+  | "3xl"
+  | "full";
 
 export interface RadiusToken {
   value: number;
@@ -24,46 +32,49 @@ export class RadiusTokenFactory {
    * Create a radius token
    */
   static create(size: RadiusSize): RadiusToken {
-    const radiusMap: Record<RadiusSize, { px: number; tailwind: string; description: string }> = {
+    const radiusMap: Record<
+      RadiusSize,
+      { px: number; tailwind: string; description: string }
+    > = {
       none: {
         px: 0,
-        tailwind: 'rounded-none',
-        description: 'No border radius',
+        tailwind: "rounded-none",
+        description: "No border radius",
       },
       sm: {
         px: 2,
-        tailwind: 'rounded-sm',
-        description: 'Small radius (2px) for subtle rounding',
+        tailwind: "rounded-sm",
+        description: "Small radius (2px) for subtle rounding",
       },
       md: {
         px: 6,
-        tailwind: 'rounded-md',
-        description: 'Medium radius (6px) for buttons and inputs',
+        tailwind: "rounded-md",
+        description: "Medium radius (6px) for buttons and inputs",
       },
       lg: {
         px: 8,
-        tailwind: 'rounded-lg',
-        description: 'Large radius (8px) for cards and containers',
+        tailwind: "rounded-lg",
+        description: "Large radius (8px) for cards and containers",
       },
       xl: {
         px: 12,
-        tailwind: 'rounded-xl',
-        description: 'Extra large radius (12px) for prominent elements',
+        tailwind: "rounded-xl",
+        description: "Extra large radius (12px) for prominent elements",
       },
-      '2xl': {
+      "2xl": {
         px: 16,
-        tailwind: 'rounded-2xl',
-        description: '2X large radius (16px) for large containers',
+        tailwind: "rounded-2xl",
+        description: "2X large radius (16px) for large containers",
       },
-      '3xl': {
+      "3xl": {
         px: 24,
-        tailwind: 'rounded-3xl',
-        description: '3X large radius (24px) for very large containers',
+        tailwind: "rounded-3xl",
+        description: "3X large radius (24px) for very large containers",
       },
       full: {
         px: 9999,
-        tailwind: 'rounded-full',
-        description: 'Full radius for circular elements',
+        tailwind: "rounded-full",
+        description: "Full radius for circular elements",
       },
     };
 
@@ -82,14 +93,14 @@ export class RadiusTokenFactory {
  * Pre-defined radius tokens
  */
 export const RADIUS_TOKENS = {
-  none: RadiusTokenFactory.create('none'),
-  sm: RadiusTokenFactory.create('sm'),
-  md: RadiusTokenFactory.create('md'),
-  lg: RadiusTokenFactory.create('lg'),
-  xl: RadiusTokenFactory.create('xl'),
-  '2xl': RadiusTokenFactory.create('2xl'),
-  '3xl': RadiusTokenFactory.create('3xl'),
-  full: RadiusTokenFactory.create('full'),
+  none: RadiusTokenFactory.create("none"),
+  sm: RadiusTokenFactory.create("sm"),
+  md: RadiusTokenFactory.create("md"),
+  lg: RadiusTokenFactory.create("lg"),
+  xl: RadiusTokenFactory.create("xl"),
+  "2xl": RadiusTokenFactory.create("2xl"),
+  "3xl": RadiusTokenFactory.create("3xl"),
+  full: RadiusTokenFactory.create("full"),
 } as const;
 
 /**

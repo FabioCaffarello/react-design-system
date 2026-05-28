@@ -7,12 +7,14 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 ### ✅ Solução Turbopack: Compatibilidade com Next.js 15+
 
 #### Problema Resolvido
+
 - **Turbopack Compatibility:** Resolvido problema de inicialização com Turbopack (Next.js 15+)
   - Problema estava nas extensions (especialmente React Flow) sendo code-split incorretamente
   - Solução: Extensions removidas do export principal e disponibilizadas via entry point separado
   - Build do Next.js com Turbopack agora funciona corretamente
 
 #### Mudanças
+
 - **Extensions Separadas:** Extensions não são mais exportadas do index principal
   - Evita code splitting incorreto do Turbopack
   - Extensions disponíveis via `@fabio.caffarello/react-design-system/extensions`
@@ -22,6 +24,7 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 ### 🏗️ Solução Estrutural: Inicialização de Providers
 
 #### Mudanças Estruturais
+
 - **Provider Initialization Guard:** Implementado sistema de guard que garante ordem de inicialização dos providers
   - Objeto que referencia todos os providers, criando boundary de módulo
   - Previne code splitting que quebra ordem de inicialização
@@ -38,12 +41,14 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
   - Facilita tree-shaking e code splitting controlado
 
 #### Reestruturação de Providers
+
 - **Providers Movidos:** `ToastProvider` e `DialogProvider` movidos de `organisms/` para `providers/`
   - Quebra dependências arquiteturais
   - Agrupa todos os providers logicamente
   - Re-exports mantidos para compatibilidade
 
 #### Documentação e Ferramentas
+
 - **Documentação Completa:** Criado `docs/NEXTJS_SETUP.md` com guia completo
   - Configuração do Next.js necessária
   - Script de setup automatizado
@@ -55,6 +60,7 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 ### ⚠️ Limitação Conhecida
 
 O problema de inicialização pode persistir no Next.js mesmo com a solução estrutural porque:
+
 - Next.js faz seu próprio bundling e pode reorganizar código
 - Requer configuração adicional no `next.config.js` do consumidor
 - Ver `docs/NEXTJS_SETUP.md` para configuração necessária
@@ -69,11 +75,13 @@ O problema de inicialização pode persistir no Next.js mesmo com a solução es
 ### 🔗 Impacto
 
 **Antes:**
+
 - ❌ Erro durante build do Next.js
 - ❌ Problema de inicialização circular
 - ❌ Requer workaround
 
 **Depois:**
+
 - ✅ Solução estrutural implementada
 - ✅ Build do design system otimizado
 - ✅ Documentação completa
@@ -86,6 +94,7 @@ O problema de inicialização pode persistir no Next.js mesmo com a solução es
 ### 🐛 Corrigido
 
 #### Compatibilidade Next.js SSR
+
 - **Correção crítica:** Resolvido erro `ReferenceError: Cannot access 'aT' before initialization` durante build do Next.js 15.5.9
 - **Ordem de exports:** Reorganizada ordem de exports em `src/ui/index.ts` e `src/ui/providers/index.ts` para garantir inicialização correta
   - Tokens exportados primeiro (sem dependências)
@@ -102,6 +111,7 @@ O problema de inicialização pode persistir no Next.js mesmo com a solução es
 ### ✨ Adicionado
 
 #### Testes
+
 - **Script de teste Next.js:** Adicionado `npm run test:nextjs` para validar compatibilidade com Next.js
   - Cria aplicação Next.js mínima automaticamente
   - Testa build com `AppProvider` em layout (SSR)
@@ -115,11 +125,13 @@ O problema de inicialização pode persistir no Next.js mesmo com a solução es
 ### 🔗 Impacto
 
 **Antes:**
+
 - ❌ Erro durante build do Next.js
 - ❌ Requer workaround com lazy loading
 - ❌ Flash de conteúdo sem estilização
 
 **Depois:**
+
 - ✅ Build do Next.js passa sem erros
 - ✅ `AppProvider` funciona nativamente em SSR/prerendering
 - ✅ Sem necessidade de workarounds
@@ -132,6 +144,7 @@ O problema de inicialização pode persistir no Next.js mesmo com a solução es
 ### ✨ Adicionado
 
 #### Novos Tokens
+
 - **Animações** (`tokens/animations.ts`)
   - Durações: fast (150ms), base (200ms), slow (300ms), slower (500ms)
   - Easing functions: ease-in, ease-out, ease-in-out, spring
@@ -151,6 +164,7 @@ O problema de inicialização pode persistir no Next.js mesmo com a solução es
   - Helper: `getGradientClass()`
 
 #### Novos Componentes Atoms
+
 - **Switch** - Toggle on/off com estados, labels, descrições, acessibilidade completa
 - **Separator** - Separador horizontal/vertical com variantes (solid, dashed, dotted)
 - **Accordion** - Single e multiple selection, animações suaves, ícones customizáveis
@@ -158,6 +172,7 @@ O problema de inicialização pode persistir no Next.js mesmo com a solução es
 - **Popover** - Posicionamento inteligente, trigger customizável, portal rendering
 
 #### Novos Componentes Molecules
+
 - **SearchInput** - Input com ícone de busca, clear button, loading state, debounce
 - **Rating** - Sistema de avaliação com estrelas, half ratings, read-only, custom icons
 - **FileUpload** - Drag and drop, preview de arquivos, validação de tipo/tamanho, progress indicator
@@ -165,6 +180,7 @@ O problema de inicialização pode persistir no Next.js mesmo com a solução es
 - **ColorPicker** - Seletor de cores com RGB sliders, presets, formatos hex/rgb/hsl
 
 #### Novos Componentes Organisms
+
 - **Stepper** - Wizard multi-step com validação por step, navegação, progress indicator
 - **Timeline** - Exibição de eventos em linha do tempo, horizontal/vertical, status, ícones
 - **CommandPalette** - Busca rápida de comandos, keyboard navigation (Cmd/Ctrl+K), categorias
@@ -173,18 +189,21 @@ O problema de inicialização pode persistir no Next.js mesmo com a solução es
 ### 🔧 Melhorado
 
 #### Performance
+
 - **React.memo** implementado em: Card, Badge, Separator, Spinner
 - **useMemo/useCallback** implementado em componentes otimizados
 - **Code splitting** configurado com entry points separados (atoms, molecules, organisms, tokens)
 - **Virtual scrolling** já existente no Table otimizado
 
 #### Documentação
+
 - Documentação completa de tokens no Storybook (`Tokens.mdx`)
 - Componentes de visualização de tokens (`TokenVisualizations.tsx`)
 - Guia de code splitting (`CODE_SPLITTING.md`)
 - Guia de performance (`PERFORMANCE_GUIDE.md`)
 
 #### Ferramentas
+
 - Script de auditoria de tokens (`scripts/audit-tokens.js`)
 - Comando npm: `npm run audit:tokens`
 

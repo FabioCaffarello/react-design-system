@@ -1,82 +1,83 @@
 module.exports = {
   branches: [
-    'main',
+    "main",
     {
-      name: 'beta',
-      prerelease: true
+      name: "beta",
+      prerelease: true,
     },
     {
-      name: 'alpha',
-      prerelease: true
-    }
+      name: "alpha",
+      prerelease: true,
+    },
   ],
   plugins: [
     [
-      '@semantic-release/commit-analyzer',
+      "@semantic-release/commit-analyzer",
       {
-        preset: 'conventionalcommits',
+        preset: "conventionalcommits",
         releaseRules: [
-          { type: 'feat', release: 'minor' },
-          { type: 'fix', release: 'patch' },
-          { type: 'perf', release: 'patch' },
-          { type: 'revert', release: 'patch' },
-          { type: 'docs', release: false },
-          { type: 'style', release: false },
-          { type: 'chore', release: false },
-          { type: 'refactor', release: 'patch' },
-          { type: 'test', release: false },
-          { type: 'build', release: false },
-          { type: 'ci', release: false },
-          { breaking: true, release: 'major' }
-        ]
-      }
+          { type: "feat", release: "minor" },
+          { type: "fix", release: "patch" },
+          { type: "perf", release: "patch" },
+          { type: "revert", release: "patch" },
+          { type: "docs", release: false },
+          { type: "style", release: false },
+          { type: "chore", release: false },
+          { type: "refactor", release: "patch" },
+          { type: "test", release: false },
+          { type: "build", release: false },
+          { type: "ci", release: false },
+          { breaking: true, release: "major" },
+        ],
+      },
     ],
     [
-      '@semantic-release/release-notes-generator',
+      "@semantic-release/release-notes-generator",
       {
-        preset: 'conventionalcommits',
+        preset: "conventionalcommits",
         presetConfig: {
           types: [
-            { type: 'feat', section: '✨ Features' },
-            { type: 'fix', section: '🐛 Bug Fixes' },
-            { type: 'perf', section: '⚡ Performance Improvements' },
-            { type: 'revert', section: '⏪ Reverts' },
-            { type: 'docs', section: '📝 Documentation', hidden: false },
-            { type: 'style', section: '💄 Styles', hidden: true },
-            { type: 'chore', section: '🔧 Chores', hidden: true },
-            { type: 'refactor', section: '♻️ Code Refactoring' },
-            { type: 'test', section: '✅ Tests', hidden: true },
-            { type: 'build', section: '📦 Build System', hidden: true },
-            { type: 'ci', section: '👷 CI/CD', hidden: true }
-          ]
-        }
-      }
+            { type: "feat", section: "✨ Features" },
+            { type: "fix", section: "🐛 Bug Fixes" },
+            { type: "perf", section: "⚡ Performance Improvements" },
+            { type: "revert", section: "⏪ Reverts" },
+            { type: "docs", section: "📝 Documentation", hidden: false },
+            { type: "style", section: "💄 Styles", hidden: true },
+            { type: "chore", section: "🔧 Chores", hidden: true },
+            { type: "refactor", section: "♻️ Code Refactoring" },
+            { type: "test", section: "✅ Tests", hidden: true },
+            { type: "build", section: "📦 Build System", hidden: true },
+            { type: "ci", section: "👷 CI/CD", hidden: true },
+          ],
+        },
+      },
     ],
     [
-      '@semantic-release/changelog',
+      "@semantic-release/changelog",
       {
-        changelogFile: 'CHANGELOG.md'
-      }
+        changelogFile: "CHANGELOG.md",
+      },
     ],
     [
-      '@semantic-release/npm',
+      "@semantic-release/npm",
       {
-        npmPublish: true
-      }
+        npmPublish: true,
+      },
     ],
     [
-      '@semantic-release/git',
+      "@semantic-release/git",
       {
-        assets: ['CHANGELOG.md', 'package.json', 'package-lock.json'],
-        message: 'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}'
-      }
+        assets: ["CHANGELOG.md", "package.json", "package-lock.json"],
+        message:
+          "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
+      },
     ],
     [
-      '@semantic-release/github',
+      "@semantic-release/github",
       {
         successComment: false,
-        releasedLabels: false
-      }
-    ]
-  ]
+        releasedLabels: false,
+      },
+    ],
+  ],
 };

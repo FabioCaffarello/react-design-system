@@ -1,10 +1,10 @@
 /**
  * Token Visualization Components
- * 
+ *
  * React components for visualizing design tokens in Storybook
  */
 
-import { 
+import {
   COLOR_TOKENS_LIGHT,
   SPACING_TOKENS,
   SHADOW_TOKENS,
@@ -13,22 +13,32 @@ import {
   Z_INDEX_TOKENS,
   OPACITY_TOKENS,
   GRADIENT_TOKENS,
-} from './index';
-import type { ColorRole } from './colors';
+} from "./index";
+import type { ColorRole } from "./colors";
 
 /**
  * Color Palette Visualization
  */
 export function ColorPalette() {
-  const colorRoles: ColorRole[] = ['primary', 'secondary', 'success', 'warning', 'error', 'info', 'neutral'];
+  const colorRoles: ColorRole[] = [
+    "primary",
+    "secondary",
+    "success",
+    "warning",
+    "error",
+    "info",
+    "neutral",
+  ];
 
   return (
     <div className="space-y-6">
-      {colorRoles.map(role => {
+      {colorRoles.map((role) => {
         const color = COLOR_TOKENS_LIGHT[role];
         return (
           <div key={role} className="space-y-2">
-            <h3 className="text-sm font-semibold text-gray-700 capitalize">{role}</h3>
+            <h3 className="text-sm font-semibold text-gray-700 capitalize">
+              {role}
+            </h3>
             <div className="flex gap-2">
               <ColorSwatch
                 label="light"
@@ -52,9 +62,15 @@ export function ColorPalette() {
               />
             </div>
             <div className="text-xs text-gray-500 space-y-1">
-              <div>Light: {color.light.hex} ({color.light.tailwind})</div>
-              <div>Default: {color.DEFAULT.hex} ({color.DEFAULT.tailwind})</div>
-              <div>Dark: {color.dark.hex} ({color.dark.tailwind})</div>
+              <div>
+                Light: {color.light.hex} ({color.light.tailwind})
+              </div>
+              <div>
+                Default: {color.DEFAULT.hex} ({color.DEFAULT.tailwind})
+              </div>
+              <div>
+                Dark: {color.dark.hex} ({color.dark.tailwind})
+              </div>
             </div>
           </div>
         );
@@ -63,7 +79,15 @@ export function ColorPalette() {
   );
 }
 
-function ColorSwatch({ label, color, textColor }: { label: string; color: string; textColor: string }) {
+function ColorSwatch({
+  label,
+  color,
+  textColor,
+}: {
+  label: string;
+  color: string;
+  textColor: string;
+}) {
   return (
     <div className="flex flex-col items-center gap-1">
       <div
@@ -89,13 +113,14 @@ export function SpacingReference() {
         <div key={key} className="flex items-center gap-4">
           <div className="w-32 text-sm font-medium text-gray-700">{key}</div>
           <div className="flex-1 flex items-center gap-2">
-            <div
-              className="bg-indigo-500 h-4"
-              style={{ width: token.px }}
-            />
-            <span className="text-xs text-gray-600">{token.px} ({token.rem})</span>
+            <div className="bg-indigo-500 h-4" style={{ width: token.px }} />
+            <span className="text-xs text-gray-600">
+              {token.px} ({token.rem})
+            </span>
           </div>
-          <div className="w-24 text-xs text-gray-500 font-mono">{token.tailwind}</div>
+          <div className="w-24 text-xs text-gray-500 font-mono">
+            {token.tailwind}
+          </div>
         </div>
       ))}
     </div>
@@ -107,12 +132,12 @@ export function SpacingReference() {
  */
 export function TypographyReference() {
   const typographyEntries = [
-    { name: 'h1', size: '4xl', weight: 'bold', lineHeight: 'tight' },
-    { name: 'h2', size: '3xl', weight: 'bold', lineHeight: 'tight' },
-    { name: 'h3', size: '2xl', weight: 'semibold', lineHeight: 'snug' },
-    { name: 'body', size: 'base', weight: 'normal', lineHeight: 'relaxed' },
-    { name: 'label', size: 'sm', weight: 'medium', lineHeight: 'normal' },
-    { name: 'caption', size: 'xs', weight: 'normal', lineHeight: 'normal' },
+    { name: "h1", size: "4xl", weight: "bold", lineHeight: "tight" },
+    { name: "h2", size: "3xl", weight: "bold", lineHeight: "tight" },
+    { name: "h3", size: "2xl", weight: "semibold", lineHeight: "snug" },
+    { name: "body", size: "base", weight: "normal", lineHeight: "relaxed" },
+    { name: "label", size: "sm", weight: "medium", lineHeight: "normal" },
+    { name: "caption", size: "xs", weight: "normal", lineHeight: "normal" },
   ];
 
   return (
@@ -121,7 +146,9 @@ export function TypographyReference() {
         <div key={name} className="border-b border-gray-200 pb-4">
           <div className="flex items-baseline gap-4">
             <div className="w-24 text-sm font-medium text-gray-700">{name}</div>
-            <div className={`text-${size} font-${weight} leading-${lineHeight}`}>
+            <div
+              className={`text-${size} font-${weight} leading-${lineHeight}`}
+            >
               The quick brown fox jumps over the lazy dog
             </div>
           </div>
@@ -151,7 +178,9 @@ export function ShadowReference() {
           >
             <span className="text-xs text-gray-600">{token.description}</span>
           </div>
-          <div className="text-xs text-gray-500 font-mono">{token.tailwind}</div>
+          <div className="text-xs text-gray-500 font-mono">
+            {token.tailwind}
+          </div>
         </div>
       ))}
     </div>
@@ -174,7 +203,9 @@ export function RadiusReference() {
             style={{ borderRadius: token.px }}
           />
           <div className="text-xs text-gray-500">{token.px}</div>
-          <div className="text-xs text-gray-500 font-mono">{token.tailwind}</div>
+          <div className="text-xs text-gray-500 font-mono">
+            {token.tailwind}
+          </div>
         </div>
       ))}
     </div>
@@ -191,25 +222,37 @@ export function AnimationReference() {
     <div className="space-y-4">
       {animationEntries.map(([key, token]) => {
         // Type guard to check if it's an AnimationToken
-        const isAnimationToken = 'easing' in token && 'duration' in token && typeof token.duration === 'object';
-        
+        const isAnimationToken =
+          "easing" in token &&
+          "duration" in token &&
+          typeof token.duration === "object";
+
         if (isAnimationToken) {
-          const animToken = token as import('./animations').AnimationToken;
+          const animToken = token as import("./animations").AnimationToken;
           return (
             <div key={key} className="border-b border-gray-200 pb-4">
-              <div className="text-sm font-medium text-gray-700 mb-2">{key}</div>
+              <div className="text-sm font-medium text-gray-700 mb-2">
+                {key}
+              </div>
               <div className="space-y-1 text-xs text-gray-600">
-                <div>Duration: {animToken.duration.value} ({animToken.duration.ms}ms)</div>
+                <div>
+                  Duration: {animToken.duration.value} ({animToken.duration.ms}
+                  ms)
+                </div>
                 <div>Easing: {animToken.easing.description}</div>
-                <div className="font-mono">{animToken.duration.tailwind} {animToken.easing.tailwind}</div>
+                <div className="font-mono">
+                  {animToken.duration.tailwind} {animToken.easing.tailwind}
+                </div>
               </div>
             </div>
           );
         } else {
-          const transToken = token as import('./animations').TransitionToken;
+          const transToken = token as import("./animations").TransitionToken;
           return (
             <div key={key} className="border-b border-gray-200 pb-4">
-              <div className="text-sm font-medium text-gray-700 mb-2">{key}</div>
+              <div className="text-sm font-medium text-gray-700 mb-2">
+                {key}
+              </div>
               <div className="space-y-1 text-xs text-gray-600">
                 <div>Property: {transToken.property}</div>
                 <div>Duration: {transToken.duration}</div>
@@ -228,18 +271,27 @@ export function AnimationReference() {
  * Z-Index Reference Visualization
  */
 export function ZIndexReference() {
-  const zIndexEntries = Object.entries(Z_INDEX_TOKENS).sort((a, b) => b[1].value - a[1].value);
+  const zIndexEntries = Object.entries(Z_INDEX_TOKENS).sort(
+    (a, b) => b[1].value - a[1].value,
+  );
 
   return (
     <div className="space-y-2">
       {zIndexEntries.map(([key, token]) => (
-        <div key={key} className="flex items-center gap-4 border-b border-gray-200 pb-2">
+        <div
+          key={key}
+          className="flex items-center gap-4 border-b border-gray-200 pb-2"
+        >
           <div className="w-32 text-sm font-medium text-gray-700">{key}</div>
           <div className="flex-1">
             <div className="text-xs text-gray-600">{token.description}</div>
           </div>
-          <div className="w-24 text-xs text-gray-500 font-mono">{token.tailwind}</div>
-          <div className="w-16 text-xs text-gray-500 text-right">{token.value}</div>
+          <div className="w-24 text-xs text-gray-500 font-mono">
+            {token.tailwind}
+          </div>
+          <div className="w-16 text-xs text-gray-500 text-right">
+            {token.value}
+          </div>
         </div>
       ))}
     </div>
@@ -262,7 +314,9 @@ export function OpacityReference() {
             style={{ opacity: token.decimal }}
           />
           <div className="text-xs text-gray-500">{token.value}%</div>
-          <div className="text-xs text-gray-500 font-mono">{token.tailwind}</div>
+          <div className="text-xs text-gray-500 font-mono">
+            {token.tailwind}
+          </div>
         </div>
       ))}
     </div>
@@ -285,7 +339,9 @@ export function GradientReference() {
             style={{ background: token.value }}
           />
           <div className="text-xs text-gray-500">{token.description}</div>
-          <div className="text-xs text-gray-500 font-mono break-all">{token.tailwind}</div>
+          <div className="text-xs text-gray-500 font-mono break-all">
+            {token.tailwind}
+          </div>
         </div>
       ))}
     </div>

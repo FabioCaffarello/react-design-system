@@ -94,13 +94,13 @@ Use `play` functions para testar interações:
 export const InteractionTest: Story = {
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
-    
-    await step('Click button', async () => {
-      const button = canvas.getByRole('button');
+
+    await step("Click button", async () => {
+      const button = canvas.getByRole("button");
       await userEvent.click(button);
     });
-    
-    await step('Verify state change', async () => {
+
+    await step("Verify state change", async () => {
       await waitFor(() => {
         expect(canvas.getByText(/success/i)).toBeInTheDocument();
       });
@@ -112,21 +112,25 @@ export const InteractionTest: Story = {
 ## Addons Disponíveis
 
 ### @storybook/addon-docs
+
 - Documentação automática
 - Controls para props
 - Actions para eventos
 - Viewport para responsividade
 
 ### @storybook/addon-a11y
+
 - Testes de acessibilidade
 - Verificação WCAG 2.1 AA
 - Relatórios de acessibilidade
 
 ### @storybook/addon-vitest
+
 - Integração com Vitest
 - Testes unitários nas stories
 
 ### @storybook/addon-mcp
+
 - Model Context Protocol
 - Integração com AI agents
 
@@ -151,6 +155,7 @@ npm run generate-story-index
 ### 1. Sempre Documente Eventos e Estados
 
 Cada story deve ter:
+
 - Tabela de Events na documentação
 - Tabela de States na documentação
 - argTypes para todos os eventos
@@ -163,8 +168,8 @@ Teste interações reais:
 ```tsx
 play: async ({ canvasElement }) => {
   const canvas = within(canvasElement);
-  await userEvent.click(canvas.getByRole('button'));
-}
+  await userEvent.click(canvas.getByRole("button"));
+};
 ```
 
 ### 3. Demonstre Comportamento Real
@@ -175,7 +180,7 @@ Não apenas props estáticas:
 // ✅ Bom
 export const WithState: Story = {
   render: () => {
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState("");
     return <Input value={value} onChange={(e) => setValue(e.target.value)} />;
   },
 };
@@ -183,7 +188,7 @@ export const WithState: Story = {
 // ❌ Evitar
 export const Static: Story = {
   args: {
-    value: 'Static value',
+    value: "Static value",
   },
 };
 ```
@@ -197,7 +202,9 @@ export const Accessibility: Story = {
   render: () => (
     <div>
       <Button aria-label="Save">Save</Button>
-      <Button disabled aria-disabled="true">Disabled</Button>
+      <Button disabled aria-disabled="true">
+        Disabled
+      </Button>
     </div>
   ),
 };
@@ -212,6 +219,7 @@ npm run validate-stories
 ```
 
 O script verifica:
+
 - ✅ Events documentados
 - ✅ States documentados
 - ✅ Play functions presentes

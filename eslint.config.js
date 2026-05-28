@@ -12,8 +12,13 @@ export default defineConfig([
   globalIgnores(["dist", "storybook-static", "**/*.d.ts"]),
   {
     files: ["**/*.{ts,tsx}"],
-    ignores: [".storybook/**", "**/*.stories.{ts,tsx}", "**/*.test.{ts,tsx}", "vite.config.ts"],
-    extends: [  
+    ignores: [
+      ".storybook/**",
+      "**/*.stories.{ts,tsx}",
+      "**/*.test.{ts,tsx}",
+      "vite.config.ts",
+    ],
+    extends: [
       js.configs.recommended,
       ...tseslint.configs.recommended,
       reactHooks.configs["recommended-latest"],
@@ -25,36 +30,48 @@ export default defineConfig([
     },
     rules: {
       // TypeScript rules (non-type-aware for better performance)
-      "@typescript-eslint/no-explicit-any": ["warn", { 
-        ignoreRestArgs: false,
-        fixToUnknown: true,
-      }],
+      "@typescript-eslint/no-explicit-any": [
+        "warn",
+        {
+          ignoreRestArgs: false,
+          fixToUnknown: true,
+        },
+      ],
       "@typescript-eslint/no-unsafe-assignment": "off",
       "@typescript-eslint/no-unsafe-member-access": "off",
       "@typescript-eslint/no-unsafe-call": "off",
       "@typescript-eslint/no-unsafe-return": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
-      
+
       // Disallow console in production code (allow in stories and dev)
-      "no-console": ["warn", { 
-        allow: ["warn", "error"],
-      }],
-      
+      "no-console": [
+        "warn",
+        {
+          allow: ["warn", "error"],
+        },
+      ],
+
       // Code quality
       "no-unused-vars": "off", // Use TypeScript version
-      "@typescript-eslint/no-unused-vars": ["error", {
-        argsIgnorePattern: "^_",
-        varsIgnorePattern: "^_",
-      }],
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
       "prefer-const": "error",
       "no-var": "error",
-      
+
       // React best practices
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
-      "react-refresh/only-export-components": ["warn", { 
-        allowConstantExport: true,
-      }],
+      "react-refresh/only-export-components": [
+        "warn",
+        {
+          allowConstantExport: true,
+        },
+      ],
     },
   },
   {
@@ -82,10 +99,13 @@ export default defineConfig([
       "@typescript-eslint/no-unsafe-call": "off",
       "@typescript-eslint/no-unsafe-return": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
-      "@typescript-eslint/no-unused-vars": ["warn", {
-        argsIgnorePattern: "^_",
-        varsIgnorePattern: "^_",
-      }],
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
       // Allow hooks in render functions (Storybook pattern)
       "react-hooks/rules-of-hooks": "off",
     },
@@ -93,10 +113,7 @@ export default defineConfig([
   {
     // Storybook config files - no type checking
     files: [".storybook/**/*.{ts,tsx}", "vite.config.ts"],
-    extends: [
-      js.configs.recommended,
-      ...tseslint.configs.recommended,
-    ],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.node,
@@ -113,10 +130,7 @@ export default defineConfig([
   {
     // Scripts - allow console.log for debugging and output
     files: ["scripts/**/*.{ts,js}"],
-    extends: [
-      js.configs.recommended,
-      ...tseslint.configs.recommended,
-    ],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.node,
@@ -130,10 +144,13 @@ export default defineConfig([
       "@typescript-eslint/no-unsafe-return": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/no-explicit-any": "warn",
-      "@typescript-eslint/no-unused-vars": ["warn", {
-        argsIgnorePattern: "^_",
-        varsIgnorePattern: "^_",
-      }],
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
     },
   },
 ]);
