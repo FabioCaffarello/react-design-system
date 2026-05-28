@@ -24,9 +24,9 @@
   --color-brand-primary-dark: var(--color-indigo-500);
   --color-brand-primary-darker: var(--color-indigo-600);
 
-  --color-brand-secondary: var(--color-violet-400);
-  --color-brand-secondary-light: var(--color-violet-300);
-  --color-brand-secondary-dark: var(--color-violet-500);
+  --color-brand-secondary: var(--color-pink-400);
+  --color-brand-secondary-light: var(--color-pink-300);
+  --color-brand-secondary-dark: var(--color-pink-500);
 
   --color-brand-accent: var(--color-cyan-400);
   --color-brand-accent-light: var(--color-cyan-300);
@@ -54,7 +54,7 @@
 
   /* Brand text */
   --color-fg-brand: var(--color-indigo-400);
-  --color-fg-brand-secondary: var(--color-violet-400);
+  --color-fg-brand-secondary: var(--color-pink-400);
 
   /* Feedback text */
   --color-fg-success: var(--color-emerald-400);
@@ -80,8 +80,8 @@
   --color-surface-brand: var(--color-indigo-500);
   --color-surface-brand-emphasis: var(--color-indigo-400);
 
-  --color-surface-secondary-subtle: var(--color-violet-950);
-  --color-surface-secondary: var(--color-violet-500);
+  --color-surface-secondary-subtle: var(--color-pink-950);
+  --color-surface-secondary: var(--color-pink-500);
 
   --color-surface-accent-subtle: var(--color-cyan-950);
   --color-surface-accent: var(--color-cyan-500);

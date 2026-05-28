@@ -31,9 +31,9 @@
   --color-brand-primary-dark: var(--color-indigo-600);
   --color-brand-primary-darker: var(--color-indigo-700);
 
-  --color-brand-secondary: var(--color-violet-500);
-  --color-brand-secondary-light: var(--color-violet-400);
-  --color-brand-secondary-dark: var(--color-violet-600);
+  --color-brand-secondary: var(--color-pink-500);
+  --color-brand-secondary-light: var(--color-pink-400);
+  --color-brand-secondary-dark: var(--color-pink-600);
 
   --color-brand-accent: var(--color-cyan-500);
   --color-brand-accent-light: var(--color-cyan-400);
@@ -141,7 +141,7 @@
 [data-theme="dark"][data-variant="tech"],
 .dark.variant-tech {
   --color-brand-primary: var(--color-indigo-400);
-  --color-brand-secondary: var(--color-violet-400);
+  --color-brand-secondary: var(--color-pink-400);
   --color-brand-accent: var(--color-cyan-400);
 
   --shadow-button-primary:
