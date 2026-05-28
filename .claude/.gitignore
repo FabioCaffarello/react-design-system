@@ -1,0 +1,4 @@
+# Personal, machine-specific Claude Code config — never commit
+settings.local.json
+
+# Local CLAUDE overrides (if you create one at repo root, gitignore it there)
