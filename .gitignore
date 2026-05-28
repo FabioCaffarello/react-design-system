@@ -27,3 +27,6 @@ dist-ssr
 storybook-static
 
 coverage
+
+# Claude Code harness runtime
+.claude/scheduled_tasks.lock

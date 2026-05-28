@@ -1,0 +1,197 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Organisms/Dialog" />
+
+# Dialog
+
+A flexible and accessible dialog component using the compound components pattern. Supports both controlled and uncontrolled modes with full keyboard navigation and focus management.
+
+## Features
+
+- **Compound Components**: Flexible API with composable parts
+- **Controlled/Uncontrolled**: Works in both modes
+- **Focus Trap**: Automatically traps focus within dialog
+- **Portal Rendering**: Renders outside DOM hierarchy
+- **Accessibility**: Full ARIA support and keyboard navigation
+- **Sizes**: Multiple size options (sm, md, lg, xl, fullscreen)
+- **Body Scroll Lock**: Prevents background scrolling when open
+
+## Basic Usage
+
+### Uncontrolled Mode
+
+```tsx
+import { Dialog, Button } from "@fabio.caffarello/react-design-system";
+
+<Dialog>
+  <Dialog.Trigger>
+    <Button>Open Dialog</Button>
+  </Dialog.Trigger>
+  <Dialog.Content>
+    <Dialog.Header>
+      <Dialog.Title>Dialog Title</Dialog.Title>
+      <Dialog.Description>Dialog description text</Dialog.Description>
+    </Dialog.Header>
+    <Dialog.Footer>
+      <Dialog.Close>
+        <Button variant="outline">Cancel</Button>
+      </Dialog.Close>
+      <Button>Confirm</Button>
+    </Dialog.Footer>
+  </Dialog.Content>
+</Dialog>;
+```
+
+### Controlled Mode
+
+```tsx
+import { useState } from "react";
+import { Dialog, Button } from "@fabio.caffarello/react-design-system";
+
+function MyComponent() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setIsOpen(true)}>Open Dialog</Button>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Dialog Title</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Footer>
+            <Button variant="outline" onClick={() => setIsOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={() => setIsOpen(false)}>Confirm</Button>
+          </Dialog.Footer>
+        </Dialog.Content>
+      </Dialog>
+    </>
+  );
+}
+```
+
+## Compound Components
+
+### Dialog.Trigger
+
+Opens the dialog when clicked:
+
+```tsx
+<Dialog.Trigger>
+  <Button>Open</Button>
+</Dialog.Trigger>
+```
+
+### Dialog.Content
+
+The main dialog container:
+
+```tsx
+<Dialog.Content size="lg" closeOnOverlayClick closeOnEscape>
+  {/* Content */}
+</Dialog.Content>
+```
+
+**Props:**
+
+- `size`: 'sm' | 'md' | 'lg' | 'xl' | 'fullscreen'
+- `closeOnOverlayClick`: Close when clicking overlay
+- `closeOnEscape`: Close on Escape key
+
+### Dialog.Header
+
+Container for title and description:
+
+```tsx
+<Dialog.Header>
+  <Dialog.Title>Title</Dialog.Title>
+  <Dialog.Description>Description</Dialog.Description>
+</Dialog.Header>
+```
+
+### Dialog.Title
+
+The dialog title (required for accessibility):
+
+```tsx
+<Dialog.Title>Dialog Title</Dialog.Title>
+```
+
+### Dialog.Description
+
+Optional description text:
+
+```tsx
+<Dialog.Description>Additional context about the dialog</Dialog.Description>
+```
+
+### Dialog.Footer
+
+Container for action buttons:
+
+```tsx
+<Dialog.Footer>
+  <Button>Action</Button>
+</Dialog.Footer>
+```
+
+### Dialog.Close
+
+Closes the dialog when clicked:
+
+```tsx
+<Dialog.Close>
+  <Button variant="outline">Close</Button>
+</Dialog.Close>
+```
+
+## Sizes
+
+```tsx
+<Dialog.Content size="sm">Small Dialog</Dialog.Content>
+<Dialog.Content size="md">Medium Dialog</Dialog.Content>
+<Dialog.Content size="lg">Large Dialog</Dialog.Content>
+<Dialog.Content size="xl">Extra Large Dialog</Dialog.Content>
+<Dialog.Content size="fullscreen">Fullscreen Dialog</Dialog.Content>
+```
+
+## Focus Management
+
+The Dialog automatically:
+
+- Focuses the first focusable element when opened
+- Traps focus within the dialog
+- Restores focus to the trigger when closed
+- Prevents body scrolling when open
+
+## Keyboard Navigation
+
+- **Escape**: Closes the dialog (if `closeOnEscape` is true)
+- **Tab**: Navigates between focusable elements
+- **Shift+Tab**: Navigates backwards
+- Focus wraps within the dialog
+
+## Accessibility
+
+The Dialog component follows ARIA best practices:
+
+- Uses `role="dialog"` with `aria-modal="true"`
+- Associates title via `aria-labelledby`
+- Associates description via `aria-describedby`
+- Manages focus automatically
+- Supports screen readers
+
+### Required ARIA Attributes
+
+- **Title**: Always provide a `Dialog.Title` for `aria-labelledby`
+- **Description**: Optional but recommended for `aria-describedby`
+
+## Best Practices
+
+1. **Always provide a title**: Required for accessibility
+2. **Use descriptions**: Help users understand the dialog purpose
+3. **Clear actions**: Make button labels clear and actionable
+4. **Escape to close**: Allow users to close with Escape key
+5. **Focus management**: Let the component handle focus automatically

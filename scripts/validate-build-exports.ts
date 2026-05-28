@@ -1,17 +1,17 @@
 #!/usr/bin/env tsx
 /**
  * Build Export Validation Script
- * 
+ *
  * Validates that all exports from src/ui/index.ts are present in the built dist/index.js
  * This prevents regressions where exports are accidentally removed from the build.
  */
 
-import { readFileSync, existsSync } from 'fs';
-import { join } from 'path';
+import { readFileSync, existsSync } from "fs";
+import { join } from "path";
 
 interface ExportInfo {
   name: string;
-  type: 'named' | 'default' | 'namespace';
+  type: "named" | "default" | "namespace";
   source: string;
 }
 
@@ -24,7 +24,7 @@ function extractExportsFromSource(filePath: string): ExportInfo[] {
     process.exit(1);
   }
 
-  const content = readFileSync(filePath, 'utf-8');
+  const content = readFileSync(filePath, "utf-8");
   const exports: ExportInfo[] = [];
 
   // Match export statements
@@ -48,7 +48,7 @@ function extractExportsFromSource(filePath: string): ExportInfo[] {
       if (match[1]) {
         exports.push({
           name: match[1],
-          type: match[0].includes('default') ? 'default' : 'named',
+          type: match[0].includes("default") ? "default" : "named",
           source: filePath,
         });
       }
@@ -63,25 +63,32 @@ function extractExportsFromSource(filePath: string): ExportInfo[] {
  */
 function extractExportsFromDeclarations(_filePath: string): string[] {
   const exports: string[] = [];
-  const basePath = join(process.cwd(), 'dist/ui');
-  
+  const basePath = join(process.cwd(), "dist/ui");
+
   // Check providers
-  const providersPath = join(basePath, 'providers/index.d.ts');
+  const providersPath = join(basePath, "providers/index.d.ts");
   if (existsSync(providersPath)) {
-    const content = readFileSync(providersPath, 'utf-8');
+    const content = readFileSync(providersPath, "utf-8");
     const matches = content.matchAll(/export\s+\{\s*([^}]+)\s*\}/g);
     for (const match of matches) {
-      const names = match[1].split(',').map(n => n.trim().split(/\s+as\s+/)[0].trim());
+      const names = match[1].split(",").map((n) =>
+        n
+          .trim()
+          .split(/\s+as\s+/)[0]
+          .trim(),
+      );
       exports.push(...names);
     }
   }
-  
-  // Check atoms
-  const atomsPath = join(basePath, 'atoms/index.d.ts');
+
+  // Check primitives
+  const atomsPath = join(basePath, "primitives/index.d.ts");
   if (existsSync(atomsPath)) {
-    const content = readFileSync(atomsPath, 'utf-8');
+    const content = readFileSync(atomsPath, "utf-8");
     // Match: export { default as Button } from "./Button/Button";
-    const matches = content.matchAll(/export\s+\{\s*default\s+as\s+(\w+)\s*\}/g);
+    const matches = content.matchAll(
+      /export\s+\{\s*default\s+as\s+(\w+)\s*\}/g,
+    );
     for (const match of matches) {
       exports.push(match[1]);
     }
@@ -91,7 +98,7 @@ function extractExportsFromDeclarations(_filePath: string): string[] {
       // Types are also exports, but we're mainly interested in values
     }
   }
-  
+
   return [...new Set(exports)];
 }
 
@@ -118,7 +125,7 @@ async function extractExportsFromBuild(filePath: string): Promise<string[]> {
  * Fallback: Extract exports from built JavaScript file by parsing
  */
 function extractExportsFromBuildFallback(filePath: string): string[] {
-  const content = readFileSync(filePath, 'utf-8');
+  const content = readFileSync(filePath, "utf-8");
   const exports: string[] = [];
 
   // Match export statements in built code
@@ -136,7 +143,9 @@ function extractExportsFromBuildFallback(filePath: string): string[] {
     for (const match of matches) {
       if (match[1]) {
         // Split comma-separated exports
-        const names = match[1].split(',').map(n => n.trim().split(' as ')[0].trim());
+        const names = match[1]
+          .split(",")
+          .map((n) => n.trim().split(" as ")[0].trim());
         exports.push(...names);
       }
     }
@@ -148,14 +157,17 @@ function extractExportsFromBuildFallback(filePath: string): string[] {
 /**
  * Check if AppProvider and other critical exports are present
  */
-function checkCriticalExports(buildExports: string[]): { missing: string[]; found: string[] } {
+function checkCriticalExports(buildExports: string[]): {
+  missing: string[];
+  found: string[];
+} {
   const criticalExports = [
-    'AppProvider',
-    'ConfigProvider',
-    'ThemeProvider',
-    'Button',
-    'Input',
-    'Text',
+    "AppProvider",
+    "ConfigProvider",
+    "ThemeProvider",
+    "Button",
+    "Input",
+    "Text",
   ];
 
   const found: string[] = [];
@@ -176,39 +188,41 @@ function checkCriticalExports(buildExports: string[]): { missing: string[]; foun
  * Main validation function
  */
 async function validateBuildExports() {
-  console.log('🔍 Validating build exports...\n');
+  console.log("🔍 Validating build exports...\n");
 
-  const sourcePath = join(process.cwd(), 'src/ui/index.ts');
-  const buildPath = join(process.cwd(), 'dist/index.js');
+  const sourcePath = join(process.cwd(), "src/ui/index.ts");
+  const buildPath = join(process.cwd(), "dist/index.js");
 
   // Extract exports from source
-  console.log('📖 Reading source exports...');
+  console.log("📖 Reading source exports...");
   const sourceExports = extractExportsFromSource(sourcePath);
   console.log(`   Found ${sourceExports.length} export statements in source\n`);
 
   // Extract exports from build
-  console.log('📦 Reading build exports...');
+  console.log("📦 Reading build exports...");
   const buildExports = await extractExportsFromBuild(buildPath);
   console.log(`   Found ${buildExports.length} exports in build\n`);
 
   // Check critical exports
-  console.log('✅ Checking critical exports...');
+  console.log("✅ Checking critical exports...");
   const { missing, found } = checkCriticalExports(buildExports);
 
   if (found.length > 0) {
-    console.log(`   ✓ Found: ${found.join(', ')}`);
+    console.log(`   ✓ Found: ${found.join(", ")}`);
   }
 
   if (missing.length > 0) {
     console.error(`\n❌ Missing critical exports in build:`);
-    missing.forEach(name => console.error(`   - ${name}`));
-    console.error('\n⚠️  Build validation failed!');
-    console.error('   Please check vite.config.ts and ensure all exports are preserved.\n');
+    missing.forEach((name) => console.error(`   - ${name}`));
+    console.error("\n⚠️  Build validation failed!");
+    console.error(
+      "   Please check vite.config.ts and ensure all exports are preserved.\n",
+    );
     process.exit(1);
   }
 
-  console.log('\n✅ Build validation passed!');
-  console.log('   All critical exports are present in the build.\n');
+  console.log("\n✅ Build validation passed!");
+  console.log("   All critical exports are present in the build.\n");
 }
 
 // Run validation
@@ -216,7 +230,7 @@ async function validateBuildExports() {
   try {
     await validateBuildExports();
   } catch (error) {
-    console.error('❌ Validation error:', error);
+    console.error("❌ Validation error:", error);
     process.exit(1);
   }
 })();

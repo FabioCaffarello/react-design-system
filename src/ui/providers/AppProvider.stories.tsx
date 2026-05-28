@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { AppProvider } from './AppProvider';
-import { Button } from '../atoms';
+import type { Meta, StoryObj } from "@storybook/react";
+import { AppProvider } from "./AppProvider";
+import { Button } from "../primitives";
 
 const meta: Meta<typeof AppProvider> = {
-  title: 'Providers/AppProvider',
+  title: "Providers/AppProvider",
   component: AppProvider,
   parameters: {
     docs: {
@@ -68,7 +68,7 @@ The AppProvider uses a bottom-up composition strategy:
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 };
 
 export default meta;
@@ -76,15 +76,18 @@ type Story = StoryObj<typeof AppProvider>;
 
 /**
  * Default AppProvider
- * 
+ *
  * AppProvider with all default providers enabled.
  */
 export const Default: Story = {
   render: () => (
     <AppProvider>
-      <div style={{ padding: '20px' }}>
+      <div style={{ padding: "20px" }}>
         <h2>AppProvider Example</h2>
-        <p>This component is wrapped with AppProvider, providing access to all global contexts.</p>
+        <p>
+          This component is wrapped with AppProvider, providing access to all
+          global contexts.
+        </p>
         <Button>Test Button</Button>
       </div>
     </AppProvider>
@@ -93,14 +96,14 @@ export const Default: Story = {
 
 /**
  * Custom Configuration
- * 
+ *
  * AppProvider with custom provider configuration.
  */
 export const CustomConfig: Story = {
   render: () => (
     <AppProvider
       config={{
-        theme: { defaultTheme: 'dark' },
+        theme: { defaultTheme: "dark" },
         config: {
           config: {
             features: { debug: true },
@@ -109,7 +112,7 @@ export const CustomConfig: Story = {
         toast: { maxToasts: 5 },
       }}
     >
-      <div style={{ padding: '20px' }}>
+      <div style={{ padding: "20px" }}>
         <h2>Custom Configuration</h2>
         <p>AppProvider with custom theme, config, and toast settings.</p>
         <Button>Test Button</Button>
@@ -120,7 +123,7 @@ export const CustomConfig: Story = {
 
 /**
  * Selective Providers
- * 
+ *
  * AppProvider with only specific providers enabled.
  */
 export const SelectiveProviders: Story = {
@@ -135,7 +138,7 @@ export const SelectiveProviders: Story = {
         },
       }}
     >
-      <div style={{ padding: '20px' }}>
+      <div style={{ padding: "20px" }}>
         <h2>Selective Providers</h2>
         <p>Only ThemeProvider and ConfigProvider are enabled.</p>
         <Button>Test Button</Button>

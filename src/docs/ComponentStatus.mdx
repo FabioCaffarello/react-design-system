@@ -1,5 +1,5 @@
-import { Meta } from '@storybook/addon-docs/blocks';
-import { ComponentStatusTable } from './components/ComponentStatusTable';
+import { Meta } from "@storybook/addon-docs/blocks";
+import { ComponentStatusTable } from "./components/ComponentStatusTable";
 
 <Meta title="Design System/Component Status" />
 
@@ -9,21 +9,29 @@ Esta página mostra o status de todos os componentes do design system, incluindo
 
 ## Legenda
 
-<div style={{ display: 'flex', gap: '24px', marginBottom: '32px', flexWrap: 'wrap' }}>
-  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-    <span style={{ fontSize: '20px' }}>✅</span>
+<div
+  style={{
+    display: "flex",
+    gap: "24px",
+    marginBottom: "32px",
+    flexWrap: "wrap",
+  }}
+>
+  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+    <span style={{ fontSize: "20px" }}>✅</span>
     <strong>Stable</strong>: Componente estável e pronto para produção
   </div>
-  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-    <span style={{ fontSize: '20px' }}>🟡</span>
+  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+    <span style={{ fontSize: "20px" }}>🟡</span>
     <strong>Beta</strong>: Componente em beta, pode ter mudanças
   </div>
-  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-    <span style={{ fontSize: '20px' }}>🔴</span>
-    <strong>Deprecated</strong>: Componente descontinuado, não use em novos projetos
+  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+    <span style={{ fontSize: "20px" }}>🔴</span>
+    <strong>Deprecated</strong>: Componente descontinuado, não use em novos
+    projetos
   </div>
-  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-    <span style={{ fontSize: '20px' }}>⚠️</span>
+  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+    <span style={{ fontSize: "20px" }}>⚠️</span>
     <strong>Experimental</strong>: Componente experimental, use com cautela
   </div>
 </div>
@@ -32,31 +40,181 @@ Esta página mostra o status de todos os componentes do design system, incluindo
 
 <ComponentStatusTable
   components={[
-    { name: 'Accordion', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Avatar', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Badge', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'BoxWrapper', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Button', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Checkbox', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Collapsible', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'ErrorMessage', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Info', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Input', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Label', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'NavLink', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Popover', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Progress', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Radio', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Select', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Separator', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'SidebarItem', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Skeleton', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Slider', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Spinner', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Switch', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Text', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Textarea', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Tooltip', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
+    {
+      name: "Accordion",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Avatar",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Badge",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "BoxWrapper",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Button",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Checkbox",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Collapsible",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "ErrorMessage",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Info",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Input",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Label",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "NavLink",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Popover",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Progress",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Radio",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Select",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Separator",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "SidebarItem",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Skeleton",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Slider",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Spinner",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Switch",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Text",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Textarea",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Tooltip",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
   ]}
 />
 
@@ -64,25 +222,139 @@ Esta página mostra o status de todos os componentes do design system, incluindo
 
 <ComponentStatusTable
   components={[
-    { name: 'Breadcrumb', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Card', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'DatePicker', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Dropdown', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'EmptyState', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'FileUpload', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Form', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'NavbarGroup', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Pagination', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Rating', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'SearchInput', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'SidebarGroup', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'SidebarHeader', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'TableActions', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'TableFilters', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'TablePagination', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Tabs', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'TimePicker', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'ColorPicker', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
+    {
+      name: "Breadcrumb",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Card",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "DatePicker",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Dropdown",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "EmptyState",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "FileUpload",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Form",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "NavbarGroup",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Pagination",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Rating",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "SearchInput",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "SidebarGroup",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "SidebarHeader",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "TableActions",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "TableFilters",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "TablePagination",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Tabs",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "TimePicker",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "ColorPicker",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
   ]}
 />
 
@@ -90,15 +362,69 @@ Esta página mostra o status de todos os componentes do design system, incluindo
 
 <ComponentStatusTable
   components={[
-    { name: 'CommandPalette', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'DataGrid', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Dialog', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Modal', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Sidebar', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Stepper', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Table', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Timeline', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
-    { name: 'Toast', status: 'Stable', accessibility: 'WCAG 2.1 AA', tests: '>80%', docs: true },
+    {
+      name: "CommandPalette",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "DataGrid",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Dialog",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Modal",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Sidebar",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Stepper",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Table",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Timeline",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
+    {
+      name: "Toast",
+      status: "Stable",
+      accessibility: "WCAG 2.1 AA",
+      tests: ">80%",
+      docs: true,
+    },
   ]}
 />
 
@@ -112,6 +438,7 @@ Os seguintes organisms foram auditados e melhorados com stories interativas, doc
 - **Stepper**: Stories com validação, workflows complexos, e testes de interação completos
 
 Todos esses components agora têm:
+
 - ✅ ArgTypes completos e documentados
 - ✅ Testes de interação com `play` functions
 - ✅ Eventos documentados no [Event Catalog](./EventCatalog.mdx)
@@ -120,54 +447,81 @@ Todos esses components agora têm:
 
 ## Estatísticas Gerais
 
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-  gap: '16px',
-  marginTop: '32px',
-  marginBottom: '32px'
-}}>
-  <div style={{
-    padding: '16px',
-    border: '1px solid #e5e7eb',
-    borderRadius: '8px',
-    backgroundColor: '#f9fafb'
-  }}>
-    <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#1f2937' }}>58</div>
-    <div style={{ fontSize: '14px', color: '#6b7280', marginTop: '4px' }}>Total de Componentes</div>
+<div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+    gap: "16px",
+    marginTop: "32px",
+    marginBottom: "32px",
+  }}
+>
+  <div
+    style={{
+      padding: "16px",
+      border: "1px solid #e5e7eb",
+      borderRadius: "8px",
+      backgroundColor: "#f9fafb",
+    }}
+  >
+    <div style={{ fontSize: "24px", fontWeight: "bold", color: "#1f2937" }}>
+      58
+    </div>
+    <div style={{ fontSize: "14px", color: "#6b7280", marginTop: "4px" }}>
+      Total de Componentes
+    </div>
   </div>
-  <div style={{
-    padding: '16px',
-    border: '1px solid #e5e7eb',
-    borderRadius: '8px',
-    backgroundColor: '#f9fafb'
-  }}>
-    <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#10b981' }}>58</div>
-    <div style={{ fontSize: '14px', color: '#6b7280', marginTop: '4px' }}>Componentes Estáveis</div>
+  <div
+    style={{
+      padding: "16px",
+      border: "1px solid #e5e7eb",
+      borderRadius: "8px",
+      backgroundColor: "#f9fafb",
+    }}
+  >
+    <div style={{ fontSize: "24px", fontWeight: "bold", color: "#10b981" }}>
+      58
+    </div>
+    <div style={{ fontSize: "14px", color: "#6b7280", marginTop: "4px" }}>
+      Componentes Estáveis
+    </div>
   </div>
-  <div style={{
-    padding: '16px',
-    border: '1px solid #e5e7eb',
-    borderRadius: '8px',
-    backgroundColor: '#f9fafb'
-  }}>
-    <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#10b981' }}>>80%</div>
-    <div style={{ fontSize: '14px', color: '#6b7280', marginTop: '4px' }}>Cobertura de Testes</div>
+  <div
+    style={{
+      padding: "16px",
+      border: "1px solid #e5e7eb",
+      borderRadius: "8px",
+      backgroundColor: "#f9fafb",
+    }}
+  >
+    <div style={{ fontSize: "24px", fontWeight: "bold", color: "#10b981" }}>
+      >80%
+    </div>
+    <div style={{ fontSize: "14px", color: "#6b7280", marginTop: "4px" }}>
+      Cobertura de Testes
+    </div>
   </div>
-  <div style={{
-    padding: '16px',
-    border: '1px solid #e5e7eb',
-    borderRadius: '8px',
-    backgroundColor: '#f9fafb'
-  }}>
-    <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#10b981' }}>100%</div>
-    <div style={{ fontSize: '14px', color: '#6b7280', marginTop: '4px' }}>WCAG 2.1 AA</div>
+  <div
+    style={{
+      padding: "16px",
+      border: "1px solid #e5e7eb",
+      borderRadius: "8px",
+      backgroundColor: "#f9fafb",
+    }}
+  >
+    <div style={{ fontSize: "24px", fontWeight: "bold", color: "#10b981" }}>
+      100%
+    </div>
+    <div style={{ fontSize: "14px", color: "#6b7280", marginTop: "4px" }}>
+      WCAG 2.1 AA
+    </div>
   </div>
 </div>
 
 ## Roadmap
 
 ### Próximos Componentes
+
 - [ ] Calendar
 - [ ] TreeView
 - [ ] Carousel
@@ -175,6 +529,7 @@ Todos esses components agora têm:
 - [ ] Menu
 
 ### Melhorias Planejadas
+
 - [ ] Melhorias de performance em componentes grandes
 - [ ] Suporte a RTL (Right-to-Left)
 - [ ] Mais variantes de temas

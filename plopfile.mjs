@@ -6,7 +6,7 @@ export default function plop(/** @type {import("plop").NodePlopAPI} */ plop) {
         type: "list",
         name: "type",
         message: "Component type",
-        choices: ["atom", "molecule", "organism", "template", "pattern", "layout"],
+        choices: ["primitive", "component", "layout"],
       },
       {
         type: "input",
@@ -57,52 +57,25 @@ export default function plop(/** @type {import("plop").NodePlopAPI} */ plop) {
         message: "Does this component accept children?",
         default: true,
       },
-      {
-        type: "list",
-        name: "pattern",
-        message: "Design pattern (optional)",
-        choices: [
-          { name: "None", value: "none" },
-          { name: "Factory Pattern", value: "factory" },
-          { name: "Builder Pattern", value: "builder" },
-          { name: "Strategy Pattern", value: "strategy" },
-        ],
-        default: "none",
-      },
     ],
 
-    actions: (data) => {
-      const actions = [
-        {
-          type: "add",
-          path: "./src/ui/{{type}}s/{{pascalCase name}}/{{pascalCase name}}.tsx",
-          templateFile: data.type === "atom" 
-            ? "./plop-templates/Atom.template.tsx.hbs"
-            : "./plop-templates/Component.tsx.hbs",
-        },
-        {
-          type: "add",
-          path: "./src/ui/{{type}}s/{{pascalCase name}}/{{pascalCase name}}.stories.tsx",
-          templateFile: "./plop-templates/Story.tsx.hbs",
-        },
-        {
-          type: "append",
-          path: "./src/ui/{{type}}s/index.ts",
-          template:
-            'export { default as {{pascalCase name}} } from "./{{pascalCase name}}/{{pascalCase name}}";',
-        },
-      ];
-
-      // Add factory pattern if selected
-      if (data.pattern === "factory") {
-        actions.push({
-          type: "add",
-          path: "./src/ui/{{type}}s/{{pascalCase name}}/{{pascalCase name}}Factory.ts",
-          templateFile: "./plop-templates/Factory.template.tsx.hbs",
-        });
-      }
-
-      return actions;
-    },
+    actions: () => [
+      {
+        type: "add",
+        path: "./src/ui/{{type}}s/{{pascalCase name}}/{{pascalCase name}}.tsx",
+        templateFile: "./plop-templates/Component.tsx.hbs",
+      },
+      {
+        type: "add",
+        path: "./src/ui/{{type}}s/{{pascalCase name}}/{{pascalCase name}}.stories.tsx",
+        templateFile: "./plop-templates/Story.tsx.hbs",
+      },
+      {
+        type: "append",
+        path: "./src/ui/{{type}}s/index.ts",
+        template:
+          'export { default as {{pascalCase name}} } from "./{{pascalCase name}}/{{pascalCase name}}";',
+      },
+    ],
   });
 }

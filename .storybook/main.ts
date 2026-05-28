@@ -3,11 +3,9 @@ import type { StorybookConfig } from "@storybook/react-vite";
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
-    "@chromatic-com/storybook", // Visual regression testing with Chromatic
     "@storybook/addon-docs", // Documentation support (includes Controls, Actions, Viewport, and Interactions in Storybook 10)
     "@storybook/addon-a11y", // Accessibility testing
     "@storybook/addon-vitest", // Vitest integration
-    "@storybook/addon-mcp", // Model Context Protocol for AI agents
     // Note: @storybook/addon-interactions is now part of @storybook/addon-docs in Storybook 10
     // Additional addons (install if needed):
     // "@storybook/addon-measure", // Measure elements (install: npm install -D @storybook/addon-measure)
