@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useEffect, type ReactNode } from 'react';
-import { createPortal } from 'react-dom';
-import { getShadowClass } from '../../tokens/shadows';
-import { getZIndexClass } from '../../tokens/z-index';
-import { getAnimationClass } from '../../tokens/animations';
-import { getSpacingClass } from '../../tokens/spacing';
-import { getColorClass } from '../../tokens/colors';
-import { useDrawerContext } from './DrawerContext';
-import { X } from 'lucide-react';
-import { Button } from '../../atoms';
+import { useEffect, type ReactNode } from "react";
+import { createPortal } from "react-dom";
+import { getShadowClass } from "../../tokens/shadows";
+import { getZIndexClass } from "../../tokens/z-index";
+import { getAnimationClass } from "../../tokens/animations";
+import { getSpacingClass } from "../../tokens/spacing";
+import { getColorClass } from "../../tokens/colors";
+import { useDrawerContext } from "./DrawerContext";
+import { X } from "lucide-react";
+import { Button } from "../../primitives";
 
 export interface DrawerContentProps {
   children: ReactNode;
@@ -19,13 +19,13 @@ export interface DrawerContentProps {
 
 /**
  * DrawerContent Component
- * 
+ *
  * The main content container for the drawer.
  * Renders in a portal with overlay.
  */
 export default function DrawerContent({
   children,
-  className = '',
+  className = "",
   showCloseButton = false,
 }: DrawerContentProps) {
   const {
@@ -41,21 +41,21 @@ export default function DrawerContent({
   useEffect(() => {
     if (isOpen && closeOnEscape) {
       const handleEscape = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') {
+        if (e.key === "Escape") {
           closeDrawer();
         }
       };
-      document.addEventListener('keydown', handleEscape);
-      return () => document.removeEventListener('keydown', handleEscape);
+      document.addEventListener("keydown", handleEscape);
+      return () => document.removeEventListener("keydown", handleEscape);
     }
   }, [isOpen, closeOnEscape, closeDrawer]);
 
   // Prevent body scroll when open
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
       return () => {
-        document.body.style.overflow = '';
+        document.body.style.overflow = "";
       };
     }
   }, [isOpen]);
@@ -63,18 +63,18 @@ export default function DrawerContent({
   if (!isOpen) return null;
 
   const sizeClasses = {
-    sm: position === 'left' || position === 'right' ? 'w-64' : 'h-64',
-    md: position === 'left' || position === 'right' ? 'w-96' : 'h-96',
-    lg: position === 'left' || position === 'right' ? 'w-[32rem]' : 'h-[32rem]',
-    xl: position === 'left' || position === 'right' ? 'w-[42rem]' : 'h-[42rem]',
-    full: position === 'left' || position === 'right' ? 'w-full' : 'h-full',
+    sm: position === "left" || position === "right" ? "w-64" : "h-64",
+    md: position === "left" || position === "right" ? "w-96" : "h-96",
+    lg: position === "left" || position === "right" ? "w-[32rem]" : "h-[32rem]",
+    xl: position === "left" || position === "right" ? "w-[42rem]" : "h-[42rem]",
+    full: position === "left" || position === "right" ? "w-full" : "h-full",
   };
 
   const positionClasses = {
-    left: 'left-0 top-0 bottom-0',
-    right: 'right-0 top-0 bottom-0',
-    top: 'top-0 left-0 right-0',
-    bottom: 'bottom-0 left-0 right-0',
+    left: "left-0 top-0 bottom-0",
+    right: "right-0 top-0 bottom-0",
+    top: "top-0 left-0 right-0",
+    bottom: "bottom-0 left-0 right-0",
   };
 
   const drawerContent = (
@@ -85,9 +85,9 @@ export default function DrawerContent({
           fixed
           inset-0
           bg-black/50
-          ${getZIndexClass('modal')}
-          ${getAnimationClass('base')}
-          ${isOpen ? 'opacity-100' : 'opacity-0'}
+          ${getZIndexClass("modal")}
+          ${getAnimationClass("base")}
+          ${isOpen ? "opacity-100" : "opacity-0"}
         `}
         onClick={closeOnOverlayClick ? closeDrawer : undefined}
         aria-hidden="true"
@@ -99,11 +99,11 @@ export default function DrawerContent({
           fixed
           ${positionClasses[position]}
           ${sizeClasses[size]}
-          ${position === 'left' || position === 'right' ? 'max-w-[90vw]' : 'max-h-[90vh]'}
+          ${position === "left" || position === "right" ? "max-w-[90vw]" : "max-h-[90vh]"}
           bg-white
-          ${getShadowClass('xl')}
-          ${getZIndexClass('modal')}
-          ${getAnimationClass('base')}
+          ${getShadowClass("xl")}
+          ${getZIndexClass("modal")}
+          ${getAnimationClass("base")}
           flex
           flex-col
           ${className}
@@ -113,13 +113,15 @@ export default function DrawerContent({
         onClick={(e) => e.stopPropagation()}
       >
         {showCloseButton && (
-          <div className={`
+          <div
+            className={`
             flex
             justify-end
-            ${getSpacingClass('sm', 'p')}
+            ${getSpacingClass("sm", "p")}
             border-b
-            ${getColorClass('neutral', 'DEFAULT', 'border')}
-          `}>
+            ${getColorClass("neutral", "DEFAULT", "border")}
+          `}
+          >
             <Button
               variant="ghost"
               size="sm"
@@ -136,5 +138,7 @@ export default function DrawerContent({
     </>
   );
 
-  return typeof window !== 'undefined' ? createPortal(drawerContent, document.body) : null;
+  return typeof window !== "undefined"
+    ? createPortal(drawerContent, document.body)
+    : null;
 }

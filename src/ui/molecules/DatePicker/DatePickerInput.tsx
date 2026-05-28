@@ -1,36 +1,37 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect, type HTMLAttributes } from 'react';
-import { Calendar } from 'lucide-react';
-import { useDatePickerContext } from './DatePickerContext';
-import Input from '../../atoms/Input/Input';
-import Button from '../../atoms/Button/Button';
+import { useState, useRef, useEffect, type HTMLAttributes } from "react";
+import { Calendar } from "lucide-react";
+import { useDatePickerContext } from "./DatePickerContext";
+import Input from "../../primitives/Input/Input";
+import Button from "../../primitives/Button/Button";
 
-export interface DatePickerInputProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'onFocus'> {
+export interface DatePickerInputProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, "onChange" | "onFocus"> {
   placeholder?: string;
   format?: string; // Date format string (e.g., 'MM/dd/yyyy')
   showCalendarButton?: boolean;
-  'aria-label'?: string;
+  "aria-label"?: string;
   onFocus?: () => void;
 }
 
 // Simple date formatting without date-fns dependency
-function formatDate(date: Date, format: string = 'yyyy-MM-dd'): string {
+function formatDate(date: Date, format: string = "yyyy-MM-dd"): string {
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
   return format
-    .replace('yyyy', String(year))
-    .replace('MM', month)
-    .replace('dd', day)
-    .replace('MM/dd/yyyy', `${month}/${day}/${year}`)
-    .replace('dd/MM/yyyy', `${day}/${month}/${year}`);
+    .replace("yyyy", String(year))
+    .replace("MM", month)
+    .replace("dd", day)
+    .replace("MM/dd/yyyy", `${month}/${day}/${year}`)
+    .replace("dd/MM/yyyy", `${day}/${month}/${year}`);
 }
 
 function parseDate(value: string): Date | null {
   if (!value) return null;
-  
+
   // Try ISO format first (yyyy-MM-dd)
   const isoMatch = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
   if (isoMatch) {
@@ -38,7 +39,7 @@ function parseDate(value: string): Date | null {
     const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
     if (!isNaN(date.getTime())) return date;
   }
-  
+
   // Try MM/dd/yyyy
   const usMatch = value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
   if (usMatch) {
@@ -46,7 +47,7 @@ function parseDate(value: string): Date | null {
     const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
     if (!isNaN(date.getTime())) return date;
   }
-  
+
   // Try dd/MM/yyyy
   const euMatch = value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
   if (euMatch) {
@@ -54,46 +55,49 @@ function parseDate(value: string): Date | null {
     const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
     if (!isNaN(date.getTime())) return date;
   }
-  
+
   return null;
 }
 
 export function DatePickerInput({
-  placeholder = 'Select date',
-  format = 'yyyy-MM-dd',
+  placeholder = "Select date",
+  format = "yyyy-MM-dd",
   showCalendarButton = true,
-  'aria-label': ariaLabel,
+  "aria-label": ariaLabel,
   onFocus,
-  className = '',
+  className = "",
   ...props
 }: DatePickerInputProps) {
-  const { selectedDate, selectedRange, mode, onDateChange } = useDatePickerContext();
-  const [inputValue, setInputValue] = useState('');
+  const { selectedDate, selectedRange, mode, onDateChange } =
+    useDatePickerContext();
+  const [inputValue, setInputValue] = useState("");
   const [_isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Update input value when selected date changes
   useEffect(() => {
-    if (mode === 'single' && selectedDate) {
+    if (mode === "single" && selectedDate) {
       setInputValue(formatDate(selectedDate, format));
-    } else if (mode === 'range' && selectedRange) {
+    } else if (mode === "range" && selectedRange) {
       if (selectedRange.start && selectedRange.end) {
-        setInputValue(`${formatDate(selectedRange.start, format)} - ${formatDate(selectedRange.end, format)}`);
+        setInputValue(
+          `${formatDate(selectedRange.start, format)} - ${formatDate(selectedRange.end, format)}`,
+        );
       } else if (selectedRange.start) {
         setInputValue(formatDate(selectedRange.start, format));
       } else {
-        setInputValue('');
+        setInputValue("");
       }
     } else {
-      setInputValue('');
+      setInputValue("");
     }
   }, [selectedDate, selectedRange, mode, format]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInputValue(value);
-    
-    if (mode === 'single') {
+
+    if (mode === "single") {
       const date = parseDate(value);
       onDateChange(date);
     }
@@ -103,7 +107,7 @@ export function DatePickerInput({
   const handleInputBlur = () => {
     setIsFocused(false);
     // Validate and format on blur
-    if (inputValue && mode === 'single') {
+    if (inputValue && mode === "single") {
       const date = parseDate(inputValue);
       if (date) {
         setInputValue(formatDate(date, format));
@@ -130,17 +134,19 @@ export function DatePickerInput({
         onBlur={handleInputBlur}
         placeholder={placeholder}
         aria-label={ariaLabel || placeholder}
-        rightIcon={showCalendarButton ? (
-          <Button
-            variant="iconOnly"
-            size="sm"
-            onClick={handleCalendarClick}
-            aria-label="Open calendar"
-            type="button"
-          >
-            <Calendar className="h-4 w-4" />
-          </Button>
-        ) : undefined}
+        rightIcon={
+          showCalendarButton ? (
+            <Button
+              variant="iconOnly"
+              size="sm"
+              onClick={handleCalendarClick}
+              aria-label="Open calendar"
+              type="button"
+            >
+              <Calendar className="h-4 w-4" />
+            </Button>
+          ) : undefined
+        }
       />
     </div>
   );

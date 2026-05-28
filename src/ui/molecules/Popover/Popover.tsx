@@ -1,30 +1,39 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react';
-import { createPortal } from 'react-dom';
-import { X } from 'lucide-react';
-import { getSpacingClass } from '../../tokens/spacing';
-import { getRadiusClass } from '../../tokens/radius';
-import { getShadowClass } from '../../tokens/shadows';
-import { getZIndexClass } from '../../tokens/z-index';
-import { getAnimationClass } from '../../tokens/animations';
-import { getColorClass } from '../../tokens/colors';
-import { getTypographySize, getTypographyWeight } from '../../tokens/typography';
-import Button from '../../atoms/Button/Button';
+import {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  type ReactNode,
+} from "react";
+import { createPortal } from "react-dom";
+import { X } from "lucide-react";
+import { getSpacingClass } from "../../tokens/spacing";
+import { getRadiusClass } from "../../tokens/radius";
+import { getShadowClass } from "../../tokens/shadows";
+import { getZIndexClass } from "../../tokens/z-index";
+import { getAnimationClass } from "../../tokens/animations";
+import { getColorClass } from "../../tokens/colors";
+import {
+  getTypographySize,
+  getTypographyWeight,
+} from "../../tokens/typography";
+import Button from "../../primitives/Button/Button";
 
-export type PopoverPlacement = 
-  | 'top' 
-  | 'top-start' 
-  | 'top-end'
-  | 'bottom' 
-  | 'bottom-start' 
-  | 'bottom-end'
-  | 'left' 
-  | 'left-start' 
-  | 'left-end'
-  | 'right' 
-  | 'right-start' 
-  | 'right-end';
+export type PopoverPlacement =
+  | "top"
+  | "top-start"
+  | "top-end"
+  | "bottom"
+  | "bottom-start"
+  | "bottom-end"
+  | "left"
+  | "left-start"
+  | "left-end"
+  | "right"
+  | "right-start"
+  | "right-end";
 
 export interface PopoverProps {
   trigger: ReactNode;
@@ -44,11 +53,11 @@ export interface PopoverProps {
 
 /**
  * Popover Component
- * 
+ *
  * A popover component that displays content in a floating panel.
  * Supports positioning, portal rendering, and keyboard navigation.
  * Follows Atomic Design principles as an Atom component.
- * 
+ *
  * @example
  * ```tsx
  * <Popover
@@ -65,14 +74,14 @@ export default function Popover({
   open: controlledOpen,
   defaultOpen = false,
   onOpenChange,
-  placement = 'bottom',
+  placement = "bottom",
   showCloseButton = false,
   title,
   closeOnClickOutside = true,
   closeOnEscape = true,
-  className = '',
-  triggerClassName = '',
-  contentClassName = '',
+  className = "",
+  triggerClassName = "",
+  contentClassName = "",
 }: PopoverProps) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -94,32 +103,61 @@ export default function Popover({
     let left = 0;
 
     // Calculate position based on placement
-    if (placement.startsWith('top')) {
+    if (placement.startsWith("top")) {
       top = triggerRect.top + scrollY - popoverRect.height - 8;
-      if (placement === 'top-start') left = triggerRect.left + scrollX;
-      else if (placement === 'top-end') left = triggerRect.right + scrollX - popoverRect.width;
-      else left = triggerRect.left + scrollX + (triggerRect.width - popoverRect.width) / 2;
-    } else if (placement.startsWith('bottom')) {
+      if (placement === "top-start") left = triggerRect.left + scrollX;
+      else if (placement === "top-end")
+        left = triggerRect.right + scrollX - popoverRect.width;
+      else
+        left =
+          triggerRect.left +
+          scrollX +
+          (triggerRect.width - popoverRect.width) / 2;
+    } else if (placement.startsWith("bottom")) {
       top = triggerRect.bottom + scrollY + 8;
-      if (placement === 'bottom-start') left = triggerRect.left + scrollX;
-      else if (placement === 'bottom-end') left = triggerRect.right + scrollX - popoverRect.width;
-      else left = triggerRect.left + scrollX + (triggerRect.width - popoverRect.width) / 2;
-    } else if (placement.startsWith('left')) {
+      if (placement === "bottom-start") left = triggerRect.left + scrollX;
+      else if (placement === "bottom-end")
+        left = triggerRect.right + scrollX - popoverRect.width;
+      else
+        left =
+          triggerRect.left +
+          scrollX +
+          (triggerRect.width - popoverRect.width) / 2;
+    } else if (placement.startsWith("left")) {
       left = triggerRect.left + scrollX - popoverRect.width - 8;
-      if (placement === 'left-start') top = triggerRect.top + scrollY;
-      else if (placement === 'left-end') top = triggerRect.bottom + scrollY - popoverRect.height;
-      else top = triggerRect.top + scrollY + (triggerRect.height - popoverRect.height) / 2;
-    } else if (placement.startsWith('right')) {
+      if (placement === "left-start") top = triggerRect.top + scrollY;
+      else if (placement === "left-end")
+        top = triggerRect.bottom + scrollY - popoverRect.height;
+      else
+        top =
+          triggerRect.top +
+          scrollY +
+          (triggerRect.height - popoverRect.height) / 2;
+    } else if (placement.startsWith("right")) {
       left = triggerRect.right + scrollX + 8;
-      if (placement === 'right-start') top = triggerRect.top + scrollY;
-      else if (placement === 'right-end') top = triggerRect.bottom + scrollY - popoverRect.height;
-      else top = triggerRect.top + scrollY + (triggerRect.height - popoverRect.height) / 2;
+      if (placement === "right-start") top = triggerRect.top + scrollY;
+      else if (placement === "right-end")
+        top = triggerRect.bottom + scrollY - popoverRect.height;
+      else
+        top =
+          triggerRect.top +
+          scrollY +
+          (triggerRect.height - popoverRect.height) / 2;
     }
 
     // Keep within viewport
     const padding = 8;
-    top = Math.max(padding, Math.min(top, window.innerHeight + scrollY - popoverRect.height - padding));
-    left = Math.max(padding, Math.min(left, window.innerWidth + scrollX - popoverRect.width - padding));
+    top = Math.max(
+      padding,
+      Math.min(
+        top,
+        window.innerHeight + scrollY - popoverRect.height - padding,
+      ),
+    );
+    left = Math.max(
+      padding,
+      Math.min(left, window.innerWidth + scrollX - popoverRect.width - padding),
+    );
 
     setPosition({ top, left });
   }, [placement]);
@@ -129,11 +167,11 @@ export default function Popover({
       updatePosition();
       const handleResize = () => updatePosition();
       const handleScroll = () => updatePosition();
-      window.addEventListener('resize', handleResize);
-      window.addEventListener('scroll', handleScroll, true);
+      window.addEventListener("resize", handleResize);
+      window.addEventListener("scroll", handleScroll, true);
       return () => {
-        window.removeEventListener('resize', handleResize);
-        window.removeEventListener('scroll', handleScroll, true);
+        window.removeEventListener("resize", handleResize);
+        window.removeEventListener("scroll", handleScroll, true);
       };
     }
   }, [isOpen, placement, updatePosition]);
@@ -145,12 +183,15 @@ export default function Popover({
     }
   }, [isOpen, updatePosition]);
 
-  const handleOpenChange = useCallback((newOpen: boolean) => {
-    if (!isControlled) {
-      setInternalOpen(newOpen);
-    }
-    onOpenChange?.(newOpen);
-  }, [isControlled, onOpenChange]);
+  const handleOpenChange = useCallback(
+    (newOpen: boolean) => {
+      if (!isControlled) {
+        setInternalOpen(newOpen);
+      }
+      onOpenChange?.(newOpen);
+    },
+    [isControlled, onOpenChange],
+  );
 
   const handleClose = useCallback(() => {
     handleOpenChange(false);
@@ -159,12 +200,12 @@ export default function Popover({
   useEffect(() => {
     if (isOpen && closeOnEscape) {
       const handleEscape = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') {
+        if (e.key === "Escape") {
           handleClose();
         }
       };
-      document.addEventListener('keydown', handleEscape);
-      return () => document.removeEventListener('keydown', handleEscape);
+      document.addEventListener("keydown", handleEscape);
+      return () => document.removeEventListener("keydown", handleEscape);
     }
   }, [isOpen, closeOnEscape, handleClose]);
 
@@ -180,8 +221,9 @@ export default function Popover({
           handleClose();
         }
       };
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [isOpen, closeOnClickOutside, handleClose]);
 
@@ -190,15 +232,15 @@ export default function Popover({
       ref={popoverRef}
       className={`
         absolute
-        ${getZIndexClass('popover')}
+        ${getZIndexClass("popover")}
         bg-white
-        ${getRadiusClass('lg')}
-        ${getShadowClass('lg')}
+        ${getRadiusClass("lg")}
+        ${getShadowClass("lg")}
         border
-        ${getColorClass('neutral', 'DEFAULT', 'border')}
+        ${getColorClass("neutral", "DEFAULT", "border")}
         min-w-[200px]
         max-w-[400px]
-        ${getAnimationClass('base')}
+        ${getAnimationClass("base")}
         ${contentClassName}
       `}
       style={{
@@ -209,17 +251,23 @@ export default function Popover({
       aria-modal="false"
     >
       {(title || showCloseButton) && (
-        <div className={`
+        <div
+          className={`
           flex
           items-center
           justify-between
-          ${getSpacingClass('base', 'px')}
-          ${getSpacingClass('md', 'py')}
+          ${getSpacingClass("base", "px")}
+          ${getSpacingClass("md", "py")}
           border-b
-          ${getColorClass('neutral', 'DEFAULT', 'border')}
-        `}>
+          ${getColorClass("neutral", "DEFAULT", "border")}
+        `}
+        >
           {title && (
-            <h3 className={`${getTypographySize('bodySmall')} ${getTypographyWeight('h5')} ${getColorClass('neutral', 'dark', 'text')}`}>{title}</h3>
+            <h3
+              className={`${getTypographySize("bodySmall")} ${getTypographyWeight("h5")} ${getColorClass("neutral", "dark", "text")}`}
+            >
+              {title}
+            </h3>
           )}
           {showCloseButton && (
             <Button
@@ -234,10 +282,12 @@ export default function Popover({
           )}
         </div>
       )}
-      <div className={`
-        ${getSpacingClass('base', 'p')}
-        ${title || showCloseButton ? '' : getSpacingClass('md', 'p')}
-      `}>
+      <div
+        className={`
+        ${getSpacingClass("base", "p")}
+        ${title || showCloseButton ? "" : getSpacingClass("md", "p")}
+      `}
+      >
         {children}
       </div>
     </div>
@@ -252,7 +302,8 @@ export default function Popover({
       >
         {trigger}
       </div>
-      {typeof window !== 'undefined' && createPortal(popoverContent, document.body)}
+      {typeof window !== "undefined" &&
+        createPortal(popoverContent, document.body)}
     </div>
   );
 }

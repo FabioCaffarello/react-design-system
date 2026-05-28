@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { type ReactNode } from 'react';
-import Dialog from './Dialog';
-import { DialogContent } from './DialogContent';
-import { DialogHeader } from './DialogHeader';
-import { DialogFooter } from './DialogFooter';
-import Button from '../../atoms/Button/Button';
+import { type ReactNode } from "react";
+import Dialog from "./Dialog";
+import { DialogContent } from "./DialogContent";
+import { DialogHeader } from "./DialogHeader";
+import { DialogFooter } from "./DialogFooter";
+import Button from "../../primitives/Button/Button";
 
 export interface AlertDialogProps {
   open?: boolean;
@@ -15,7 +15,7 @@ export interface AlertDialogProps {
   description?: string;
   confirmLabel?: string;
   cancelLabel?: string;
-  variant?: 'default' | 'destructive';
+  variant?: "default" | "destructive";
   onConfirm?: () => void;
   onCancel?: () => void;
   children?: ReactNode;
@@ -23,10 +23,10 @@ export interface AlertDialogProps {
 
 /**
  * AlertDialog Component
- * 
+ *
  * A specialized dialog for confirmations and alerts.
  * Built on top of Dialog with pre-configured layout.
- * 
+ *
  * @example
  * ```tsx
  * <AlertDialog
@@ -45,9 +45,9 @@ export function AlertDialog({
   onOpenChange,
   title,
   description,
-  confirmLabel = 'Confirm',
-  cancelLabel = 'Cancel',
-  variant = 'default',
+  confirmLabel = "Confirm",
+  cancelLabel = "Cancel",
+  variant = "default",
   onConfirm,
   onCancel,
   children,
@@ -69,14 +69,16 @@ export function AlertDialog({
           <>
             <DialogHeader>
               <Dialog.Title>{title}</Dialog.Title>
-              {description && <Dialog.Description>{description}</Dialog.Description>}
+              {description && (
+                <Dialog.Description>{description}</Dialog.Description>
+              )}
             </DialogHeader>
             <DialogFooter>
               <Button variant="outline" onClick={handleCancel}>
                 {cancelLabel}
               </Button>
               <Button
-                variant={variant === 'destructive' ? 'error' : 'primary'}
+                variant={variant === "destructive" ? "error" : "primary"}
                 onClick={handleConfirm}
               >
                 {confirmLabel}

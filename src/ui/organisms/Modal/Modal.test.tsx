@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import Modal from "./Modal";
-import { Button } from "../../atoms";
+import { Button } from "../../primitives";
 
 // Mock createPortal
 vi.mock("react-dom", async () => {
@@ -25,7 +25,7 @@ describe("Modal", () => {
     render(
       <Modal isOpen={true} onClose={() => {}} title="Test Modal">
         <p>Modal content</p>
-      </Modal>
+      </Modal>,
     );
     expect(screen.getByText("Modal content")).toBeInTheDocument();
   });
@@ -34,7 +34,7 @@ describe("Modal", () => {
     render(
       <Modal isOpen={false} onClose={() => {}} title="Test Modal">
         <p>Modal content</p>
-      </Modal>
+      </Modal>,
     );
     expect(screen.queryByText("Modal content")).not.toBeInTheDocument();
   });
@@ -44,7 +44,7 @@ describe("Modal", () => {
     render(
       <Modal isOpen={true} onClose={handleClose} title="Test Modal">
         <p>Content</p>
-      </Modal>
+      </Modal>,
     );
     const closeButton = screen.getByLabelText("Close modal");
     fireEvent.click(closeButton);
@@ -56,7 +56,7 @@ describe("Modal", () => {
     render(
       <Modal isOpen={true} onClose={handleClose} title="Test Modal">
         <p>Content</p>
-      </Modal>
+      </Modal>,
     );
     fireEvent.keyDown(document, { key: "Escape" });
     expect(handleClose).toHaveBeenCalledTimes(1);
@@ -67,7 +67,7 @@ describe("Modal", () => {
     const { container } = render(
       <Modal isOpen={true} onClose={handleClose} title="Test Modal">
         <p>Content</p>
-      </Modal>
+      </Modal>,
     );
     const overlay = container.querySelector('[role="dialog"]');
     if (overlay) {
@@ -80,7 +80,7 @@ describe("Modal", () => {
     const { container } = render(
       <Modal isOpen={true} onClose={() => {}} title="Test Modal">
         <p>Content</p>
-      </Modal>
+      </Modal>,
     );
     const dialog = container.querySelector('[role="dialog"]');
     expect(dialog).toHaveAttribute("aria-modal", "true");
@@ -90,7 +90,7 @@ describe("Modal", () => {
     render(
       <Modal isOpen={true} onClose={() => {}} title="Test Title">
         <p>Content</p>
-      </Modal>
+      </Modal>,
     );
     expect(screen.getByText("Test Title")).toBeInTheDocument();
   });
@@ -104,7 +104,7 @@ describe("Modal", () => {
         footer={<Button>Action</Button>}
       >
         <p>Content</p>
-      </Modal>
+      </Modal>,
     );
     expect(screen.getByText("Action")).toBeInTheDocument();
   });

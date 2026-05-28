@@ -1,16 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
-import { useState } from 'react';
-import Popover from './Popover';
-import { Button } from '../../atoms';
+import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
+import { expect, userEvent, within, waitFor } from "@storybook/test";
+import { useState } from "react";
+import Popover from "./Popover";
+import { Button } from "../../primitives";
 
 const meta: Meta<typeof Popover> = {
-  title: 'Molecules/Popover',
+  title: "Molecules/Popover",
   component: Popover,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
     docs: {
       description: {
         component: `
@@ -38,20 +38,20 @@ A popover component that displays content in a floating panel, triggered by a bu
   },
   argTypes: {
     placement: {
-      control: 'select',
+      control: "select",
       options: [
-        'top',
-        'top-start',
-        'top-end',
-        'bottom',
-        'bottom-start',
-        'bottom-end',
-        'left',
-        'left-start',
-        'left-end',
-        'right',
-        'right-start',
-        'right-end',
+        "top",
+        "top-start",
+        "top-end",
+        "bottom",
+        "bottom-start",
+        "bottom-end",
+        "left",
+        "left-start",
+        "left-end",
+        "right",
+        "right-start",
+        "right-end",
       ],
     },
   },
@@ -159,7 +159,9 @@ export const Controlled: Story = {
           showCloseButton
         >
           <p>This popover is controlled by external state.</p>
-          <p className="mt-2 text-sm text-gray-600">Open: {open ? 'Yes' : 'No'}</p>
+          <p className="mt-2 text-sm text-gray-600">
+            Open: {open ? "Yes" : "No"}
+          </p>
         </Popover>
         <Button onClick={() => setOpen(!open)} variant="outline">
           External Toggle
@@ -189,11 +191,12 @@ export const WithEvents: Story = {
     const handleOpenChange = fn((newOpen: boolean) => {
       setOpen(newOpen);
     });
-    
+
     return (
       <div className="space-y-4">
         <p className="text-sm text-gray-600">
-          Click the button to open/close the popover. Check the Actions panel to see events being fired.
+          Click the button to open/close the popover. Check the Actions panel to
+          see events being fired.
         </p>
         <Popover
           trigger={<Button>Toggle Popover</Button>}
@@ -203,31 +206,43 @@ export const WithEvents: Story = {
           showCloseButton
         >
           <p>This popover fires events when opened/closed.</p>
-          <p className="mt-2 text-sm text-gray-600">Open: {open ? 'Yes' : 'No'}</p>
+          <p className="mt-2 text-sm text-gray-600">
+            Open: {open ? "Yes" : "No"}
+          </p>
         </Popover>
       </div>
     );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = await canvas.findByRole('button', { name: /Toggle Popover/i });
-    
+    const button = await canvas.findByRole("button", {
+      name: /Toggle Popover/i,
+    });
+
     // Click to open
     await userEvent.click(button);
     // Popover renders in a portal (document.body), so search there
-    await waitFor(() => {
-      const content = within(document.body).getByText('This popover fires events when opened/closed.');
-      expect(content).toBeInTheDocument();
-    }, { timeout: 3000 });
-    
+    await waitFor(
+      () => {
+        const content = within(document.body).getByText(
+          "This popover fires events when opened/closed.",
+        );
+        expect(content).toBeInTheDocument();
+      },
+      { timeout: 3000 },
+    );
+
     // Click close button (also in portal)
-    const closeButton = within(document.body).getByRole('button', { name: /close/i });
+    const closeButton = within(document.body).getByRole("button", {
+      name: /close/i,
+    });
     await userEvent.click(closeButton);
   },
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates popover events. Open and close the popover, then check the Actions panel to see events being logged.',
+        story:
+          "Demonstrates popover events. Open and close the popover, then check the Actions panel to see events being logged.",
       },
     },
   },
@@ -243,7 +258,7 @@ export const ClosedState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Closed state - popover is not visible.',
+        story: "Closed state - popover is not visible.",
       },
     },
   },
@@ -267,7 +282,7 @@ export const OpenState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Open state - popover is visible.',
+        story: "Open state - popover is visible.",
       },
     },
   },
@@ -286,7 +301,7 @@ export const WithTitleState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'With title state - popover includes a title header.',
+        story: "With title state - popover includes a title header.",
       },
     },
   },
@@ -306,7 +321,8 @@ export const WithoutCloseButtonState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Without close button state - popover has no X button, must close by clicking outside.',
+        story:
+          "Without close button state - popover has no X button, must close by clicking outside.",
       },
     },
   },

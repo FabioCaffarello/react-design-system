@@ -1,19 +1,19 @@
 /**
  * HeaderHamburger Component
- * 
+ *
  * Hamburger button for toggling mobile menu.
- * 
+ *
  * @see EPIC-002: Header Component (Molecule)
  * @see TASK-027: Hamburger Button
  */
 
-'use client';
+"use client";
 
-import React from 'react';
-import { Menu, X } from 'lucide-react';
-import { Button } from '../../../atoms/Button/Button';
-import { useHeaderContext } from '../contexts/HeaderContext';
-import { cn } from '../../../utils';
+import React from "react";
+import { Menu, X } from "lucide-react";
+import { Button } from "../../../primitives/Button/Button";
+import { useHeaderContext } from "../contexts/HeaderContext";
+import { cn } from "../../../utils";
 
 export interface HeaderHamburgerProps {
   /**
@@ -35,21 +35,21 @@ export interface HeaderHamburgerProps {
    * Button variant
    * @default 'ghost'
    */
-  variant?: 'ghost' | 'outline' | 'default';
+  variant?: "ghost" | "outline" | "default";
 
   /**
    * Button size
    * @default 'md'
    */
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
 }
 
 /**
  * HeaderHamburger Component
- * 
+ *
  * Hamburger button that toggles the mobile menu.
  * Only visible on mobile devices.
- * 
+ *
  * @example
  * ```tsx
  * <Header>
@@ -62,8 +62,8 @@ export function HeaderHamburger({
   className,
   icon,
   closeIcon,
-  variant = 'ghost',
-  size = 'md',
+  variant = "ghost",
+  size = "md",
 }: HeaderHamburgerProps) {
   const { isMobileMenuOpen, toggleMobileMenu } = useHeaderContext();
 
@@ -75,8 +75,8 @@ export function HeaderHamburger({
       variant={variant}
       size={size}
       onClick={toggleMobileMenu}
-      className={cn('md:hidden', className)}
-      aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+      className={cn("md:hidden", className)}
+      aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
       aria-expanded={isMobileMenuOpen}
     >
       {isMobileMenuOpen ? CloseIcon : MenuIcon}

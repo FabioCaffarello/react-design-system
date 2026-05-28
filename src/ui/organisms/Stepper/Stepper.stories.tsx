@@ -1,16 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
-import { fn } from '@storybook/test';
-import Stepper from './Stepper';
-import Input from '../../atoms/Input/Input';
+import type { Meta, StoryObj } from "@storybook/react";
+import { useState } from "react";
+import { expect, userEvent, within, waitFor } from "@storybook/test";
+import { fn } from "@storybook/test";
+import Stepper from "./Stepper";
+import Input from "../../primitives/Input/Input";
 
 const meta: Meta<typeof Stepper> = {
-  title: 'Organisms/Stepper',
+  title: "Organisms/Stepper",
   component: Stepper,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
-    layout: 'padded',
+    layout: "padded",
     docs: {
       description: {
         component: `
@@ -59,60 +59,60 @@ stateDiagram-v2
   },
   argTypes: {
     steps: {
-      description: 'Array of step definitions',
+      description: "Array of step definitions",
       control: false,
     },
     currentStep: {
-      description: 'Index of the current active step',
-      control: { type: 'number', min: 0 },
+      description: "Index of the current active step",
+      control: { type: "number", min: 0 },
       table: {
-        type: { summary: 'number' },
+        type: { summary: "number" },
       },
     },
     onStepChange: {
-      description: 'Callback fired when the step changes',
-      action: 'onStepChange',
-      category: 'Events',
+      description: "Callback fired when the step changes",
+      action: "onStepChange",
+      category: "Events",
       table: {
-        type: { summary: '(stepIndex: number) => void' },
+        type: { summary: "(stepIndex: number) => void" },
       },
     },
     onComplete: {
-      description: 'Callback fired when the stepper is completed',
-      action: 'onComplete',
-      category: 'Events',
+      description: "Callback fired when the stepper is completed",
+      action: "onComplete",
+      category: "Events",
       table: {
-        type: { summary: '() => void' },
+        type: { summary: "() => void" },
       },
     },
     orientation: {
-      description: 'Orientation of the stepper',
-      control: 'select',
-      options: ['horizontal', 'vertical'],
+      description: "Orientation of the stepper",
+      control: "select",
+      options: ["horizontal", "vertical"],
       table: {
         type: { summary: "'horizontal' | 'vertical'" },
         defaultValue: { summary: "'horizontal'" },
       },
     },
     showStepNumbers: {
-      description: 'Whether to show step numbers',
-      control: 'boolean',
+      description: "Whether to show step numbers",
+      control: "boolean",
       table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'true' },
+        type: { summary: "boolean" },
+        defaultValue: { summary: "true" },
       },
     },
     allowNavigation: {
-      description: 'Whether to allow clicking on previous steps',
-      control: 'boolean',
+      description: "Whether to allow clicking on previous steps",
+      control: "boolean",
       table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'true' },
+        type: { summary: "boolean" },
+        defaultValue: { summary: "true" },
       },
     },
     className: {
-      description: 'Additional CSS classes',
-      control: 'text',
+      description: "Additional CSS classes",
+      control: "text",
     },
   },
 };
@@ -122,9 +122,9 @@ type Story = StoryObj<typeof Stepper>;
 
 const basicSteps = [
   {
-    id: '1',
-    title: 'Account',
-    description: 'Create your account',
+    id: "1",
+    title: "Account",
+    description: "Create your account",
     content: (
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">Create Account</h3>
@@ -134,9 +134,9 @@ const basicSteps = [
     ),
   },
   {
-    id: '2',
-    title: 'Profile',
-    description: 'Complete your profile',
+    id: "2",
+    title: "Profile",
+    description: "Complete your profile",
     content: (
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">Profile Information</h3>
@@ -146,14 +146,15 @@ const basicSteps = [
     ),
   },
   {
-    id: '3',
-    title: 'Review',
-    description: 'Review and submit',
+    id: "3",
+    title: "Review",
+    description: "Review and submit",
     content: (
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">Review Your Information</h3>
         <p className="text-sm text-gray-600">
-          Please review all the information you've entered and click Complete to finish.
+          Please review all the information you've entered and click Complete to
+          finish.
         </p>
       </div>
     ),
@@ -167,9 +168,9 @@ export const Default: Story = {
       setCurrentStep(stepIndex);
     });
     const handleComplete = fn(() => {
-      alert('Completed!');
+      alert("Completed!");
     });
-    
+
     return (
       <Stepper
         {...args}
@@ -182,14 +183,14 @@ export const Default: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Check that first step is visible
     expect(canvas.getByText(/create your account/i)).toBeInTheDocument();
-    
+
     // Find and click next button
-    const nextButton = canvas.getByRole('button', { name: /next/i });
+    const nextButton = canvas.getByRole("button", { name: /next/i });
     await userEvent.click(nextButton);
-    
+
     // Wait for second step to appear
     await waitFor(() => {
       expect(canvas.getByText(/complete your profile/i)).toBeInTheDocument();
@@ -206,7 +207,7 @@ export const Vertical: Story = {
         currentStep={currentStep}
         onStepChange={setCurrentStep}
         orientation="vertical"
-        onComplete={() => alert('Completed!')}
+        onComplete={() => alert("Completed!")}
       />
     );
   },
@@ -221,7 +222,7 @@ export const WithoutStepNumbers: Story = {
         currentStep={currentStep}
         onStepChange={setCurrentStep}
         showStepNumbers={false}
-        onComplete={() => alert('Completed!')}
+        onComplete={() => alert("Completed!")}
       />
     );
   },
@@ -231,17 +232,17 @@ export const WithStatus: Story = {
   render: () => {
     const [currentStep, setCurrentStep] = useState(1);
     const stepsWithStatus = [
-      { ...basicSteps[0], status: 'completed' as const },
-      { ...basicSteps[1], status: 'active' as const },
-      { ...basicSteps[2], status: 'pending' as const },
+      { ...basicSteps[0], status: "completed" as const },
+      { ...basicSteps[1], status: "active" as const },
+      { ...basicSteps[2], status: "pending" as const },
     ];
-    
+
     return (
       <Stepper
         steps={stepsWithStatus}
         currentStep={currentStep}
         onStepChange={setCurrentStep}
-        onComplete={() => alert('Completed!')}
+        onComplete={() => alert("Completed!")}
       />
     );
   },
@@ -251,17 +252,17 @@ export const WithError: Story = {
   render: () => {
     const [currentStep, setCurrentStep] = useState(1);
     const stepsWithError = [
-      { ...basicSteps[0], status: 'completed' as const },
-      { ...basicSteps[1], status: 'error' as const },
-      { ...basicSteps[2], status: 'pending' as const },
+      { ...basicSteps[0], status: "completed" as const },
+      { ...basicSteps[1], status: "error" as const },
+      { ...basicSteps[2], status: "pending" as const },
     ];
-    
+
     return (
       <Stepper
         steps={stepsWithError}
         currentStep={currentStep}
         onStepChange={setCurrentStep}
-        onComplete={() => alert('Completed!')}
+        onComplete={() => alert("Completed!")}
       />
     );
   },
@@ -276,7 +277,7 @@ export const WithoutNavigation: Story = {
         currentStep={currentStep}
         onStepChange={setCurrentStep}
         allowNavigation={false}
-        onComplete={() => alert('Completed!')}
+        onComplete={() => alert("Completed!")}
       />
     );
   },
@@ -286,21 +287,21 @@ export const ComplexWorkflow: Story = {
   render: () => {
     const [currentStep, setCurrentStep] = useState(0);
     const [formData, setFormData] = useState({
-      email: '',
-      password: '',
-      firstName: '',
-      lastName: '',
+      email: "",
+      password: "",
+      firstName: "",
+      lastName: "",
     });
     const handleComplete = fn(() => {
-      alert('Registration Complete!');
-      console.log('Form Data:', formData);
+      alert("Registration Complete!");
+      console.log("Form Data:", formData);
     });
 
     const complexSteps = [
       {
-        id: '1',
-        title: 'Sign Up',
-        description: 'Create your account',
+        id: "1",
+        title: "Sign Up",
+        description: "Create your account",
         content: (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Create Your Account</h3>
@@ -308,53 +309,63 @@ export const ComplexWorkflow: Story = {
               label="Email"
               type="email"
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
             />
             <Input
               label="Password"
               type="password"
               value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
             />
           </div>
         ),
       },
       {
-        id: '2',
-        title: 'Personal Info',
-        description: 'Tell us about yourself',
+        id: "2",
+        title: "Personal Info",
+        description: "Tell us about yourself",
         content: (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Personal Information</h3>
             <Input
               label="First Name"
               value={formData.firstName}
-              onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, firstName: e.target.value })
+              }
             />
             <Input
               label="Last Name"
               value={formData.lastName}
-              onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, lastName: e.target.value })
+              }
             />
           </div>
         ),
       },
       {
-        id: '3',
-        title: 'Review',
-        description: 'Review your information',
+        id: "3",
+        title: "Review",
+        description: "Review your information",
         content: (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Review Your Information</h3>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-600">Email:</span>
-                <span className="font-medium">{formData.email || 'Not provided'}</span>
+                <span className="font-medium">
+                  {formData.email || "Not provided"}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Name:</span>
                 <span className="font-medium">
-                  {formData.firstName} {formData.lastName || 'Not provided'}
+                  {formData.firstName} {formData.lastName || "Not provided"}
                 </span>
               </div>
             </div>
@@ -374,51 +385,58 @@ export const ComplexWorkflow: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Fill in first step
     const emailInput = await canvas.findByLabelText(/email/i);
-    await userEvent.type(emailInput, 'test@example.com');
-    
+    await userEvent.type(emailInput, "test@example.com");
+
     // There might be multiple password inputs, get the first one
     const passwordInputs = canvas.getAllByLabelText((content, element) => {
-      return element?.getAttribute('type') === 'password' || false;
+      return element?.getAttribute("type") === "password" || false;
     });
     const passwordInput = passwordInputs[0];
     if (passwordInput) {
-      await userEvent.type(passwordInput, 'password123');
+      await userEvent.type(passwordInput, "password123");
     }
-    
+
     // Go to next step
-    const nextButtons = canvas.getAllByRole('button', { name: /next/i });
+    const nextButtons = canvas.getAllByRole("button", { name: /next/i });
     const nextButton = nextButtons[0];
     if (nextButton) {
       await userEvent.click(nextButton);
     }
-    
+
     // Wait for second step
-    await waitFor(async () => {
-      const personalInfo = await canvas.findByText(/personal information/i);
-      expect(personalInfo).toBeInTheDocument();
-    }, { timeout: 3000 });
-    
+    await waitFor(
+      async () => {
+        const personalInfo = await canvas.findByText(/personal information/i);
+        expect(personalInfo).toBeInTheDocument();
+      },
+      { timeout: 3000 },
+    );
+
     // Fill in second step
     const firstNameInput = await canvas.findByLabelText(/first name/i);
-    await userEvent.type(firstNameInput, 'John');
-    
+    await userEvent.type(firstNameInput, "John");
+
     const lastNameInput = await canvas.findByLabelText(/last name/i);
-    await userEvent.type(lastNameInput, 'Doe');
-    
+    await userEvent.type(lastNameInput, "Doe");
+
     // Go to review step
-    const nextButtons2 = canvas.getAllByRole('button', { name: /next/i });
+    const nextButtons2 = canvas.getAllByRole("button", { name: /next/i });
     const nextButton2 = nextButtons2[0];
     if (nextButton2) {
       await userEvent.click(nextButton2);
     }
-    
+
     // Wait for review step - there might be multiple "review your information" elements
     await waitFor(() => {
       const reviewElements = canvas.getAllByText((content, element) => {
-        return element?.textContent?.toLowerCase().includes('review your information') || false;
+        return (
+          element?.textContent
+            ?.toLowerCase()
+            .includes("review your information") || false
+        );
       });
       expect(reviewElements.length).toBeGreaterThan(0);
       expect(canvas.getByText(/test@example.com/i)).toBeInTheDocument();
@@ -430,23 +448,23 @@ export const ComplexWorkflow: Story = {
 export const WithValidation: Story = {
   render: () => {
     const [currentStep, setCurrentStep] = useState(0);
-    const [email, setEmail] = useState('');
-    const [error, setError] = useState('');
-    
+    const [email, setEmail] = useState("");
+    const [error, setError] = useState("");
+
     const validateEmail = () => {
-      if (!email || !email.includes('@')) {
-        setError('Please enter a valid email');
+      if (!email || !email.includes("@")) {
+        setError("Please enter a valid email");
         return false;
       }
-      setError('');
+      setError("");
       return true;
     };
-    
+
     const stepsWithValidation = [
       {
-        id: '1',
-        title: 'Email',
-        description: 'Enter your email',
+        id: "1",
+        title: "Email",
+        description: "Enter your email",
         content: (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Email Address</h3>
@@ -456,7 +474,7 @@ export const WithValidation: Story = {
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
-                setError('');
+                setError("");
               }}
               error={!!error}
               helperText={error}
@@ -465,9 +483,9 @@ export const WithValidation: Story = {
         ),
       },
       {
-        id: '2',
-        title: 'Complete',
-        description: 'All done!',
+        id: "2",
+        title: "Complete",
+        description: "All done!",
         content: (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Email Verified</h3>
@@ -476,21 +494,21 @@ export const WithValidation: Story = {
         ),
       },
     ];
-    
+
     const handleNext = () => {
       if (currentStep === 0 && !validateEmail()) {
         return;
       }
       setCurrentStep(currentStep + 1);
     };
-    
+
     return (
       <div>
         <Stepper
           steps={stepsWithValidation}
           currentStep={currentStep}
           onStepChange={setCurrentStep}
-          onComplete={() => alert('Completed!')}
+          onComplete={() => alert("Completed!")}
         />
         <div className="mt-4 flex justify-end gap-2">
           {currentStep > 0 && (
@@ -510,7 +528,7 @@ export const WithValidation: Story = {
             </button>
           ) : (
             <button
-              onClick={() => alert('Completed!')}
+              onClick={() => alert("Completed!")}
               className="px-4 py-2 text-sm bg-green-600 text-white rounded"
             >
               Complete
@@ -530,13 +548,14 @@ export const WithEvents: Story = {
       setCurrentStep(stepIndex);
     });
     const handleComplete = fn(() => {
-      console.log('Stepper completed!');
+      console.log("Stepper completed!");
     });
-    
+
     return (
       <div className="space-y-4">
         <p className="text-sm text-gray-600">
-          Navigate through steps or complete the stepper. Check the Actions panel to see events being fired.
+          Navigate through steps or complete the stepper. Check the Actions
+          panel to see events being fired.
         </p>
         <Stepper
           steps={basicSteps}
@@ -550,7 +569,7 @@ export const WithEvents: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const nextButton = canvas.getByRole('button', { name: /next/i });
+    const nextButton = canvas.getByRole("button", { name: /next/i });
     await userEvent.click(nextButton);
     await waitFor(() => {
       expect(canvas.getByText(/complete your profile/i)).toBeInTheDocument();
@@ -559,7 +578,8 @@ export const WithEvents: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates stepper events. Navigate through steps and check the Actions panel to see events being logged.',
+        story:
+          "Demonstrates stepper events. Navigate through steps and check the Actions panel to see events being logged.",
       },
     },
   },
@@ -570,14 +590,14 @@ export const HorizontalState: Story = {
   args: {
     steps: basicSteps,
     currentStep: 0,
-    orientation: 'horizontal',
+    orientation: "horizontal",
     onStepChange: () => {},
     onComplete: () => {},
   },
   parameters: {
     docs: {
       description: {
-        story: 'Horizontal state - steps are arranged horizontally (default).',
+        story: "Horizontal state - steps are arranged horizontally (default).",
       },
     },
   },
@@ -587,14 +607,14 @@ export const VerticalState: Story = {
   args: {
     steps: basicSteps,
     currentStep: 0,
-    orientation: 'vertical',
+    orientation: "vertical",
     onStepChange: () => {},
     onComplete: () => {},
   },
   parameters: {
     docs: {
       description: {
-        story: 'Vertical state - steps are arranged vertically.',
+        story: "Vertical state - steps are arranged vertically.",
       },
     },
   },
@@ -611,7 +631,7 @@ export const WithStepNumbersState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'With step numbers state - step numbers are displayed.',
+        story: "With step numbers state - step numbers are displayed.",
       },
     },
   },
@@ -628,7 +648,7 @@ export const WithoutStepNumbersState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Without step numbers state - step numbers are hidden.',
+        story: "Without step numbers state - step numbers are hidden.",
       },
     },
   },
@@ -645,7 +665,7 @@ export const WithNavigationState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'With navigation state - allows clicking on previous steps.',
+        story: "With navigation state - allows clicking on previous steps.",
       },
     },
   },
@@ -662,7 +682,8 @@ export const WithoutNavigationState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Without navigation state - does not allow clicking on previous steps.',
+        story:
+          "Without navigation state - does not allow clicking on previous steps.",
       },
     },
   },

@@ -1,29 +1,29 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useNavbarRequired } from '../../contexts/NavbarContext';
-import { cn } from '../../../../utils';
-import Tooltip from '../../../../atoms/Tooltip/Tooltip';
-import type { NavbarItemProps, NavbarLabelMode } from '../../types';
+import React from "react";
+import { useNavbarRequired } from "../../contexts/NavbarContext";
+import { cn } from "../../../../utils";
+import Tooltip from "../../../../primitives/Tooltip/Tooltip";
+import type { NavbarItemProps, NavbarLabelMode } from "../../types";
 
 /**
  * Size configuration for navbar items
  */
 const SIZE_CLASSES = {
   sm: {
-    container: 'w-8 h-8',
-    icon: 'w-4 h-4',
-    badge: 'min-w-[14px] h-[14px] text-[10px]',
+    container: "w-8 h-8",
+    icon: "w-4 h-4",
+    badge: "min-w-[14px] h-[14px] text-[10px]",
   },
   md: {
-    container: 'w-10 h-10',
-    icon: 'w-5 h-5',
-    badge: 'min-w-[18px] h-[18px] text-xs',
+    container: "w-10 h-10",
+    icon: "w-5 h-5",
+    badge: "min-w-[18px] h-[18px] text-xs",
   },
   lg: {
-    container: 'w-12 h-12',
-    icon: 'w-6 h-6',
-    badge: 'min-w-[20px] h-[20px] text-xs',
+    container: "w-12 h-12",
+    icon: "w-6 h-6",
+    badge: "min-w-[20px] h-[20px] text-xs",
   },
 } as const;
 
@@ -31,10 +31,10 @@ const SIZE_CLASSES = {
  * Badge variant colors
  */
 const BADGE_VARIANTS = {
-  default: 'bg-red-500',
-  success: 'bg-green-500',
-  warning: 'bg-amber-500',
-  danger: 'bg-red-600',
+  default: "bg-red-500",
+  success: "bg-green-500",
+  warning: "bg-amber-500",
+  danger: "bg-red-600",
 } as const;
 
 /**
@@ -69,9 +69,9 @@ const BADGE_VARIANTS = {
  * ```
  */
 const LABEL_STYLES: Record<NavbarLabelMode, string> = {
-  tooltip: '', // Uses existing tooltip behavior
-  inline: 'flex-row gap-2 w-full px-3',
-  below: 'flex-col gap-1.5', // Aumentado de gap-1 para gap-1.5 para melhor espaçamento
+  tooltip: "", // Uses existing tooltip behavior
+  inline: "flex-row gap-2 w-full px-3",
+  below: "flex-col gap-1.5", // Aumentado de gap-1 para gap-1.5 para melhor espaçamento
 };
 
 export default function NavbarItem({
@@ -83,20 +83,24 @@ export default function NavbarItem({
   active = false,
   showTooltip = true,
   badge,
-  badgeVariant = 'default',
-  variant = 'default',
-  size = 'md',
+  badgeVariant = "default",
+  variant = "default",
+  size = "md",
   href,
   target,
   onClick,
   disabled = false,
-  className = '',
+  className = "",
   ...props
 }: NavbarItemProps) {
-  const { activeItem, setActiveItem, labelMode: contextLabelMode } = useNavbarRequired();
-  
+  const {
+    activeItem,
+    setActiveItem,
+    labelMode: contextLabelMode,
+  } = useNavbarRequired();
+
   // Use prop labelMode or fallback to context labelMode or 'tooltip'
-  const effectiveLabelMode = labelMode ?? contextLabelMode ?? 'tooltip';
+  const effectiveLabelMode = labelMode ?? contextLabelMode ?? "tooltip";
 
   const isActive = active || (id && activeItem === id);
   const sizeConfig = SIZE_CLASSES[size];
@@ -113,103 +117,115 @@ export default function NavbarItem({
   };
 
   // Label element (for inline and below modes)
-  const labelElement = effectiveLabelMode !== 'tooltip' && showLabel && label && (
-    <span 
-      className={cn(
-        'text-xs',
-        'flex-shrink-0', // Prevenir que label encolha
-        'relative z-10', // Garantir que label fique na frente do ícone
-        effectiveLabelMode === 'below' && 'text-center',
-        effectiveLabelMode === 'inline' && 'truncate'
-      )}
-      style={{
-        // Garantir que label não seja afetada por transformações
-        willChange: 'auto',
-        transform: 'none',
-        zIndex: 10, // Garantir que label fique na frente do ícone
-      }}
-    >
-      {label}
-    </span>
-  );
+  const labelElement = effectiveLabelMode !== "tooltip" &&
+    showLabel &&
+    label && (
+      <span
+        className={cn(
+          "text-xs",
+          "flex-shrink-0", // Prevenir que label encolha
+          "relative z-10", // Garantir que label fique na frente do ícone
+          effectiveLabelMode === "below" && "text-center",
+          effectiveLabelMode === "inline" && "truncate",
+        )}
+        style={{
+          // Garantir que label não seja afetada por transformações
+          willChange: "auto",
+          transform: "none",
+          zIndex: 10, // Garantir que label fique na frente do ícone
+        }}
+      >
+        {label}
+      </span>
+    );
 
   // Base classes for the item
   // Removido transition-colors e duration-150 para eliminar animações
   // Adicionado box-border para estabilidade dimensional
   const baseClasses = cn(
-    'relative',
-    'flex',
-    'items-center',
-    effectiveLabelMode === 'inline' ? 'justify-start' : 'justify-center',
-    effectiveLabelMode === 'below' && 'flex-col',
-    'rounded-lg',
-    'box-border', // Garantir box-sizing consistente
-    'focus:outline-none',
-    'focus:ring-2',
-    'focus:ring-[var(--color-primary-500)]',
-    'focus:ring-offset-1',
-    'w-full', // Ensure full width for vertical layout
-    'flex-shrink-0', // Prevent items from shrinking
-    'min-w-0', // Prevent flex items from overflowing
+    "relative",
+    "flex",
+    "items-center",
+    effectiveLabelMode === "inline" ? "justify-start" : "justify-center",
+    effectiveLabelMode === "below" && "flex-col",
+    "rounded-lg",
+    "box-border", // Garantir box-sizing consistente
+    "focus:outline-none",
+    "focus:ring-2",
+    "focus:ring-[var(--color-primary-500)]",
+    "focus:ring-offset-1",
+    "w-full", // Ensure full width for vertical layout
+    "flex-shrink-0", // Prevent items from shrinking
+    "min-w-0", // Prevent flex items from overflowing
     // Remover todas as transições que possam causar movimento
-    '[&>*]:!transition-none',
-    '[&>*]:!transform-none',
-    effectiveLabelMode === 'tooltip' ? sizeConfig.container : 'px-2 py-1.5',
-    effectiveLabelMode !== 'tooltip' && LABEL_STYLES[effectiveLabelMode],
-    disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
-    className
+    "[&>*]:!transition-none",
+    "[&>*]:!transform-none",
+    effectiveLabelMode === "tooltip" ? sizeConfig.container : "px-2 py-1.5",
+    effectiveLabelMode !== "tooltip" && LABEL_STYLES[effectiveLabelMode],
+    disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
+    className,
   );
 
   // Variant-specific classes usando variáveis CSS via Tailwind arbitrary values
   // Estados hover/active sem transições para evitar movimento
   const variantClasses = {
     default: isActive
-      ? 'bg-[var(--color-primary-100)] text-[var(--color-primary-600)]'
+      ? "bg-[var(--color-primary-100)] text-[var(--color-primary-600)]"
       : disabled
-        ? 'text-[var(--color-neutral-400)]'
-        : 'text-[var(--color-neutral-600)] hover:bg-[var(--color-neutral-100)] hover:text-[var(--color-neutral-900)] [&:hover]:!transform-none',
+        ? "text-[var(--color-neutral-400)]"
+        : "text-[var(--color-neutral-600)] hover:bg-[var(--color-neutral-100)] hover:text-[var(--color-neutral-900)] [&:hover]:!transform-none",
     ghost: isActive
-      ? 'text-[var(--color-primary-600)]'
+      ? "text-[var(--color-primary-600)]"
       : disabled
-        ? 'text-[var(--color-neutral-400)]'
-        : 'text-[var(--color-neutral-600)] hover:text-[var(--color-neutral-900)] [&:hover]:!transform-none',
+        ? "text-[var(--color-neutral-400)]"
+        : "text-[var(--color-neutral-600)] hover:text-[var(--color-neutral-900)] [&:hover]:!transform-none",
     subtle: isActive
-      ? 'bg-[var(--color-neutral-100)] text-[var(--color-neutral-900)]'
+      ? "bg-[var(--color-neutral-100)] text-[var(--color-neutral-900)]"
       : disabled
-        ? 'text-[var(--color-neutral-400)]'
-        : 'text-[var(--color-neutral-500)] hover:bg-[var(--color-neutral-50)] hover:text-[var(--color-neutral-700)] [&:hover]:!transform-none',
+        ? "text-[var(--color-neutral-400)]"
+        : "text-[var(--color-neutral-500)] hover:bg-[var(--color-neutral-50)] hover:text-[var(--color-neutral-700)] [&:hover]:!transform-none",
   };
 
   const content = (
     <>
       {/* Wrapper do ícone - sem animações, com estabilidade dimensional */}
-      <span 
+      <span
         className={cn(
-          'flex-shrink-0',
+          "flex-shrink-0",
           sizeConfig.icon,
-          '[&>svg]:transition-none',
-          '[&>svg]:!transform-none',
-          '[&>svg]:!will-change-auto',
-          'box-border',
-          'flex items-center justify-center',
+          "[&>svg]:transition-none",
+          "[&>svg]:!transform-none",
+          "[&>svg]:!will-change-auto",
+          "box-border",
+          "flex items-center justify-center",
           // Garantir que ícone não sobreponha label - z-index menor que label
-          effectiveLabelMode === 'tooltip' ? 'relative z-0' : 'relative z-0'
+          effectiveLabelMode === "tooltip" ? "relative z-0" : "relative z-0",
         )}
         style={{
           // Garantir dimensões mínimas fixas para evitar "pular"
-          minWidth: sizeConfig.icon === 'w-4 h-4' ? '1rem' : sizeConfig.icon === 'w-5 h-5' ? '1.25rem' : '1.5rem',
-          minHeight: sizeConfig.icon === 'w-4 h-4' ? '1rem' : sizeConfig.icon === 'w-5 h-5' ? '1.25rem' : '1.5rem',
+          minWidth:
+            sizeConfig.icon === "w-4 h-4"
+              ? "1rem"
+              : sizeConfig.icon === "w-5 h-5"
+                ? "1.25rem"
+                : "1.5rem",
+          minHeight:
+            sizeConfig.icon === "w-4 h-4"
+              ? "1rem"
+              : sizeConfig.icon === "w-5 h-5"
+                ? "1.25rem"
+                : "1.5rem",
           // Forçar sem animações ou transformações
-          willChange: 'auto',
-          transform: 'none',
-          transition: 'none',
+          willChange: "auto",
+          transform: "none",
+          transition: "none",
           // Garantir que ícone fique atrás do label quando ambos estão visíveis
-          zIndex: effectiveLabelMode !== 'tooltip' ? 0 : 'auto',
+          zIndex: effectiveLabelMode !== "tooltip" ? 0 : "auto",
         }}
       >
         {icon}
       </span>
-      
+
       {/* Label (for inline and below modes) - posicionada após o ícone */}
       {labelElement}
 
@@ -217,18 +233,18 @@ export default function NavbarItem({
       {badge !== undefined && badge !== null && (
         <span
           className={cn(
-            'absolute',
-            '-top-1',
-            '-right-1',
-            'flex',
-            'items-center',
-            'justify-center',
-            'px-1',
-            'font-medium',
-            'text-white',
-            'rounded-full',
+            "absolute",
+            "-top-1",
+            "-right-1",
+            "flex",
+            "items-center",
+            "justify-center",
+            "px-1",
+            "font-medium",
+            "text-white",
+            "rounded-full",
             sizeConfig.badge,
-            BADGE_VARIANTS[badgeVariant]
+            BADGE_VARIANTS[badgeVariant],
           )}
         >
           {badge}
@@ -240,21 +256,21 @@ export default function NavbarItem({
   // Render as link if href is provided
   // Adicionar style inline para garantir que não há transformações em hover
   const elementStyle = {
-    willChange: 'auto',
-    transform: 'none',
-    transition: 'none',
+    willChange: "auto",
+    transform: "none",
+    transition: "none",
   };
 
   const element = href ? (
     <a
       href={href}
       target={target}
-      rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+      rel={target === "_blank" ? "noopener noreferrer" : undefined}
       onClick={handleClick}
       className={cn(baseClasses, variantClasses[variant])}
       style={elementStyle}
       aria-label={label}
-      aria-current={isActive ? 'page' : undefined}
+      aria-current={isActive ? "page" : undefined}
       aria-disabled={disabled}
     >
       {content}
@@ -267,7 +283,7 @@ export default function NavbarItem({
       className={cn(baseClasses, variantClasses[variant])}
       style={elementStyle}
       aria-label={label}
-      aria-current={isActive ? 'page' : undefined}
+      aria-current={isActive ? "page" : undefined}
       {...props}
     >
       {content}
@@ -275,7 +291,7 @@ export default function NavbarItem({
   );
 
   // Wrap with tooltip only if mode is 'tooltip'
-  if (effectiveLabelMode === 'tooltip' && showTooltip && label && !disabled) {
+  if (effectiveLabelMode === "tooltip" && showTooltip && label && !disabled) {
     return (
       <Tooltip content={label} position="right">
         {element}

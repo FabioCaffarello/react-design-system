@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useNavbarRequired } from '../../contexts/NavbarContext';
-import Tooltip from '../../../../atoms/Tooltip/Tooltip';
-import type { NavbarToggleProps } from '../../types';
+import React from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useNavbarRequired } from "../../contexts/NavbarContext";
+import Tooltip from "../../../../primitives/Tooltip/Tooltip";
+import type { NavbarToggleProps } from "../../types";
 
 /**
  * Toggle button for the Navbar subcomponent
@@ -22,9 +22,9 @@ import type { NavbarToggleProps } from '../../types';
  */
 export default function NavbarToggle({
   icon,
-  size = 'sm',
-  variant = 'ghost',
-  className = '',
+  size = "sm",
+  variant = "ghost",
+  className = "",
   ...props
 }: NavbarToggleProps) {
   const { collapsed, toggle } = useNavbarRequired();
@@ -32,42 +32,42 @@ export default function NavbarToggle({
   // Render the icon
   const renderIcon = () => {
     if (icon) {
-      return typeof icon === 'function' ? icon(collapsed) : icon;
+      return typeof icon === "function" ? icon(collapsed) : icon;
     }
     const Icon = collapsed ? ChevronRight : ChevronLeft;
     return (
-      <Icon 
-        className={iconSizeClasses[size]} 
+      <Icon
+        className={iconSizeClasses[size]}
         style={{
-          transition: 'none',
-          transform: 'none',
-          willChange: 'auto',
+          transition: "none",
+          transform: "none",
+          willChange: "auto",
         }}
       />
     );
   };
 
   const sizeClasses = {
-    xs: 'w-6 h-6',
-    sm: 'w-8 h-8',
-    md: 'w-10 h-10',
+    xs: "w-6 h-6",
+    sm: "w-8 h-8",
+    md: "w-10 h-10",
   };
 
   const iconSizeClasses = {
-    xs: 'w-3 h-3',
-    sm: 'w-4 h-4',
-    md: 'w-5 h-5',
+    xs: "w-3 h-3",
+    sm: "w-4 h-4",
+    md: "w-5 h-5",
   };
 
   const variantClasses = {
-    default: 'bg-white border border-gray-200 shadow-sm hover:bg-gray-50',
-    ghost: 'hover:bg-gray-100',
-    outline: 'border border-gray-300 hover:bg-gray-50',
+    default: "bg-white border border-gray-200 shadow-sm hover:bg-gray-50",
+    ghost: "hover:bg-gray-100",
+    outline: "border border-gray-300 hover:bg-gray-50",
   };
 
   return (
     <Tooltip
-      content={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+      content={collapsed ? "Expand sidebar" : "Collapse sidebar"}
       position="right"
     >
       <button
@@ -91,11 +91,11 @@ export default function NavbarToggle({
         `}
         style={{
           // Remover transições que possam causar movimento
-          willChange: 'auto',
-          transform: 'none',
-          transition: 'none',
+          willChange: "auto",
+          transform: "none",
+          transition: "none",
         }}
-        aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
         aria-expanded={!collapsed}
         {...props}
       >

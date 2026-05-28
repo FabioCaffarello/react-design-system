@@ -16,10 +16,10 @@
     },
     "./styles": "./dist/react-design-system.css",
     "./styles.css": "./dist/react-design-system.css",
-    "./atoms": {
-      "types": "./dist/ui/atoms/index.d.ts",
-      "import": "./dist/atoms/index.js",
-      "require": "./dist/atoms/index.cjs"
+    "./primitives": {
+      "types": "./dist/ui/primitives/index.d.ts",
+      "import": "./dist/primitives/index.js",
+      "require": "./dist/primitives/index.cjs"
     },
     "./molecules": {
       "types": "./dist/ui/molecules/index.d.ts",

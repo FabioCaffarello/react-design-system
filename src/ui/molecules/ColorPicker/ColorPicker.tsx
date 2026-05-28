@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState, useEffect, type ChangeEvent } from 'react';
-import { getRadiusClass } from '../../tokens/radius';
-import { getShadowClass } from '../../tokens/shadows';
-import { getSpacingClass } from '../../tokens/spacing';
-import Input from '../../atoms/Input/Input';
-import Popover from '../Popover/Popover';
+import { useState, useEffect, type ChangeEvent } from "react";
+import { getRadiusClass } from "../../tokens/radius";
+import { getShadowClass } from "../../tokens/shadows";
+import { getSpacingClass } from "../../tokens/spacing";
+import Input from "../../primitives/Input/Input";
+import Popover from "../Popover/Popover";
 
-export type ColorFormat = 'hex' | 'rgb' | 'hsl';
+export type ColorFormat = "hex" | "rgb" | "hsl";
 
 export interface ColorPickerProps {
   value?: string; // Hex color (e.g., "#ff0000")
@@ -23,11 +23,11 @@ export interface ColorPickerProps {
 
 /**
  * ColorPicker Component
- * 
+ *
  * A color picker component for selecting colors.
  * Supports hex, rgb, and hsl formats with presets.
  * Follows Atomic Design principles as a Molecule component.
- * 
+ *
  * @example
  * ```tsx
  * <ColorPicker
@@ -38,14 +38,14 @@ export interface ColorPickerProps {
  */
 export default function ColorPicker({
   value: controlledValue,
-  defaultValue = '#000000',
-  format: _format = 'hex',
+  defaultValue = "#000000",
+  format: _format = "hex",
   onChange,
   presets,
   showInput = true,
   disabled = false,
   label,
-  className = '',
+  className = "",
 }: ColorPickerProps) {
   const [internalValue, setInternalValue] = useState(defaultValue);
   const [rgb, setRgb] = useState({ r: 0, g: 0, b: 0 });
@@ -67,10 +67,15 @@ export default function ColorPicker({
 
   // Convert RGB to hex
   const rgbToHex = (r: number, g: number, b: number) => {
-    return '#' + [r, g, b].map((x) => {
-      const hex = x.toString(16);
-      return hex.length === 1 ? '0' + hex : hex;
-    }).join('');
+    return (
+      "#" +
+      [r, g, b]
+        .map((x) => {
+          const hex = x.toString(16);
+          return hex.length === 1 ? "0" + hex : hex;
+        })
+        .join("")
+    );
   };
 
   // Update RGB when value changes
@@ -83,7 +88,7 @@ export default function ColorPicker({
 
   const handleHexChange = (e: ChangeEvent<HTMLInputElement>) => {
     const hex = e.target.value;
-    if (/^#[0-9A-F]{6}$/i.test(hex) || hex === '') {
+    if (/^#[0-9A-F]{6}$/i.test(hex) || hex === "") {
       if (!isControlled) {
         setInternalValue(hex);
       }
@@ -94,7 +99,7 @@ export default function ColorPicker({
     }
   };
 
-  const handleRgbChange = (component: 'r' | 'g' | 'b', val: number) => {
+  const handleRgbChange = (component: "r" | "g" | "b", val: number) => {
     const newRgb = { ...rgb, [component]: Math.max(0, Math.min(255, val)) };
     setRgb(newRgb);
     const hex = rgbToHex(newRgb.r, newRgb.g, newRgb.b);
@@ -105,21 +110,29 @@ export default function ColorPicker({
   };
 
   const defaultPresets = [
-    '#000000', '#ffffff', '#ff0000', '#00ff00', '#0000ff',
-    '#ffff00', '#ff00ff', '#00ffff', '#808080', '#ffa500',
+    "#000000",
+    "#ffffff",
+    "#ff0000",
+    "#00ff00",
+    "#0000ff",
+    "#ffff00",
+    "#ff00ff",
+    "#00ffff",
+    "#808080",
+    "#ffa500",
   ];
 
   const colorPresets = presets || defaultPresets;
 
   const colorPickerContent = (
-    <div className={`${getSpacingClass('base', 'p')} min-w-[280px]`}>
+    <div className={`${getSpacingClass("base", "p")} min-w-[280px]`}>
       {/* Color Preview */}
       <div
         className={`
           w-full
           h-32
-          ${getRadiusClass('md')}
-          ${getShadowClass('sm')}
+          ${getRadiusClass("md")}
+          ${getShadowClass("sm")}
           mb-4
           border
           border-gray-200
@@ -138,7 +151,7 @@ export default function ColorPicker({
             min="0"
             max="255"
             value={rgb.r}
-            onChange={(e) => handleRgbChange('r', parseInt(e.target.value))}
+            onChange={(e) => handleRgbChange("r", parseInt(e.target.value))}
             disabled={disabled}
             className="w-full"
           />
@@ -152,7 +165,7 @@ export default function ColorPicker({
             min="0"
             max="255"
             value={rgb.g}
-            onChange={(e) => handleRgbChange('g', parseInt(e.target.value))}
+            onChange={(e) => handleRgbChange("g", parseInt(e.target.value))}
             disabled={disabled}
             className="w-full"
           />
@@ -166,7 +179,7 @@ export default function ColorPicker({
             min="0"
             max="255"
             value={rgb.b}
-            onChange={(e) => handleRgbChange('b', parseInt(e.target.value))}
+            onChange={(e) => handleRgbChange("b", parseInt(e.target.value))}
             disabled={disabled}
             className="w-full"
           />
@@ -211,12 +224,12 @@ export default function ColorPicker({
                 className={`
                   w-6
                   h-6
-                  ${getRadiusClass('sm')}
+                  ${getRadiusClass("sm")}
                   border
                   border-gray-300
                   hover:scale-110
-                  ${getShadowClass('sm')}
-                  ${currentValue.toLowerCase() === color.toLowerCase() ? 'ring-2 ring-offset-1 ring-indigo-500' : ''}
+                  ${getShadowClass("sm")}
+                  ${currentValue.toLowerCase() === color.toLowerCase() ? "ring-2 ring-offset-1 ring-indigo-500" : ""}
                 `}
                 style={{ backgroundColor: color }}
                 aria-label={`Select color ${color}`}
@@ -234,18 +247,20 @@ export default function ColorPicker({
         trigger={
           <div className="flex items-center gap-2">
             {label && (
-              <label className="text-sm font-medium text-gray-700">{label}</label>
+              <label className="text-sm font-medium text-gray-700">
+                {label}
+              </label>
             )}
             <div
               className={`
                 w-10
                 h-10
-                ${getRadiusClass('md')}
+                ${getRadiusClass("md")}
                 border
                 border-gray-300
-                ${getShadowClass('sm')}
+                ${getShadowClass("sm")}
                 cursor-pointer
-                ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
+                ${disabled ? "opacity-50 cursor-not-allowed" : ""}
               `}
               style={{ backgroundColor: currentValue }}
             />

@@ -26,7 +26,7 @@ export default defineConfig(() => {
         entry: {
           index: "src/ui/index.ts",
           providers: "src/ui/providers/index.ts", // Separate entry point for providers
-          atoms: "src/ui/atoms/index.ts",
+          primitives: "src/ui/primitives/index.ts",
           molecules: "src/ui/molecules/index.ts",
           organisms: "src/ui/organisms/index.ts",
           tokens: "src/ui/tokens/index.ts",
@@ -86,8 +86,8 @@ export default defineConfig(() => {
               return null; // Keep in main bundle - CRITICAL for initialization order
             }
             // Only split sub-entry points, not the main index
-            if (id.includes("/atoms/") && !id.includes("src/ui/index")) {
-              return "atoms";
+            if (id.includes("/primitives/") && !id.includes("src/ui/index")) {
+              return "primitives";
             }
             if (id.includes("/molecules/") && !id.includes("src/ui/index")) {
               return "molecules";

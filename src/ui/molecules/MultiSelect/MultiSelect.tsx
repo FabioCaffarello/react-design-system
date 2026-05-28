@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect, forwardRef } from 'react';
-import Chip from '../../atoms/Chip/Chip';
-import { Check } from 'lucide-react';
-import AutocompleteList from '../Autocomplete/AutocompleteList';
-import type { AutocompleteOptionType } from '../Autocomplete/AutocompleteOption';
-import { cn } from '../../utils';
-import { getColorClass } from '../../tokens';
-import { getSpacingClass } from '../../tokens';
-import { getRadiusClass } from '../../tokens';
+import { useState, useRef, useEffect, forwardRef } from "react";
+import Chip from "../../primitives/Chip/Chip";
+import { Check } from "lucide-react";
+import AutocompleteList from "../Autocomplete/AutocompleteList";
+import type { AutocompleteOptionType } from "../Autocomplete/AutocompleteOption";
+import { cn } from "../../utils";
+import { getColorClass } from "../../tokens";
+import { getSpacingClass } from "../../tokens";
+import { getRadiusClass } from "../../tokens";
 
 export interface MultiSelectProps {
   options: AutocompleteOptionType[];
@@ -24,15 +24,15 @@ export interface MultiSelectProps {
   showSelectAll?: boolean;
   className?: string;
   inputClassName?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
 }
 
 /**
  * MultiSelect Component
- * 
+ *
  * A multi-select component with chips for selected items.
  * Supports keyboard navigation, loading states, and custom filtering.
- * 
+ *
  * @example
  * ```tsx
  * <MultiSelect
@@ -52,22 +52,22 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
       defaultValue = [],
       onChange,
       onSelect,
-      placeholder = 'Select options...',
+      placeholder = "Select options...",
       loading = false,
       disabled = false,
-      emptyMessage = 'No options found',
+      emptyMessage = "No options found",
       maxSelected,
       showSelectAll = false,
-      className = '',
-      inputClassName = '',
-      size = 'md',
+      className = "",
+      inputClassName = "",
+      size = "md",
     },
-    ref
+    ref,
   ) {
     const [internalValue, setInternalValue] = useState<string[]>(defaultValue);
     const [isOpen, setIsOpen] = useState(false);
     const [highlightedIndex, setHighlightedIndex] = useState(-1);
-    const [searchValue, setSearchValue] = useState('');
+    const [searchValue, setSearchValue] = useState("");
     const containerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const listRef = useRef<HTMLDivElement>(null);
@@ -77,7 +77,7 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
 
     // Get selected options
     const selectedOptions = options.filter((opt) =>
-      selectedValues.includes(opt.value)
+      selectedValues.includes(opt.value),
     );
 
     // Filter options (exclude already selected if needed, or show all)
@@ -86,7 +86,7 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
 
       if (searchValue.trim()) {
         filtered = options.filter((option) =>
-          option.label.toLowerCase().includes(searchValue.toLowerCase())
+          option.label.toLowerCase().includes(searchValue.toLowerCase()),
         );
       }
 
@@ -107,7 +107,11 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
     // Handle option toggle
     const handleToggleOption = (option: AutocompleteOptionType) => {
       if (option.disabled) return;
-      if (maxSelected && selectedValues.length >= maxSelected && !selectedValues.includes(option.value)) {
+      if (
+        maxSelected &&
+        selectedValues.length >= maxSelected &&
+        !selectedValues.includes(option.value)
+      ) {
         return;
       }
 
@@ -121,7 +125,7 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
 
       onChange?.(newValues);
       onSelect?.(options.filter((opt) => newValues.includes(opt.value)));
-      setSearchValue('');
+      setSearchValue("");
     };
 
     // Handle select all
@@ -143,7 +147,7 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
     const handleDeselectAll = () => {
       const filteredValues = filteredOptions.map((opt) => opt.value);
       const newValues = selectedValues.filter(
-        (v) => !filteredValues.includes(v)
+        (v) => !filteredValues.includes(v),
       );
 
       if (!isControlled) {
@@ -169,36 +173,43 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
     // Handle keyboard navigation
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (!isOpen || filteredOptions.length === 0) {
-        if (e.key === 'ArrowDown' || e.key === 'Enter') {
+        if (e.key === "ArrowDown" || e.key === "Enter") {
           setIsOpen(true);
         }
         // Remove last chip on backspace
-        if (e.key === 'Backspace' && searchValue === '' && selectedValues.length > 0) {
+        if (
+          e.key === "Backspace" &&
+          searchValue === "" &&
+          selectedValues.length > 0
+        ) {
           handleRemoveChip(selectedValues[selectedValues.length - 1]);
         }
         return;
       }
 
       switch (e.key) {
-        case 'ArrowDown':
+        case "ArrowDown":
           e.preventDefault();
           setHighlightedIndex((prev) =>
-            prev < filteredOptions.length - 1 ? prev + 1 : 0
+            prev < filteredOptions.length - 1 ? prev + 1 : 0,
           );
           break;
-        case 'ArrowUp':
+        case "ArrowUp":
           e.preventDefault();
           setHighlightedIndex((prev) =>
-            prev > 0 ? prev - 1 : filteredOptions.length - 1
+            prev > 0 ? prev - 1 : filteredOptions.length - 1,
           );
           break;
-        case 'Enter':
+        case "Enter":
           e.preventDefault();
-          if (highlightedIndex >= 0 && highlightedIndex < filteredOptions.length) {
+          if (
+            highlightedIndex >= 0 &&
+            highlightedIndex < filteredOptions.length
+          ) {
             handleToggleOption(filteredOptions[highlightedIndex]);
           }
           break;
-        case 'Escape':
+        case "Escape":
           e.preventDefault();
           setIsOpen(false);
           setHighlightedIndex(-1);
@@ -217,12 +228,13 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
         ) {
           setIsOpen(false);
           setHighlightedIndex(-1);
-          setSearchValue('');
+          setSearchValue("");
         }
       };
 
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
     }, [isOpen]);
 
     // Check if all filtered options are selected
@@ -233,41 +245,49 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
     const shouldShowList = isOpen && (hasOptions || loading || emptyMessage);
 
     // Get focus-within classes using primary color
-    const primaryBorderColor = getColorClass('primary', 'DEFAULT', 'border');
-    const primaryRingColor = getColorClass('primary', 'DEFAULT', 'border').replace('border-', 'ring-');
+    const primaryBorderColor = getColorClass("primary", "DEFAULT", "border");
+    const primaryRingColor = getColorClass(
+      "primary",
+      "DEFAULT",
+      "border",
+    ).replace("border-", "ring-");
 
     return (
-      <div ref={containerRef} className={cn('relative', className)}>
-        <div className={cn(
-          'flex',
-          'flex-wrap',
-          getSpacingClass('sm', 'gap'),
-          getSpacingClass('sm', 'p'),
-          'border',
-          getColorClass('neutral', 'DEFAULT', 'border'),
-          getRadiusClass('md'),
-          'min-h-10',
-          'focus-within:outline-none',
-          'focus-within:ring-2',
-          'focus-within:ring-offset-2',
-          `focus-within:${primaryBorderColor}`,
-          `focus-within:${primaryRingColor}`
-        )}>
+      <div ref={containerRef} className={cn("relative", className)}>
+        <div
+          className={cn(
+            "flex",
+            "flex-wrap",
+            getSpacingClass("sm", "gap"),
+            getSpacingClass("sm", "p"),
+            "border",
+            getColorClass("neutral", "DEFAULT", "border"),
+            getRadiusClass("md"),
+            "min-h-10",
+            "focus-within:outline-none",
+            "focus-within:ring-2",
+            "focus-within:ring-offset-2",
+            `focus-within:${primaryBorderColor}`,
+            `focus-within:${primaryRingColor}`,
+          )}
+        >
           {selectedOptions.map((option) => (
             <Chip
               key={option.value}
               onRemove={() => handleRemoveChip(option.value)}
-              size={size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'md'}
+              size={size === "sm" ? "sm" : size === "lg" ? "lg" : "md"}
             >
               {option.label}
             </Chip>
           ))}
           <input
             ref={(node) => {
-              if (typeof ref === 'function') {
+              if (typeof ref === "function") {
                 ref(node);
               } else if (ref) {
-                (ref as React.MutableRefObject<HTMLInputElement | null>).current = node;
+                (
+                  ref as React.MutableRefObject<HTMLInputElement | null>
+                ).current = node;
               }
               inputRef.current = node;
             }}
@@ -276,9 +296,15 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             onFocus={() => setIsOpen(true)}
-            placeholder={selectedValues.length === 0 ? placeholder : ''}
+            placeholder={selectedValues.length === 0 ? placeholder : ""}
             disabled={disabled}
-            className={cn('flex-1', 'min-w-[120px]', 'outline-none', 'bg-transparent', inputClassName)}
+            className={cn(
+              "flex-1",
+              "min-w-[120px]",
+              "outline-none",
+              "bg-transparent",
+              inputClassName,
+            )}
           />
         </div>
 
@@ -288,8 +314,16 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
             options={filteredOptions.map((opt) => ({
               ...opt,
               icon: selectedValues.includes(opt.value) ? (
-                <Check className={cn('h-4', 'w-4', getColorClass('primary', 'DEFAULT', 'text'))} />
-              ) : opt.icon,
+                <Check
+                  className={cn(
+                    "h-4",
+                    "w-4",
+                    getColorClass("primary", "DEFAULT", "text"),
+                  )}
+                />
+              ) : (
+                opt.icon
+              ),
             }))}
             highlightedIndex={highlightedIndex}
             onSelect={handleToggleOption}
@@ -304,9 +338,9 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
-MultiSelect.displayName = 'MultiSelect';
+MultiSelect.displayName = "MultiSelect";
 
 export default MultiSelect;

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
+import { fn } from "@storybook/test";
+import { expect, userEvent, within, waitFor } from "@storybook/test";
 import { useState } from "react";
 import Card from "./Card";
-import { Text, Button } from "../../atoms";
+import { Text, Button } from "../../primitives";
 
 const meta: Meta<typeof Card> = {
   title: "Molecules/Card",
@@ -49,18 +49,18 @@ A versatile card component for displaying content in containers. Supports multip
       description: "Padding size",
     },
     onClick: {
-      description: 'Callback fired when the card is clicked',
-      action: 'onClick',
+      description: "Callback fired when the card is clicked",
+      action: "onClick",
       table: {
-        type: { summary: '(event: MouseEvent) => void' },
-        category: 'Events',
+        type: { summary: "(event: MouseEvent) => void" },
+        category: "Events",
       },
     },
-    'aria-label': {
+    "aria-label": {
       control: "text",
       description: "Accessible label for interactive cards",
     },
-    'aria-labelledby': {
+    "aria-labelledby": {
       control: "text",
       description: "ID of element that labels the card",
     },
@@ -71,8 +71,12 @@ export const Default: StoryObj<typeof Card> = {
   args: {
     children: (
       <>
-        <Text as="h3" className="text-lg font-semibold mb-2">Card Title</Text>
-        <Text as="p" className="text-gray-600">This is a default card with medium padding.</Text>
+        <Text as="h3" className="text-lg font-semibold mb-2">
+          Card Title
+        </Text>
+        <Text as="p" className="text-gray-600">
+          This is a default card with medium padding.
+        </Text>
       </>
     ),
   },
@@ -83,8 +87,12 @@ export const Hover: StoryObj<typeof Card> = {
     variant: "hover",
     children: (
       <>
-        <Text as="h3" className="text-lg font-semibold mb-2">Hover Card</Text>
-        <Text as="p" className="text-gray-600">This card has hover effects. Hover over it!</Text>
+        <Text as="h3" className="text-lg font-semibold mb-2">
+          Hover Card
+        </Text>
+        <Text as="p" className="text-gray-600">
+          This card has hover effects. Hover over it!
+        </Text>
       </>
     ),
   },
@@ -95,8 +103,12 @@ export const Selected: StoryObj<typeof Card> = {
     variant: "selected",
     children: (
       <>
-        <Text as="h3" className="text-lg font-semibold mb-2">Selected Card</Text>
-        <Text as="p" className="text-gray-600">This card appears selected with a blue border.</Text>
+        <Text as="h3" className="text-lg font-semibold mb-2">
+          Selected Card
+        </Text>
+        <Text as="p" className="text-gray-600">
+          This card appears selected with a blue border.
+        </Text>
       </>
     ),
   },
@@ -107,8 +119,12 @@ export const WithPaddingSmall: StoryObj<typeof Card> = {
     padding: "small",
     children: (
       <>
-        <Text as="h3" className="text-lg font-semibold mb-2">Small Padding</Text>
-        <Text as="p" className="text-gray-600">This card has small padding.</Text>
+        <Text as="h3" className="text-lg font-semibold mb-2">
+          Small Padding
+        </Text>
+        <Text as="p" className="text-gray-600">
+          This card has small padding.
+        </Text>
       </>
     ),
   },
@@ -119,8 +135,12 @@ export const WithPaddingLarge: StoryObj<typeof Card> = {
     padding: "large",
     children: (
       <>
-        <Text as="h3" className="text-lg font-semibold mb-2">Large Padding</Text>
-        <Text as="p" className="text-gray-600">This card has large padding for more spacious content.</Text>
+        <Text as="h3" className="text-lg font-semibold mb-2">
+          Large Padding
+        </Text>
+        <Text as="p" className="text-gray-600">
+          This card has large padding for more spacious content.
+        </Text>
       </>
     ),
   },
@@ -130,14 +150,18 @@ export const WithActions: StoryObj<typeof Card> = {
   render: () => {
     const [primaryClicked, setPrimaryClicked] = useState(false);
     const [secondaryClicked, setSecondaryClicked] = useState(false);
-    
+
     return (
       <div className="space-y-4">
         <Card variant="hover" padding="large">
-          <Text as="h3" className="text-lg font-semibold mb-2">Card with Actions</Text>
-          <Text as="p" className="text-gray-600 mb-4">This card includes action buttons with real callbacks.</Text>
+          <Text as="h3" className="text-lg font-semibold mb-2">
+            Card with Actions
+          </Text>
+          <Text as="p" className="text-gray-600 mb-4">
+            This card includes action buttons with real callbacks.
+          </Text>
           <div className="flex gap-2">
-            <Button 
+            <Button
               variant="regular"
               onClick={() => {
                 setPrimaryClicked(true);
@@ -146,7 +170,7 @@ export const WithActions: StoryObj<typeof Card> = {
             >
               Primary Action
             </Button>
-            <Button 
+            <Button
               variant="secondary"
               onClick={() => {
                 setSecondaryClicked(true);
@@ -169,7 +193,8 @@ export const WithActions: StoryObj<typeof Card> = {
   parameters: {
     docs: {
       description: {
-        story: "Card with interactive buttons. Click the buttons to see feedback.",
+        story:
+          "Card with interactive buttons. Click the buttons to see feedback.",
       },
     },
   },
@@ -178,13 +203,13 @@ export const WithActions: StoryObj<typeof Card> = {
 export const SelectableCards: StoryObj<typeof Card> = {
   render: () => {
     const [selectedCard, setSelectedCard] = useState<string | null>(null);
-    
+
     const cards = [
-      { id: '1', title: 'Basic Plan', price: '$9/month' },
-      { id: '2', title: 'Pro Plan', price: '$29/month' },
-      { id: '3', title: 'Enterprise Plan', price: '$99/month' },
+      { id: "1", title: "Basic Plan", price: "$9/month" },
+      { id: "2", title: "Pro Plan", price: "$29/month" },
+      { id: "3", title: "Enterprise Plan", price: "$99/month" },
     ];
-    
+
     return (
       <div className="space-y-4">
         <div className="grid grid-cols-3 gap-4">
@@ -195,14 +220,19 @@ export const SelectableCards: StoryObj<typeof Card> = {
               onClick={() => setSelectedCard(card.id)}
               aria-label={`${card.title} - ${card.price}`}
             >
-              <Text as="h3" className="text-lg font-semibold mb-2">{card.title}</Text>
-              <Text as="p" className="text-gray-600">{card.price}</Text>
+              <Text as="h3" className="text-lg font-semibold mb-2">
+                {card.title}
+              </Text>
+              <Text as="p" className="text-gray-600">
+                {card.price}
+              </Text>
             </Card>
           ))}
         </div>
         {selectedCard && (
           <div className="text-sm text-gray-600 p-3 bg-blue-50 rounded">
-            Selected: <strong>{cards.find(c => c.id === selectedCard)?.title}</strong>
+            Selected:{" "}
+            <strong>{cards.find((c) => c.id === selectedCard)?.title}</strong>
           </div>
         )}
       </div>
@@ -211,7 +241,8 @@ export const SelectableCards: StoryObj<typeof Card> = {
   parameters: {
     docs: {
       description: {
-        story: "Selectable cards demonstrating selection state. Click cards to select them.",
+        story:
+          "Selectable cards demonstrating selection state. Click cards to select them.",
       },
     },
   },
@@ -222,8 +253,12 @@ export const NoPadding: StoryObj<typeof Card> = {
     padding: "none",
     children: (
       <div className="p-4">
-        <Text as="h3" className="text-lg font-semibold mb-2">No Padding Card</Text>
-        <Text as="p" className="text-gray-600">This card has no default padding. Content controls its own spacing.</Text>
+        <Text as="h3" className="text-lg font-semibold mb-2">
+          No Padding Card
+        </Text>
+        <Text as="p" className="text-gray-600">
+          This card has no default padding. Content controls its own spacing.
+        </Text>
       </div>
     ),
   },
@@ -233,13 +268,13 @@ export const Interactive: StoryObj<typeof Card> = {
   render: () => {
     const [clickCount, setClickCount] = useState(0);
     const [lastAction, setLastAction] = useState<string | null>(null);
-    
+
     const handleClick = () => {
-      setClickCount(prev => prev + 1);
+      setClickCount((prev) => prev + 1);
       setLastAction("Card clicked");
       setTimeout(() => setLastAction(null), 2000);
     };
-    
+
     return (
       <div className="space-y-4">
         <Card
@@ -247,12 +282,19 @@ export const Interactive: StoryObj<typeof Card> = {
           onClick={handleClick}
           aria-label="Clickable card example"
         >
-          <Text as="h3" className="text-lg font-semibold mb-2">Interactive Card</Text>
-          <Text as="p" className="text-gray-600">This card is clickable. Press Enter or Space when focused to activate.</Text>
+          <Text as="h3" className="text-lg font-semibold mb-2">
+            Interactive Card
+          </Text>
+          <Text as="p" className="text-gray-600">
+            This card is clickable. Press Enter or Space when focused to
+            activate.
+          </Text>
         </Card>
         <div className="text-sm text-gray-600">
           {lastAction && (
-            <p className="text-green-600">✓ {lastAction} (Total: {clickCount})</p>
+            <p className="text-green-600">
+              ✓ {lastAction} (Total: {clickCount})
+            </p>
           )}
           <p>Click count: {clickCount}</p>
         </div>
@@ -262,7 +304,8 @@ export const Interactive: StoryObj<typeof Card> = {
   parameters: {
     docs: {
       description: {
-        story: "Interactive cards support keyboard navigation. Tab to focus, then press Enter or Space to activate. Click to see the counter increase.",
+        story:
+          "Interactive cards support keyboard navigation. Tab to focus, then press Enter or Space to activate. Click to see the counter increase.",
       },
     },
   },
@@ -272,12 +315,18 @@ export const WithAriaLabel: StoryObj<typeof Card> = {
   args: {
     variant: "hover",
     onClick: () => alert("Card clicked!"),
-    'aria-label': "Product card: Premium Plan - $99/month",
+    "aria-label": "Product card: Premium Plan - $99/month",
     children: (
       <>
-        <Text as="h3" className="text-lg font-semibold mb-2">Premium Plan</Text>
-        <Text as="p" className="text-gray-600 mb-2">$99/month</Text>
-        <Text as="p" className="text-sm text-gray-500">Includes all features</Text>
+        <Text as="h3" className="text-lg font-semibold mb-2">
+          Premium Plan
+        </Text>
+        <Text as="p" className="text-gray-600 mb-2">
+          $99/month
+        </Text>
+        <Text as="p" className="text-sm text-gray-500">
+          Includes all features
+        </Text>
       </>
     ),
   },
@@ -287,24 +336,29 @@ export const WithAriaLabel: StoryObj<typeof Card> = {
 export const WithEvents: StoryObj<typeof Card> = {
   render: () => {
     const [clickCount, setClickCount] = useState(0);
-    
+
     const handleClick = fn(() => {
-      setClickCount(prev => prev + 1);
-      console.log('Card clicked');
+      setClickCount((prev) => prev + 1);
+      console.log("Card clicked");
     });
-    
+
     return (
       <div className="space-y-4">
         <p className="text-sm text-gray-600">
-          Click the card below. Check the Actions panel to see events being fired.
+          Click the card below. Check the Actions panel to see events being
+          fired.
         </p>
         <Card
           variant="hover"
           onClick={handleClick}
           aria-label="Interactive card"
         >
-          <Text as="h3" className="text-lg font-semibold mb-2">Interactive Card</Text>
-          <Text as="p" className="text-gray-600">Click me to see events in the Actions panel.</Text>
+          <Text as="h3" className="text-lg font-semibold mb-2">
+            Interactive Card
+          </Text>
+          <Text as="p" className="text-gray-600">
+            Click me to see events in the Actions panel.
+          </Text>
         </Card>
         <p className="text-sm text-gray-500">Click count: {clickCount}</p>
       </div>
@@ -312,8 +366,9 @@ export const WithEvents: StoryObj<typeof Card> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const card = canvas.getByRole('button') || canvas.getByLabelText('Interactive card');
-    
+    const card =
+      canvas.getByRole("button") || canvas.getByLabelText("Interactive card");
+
     // Test click
     await userEvent.click(card);
     await waitFor(() => {
@@ -323,7 +378,8 @@ export const WithEvents: StoryObj<typeof Card> = {
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates card events. Click the card and check the Actions panel to see events being logged.',
+        story:
+          "Demonstrates card events. Click the card and check the Actions panel to see events being logged.",
       },
     },
   },
@@ -336,15 +392,19 @@ export const DefaultState: StoryObj<typeof Card> = {
     padding: "medium",
     children: (
       <>
-        <Text as="h3" className="text-lg font-semibold mb-2">Default Card</Text>
-        <Text as="p" className="text-gray-600">This is a default card.</Text>
+        <Text as="h3" className="text-lg font-semibold mb-2">
+          Default Card
+        </Text>
+        <Text as="p" className="text-gray-600">
+          This is a default card.
+        </Text>
       </>
     ),
   },
   parameters: {
     docs: {
       description: {
-        story: 'Default state - card with default variant and medium padding.',
+        story: "Default state - card with default variant and medium padding.",
       },
     },
   },
@@ -356,15 +416,20 @@ export const HoverState: StoryObj<typeof Card> = {
     padding: "medium",
     children: (
       <>
-        <Text as="h3" className="text-lg font-semibold mb-2">Hover Card</Text>
-        <Text as="p" className="text-gray-600">This card has hover effects.</Text>
+        <Text as="h3" className="text-lg font-semibold mb-2">
+          Hover Card
+        </Text>
+        <Text as="p" className="text-gray-600">
+          This card has hover effects.
+        </Text>
       </>
     ),
   },
   parameters: {
     docs: {
       description: {
-        story: 'Hover state - card with hover variant that shows hover effects.',
+        story:
+          "Hover state - card with hover variant that shows hover effects.",
       },
     },
   },
@@ -376,15 +441,20 @@ export const SelectedState: StoryObj<typeof Card> = {
     padding: "medium",
     children: (
       <>
-        <Text as="h3" className="text-lg font-semibold mb-2">Selected Card</Text>
-        <Text as="p" className="text-gray-600">This card appears selected.</Text>
+        <Text as="h3" className="text-lg font-semibold mb-2">
+          Selected Card
+        </Text>
+        <Text as="p" className="text-gray-600">
+          This card appears selected.
+        </Text>
       </>
     ),
   },
   parameters: {
     docs: {
       description: {
-        story: 'Selected state - card with selected variant showing highlighted border.',
+        story:
+          "Selected state - card with selected variant showing highlighted border.",
       },
     },
   },

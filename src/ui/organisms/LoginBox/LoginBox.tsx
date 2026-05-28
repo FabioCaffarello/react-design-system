@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from "react";
-import { Button, Input, Label } from "../../atoms";
+import { Button, Input, Label } from "../../primitives";
 import { cn } from "../../utils";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getRadiusClass } from "../../tokens/radius";
@@ -15,12 +15,14 @@ export default function LoginBox({
   ...props
 }: Props) {
   return (
-    <div className={cn(
-      getSpacingClass('base', 'p'),
-      getColorClass('neutral', 'light', 'bg'),
-      getRadiusClass('md'),
-      className
-    )}>
+    <div
+      className={cn(
+        getSpacingClass("base", "p"),
+        getColorClass("neutral", "light", "bg"),
+        getRadiusClass("md"),
+        className,
+      )}
+    >
       <form
         {...props}
         onSubmit={(e) => {
@@ -33,21 +35,13 @@ export default function LoginBox({
           <Label htmlFor="login-email" variant="required">
             Your email
           </Label>
-          <Input
-            id="login-email"
-            placeholder="myname@email.com"
-            type="email"
-          />
+          <Input id="login-email" placeholder="myname@email.com" type="email" />
         </div>
         <div className="space-y-2">
           <Label htmlFor="login-password" variant="required">
             Your password
           </Label>
-          <Input
-            id="login-password"
-            placeholder="••••••••"
-            type="password"
-          />
+          <Input id="login-password" placeholder="••••••••" type="password" />
         </div>
         <div className="flex justify-between">
           <Button

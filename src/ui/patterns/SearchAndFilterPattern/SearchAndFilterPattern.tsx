@@ -1,8 +1,8 @@
-import React, { useState, useMemo } from 'react';
-import { SearchInput, Card } from '../../molecules';
-import { Button, Text } from '../../atoms';
-import { Container } from '../../layouts/Container/Container';
-import { Stack } from '../../layouts/Stack/Stack';
+import React, { useState, useMemo } from "react";
+import { SearchInput, Card } from "../../molecules";
+import { Button, Text } from "../../primitives";
+import { Container } from "../../layouts/Container/Container";
+import { Stack } from "../../layouts/Stack/Stack";
 
 export interface FilterOption {
   id: string;
@@ -13,7 +13,7 @@ export interface FilterOption {
 export interface FilterConfig {
   id: string;
   label: string;
-  type: 'select' | 'multiselect' | 'date' | 'range';
+  type: "select" | "multiselect" | "date" | "range";
   options?: FilterOption[];
   placeholder?: string;
 }
@@ -57,10 +57,10 @@ export interface SearchAndFilterPatternProps<T = unknown> {
 
 /**
  * SearchAndFilterPattern - A complete search and filter pattern
- * 
+ *
  * This pattern solves the common UX problem of searching and filtering lists of items.
  * It combines SearchInput with filter controls and results display.
- * 
+ *
  * @example
  * ```tsx
  * <SearchAndFilterPattern
@@ -76,12 +76,14 @@ export function SearchAndFilterPattern<T = unknown>({
   filterFn,
   renderItem,
   filters = [],
-  searchPlaceholder = 'Search...',
-  emptyMessage = 'No results found',
+  searchPlaceholder = "Search...",
+  emptyMessage = "No results found",
   showResultsCount = true,
 }: SearchAndFilterPatternProps<T>) {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeFilters, setActiveFilters] = useState<Record<string, unknown>>({});
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilters, setActiveFilters] = useState<Record<string, unknown>>(
+    {},
+  );
 
   // Filter items based on search and filters
   const filteredItems = useMemo(() => {
@@ -110,10 +112,11 @@ export function SearchAndFilterPattern<T = unknown>({
 
   const clearFilters = () => {
     setActiveFilters({});
-    setSearchQuery('');
+    setSearchQuery("");
   };
 
-  const hasActiveFilters = searchQuery.trim().length > 0 || Object.keys(activeFilters).length > 0;
+  const hasActiveFilters =
+    searchQuery.trim().length > 0 || Object.keys(activeFilters).length > 0;
 
   return (
     <Container maxWidth="full" paddingX="base" paddingY="base">
@@ -140,14 +143,20 @@ export function SearchAndFilterPattern<T = unknown>({
                     </Text>
                     <select
                       className="px-3 py-1 border rounded text-sm"
-                      value={String(activeFilters[filter.id] || '')}
+                      value={String(activeFilters[filter.id] || "")}
                       onChange={(e) =>
-                        handleFilterChange(filter.id, e.target.value || undefined)
+                        handleFilterChange(
+                          filter.id,
+                          e.target.value || undefined,
+                        )
                       }
                     >
                       <option value="">All</option>
                       {filter.options?.map((option) => (
-                        <option key={option.id} value={String(option.value || '')}>
+                        <option
+                          key={option.id}
+                          value={String(option.value || "")}
+                        >
                           {option.label}
                         </option>
                       ))}
@@ -172,7 +181,7 @@ export function SearchAndFilterPattern<T = unknown>({
         {showResultsCount && (
           <div className="text-sm text-gray-600">
             Showing {filteredItems.length} of {items.length} results
-            {hasActiveFilters && ' (filtered)'}
+            {hasActiveFilters && " (filtered)"}
           </div>
         )}
 

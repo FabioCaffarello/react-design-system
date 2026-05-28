@@ -1,12 +1,19 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef, type HTMLAttributes, type KeyboardEvent } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useDatePickerContext } from './DatePickerContext';
-import Button from '../../atoms/Button/Button';
-import { getColorClass, getRadiusClass } from '../../tokens';
+import {
+  useState,
+  useEffect,
+  useRef,
+  type HTMLAttributes,
+  type KeyboardEvent,
+} from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useDatePickerContext } from "./DatePickerContext";
+import Button from "../../primitives/Button/Button";
+import { getColorClass, getRadiusClass } from "../../tokens";
 
-export interface DatePickerCalendarProps extends HTMLAttributes<HTMLDivElement> {
+export interface DatePickerCalendarProps
+  extends HTMLAttributes<HTMLDivElement> {
   month?: Date; // Current month to display
   onMonthChange?: (month: Date) => void;
 }
@@ -30,32 +37,54 @@ function isSameDay(date1: Date | null, date2: Date | null): boolean {
 }
 
 function isSameMonth(date1: Date, date2: Date): boolean {
-  return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth();
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth()
+  );
 }
 
-function isDateInRange(date: Date, start: Date | null, end: Date | null): boolean {
+function isDateInRange(
+  date: Date,
+  start: Date | null,
+  end: Date | null,
+): boolean {
   if (!start || !end) return false;
   const time = date.getTime();
   return time >= start.getTime() && time <= end.getTime();
 }
 
-function isDateDisabled(date: Date, minDate?: Date, maxDate?: Date, disabledDates?: Date[]): boolean {
+function isDateDisabled(
+  date: Date,
+  minDate?: Date,
+  maxDate?: Date,
+  disabledDates?: Date[],
+): boolean {
   if (minDate && date < minDate) return true;
   if (maxDate && date > maxDate) return true;
-  if (disabledDates?.some(d => isSameDay(date, d))) return true;
+  if (disabledDates?.some((d) => isSameDay(date, d))) return true;
   return false;
 }
 
-const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTHS = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December'
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 export function DatePickerCalendar({
   month: controlledMonth,
   onMonthChange,
-  className = '',
+  className = "",
   ...props
 }: DatePickerCalendarProps) {
   const {
@@ -70,7 +99,7 @@ export function DatePickerCalendar({
   } = useDatePickerContext();
 
   const [currentMonth, setCurrentMonth] = useState<Date>(
-    controlledMonth || selectedDate || selectedRange?.start || new Date()
+    controlledMonth || selectedDate || selectedRange?.start || new Date(),
   );
   const calendarRef = useRef<HTMLDivElement>(null);
   const [focusedDate, setFocusedDate] = useState<Date | null>(null);
@@ -93,15 +122,17 @@ export function DatePickerCalendar({
 
   // Add all days of the month
   for (let day = 1; day <= daysInMonth; day++) {
-    days.push(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day));
+    days.push(
+      new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day),
+    );
   }
 
   const handleDateClick = (date: Date) => {
     if (isDateDisabled(date, minDate, maxDate, disabledDates)) return;
 
-    if (mode === 'single') {
+    if (mode === "single") {
       onDateChange(date);
-    } else if (mode === 'range') {
+    } else if (mode === "range") {
       const currentRange = selectedRange || { start: null, end: null };
       if (!currentRange.start || (currentRange.start && currentRange.end)) {
         // Start new range
@@ -118,13 +149,21 @@ export function DatePickerCalendar({
   };
 
   const handlePreviousMonth = () => {
-    const newMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1);
+    const newMonth = new Date(
+      currentMonth.getFullYear(),
+      currentMonth.getMonth() - 1,
+      1,
+    );
     setCurrentMonth(newMonth);
     onMonthChange?.(newMonth);
   };
 
   const handleNextMonth = () => {
-    const newMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1);
+    const newMonth = new Date(
+      currentMonth.getFullYear(),
+      currentMonth.getMonth() + 1,
+      1,
+    );
     setCurrentMonth(newMonth);
     onMonthChange?.(newMonth);
   };
@@ -133,32 +172,48 @@ export function DatePickerCalendar({
     let newDate: Date | null = null;
 
     switch (e.key) {
-      case 'ArrowLeft':
+      case "ArrowLeft":
         e.preventDefault();
-        newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1);
+        newDate = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate() - 1,
+        );
         break;
-      case 'ArrowRight':
+      case "ArrowRight":
         e.preventDefault();
-        newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+        newDate = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate() + 1,
+        );
         break;
-      case 'ArrowUp':
+      case "ArrowUp":
         e.preventDefault();
-        newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7);
+        newDate = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate() - 7,
+        );
         break;
-      case 'ArrowDown':
+      case "ArrowDown":
         e.preventDefault();
-        newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7);
+        newDate = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate() + 7,
+        );
         break;
-      case 'Home':
+      case "Home":
         e.preventDefault();
         newDate = new Date(date.getFullYear(), date.getMonth(), 1);
         break;
-      case 'End':
+      case "End":
         e.preventDefault();
         newDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
         break;
-      case 'Enter':
-      case ' ':
+      case "Enter":
+      case " ":
         e.preventDefault();
         handleDateClick(date);
         return;
@@ -223,15 +278,23 @@ export function DatePickerCalendar({
             return <div key={`empty-${index}`} className="aspect-square" />;
           }
 
-          const isSelected = mode === 'single'
-            ? isSameDay(date, selectedDate)
-            : (isSameDay(date, selectedRange?.start || null) || isSameDay(date, selectedRange?.end || null));
+          const isSelected =
+            mode === "single"
+              ? isSameDay(date, selectedDate)
+              : isSameDay(date, selectedRange?.start || null) ||
+                isSameDay(date, selectedRange?.end || null);
 
-          const isInRange = mode === 'range' && selectedRange
-            ? isDateInRange(date, selectedRange.start, selectedRange.end)
-            : false;
+          const isInRange =
+            mode === "range" && selectedRange
+              ? isDateInRange(date, selectedRange.start, selectedRange.end)
+              : false;
 
-          const isDisabled = isDateDisabled(date, minDate, maxDate, disabledDates);
+          const isDisabled = isDateDisabled(
+            date,
+            minDate,
+            maxDate,
+            disabledDates,
+          );
           const isToday = isSameDay(date, new Date());
           const isFocused = focusedDate && isSameDay(date, focusedDate);
 
@@ -245,22 +308,23 @@ export function DatePickerCalendar({
               className={`
                 aspect-square
                 text-sm
-                ${getRadiusClass('md')}
+                ${getRadiusClass("md")}
                 transition-colors
                 focus:outline-none
                 focus:ring-2
                 focus:ring-offset-1
-                ${isDisabled
-                  ? 'text-gray-300 cursor-not-allowed'
-                  : isSelected
-                  ? `${getColorClass('primary', 'DEFAULT', 'bg')} text-white font-semibold`
-                  : isInRange
-                  ? `${getColorClass('primary', 'light', 'bg')} ${getColorClass('primary', 'DEFAULT', 'text')}`
-                  : isToday
-                  ? 'border-2 border-indigo-500 font-semibold'
-                  : isFocused
-                  ? `${getColorClass('primary', 'light', 'bg')}`
-                  : 'hover:bg-gray-100'
+                ${
+                  isDisabled
+                    ? "text-gray-300 cursor-not-allowed"
+                    : isSelected
+                      ? `${getColorClass("primary", "DEFAULT", "bg")} text-white font-semibold`
+                      : isInRange
+                        ? `${getColorClass("primary", "light", "bg")} ${getColorClass("primary", "DEFAULT", "text")}`
+                        : isToday
+                          ? "border-2 border-indigo-500 font-semibold"
+                          : isFocused
+                            ? `${getColorClass("primary", "light", "bg")}`
+                            : "hover:bg-gray-100"
                 }
               `}
               aria-label={date.toDateString()}

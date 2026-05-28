@@ -1,20 +1,20 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { expect, within, waitFor } from '@storybook/test';
-import { DataTablePattern, type DataTableColumn } from './DataTablePattern';
-import { Button } from '../../atoms';
+import type { Meta, StoryObj } from "@storybook/react";
+import { expect, within, waitFor } from "@storybook/test";
+import { DataTablePattern, type DataTableColumn } from "./DataTablePattern";
+import { Button } from "../../primitives";
 
 interface User {
   id: number;
   name: string;
   email: string;
   role: string;
-  status: 'active' | 'inactive';
+  status: "active" | "inactive";
 }
 
 const meta: Meta<typeof DataTablePattern> = {
-  title: 'Patterns/DataTablePattern',
+  title: "Patterns/DataTablePattern",
   component: DataTablePattern,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -57,20 +57,20 @@ This pattern solves the common UX problem of displaying searchable, paginated da
   },
   argTypes: {
     enableSearch: {
-      control: 'boolean',
-      description: 'Enable search functionality',
+      control: "boolean",
+      description: "Enable search functionality",
     },
     enablePagination: {
-      control: 'boolean',
-      description: 'Enable pagination',
+      control: "boolean",
+      description: "Enable pagination",
     },
     itemsPerPage: {
-      control: 'number',
-      description: 'Items per page',
+      control: "number",
+      description: "Items per page",
     },
     loading: {
-      control: 'boolean',
-      description: 'Loading state',
+      control: "boolean",
+      description: "Loading state",
     },
   },
 };
@@ -82,34 +82,36 @@ const mockUsers: User[] = Array.from({ length: 45 }, (_, i) => ({
   id: i + 1,
   name: `User ${i + 1}`,
   email: `user${i + 1}@example.com`,
-  role: i % 3 === 0 ? 'Admin' : i % 3 === 1 ? 'Editor' : 'Viewer',
-  status: i % 4 === 0 ? 'inactive' : 'active',
+  role: i % 3 === 0 ? "Admin" : i % 3 === 1 ? "Editor" : "Viewer",
+  status: i % 4 === 0 ? "inactive" : "active",
 }));
 
 const columns: DataTableColumn<User>[] = [
   {
-    key: 'id',
-    label: 'ID',
+    key: "id",
+    label: "ID",
   },
   {
-    key: 'name',
-    label: 'Name',
+    key: "name",
+    label: "Name",
   },
   {
-    key: 'email',
-    label: 'Email',
+    key: "email",
+    label: "Email",
   },
   {
-    key: 'role',
-    label: 'Role',
+    key: "role",
+    label: "Role",
   },
   {
-    key: 'status',
-    label: 'Status',
+    key: "status",
+    label: "Status",
     render: (value) => (
       <span
         className={`px-2 py-1 rounded text-xs ${
-          value === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+          value === "active"
+            ? "bg-green-100 text-green-800"
+            : "bg-gray-100 text-gray-800"
         }`}
       >
         {value}
@@ -178,7 +180,7 @@ export const Empty: Story = {
     data: [],
     enableSearch: true,
     enablePagination: true,
-    emptyMessage: 'No users found',
+    emptyMessage: "No users found",
   },
 };
 
@@ -195,7 +197,8 @@ export const WithEvents: Story = {
     (Story) => (
       <div className="space-y-4">
         <p className="text-sm text-gray-600">
-          Search or change pages. Check the Actions panel to see events being fired.
+          Search or change pages. Check the Actions panel to see events being
+          fired.
         </p>
         <Story />
       </div>
@@ -203,19 +206,23 @@ export const WithEvents: Story = {
   ],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await waitFor(async () => {
-      // There might be multiple "User 1" elements (e.g., User 1 and User 10)
-      // Get all matching elements and verify at least one exists
-      const user1Elements = canvas.getAllByText((content, element) => {
-        return element?.textContent?.trim() === 'User 1' || false;
-      });
-      expect(user1Elements.length).toBeGreaterThan(0);
-    }, { timeout: 3000 });
+    await waitFor(
+      async () => {
+        // There might be multiple "User 1" elements (e.g., User 1 and User 10)
+        // Get all matching elements and verify at least one exists
+        const user1Elements = canvas.getAllByText((content, element) => {
+          return element?.textContent?.trim() === "User 1" || false;
+        });
+        expect(user1Elements.length).toBeGreaterThan(0);
+      },
+      { timeout: 3000 },
+    );
   },
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates pattern events. Search or navigate pages and check the Actions panel to see events being logged.',
+        story:
+          "Demonstrates pattern events. Search or navigate pages and check the Actions panel to see events being logged.",
       },
     },
   },
@@ -233,7 +240,7 @@ export const DefaultState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Default state - table with search and pagination.',
+        story: "Default state - table with search and pagination.",
       },
     },
   },
@@ -250,7 +257,7 @@ export const LoadingState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Loading state - shows loading spinner.',
+        story: "Loading state - shows loading spinner.",
       },
     },
   },
@@ -262,12 +269,12 @@ export const EmptyState: Story = {
     data: [],
     enableSearch: true,
     enablePagination: true,
-    emptyMessage: 'No users found',
+    emptyMessage: "No users found",
   },
   parameters: {
     docs: {
       description: {
-        story: 'Empty state - no data available.',
+        story: "Empty state - no data available.",
       },
     },
   },
@@ -289,7 +296,7 @@ export const WithActionsState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'With actions state - action buttons visible.',
+        story: "With actions state - action buttons visible.",
       },
     },
   },
@@ -306,7 +313,7 @@ export const WithoutSearchState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Without search state - search field hidden.',
+        story: "Without search state - search field hidden.",
       },
     },
   },
@@ -322,7 +329,7 @@ export const WithoutPaginationState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Without pagination state - pagination controls hidden.',
+        story: "Without pagination state - pagination controls hidden.",
       },
     },
   },

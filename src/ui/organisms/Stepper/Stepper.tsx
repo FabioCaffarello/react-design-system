@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useState, type ReactNode } from 'react';
-import { Check } from 'lucide-react';
-import { getColorClass } from '../../tokens/colors';
-import { getSpacingClass } from '../../tokens/spacing';
-import { getRadiusClass } from '../../tokens/radius';
-import { getAnimationClass } from '../../tokens/animations';
-import Button from '../../atoms/Button/Button';
-import Separator from '../../atoms/Separator/Separator';
+import { useState, type ReactNode } from "react";
+import { Check } from "lucide-react";
+import { getColorClass } from "../../tokens/colors";
+import { getSpacingClass } from "../../tokens/spacing";
+import { getRadiusClass } from "../../tokens/radius";
+import { getAnimationClass } from "../../tokens/animations";
+import Button from "../../primitives/Button/Button";
+import Separator from "../../primitives/Separator/Separator";
 
-export type StepperStatus = 'pending' | 'active' | 'completed' | 'error';
+export type StepperStatus = "pending" | "active" | "completed" | "error";
 
 export interface StepperStep {
   id: string;
@@ -28,17 +28,17 @@ export interface StepperProps {
   onComplete?: () => void;
   allowNavigation?: boolean;
   showStepNumbers?: boolean;
-  orientation?: 'horizontal' | 'vertical';
+  orientation?: "horizontal" | "vertical";
   className?: string;
 }
 
 /**
  * Stepper Component
- * 
+ *
  * A multi-step wizard component for guided workflows.
  * Supports validation, navigation, and completion callbacks.
  * Follows Atomic Design principles as an Organism component.
- * 
+ *
  * @example
  * ```tsx
  * <Stepper
@@ -58,18 +58,21 @@ export default function Stepper({
   onComplete,
   allowNavigation = true,
   showStepNumbers = true,
-  orientation = 'horizontal',
-  className = '',
+  orientation = "horizontal",
+  className = "",
 }: StepperProps) {
-  const [internalCurrentStep, setInternalCurrentStep] = useState(defaultCurrentStep);
+  const [internalCurrentStep, setInternalCurrentStep] =
+    useState(defaultCurrentStep);
 
   const isControlled = controlledCurrentStep !== undefined;
-  const currentStepIndex = isControlled ? controlledCurrentStep : internalCurrentStep;
+  const currentStepIndex = isControlled
+    ? controlledCurrentStep
+    : internalCurrentStep;
 
   const getStepStatus = (index: number): StepperStatus => {
-    if (index < currentStepIndex) return 'completed';
-    if (index === currentStepIndex) return 'active';
-    return 'pending';
+    if (index < currentStepIndex) return "completed";
+    if (index === currentStepIndex) return "active";
+    return "pending";
   };
 
   const handleNext = () => {
@@ -97,7 +100,7 @@ export default function Stepper({
   const handleStepClick = (index: number) => {
     if (!allowNavigation) return;
     if (steps[index].disabled) return;
-    
+
     if (!isControlled) {
       setInternalCurrentStep(index);
     }
@@ -108,7 +111,7 @@ export default function Stepper({
   const isFirstStep = currentStepIndex === 0;
   const isLastStep = currentStepIndex === steps.length - 1;
 
-  if (orientation === 'vertical') {
+  if (orientation === "vertical") {
     return (
       <div className={`flex gap-4 ${className}`}>
         {/* Steps List */}
@@ -131,21 +134,22 @@ export default function Stepper({
                       justify-center
                       w-10
                       h-10
-                      ${getRadiusClass('full')}
+                      ${getRadiusClass("full")}
                       border-2
-                      ${getAnimationClass('base')}
-                      ${status === 'completed'
-                        ? `${getColorClass('success', 'DEFAULT', 'bg')} ${getColorClass('success', 'DEFAULT', 'border')} text-white`
-                        : status === 'active'
-                        ? `${getColorClass('primary', 'DEFAULT', 'bg')} ${getColorClass('primary', 'DEFAULT', 'border')} text-white`
-                        : status === 'error'
-                        ? `${getColorClass('error', 'DEFAULT', 'bg')} ${getColorClass('error', 'DEFAULT', 'border')} text-white`
-                        : 'bg-white border-gray-300 text-gray-400'
+                      ${getAnimationClass("base")}
+                      ${
+                        status === "completed"
+                          ? `${getColorClass("success", "DEFAULT", "bg")} ${getColorClass("success", "DEFAULT", "border")} text-white`
+                          : status === "active"
+                            ? `${getColorClass("primary", "DEFAULT", "bg")} ${getColorClass("primary", "DEFAULT", "border")} text-white`
+                            : status === "error"
+                              ? `${getColorClass("error", "DEFAULT", "bg")} ${getColorClass("error", "DEFAULT", "border")} text-white`
+                              : "bg-white border-gray-300 text-gray-400"
                       }
-                      ${!allowNavigation || step.disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}
+                      ${!allowNavigation || step.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
                     `}
                   >
-                    {status === 'completed' ? (
+                    {status === "completed" ? (
                       <Check className="h-5 w-5" />
                     ) : showStepNumbers ? (
                       index + 1
@@ -157,7 +161,7 @@ export default function Stepper({
                         w-0.5
                         h-12
                         mt-2
-                        ${status === 'completed' ? getColorClass('success', 'DEFAULT', 'bg') : 'bg-gray-300'}
+                        ${status === "completed" ? getColorClass("success", "DEFAULT", "bg") : "bg-gray-300"}
                       `}
                     />
                   )}
@@ -171,15 +175,17 @@ export default function Stepper({
                     disabled={!allowNavigation || step.disabled}
                     className={`
                       text-left
-                      ${isActive ? 'font-semibold' : 'font-medium'}
-                      ${status === 'active' ? getColorClass('primary', 'DEFAULT', 'text') : 'text-gray-700'}
-                      ${!allowNavigation || step.disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}
+                      ${isActive ? "font-semibold" : "font-medium"}
+                      ${status === "active" ? getColorClass("primary", "DEFAULT", "text") : "text-gray-700"}
+                      ${!allowNavigation || step.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
                     `}
                   >
                     {step.title}
                   </button>
                   {step.description && (
-                    <p className="text-sm text-gray-500 mt-1">{step.description}</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      {step.description}
+                    </p>
                   )}
                 </div>
               </div>
@@ -189,18 +195,22 @@ export default function Stepper({
 
         {/* Step Content */}
         <div className="flex-1">
-          <div className={`
-            ${getSpacingClass('lg', 'p')}
+          <div
+            className={`
+            ${getSpacingClass("lg", "p")}
             border
             border-gray-200
-            ${getRadiusClass('lg')}
+            ${getRadiusClass("lg")}
             bg-white
-          `}>
+          `}
+          >
             {currentStep.content}
           </div>
 
           {/* Navigation */}
-          <div className={`flex justify-between mt-4 ${getSpacingClass('base', 'gap')}`}>
+          <div
+            className={`flex justify-between mt-4 ${getSpacingClass("base", "gap")}`}
+          >
             <Button
               variant="outline"
               onClick={handlePrevious}
@@ -208,11 +218,8 @@ export default function Stepper({
             >
               Previous
             </Button>
-            <Button
-              variant="primary"
-              onClick={handleNext}
-            >
-              {isLastStep ? 'Complete' : 'Next'}
+            <Button variant="primary" onClick={handleNext}>
+              {isLastStep ? "Complete" : "Next"}
             </Button>
           </div>
         </div>
@@ -242,46 +249,51 @@ export default function Stepper({
                     justify-center
                     w-10
                     h-10
-                    ${getRadiusClass('full')}
+                    ${getRadiusClass("full")}
                     border-2
-                    ${getAnimationClass('base')}
-                    ${status === 'completed'
-                      ? `${getColorClass('success', 'DEFAULT', 'bg')} ${getColorClass('success', 'DEFAULT', 'border')} text-white`
-                      : status === 'active'
-                      ? `${getColorClass('primary', 'DEFAULT', 'bg')} ${getColorClass('primary', 'DEFAULT', 'border')} text-white`
-                      : status === 'error'
-                      ? `${getColorClass('error', 'DEFAULT', 'bg')} ${getColorClass('error', 'DEFAULT', 'border')} text-white`
-                      : 'bg-white border-gray-300 text-gray-400'
+                    ${getAnimationClass("base")}
+                    ${
+                      status === "completed"
+                        ? `${getColorClass("success", "DEFAULT", "bg")} ${getColorClass("success", "DEFAULT", "border")} text-white`
+                        : status === "active"
+                          ? `${getColorClass("primary", "DEFAULT", "bg")} ${getColorClass("primary", "DEFAULT", "border")} text-white`
+                          : status === "error"
+                            ? `${getColorClass("error", "DEFAULT", "bg")} ${getColorClass("error", "DEFAULT", "border")} text-white`
+                            : "bg-white border-gray-300 text-gray-400"
                     }
-                    ${!allowNavigation || step.disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}
+                    ${!allowNavigation || step.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
                   `}
                 >
-                  {status === 'completed' ? (
+                  {status === "completed" ? (
                     <Check className="h-5 w-5" />
                   ) : showStepNumbers ? (
                     index + 1
                   ) : null}
                 </button>
-                <div className={`mt-2 text-center ${getSpacingClass('sm', 'px')}`}>
+                <div
+                  className={`mt-2 text-center ${getSpacingClass("sm", "px")}`}
+                >
                   <p
                     className={`
                       text-sm
                       font-medium
-                      ${isActive ? getColorClass('primary', 'DEFAULT', 'text') : 'text-gray-600'}
+                      ${isActive ? getColorClass("primary", "DEFAULT", "text") : "text-gray-600"}
                     `}
                   >
                     {step.title}
                   </p>
                   {step.description && (
-                    <p className="text-xs text-gray-500 mt-1">{step.description}</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {step.description}
+                    </p>
                   )}
                 </div>
               </div>
               {index < steps.length - 1 && (
-                <div className={`flex-1 mx-2 ${getSpacingClass('base', 'mx')}`}>
+                <div className={`flex-1 mx-2 ${getSpacingClass("base", "mx")}`}>
                   <Separator
                     className={`
-                      ${status === 'completed' ? getColorClass('success', 'DEFAULT', 'border') : 'border-gray-300'}
+                      ${status === "completed" ? getColorClass("success", "DEFAULT", "border") : "border-gray-300"}
                     `}
                   />
                 </div>
@@ -292,18 +304,20 @@ export default function Stepper({
       </div>
 
       {/* Step Content */}
-      <div className={`
-        ${getSpacingClass('lg', 'p')}
+      <div
+        className={`
+        ${getSpacingClass("lg", "p")}
         border
         border-gray-200
-        ${getRadiusClass('lg')}
+        ${getRadiusClass("lg")}
         bg-white
-      `}>
+      `}
+      >
         {currentStep.content}
       </div>
 
       {/* Navigation */}
-      <div className={`flex justify-between ${getSpacingClass('base', 'gap')}`}>
+      <div className={`flex justify-between ${getSpacingClass("base", "gap")}`}>
         <Button
           variant="outline"
           onClick={handlePrevious}
@@ -311,11 +325,8 @@ export default function Stepper({
         >
           Previous
         </Button>
-        <Button
-          variant="primary"
-          onClick={handleNext}
-        >
-          {isLastStep ? 'Complete' : 'Next'}
+        <Button variant="primary" onClick={handleNext}>
+          {isLastStep ? "Complete" : "Next"}
         </Button>
       </div>
     </div>

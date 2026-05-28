@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { useState, useRef, type DragEvent, type ChangeEvent } from 'react';
-import { Upload, X, File, CheckCircle2, AlertCircle } from 'lucide-react';
-import { cn } from '../../utils';
-import { 
-  getColorClass, 
-  getFocusColorClass, 
+import { useState, useRef, type DragEvent, type ChangeEvent } from "react";
+import { Upload, X, File, CheckCircle2, AlertCircle } from "lucide-react";
+import { cn } from "../../utils";
+import {
+  getColorClass,
+  getFocusColorClass,
   getHoverColorClass,
   getSpacingClass,
   getRadiusClass,
   getAnimationClass,
   getTypographySizeFromFontSize,
-  getTypographyWeightFromFontWeight
-} from '../../tokens';
-import Button from '../../atoms/Button/Button';
-import Progress from '../../atoms/Progress/Progress';
+  getTypographyWeightFromFontWeight,
+} from "../../tokens";
+import Button from "../../primitives/Button/Button";
+import Progress from "../../primitives/Progress/Progress";
 
 export interface FileUploadFile {
   file: File;
@@ -41,10 +41,10 @@ export interface FileUploadProps {
 
 /**
  * FileUpload Component
- * 
+ *
  * A file upload component with drag and drop, preview, validation, and progress.
  * Follows Atomic Design principles as a Molecule component.
- * 
+ *
  * @example
  * ```tsx
  * <FileUpload
@@ -64,7 +64,7 @@ export default function FileUpload({
   showPreview = true,
   showProgress = false,
   disabled = false,
-  className = '',
+  className = "",
   label,
   description,
 }: FileUploadProps) {
@@ -73,11 +73,11 @@ export default function FileUpload({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return "0 Bytes";
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+    return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + " " + sizes[i];
   };
 
   const validateFile = (file: File): string | null => {
@@ -94,7 +94,7 @@ export default function FileUpload({
     fileArray.forEach((file) => {
       const error = validateFile(file);
       const fileId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-      
+
       const fileUpload: FileUploadFile = {
         file,
         id: fileId,
@@ -103,13 +103,15 @@ export default function FileUpload({
       };
 
       // Generate preview for images
-      if (showPreview && file.type.startsWith('image/')) {
+      if (showPreview && file.type.startsWith("image/")) {
         const reader = new FileReader();
         reader.onload = (e) => {
           setFiles((prev) =>
             prev.map((f) =>
-              f.id === fileId ? { ...f, preview: e.target?.result as string } : f
-            )
+              f.id === fileId
+                ? { ...f, preview: e.target?.result as string }
+                : f,
+            ),
           );
         };
         reader.readAsDataURL(file);
@@ -123,8 +125,10 @@ export default function FileUpload({
 
   const handleFiles = (newFiles: FileUploadFile[]) => {
     const updatedFiles = multiple ? [...files, ...newFiles] : newFiles;
-    const limitedFiles = maxFiles ? updatedFiles.slice(0, maxFiles) : updatedFiles;
-    
+    const limitedFiles = maxFiles
+      ? updatedFiles.slice(0, maxFiles)
+      : updatedFiles;
+
     setFiles(limitedFiles);
     onFilesChange?.(limitedFiles);
   };
@@ -161,7 +165,7 @@ export default function FileUpload({
     }
     // Reset input
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
@@ -179,25 +183,36 @@ export default function FileUpload({
   };
 
   return (
-    <div className={cn(getSpacingClass('lg', 'gap'), 'flex', 'flex-col', className)}>
+    <div
+      className={cn(
+        getSpacingClass("lg", "gap"),
+        "flex",
+        "flex-col",
+        className,
+      )}
+    >
       {(label || description) && (
         <div>
           {label && (
-            <label className={cn(
-              'block',
-              getTypographySizeFromFontSize('sm'),
-              getTypographyWeightFromFontWeight('medium'),
-              getColorClass('neutral', 'dark', 'text'),
-              getSpacingClass('xs', 'mb')
-            )}>
+            <label
+              className={cn(
+                "block",
+                getTypographySizeFromFontSize("sm"),
+                getTypographyWeightFromFontWeight("medium"),
+                getColorClass("neutral", "dark", "text"),
+                getSpacingClass("xs", "mb"),
+              )}
+            >
               {label}
             </label>
           )}
           {description && (
-            <p className={cn(
-              getTypographySizeFromFontSize('sm'),
-              getColorClass('neutral', 'DEFAULT', 'text')
-            )}>
+            <p
+              className={cn(
+                getTypographySizeFromFontSize("sm"),
+                getColorClass("neutral", "DEFAULT", "text"),
+              )}
+            >
               {description}
             </p>
           )}
@@ -210,26 +225,26 @@ export default function FileUpload({
         onDragLeave={handleDragLeave}
         onClick={handleClick}
         className={cn(
-          'relative',
-          'border-2',
-          'border-dashed',
-          isDragging 
-            ? getColorClass('primary', 'DEFAULT', 'border')
-            : getColorClass('neutral', 'DEFAULT', 'border'),
-          getRadiusClass('lg'),
-          getSpacingClass('lg', 'p'),
-          'text-center',
-          'cursor-pointer',
-          getAnimationClass('base'),
-          getFocusColorClass('primary', 'DEFAULT', 'border'),
-          disabled 
-            ? 'opacity-50 cursor-not-allowed' 
+          "relative",
+          "border-2",
+          "border-dashed",
+          isDragging
+            ? getColorClass("primary", "DEFAULT", "border")
+            : getColorClass("neutral", "DEFAULT", "border"),
+          getRadiusClass("lg"),
+          getSpacingClass("lg", "p"),
+          "text-center",
+          "cursor-pointer",
+          getAnimationClass("base"),
+          getFocusColorClass("primary", "DEFAULT", "border"),
+          disabled
+            ? "opacity-50 cursor-not-allowed"
             : cn(
-                getHoverColorClass('neutral', 'dark', 'border'),
-                'focus:outline-none',
-                'focus:ring-2',
-                'focus:ring-offset-2'
-              )
+                getHoverColorClass("neutral", "dark", "border"),
+                "focus:outline-none",
+                "focus:ring-2",
+                "focus:ring-offset-2",
+              ),
         )}
         role="button"
         tabIndex={disabled ? -1 : 0}
@@ -246,38 +261,53 @@ export default function FileUpload({
           className="hidden"
         />
 
-        <div className={cn('flex', 'flex-col', 'items-center', getSpacingClass('sm', 'gap'))}>
+        <div
+          className={cn(
+            "flex",
+            "flex-col",
+            "items-center",
+            getSpacingClass("sm", "gap"),
+          )}
+        >
           <Upload
             className={cn(
-              'h-8',
-              'w-8',
-              isDragging 
-                ? getColorClass('primary', 'DEFAULT', 'text')
-                : getColorClass('neutral', 'DEFAULT', 'text')
+              "h-8",
+              "w-8",
+              isDragging
+                ? getColorClass("primary", "DEFAULT", "text")
+                : getColorClass("neutral", "DEFAULT", "text"),
             )}
           />
           <div>
-            <span className={cn(
-              getTypographySizeFromFontSize('sm'),
-              getTypographyWeightFromFontWeight('medium'),
-              getColorClass('neutral', 'dark', 'text')
-            )}>
-              {isDragging ? 'Drop files here' : 'Click to upload or drag and drop'}
+            <span
+              className={cn(
+                getTypographySizeFromFontSize("sm"),
+                getTypographyWeightFromFontWeight("medium"),
+                getColorClass("neutral", "dark", "text"),
+              )}
+            >
+              {isDragging
+                ? "Drop files here"
+                : "Click to upload or drag and drop"}
             </span>
             {accept && (
-              <p className={cn(
-                getTypographySizeFromFontSize('xs'),
-                getColorClass('neutral', 'DEFAULT', 'text'),
-                getSpacingClass('xs', 'mt')
-              )}>
+              <p
+                className={cn(
+                  getTypographySizeFromFontSize("xs"),
+                  getColorClass("neutral", "DEFAULT", "text"),
+                  getSpacingClass("xs", "mt"),
+                )}
+              >
                 Accepted: {accept}
               </p>
             )}
             {maxSize && (
-              <p className={cn(
-                getTypographySizeFromFontSize('xs'),
-                getColorClass('neutral', 'DEFAULT', 'text')
-              )}>
+              <p
+                className={cn(
+                  getTypographySizeFromFontSize("xs"),
+                  getColorClass("neutral", "DEFAULT", "text"),
+                )}
+              >
                 Max size: {formatFileSize(maxSize)}
               </p>
             )}
@@ -286,68 +316,104 @@ export default function FileUpload({
       </div>
 
       {files.length > 0 && (
-        <div className={cn('flex', 'flex-col', getSpacingClass('sm', 'gap'))}>
+        <div className={cn("flex", "flex-col", getSpacingClass("sm", "gap"))}>
           {files.map((fileUpload) => (
             <div
               key={fileUpload.id}
               className={cn(
-                'flex',
-                'items-center',
-                getSpacingClass('md', 'gap'),
-                getSpacingClass('base', 'p'),
-                'border',
-                getColorClass('neutral', 'DEFAULT', 'border'),
-                getRadiusClass('md'),
-                fileUpload.error 
-                  ? getColorClass('error', 'light', 'bg')
-                  : getColorClass('neutral', 'light', 'bg')
+                "flex",
+                "items-center",
+                getSpacingClass("md", "gap"),
+                getSpacingClass("base", "p"),
+                "border",
+                getColorClass("neutral", "DEFAULT", "border"),
+                getRadiusClass("md"),
+                fileUpload.error
+                  ? getColorClass("error", "light", "bg")
+                  : getColorClass("neutral", "light", "bg"),
               )}
             >
               {showPreview && fileUpload.preview ? (
                 <img
                   src={fileUpload.preview}
                   alt={fileUpload.file.name}
-                  className={cn('w-12', 'h-12', 'object-cover', getRadiusClass('md'))}
+                  className={cn(
+                    "w-12",
+                    "h-12",
+                    "object-cover",
+                    getRadiusClass("md"),
+                  )}
                 />
               ) : (
-                <File className={cn('h-8', 'w-8', getColorClass('neutral', 'DEFAULT', 'text'))} />
+                <File
+                  className={cn(
+                    "h-8",
+                    "w-8",
+                    getColorClass("neutral", "DEFAULT", "text"),
+                  )}
+                />
               )}
 
-              <div className={cn('flex-1', 'min-w-0')}>
-                <p className={cn(
-                  getTypographySizeFromFontSize('sm'),
-                  getTypographyWeightFromFontWeight('medium'),
-                  getColorClass('neutral', 'dark', 'text'),
-                  'truncate'
-                )}>
+              <div className={cn("flex-1", "min-w-0")}>
+                <p
+                  className={cn(
+                    getTypographySizeFromFontSize("sm"),
+                    getTypographyWeightFromFontWeight("medium"),
+                    getColorClass("neutral", "dark", "text"),
+                    "truncate",
+                  )}
+                >
                   {fileUpload.file.name}
                 </p>
-                <p className={cn(
-                  getTypographySizeFromFontSize('xs'),
-                  getColorClass('neutral', 'DEFAULT', 'text')
-                )}>
+                <p
+                  className={cn(
+                    getTypographySizeFromFontSize("xs"),
+                    getColorClass("neutral", "DEFAULT", "text"),
+                  )}
+                >
                   {formatFileSize(fileUpload.file.size)}
                 </p>
                 {fileUpload.error && (
-                  <div className={cn('flex', 'items-center', getSpacingClass('xs', 'gap'), getSpacingClass('xs', 'mt'))}>
-                    <AlertCircle className={cn('h-3', 'w-3', getColorClass('error', 'DEFAULT', 'text'))} />
-                    <span className={cn(
-                      getTypographySizeFromFontSize('xs'),
-                      getColorClass('error', 'DEFAULT', 'text')
-                    )}>
+                  <div
+                    className={cn(
+                      "flex",
+                      "items-center",
+                      getSpacingClass("xs", "gap"),
+                      getSpacingClass("xs", "mt"),
+                    )}
+                  >
+                    <AlertCircle
+                      className={cn(
+                        "h-3",
+                        "w-3",
+                        getColorClass("error", "DEFAULT", "text"),
+                      )}
+                    />
+                    <span
+                      className={cn(
+                        getTypographySizeFromFontSize("xs"),
+                        getColorClass("error", "DEFAULT", "text"),
+                      )}
+                    >
                       {fileUpload.error}
                     </span>
                   </div>
                 )}
                 {showProgress && fileUpload.progress !== undefined && (
-                  <div className={cn(getSpacingClass('sm', 'mt'))}>
+                  <div className={cn(getSpacingClass("sm", "mt"))}>
                     <Progress value={fileUpload.progress} size="sm" />
                   </div>
                 )}
               </div>
 
               {!fileUpload.error && !showProgress && (
-                <CheckCircle2 className={cn('h-5', 'w-5', getColorClass('success', 'DEFAULT', 'text'))} />
+                <CheckCircle2
+                  className={cn(
+                    "h-5",
+                    "w-5",
+                    getColorClass("success", "DEFAULT", "text"),
+                  )}
+                />
               )}
 
               <Button

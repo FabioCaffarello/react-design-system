@@ -1,10 +1,15 @@
-'use client';
+"use client";
 
 import type { HTMLAttributes, ReactNode } from "react";
-import { Button } from "../../atoms";
-import { Text } from "../../atoms";
-import { cn } from '../../utils';
-import { getSpacingClass, getColorClass, getTypographySize, getTypographyWeightFromFontWeight } from '../../tokens';
+import { Button } from "../../primitives";
+import { Text } from "../../primitives";
+import { cn } from "../../utils";
+import {
+  getSpacingClass,
+  getColorClass,
+  getTypographySize,
+  getTypographyWeightFromFontWeight,
+} from "../../tokens";
 
 export interface EmptyStateProps extends HTMLAttributes<HTMLDivElement> {
   title: string;
@@ -17,10 +22,10 @@ export interface EmptyStateProps extends HTMLAttributes<HTMLDivElement> {
 
 /**
  * EmptyState Component
- * 
+ *
  * A component for displaying empty states when there's no content to show.
  * Follows Atomic Design principles as a Molecule component.
- * 
+ *
  * @example
  * ```tsx
  * <EmptyState
@@ -42,14 +47,14 @@ export default function EmptyState({
   ...props
 }: EmptyStateProps) {
   const classes = cn(
-    'flex',
-    'flex-col',
-    'items-center',
-    'justify-center',
-    'text-center',
-    getSpacingClass('xl', 'py'),
-    getSpacingClass('base', 'px'),
-    className
+    "flex",
+    "flex-col",
+    "items-center",
+    "justify-center",
+    "text-center",
+    getSpacingClass("xl", "py"),
+    getSpacingClass("base", "px"),
+    className,
   );
 
   const showAction = variant === "withAction" || (actionLabel && onAction);
@@ -64,35 +69,35 @@ export default function EmptyState({
       {...props}
     >
       {showIllustration && illustration && (
-        <div className={cn(getSpacingClass('base', 'mb'))} aria-hidden="true">
+        <div className={cn(getSpacingClass("base", "mb"))} aria-hidden="true">
           {illustration}
         </div>
       )}
-      
-      <Text 
-        as="h3" 
+
+      <Text
+        as="h3"
         className={cn(
-          getTypographySize('h4'),
-          getTypographyWeightFromFontWeight('semibold'),
-          getColorClass('neutral', 'dark', 'text'),
-          getSpacingClass('sm', 'mb')
+          getTypographySize("h4"),
+          getTypographyWeightFromFontWeight("semibold"),
+          getColorClass("neutral", "dark", "text"),
+          getSpacingClass("sm", "mb"),
         )}
       >
         {title}
       </Text>
-      
-      <Text 
-        as="p" 
+
+      <Text
+        as="p"
         className={cn(
-          getTypographySize('bodySmall'),
-          getColorClass('neutral', 'DEFAULT', 'text'),
-          getSpacingClass('md', 'mb'),
-          'max-w-sm' // Max width utility - justified as layout constraint
+          getTypographySize("bodySmall"),
+          getColorClass("neutral", "DEFAULT", "text"),
+          getSpacingClass("md", "mb"),
+          "max-w-sm", // Max width utility - justified as layout constraint
         )}
       >
         {message}
       </Text>
-      
+
       {showAction && actionLabel && onAction && (
         <Button variant="primary" onClick={onAction}>
           {actionLabel}

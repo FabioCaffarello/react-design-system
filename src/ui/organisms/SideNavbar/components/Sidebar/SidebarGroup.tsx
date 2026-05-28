@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef } from 'react';
-import { useSidebarRequired } from '../../contexts/SidebarContext';
-import { useSideNavbarStateRequired } from '../../contexts/SideNavbarStateContext';
-import { useSideNavbarThemeRequired } from '../../contexts/SideNavbarThemeContext';
-import Collapsible from '../../../../atoms/Collapsible/Collapsible';
-import type { SidebarGroupProps } from '../../types';
+import React, { useEffect, useRef } from "react";
+import { useSidebarRequired } from "../../contexts/SidebarContext";
+import { useSideNavbarStateRequired } from "../../contexts/SideNavbarStateContext";
+import { useSideNavbarThemeRequired } from "../../contexts/SideNavbarThemeContext";
+import Collapsible from "../../../../primitives/Collapsible/Collapsible";
+import type { SidebarGroupProps } from "../../types";
 
 /**
  * Group component for the Sidebar subcomponent
@@ -33,11 +33,16 @@ export default function SidebarGroup({
   collapsible = true,
   defaultCollapsed = false,
   children,
-  className = '',
+  className = "",
   ...props
 }: SidebarGroupProps) {
-  const { collapsed: sidebarCollapsed, activeGroup, setActiveGroup } = useSidebarRequired();
-  const { groupStates, toggleGroup, setGroupCollapsed } = useSideNavbarStateRequired();
+  const {
+    collapsed: sidebarCollapsed,
+    activeGroup,
+    setActiveGroup,
+  } = useSidebarRequired();
+  const { groupStates, toggleGroup, setGroupCollapsed } =
+    useSideNavbarStateRequired();
   const { animationDuration } = useSideNavbarThemeRequired();
   const hasInitialized = useRef(false);
 
@@ -95,8 +100,8 @@ export default function SidebarGroup({
             text-left
             transition-colors
             duration-150
-            ${isActive ? 'bg-gray-100' : 'hover:bg-gray-100'}
-            ${!collapsible ? 'cursor-default' : 'cursor-pointer'}
+            ${isActive ? "bg-gray-100" : "hover:bg-gray-100"}
+            ${!collapsible ? "cursor-default" : "cursor-pointer"}
           `}
           aria-expanded={collapsible ? !isCollapsed : undefined}
           aria-controls={collapsible ? `sidebar-group-${id}` : undefined}
@@ -114,7 +119,7 @@ export default function SidebarGroup({
                   h-4
                   text-gray-400
                   transition-transform
-                  ${isCollapsed ? '-rotate-90' : 'rotate-0'}
+                  ${isCollapsed ? "-rotate-90" : "rotate-0"}
                 `}
                 style={{ transitionDuration: `${animationDuration}ms` }}
                 aria-hidden="true"

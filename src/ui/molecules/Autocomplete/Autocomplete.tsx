@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect, forwardRef } from 'react';
-import Input from '../../atoms/Input/Input';
-import { ChevronDown, Loader2 } from 'lucide-react';
-import AutocompleteOption from './AutocompleteOption';
-import AutocompleteList from './AutocompleteList';
-import type { AutocompleteOptionType } from './AutocompleteOption';
+import { useState, useRef, useEffect, forwardRef } from "react";
+import Input from "../../primitives/Input/Input";
+import { ChevronDown, Loader2 } from "lucide-react";
+import AutocompleteOption from "./AutocompleteOption";
+import AutocompleteList from "./AutocompleteList";
+import type { AutocompleteOptionType } from "./AutocompleteOption";
 
 export type { AutocompleteOptionType as AutocompleteOption };
 
@@ -20,18 +20,21 @@ export interface AutocompleteProps {
   disabled?: boolean;
   emptyMessage?: string;
   debounceMs?: number;
-  filterOptions?: (options: AutocompleteOptionType[], searchValue: string) => AutocompleteOptionType[];
+  filterOptions?: (
+    options: AutocompleteOptionType[],
+    searchValue: string,
+  ) => AutocompleteOptionType[];
   className?: string;
   inputClassName?: string;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
 }
 
 /**
  * Autocomplete Component
- * 
+ *
  * An input component with autocomplete suggestions.
  * Supports keyboard navigation, loading states, and custom filtering.
- * 
+ *
  * @example
  * ```tsx
  * <Autocomplete
@@ -51,24 +54,24 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
       defaultValue,
       onChange,
       onSelect,
-      placeholder = 'Type to search...',
+      placeholder = "Type to search...",
       loading = false,
       disabled = false,
-      emptyMessage = 'No options found',
+      emptyMessage = "No options found",
       debounceMs = 300,
       filterOptions,
-      className = '',
-      inputClassName = '',
-      size = 'md',
+      className = "",
+      inputClassName = "",
+      size = "md",
     },
-    ref
+    ref,
   ) {
     const [internalValue, setInternalValue] = useState<string>(
-      typeof defaultValue === 'string' ? defaultValue : ''
+      typeof defaultValue === "string" ? defaultValue : "",
     );
     const [isOpen, setIsOpen] = useState(false);
     const [highlightedIndex, setHighlightedIndex] = useState(-1);
-    const [searchValue, setSearchValue] = useState('');
+    const [searchValue, setSearchValue] = useState("");
     const containerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const listRef = useRef<HTMLDivElement>(null);
@@ -89,7 +92,7 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
 
       // Default filter: case-insensitive search in label
       return options.filter((option) =>
-        option.label.toLowerCase().includes(searchValue.toLowerCase())
+        option.label.toLowerCase().includes(searchValue.toLowerCase()),
       );
     };
 
@@ -137,32 +140,35 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
     // Handle keyboard navigation
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (!isOpen || filteredOptions.length === 0) {
-        if (e.key === 'ArrowDown' || e.key === 'Enter') {
+        if (e.key === "ArrowDown" || e.key === "Enter") {
           setIsOpen(true);
         }
         return;
       }
 
       switch (e.key) {
-        case 'ArrowDown':
+        case "ArrowDown":
           e.preventDefault();
           setHighlightedIndex((prev) =>
-            prev < filteredOptions.length - 1 ? prev + 1 : 0
+            prev < filteredOptions.length - 1 ? prev + 1 : 0,
           );
           break;
-        case 'ArrowUp':
+        case "ArrowUp":
           e.preventDefault();
           setHighlightedIndex((prev) =>
-            prev > 0 ? prev - 1 : filteredOptions.length - 1
+            prev > 0 ? prev - 1 : filteredOptions.length - 1,
           );
           break;
-        case 'Enter':
+        case "Enter":
           e.preventDefault();
-          if (highlightedIndex >= 0 && highlightedIndex < filteredOptions.length) {
+          if (
+            highlightedIndex >= 0 &&
+            highlightedIndex < filteredOptions.length
+          ) {
             handleSelect(filteredOptions[highlightedIndex]);
           }
           break;
-        case 'Escape':
+        case "Escape":
           e.preventDefault();
           setIsOpen(false);
           setHighlightedIndex(-1);
@@ -184,18 +190,22 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
         }
       };
 
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
     }, [isOpen]);
 
     // Scroll highlighted item into view
     useEffect(() => {
       if (highlightedIndex >= 0 && listRef.current) {
         const items = listRef.current.querySelectorAll('[role="option"]');
-        if (items[highlightedIndex] && typeof items[highlightedIndex].scrollIntoView === 'function') {
+        if (
+          items[highlightedIndex] &&
+          typeof items[highlightedIndex].scrollIntoView === "function"
+        ) {
           items[highlightedIndex].scrollIntoView({
-            block: 'nearest',
-            behavior: 'smooth',
+            block: "nearest",
+            behavior: "smooth",
           });
         }
       }
@@ -211,7 +221,7 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
           setSearchValue(currentValue);
         }
       } else {
-        setSearchValue('');
+        setSearchValue("");
       }
     }, [currentValue, options]);
 
@@ -234,7 +244,7 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
             ) : (
               <ChevronDown
                 className={`h-4 w-4 transition-transform ${
-                  isOpen ? 'rotate-180' : ''
+                  isOpen ? "rotate-180" : ""
                 }`}
               />
             )
@@ -255,9 +265,9 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
-Autocomplete.displayName = 'Autocomplete';
+Autocomplete.displayName = "Autocomplete";
 
 export default Autocomplete;

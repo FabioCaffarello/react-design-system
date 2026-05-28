@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import type { HTMLAttributes } from 'react';
-import { useState } from 'react';
-import { Input, Select, Label, Button } from '../../../atoms';
-import { X, Filter } from 'lucide-react';
+import type { HTMLAttributes } from "react";
+import { useState } from "react";
+import { Input, Select, Label, Button } from "../../../primitives";
+import { X, Filter } from "lucide-react";
 
-export type FilterType = 'text' | 'select' | 'date';
+export type FilterType = "text" | "select" | "date";
 
 export interface FilterConfig {
   key: string;
@@ -26,10 +26,10 @@ export interface TableFiltersProps extends HTMLAttributes<HTMLDivElement> {
 
 /**
  * TableFilters Component
- * 
+ *
  * Filter controls for tables with support for text, select, and date filters.
  * Follows Atomic Design principles as a Molecule component.
- * 
+ *
  * @example
  * ```tsx
  * <TableFilters
@@ -46,14 +46,15 @@ export default function TableFilters({
   onFilter,
   initialValues = {},
   showClearAll = true,
-  className = '',
+  className = "",
   ...props
 }: TableFiltersProps) {
-  const [filterValues, setFilterValues] = useState<Record<string, FilterValue>>(initialValues);
+  const [filterValues, setFilterValues] =
+    useState<Record<string, FilterValue>>(initialValues);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const hasActiveFilters = Object.values(filterValues).some(
-    (value) => value !== '' && value !== null && value !== undefined
+    (value) => value !== "" && value !== null && value !== undefined,
   );
 
   const handleFilterChange = (key: string, value: FilterValue) => {
@@ -65,24 +66,27 @@ export default function TableFilters({
   const handleClearAll = () => {
     const clearedFilters: Record<string, FilterValue> = {};
     filters.forEach((filter) => {
-      clearedFilters[filter.key] = '';
+      clearedFilters[filter.key] = "";
     });
     setFilterValues(clearedFilters);
     onFilter(clearedFilters);
   };
 
   const handleClearFilter = (key: string) => {
-    const newFilters = { ...filterValues, [key]: '' };
+    const newFilters = { ...filterValues, [key]: "" };
     setFilterValues(newFilters);
     onFilter(newFilters);
   };
 
   const activeFilterCount = Object.values(filterValues).filter(
-    (value) => value !== '' && value !== null && value !== undefined
+    (value) => value !== "" && value !== null && value !== undefined,
   ).length;
 
   return (
-    <div className={`bg-white border-b border-gray-200 ${className}`} {...props}>
+    <div
+      className={`bg-white border-b border-gray-200 ${className}`}
+      {...props}
+    >
       <div className="px-4 py-3 sm:px-6">
         <div className="flex items-center justify-between">
           <button
@@ -114,7 +118,7 @@ export default function TableFilters({
         {isExpanded && (
           <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {filters.map((filter) => {
-              const value = filterValues[filter.key] || '';
+              const value = filterValues[filter.key] || "";
 
               return (
                 <div key={filter.key} className="space-y-1">
@@ -122,28 +126,35 @@ export default function TableFilters({
                     {filter.label}
                   </Label>
                   <div className="relative">
-                    {filter.type === 'text' && (
+                    {filter.type === "text" && (
                       <Input
                         id={`filter-${filter.key}`}
                         type="text"
                         value={value}
-                        onChange={(e) => handleFilterChange(filter.key, e.target.value)}
-                        placeholder={filter.placeholder || `Filter by ${filter.label.toLowerCase()}`}
+                        onChange={(e) =>
+                          handleFilterChange(filter.key, e.target.value)
+                        }
+                        placeholder={
+                          filter.placeholder ||
+                          `Filter by ${filter.label.toLowerCase()}`
+                        }
                         size="sm"
                         variant="outlined"
                       />
                     )}
 
-                    {filter.type === 'select' && (
+                    {filter.type === "select" && (
                       <div className="relative">
                         <Select
                           id={`filter-${filter.key}`}
                           options={[
-                            { value: '', label: `All ${filter.label}` },
+                            { value: "", label: `All ${filter.label}` },
                             ...(filter.options || []),
                           ]}
                           value={value}
-                          onChange={(e) => handleFilterChange(filter.key, e.target.value)}
+                          onChange={(e) =>
+                            handleFilterChange(filter.key, e.target.value)
+                          }
                         />
                         {value && (
                           <button
@@ -158,18 +169,20 @@ export default function TableFilters({
                       </div>
                     )}
 
-                    {filter.type === 'date' && (
+                    {filter.type === "date" && (
                       <Input
                         id={`filter-${filter.key}`}
                         type="date"
                         value={value}
-                        onChange={(e) => handleFilterChange(filter.key, e.target.value)}
+                        onChange={(e) =>
+                          handleFilterChange(filter.key, e.target.value)
+                        }
                         size="sm"
                         variant="outlined"
                       />
                     )}
 
-                    {value && filter.type !== 'select' && (
+                    {value && filter.type !== "select" && (
                       <button
                         type="button"
                         onClick={() => handleClearFilter(filter.key)}

@@ -1,16 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { expect, within, waitFor } from '@storybook/test';
-import { DashboardLayout } from './DashboardLayout';
-import { Button, Text } from '../../atoms';
-import { SideNavbar } from '../../organisms';
-import { Home, Settings, Users, FileText } from 'lucide-react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { expect, within, waitFor } from "@storybook/test";
+import { DashboardLayout } from "./DashboardLayout";
+import { Button, Text } from "../../primitives";
+import { SideNavbar } from "../../organisms";
+import { Home, Settings, Users, FileText } from "lucide-react";
 
 const meta: Meta<typeof DashboardLayout> = {
-  title: 'Templates/DashboardLayout',
+  title: "Templates/DashboardLayout",
   component: DashboardLayout,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
-    layout: 'fullscreen',
+    layout: "fullscreen",
     docs: {
       description: {
         component: `
@@ -45,8 +45,8 @@ This template provides a full page structure with header, sidebar, main content,
   },
   argTypes: {
     defaultCollapsed: {
-      control: 'boolean',
-      description: 'Sidebar collapsed by default',
+      control: "boolean",
+      description: "Sidebar collapsed by default",
     },
   },
 };
@@ -56,10 +56,26 @@ type Story = StoryObj<typeof DashboardLayout>;
 
 const mockSidebar = (
   <SideNavbar.Navbar>
-    <SideNavbar.Navbar.Item id="home" icon={<Home className="h-5 w-5" />} label="Home" />
-    <SideNavbar.Navbar.Item id="users" icon={<Users className="h-5 w-5" />} label="Users" />
-    <SideNavbar.Navbar.Item id="documents" icon={<FileText className="h-5 w-5" />} label="Documents" />
-    <SideNavbar.Navbar.Item id="settings" icon={<Settings className="h-5 w-5" />} label="Settings" />
+    <SideNavbar.Navbar.Item
+      id="home"
+      icon={<Home className="h-5 w-5" />}
+      label="Home"
+    />
+    <SideNavbar.Navbar.Item
+      id="users"
+      icon={<Users className="h-5 w-5" />}
+      label="Users"
+    />
+    <SideNavbar.Navbar.Item
+      id="documents"
+      icon={<FileText className="h-5 w-5" />}
+      label="Documents"
+    />
+    <SideNavbar.Navbar.Item
+      id="settings"
+      icon={<Settings className="h-5 w-5" />}
+      label="Settings"
+    />
   </SideNavbar.Navbar>
 );
 
@@ -144,7 +160,8 @@ export const WithEvents: Story = {
     return (
       <div className="space-y-4">
         <p className="text-sm text-gray-600">
-          Toggle sidebar or click navigation items. Check the Actions panel to see events being fired.
+          Toggle sidebar or click navigation items. Check the Actions panel to
+          see events being fired.
         </p>
         <DashboardLayout
           sidebar={mockSidebar}
@@ -157,16 +174,20 @@ export const WithEvents: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await waitFor(async () => {
-      // Use getAllByText since there are multiple "Dashboard" elements
-      const dashboardElements = canvas.getAllByText(/dashboard/i);
-      expect(dashboardElements.length).toBeGreaterThan(0);
-    }, { timeout: 3000 });
+    await waitFor(
+      async () => {
+        // Use getAllByText since there are multiple "Dashboard" elements
+        const dashboardElements = canvas.getAllByText(/dashboard/i);
+        expect(dashboardElements.length).toBeGreaterThan(0);
+      },
+      { timeout: 3000 },
+    );
   },
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates layout events. Toggle sidebar or click navigation items and check the Actions panel to see events being logged.',
+        story:
+          "Demonstrates layout events. Toggle sidebar or click navigation items and check the Actions panel to see events being logged.",
       },
     },
   },
@@ -211,7 +232,8 @@ export const DefaultState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Default state - full layout with sidebar, header, content, and footer.',
+        story:
+          "Default state - full layout with sidebar, header, content, and footer.",
       },
     },
   },
@@ -225,7 +247,7 @@ export const CollapsedState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Collapsed state - sidebar is collapsed by default.',
+        story: "Collapsed state - sidebar is collapsed by default.",
       },
     },
   },
@@ -241,7 +263,7 @@ export const NoSidebarState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'No sidebar state - sidebar is not visible.',
+        story: "No sidebar state - sidebar is not visible.",
       },
     },
   },
@@ -260,7 +282,7 @@ export const MinimalState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Minimal state - no header or footer, only sidebar and content.',
+        story: "Minimal state - no header or footer, only sidebar and content.",
       },
     },
   },

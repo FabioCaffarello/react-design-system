@@ -1,15 +1,15 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
-import { expect, within, waitFor } from '@storybook/test';
-import { useState } from 'react';
-import { FormWizardPattern } from './FormWizardPattern';
-import { Input, Checkbox } from '../../atoms';
-import type { FormWizardStep } from './FormWizardPattern';
+import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
+import { expect, within, waitFor } from "@storybook/test";
+import { useState } from "react";
+import { FormWizardPattern } from "./FormWizardPattern";
+import { Input, Checkbox } from "../../primitives";
+import type { FormWizardStep } from "./FormWizardPattern";
 
 const meta: Meta<typeof FormWizardPattern> = {
-  title: 'Patterns/FormWizardPattern',
+  title: "Patterns/FormWizardPattern",
   component: FormWizardPattern,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -75,12 +75,12 @@ graph TB
   },
   argTypes: {
     allowBackNavigation: {
-      control: 'boolean',
-      description: 'Allow navigation to previous steps',
+      control: "boolean",
+      description: "Allow navigation to previous steps",
     },
     showStepNumbers: {
-      control: 'boolean',
-      description: 'Show step numbers',
+      control: "boolean",
+      description: "Show step numbers",
     },
   },
 };
@@ -91,9 +91,9 @@ type Story = StoryObj<typeof FormWizardPattern>;
 // Example steps
 const _createBasicSteps = (): FormWizardStep[] => {
   const [personalInfo, setPersonalInfo] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
+    firstName: "",
+    lastName: "",
+    email: "",
   });
 
   const [preferences, setPreferences] = useState({
@@ -105,8 +105,8 @@ const _createBasicSteps = (): FormWizardStep[] => {
 
   return [
     {
-      label: 'Personal Information',
-      description: 'Enter your personal details',
+      label: "Personal Information",
+      description: "Enter your personal details",
       fields: (
         <div className="space-y-4">
           <Input
@@ -140,13 +140,13 @@ const _createBasicSteps = (): FormWizardStep[] => {
         return (
           personalInfo.firstName.length > 0 &&
           personalInfo.lastName.length > 0 &&
-          personalInfo.email.includes('@')
+          personalInfo.email.includes("@")
         );
       },
     },
     {
-      label: 'Preferences',
-      description: 'Choose your preferences',
+      label: "Preferences",
+      description: "Choose your preferences",
       fields: (
         <div className="space-y-4">
           <Checkbox
@@ -167,8 +167,8 @@ const _createBasicSteps = (): FormWizardStep[] => {
       ),
     },
     {
-      label: 'Review',
-      description: 'Review your information',
+      label: "Review",
+      description: "Review your information",
       fields: (
         <div className="space-y-2">
           <p className="text-sm text-gray-600">
@@ -183,9 +183,9 @@ const _createBasicSteps = (): FormWizardStep[] => {
 export const Default: Story = {
   render: () => {
     const [personalInfo, setPersonalInfo] = useState({
-      firstName: '',
-      lastName: '',
-      email: '',
+      firstName: "",
+      lastName: "",
+      email: "",
     });
 
     const [preferences, setPreferences] = useState({
@@ -195,8 +195,8 @@ export const Default: Story = {
 
     const steps: FormWizardStep[] = [
       {
-        label: 'Personal Information',
-        description: 'Enter your personal details',
+        label: "Personal Information",
+        description: "Enter your personal details",
         fields: (
           <div className="space-y-4">
             <Input
@@ -230,13 +230,13 @@ export const Default: Story = {
           return (
             personalInfo.firstName.length > 0 &&
             personalInfo.lastName.length > 0 &&
-            personalInfo.email.includes('@')
+            personalInfo.email.includes("@")
           );
         },
       },
       {
-        label: 'Preferences',
-        description: 'Choose your preferences',
+        label: "Preferences",
+        description: "Choose your preferences",
         fields: (
           <div className="space-y-4">
             <Checkbox
@@ -257,21 +257,24 @@ export const Default: Story = {
         ),
       },
       {
-        label: 'Review',
-        description: 'Review your information',
+        label: "Review",
+        description: "Review your information",
         fields: (
           <div className="space-y-2">
             <p className="text-sm text-gray-600">
-              <strong>Name:</strong> {personalInfo.firstName} {personalInfo.lastName}
+              <strong>Name:</strong> {personalInfo.firstName}{" "}
+              {personalInfo.lastName}
             </p>
             <p className="text-sm text-gray-600">
               <strong>Email:</strong> {personalInfo.email}
             </p>
             <p className="text-sm text-gray-600">
-              <strong>Newsletter:</strong> {preferences.newsletter ? 'Yes' : 'No'}
+              <strong>Newsletter:</strong>{" "}
+              {preferences.newsletter ? "Yes" : "No"}
             </p>
             <p className="text-sm text-gray-600">
-              <strong>Notifications:</strong> {preferences.notifications ? 'Yes' : 'No'}
+              <strong>Notifications:</strong>{" "}
+              {preferences.notifications ? "Yes" : "No"}
             </p>
           </div>
         ),
@@ -282,8 +285,8 @@ export const Default: Story = {
       <FormWizardPattern
         steps={steps}
         onComplete={(data) => {
-          alert('Wizard completed!');
-          console.log('Form data:', data);
+          alert("Wizard completed!");
+          console.log("Form data:", data);
         }}
       />
     );
@@ -292,13 +295,13 @@ export const Default: Story = {
 
 export const WithoutBackNavigation: Story = {
   render: () => {
-    const [step1, setStep1] = useState('');
-    const [step2, setStep2] = useState('');
+    const [step1, setStep1] = useState("");
+    const [step2, setStep2] = useState("");
 
     const steps: FormWizardStep[] = [
       {
-        label: 'Step 1',
-        description: 'First step',
+        label: "Step 1",
+        description: "First step",
         fields: (
           <Input
             label="Field 1"
@@ -308,8 +311,8 @@ export const WithoutBackNavigation: Story = {
         ),
       },
       {
-        label: 'Step 2',
-        description: 'Second step',
+        label: "Step 2",
+        description: "Second step",
         fields: (
           <Input
             label="Field 2"
@@ -328,22 +331,22 @@ export const WithoutBackNavigation: Story = {
 export const WithEvents: Story = {
   render: () => {
     const [personalInfo, setPersonalInfo] = useState({
-      firstName: '',
-      lastName: '',
-      email: '',
+      firstName: "",
+      lastName: "",
+      email: "",
     });
 
     const handleComplete = fn((data: Record<string, unknown>) => {
-      console.log('Wizard completed!', data);
+      console.log("Wizard completed!", data);
     });
     const _handleStepChange = fn((stepIndex: number) => {
-      console.log('Step changed:', stepIndex);
+      console.log("Step changed:", stepIndex);
     });
 
     const steps: FormWizardStep[] = [
       {
-        label: 'Personal Information',
-        description: 'Enter your personal details',
+        label: "Personal Information",
+        description: "Enter your personal details",
         fields: (
           <div className="space-y-4">
             <Input
@@ -366,8 +369,8 @@ export const WithEvents: Story = {
         ),
       },
       {
-        label: 'Review',
-        description: 'Review your information',
+        label: "Review",
+        description: "Review your information",
         fields: (
           <div className="space-y-2">
             <p className="text-sm text-gray-600">
@@ -381,30 +384,32 @@ export const WithEvents: Story = {
     return (
       <div className="space-y-4">
         <p className="text-sm text-gray-600">
-          Navigate through steps or complete the wizard. Check the Actions panel to see events being fired.
+          Navigate through steps or complete the wizard. Check the Actions panel
+          to see events being fired.
         </p>
-        <FormWizardPattern
-          steps={steps}
-          onComplete={handleComplete}
-        />
+        <FormWizardPattern steps={steps} onComplete={handleComplete} />
       </div>
     );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     // Wait for the wizard to render - check for any visible content
-    await waitFor(() => {
-      // Check for form fields or step content
-      const firstNameInput = canvas.queryByLabelText(/first name/i);
-      const lastNameInput = canvas.queryByLabelText(/last name/i);
-      // At least one input should be present to confirm wizard is rendered
-      expect(firstNameInput || lastNameInput).toBeInTheDocument();
-    }, { timeout: 5000 });
+    await waitFor(
+      () => {
+        // Check for form fields or step content
+        const firstNameInput = canvas.queryByLabelText(/first name/i);
+        const lastNameInput = canvas.queryByLabelText(/last name/i);
+        // At least one input should be present to confirm wizard is rendered
+        expect(firstNameInput || lastNameInput).toBeInTheDocument();
+      },
+      { timeout: 5000 },
+    );
   },
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates wizard events. Navigate steps or complete the wizard and check the Actions panel to see events being logged.',
+        story:
+          "Demonstrates wizard events. Navigate steps or complete the wizard and check the Actions panel to see events being logged.",
       },
     },
   },
@@ -414,15 +419,15 @@ export const WithEvents: Story = {
 export const DefaultState: Story = {
   render: () => {
     const [personalInfo, setPersonalInfo] = useState({
-      firstName: '',
-      lastName: '',
-      email: '',
+      firstName: "",
+      lastName: "",
+      email: "",
     });
 
     const steps: FormWizardStep[] = [
       {
-        label: 'Personal Information',
-        description: 'Enter your personal details',
+        label: "Personal Information",
+        description: "Enter your personal details",
         fields: (
           <div className="space-y-4">
             <Input
@@ -451,7 +456,7 @@ export const DefaultState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Default state - wizard with first step active.',
+        story: "Default state - wizard with first step active.",
       },
     },
   },
@@ -462,13 +467,13 @@ export const WithBackNavigationState: Story = {
     allowBackNavigation: true,
   },
   render: (args) => {
-    const [step1, setStep1] = useState('');
-    const [step2, setStep2] = useState('');
+    const [step1, setStep1] = useState("");
+    const [step2, setStep2] = useState("");
 
     const steps: FormWizardStep[] = [
       {
-        label: 'Step 1',
-        description: 'First step',
+        label: "Step 1",
+        description: "First step",
         fields: (
           <Input
             label="Field 1"
@@ -478,8 +483,8 @@ export const WithBackNavigationState: Story = {
         ),
       },
       {
-        label: 'Step 2',
-        description: 'Second step',
+        label: "Step 2",
+        description: "Second step",
         fields: (
           <Input
             label="Field 2"
@@ -495,7 +500,8 @@ export const WithBackNavigationState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'With back navigation state - allows navigating to previous steps.',
+        story:
+          "With back navigation state - allows navigating to previous steps.",
       },
     },
   },
@@ -506,13 +512,13 @@ export const WithoutBackNavigationState: Story = {
     allowBackNavigation: false,
   },
   render: (args) => {
-    const [step1, setStep1] = useState('');
-    const [step2, setStep2] = useState('');
+    const [step1, setStep1] = useState("");
+    const [step2, setStep2] = useState("");
 
     const steps: FormWizardStep[] = [
       {
-        label: 'Step 1',
-        description: 'First step',
+        label: "Step 1",
+        description: "First step",
         fields: (
           <Input
             label="Field 1"
@@ -522,8 +528,8 @@ export const WithoutBackNavigationState: Story = {
         ),
       },
       {
-        label: 'Step 2',
-        description: 'Second step',
+        label: "Step 2",
+        description: "Second step",
         fields: (
           <Input
             label="Field 2"
@@ -539,7 +545,8 @@ export const WithoutBackNavigationState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Without back navigation state - does not allow navigating to previous steps.',
+        story:
+          "Without back navigation state - does not allow navigating to previous steps.",
       },
     },
   },

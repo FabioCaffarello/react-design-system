@@ -1,12 +1,14 @@
-'use client';
+"use client";
 
-import type { HTMLAttributes } from 'react';
-import { useTableContext } from './TableContext';
-import { Checkbox } from '../../atoms';
-import TableCell from './TableCell';
-import TableActions from './TableActions';
+import type { HTMLAttributes } from "react";
+import { useTableContext } from "./TableContext";
+import { Checkbox } from "../../primitives";
+import TableCell from "./TableCell";
+import TableActions from "./TableActions";
 
-export interface TableRowProps<T extends Record<string, unknown> = Record<string, unknown>> extends Omit<HTMLAttributes<HTMLTableRowElement>, 'style'> {
+export interface TableRowProps<
+  T extends Record<string, unknown> = Record<string, unknown>,
+> extends Omit<HTMLAttributes<HTMLTableRowElement>, "style"> {
   row: T;
   rowIndex: number;
   style?: React.CSSProperties;
@@ -15,15 +17,17 @@ export interface TableRowProps<T extends Record<string, unknown> = Record<string
 
 /**
  * TableRow Component
- * 
+ *
  * Renders a table row (tr) with cells.
  * Supports selection and row click.
  * Must be used within a Table component.
  */
-export default function TableRow<T extends Record<string, unknown> = Record<string, unknown>>({
+export default function TableRow<
+  T extends Record<string, unknown> = Record<string, unknown>,
+>({
   row,
   rowIndex,
-  className = '',
+  className = "",
   onClick,
   style,
   ...props
@@ -55,7 +59,7 @@ export default function TableRow<T extends Record<string, unknown> = Record<stri
       role="row"
       aria-selected={selectable ? isSelected : undefined}
       aria-rowindex={rowIndex + 1}
-      className={`hover:bg-gray-50 ${isSelected ? 'bg-indigo-50' : ''} ${className}`}
+      className={`hover:bg-gray-50 ${isSelected ? "bg-indigo-50" : ""} ${className}`}
       onClick={handleClick}
       style={style}
       {...props}
@@ -70,11 +74,11 @@ export default function TableRow<T extends Record<string, unknown> = Record<stri
           />
         </td>
       )}
-      
+
       {columns.map((column) => (
         <TableCell key={String(column.key)} column={column} row={row} />
       ))}
-      
+
       {actions && (
         <td className="px-6 py-4 text-right">
           <TableActions row={row} />

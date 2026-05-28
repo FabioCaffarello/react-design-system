@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
-import { expect, within, waitFor } from '@storybook/test';
-import React, { useState } from 'react';
-import SideNavbar from './SideNavbar';
-import { SidebarSlot, SidebarSlotContent } from './components/Sidebar';
-import { SidebarSlotProvider } from './providers/SidebarSlotProvider';
-import Tabs from '../../molecules/Tabs/Tabs';
-import Card from '../../molecules/Card/Card';
-import { Button } from '../../atoms';
+import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
+import { expect, within, waitFor } from "@storybook/test";
+import React, { useState } from "react";
+import SideNavbar from "./SideNavbar";
+import { SidebarSlot, SidebarSlotContent } from "./components/Sidebar";
+import { SidebarSlotProvider } from "./providers/SidebarSlotProvider";
+import Tabs from "../../molecules/Tabs/Tabs";
+import Card from "../../molecules/Card/Card";
+import { Button } from "../../primitives";
 import {
   Home,
   BarChart3,
@@ -17,10 +17,10 @@ import {
   Bell,
   HelpCircle,
   LogOut,
-} from 'lucide-react';
+} from "lucide-react";
 
 const meta: Meta<typeof SideNavbar> = {
-  title: 'Organisms/SideNavbar',
+  title: "Organisms/SideNavbar",
   component: SideNavbar,
   parameters: {
     docs: {
@@ -48,34 +48,34 @@ A collapsible sidebar with navigation icons column (always visible) and expandab
         `,
       },
     },
-    layout: 'fullscreen',
+    layout: "fullscreen",
   },
   argTypes: {
     width: {
-      control: 'text',
-      description: 'Total width when expanded',
+      control: "text",
+      description: "Total width when expanded",
     },
     navigationWidth: {
-      control: 'text',
-      description: 'Width of the navigation column (icons)',
+      control: "text",
+      description: "Width of the navigation column (icons)",
     },
     defaultCollapsed: {
-      control: 'boolean',
-      description: 'Initial collapsed state',
+      control: "boolean",
+      description: "Initial collapsed state",
     },
     variant: {
-      control: 'select',
-      options: ['default', 'compact', 'elevated'],
-      description: 'Visual variant',
+      control: "select",
+      options: ["default", "compact", "elevated"],
+      description: "Visual variant",
     },
     showToggle: {
-      control: 'boolean',
-      description: 'Whether to show the toggle button',
+      control: "boolean",
+      description: "Whether to show the toggle button",
     },
     togglePosition: {
-      control: 'select',
-      options: ['floating', 'top', 'bottom'],
-      description: 'Position of the toggle button',
+      control: "select",
+      options: ["floating", "top", "bottom"],
+      description: "Position of the toggle button",
     },
   },
 };
@@ -92,7 +92,11 @@ const NavigationTabs = ({
   onTabChange: (tab: string) => void;
 }) => (
   <Tabs value={activeTab} onValueChange={onTabChange}>
-    <Tabs.List orientation="vertical" variant="compact" className="w-full p-2 gap-1">
+    <Tabs.List
+      orientation="vertical"
+      variant="compact"
+      className="w-full p-2 gap-1"
+    >
       <Tabs.Trigger
         value="home"
         className="w-full aspect-square flex items-center justify-center p-2 rounded-md"
@@ -128,11 +132,11 @@ const NavigationTabs = ({
 );
 
 const tabLabels: Record<string, string> = {
-  home: 'Home',
-  analytics: 'Analytics',
-  users: 'Users',
-  documents: 'Documents',
-  settings: 'Settings',
+  home: "Home",
+  analytics: "Analytics",
+  users: "Users",
+  documents: "Documents",
+  settings: "Settings",
 };
 
 // Layout wrapper for stories
@@ -142,8 +146,8 @@ const LayoutWrapper = ({ children }: { children: React.ReactNode }) => (
     <div className="flex-1 p-6">
       <h1 className="text-2xl font-bold mb-4">Main Content Area</h1>
       <p className="text-gray-600">
-        Click the toggle button on the sidebar edge to collapse/expand.
-        The navigation icons remain visible when collapsed.
+        Click the toggle button on the sidebar edge to collapse/expand. The
+        navigation icons remain visible when collapsed.
       </p>
     </div>
   </div>
@@ -151,7 +155,7 @@ const LayoutWrapper = ({ children }: { children: React.ReactNode }) => (
 
 /**
  * Default SideNavbar with vertical navigation and toggle on right edge
- * 
+ *
  * This is the recommended usage pattern:
  * - Navigation items are displayed vertically in the navbar
  * - Toggle button is positioned on the right edge of the navbar, vertically centered
@@ -159,7 +163,7 @@ const LayoutWrapper = ({ children }: { children: React.ReactNode }) => (
  */
 export const Default: Story = {
   render: () => {
-    const [activeItem, setActiveItem] = useState('home');
+    const [activeItem, setActiveItem] = useState("home");
 
     return (
       <LayoutWrapper>
@@ -170,30 +174,30 @@ export const Default: Story = {
               id="home"
               icon={<Home className="h-5 w-5" />}
               label="Home"
-              active={activeItem === 'home'}
-              onClick={() => setActiveItem('home')}
+              active={activeItem === "home"}
+              onClick={() => setActiveItem("home")}
             />
             <SideNavbar.Navbar.Item
               id="analytics"
               icon={<BarChart3 className="h-5 w-5" />}
               label="Analytics"
-              active={activeItem === 'analytics'}
-              onClick={() => setActiveItem('analytics')}
+              active={activeItem === "analytics"}
+              onClick={() => setActiveItem("analytics")}
             />
             <SideNavbar.Navbar.Item
               id="users"
               icon={<Users className="h-5 w-5" />}
               label="Users"
               badge={12}
-              active={activeItem === 'users'}
-              onClick={() => setActiveItem('users')}
+              active={activeItem === "users"}
+              onClick={() => setActiveItem("users")}
             />
             <SideNavbar.Navbar.Item
               id="documents"
               icon={<FileText className="h-5 w-5" />}
               label="Documents"
-              active={activeItem === 'documents'}
-              onClick={() => setActiveItem('documents')}
+              active={activeItem === "documents"}
+              onClick={() => setActiveItem("documents")}
             />
 
             <SideNavbar.Navbar.Separator />
@@ -202,24 +206,28 @@ export const Default: Story = {
               id="settings"
               icon={<Settings className="h-5 w-5" />}
               label="Settings"
-              active={activeItem === 'settings'}
-              onClick={() => setActiveItem('settings')}
+              active={activeItem === "settings"}
+              onClick={() => setActiveItem("settings")}
             />
           </SideNavbar.Navbar>
 
           <SideNavbar.Sidebar>
-            <SideNavbar.Sidebar.Header 
+            <SideNavbar.Sidebar.Header
               title={activeItem.charAt(0).toUpperCase() + activeItem.slice(1)}
               subtitle="Main navigation"
             />
             <SideNavbar.Sidebar.Content>
               <div className="space-y-4">
                 <Card>
-                  <h3 className="font-semibold mb-2">Welcome to {activeItem.charAt(0).toUpperCase() + activeItem.slice(1)}</h3>
+                  <h3 className="font-semibold mb-2">
+                    Welcome to{" "}
+                    {activeItem.charAt(0).toUpperCase() + activeItem.slice(1)}
+                  </h3>
                   <p className="text-gray-600">
-                    This is the content area for the {activeItem} section.
-                    Click the toggle button on the right edge of the navbar to collapse/expand the sidebar.
-                    The navigation icons remain visible when collapsed.
+                    This is the content area for the {activeItem} section. Click
+                    the toggle button on the right edge of the navbar to
+                    collapse/expand the sidebar. The navigation icons remain
+                    visible when collapsed.
                   </p>
                 </Card>
               </div>
@@ -232,7 +240,8 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Default SideNavbar with vertical navigation items and toggle button on the right edge. This is the recommended usage pattern.',
+        story:
+          "Default SideNavbar with vertical navigation items and toggle button on the right edge. This is the recommended usage pattern.",
       },
     },
   },
@@ -240,13 +249,13 @@ export const Default: Story = {
 
 /**
  * SideNavbar that starts collapsed
- * 
+ *
  * Shows only the vertical navigation icons. The toggle button on the right edge
  * can be used to expand the sidebar.
  */
 export const Collapsed: Story = {
   render: () => {
-    const [activeItem, setActiveItem] = useState('home');
+    const [activeItem, setActiveItem] = useState("home");
 
     return (
       <LayoutWrapper>
@@ -257,30 +266,30 @@ export const Collapsed: Story = {
               id="home"
               icon={<Home className="h-5 w-5" />}
               label="Home"
-              active={activeItem === 'home'}
-              onClick={() => setActiveItem('home')}
+              active={activeItem === "home"}
+              onClick={() => setActiveItem("home")}
             />
             <SideNavbar.Navbar.Item
               id="analytics"
               icon={<BarChart3 className="h-5 w-5" />}
               label="Analytics"
-              active={activeItem === 'analytics'}
-              onClick={() => setActiveItem('analytics')}
+              active={activeItem === "analytics"}
+              onClick={() => setActiveItem("analytics")}
             />
             <SideNavbar.Navbar.Item
               id="users"
               icon={<Users className="h-5 w-5" />}
               label="Users"
               badge={12}
-              active={activeItem === 'users'}
-              onClick={() => setActiveItem('users')}
+              active={activeItem === "users"}
+              onClick={() => setActiveItem("users")}
             />
             <SideNavbar.Navbar.Item
               id="documents"
               icon={<FileText className="h-5 w-5" />}
               label="Documents"
-              active={activeItem === 'documents'}
-              onClick={() => setActiveItem('documents')}
+              active={activeItem === "documents"}
+              onClick={() => setActiveItem("documents")}
             />
 
             <SideNavbar.Navbar.Separator />
@@ -289,19 +298,20 @@ export const Collapsed: Story = {
               id="settings"
               icon={<Settings className="h-5 w-5" />}
               label="Settings"
-              active={activeItem === 'settings'}
-              onClick={() => setActiveItem('settings')}
+              active={activeItem === "settings"}
+              onClick={() => setActiveItem("settings")}
             />
           </SideNavbar.Navbar>
 
           <SideNavbar.Sidebar>
-            <SideNavbar.Sidebar.Header 
+            <SideNavbar.Sidebar.Header
               title={activeItem.charAt(0).toUpperCase() + activeItem.slice(1)}
             />
             <SideNavbar.Sidebar.Content>
               <Card>
                 <p className="text-gray-600">
-                  The collapsed state is persisted to localStorage. Refresh the page and the sidebar will remember its state.
+                  The collapsed state is persisted to localStorage. Refresh the
+                  page and the sidebar will remember its state.
                 </p>
               </Card>
             </SideNavbar.Sidebar.Content>
@@ -313,7 +323,8 @@ export const Collapsed: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'SideNavbar starting in collapsed state. Only navigation icons are visible. Use the toggle button on the right edge to expand.',
+        story:
+          "SideNavbar starting in collapsed state. Only navigation icons are visible. Use the toggle button on the right edge to expand.",
       },
     },
   },
@@ -324,7 +335,7 @@ export const Collapsed: Story = {
  */
 export const WithHeader: Story = {
   render: () => {
-    const [activeTab, setActiveTab] = useState('analytics');
+    const [activeTab, setActiveTab] = useState("analytics");
 
     return (
       <LayoutWrapper>
@@ -364,7 +375,7 @@ export const WithHeader: Story = {
  */
 export const WithFooter: Story = {
   render: () => {
-    const [activeTab, setActiveTab] = useState('settings');
+    const [activeTab, setActiveTab] = useState("settings");
 
     return (
       <LayoutWrapper>
@@ -417,7 +428,7 @@ export const WithFooter: Story = {
  */
 export const WithHeaderAndFooter: Story = {
   render: () => {
-    const [activeTab, setActiveTab] = useState('users');
+    const [activeTab, setActiveTab] = useState("users");
 
     return (
       <LayoutWrapper>
@@ -433,22 +444,25 @@ export const WithHeaderAndFooter: Story = {
             />
             <SideNavbar.Sidebar.Content>
               <div className="space-y-2">
-                {['Alice Johnson', 'Bob Smith', 'Carol White', 'David Brown'].map(
-                  (name) => (
-                    <div
-                      key={name}
-                      className="flex items-center gap-3 p-3 bg-white rounded-lg border"
-                    >
-                      <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center">
-                        <Users className="w-4 h-4 text-indigo-600" />
-                      </div>
-                      <div>
-                        <p className="font-medium">{name}</p>
-                        <p className="text-sm text-gray-500">Team member</p>
-                      </div>
+                {[
+                  "Alice Johnson",
+                  "Bob Smith",
+                  "Carol White",
+                  "David Brown",
+                ].map((name) => (
+                  <div
+                    key={name}
+                    className="flex items-center gap-3 p-3 bg-white rounded-lg border"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                      <Users className="w-4 h-4 text-indigo-600" />
                     </div>
-                  )
-                )}
+                    <div>
+                      <p className="font-medium">{name}</p>
+                      <p className="text-sm text-gray-500">Team member</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </SideNavbar.Sidebar.Content>
             <SideNavbar.Sidebar.Footer>
@@ -469,15 +483,12 @@ export const WithHeaderAndFooter: Story = {
  */
 export const Controlled: Story = {
   render: () => {
-    const [activeTab, setActiveTab] = useState('home');
+    const [activeTab, setActiveTab] = useState("home");
     const [collapsed, setCollapsed] = useState(false);
 
     return (
       <LayoutWrapper>
-        <SideNavbar
-          collapsed={collapsed}
-          onCollapseChange={setCollapsed}
-        >
+        <SideNavbar collapsed={collapsed} onCollapseChange={setCollapsed}>
           <SideNavbar.Navbar>
             <NavigationTabs activeTab={activeTab} onTabChange={setActiveTab} />
           </SideNavbar.Navbar>
@@ -487,7 +498,8 @@ export const Controlled: Story = {
             <SideNavbar.Sidebar.Content>
               <Card>
                 <p className="mb-4">
-                  Sidebar is currently: <strong>{collapsed ? 'Collapsed' : 'Expanded'}</strong>
+                  Sidebar is currently:{" "}
+                  <strong>{collapsed ? "Collapsed" : "Expanded"}</strong>
                 </p>
                 <Button
                   variant="outline"
@@ -509,7 +521,7 @@ export const Controlled: Story = {
  */
 export const WithPersistence: Story = {
   render: () => {
-    const [activeTab, setActiveTab] = useState('home');
+    const [activeTab, setActiveTab] = useState("home");
 
     return (
       <LayoutWrapper>
@@ -523,8 +535,8 @@ export const WithPersistence: Story = {
             <SideNavbar.Sidebar.Content>
               <Card>
                 <p className="text-sm text-gray-600">
-                  The collapsed state is persisted to localStorage.
-                  Refresh the page and the sidebar will remember its state.
+                  The collapsed state is persisted to localStorage. Refresh the
+                  page and the sidebar will remember its state.
                 </p>
               </Card>
             </SideNavbar.Sidebar.Content>
@@ -540,7 +552,7 @@ export const WithPersistence: Story = {
  */
 export const CustomWidth: Story = {
   render: () => {
-    const [activeTab, setActiveTab] = useState('home');
+    const [activeTab, setActiveTab] = useState("home");
 
     return (
       <LayoutWrapper>
@@ -556,7 +568,8 @@ export const CustomWidth: Story = {
             />
             <SideNavbar.Sidebar.Content>
               <p className="text-gray-600">
-                This sidebar has a custom width of 400px and navigation width of 64px.
+                This sidebar has a custom width of 400px and navigation width of
+                64px.
               </p>
             </SideNavbar.Sidebar.Content>
           </SideNavbar.Sidebar>
@@ -571,17 +584,22 @@ export const CustomWidth: Story = {
  */
 export const Variants: Story = {
   render: () => {
-    const [activeTab, setActiveTab] = useState('home');
+    const [activeTab, setActiveTab] = useState("home");
 
     return (
       <div className="flex h-screen bg-gray-100 gap-4 p-4">
-        {(['default', 'compact', 'elevated'] as const).map((variant) => (
+        {(["default", "compact", "elevated"] as const).map((variant) => (
           <div key={variant} className="flex flex-col">
-            <span className="text-sm font-medium mb-2 capitalize">{variant}</span>
+            <span className="text-sm font-medium mb-2 capitalize">
+              {variant}
+            </span>
             <div className="flex-1 border rounded-lg overflow-hidden">
               <SideNavbar variant={variant} width="200px">
                 <SideNavbar.Navbar>
-                  <NavigationTabs activeTab={activeTab} onTabChange={setActiveTab} />
+                  <NavigationTabs
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
+                  />
                 </SideNavbar.Navbar>
 
                 <SideNavbar.Sidebar>
@@ -604,7 +622,7 @@ export const Variants: Story = {
  */
 export const LongContent: Story = {
   render: () => {
-    const [activeTab, setActiveTab] = useState('documents');
+    const [activeTab, setActiveTab] = useState("documents");
 
     return (
       <LayoutWrapper>
@@ -614,7 +632,10 @@ export const LongContent: Story = {
           </SideNavbar.Navbar>
 
           <SideNavbar.Sidebar>
-            <SideNavbar.Sidebar.Header title="Documents" subtitle="All your files" />
+            <SideNavbar.Sidebar.Header
+              title="Documents"
+              subtitle="All your files"
+            />
             <SideNavbar.Sidebar.Content>
               <div className="space-y-2">
                 {Array.from({ length: 20 }, (_, i) => (
@@ -624,8 +645,12 @@ export const LongContent: Story = {
                   >
                     <FileText className="w-5 h-5 text-gray-400" />
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium truncate">Document {i + 1}.pdf</p>
-                      <p className="text-xs text-gray-500">Modified 2 days ago</p>
+                      <p className="font-medium truncate">
+                        Document {i + 1}.pdf
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Modified 2 days ago
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -646,14 +671,17 @@ export const LongContent: Story = {
  */
 export const WithBottomNavigation: Story = {
   render: () => {
-    const [activeTab, setActiveTab] = useState('home');
+    const [activeTab, setActiveTab] = useState("home");
 
     return (
       <LayoutWrapper>
         <SideNavbar>
           <SideNavbar.Navbar>
             <div className="flex flex-col h-full">
-              <NavigationTabs activeTab={activeTab} onTabChange={setActiveTab} />
+              <NavigationTabs
+                activeTab={activeTab}
+                onTabChange={setActiveTab}
+              />
               <div className="mt-auto p-2 space-y-1">
                 <button className="w-full aspect-square flex items-center justify-center p-2 rounded-md text-gray-500 hover:bg-gray-100">
                   <Bell className="h-5 w-5" />
@@ -672,8 +700,8 @@ export const WithBottomNavigation: Story = {
             <SideNavbar.Sidebar.Header title={tabLabels[activeTab]} />
             <SideNavbar.Sidebar.Content>
               <p className="text-gray-600">
-                The navigation column has additional icons at the bottom
-                for notifications, help, and logout.
+                The navigation column has additional icons at the bottom for
+                notifications, help, and logout.
               </p>
             </SideNavbar.Sidebar.Content>
           </SideNavbar.Sidebar>
@@ -685,14 +713,14 @@ export const WithBottomNavigation: Story = {
 
 /**
  * SideNavbar using Navbar.Item compound component with badges and variants
- * 
+ *
  * Demonstrates the recommended pattern: navigation items are placed directly
  * in the Navbar component, which automatically arranges them vertically.
  * The toggle button is positioned on the right edge of the navbar.
  */
 export const WithNavbarItems: Story = {
   render: () => {
-    const [activeItem, setActiveItem] = useState('home');
+    const [activeItem, setActiveItem] = useState("home");
 
     return (
       <LayoutWrapper>
@@ -703,15 +731,15 @@ export const WithNavbarItems: Story = {
               id="home"
               icon={<Home className="h-5 w-5" />}
               label="Home"
-              active={activeItem === 'home'}
-              onClick={() => setActiveItem('home')}
+              active={activeItem === "home"}
+              onClick={() => setActiveItem("home")}
             />
             <SideNavbar.Navbar.Item
               id="analytics"
               icon={<BarChart3 className="h-5 w-5" />}
               label="Analytics"
-              active={activeItem === 'analytics'}
-              onClick={() => setActiveItem('analytics')}
+              active={activeItem === "analytics"}
+              onClick={() => setActiveItem("analytics")}
             />
             <SideNavbar.Navbar.Item
               id="users"
@@ -719,15 +747,15 @@ export const WithNavbarItems: Story = {
               label="Users"
               badge={12}
               badgeVariant="default"
-              active={activeItem === 'users'}
-              onClick={() => setActiveItem('users')}
+              active={activeItem === "users"}
+              onClick={() => setActiveItem("users")}
             />
             <SideNavbar.Navbar.Item
               id="documents"
               icon={<FileText className="h-5 w-5" />}
               label="Documents"
-              active={activeItem === 'documents'}
-              onClick={() => setActiveItem('documents')}
+              active={activeItem === "documents"}
+              onClick={() => setActiveItem("documents")}
             />
 
             <SideNavbar.Navbar.Separator />
@@ -740,7 +768,7 @@ export const WithNavbarItems: Story = {
                 label="Notifications"
                 badge={3}
                 badgeVariant="danger"
-                onClick={() => setActiveItem('notifications')}
+                onClick={() => setActiveItem("notifications")}
               />
               <SideNavbar.Navbar.Item
                 id="help"
@@ -752,8 +780,8 @@ export const WithNavbarItems: Story = {
                 id="settings"
                 icon={<Settings className="h-5 w-5" />}
                 label="Settings"
-                active={activeItem === 'settings'}
-                onClick={() => setActiveItem('settings')}
+                active={activeItem === "settings"}
+                onClick={() => setActiveItem("settings")}
               />
             </div>
           </SideNavbar.Navbar>
@@ -766,20 +794,23 @@ export const WithNavbarItems: Story = {
             <SideNavbar.Sidebar.Content>
               <Card>
                 <p className="text-gray-600">
-                  This example uses <code>SideNavbar.Navbar.Item</code> compound component
-                  which supports:
+                  This example uses <code>SideNavbar.Navbar.Item</code> compound
+                  component which supports:
                 </p>
                 <ul className="list-disc list-inside mt-2 text-sm text-gray-600 space-y-1">
                   <li>Active state management</li>
-                  <li>Badges with variants (default, success, warning, danger)</li>
+                  <li>
+                    Badges with variants (default, success, warning, danger)
+                  </li>
                   <li>Tooltips on hover (when collapsed)</li>
                   <li>Link support with href</li>
                   <li>Disabled state</li>
                   <li>Multiple sizes (sm, md, lg)</li>
                 </ul>
                 <p className="text-sm text-gray-500 mt-4">
-                  <strong>Note:</strong> Navigation items are automatically arranged vertically.
-                  The toggle button is positioned on the right edge of the navbar.
+                  <strong>Note:</strong> Navigation items are automatically
+                  arranged vertically. The toggle button is positioned on the
+                  right edge of the navbar.
                 </p>
               </Card>
             </SideNavbar.Sidebar.Content>
@@ -791,7 +822,8 @@ export const WithNavbarItems: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates the recommended usage pattern with Navbar.Item components. Items are automatically arranged vertically, and the toggle button is on the right edge.',
+        story:
+          "Demonstrates the recommended usage pattern with Navbar.Item components. Items are automatically arranged vertically, and the toggle button is on the right edge.",
       },
     },
   },
@@ -800,7 +832,7 @@ export const WithNavbarItems: Story = {
 // Event Stories
 export const WithEvents: Story = {
   render: () => {
-    const [activeTab, setActiveTab] = useState('home');
+    const [activeTab, setActiveTab] = useState("home");
     const [collapsed, setCollapsed] = useState(false);
     const handleCollapseChange = fn((newCollapsed: boolean) => {
       setCollapsed(newCollapsed);
@@ -820,10 +852,11 @@ export const WithEvents: Story = {
             <SideNavbar.Sidebar.Content>
               <Card>
                 <p className="text-sm text-gray-600">
-                  Toggle the sidebar. Check the Actions panel to see events being fired.
+                  Toggle the sidebar. Check the Actions panel to see events
+                  being fired.
                 </p>
                 <p className="text-sm text-gray-500 mt-2">
-                  Collapsed: {collapsed ? 'Yes' : 'No'}
+                  Collapsed: {collapsed ? "Yes" : "No"}
                 </p>
               </Card>
             </SideNavbar.Sidebar.Content>
@@ -836,13 +869,14 @@ export const WithEvents: Story = {
     const canvas = within(canvasElement);
     // Wait for sidebar to be rendered
     await waitFor(() => {
-      expect(canvas.getByText('Home')).toBeInTheDocument();
+      expect(canvas.getByText("Home")).toBeInTheDocument();
     });
   },
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates sidebar events. Toggle the sidebar and check the Actions panel to see events being logged.',
+        story:
+          "Demonstrates sidebar events. Toggle the sidebar and check the Actions panel to see events being logged.",
       },
     },
   },
@@ -851,7 +885,7 @@ export const WithEvents: Story = {
 // State Stories
 export const ExpandedState: Story = {
   render: () => {
-    const [activeTab, setActiveTab] = useState('home');
+    const [activeTab, setActiveTab] = useState("home");
     return (
       <LayoutWrapper>
         <SideNavbar collapsed={false}>
@@ -871,7 +905,8 @@ export const ExpandedState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Expanded state - sidebar is fully expanded with content visible.',
+        story:
+          "Expanded state - sidebar is fully expanded with content visible.",
       },
     },
   },
@@ -879,7 +914,7 @@ export const ExpandedState: Story = {
 
 export const CollapsedState: Story = {
   render: () => {
-    const [activeTab, setActiveTab] = useState('home');
+    const [activeTab, setActiveTab] = useState("home");
     return (
       <LayoutWrapper>
         <SideNavbar collapsed={true}>
@@ -899,7 +934,8 @@ export const CollapsedState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Collapsed state - sidebar is collapsed showing only navigation icons.',
+        story:
+          "Collapsed state - sidebar is collapsed showing only navigation icons.",
       },
     },
   },
@@ -914,7 +950,7 @@ export const CollapsedState: Story = {
  */
 export const ToggleAtNavbarTop: Story = {
   render: () => {
-    const [activeTab, setActiveTab] = useState('home');
+    const [activeTab, setActiveTab] = useState("home");
     return (
       <LayoutWrapper>
         <SideNavbar togglePosition="floating">
@@ -925,16 +961,18 @@ export const ToggleAtNavbarTop: Story = {
             <SideNavbar.Sidebar.Header title={tabLabels[activeTab]} />
             <SideNavbar.Sidebar.Content>
               <Card>
-                <h3 className="font-semibold mb-2">Toggle at Navbar Top-Right</h3>
+                <h3 className="font-semibold mb-2">
+                  Toggle at Navbar Top-Right
+                </h3>
                 <p className="text-sm text-gray-600">
-                  The toggle button is positioned at the top-right corner of the navbar.
-                  It stays fixed at the navbar's right edge and smoothly transitions
-                  as the sidebar expands and collapses.
+                  The toggle button is positioned at the top-right corner of the
+                  navbar. It stays fixed at the navbar's right edge and smoothly
+                  transitions as the sidebar expands and collapses.
                 </p>
                 <p className="text-sm text-gray-500 mt-2">
-                  The toggle always remains at the navbar's edge, regardless of the
-                  sidebar's state. This provides consistent access to the collapse/expand
-                  functionality.
+                  The toggle always remains at the navbar's edge, regardless of
+                  the sidebar's state. This provides consistent access to the
+                  collapse/expand functionality.
                 </p>
               </Card>
             </SideNavbar.Sidebar.Content>
@@ -946,7 +984,8 @@ export const ToggleAtNavbarTop: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates the toggle button positioned at the top-right of the navbar. The toggle stays at the navbar edge and smoothly transitions with the sidebar state.',
+        story:
+          "Demonstrates the toggle button positioned at the top-right of the navbar. The toggle stays at the navbar edge and smoothly transitions with the sidebar state.",
       },
     },
   },
@@ -992,8 +1031,8 @@ export const WithSlotSystem: Story = {
               <SideNavbar.Sidebar.Content>
                 <Card className="mb-4">
                   <p className="text-xs text-gray-500 mb-2">
-                    <strong>Note:</strong> Slots are exclusive to the Sidebar component.
-                    They cannot be used in the Navbar.
+                    <strong>Note:</strong> Slots are exclusive to the Sidebar
+                    component. They cannot be used in the Navbar.
                   </p>
                 </Card>
                 <SidebarSlot id="dashboard">
@@ -1001,7 +1040,8 @@ export const WithSlotSystem: Story = {
                     <h3 className="font-semibold mb-2">Dashboard Content</h3>
                     <p className="text-sm text-gray-600">
                       This content is shown when the dashboard item is active.
-                      Use the useSideNavbarNavigation hook to switch slots programmatically.
+                      Use the useSideNavbarNavigation hook to switch slots
+                      programmatically.
                     </p>
                   </Card>
                 </SidebarSlot>
@@ -1032,7 +1072,8 @@ export const WithSlotSystem: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates the slot system for dynamic sidebar content. Different slots can be registered and switched dynamically.',
+        story:
+          "Demonstrates the slot system for dynamic sidebar content. Different slots can be registered and switched dynamically.",
       },
     },
   },
@@ -1047,7 +1088,7 @@ export const WithSlotSystem: Story = {
  */
 export const NavbarWithInlineLabels: Story = {
   render: () => {
-    const [activeItem, setActiveItem] = useState('home');
+    const [activeItem, setActiveItem] = useState("home");
     return (
       <LayoutWrapper>
         <SideNavbar>
@@ -1057,30 +1098,30 @@ export const NavbarWithInlineLabels: Story = {
                 id="home"
                 icon={<Home className="h-5 w-5" />}
                 label="Home"
-                active={activeItem === 'home'}
-                onClick={() => setActiveItem('home')}
+                active={activeItem === "home"}
+                onClick={() => setActiveItem("home")}
               />
               <SideNavbar.Navbar.Item
                 id="analytics"
                 icon={<BarChart3 className="h-5 w-5" />}
                 label="Analytics"
-                active={activeItem === 'analytics'}
-                onClick={() => setActiveItem('analytics')}
+                active={activeItem === "analytics"}
+                onClick={() => setActiveItem("analytics")}
               />
               <SideNavbar.Navbar.Item
                 id="users"
                 icon={<Users className="h-5 w-5" />}
                 label="Users"
                 badge={12}
-                active={activeItem === 'users'}
-                onClick={() => setActiveItem('users')}
+                active={activeItem === "users"}
+                onClick={() => setActiveItem("users")}
               />
               <SideNavbar.Navbar.Item
                 id="settings"
                 icon={<Settings className="h-5 w-5" />}
                 label="Settings"
-                active={activeItem === 'settings'}
-                onClick={() => setActiveItem('settings')}
+                active={activeItem === "settings"}
+                onClick={() => setActiveItem("settings")}
               />
             </div>
           </SideNavbar.Navbar>
@@ -1089,7 +1130,8 @@ export const NavbarWithInlineLabels: Story = {
             <SideNavbar.Sidebar.Content>
               <Card>
                 <p className="text-sm text-gray-600">
-                  The navbar expands to show labels inline with icons when not collapsed.
+                  The navbar expands to show labels inline with icons when not
+                  collapsed.
                 </p>
               </Card>
             </SideNavbar.Sidebar.Content>
@@ -1101,7 +1143,8 @@ export const NavbarWithInlineLabels: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Navbar with inline labels. When expanded, labels appear next to icons.',
+        story:
+          "Navbar with inline labels. When expanded, labels appear next to icons.",
       },
     },
   },
@@ -1112,7 +1155,7 @@ export const NavbarWithInlineLabels: Story = {
  */
 export const NavbarWithLabelsBelow: Story = {
   render: () => {
-    const [activeItem, setActiveItem] = useState('home');
+    const [activeItem, setActiveItem] = useState("home");
     return (
       <LayoutWrapper>
         <SideNavbar>
@@ -1122,23 +1165,23 @@ export const NavbarWithLabelsBelow: Story = {
                 id="home"
                 icon={<Home className="h-5 w-5" />}
                 label="Home"
-                active={activeItem === 'home'}
-                onClick={() => setActiveItem('home')}
+                active={activeItem === "home"}
+                onClick={() => setActiveItem("home")}
               />
               <SideNavbar.Navbar.Item
                 id="analytics"
                 icon={<BarChart3 className="h-5 w-5" />}
                 label="Analytics"
-                active={activeItem === 'analytics'}
-                onClick={() => setActiveItem('analytics')}
+                active={activeItem === "analytics"}
+                onClick={() => setActiveItem("analytics")}
               />
               <SideNavbar.Navbar.Item
                 id="users"
                 icon={<Users className="h-5 w-5" />}
                 label="Users"
                 badge={12}
-                active={activeItem === 'users'}
-                onClick={() => setActiveItem('users')}
+                active={activeItem === "users"}
+                onClick={() => setActiveItem("users")}
               />
             </div>
           </SideNavbar.Navbar>
@@ -1159,7 +1202,7 @@ export const NavbarWithLabelsBelow: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Navbar with labels displayed below icons.',
+        story: "Navbar with labels displayed below icons.",
       },
     },
   },
@@ -1170,52 +1213,60 @@ export const NavbarWithLabelsBelow: Story = {
  */
 export const NavbarWithGroups: Story = {
   render: () => {
-    const [activeItem, setActiveItem] = useState('home');
+    const [activeItem, setActiveItem] = useState("home");
     return (
       <LayoutWrapper>
         <SideNavbar showToggle togglePosition="floating">
           <SideNavbar.Navbar>
             {/* Groups automatically arrange items vertically */}
-            <SideNavbar.Navbar.Group label="Main" collapsible defaultCollapsed={false}>
+            <SideNavbar.Navbar.Group
+              label="Main"
+              collapsible
+              defaultCollapsed={false}
+            >
               <SideNavbar.Navbar.Item
                 id="home"
                 icon={<Home className="h-5 w-5" />}
                 label="Home"
-                active={activeItem === 'home'}
-                onClick={() => setActiveItem('home')}
+                active={activeItem === "home"}
+                onClick={() => setActiveItem("home")}
               />
               <SideNavbar.Navbar.Item
                 id="analytics"
                 icon={<BarChart3 className="h-5 w-5" />}
                 label="Analytics"
-                active={activeItem === 'analytics'}
-                onClick={() => setActiveItem('analytics')}
+                active={activeItem === "analytics"}
+                onClick={() => setActiveItem("analytics")}
               />
               <SideNavbar.Navbar.Item
                 id="users"
                 icon={<Users className="h-5 w-5" />}
                 label="Users"
-                active={activeItem === 'users'}
-                onClick={() => setActiveItem('users')}
+                active={activeItem === "users"}
+                onClick={() => setActiveItem("users")}
               />
             </SideNavbar.Navbar.Group>
 
             <SideNavbar.Navbar.Separator />
 
-            <SideNavbar.Navbar.Group label="Settings" collapsible defaultCollapsed={true}>
+            <SideNavbar.Navbar.Group
+              label="Settings"
+              collapsible
+              defaultCollapsed={true}
+            >
               <SideNavbar.Navbar.Item
                 id="settings"
                 icon={<Settings className="h-5 w-5" />}
                 label="Settings"
-                active={activeItem === 'settings'}
-                onClick={() => setActiveItem('settings')}
+                active={activeItem === "settings"}
+                onClick={() => setActiveItem("settings")}
               />
               <SideNavbar.Navbar.Item
                 id="help"
                 icon={<HelpCircle className="h-5 w-5" />}
                 label="Help"
-                active={activeItem === 'help'}
-                onClick={() => setActiveItem('help')}
+                active={activeItem === "help"}
+                onClick={() => setActiveItem("help")}
               />
             </SideNavbar.Navbar.Group>
           </SideNavbar.Navbar>
@@ -1224,8 +1275,8 @@ export const NavbarWithGroups: Story = {
             <SideNavbar.Sidebar.Content>
               <Card>
                 <p className="text-sm text-gray-600">
-                  Navigation items are grouped with collapsible sections.
-                  All items are arranged vertically in the navbar.
+                  Navigation items are grouped with collapsible sections. All
+                  items are arranged vertically in the navbar.
                 </p>
               </Card>
             </SideNavbar.Sidebar.Content>
@@ -1237,7 +1288,8 @@ export const NavbarWithGroups: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Navbar with grouped items. Groups can be collapsed and expanded. All navigation items are arranged vertically.',
+        story:
+          "Navbar with grouped items. Groups can be collapsed and expanded. All navigation items are arranged vertically.",
       },
     },
   },
@@ -1245,13 +1297,13 @@ export const NavbarWithGroups: Story = {
 
 /**
  * Real-world Dashboard Example
- * 
+ *
  * A complete dashboard layout showing how SideNavbar would be used in a real application.
  * Features vertical navigation, toggle on right edge, and realistic content.
  */
 export const DashboardExample: Story = {
   render: () => {
-    const [activeItem, setActiveItem] = useState('dashboard');
+    const [activeItem, setActiveItem] = useState("dashboard");
 
     return (
       <LayoutWrapper>
@@ -1262,30 +1314,30 @@ export const DashboardExample: Story = {
               id="dashboard"
               icon={<Home className="h-5 w-5" />}
               label="Dashboard"
-              active={activeItem === 'dashboard'}
-              onClick={() => setActiveItem('dashboard')}
+              active={activeItem === "dashboard"}
+              onClick={() => setActiveItem("dashboard")}
             />
             <SideNavbar.Navbar.Item
               id="analytics"
               icon={<BarChart3 className="h-5 w-5" />}
               label="Analytics"
-              active={activeItem === 'analytics'}
-              onClick={() => setActiveItem('analytics')}
+              active={activeItem === "analytics"}
+              onClick={() => setActiveItem("analytics")}
             />
             <SideNavbar.Navbar.Item
               id="users"
               icon={<Users className="h-5 w-5" />}
               label="Users"
               badge={5}
-              active={activeItem === 'users'}
-              onClick={() => setActiveItem('users')}
+              active={activeItem === "users"}
+              onClick={() => setActiveItem("users")}
             />
             <SideNavbar.Navbar.Item
               id="documents"
               icon={<FileText className="h-5 w-5" />}
               label="Documents"
-              active={activeItem === 'documents'}
-              onClick={() => setActiveItem('documents')}
+              active={activeItem === "documents"}
+              onClick={() => setActiveItem("documents")}
             />
 
             <SideNavbar.Navbar.Separator />
@@ -1298,20 +1350,20 @@ export const DashboardExample: Story = {
                 label="Notifications"
                 badge={3}
                 badgeVariant="danger"
-                onClick={() => setActiveItem('notifications')}
+                onClick={() => setActiveItem("notifications")}
               />
               <SideNavbar.Navbar.Item
                 id="settings"
                 icon={<Settings className="h-5 w-5" />}
                 label="Settings"
-                active={activeItem === 'settings'}
-                onClick={() => setActiveItem('settings')}
+                active={activeItem === "settings"}
+                onClick={() => setActiveItem("settings")}
               />
             </div>
           </SideNavbar.Navbar>
 
           <SideNavbar.Sidebar>
-            <SideNavbar.Sidebar.Header 
+            <SideNavbar.Sidebar.Header
               title={activeItem.charAt(0).toUpperCase() + activeItem.slice(1)}
               subtitle="Dashboard Overview"
             />
@@ -1319,23 +1371,38 @@ export const DashboardExample: Story = {
               <div className="space-y-4">
                 <Card>
                   <h3 className="font-semibold text-lg mb-2">
-                    {activeItem === 'dashboard' && 'Welcome to Dashboard'}
-                    {activeItem === 'analytics' && 'Analytics Overview'}
-                    {activeItem === 'users' && 'User Management'}
-                    {activeItem === 'documents' && 'Document Library'}
-                    {activeItem === 'notifications' && 'Notifications'}
-                    {activeItem === 'settings' && 'Settings'}
+                    {activeItem === "dashboard" && "Welcome to Dashboard"}
+                    {activeItem === "analytics" && "Analytics Overview"}
+                    {activeItem === "users" && "User Management"}
+                    {activeItem === "documents" && "Document Library"}
+                    {activeItem === "notifications" && "Notifications"}
+                    {activeItem === "settings" && "Settings"}
                   </h3>
                   <p className="text-gray-600">
-                    This is a realistic dashboard example showing how the SideNavbar component
-                    is used in production applications. Notice:
+                    This is a realistic dashboard example showing how the
+                    SideNavbar component is used in production applications.
+                    Notice:
                   </p>
                   <ul className="list-disc list-inside mt-2 text-sm text-gray-600 space-y-1">
-                    <li>Navigation items are arranged <strong>vertically</strong> in the navbar</li>
-                    <li>The toggle button is positioned on the <strong>right edge</strong> of the navbar</li>
-                    <li>Items can have badges to show notifications or counts</li>
-                    <li>Secondary items are pushed to the bottom using <code>mt-auto</code></li>
-                    <li>The sidebar content changes based on the active navigation item</li>
+                    <li>
+                      Navigation items are arranged <strong>vertically</strong>{" "}
+                      in the navbar
+                    </li>
+                    <li>
+                      The toggle button is positioned on the{" "}
+                      <strong>right edge</strong> of the navbar
+                    </li>
+                    <li>
+                      Items can have badges to show notifications or counts
+                    </li>
+                    <li>
+                      Secondary items are pushed to the bottom using{" "}
+                      <code>mt-auto</code>
+                    </li>
+                    <li>
+                      The sidebar content changes based on the active navigation
+                      item
+                    </li>
                   </ul>
                 </Card>
               </div>
@@ -1348,7 +1415,8 @@ export const DashboardExample: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'A complete real-world dashboard example showing the recommended usage pattern: vertical navigation items, toggle on right edge, and realistic content structure.',
+        story:
+          "A complete real-world dashboard example showing the recommended usage pattern: vertical navigation items, toggle on right edge, and realistic content structure.",
       },
     },
   },

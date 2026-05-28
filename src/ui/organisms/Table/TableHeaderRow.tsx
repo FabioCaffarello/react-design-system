@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import type { HTMLAttributes } from 'react';
-import { useTableContext } from './TableContext';
-import { Checkbox } from '../../atoms';
-import TableHeaderCell from './TableHeaderCell';
+import type { HTMLAttributes } from "react";
+import { useTableContext } from "./TableContext";
+import { Checkbox } from "../../primitives";
+import TableHeaderCell from "./TableHeaderCell";
 
 export type TableHeaderRowProps = HTMLAttributes<HTMLTableRowElement>;
 
 /**
  * TableHeaderRow Component
- * 
+ *
  * Renders a header row (tr) with header cells.
  * Must be used within a Table component.
  */
 export default function TableHeaderRow({
-  className = '',
+  className = "",
   ...props
 }: TableHeaderRowProps) {
   const {
@@ -46,7 +46,7 @@ export default function TableHeaderRow({
           />
         </th>
       )}
-      
+
       {columns.map((column) => (
         <TableHeaderCell
           key={column.key}
@@ -56,7 +56,7 @@ export default function TableHeaderRow({
           onResize={setColumnWidth}
         />
       ))}
-      
+
       {actions && (
         <th
           scope="col"

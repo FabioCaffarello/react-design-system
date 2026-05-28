@@ -1,23 +1,23 @@
 /**
  * Header Stories
- * 
+ *
  * Storybook stories for the Header component.
  */
 
-import type { Meta, StoryObj } from '@storybook/react';
-import { Header } from './Header';
-import { NavLink } from '../../atoms/NavLink';
-import { Button } from '../../atoms/Button/Button';
-import { DashboardLayout } from '../../templates/DashboardLayout/DashboardLayout';
-import SideNavbar from '../../organisms/SideNavbar/SideNavbar';
-import { Home, Settings } from 'lucide-react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Header } from "./Header";
+import { NavLink } from "../../primitives/NavLink";
+import { Button } from "../../primitives/Button/Button";
+import { DashboardLayout } from "../../templates/DashboardLayout/DashboardLayout";
+import SideNavbar from "../../organisms/SideNavbar/SideNavbar";
+import { Home, Settings } from "lucide-react";
 
 const meta: Meta<typeof Header> = {
-  title: 'Molecules/Header',
+  title: "Molecules/Header",
   component: Header,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
-    layout: 'fullscreen',
+    layout: "fullscreen",
     docs: {
       description: {
         component: `
@@ -54,18 +54,18 @@ Uses compound components pattern for maximum flexibility.
   },
   argTypes: {
     variant: {
-      control: 'select',
-      options: ['default', 'elevated', 'bordered'],
-      description: 'Visual variant of the Header',
+      control: "select",
+      options: ["default", "elevated", "bordered"],
+      description: "Visual variant of the Header",
     },
     sticky: {
-      control: 'boolean',
-      description: 'Whether the header is sticky',
+      control: "boolean",
+      description: "Whether the header is sticky",
     },
     maxWidth: {
-      control: 'select',
-      options: ['sm', 'md', 'lg', 'xl', 'full'],
-      description: 'Max width of the header container',
+      control: "select",
+      options: ["sm", "md", "lg", "xl", "full"],
+      description: "Max width of the header container",
     },
   },
 };
@@ -201,16 +201,30 @@ export const WithMobileMenu: Story = {
         <NavLink href="/contact">Contact</NavLink>
       </Header.Navigation>
       <Header.Actions>
-        <Button variant="outline" className="hidden md:inline-flex">Sign In</Button>
-        <Button variant="primary" className="hidden md:inline-flex">Sign Up</Button>
+        <Button variant="outline" className="hidden md:inline-flex">
+          Sign In
+        </Button>
+        <Button variant="primary" className="hidden md:inline-flex">
+          Sign Up
+        </Button>
       </Header.Actions>
       <Header.MobileMenu>
-        <NavLink href="/home" className="block py-2">Home</NavLink>
-        <NavLink href="/about" className="block py-2">About</NavLink>
-        <NavLink href="/contact" className="block py-2">Contact</NavLink>
+        <NavLink href="/home" className="block py-2">
+          Home
+        </NavLink>
+        <NavLink href="/about" className="block py-2">
+          About
+        </NavLink>
+        <NavLink href="/contact" className="block py-2">
+          Contact
+        </NavLink>
         <div className="mt-4 pt-4 border-t">
-          <Button variant="outline" className="w-full mb-2">Sign In</Button>
-          <Button variant="primary" className="w-full">Sign Up</Button>
+          <Button variant="outline" className="w-full mb-2">
+            Sign In
+          </Button>
+          <Button variant="primary" className="w-full">
+            Sign Up
+          </Button>
         </div>
       </Header.MobileMenu>
     </Header>
@@ -219,7 +233,7 @@ export const WithMobileMenu: Story = {
 
 /**
  * With DashboardLayout
- * 
+ *
  * Example of Header used with DashboardLayout.
  * Uses `bare` prop to avoid duplicate header/Container wrappers.
  */
@@ -248,7 +262,9 @@ export const WithDashboardLayout: Story = {
         <h1 className="text-2xl font-bold mb-4">Dashboard Content</h1>
         <p>This is the main content area of the dashboard.</p>
         <p className="mt-4 text-sm text-gray-600">
-          Note: Header uses <code className="bg-gray-100 px-1 rounded">bare</code> prop to avoid duplicate wrappers when used in DashboardLayout.
+          Note: Header uses{" "}
+          <code className="bg-gray-100 px-1 rounded">bare</code> prop to avoid
+          duplicate wrappers when used in DashboardLayout.
         </p>
       </div>
     </DashboardLayout>

@@ -1,13 +1,14 @@
-'use client';
+"use client";
 
-import { type ReactNode, type HTMLAttributes, useEffect, useRef } from 'react';
-import { ChevronDown } from 'lucide-react';
-import { useSideNavbarStateRequired } from '../contexts/SideNavbarStateContext';
-import { useSideNavbarThemeRequired } from '../contexts/SideNavbarThemeContext';
-import Collapsible from '../../../atoms/Collapsible/Collapsible';
-import { getSpacingClass, getColorClass } from '../../../tokens';
+import { type ReactNode, type HTMLAttributes, useEffect, useRef } from "react";
+import { ChevronDown } from "lucide-react";
+import { useSideNavbarStateRequired } from "../contexts/SideNavbarStateContext";
+import { useSideNavbarThemeRequired } from "../contexts/SideNavbarThemeContext";
+import Collapsible from "../../../primitives/Collapsible/Collapsible";
+import { getSpacingClass, getColorClass } from "../../../tokens";
 
-export interface SideNavbarGroupProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
+export interface SideNavbarGroupProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
   /**
    * Unique identifier for the group
    */
@@ -50,7 +51,7 @@ export interface SideNavbarGroupProps extends Omit<HTMLAttributes<HTMLDivElement
    * Padding size for the content
    * @default 'md'
    */
-  padding?: 'none' | 'sm' | 'md' | 'lg';
+  padding?: "none" | "sm" | "md" | "lg";
 
   /**
    * Children content
@@ -85,12 +86,13 @@ export default function SideNavbarGroup({
   collapsible = true,
   defaultCollapsed = false,
   showBorder = true,
-  padding = 'md',
+  padding = "md",
   children,
-  className = '',
+  className = "",
   ...props
 }: SideNavbarGroupProps) {
-  const { groupStates, toggleGroup, setGroupCollapsed } = useSideNavbarStateRequired();
+  const { groupStates, toggleGroup, setGroupCollapsed } =
+    useSideNavbarStateRequired();
   const { animationDuration } = useSideNavbarThemeRequired();
   const hasInitialized = useRef(false);
 
@@ -111,12 +113,12 @@ export default function SideNavbarGroup({
     }
   };
 
-  const paddingClass = padding !== 'none' ? getSpacingClass(padding, 'p') : '';
+  const paddingClass = padding !== "none" ? getSpacingClass(padding, "p") : "";
 
   return (
     <div
       className={`
-        ${showBorder ? `border-b ${getColorClass('neutral', 'DEFAULT', 'border')}` : ''}
+        ${showBorder ? `border-b ${getColorClass("neutral", "DEFAULT", "border")}` : ""}
         ${className}
       `}
       data-group-id={id}
@@ -130,11 +132,11 @@ export default function SideNavbarGroup({
           disabled={!collapsible}
           className={`
             flex items-center justify-between w-full
-            ${getSpacingClass('sm', 'px')}
-            ${getSpacingClass('xs', 'py')}
+            ${getSpacingClass("sm", "px")}
+            ${getSpacingClass("xs", "py")}
             text-left
             transition-colors
-            ${collapsible ? 'hover:bg-neutral-100 cursor-pointer' : 'cursor-default'}
+            ${collapsible ? "hover:bg-neutral-100 cursor-pointer" : "cursor-default"}
             disabled:cursor-default
           `}
           aria-expanded={!isCollapsed}
@@ -142,11 +144,15 @@ export default function SideNavbarGroup({
         >
           <div className="flex items-center gap-2 min-w-0">
             {icon && (
-              <span className={`flex-shrink-0 ${getColorClass('neutral', 'dark', 'text')}`}>
+              <span
+                className={`flex-shrink-0 ${getColorClass("neutral", "dark", "text")}`}
+              >
                 {icon}
               </span>
             )}
-            <span className={`font-medium text-sm truncate ${getColorClass('neutral', 'darker', 'text')}`}>
+            <span
+              className={`font-medium text-sm truncate ${getColorClass("neutral", "darker", "text")}`}
+            >
               {title}
             </span>
           </div>
@@ -164,9 +170,9 @@ export default function SideNavbarGroup({
               <ChevronDown
                 className={`
                   h-4 w-4
-                  ${getColorClass('neutral', 'DEFAULT', 'text')}
+                  ${getColorClass("neutral", "DEFAULT", "text")}
                   transition-transform
-                  ${isCollapsed ? '-rotate-90' : 'rotate-0'}
+                  ${isCollapsed ? "-rotate-90" : "rotate-0"}
                 `}
                 style={{ transitionDuration: `${animationDuration}ms` }}
                 aria-hidden="true"
@@ -177,14 +183,8 @@ export default function SideNavbarGroup({
       )}
 
       {/* Group Content */}
-      <Collapsible
-        open={!isCollapsed}
-        duration={animationDuration}
-      >
-        <div
-          id={`group-content-${id}`}
-          className={paddingClass}
-        >
+      <Collapsible open={!isCollapsed} duration={animationDuration}>
+        <div id={`group-content-${id}`} className={paddingClass}>
           {children}
         </div>
       </Collapsible>

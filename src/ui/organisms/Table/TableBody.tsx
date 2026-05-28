@@ -1,27 +1,29 @@
-'use client';
+"use client";
 
-import { useMemo, type HTMLAttributes, ReactNode } from 'react';
-import { useTableContext } from './TableContext';
-import { Skeleton } from '../../atoms';
-import TableRow from './TableRow';
-import TableEmptyState from './TableEmptyState';
-import { useVirtualScrolling } from './useVirtualScrolling';
+import { useMemo, type HTMLAttributes, ReactNode } from "react";
+import { useTableContext } from "./TableContext";
+import { Skeleton } from "../../primitives";
+import TableRow from "./TableRow";
+import TableEmptyState from "./TableEmptyState";
+import { useVirtualScrolling } from "./useVirtualScrolling";
 
-export interface TableBodyProps<T extends Record<string, unknown> = Record<string, unknown>> extends Omit<HTMLAttributes<HTMLTableSectionElement>, 'children'> {
+export interface TableBodyProps<
+  T extends Record<string, unknown> = Record<string, unknown>,
+> extends Omit<HTMLAttributes<HTMLTableSectionElement>, "children"> {
   children?: (row: T, index: number) => ReactNode;
   className?: string;
 }
 
 /**
  * TableBody Component
- * 
+ *
  * Renders the table body (tbody) with rows.
  * Can render loading skeleton, empty state, or data rows.
  * Must be used within a Table component.
  */
 export default function TableBody({
   children,
-  className = '',
+  className = "",
   ...props
 }: TableBodyProps) {
   const {
@@ -35,18 +37,16 @@ export default function TableBody({
   } = useTableContext();
 
   // Calculate total columns for colspan
-  const totalColumns = columns.length + (selectable ? 1 : 0) + (actions ? 1 : 0);
+  const totalColumns =
+    columns.length + (selectable ? 1 : 0) + (actions ? 1 : 0);
 
   // Virtual scrolling
-  const virtualScrollingResult = useVirtualScrolling(
-    paginatedData,
-    {
-      itemHeight: virtualScrollingOptions?.itemHeight || 50,
-      containerHeight: virtualScrollingOptions?.containerHeight,
-      overscan: virtualScrollingOptions?.overscan || 5,
-      enabled: virtualScrolling || false,
-    }
-  );
+  const virtualScrollingResult = useVirtualScrolling(paginatedData, {
+    itemHeight: virtualScrollingOptions?.itemHeight || 50,
+    containerHeight: virtualScrollingOptions?.containerHeight,
+    overscan: virtualScrollingOptions?.overscan || 5,
+    enabled: virtualScrolling || false,
+  });
 
   const rowsToRender = useMemo(() => {
     if (virtualScrolling && virtualScrollingResult.virtualItems.length > 0) {
@@ -62,7 +62,10 @@ export default function TableBody({
 
   if (loading) {
     return (
-      <tbody className={`bg-white divide-y divide-gray-200 ${className}`} {...props}>
+      <tbody
+        className={`bg-white divide-y divide-gray-200 ${className}`}
+        {...props}
+      >
         {Array.from({ length: 5 }).map((_, index) => (
           <tr key={index}>
             {Array.from({ length: totalColumns }).map((_, colIndex) => (
@@ -78,7 +81,10 @@ export default function TableBody({
 
   if (paginatedData.length === 0) {
     return (
-      <tbody className={`bg-white divide-y divide-gray-200 ${className}`} {...props}>
+      <tbody
+        className={`bg-white divide-y divide-gray-200 ${className}`}
+        {...props}
+      >
         <tr>
           <td colSpan={totalColumns} className="px-6 py-12">
             <TableEmptyState />
@@ -89,9 +95,12 @@ export default function TableBody({
   }
 
   // If children is a render function, use it
-  if (typeof children === 'function') {
+  if (typeof children === "function") {
     return (
-      <tbody className={`bg-white divide-y divide-gray-200 ${className}`} {...props}>
+      <tbody
+        className={`bg-white divide-y divide-gray-200 ${className}`}
+        {...props}
+      >
         {paginatedData.map((row, index) => children(row, index))}
       </tbody>
     );
@@ -104,11 +113,16 @@ export default function TableBody({
       role="rowgroup"
       {...props}
     >
-      {virtualScrolling && virtualScrollingResult.virtualItems.length > 0 && rowsToRender.length > 0 ? (
+      {virtualScrolling &&
+      virtualScrollingResult.virtualItems.length > 0 &&
+      rowsToRender.length > 0 ? (
         // Virtual scrolling: render with spacer rows
         <>
           {virtualScrollingResult.virtualItems[0]?.start > 0 && (
-            <tr style={{ height: virtualScrollingResult.virtualItems[0].start }} aria-hidden="true">
+            <tr
+              style={{ height: virtualScrollingResult.virtualItems[0].start }}
+              aria-hidden="true"
+            >
               <td colSpan={totalColumns} />
             </tr>
           )}
@@ -118,7 +132,13 @@ export default function TableBody({
           {virtualScrollingResult.virtualItems.length > 0 && (
             <tr
               style={{
-                height: Math.max(0, virtualScrollingResult.totalHeight - (virtualScrollingResult.virtualItems[virtualScrollingResult.virtualItems.length - 1]?.end || 0)),
+                height: Math.max(
+                  0,
+                  virtualScrollingResult.totalHeight -
+                    (virtualScrollingResult.virtualItems[
+                      virtualScrollingResult.virtualItems.length - 1
+                    ]?.end || 0),
+                ),
               }}
               aria-hidden="true"
             >

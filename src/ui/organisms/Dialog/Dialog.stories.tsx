@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
-import { useState } from 'react';
-import Dialog from './Dialog';
-import AlertDialog from './AlertDialog';
-import { Button } from '../../atoms';
-import { Input, Label } from '../../atoms';
+import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
+import { expect, userEvent, within, waitFor } from "@storybook/test";
+import { useState } from "react";
+import Dialog from "./Dialog";
+import AlertDialog from "./AlertDialog";
+import { Button } from "../../primitives";
+import { Input, Label } from "../../primitives";
 
 const meta: Meta<typeof Dialog> = {
-  title: 'Organisms/Dialog',
+  title: "Organisms/Dialog",
   component: Dialog,
   parameters: {
     docs: {
@@ -36,11 +36,11 @@ A flexible dialog component using compound components pattern. Supports both con
   },
   argTypes: {
     onOpenChange: {
-      description: 'Callback fired when the dialog open state changes',
-      action: 'onOpenChange',
+      description: "Callback fired when the dialog open state changes",
+      action: "onOpenChange",
       table: {
-        type: { summary: '(open: boolean) => void' },
-        category: 'Events',
+        type: { summary: "(open: boolean) => void" },
+        category: "Events",
       },
     },
   },
@@ -60,7 +60,8 @@ export const Default: Story = {
             <Dialog.Header>
               <Dialog.Title>Dialog Title</Dialog.Title>
               <Dialog.Description>
-                This is a dialog description. It provides additional context about the dialog.
+                This is a dialog description. It provides additional context
+                about the dialog.
               </Dialog.Description>
             </Dialog.Header>
             <div className="p-6 pt-0">
@@ -140,13 +141,22 @@ export const WithForm: Story = {
 
 export const Sizes: Story = {
   render: () => {
-    const [size, setSize] = useState<'sm' | 'md' | 'lg' | 'xl' | 'fullscreen'>('md');
+    const [size, setSize] = useState<"sm" | "md" | "lg" | "xl" | "fullscreen">(
+      "md",
+    );
     const [isOpen, setIsOpen] = useState(false);
     return (
       <>
         <div className="space-x-2 mb-4">
-          {(['sm', 'md', 'lg', 'xl', 'fullscreen'] as const).map((s) => (
-            <Button key={s} variant={size === s ? 'primary' : 'outline'} onClick={() => { setSize(s); setIsOpen(true); }}>
+          {(["sm", "md", "lg", "xl", "fullscreen"] as const).map((s) => (
+            <Button
+              key={s}
+              variant={size === s ? "primary" : "outline"}
+              onClick={() => {
+                setSize(s);
+                setIsOpen(true);
+              }}
+            >
               {s}
             </Button>
           ))}
@@ -185,7 +195,8 @@ export const WithoutOverlayClose: Story = {
             <Dialog.Header>
               <Dialog.Title>Important Dialog</Dialog.Title>
               <Dialog.Description>
-                This dialog cannot be closed by clicking the overlay. You must use the close button or Escape key.
+                This dialog cannot be closed by clicking the overlay. You must
+                use the close button or Escape key.
               </Dialog.Description>
             </Dialog.Header>
             <div className="p-6 pt-0">
@@ -203,16 +214,17 @@ export const WithoutOverlayClose: Story = {
 
 // AlertDialog Stories
 const _alertDialogMeta: Meta<typeof AlertDialog> = {
-  title: 'Organisms/Dialog/AlertDialog',
+  title: "Organisms/Dialog/AlertDialog",
   component: AlertDialog,
   parameters: {
     docs: {
       description: {
-        component: 'A specialized dialog for confirmations and alerts. Built on top of Dialog with pre-configured layout.',
+        component:
+          "A specialized dialog for confirmations and alerts. Built on top of Dialog with pre-configured layout.",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 };
 
 export const AlertDialogDefault: StoryObj<typeof AlertDialog> = {
@@ -226,7 +238,7 @@ export const AlertDialogDefault: StoryObj<typeof AlertDialog> = {
           onOpenChange={setIsOpen}
           title="Confirm Action"
           description="Are you sure you want to proceed with this action?"
-          onConfirm={() => alert('Confirmed!')}
+          onConfirm={() => alert("Confirmed!")}
         />
       </>
     );
@@ -238,7 +250,9 @@ export const AlertDialogDestructive: StoryObj<typeof AlertDialog> = {
     const [isOpen, setIsOpen] = useState(false);
     return (
       <>
-        <Button variant="error" onClick={() => setIsOpen(true)}>Delete Item</Button>
+        <Button variant="error" onClick={() => setIsOpen(true)}>
+          Delete Item
+        </Button>
         <AlertDialog
           open={isOpen}
           onOpenChange={setIsOpen}
@@ -247,7 +261,7 @@ export const AlertDialogDestructive: StoryObj<typeof AlertDialog> = {
           variant="destructive"
           confirmLabel="Delete"
           cancelLabel="Cancel"
-          onConfirm={() => alert('Deleted!')}
+          onConfirm={() => alert("Deleted!")}
         />
       </>
     );
@@ -258,12 +272,12 @@ export const AlertDialogDestructive: StoryObj<typeof AlertDialog> = {
 export const WithEvents: Story = {
   render: () => {
     const [isOpen, setIsOpen] = useState(false);
-    
+
     const handleOpenChange = fn((newOpen: boolean) => {
       setIsOpen(newOpen);
-      console.log('Dialog open state changed:', newOpen);
+      console.log("Dialog open state changed:", newOpen);
     });
-    
+
     return (
       <>
         <Button onClick={() => setIsOpen(true)}>Open Dialog</Button>
@@ -272,7 +286,8 @@ export const WithEvents: Story = {
             <Dialog.Header>
               <Dialog.Title>Interactive Dialog</Dialog.Title>
               <Dialog.Description>
-                Interact with the dialog. Check the Actions panel to see events being fired.
+                Interact with the dialog. Check the Actions panel to see events
+                being fired.
               </Dialog.Description>
             </Dialog.Header>
             <div className="p-6 pt-0">
@@ -291,20 +306,24 @@ export const WithEvents: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button', { name: /Open Dialog/i });
-    
+    const button = canvas.getByRole("button", { name: /Open Dialog/i });
+
     // Test opening dialog
     await userEvent.click(button);
     // Wait for dialog to appear - it might be in a portal outside canvasElement
-    await waitFor(async () => {
-      const dialog = within(document.body).queryByRole('dialog');
-      expect(dialog).toBeInTheDocument();
-    }, { timeout: 3000 });
+    await waitFor(
+      async () => {
+        const dialog = within(document.body).queryByRole("dialog");
+        expect(dialog).toBeInTheDocument();
+      },
+      { timeout: 3000 },
+    );
   },
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates dialog events. Open and close the dialog and check the Actions panel to see events being logged.',
+        story:
+          "Demonstrates dialog events. Open and close the dialog and check the Actions panel to see events being logged.",
       },
     },
   },
@@ -321,9 +340,7 @@ export const ClosedState: Story = {
           <Dialog.Content>
             <Dialog.Header>
               <Dialog.Title>Closed Dialog</Dialog.Title>
-              <Dialog.Description>
-                This dialog is closed.
-              </Dialog.Description>
+              <Dialog.Description>This dialog is closed.</Dialog.Description>
             </Dialog.Header>
           </Dialog.Content>
         </Dialog>
@@ -333,7 +350,7 @@ export const ClosedState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Closed state - dialog is hidden, ready to be opened.',
+        story: "Closed state - dialog is hidden, ready to be opened.",
       },
     },
   },
@@ -349,9 +366,7 @@ export const OpenState: Story = {
           <Dialog.Content>
             <Dialog.Header>
               <Dialog.Title>Open Dialog</Dialog.Title>
-              <Dialog.Description>
-                This dialog is open.
-              </Dialog.Description>
+              <Dialog.Description>This dialog is open.</Dialog.Description>
             </Dialog.Header>
             <Dialog.Footer>
               <Button onClick={() => setIsOpen(false)}>Close</Button>
@@ -364,7 +379,7 @@ export const OpenState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Open state - dialog is visible.',
+        story: "Open state - dialog is visible.",
       },
     },
   },

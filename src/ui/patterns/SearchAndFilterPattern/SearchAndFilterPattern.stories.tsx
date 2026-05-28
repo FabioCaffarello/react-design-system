@@ -1,16 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
-import { expect, within, waitFor } from '@storybook/test';
-import { SearchAndFilterPattern } from './SearchAndFilterPattern';
-import { Card } from '../../molecules';
-import { Text } from '../../atoms';
-import { Stack } from '../../layouts/Stack/Stack';
-import type { FilterConfig } from './SearchAndFilterPattern';
+import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
+import { expect, within, waitFor } from "@storybook/test";
+import { SearchAndFilterPattern } from "./SearchAndFilterPattern";
+import { Card } from "../../molecules";
+import { Text } from "../../primitives";
+import { Stack } from "../../layouts/Stack/Stack";
+import type { FilterConfig } from "./SearchAndFilterPattern";
 
 const meta: Meta<typeof SearchAndFilterPattern> = {
-  title: 'Patterns/SearchAndFilterPattern',
+  title: "Patterns/SearchAndFilterPattern",
   component: SearchAndFilterPattern,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -50,8 +50,8 @@ This pattern solves the common UX problem of searching and filtering lists of it
   },
   argTypes: {
     showResultsCount: {
-      control: 'boolean',
-      description: 'Show results count',
+      control: "boolean",
+      description: "Show results count",
     },
   },
 };
@@ -68,33 +68,51 @@ interface Product {
 }
 
 const mockProducts: Product[] = [
-  { id: 1, name: 'Laptop', category: 'Electronics', price: 999, inStock: true },
-  { id: 2, name: 'Phone', category: 'Electronics', price: 699, inStock: true },
-  { id: 3, name: 'Tablet', category: 'Electronics', price: 399, inStock: false },
-  { id: 4, name: 'Desk', category: 'Furniture', price: 299, inStock: true },
-  { id: 5, name: 'Chair', category: 'Furniture', price: 199, inStock: true },
-  { id: 6, name: 'Monitor', category: 'Electronics', price: 249, inStock: true },
-  { id: 7, name: 'Keyboard', category: 'Electronics', price: 79, inStock: true },
-  { id: 8, name: 'Mouse', category: 'Electronics', price: 49, inStock: false },
+  { id: 1, name: "Laptop", category: "Electronics", price: 999, inStock: true },
+  { id: 2, name: "Phone", category: "Electronics", price: 699, inStock: true },
+  {
+    id: 3,
+    name: "Tablet",
+    category: "Electronics",
+    price: 399,
+    inStock: false,
+  },
+  { id: 4, name: "Desk", category: "Furniture", price: 299, inStock: true },
+  { id: 5, name: "Chair", category: "Furniture", price: 199, inStock: true },
+  {
+    id: 6,
+    name: "Monitor",
+    category: "Electronics",
+    price: 249,
+    inStock: true,
+  },
+  {
+    id: 7,
+    name: "Keyboard",
+    category: "Electronics",
+    price: 79,
+    inStock: true,
+  },
+  { id: 8, name: "Mouse", category: "Electronics", price: 49, inStock: false },
 ];
 
 const filters: FilterConfig[] = [
   {
-    id: 'category',
-    label: 'Category',
-    type: 'select',
+    id: "category",
+    label: "Category",
+    type: "select",
     options: [
-      { id: 'electronics', label: 'Electronics', value: 'Electronics' },
-      { id: 'furniture', label: 'Furniture', value: 'Furniture' },
+      { id: "electronics", label: "Electronics", value: "Electronics" },
+      { id: "furniture", label: "Furniture", value: "Furniture" },
     ],
   },
   {
-    id: 'inStock',
-    label: 'Availability',
-    type: 'select',
+    id: "inStock",
+    label: "Availability",
+    type: "select",
     options: [
-      { id: 'in-stock', label: 'In Stock', value: true },
-      { id: 'out-of-stock', label: 'Out of Stock', value: false },
+      { id: "in-stock", label: "In Stock", value: true },
+      { id: "out-of-stock", label: "Out of Stock", value: false },
     ],
   },
 ];
@@ -102,11 +120,14 @@ const filters: FilterConfig[] = [
 export const Default: Story = {
   args: {
     items: mockProducts,
-    searchFn: (query, item) => (item as { name: string }).name.toLowerCase().includes(query),
+    searchFn: (query, item) =>
+      (item as { name: string }).name.toLowerCase().includes(query),
     filterFn: (filters, item) => {
       const product = item as Product;
-      if (filters.category && product.category !== filters.category) return false;
-      if (filters.inStock !== undefined && product.inStock !== filters.inStock) return false;
+      if (filters.category && product.category !== filters.category)
+        return false;
+      if (filters.inStock !== undefined && product.inStock !== filters.inStock)
+        return false;
       return true;
     },
     renderItem: (item) => {
@@ -117,22 +138,26 @@ export const Default: Story = {
             <Text variant="heading" className="text-base">
               {product.name}
             </Text>
-            <Text className="text-gray-600 text-sm">
-              {product.category}
-            </Text>
+            <Text className="text-gray-600 text-sm">{product.category}</Text>
             <Text variant="heading" className="text-lg">
               ${product.price}
             </Text>
-            <Text className={product.inStock ? 'text-green-600 text-sm' : 'text-red-600 text-sm'}>
-              {product.inStock ? 'In Stock' : 'Out of Stock'}
+            <Text
+              className={
+                product.inStock
+                  ? "text-green-600 text-sm"
+                  : "text-red-600 text-sm"
+              }
+            >
+              {product.inStock ? "In Stock" : "Out of Stock"}
             </Text>
           </Stack>
         </Card>
       );
     },
     filters,
-    searchPlaceholder: 'Search products...',
-    emptyMessage: 'No products found',
+    searchPlaceholder: "Search products...",
+    emptyMessage: "No products found",
     showResultsCount: true,
   },
 };
@@ -140,9 +165,14 @@ export const Default: Story = {
 export const SearchOnly: Story = {
   args: {
     items: mockProducts,
-    searchFn: (query, item) => (item as { name: string }).name.toLowerCase().includes(query),
+    searchFn: (query, item) =>
+      (item as { name: string }).name.toLowerCase().includes(query),
     renderItem: (item) => {
-      const typedItem = item as { name: string; category: string; price: number };
+      const typedItem = item as {
+        name: string;
+        category: string;
+        price: number;
+      };
       return (
         <Card padding="medium">
           <Text variant="heading">{typedItem.name}</Text>
@@ -153,7 +183,7 @@ export const SearchOnly: Story = {
       );
     },
     filters: [],
-    searchPlaceholder: 'Search...',
+    searchPlaceholder: "Search...",
   },
 };
 
@@ -162,7 +192,8 @@ export const FiltersOnly: Story = {
     items: mockProducts,
     filterFn: (filters, item) => {
       const typedItem = item as { category: string };
-      if (filters.category && typedItem.category !== filters.category) return false;
+      if (filters.category && typedItem.category !== filters.category)
+        return false;
       return true;
     },
     renderItem: (item) => {
@@ -170,14 +201,12 @@ export const FiltersOnly: Story = {
       return (
         <Card padding="medium">
           <Text variant="heading">{typedItem.name}</Text>
-          <Text className="text-gray-600 text-sm">
-            {typedItem.category}
-          </Text>
+          <Text className="text-gray-600 text-sm">{typedItem.category}</Text>
         </Card>
       );
     },
     filters: [filters[0]], // Only category filter
-    searchPlaceholder: 'Search...',
+    searchPlaceholder: "Search...",
   },
 };
 
@@ -186,24 +215,30 @@ export const WithEvents: Story = {
   render: () => {
     // @ts-expect-error - Used for Storybook actions panel
     const _handleSearch = fn((query: string) => {
-      console.log('Search:', query);
+      console.log("Search:", query);
     });
     // @ts-expect-error - Used for Storybook actions panel
     const _handleFilter = fn((filters: Record<string, unknown>) => {
-      console.log('Filter:', filters);
+      console.log("Filter:", filters);
     });
-    
+
     return (
       <div className="space-y-4">
         <p className="text-sm text-gray-600">
-          Search or apply filters. Check the Actions panel to see events being fired.
+          Search or apply filters. Check the Actions panel to see events being
+          fired.
         </p>
         <SearchAndFilterPattern
           items={mockProducts}
           searchFn={(query, item) => item.name.toLowerCase().includes(query)}
           filterFn={(filters, item) => {
-            if (filters.category && item.category !== filters.category) return false;
-            if (filters.inStock !== undefined && item.inStock !== filters.inStock) return false;
+            if (filters.category && item.category !== filters.category)
+              return false;
+            if (
+              filters.inStock !== undefined &&
+              item.inStock !== filters.inStock
+            )
+              return false;
             return true;
           }}
           renderItem={(item) => (
@@ -212,9 +247,7 @@ export const WithEvents: Story = {
                 <Text variant="heading" className="text-base">
                   {item.name}
                 </Text>
-                <Text className="text-gray-600 text-sm">
-                  {item.category}
-                </Text>
+                <Text className="text-gray-600 text-sm">{item.category}</Text>
               </Stack>
             </Card>
           )}
@@ -229,13 +262,16 @@ export const WithEvents: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await waitFor(() => {
-      expect(canvas.getByPlaceholderText(/search products/i)).toBeInTheDocument();
+      expect(
+        canvas.getByPlaceholderText(/search products/i),
+      ).toBeInTheDocument();
     });
   },
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates pattern events. Search or apply filters and check the Actions panel to see events being logged.',
+        story:
+          "Demonstrates pattern events. Search or apply filters and check the Actions panel to see events being logged.",
       },
     },
   },
@@ -245,11 +281,17 @@ export const WithEvents: Story = {
 export const DefaultState: Story = {
   args: {
     items: mockProducts,
-    searchFn: (query, item) => (item as { name: string }).name.toLowerCase().includes(query),
+    searchFn: (query, item) =>
+      (item as { name: string }).name.toLowerCase().includes(query),
     filterFn: (filters, item) => {
       const typedItem = item as { category: string; inStock: boolean };
-      if (filters.category && typedItem.category !== filters.category) return false;
-      if (filters.inStock !== undefined && typedItem.inStock !== filters.inStock) return false;
+      if (filters.category && typedItem.category !== filters.category)
+        return false;
+      if (
+        filters.inStock !== undefined &&
+        typedItem.inStock !== filters.inStock
+      )
+        return false;
       return true;
     },
     renderItem: (item) => {
@@ -260,22 +302,20 @@ export const DefaultState: Story = {
             <Text variant="heading" className="text-base">
               {typedItem.name}
             </Text>
-            <Text className="text-gray-600 text-sm">
-              {typedItem.category}
-            </Text>
+            <Text className="text-gray-600 text-sm">{typedItem.category}</Text>
           </Stack>
         </Card>
       );
     },
     filters,
-    searchPlaceholder: 'Search products...',
-    emptyMessage: 'No products found',
+    searchPlaceholder: "Search products...",
+    emptyMessage: "No products found",
     showResultsCount: true,
   },
   parameters: {
     docs: {
       description: {
-        story: 'Default state - shows all items with search and filters.',
+        story: "Default state - shows all items with search and filters.",
       },
     },
   },
@@ -284,9 +324,14 @@ export const DefaultState: Story = {
 export const SearchOnlyState: Story = {
   args: {
     items: mockProducts,
-    searchFn: (query, item) => (item as { name: string }).name.toLowerCase().includes(query),
+    searchFn: (query, item) =>
+      (item as { name: string }).name.toLowerCase().includes(query),
     renderItem: (item) => {
-      const typedItem = item as { name: string; category: string; price: number };
+      const typedItem = item as {
+        name: string;
+        category: string;
+        price: number;
+      };
       return (
         <Card padding="medium">
           <Text variant="heading">{typedItem.name}</Text>
@@ -297,12 +342,12 @@ export const SearchOnlyState: Story = {
       );
     },
     filters: [],
-    searchPlaceholder: 'Search...',
+    searchPlaceholder: "Search...",
   },
   parameters: {
     docs: {
       description: {
-        story: 'Search only state - only search field visible.',
+        story: "Search only state - only search field visible.",
       },
     },
   },
@@ -313,7 +358,8 @@ export const FiltersOnlyState: Story = {
     items: mockProducts,
     filterFn: (filters, item) => {
       const typedItem = item as { category: string };
-      if (filters.category && typedItem.category !== filters.category) return false;
+      if (filters.category && typedItem.category !== filters.category)
+        return false;
       return true;
     },
     renderItem: (item) => {
@@ -321,19 +367,17 @@ export const FiltersOnlyState: Story = {
       return (
         <Card padding="medium">
           <Text variant="heading">{typedItem.name}</Text>
-          <Text className="text-gray-600 text-sm">
-            {typedItem.category}
-          </Text>
+          <Text className="text-gray-600 text-sm">{typedItem.category}</Text>
         </Card>
       );
     },
     filters: [filters[0]], // Only category filter
-    searchPlaceholder: 'Search...',
+    searchPlaceholder: "Search...",
   },
   parameters: {
     docs: {
       description: {
-        story: 'Filters only state - only filters visible.',
+        story: "Filters only state - only filters visible.",
       },
     },
   },
@@ -342,7 +386,8 @@ export const FiltersOnlyState: Story = {
 export const EmptyState: Story = {
   args: {
     items: [],
-    searchFn: (query, item) => (item as { name: string }).name.toLowerCase().includes(query),
+    searchFn: (query, item) =>
+      (item as { name: string }).name.toLowerCase().includes(query),
     renderItem: (item) => {
       const typedItem = item as { name: string };
       return (
@@ -352,13 +397,13 @@ export const EmptyState: Story = {
       );
     },
     filters: [],
-    searchPlaceholder: 'Search...',
-    emptyMessage: 'No items found',
+    searchPlaceholder: "Search...",
+    emptyMessage: "No items found",
   },
   parameters: {
     docs: {
       description: {
-        story: 'Empty state - no items to display.',
+        story: "Empty state - no items to display.",
       },
     },
   },

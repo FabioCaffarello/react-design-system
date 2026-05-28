@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from '@storybook/test';
-import { expect, within, waitFor } from '@storybook/test';
+import { fn } from "@storybook/test";
+import { expect, within, waitFor } from "@storybook/test";
 import { useState } from "react";
 import Table from "./Table";
-import { Badge, Button } from "../../atoms";
+import { Badge, Button } from "../../primitives";
 import { Card } from "../../molecules";
 
 interface SampleData {
@@ -15,9 +15,27 @@ interface SampleData {
 }
 
 const sampleData: SampleData[] = [
-  { id: '1', name: 'Epic 1', status: 'ACTIVE', priority: 'HIGH', createdAt: '2024-01-01' },
-  { id: '2', name: 'Epic 2', status: 'DRAFT', priority: 'MEDIUM', createdAt: '2024-01-02' },
-  { id: '3', name: 'Epic 3', status: 'COMPLETED', priority: 'LOW', createdAt: '2024-01-03' },
+  {
+    id: "1",
+    name: "Epic 1",
+    status: "ACTIVE",
+    priority: "HIGH",
+    createdAt: "2024-01-01",
+  },
+  {
+    id: "2",
+    name: "Epic 2",
+    status: "DRAFT",
+    priority: "MEDIUM",
+    createdAt: "2024-01-02",
+  },
+  {
+    id: "3",
+    name: "Epic 3",
+    status: "COMPLETED",
+    priority: "LOW",
+    createdAt: "2024-01-03",
+  },
 ];
 
 const meta: Meta<typeof Table> = {
@@ -90,10 +108,10 @@ stateDiagram-v2
 export const Default: StoryObj<typeof Table> = {
   args: {
     columns: [
-      { key: 'name', label: 'Name' },
-      { key: 'status', label: 'Status' },
-      { key: 'priority', label: 'Priority' },
-      { key: 'createdAt', label: 'Created At' },
+      { key: "name", label: "Name" },
+      { key: "status", label: "Status" },
+      { key: "priority", label: "Priority" },
+      { key: "createdAt", label: "Created At" },
     ],
     data: sampleData,
   },
@@ -101,31 +119,31 @@ export const Default: StoryObj<typeof Table> = {
 
 export const WithSorting: StoryObj<typeof Table> = {
   render: () => {
-    const [sortColumn, setSortColumn] = useState<string>('');
-    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+    const [sortColumn, setSortColumn] = useState<string>("");
+    const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
     const [data, setData] = useState(sampleData);
 
-    const handleSort = (columnKey: string, direction: 'asc' | 'desc') => {
+    const handleSort = (columnKey: string, direction: "asc" | "desc") => {
       setSortColumn(columnKey);
       setSortDirection(direction);
-      
+
       const sorted = [...data].sort((a, b) => {
         const aVal = (a as Record<string, unknown>)[columnKey] as string;
         const bVal = (b as Record<string, unknown>)[columnKey] as string;
         const comparison = aVal.localeCompare(bVal);
-        return direction === 'asc' ? comparison : -comparison;
+        return direction === "asc" ? comparison : -comparison;
       });
-      
+
       setData(sorted);
     };
 
     return (
       <Table
         columns={[
-          { key: 'name', label: 'Name', sortable: true },
-          { key: 'status', label: 'Status', sortable: true },
-          { key: 'priority', label: 'Priority', sortable: true },
-          { key: 'createdAt', label: 'Created At', sortable: true },
+          { key: "name", label: "Name", sortable: true },
+          { key: "status", label: "Status", sortable: true },
+          { key: "priority", label: "Priority", sortable: true },
+          { key: "createdAt", label: "Created At", sortable: true },
         ]}
         data={data}
         onSort={handleSort}
@@ -139,26 +157,42 @@ export const WithSorting: StoryObj<typeof Table> = {
 export const WithCustomRendering: StoryObj<typeof Table> = {
   args: {
     columns: [
-      { key: 'name', label: 'Name' },
+      { key: "name", label: "Name" },
       {
-        key: 'status',
-        label: 'Status',
+        key: "status",
+        label: "Status",
         render: (value) => (
-          <Badge variant={value === 'ACTIVE' ? 'success' : value === 'COMPLETED' ? 'info' : 'neutral'}>
+          <Badge
+            variant={
+              value === "ACTIVE"
+                ? "success"
+                : value === "COMPLETED"
+                  ? "info"
+                  : "neutral"
+            }
+          >
             {value}
           </Badge>
         ),
       },
       {
-        key: 'priority',
-        label: 'Priority',
+        key: "priority",
+        label: "Priority",
         render: (value) => (
-          <Badge variant={value === 'HIGH' ? 'error' : value === 'MEDIUM' ? 'warning' : 'info'}>
+          <Badge
+            variant={
+              value === "HIGH"
+                ? "error"
+                : value === "MEDIUM"
+                  ? "warning"
+                  : "info"
+            }
+          >
             {value}
           </Badge>
         ),
       },
-      { key: 'createdAt', label: 'Created At' },
+      { key: "createdAt", label: "Created At" },
     ],
     data: sampleData,
   },
@@ -167,8 +201,8 @@ export const WithCustomRendering: StoryObj<typeof Table> = {
 export const Loading: StoryObj<typeof Table> = {
   args: {
     columns: [
-      { key: 'name', label: 'Name' },
-      { key: 'status', label: 'Status' },
+      { key: "name", label: "Name" },
+      { key: "status", label: "Status" },
     ],
     data: [],
     loading: true,
@@ -178,8 +212,8 @@ export const Loading: StoryObj<typeof Table> = {
 export const Empty: StoryObj<typeof Table> = {
   args: {
     columns: [
-      { key: 'name', label: 'Name' },
-      { key: 'status', label: 'Status' },
+      { key: "name", label: "Name" },
+      { key: "status", label: "Status" },
     ],
     data: [],
     emptyMessage: "No epics found. Create your first epic to get started.",
@@ -193,9 +227,9 @@ export const WithPagination: StoryObj<typeof Table> = {
     const allData = Array.from({ length: 100 }, (_, i) => ({
       id: (i + 1).toString(),
       name: `Item ${i + 1}`,
-      status: i % 3 === 0 ? 'ACTIVE' : i % 3 === 1 ? 'DRAFT' : 'COMPLETED',
-      priority: i % 4 === 0 ? 'HIGH' : i % 4 === 1 ? 'MEDIUM' : 'LOW',
-      createdAt: `2024-01-${String(i % 28 + 1).padStart(2, '0')}`,
+      status: i % 3 === 0 ? "ACTIVE" : i % 3 === 1 ? "DRAFT" : "COMPLETED",
+      priority: i % 4 === 0 ? "HIGH" : i % 4 === 1 ? "MEDIUM" : "LOW",
+      createdAt: `2024-01-${String((i % 28) + 1).padStart(2, "0")}`,
     }));
 
     const startIndex = (page - 1) * pageSize;
@@ -205,10 +239,10 @@ export const WithPagination: StoryObj<typeof Table> = {
     return (
       <Table
         columns={[
-          { key: 'name', label: 'Name', sortable: true },
-          { key: 'status', label: 'Status', sortable: true },
-          { key: 'priority', label: 'Priority' },
-          { key: 'createdAt', label: 'Created At' },
+          { key: "name", label: "Name", sortable: true },
+          { key: "status", label: "Status", sortable: true },
+          { key: "priority", label: "Priority" },
+          { key: "createdAt", label: "Created At" },
         ]}
         data={paginatedData}
         pagination={{
@@ -236,39 +270,39 @@ export const WithFilters: StoryObj<typeof Table> = {
     return (
       <Table
         columns={[
-          { key: 'name', label: 'Name' },
-          { key: 'status', label: 'Status' },
-          { key: 'priority', label: 'Priority' },
-          { key: 'createdAt', label: 'Created At' },
+          { key: "name", label: "Name" },
+          { key: "status", label: "Status" },
+          { key: "priority", label: "Priority" },
+          { key: "createdAt", label: "Created At" },
         ]}
         data={data}
         filters={{
           config: [
             {
-              key: 'status',
-              label: 'Status',
-              type: 'select',
+              key: "status",
+              label: "Status",
+              type: "select",
               options: [
-                { value: 'ACTIVE', label: 'Active' },
-                { value: 'DRAFT', label: 'Draft' },
-                { value: 'COMPLETED', label: 'Completed' },
+                { value: "ACTIVE", label: "Active" },
+                { value: "DRAFT", label: "Draft" },
+                { value: "COMPLETED", label: "Completed" },
               ],
             },
             {
-              key: 'priority',
-              label: 'Priority',
-              type: 'select',
+              key: "priority",
+              label: "Priority",
+              type: "select",
               options: [
-                { value: 'HIGH', label: 'High' },
-                { value: 'MEDIUM', label: 'Medium' },
-                { value: 'LOW', label: 'Low' },
+                { value: "HIGH", label: "High" },
+                { value: "MEDIUM", label: "Medium" },
+                { value: "LOW", label: "Low" },
               ],
             },
             {
-              key: 'search',
-              label: 'Search',
-              type: 'text',
-              placeholder: 'Search by name...',
+              key: "search",
+              label: "Search",
+              type: "text",
+              placeholder: "Search by name...",
             },
           ],
           onFilter: handleFilter,
@@ -285,9 +319,9 @@ export const WithSelection: StoryObj<typeof Table> = {
     return (
       <Table
         columns={[
-          { key: 'name', label: 'Name' },
-          { key: 'status', label: 'Status' },
-          { key: 'priority', label: 'Priority' },
+          { key: "name", label: "Name" },
+          { key: "status", label: "Status" },
+          { key: "priority", label: "Priority" },
         ]}
         data={sampleData}
         selectable
@@ -302,29 +336,33 @@ export const WithSelection: StoryObj<typeof Table> = {
 export const WithActions: StoryObj<typeof Table> = {
   render: () => {
     const handleView = (row: SampleData) => {
-      console.log('View:', row);
+      console.log("View:", row);
     };
 
     const handleEdit = (row: SampleData) => {
-      console.log('Edit:', row);
+      console.log("Edit:", row);
     };
 
     const handleDelete = (row: SampleData) => {
-      console.log('Delete:', row);
+      console.log("Delete:", row);
     };
 
     return (
       <Table
         columns={[
-          { key: 'name', label: 'Name' },
-          { key: 'status', label: 'Status' },
-          { key: 'priority', label: 'Priority' },
+          { key: "name", label: "Name" },
+          { key: "status", label: "Status" },
+          { key: "priority", label: "Priority" },
         ]}
         data={sampleData}
         actions={(row) => [
-          { label: 'View', onClick: () => handleView(row) },
-          { label: 'Edit', onClick: () => handleEdit(row) },
-          { label: 'Delete', onClick: () => handleDelete(row), variant: 'danger' },
+          { label: "View", onClick: () => handleView(row) },
+          { label: "Edit", onClick: () => handleEdit(row) },
+          {
+            label: "Delete",
+            onClick: () => handleDelete(row),
+            variant: "danger",
+          },
         ]}
         rowId={(row) => row.id}
       />
@@ -336,20 +374,20 @@ export const FullFeatured: StoryObj<typeof Table> = {
   render: () => {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
-    const [sortColumn, setSortColumn] = useState<string>('');
-    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+    const [sortColumn, setSortColumn] = useState<string>("");
+    const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
     const [_filters, setFilters] = useState<Record<string, unknown>>({});
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
     const allData = Array.from({ length: 50 }, (_, i) => ({
       id: (i + 1).toString(),
       name: `Epic ${i + 1}`,
-      status: i % 3 === 0 ? 'ACTIVE' : i % 3 === 1 ? 'DRAFT' : 'COMPLETED',
-      priority: i % 4 === 0 ? 'HIGH' : i % 4 === 1 ? 'MEDIUM' : 'LOW',
-      createdAt: `2024-01-${String(i % 28 + 1).padStart(2, '0')}`,
+      status: i % 3 === 0 ? "ACTIVE" : i % 3 === 1 ? "DRAFT" : "COMPLETED",
+      priority: i % 4 === 0 ? "HIGH" : i % 4 === 1 ? "MEDIUM" : "LOW",
+      createdAt: `2024-01-${String((i % 28) + 1).padStart(2, "0")}`,
     }));
 
-    const handleSort = (columnKey: string, direction: 'asc' | 'desc') => {
+    const handleSort = (columnKey: string, direction: "asc" | "desc") => {
       setSortColumn(columnKey);
       setSortDirection(direction);
     };
@@ -365,27 +403,43 @@ export const FullFeatured: StoryObj<typeof Table> = {
     return (
       <Table
         columns={[
-          { key: 'name', label: 'Name', sortable: true },
+          { key: "name", label: "Name", sortable: true },
           {
-            key: 'status',
-            label: 'Status',
+            key: "status",
+            label: "Status",
             sortable: true,
             render: (value) => (
-              <Badge variant={value === 'ACTIVE' ? 'success' : value === 'COMPLETED' ? 'info' : 'neutral'}>
+              <Badge
+                variant={
+                  value === "ACTIVE"
+                    ? "success"
+                    : value === "COMPLETED"
+                      ? "info"
+                      : "neutral"
+                }
+              >
                 {value}
               </Badge>
             ),
           },
           {
-            key: 'priority',
-            label: 'Priority',
+            key: "priority",
+            label: "Priority",
             render: (value) => (
-              <Badge variant={value === 'HIGH' ? 'error' : value === 'MEDIUM' ? 'warning' : 'info'}>
+              <Badge
+                variant={
+                  value === "HIGH"
+                    ? "error"
+                    : value === "MEDIUM"
+                      ? "warning"
+                      : "info"
+                }
+              >
                 {value}
               </Badge>
             ),
           },
-          { key: 'createdAt', label: 'Created At', sortable: true },
+          { key: "createdAt", label: "Created At", sortable: true },
         ]}
         data={paginatedData}
         onSort={handleSort}
@@ -401,23 +455,23 @@ export const FullFeatured: StoryObj<typeof Table> = {
         filters={{
           config: [
             {
-              key: 'status',
-              label: 'Status',
-              type: 'select',
+              key: "status",
+              label: "Status",
+              type: "select",
               options: [
-                { value: 'ACTIVE', label: 'Active' },
-                { value: 'DRAFT', label: 'Draft' },
-                { value: 'COMPLETED', label: 'Completed' },
+                { value: "ACTIVE", label: "Active" },
+                { value: "DRAFT", label: "Draft" },
+                { value: "COMPLETED", label: "Completed" },
               ],
             },
             {
-              key: 'priority',
-              label: 'Priority',
-              type: 'select',
+              key: "priority",
+              label: "Priority",
+              type: "select",
               options: [
-                { value: 'HIGH', label: 'High' },
-                { value: 'MEDIUM', label: 'Medium' },
-                { value: 'LOW', label: 'Low' },
+                { value: "HIGH", label: "High" },
+                { value: "MEDIUM", label: "Medium" },
+                { value: "LOW", label: "Low" },
               ],
             },
           ],
@@ -428,9 +482,9 @@ export const FullFeatured: StoryObj<typeof Table> = {
         onSelectionChange={setSelectedRows}
         rowId={(row) => row.id}
         actions={(_row) => [
-          { label: 'View', onClick: () => {} },
-          { label: 'Edit', onClick: () => {} },
-          { label: 'Delete', onClick: () => {}, variant: 'danger' },
+          { label: "View", onClick: () => {} },
+          { label: "Edit", onClick: () => {} },
+          { label: "Delete", onClick: () => {}, variant: "danger" },
         ]}
       />
     );
@@ -442,18 +496,18 @@ export const ClientSidePagination: StoryObj<typeof Table> = {
     const allData = Array.from({ length: 100 }, (_, i) => ({
       id: (i + 1).toString(),
       name: `Item ${i + 1}`,
-      status: i % 3 === 0 ? 'ACTIVE' : i % 3 === 1 ? 'DRAFT' : 'COMPLETED',
-      priority: i % 4 === 0 ? 'HIGH' : i % 4 === 1 ? 'MEDIUM' : 'LOW',
-      createdAt: `2024-01-${String(i % 28 + 1).padStart(2, '0')}`,
+      status: i % 3 === 0 ? "ACTIVE" : i % 3 === 1 ? "DRAFT" : "COMPLETED",
+      priority: i % 4 === 0 ? "HIGH" : i % 4 === 1 ? "MEDIUM" : "LOW",
+      createdAt: `2024-01-${String((i % 28) + 1).padStart(2, "0")}`,
     }));
 
     return (
       <Table
         columns={[
-          { key: 'name', label: 'Name', sortable: true },
-          { key: 'status', label: 'Status', sortable: true },
-          { key: 'priority', label: 'Priority' },
-          { key: 'createdAt', label: 'Created At' },
+          { key: "name", label: "Name", sortable: true },
+          { key: "status", label: "Status", sortable: true },
+          { key: "priority", label: "Priority" },
+          { key: "createdAt", label: "Created At" },
         ]}
         data={allData}
         paginationMode="client"
@@ -470,9 +524,9 @@ export const ServerSidePagination: StoryObj<typeof Table> = {
     const allData = Array.from({ length: 100 }, (_, i) => ({
       id: (i + 1).toString(),
       name: `Item ${i + 1}`,
-      status: i % 3 === 0 ? 'ACTIVE' : i % 3 === 1 ? 'DRAFT' : 'COMPLETED',
-      priority: i % 4 === 0 ? 'HIGH' : i % 4 === 1 ? 'MEDIUM' : 'LOW',
-      createdAt: `2024-01-${String(i % 28 + 1).padStart(2, '0')}`,
+      status: i % 3 === 0 ? "ACTIVE" : i % 3 === 1 ? "DRAFT" : "COMPLETED",
+      priority: i % 4 === 0 ? "HIGH" : i % 4 === 1 ? "MEDIUM" : "LOW",
+      createdAt: `2024-01-${String((i % 28) + 1).padStart(2, "0")}`,
     }));
 
     const startIndex = (page - 1) * pageSize;
@@ -482,10 +536,10 @@ export const ServerSidePagination: StoryObj<typeof Table> = {
     return (
       <Table
         columns={[
-          { key: 'name', label: 'Name', sortable: true },
-          { key: 'status', label: 'Status', sortable: true },
-          { key: 'priority', label: 'Priority' },
-          { key: 'createdAt', label: 'Created At' },
+          { key: "name", label: "Name", sortable: true },
+          { key: "status", label: "Status", sortable: true },
+          { key: "priority", label: "Priority" },
+          { key: "createdAt", label: "Created At" },
         ]}
         data={paginatedData}
         paginationMode="server"
@@ -507,9 +561,9 @@ export const AutoDetectPagination: StoryObj<typeof Table> = {
     const allData = Array.from({ length: 100 }, (_, i) => ({
       id: (i + 1).toString(),
       name: `Item ${i + 1}`,
-      status: i % 3 === 0 ? 'ACTIVE' : i % 3 === 1 ? 'DRAFT' : 'COMPLETED',
-      priority: i % 4 === 0 ? 'HIGH' : i % 4 === 1 ? 'MEDIUM' : 'LOW',
-      createdAt: `2024-01-${String(i % 28 + 1).padStart(2, '0')}`,
+      status: i % 3 === 0 ? "ACTIVE" : i % 3 === 1 ? "DRAFT" : "COMPLETED",
+      priority: i % 4 === 0 ? "HIGH" : i % 4 === 1 ? "MEDIUM" : "LOW",
+      createdAt: `2024-01-${String((i % 28) + 1).padStart(2, "0")}`,
     }));
 
     const startIndex = (page - 1) * pageSize;
@@ -519,10 +573,10 @@ export const AutoDetectPagination: StoryObj<typeof Table> = {
     return (
       <Table
         columns={[
-          { key: 'name', label: 'Name', sortable: true },
-          { key: 'status', label: 'Status', sortable: true },
-          { key: 'priority', label: 'Priority' },
-          { key: 'createdAt', label: 'Created At' },
+          { key: "name", label: "Name", sortable: true },
+          { key: "status", label: "Status", sortable: true },
+          { key: "priority", label: "Priority" },
+          { key: "createdAt", label: "Created At" },
         ]}
         data={paginatedData}
         total={allData.length}
@@ -539,66 +593,82 @@ export const DeclarativeAPI: StoryObj<typeof Table> = {
     const allData = Array.from({ length: 50 }, (_, i) => ({
       id: (i + 1).toString(),
       name: `Epic ${i + 1}`,
-      status: i % 3 === 0 ? 'ACTIVE' : i % 3 === 1 ? 'DRAFT' : 'COMPLETED',
-      priority: i % 4 === 0 ? 'HIGH' : i % 4 === 1 ? 'MEDIUM' : 'LOW',
-      createdAt: `2024-01-${String(i % 28 + 1).padStart(2, '0')}`,
+      status: i % 3 === 0 ? "ACTIVE" : i % 3 === 1 ? "DRAFT" : "COMPLETED",
+      priority: i % 4 === 0 ? "HIGH" : i % 4 === 1 ? "MEDIUM" : "LOW",
+      createdAt: `2024-01-${String((i % 28) + 1).padStart(2, "0")}`,
     }));
 
     return (
       <Table
         columns={[
-          { key: 'name', label: 'Name', sortable: true },
+          { key: "name", label: "Name", sortable: true },
           {
-            key: 'status',
-            label: 'Status',
+            key: "status",
+            label: "Status",
             sortable: true,
             render: (value) => (
-              <Badge variant={value === 'ACTIVE' ? 'success' : value === 'COMPLETED' ? 'info' : 'neutral'}>
+              <Badge
+                variant={
+                  value === "ACTIVE"
+                    ? "success"
+                    : value === "COMPLETED"
+                      ? "info"
+                      : "neutral"
+                }
+              >
                 {value}
               </Badge>
             ),
           },
           {
-            key: 'priority',
-            label: 'Priority',
+            key: "priority",
+            label: "Priority",
             render: (value) => (
-              <Badge variant={value === 'HIGH' ? 'error' : value === 'MEDIUM' ? 'warning' : 'info'}>
+              <Badge
+                variant={
+                  value === "HIGH"
+                    ? "error"
+                    : value === "MEDIUM"
+                      ? "warning"
+                      : "info"
+                }
+              >
                 {value}
               </Badge>
             ),
           },
-          { key: 'createdAt', label: 'Created At', sortable: true },
+          { key: "createdAt", label: "Created At", sortable: true },
         ]}
         data={allData}
         paginationMode="client"
         defaultPageSize={10}
         filters={[
           {
-            key: 'status',
-            label: 'Status',
-            type: 'select',
+            key: "status",
+            label: "Status",
+            type: "select",
             options: [
-              { value: 'ACTIVE', label: 'Active' },
-              { value: 'DRAFT', label: 'Draft' },
-              { value: 'COMPLETED', label: 'Completed' },
+              { value: "ACTIVE", label: "Active" },
+              { value: "DRAFT", label: "Draft" },
+              { value: "COMPLETED", label: "Completed" },
             ],
           },
           {
-            key: 'priority',
-            label: 'Priority',
-            type: 'select',
+            key: "priority",
+            label: "Priority",
+            type: "select",
             options: [
-              { value: 'HIGH', label: 'High' },
-              { value: 'MEDIUM', label: 'Medium' },
-              { value: 'LOW', label: 'Low' },
+              { value: "HIGH", label: "High" },
+              { value: "MEDIUM", label: "Medium" },
+              { value: "LOW", label: "Low" },
             ],
           },
         ]}
         selectable
         actions={(_row) => [
-          { label: 'View', onClick: () => {} },
-          { label: 'Edit', onClick: () => {} },
-          { label: 'Delete', onClick: () => {}, variant: 'danger' },
+          { label: "View", onClick: () => {} },
+          { label: "Edit", onClick: () => {} },
+          { label: "Delete", onClick: () => {}, variant: "danger" },
         ]}
       >
         <Table.Filters />
@@ -617,17 +687,18 @@ export const DeclarativeAPI: StoryObj<typeof Table> = {
 export const Accessibility: StoryObj<typeof Table> = {
   args: {
     columns: [
-      { key: 'name', label: 'Name', sortable: true },
-      { key: 'status', label: 'Status', sortable: true },
-      { key: 'priority', label: 'Priority' },
+      { key: "name", label: "Name", sortable: true },
+      { key: "status", label: "Status", sortable: true },
+      { key: "priority", label: "Priority" },
     ],
     data: sampleData,
-    'aria-label': 'User management table',
+    "aria-label": "User management table",
   },
   parameters: {
     docs: {
       description: {
-        story: 'Table with accessibility features: aria-label, aria-sort on sortable columns, keyboard navigation support.',
+        story:
+          "Table with accessibility features: aria-label, aria-sort on sortable columns, keyboard navigation support.",
       },
     },
   },
@@ -636,16 +707,18 @@ export const Accessibility: StoryObj<typeof Table> = {
 export const KeyboardNavigation: StoryObj<typeof Table> = {
   args: {
     columns: [
-      { key: 'name', label: 'Name', sortable: true },
-      { key: 'status', label: 'Status', sortable: true },
-      { key: 'priority', label: 'Priority' },
+      { key: "name", label: "Name", sortable: true },
+      { key: "status", label: "Status", sortable: true },
+      { key: "priority", label: "Priority" },
     ],
     data: sampleData,
   },
   render: (args) => (
     <div className="space-y-4">
       <div className="p-4 bg-blue-50 rounded-md">
-        <p className="text-sm text-blue-800 font-medium mb-2">Keyboard Navigation:</p>
+        <p className="text-sm text-blue-800 font-medium mb-2">
+          Keyboard Navigation:
+        </p>
         <ul className="text-sm text-blue-700 space-y-1 list-disc list-inside">
           <li>Tab to navigate to sortable column headers</li>
           <li>Enter or Space to sort columns</li>
@@ -659,7 +732,8 @@ export const KeyboardNavigation: StoryObj<typeof Table> = {
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates keyboard navigation in tables. Use Tab to focus sortable headers and Enter/Space to sort.',
+        story:
+          "Demonstrates keyboard navigation in tables. Use Tab to focus sortable headers and Enter/Space to sort.",
       },
     },
   },
@@ -675,7 +749,7 @@ export const DashboardComposition: StoryObj<typeof Table> = {
           <Button variant="outline">Export</Button>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <div className="p-4">
@@ -702,10 +776,10 @@ export const DashboardComposition: StoryObj<typeof Table> = {
           <h3 className="text-lg font-semibold mb-4">Recent Items</h3>
           <Table
             columns={[
-              { key: 'name', label: 'Name', sortable: true },
-              { key: 'status', label: 'Status', sortable: true },
-              { key: 'priority', label: 'Priority' },
-              { key: 'createdAt', label: 'Created', sortable: true },
+              { key: "name", label: "Name", sortable: true },
+              { key: "status", label: "Status", sortable: true },
+              { key: "priority", label: "Priority" },
+              { key: "createdAt", label: "Created", sortable: true },
             ]}
             data={sampleData}
             aria-label="Recent items table"
@@ -717,7 +791,8 @@ export const DashboardComposition: StoryObj<typeof Table> = {
   parameters: {
     docs: {
       description: {
-        story: 'Example dashboard showing Table component working together with Cards, Buttons, and other components.',
+        story:
+          "Example dashboard showing Table component working together with Cards, Buttons, and other components.",
       },
     },
   },
@@ -726,17 +801,17 @@ export const DashboardComposition: StoryObj<typeof Table> = {
 export const EmptyState: StoryObj<typeof Table> = {
   args: {
     columns: [
-      { key: 'name', label: 'Name' },
-      { key: 'status', label: 'Status' },
-      { key: 'priority', label: 'Priority' },
+      { key: "name", label: "Name" },
+      { key: "status", label: "Status" },
+      { key: "priority", label: "Priority" },
     ],
     data: [],
-    emptyMessage: 'No items found',
+    emptyMessage: "No items found",
   },
   parameters: {
     docs: {
       description: {
-        story: 'Table with empty state when no data is available.',
+        story: "Table with empty state when no data is available.",
       },
     },
   },
@@ -745,9 +820,9 @@ export const EmptyState: StoryObj<typeof Table> = {
 export const LoadingState: StoryObj<typeof Table> = {
   args: {
     columns: [
-      { key: 'name', label: 'Name' },
-      { key: 'status', label: 'Status' },
-      { key: 'priority', label: 'Priority' },
+      { key: "name", label: "Name" },
+      { key: "status", label: "Status" },
+      { key: "priority", label: "Priority" },
     ],
     data: [],
     loading: true,
@@ -755,7 +830,7 @@ export const LoadingState: StoryObj<typeof Table> = {
   parameters: {
     docs: {
       description: {
-        story: 'Table in loading state showing skeleton loaders.',
+        story: "Table in loading state showing skeleton loaders.",
       },
     },
   },
@@ -766,18 +841,18 @@ export const LargeDataset: StoryObj<typeof Table> = {
     const largeData = Array.from({ length: 100 }, (_, i) => ({
       id: String(i + 1),
       name: `Item ${i + 1}`,
-      status: ['ACTIVE', 'DRAFT', 'COMPLETED'][i % 3],
-      priority: ['HIGH', 'MEDIUM', 'LOW'][i % 3],
-      createdAt: `2024-01-${String((i % 28) + 1).padStart(2, '0')}`,
+      status: ["ACTIVE", "DRAFT", "COMPLETED"][i % 3],
+      priority: ["HIGH", "MEDIUM", "LOW"][i % 3],
+      createdAt: `2024-01-${String((i % 28) + 1).padStart(2, "0")}`,
     }));
 
     return (
       <Table
         columns={[
-          { key: 'name', label: 'Name', sortable: true },
-          { key: 'status', label: 'Status', sortable: true },
-          { key: 'priority', label: 'Priority' },
-          { key: 'createdAt', label: 'Created', sortable: true },
+          { key: "name", label: "Name", sortable: true },
+          { key: "status", label: "Status", sortable: true },
+          { key: "priority", label: "Priority" },
+          { key: "createdAt", label: "Created", sortable: true },
         ]}
         data={largeData}
         paginationMode="client"
@@ -789,7 +864,8 @@ export const LargeDataset: StoryObj<typeof Table> = {
   parameters: {
     docs: {
       description: {
-        story: 'Table handling large datasets with pagination. Demonstrates performance with 100+ rows.',
+        story:
+          "Table handling large datasets with pagination. Demonstrates performance with 100+ rows.",
       },
     },
   },
@@ -798,34 +874,35 @@ export const LargeDataset: StoryObj<typeof Table> = {
 // Event Stories
 export const WithEvents: StoryObj<typeof Table> = {
   render: () => {
-    const [sortColumn, setSortColumn] = useState<string>('');
-    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+    const [sortColumn, setSortColumn] = useState<string>("");
+    const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
     const [_filters, setFilters] = useState<Record<string, unknown>>({});
-    
-    const handleSort = fn((columnKey: string, direction: 'asc' | 'desc') => {
+
+    const handleSort = fn((columnKey: string, direction: "asc" | "desc") => {
       setSortColumn(columnKey);
       setSortDirection(direction);
     });
-    
+
     const handleSelectionChange = fn((selected: string[]) => {
       setSelectedRows(selected);
     });
-    
+
     const handleFilter = fn((newFilters: Record<string, unknown>) => {
       setFilters(newFilters);
     });
-    
+
     return (
       <div className="space-y-4">
         <p className="text-sm text-gray-600">
-          Sort columns, select rows, or apply filters. Check the Actions panel to see events being fired.
+          Sort columns, select rows, or apply filters. Check the Actions panel
+          to see events being fired.
         </p>
         <Table
           columns={[
-            { key: 'name', label: 'Name', sortable: true },
-            { key: 'status', label: 'Status', sortable: true },
-            { key: 'priority', label: 'Priority' },
+            { key: "name", label: "Name", sortable: true },
+            { key: "status", label: "Status", sortable: true },
+            { key: "priority", label: "Priority" },
           ]}
           data={sampleData}
           onSort={handleSort}
@@ -838,13 +915,13 @@ export const WithEvents: StoryObj<typeof Table> = {
           filters={{
             config: [
               {
-                key: 'status',
-                label: 'Status',
-                type: 'select',
+                key: "status",
+                label: "Status",
+                type: "select",
                 options: [
-                  { value: 'ACTIVE', label: 'Active' },
-                  { value: 'DRAFT', label: 'Draft' },
-                  { value: 'COMPLETED', label: 'Completed' },
+                  { value: "ACTIVE", label: "Active" },
+                  { value: "DRAFT", label: "Draft" },
+                  { value: "COMPLETED", label: "Completed" },
                 ],
               },
             ],
@@ -863,13 +940,14 @@ export const WithEvents: StoryObj<typeof Table> = {
     const canvas = within(canvasElement);
     // Wait for table to be rendered
     await waitFor(() => {
-      expect(canvas.getByText('Name')).toBeInTheDocument();
+      expect(canvas.getByText("Name")).toBeInTheDocument();
     });
   },
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates table events. Sort, select, or filter and check the Actions panel to see events being logged.',
+        story:
+          "Demonstrates table events. Sort, select, or filter and check the Actions panel to see events being logged.",
       },
     },
   },
@@ -879,16 +957,16 @@ export const WithEvents: StoryObj<typeof Table> = {
 export const DefaultState: StoryObj<typeof Table> = {
   args: {
     columns: [
-      { key: 'name', label: 'Name' },
-      { key: 'status', label: 'Status' },
-      { key: 'priority', label: 'Priority' },
+      { key: "name", label: "Name" },
+      { key: "status", label: "Status" },
+      { key: "priority", label: "Priority" },
     ],
     data: sampleData,
   },
   parameters: {
     docs: {
       description: {
-        story: 'Default state - table with basic functionality.',
+        story: "Default state - table with basic functionality.",
       },
     },
   },
@@ -896,15 +974,15 @@ export const DefaultState: StoryObj<typeof Table> = {
 
 export const WithSortingState: StoryObj<typeof Table> = {
   render: () => {
-    const [sortColumn, setSortColumn] = useState<string>('name');
-    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-    
+    const [sortColumn, setSortColumn] = useState<string>("name");
+    const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+
     return (
       <Table
         columns={[
-          { key: 'name', label: 'Name', sortable: true },
-          { key: 'status', label: 'Status', sortable: true },
-          { key: 'priority', label: 'Priority' },
+          { key: "name", label: "Name", sortable: true },
+          { key: "status", label: "Status", sortable: true },
+          { key: "priority", label: "Priority" },
         ]}
         data={sampleData}
         onSort={(col, dir) => {
@@ -919,7 +997,7 @@ export const WithSortingState: StoryObj<typeof Table> = {
   parameters: {
     docs: {
       description: {
-        story: 'With sorting state - columns are sortable.',
+        story: "With sorting state - columns are sortable.",
       },
     },
   },
@@ -927,13 +1005,13 @@ export const WithSortingState: StoryObj<typeof Table> = {
 
 export const WithSelectionState: StoryObj<typeof Table> = {
   render: () => {
-    const [selectedRows, setSelectedRows] = useState<string[]>(['1', '2']);
+    const [selectedRows, setSelectedRows] = useState<string[]>(["1", "2"]);
     return (
       <Table
         columns={[
-          { key: 'name', label: 'Name' },
-          { key: 'status', label: 'Status' },
-          { key: 'priority', label: 'Priority' },
+          { key: "name", label: "Name" },
+          { key: "status", label: "Status" },
+          { key: "priority", label: "Priority" },
         ]}
         data={sampleData}
         selectable
@@ -946,7 +1024,7 @@ export const WithSelectionState: StoryObj<typeof Table> = {
   parameters: {
     docs: {
       description: {
-        story: 'With selection state - rows can be selected.',
+        story: "With selection state - rows can be selected.",
       },
     },
   },
@@ -955,8 +1033,8 @@ export const WithSelectionState: StoryObj<typeof Table> = {
 export const LoadingStateSimple: StoryObj<typeof Table> = {
   args: {
     columns: [
-      { key: 'name', label: 'Name' },
-      { key: 'status', label: 'Status' },
+      { key: "name", label: "Name" },
+      { key: "status", label: "Status" },
     ],
     data: [],
     loading: true,
@@ -964,7 +1042,7 @@ export const LoadingStateSimple: StoryObj<typeof Table> = {
   parameters: {
     docs: {
       description: {
-        story: 'Loading state - shows loading indicator while fetching data.',
+        story: "Loading state - shows loading indicator while fetching data.",
       },
     },
   },
@@ -973,16 +1051,16 @@ export const LoadingStateSimple: StoryObj<typeof Table> = {
 export const NoData: StoryObj<typeof Table> = {
   args: {
     columns: [
-      { key: 'name', label: 'Name' },
-      { key: 'status', label: 'Status' },
+      { key: "name", label: "Name" },
+      { key: "status", label: "Status" },
     ],
     data: [],
-    emptyMessage: 'No data available',
+    emptyMessage: "No data available",
   },
   parameters: {
     docs: {
       description: {
-        story: 'Empty state - no data is available to display.',
+        story: "Empty state - no data is available to display.",
       },
     },
   },

@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useMemo, type ReactNode } from 'react';
-import { Download, ArrowUpDown } from 'lucide-react';
-import Table, { type TableColumn } from '../Table/Table';
-import Button from '../../atoms/Button/Button';
-import { getSpacingClass } from '../../tokens/spacing';
-import type { TableAction } from '../Table/TableActions/TableActions';
+import { useState, useMemo, type ReactNode } from "react";
+import { Download, ArrowUpDown } from "lucide-react";
+import Table, { type TableColumn } from "../Table/Table";
+import Button from "../../primitives/Button/Button";
+import { getSpacingClass } from "../../tokens/spacing";
+import type { TableAction } from "../Table/TableActions/TableActions";
 
 export type DataGridColumn<T = unknown> = TableColumn<T> & {
   groupable?: boolean;
@@ -20,40 +20,42 @@ export interface DataGridGroup {
   expanded?: boolean;
 }
 
-export interface DataGridProps<T extends Record<string, unknown> = Record<string, unknown>> {
+export interface DataGridProps<
+  T extends Record<string, unknown> = Record<string, unknown>,
+> {
   columns: DataGridColumn<T>[];
   data: T[];
   loading?: boolean;
-  
+
   // Sorting
-  onSort?: (columnKey: string, direction: 'asc' | 'desc') => void;
+  onSort?: (columnKey: string, direction: "asc" | "desc") => void;
   sortColumn?: string;
-  sortDirection?: 'asc' | 'desc';
+  sortDirection?: "asc" | "desc";
   multiSort?: boolean;
-  
+
   // Grouping
   groups?: DataGridGroup[];
   onGroupChange?: (groups: DataGridGroup[]) => void;
   groupable?: boolean;
-  
+
   // Column Management
   resizable?: boolean;
   reorderable?: boolean;
   onColumnReorder?: (columns: DataGridColumn<T>[]) => void;
   columnWidths?: Record<string, number>;
   onColumnResize?: (columnKey: string, width: number) => void;
-  
+
   // Selection
   selectable?: boolean;
   selectedRows?: string[];
   onSelectionChange?: (selected: string[]) => void;
   rowId?: (row: T) => string;
-  
+
   // Export
   exportable?: boolean;
-  onExport?: (format: 'csv' | 'xlsx' | 'json') => void;
-  exportFormats?: ('csv' | 'xlsx' | 'json')[];
-  
+  onExport?: (format: "csv" | "xlsx" | "json") => void;
+  exportFormats?: ("csv" | "xlsx" | "json")[];
+
   // Pagination
   pagination?: {
     page: number;
@@ -63,18 +65,18 @@ export interface DataGridProps<T extends Record<string, unknown> = Record<string
     onPageSizeChange: (size: number) => void;
     pageSizeOptions?: number[];
   };
-  
+
   // Filters
   filters?: {
     config: unknown[];
     onFilter: (filters: Record<string, unknown>) => void;
     initialValues?: Record<string, unknown>;
   };
-  
+
   // Actions
   actions?: (row: T) => TableAction<T>[];
   toolbarActions?: ReactNode;
-  
+
   // Virtual Scrolling
   virtualScrolling?: boolean;
   virtualScrollingOptions?: {
@@ -82,24 +84,24 @@ export interface DataGridProps<T extends Record<string, unknown> = Record<string
     containerHeight?: number;
     overscan?: number;
   };
-  
+
   // Empty State
   emptyMessage?: string;
   emptyStateTitle?: string;
   emptyStateMessage?: string;
   emptyStateIllustration?: ReactNode;
   emptyStateAction?: ReactNode;
-  
+
   className?: string;
 }
 
 /**
  * DataGrid Component
- * 
+ *
  * An advanced data grid component with sorting, filtering, grouping, column management, and export.
  * Extends the Table component with additional enterprise features.
  * Follows Atomic Design principles as an Organism component.
- * 
+ *
  * @example
  * ```tsx
  * <DataGrid
@@ -111,7 +113,9 @@ export interface DataGridProps<T extends Record<string, unknown> = Record<string
  * />
  * ```
  */
-export default function DataGrid<T extends Record<string, unknown> = Record<string, unknown>>({
+export default function DataGrid<
+  T extends Record<string, unknown> = Record<string, unknown>,
+>({
   columns,
   data,
   loading = false,
@@ -133,7 +137,7 @@ export default function DataGrid<T extends Record<string, unknown> = Record<stri
   rowId,
   exportable = false,
   onExport,
-  exportFormats = ['csv', 'xlsx', 'json'],
+  exportFormats = ["csv", "xlsx", "json"],
   pagination,
   filters,
   actions,
@@ -145,12 +149,12 @@ export default function DataGrid<T extends Record<string, unknown> = Record<stri
   emptyStateMessage,
   emptyStateIllustration,
   emptyStateAction,
-  className = '',
+  className = "",
 }: DataGridProps<T>) {
   const [internalGroups, setInternalGroups] = useState<DataGridGroup[]>(groups);
-  const [internalColumnWidths, setInternalColumnWidths] = useState<Record<string, number>>(
-    columnWidths || {}
-  );
+  const [internalColumnWidths, setInternalColumnWidths] = useState<
+    Record<string, number>
+  >(columnWidths || {});
 
   // Convert DataGrid columns to Table columns
   const tableColumns: TableColumn<T>[] = useMemo(() => {
@@ -162,40 +166,44 @@ export default function DataGrid<T extends Record<string, unknown> = Record<stri
 
   const _handleGroupToggle = (columnKey: string) => {
     const newGroups = internalGroups.map((g) =>
-      g.column === columnKey ? { ...g, expanded: !g.expanded } : g
+      g.column === columnKey ? { ...g, expanded: !g.expanded } : g,
     );
     setInternalGroups(newGroups);
     onGroupChange?.(newGroups);
   };
 
-  const handleExport = (format: 'csv' | 'xlsx' | 'json') => {
+  const handleExport = (format: "csv" | "xlsx" | "json") => {
     if (onExport) {
       onExport(format);
     } else {
       // Default export implementation
-      if (format === 'csv') {
+      if (format === "csv") {
         exportToCSV(data, columns);
-      } else if (format === 'json') {
+      } else if (format === "json") {
         exportToJSON(data);
       }
     }
   };
 
   const exportToCSV = (data: T[], cols: DataGridColumn<T>[]) => {
-    const headers = cols.filter((c) => c.exportable !== false).map((c) => c.label || c.key);
+    const headers = cols
+      .filter((c) => c.exportable !== false)
+      .map((c) => c.label || c.key);
     const rows = data.map((row) =>
       cols
         .filter((c) => c.exportable !== false)
         .map((c) => {
           const value = row[c.key];
-          return typeof value === 'string' && value.includes(',') ? `"${value}"` : value;
-        })
+          return typeof value === "string" && value.includes(",")
+            ? `"${value}"`
+            : value;
+        }),
     );
 
-    const csv = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
+    const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
     a.download = `export-${Date.now()}.csv`;
     a.click();
@@ -204,9 +212,9 @@ export default function DataGrid<T extends Record<string, unknown> = Record<stri
 
   const exportToJSON = (data: T[]) => {
     const json = JSON.stringify(data, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
+    const blob = new Blob([json], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
     a.download = `export-${Date.now()}.json`;
     a.click();
@@ -217,16 +225,18 @@ export default function DataGrid<T extends Record<string, unknown> = Record<stri
     <div className={`space-y-4 ${className}`}>
       {/* Toolbar */}
       {(exportable || groupable || toolbarActions) && (
-        <div className={`
+        <div
+          className={`
           flex
           items-center
           justify-between
-          ${getSpacingClass('base', 'p')}
+          ${getSpacingClass("base", "p")}
           bg-white
           border
           border-gray-200
           rounded-lg
-        `}>
+        `}
+        >
           <div className="flex items-center gap-2">
             {groupable && (
               <Button
@@ -238,7 +248,7 @@ export default function DataGrid<T extends Record<string, unknown> = Record<stri
               </Button>
             )}
           </div>
-          
+
           <div className="flex items-center gap-2">
             {toolbarActions}
             {exportable && (

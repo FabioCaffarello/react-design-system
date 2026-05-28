@@ -1,20 +1,20 @@
 /**
  * PageHeader Stories
- * 
+ *
  * Storybook stories for the PageHeader component.
  */
 
-import type { Meta, StoryObj } from '@storybook/react';
-import { PageHeader } from './PageHeader';
-import { Button } from '../../atoms/Button/Button';
-import { Plus, Edit, Trash2 } from 'lucide-react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { PageHeader } from "./PageHeader";
+import { Button } from "../../primitives/Button/Button";
+import { Plus, Edit, Trash2 } from "lucide-react";
 
 const meta: Meta<typeof PageHeader> = {
-  title: 'Molecules/PageHeader',
+  title: "Molecules/PageHeader",
   component: PageHeader,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
-    layout: 'padded',
+    layout: "padded",
     docs: {
       description: {
         component: `
@@ -49,9 +49,9 @@ Page header component with title, description, breadcrumb, and actions.
   },
   argTypes: {
     variant: {
-      control: 'select',
-      options: ['default', 'compact'],
-      description: 'Visual variant of the PageHeader',
+      control: "select",
+      options: ["default", "compact"],
+      description: "Visual variant of the PageHeader",
     },
   },
 };
@@ -64,8 +64,9 @@ type Story = StoryObj<typeof PageHeader>;
  */
 export const Default: Story = {
   args: {
-    title: 'Page Title',
-    description: 'This is a page description that provides context about the page content.',
+    title: "Page Title",
+    description:
+      "This is a page description that provides context about the page content.",
   },
 };
 
@@ -74,12 +75,12 @@ export const Default: Story = {
  */
 export const WithBreadcrumb: Story = {
   args: {
-    title: 'Page Title',
-    description: 'Page with breadcrumb navigation',
+    title: "Page Title",
+    description: "Page with breadcrumb navigation",
     breadcrumb: [
-      { label: 'Home', href: '/' },
-      { label: 'Section', href: '/section' },
-      { label: 'Page Title' },
+      { label: "Home", href: "/" },
+      { label: "Section", href: "/section" },
+      { label: "Page Title" },
     ],
   },
 };
@@ -89,8 +90,8 @@ export const WithBreadcrumb: Story = {
  */
 export const WithActions: Story = {
   args: {
-    title: 'Page Title',
-    description: 'Page with action buttons',
+    title: "Page Title",
+    description: "Page with action buttons",
     actions: (
       <>
         <Button variant="outline">Cancel</Button>
@@ -105,12 +106,12 @@ export const WithActions: Story = {
  */
 export const Complete: Story = {
   args: {
-    title: 'Edit User',
-    description: 'Update user information and settings',
+    title: "Edit User",
+    description: "Update user information and settings",
     breadcrumb: [
-      { label: 'Home', href: '/' },
-      { label: 'Users', href: '/users' },
-      { label: 'Edit User' },
+      { label: "Home", href: "/" },
+      { label: "Users", href: "/users" },
+      { label: "Edit User" },
     ],
     actions: (
       <>
@@ -130,9 +131,9 @@ export const Complete: Story = {
  */
 export const Compact: Story = {
   args: {
-    title: 'Compact Page Header',
-    description: 'This is a compact variant with less spacing',
-    variant: 'compact',
+    title: "Compact Page Header",
+    description: "This is a compact variant with less spacing",
+    variant: "compact",
   },
 };
 
@@ -141,7 +142,7 @@ export const Compact: Story = {
  */
 export const WithoutDescription: Story = {
   args: {
-    title: 'Simple Page Title',
+    title: "Simple Page Title",
     actions: <Button variant="primary">Action</Button>,
   },
 };
@@ -151,12 +152,9 @@ export const WithoutDescription: Story = {
  */
 export const WithoutActions: Story = {
   args: {
-    title: 'Page Title',
-    description: 'Page without action buttons',
-    breadcrumb: [
-      { label: 'Home', href: '/' },
-      { label: 'Page' },
-    ],
+    title: "Page Title",
+    description: "Page without action buttons",
+    breadcrumb: [{ label: "Home", href: "/" }, { label: "Page" }],
   },
 };
 
@@ -165,7 +163,7 @@ export const WithoutActions: Story = {
  */
 export const Minimal: Story = {
   args: {
-    title: 'Minimal Page Header',
+    title: "Minimal Page Header",
   },
 };
 
@@ -174,8 +172,8 @@ export const Minimal: Story = {
  */
 export const WithMultipleActions: Story = {
   args: {
-    title: 'Document Editor',
-    description: 'Edit and manage your document',
+    title: "Document Editor",
+    description: "Edit and manage your document",
     actions: (
       <>
         <Button variant="ghost" icon={<Edit />}>

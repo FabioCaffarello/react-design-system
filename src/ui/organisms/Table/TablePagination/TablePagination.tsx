@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import type { HTMLAttributes } from 'react';
-import { Button, Select, Text } from '../../../atoms';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import type { HTMLAttributes } from "react";
+import { Button, Select, Text } from "../../../primitives";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export interface TablePaginationProps extends HTMLAttributes<HTMLDivElement> {
   page: number;
@@ -17,10 +17,10 @@ export interface TablePaginationProps extends HTMLAttributes<HTMLDivElement> {
 
 /**
  * TablePagination Component
- * 
+ *
  * Pagination controls for tables with page navigation and page size selection.
  * Follows Atomic Design principles as a Molecule component.
- * 
+ *
  * @example
  * ```tsx
  * <TablePagination
@@ -41,7 +41,7 @@ export default function TablePagination({
   pageSizeOptions = [10, 25, 50, 100],
   showPageSizeSelector = true,
   showPageInfo = true,
-  className = '',
+  className = "",
   ...props
 }: TablePaginationProps) {
   const totalPages = Math.ceil(total / pageSize);
@@ -100,8 +100,8 @@ export default function TablePagination({
         {showPageInfo && (
           <div>
             <Text as="p" className="text-sm text-gray-700">
-              Showing <span className="font-medium">{startItem}</span> to{' '}
-              <span className="font-medium">{endItem}</span> of{' '}
+              Showing <span className="font-medium">{startItem}</span> to{" "}
+              <span className="font-medium">{endItem}</span> of{" "}
               <span className="font-medium">{total}</span> results
             </Text>
           </div>
@@ -114,7 +114,7 @@ export default function TablePagination({
                 Show:
               </Text>
               <Select
-                options={pageSizeOptions.map(size => ({
+                options={pageSizeOptions.map((size) => ({
                   value: size.toString(),
                   label: size.toString(),
                 }))}
@@ -167,12 +167,12 @@ export default function TablePagination({
                 return (
                   <Button
                     key={pageNum}
-                    variant={page === pageNum ? 'primary' : 'ghost'}
+                    variant={page === pageNum ? "primary" : "ghost"}
                     size="sm"
                     onClick={() => onPageChange(pageNum)}
                     className="min-w-[2.5rem]"
                     aria-label={`Page ${pageNum}`}
-                    aria-current={page === pageNum ? 'page' : undefined}
+                    aria-current={page === pageNum ? "page" : undefined}
                   >
                     {pageNum}
                   </Button>

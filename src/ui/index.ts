@@ -78,6 +78,6 @@ export {
 } from "./providers/AppProvider";
 
 // 5. COMPONENTS (depend on providers, tokens, and utils)
-export * from "./atoms";
+export * from "./primitives";
 export * from "./molecules";
 export * from "./organisms";

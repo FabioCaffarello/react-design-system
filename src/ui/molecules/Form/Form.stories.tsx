@@ -1,11 +1,18 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from '@storybook/test';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
+import { fn } from "@storybook/test";
+import { expect, userEvent, within, waitFor } from "@storybook/test";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Form from "./Form";
 import { FormField } from "./FormField";
-import { Input, Label, Button, Textarea, Select, ErrorMessage } from "../../atoms";
+import {
+  Input,
+  Label,
+  Button,
+  Textarea,
+  Select,
+  ErrorMessage,
+} from "../../primitives";
 
 const meta: Meta<typeof Form> = {
   title: "Molecules/Form",
@@ -70,32 +77,36 @@ export const Default: StoryObj<typeof Form> = {
 
     return (
       <div className="space-y-4">
-        <Form onSubmit={handleSubmit} className="max-w-md" success={submitted ? "Form submitted successfully!" : null}>
+        <Form
+          onSubmit={handleSubmit}
+          className="max-w-md"
+          success={submitted ? "Form submitted successfully!" : null}
+        >
           <div className="space-y-2">
             <Label htmlFor="name" variant="required">
               Name
             </Label>
-            <Input 
-              id="name" 
-              name="name" 
+            <Input
+              id="name"
+              name="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your name" 
-              required 
+              placeholder="Enter your name"
+              required
             />
           </div>
           <div className="space-y-2">
             <Label htmlFor="email" variant="required">
               Email
             </Label>
-            <Input 
-              id="email" 
-              name="email" 
-              type="email" 
+            <Input
+              id="email"
+              name="email"
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email" 
-              required 
+              placeholder="Enter your email"
+              required
             />
           </div>
           <Button type="submit" variant="regular">
@@ -113,7 +124,8 @@ export const Default: StoryObj<typeof Form> = {
   parameters: {
     docs: {
       description: {
-        story: "Interactive form with real state management. Fill in the fields and submit to see the success message.",
+        story:
+          "Interactive form with real state management. Fill in the fields and submit to see the success message.",
       },
     },
   },
@@ -149,9 +161,9 @@ export const WithError: StoryObj<typeof Form> = {
     };
 
     return (
-      <Form 
-        onSubmit={handleSubmit} 
-        className="max-w-md" 
+      <Form
+        onSubmit={handleSubmit}
+        className="max-w-md"
         error={formError || null}
       >
         <div className="space-y-2">
@@ -172,9 +184,7 @@ export const WithError: StoryObj<typeof Form> = {
             aria-invalid={!!emailError}
             aria-describedby={emailError ? "email-error" : undefined}
           />
-          {emailError && (
-            <ErrorMessage message={emailError} id="email-error" />
-          )}
+          {emailError && <ErrorMessage message={emailError} id="email-error" />}
         </div>
         <Button type="submit" variant="regular">
           Submit
@@ -185,7 +195,8 @@ export const WithError: StoryObj<typeof Form> = {
   parameters: {
     docs: {
       description: {
-        story: "Form with real-time validation. Try submitting with an invalid email to see validation errors.",
+        story:
+          "Form with real-time validation. Try submitting with an invalid email to see validation errors.",
       },
     },
   },
@@ -201,22 +212,22 @@ export const WithSuccess: StoryObj<typeof Form> = {
       e.preventDefault();
       setIsSubmitting(true);
       setSuccess(null);
-      
+
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
       setIsSubmitting(false);
       setSuccess("Form submitted successfully!");
       setName("");
-      
+
       // Clear success message after 3 seconds
       setTimeout(() => setSuccess(null), 3000);
     };
 
     return (
-      <Form 
-        onSubmit={handleSubmit} 
-        className="max-w-md" 
+      <Form
+        onSubmit={handleSubmit}
+        className="max-w-md"
         loading={isSubmitting}
         success={success}
       >
@@ -224,9 +235,9 @@ export const WithSuccess: StoryObj<typeof Form> = {
           <Label htmlFor="name" variant="required">
             Name
           </Label>
-          <Input 
-            id="name" 
-            name="name" 
+          <Input
+            id="name"
+            name="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             disabled={isSubmitting}
@@ -241,7 +252,8 @@ export const WithSuccess: StoryObj<typeof Form> = {
   parameters: {
     docs: {
       description: {
-        story: "Form with loading state and success message. Submit the form to see the loading state and then the success message.",
+        story:
+          "Form with loading state and success message. Submit the form to see the loading state and then the success message.",
       },
     },
   },
@@ -255,27 +267,23 @@ export const Loading: StoryObj<typeof Form> = {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       setIsSubmitting(true);
-      
+
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       setIsSubmitting(false);
       alert("Form submitted!");
     };
 
     return (
-      <Form 
-        onSubmit={handleSubmit} 
-        className="max-w-md" 
-        loading={isSubmitting}
-      >
+      <Form onSubmit={handleSubmit} className="max-w-md" loading={isSubmitting}>
         <div className="space-y-2">
           <Label htmlFor="name" variant="required">
             Name
           </Label>
-          <Input 
-            id="name" 
-            name="name" 
+          <Input
+            id="name"
+            name="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             disabled={isSubmitting}
@@ -290,7 +298,8 @@ export const Loading: StoryObj<typeof Form> = {
   parameters: {
     docs: {
       description: {
-        story: "Form with real loading state. Submit the form to see the loading state in action.",
+        story:
+          "Form with real loading state. Submit the form to see the loading state in action.",
       },
     },
   },
@@ -311,7 +320,8 @@ export const CompleteForm: StoryObj<typeof Form> = {
     const validate = () => {
       const newErrors: Record<string, string> = {};
       if (!formData.title) newErrors.title = "Title is required";
-      if (!formData.description) newErrors.description = "Description is required";
+      if (!formData.description)
+        newErrors.description = "Description is required";
       if (!formData.status) newErrors.status = "Status is required";
       setErrors(newErrors);
       return Object.keys(newErrors).length === 0;
@@ -323,13 +333,13 @@ export const CompleteForm: StoryObj<typeof Form> = {
 
       setIsSubmitting(true);
       setSuccess(null);
-      
+
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
       setIsSubmitting(false);
       setSuccess("Task created successfully!");
-      
+
       // Reset form after 2 seconds
       setTimeout(() => {
         setFormData({ title: "", description: "", status: "", priority: "" });
@@ -339,26 +349,30 @@ export const CompleteForm: StoryObj<typeof Form> = {
 
     return (
       <div className="space-y-4">
-        <Form 
-          onSubmit={handleSubmit} 
+        <Form
+          onSubmit={handleSubmit}
           className="max-w-md space-y-4"
           loading={isSubmitting}
           success={success}
-          error={Object.keys(errors).length > 0 ? "Please fix the errors below" : null}
+          error={
+            Object.keys(errors).length > 0
+              ? "Please fix the errors below"
+              : null
+          }
         >
           <div className="space-y-2">
             <Label htmlFor="title" variant="required">
               Title
             </Label>
-            <Input 
-              id="title" 
-              name="title" 
+            <Input
+              id="title"
+              name="title"
               value={formData.title}
               onChange={(e) => {
                 setFormData({ ...formData, title: e.target.value });
                 if (errors.title) setErrors({ ...errors, title: "" });
               }}
-              placeholder="Enter title" 
+              placeholder="Enter title"
               error={!!errors.title}
               disabled={isSubmitting}
             />
@@ -368,20 +382,23 @@ export const CompleteForm: StoryObj<typeof Form> = {
             <Label htmlFor="description" variant="required">
               Description
             </Label>
-            <Textarea 
-              id="description" 
-              name="description" 
+            <Textarea
+              id="description"
+              name="description"
               value={formData.description}
               onChange={(e) => {
                 setFormData({ ...formData, description: e.target.value });
-                if (errors.description) setErrors({ ...errors, description: "" });
+                if (errors.description)
+                  setErrors({ ...errors, description: "" });
               }}
-              rows={4} 
-              placeholder="Enter description" 
+              rows={4}
+              placeholder="Enter description"
               error={!!errors.description}
               disabled={isSubmitting}
             />
-            {errors.description && <ErrorMessage message={errors.description} />}
+            {errors.description && (
+              <ErrorMessage message={errors.description} />
+            )}
           </div>
           <div className="space-y-2">
             <Label htmlFor="status" variant="required">
@@ -414,7 +431,9 @@ export const CompleteForm: StoryObj<typeof Form> = {
               id="priority"
               name="priority"
               value={formData.priority}
-              onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, priority: e.target.value })
+              }
               options={[
                 { value: "LOW", label: "Low" },
                 { value: "MEDIUM", label: "Medium" },
@@ -428,11 +447,16 @@ export const CompleteForm: StoryObj<typeof Form> = {
             <Button type="submit" variant="regular" disabled={isSubmitting}>
               {isSubmitting ? "Creating..." : "Create Task"}
             </Button>
-            <Button 
-              type="button" 
-              variant="secondary" 
+            <Button
+              type="button"
+              variant="secondary"
               onClick={() => {
-                setFormData({ title: "", description: "", status: "", priority: "" });
+                setFormData({
+                  title: "",
+                  description: "",
+                  status: "",
+                  priority: "",
+                });
                 setErrors({});
               }}
               disabled={isSubmitting}
@@ -441,10 +465,14 @@ export const CompleteForm: StoryObj<typeof Form> = {
             </Button>
           </div>
         </Form>
-        {Object.keys(formData).some(key => formData[key as keyof typeof formData]) && (
+        {Object.keys(formData).some(
+          (key) => formData[key as keyof typeof formData],
+        ) && (
           <div className="max-w-md text-sm text-gray-600 p-4 bg-gray-50 rounded">
             <strong>Form Data:</strong>
-            <pre className="mt-2 text-xs">{JSON.stringify(formData, null, 2)}</pre>
+            <pre className="mt-2 text-xs">
+              {JSON.stringify(formData, null, 2)}
+            </pre>
           </div>
         )}
       </div>
@@ -453,7 +481,8 @@ export const CompleteForm: StoryObj<typeof Form> = {
   parameters: {
     docs: {
       description: {
-        story: "Complete form with real validation, loading state, and success message. Try submitting with empty fields to see validation errors.",
+        story:
+          "Complete form with real validation, loading state, and success message. Try submitting with empty fields to see validation errors.",
       },
     },
   },
@@ -497,41 +526,50 @@ export const RegistrationForm: StoryObj<typeof Form> = {
 
       setIsSubmitting(true);
       setSuccess(null);
-      
+
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       setIsSubmitting(false);
       setSuccess("Registration successful! Welcome!");
-      
+
       // Reset form after 3 seconds
       setTimeout(() => {
-        setFormData({ firstName: "", lastName: "", email: "", password: "", country: "", bio: "" });
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          country: "",
+          bio: "",
+        });
         setSuccess(null);
       }, 3000);
     };
 
     return (
-      <Form 
-        onSubmit={handleSubmit} 
+      <Form
+        onSubmit={handleSubmit}
         className="max-w-lg space-y-4"
         loading={isSubmitting}
         success={success}
-        error={Object.keys(errors).length > 0 ? "Please fix the errors below" : null}
+        error={
+          Object.keys(errors).length > 0 ? "Please fix the errors below" : null
+        }
       >
         <div className="space-y-2">
           <Label htmlFor="firstName" variant="required">
             First Name
           </Label>
-          <Input 
-            id="firstName" 
-            name="firstName" 
+          <Input
+            id="firstName"
+            name="firstName"
             value={formData.firstName}
             onChange={(e) => {
               setFormData({ ...formData, firstName: e.target.value });
               if (errors.firstName) setErrors({ ...errors, firstName: "" });
             }}
-            placeholder="John" 
+            placeholder="John"
             error={!!errors.firstName}
             disabled={isSubmitting}
           />
@@ -541,15 +579,15 @@ export const RegistrationForm: StoryObj<typeof Form> = {
           <Label htmlFor="lastName" variant="required">
             Last Name
           </Label>
-          <Input 
-            id="lastName" 
-            name="lastName" 
+          <Input
+            id="lastName"
+            name="lastName"
             value={formData.lastName}
             onChange={(e) => {
               setFormData({ ...formData, lastName: e.target.value });
               if (errors.lastName) setErrors({ ...errors, lastName: "" });
             }}
-            placeholder="Doe" 
+            placeholder="Doe"
             error={!!errors.lastName}
             disabled={isSubmitting}
           />
@@ -559,16 +597,16 @@ export const RegistrationForm: StoryObj<typeof Form> = {
           <Label htmlFor="email" variant="required">
             Email
           </Label>
-          <Input 
-            id="email" 
-            name="email" 
-            type="email" 
+          <Input
+            id="email"
+            name="email"
+            type="email"
             value={formData.email}
             onChange={(e) => {
               setFormData({ ...formData, email: e.target.value });
               if (errors.email) setErrors({ ...errors, email: "" });
             }}
-            placeholder="john.doe@example.com" 
+            placeholder="john.doe@example.com"
             error={!!errors.email}
             disabled={isSubmitting}
           />
@@ -578,16 +616,16 @@ export const RegistrationForm: StoryObj<typeof Form> = {
           <Label htmlFor="password" variant="required">
             Password
           </Label>
-          <Input 
-            id="password" 
-            name="password" 
-            type="password" 
+          <Input
+            id="password"
+            name="password"
+            type="password"
             value={formData.password}
             onChange={(e) => {
               setFormData({ ...formData, password: e.target.value });
               if (errors.password) setErrors({ ...errors, password: "" });
             }}
-            placeholder="Enter password (min 8 characters)" 
+            placeholder="Enter password (min 8 characters)"
             error={!!errors.password}
             disabled={isSubmitting}
           />
@@ -601,7 +639,9 @@ export const RegistrationForm: StoryObj<typeof Form> = {
             id="country"
             name="country"
             value={formData.country}
-            onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, country: e.target.value })
+            }
             options={[
               { value: "US", label: "United States" },
               { value: "BR", label: "Brazil" },
@@ -615,13 +655,13 @@ export const RegistrationForm: StoryObj<typeof Form> = {
           <Label htmlFor="bio" variant="optional">
             Bio
           </Label>
-          <Textarea 
-            id="bio" 
-            name="bio" 
+          <Textarea
+            id="bio"
+            name="bio"
             value={formData.bio}
             onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-            rows={4} 
-            placeholder="Tell us about yourself" 
+            rows={4}
+            placeholder="Tell us about yourself"
             disabled={isSubmitting}
           />
         </div>
@@ -629,11 +669,18 @@ export const RegistrationForm: StoryObj<typeof Form> = {
           <Button type="submit" variant="regular" disabled={isSubmitting}>
             {isSubmitting ? "Registering..." : "Register"}
           </Button>
-          <Button 
-            type="button" 
+          <Button
+            type="button"
             variant="secondary"
             onClick={() => {
-              setFormData({ firstName: "", lastName: "", email: "", password: "", country: "", bio: "" });
+              setFormData({
+                firstName: "",
+                lastName: "",
+                email: "",
+                password: "",
+                country: "",
+                bio: "",
+              });
               setErrors({});
             }}
             disabled={isSubmitting}
@@ -647,7 +694,8 @@ export const RegistrationForm: StoryObj<typeof Form> = {
   parameters: {
     docs: {
       description: {
-        story: 'Complete registration form with real validation. Try submitting with invalid data to see validation errors, or fill all required fields to see success.',
+        story:
+          "Complete registration form with real validation. Try submitting with invalid data to see validation errors, or fill all required fields to see success.",
       },
     },
   },
@@ -668,13 +716,13 @@ export const ContactForm: StoryObj<typeof Form> = {
       e.preventDefault();
       setIsSubmitting(true);
       setSuccess(null);
-      
+
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
       setIsSubmitting(false);
       setSuccess("Message sent successfully! We'll get back to you soon.");
-      
+
       // Reset form after 3 seconds
       setTimeout(() => {
         setFormData({ name: "", email: "", subject: "", message: "" });
@@ -683,8 +731,8 @@ export const ContactForm: StoryObj<typeof Form> = {
     };
 
     return (
-      <Form 
-        onSubmit={handleSubmit} 
+      <Form
+        onSubmit={handleSubmit}
         className="max-w-md space-y-4"
         loading={isSubmitting}
         success={success}
@@ -693,61 +741,72 @@ export const ContactForm: StoryObj<typeof Form> = {
           <Label htmlFor="contactName" variant="required">
             Name
           </Label>
-          <Input 
-            id="contactName" 
-            name="name" 
+          <Input
+            id="contactName"
+            name="name"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="Your name" 
+            placeholder="Your name"
             disabled={isSubmitting}
-            required 
+            required
           />
         </div>
         <div className="space-y-2">
           <Label htmlFor="contactEmail" variant="required">
             Email
           </Label>
-          <Input 
-            id="contactEmail" 
-            name="email" 
-            type="email" 
+          <Input
+            id="contactEmail"
+            name="email"
+            type="email"
             value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            placeholder="your.email@example.com" 
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
+            placeholder="your.email@example.com"
             disabled={isSubmitting}
-            required 
+            required
           />
         </div>
         <div className="space-y-2">
           <Label htmlFor="subject" variant="required">
             Subject
           </Label>
-          <Input 
-            id="subject" 
-            name="subject" 
+          <Input
+            id="subject"
+            name="subject"
             value={formData.subject}
-            onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-            placeholder="Message subject" 
+            onChange={(e) =>
+              setFormData({ ...formData, subject: e.target.value })
+            }
+            placeholder="Message subject"
             disabled={isSubmitting}
-            required 
+            required
           />
         </div>
         <div className="space-y-2">
           <Label htmlFor="message" variant="required">
             Message
           </Label>
-          <Textarea 
-            id="message" 
-            name="message" 
+          <Textarea
+            id="message"
+            name="message"
             value={formData.message}
-            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-            rows={6} 
-            placeholder="Your message" 
+            onChange={(e) =>
+              setFormData({ ...formData, message: e.target.value })
+            }
+            rows={6}
+            placeholder="Your message"
             disabled={isSubmitting}
-            required 
+            required
           />
         </div>
-        <Button type="submit" variant="regular" fullWidth disabled={isSubmitting}>
+        <Button
+          type="submit"
+          variant="regular"
+          fullWidth
+          disabled={isSubmitting}
+        >
           {isSubmitting ? "Sending..." : "Send Message"}
         </Button>
       </Form>
@@ -756,7 +815,8 @@ export const ContactForm: StoryObj<typeof Form> = {
   parameters: {
     docs: {
       description: {
-        story: 'Contact form with real submission flow. Fill in the form and submit to see the loading state and success message.',
+        story:
+          "Contact form with real submission flow. Fill in the form and submit to see the loading state and success message.",
       },
     },
   },
@@ -802,64 +862,78 @@ export const MultipleErrors: StoryObj<typeof Form> = {
     };
 
     return (
-      <Form 
-        onSubmit={handleSubmit} 
+      <Form
+        onSubmit={handleSubmit}
         className="max-w-md"
-        error={Object.keys(errors).length > 0 && Object.values(touched).some(t => t) ? "Please fix all errors below" : null}
+        error={
+          Object.keys(errors).length > 0 &&
+          Object.values(touched).some((t) => t)
+            ? "Please fix all errors below"
+            : null
+        }
       >
         <div className="space-y-2">
           <Label htmlFor="name" variant="required">
             Name
           </Label>
-          <Input 
-            id="name" 
-            name="name" 
+          <Input
+            id="name"
+            name="name"
             value={formData.name}
             onChange={(e) => {
               setFormData({ ...formData, name: e.target.value });
-              if (errors.name && touched.name) setErrors({ ...errors, name: "" });
+              if (errors.name && touched.name)
+                setErrors({ ...errors, name: "" });
             }}
             onBlur={() => handleBlur("name")}
             error={!!errors.name && touched.name}
           />
-          {errors.name && touched.name && <ErrorMessage message={errors.name} />}
+          {errors.name && touched.name && (
+            <ErrorMessage message={errors.name} />
+          )}
         </div>
         <div className="space-y-2">
           <Label htmlFor="email" variant="required">
             Email
           </Label>
-          <Input 
-            id="email" 
-            name="email" 
+          <Input
+            id="email"
+            name="email"
             type="email"
             value={formData.email}
             onChange={(e) => {
               setFormData({ ...formData, email: e.target.value });
-              if (errors.email && touched.email) setErrors({ ...errors, email: "" });
+              if (errors.email && touched.email)
+                setErrors({ ...errors, email: "" });
             }}
             onBlur={() => handleBlur("email")}
             error={!!errors.email && touched.email}
           />
-          {errors.email && touched.email && <ErrorMessage message={errors.email} />}
+          {errors.email && touched.email && (
+            <ErrorMessage message={errors.email} />
+          )}
         </div>
         <div className="space-y-2">
           <Label htmlFor="phone" variant="required">
             Phone
           </Label>
-          <Input 
-            id="phone" 
-            name="phone" 
+          <Input
+            id="phone"
+            name="phone"
             type="tel"
             value={formData.phone}
             onChange={(e) => {
               setFormData({ ...formData, phone: e.target.value });
-              if (errors.phone && touched.phone) setErrors({ ...errors, phone: "" });
+              if (errors.phone && touched.phone)
+                setErrors({ ...errors, phone: "" });
             }}
             onBlur={() => handleBlur("phone")}
             error={!!errors.phone && touched.phone}
             placeholder="(123) 456-7890"
           />
-          {errors.phone && touched.phone && <ErrorMessage message={errors.phone} />}
+          {errors.phone && touched.phone && (
+            <ErrorMessage message={errors.phone} />
+          )}
         </div>
         <Button type="submit" variant="regular">
           Submit
@@ -870,7 +944,8 @@ export const MultipleErrors: StoryObj<typeof Form> = {
   parameters: {
     docs: {
       description: {
-        story: "Form with multiple validation errors. Try submitting with empty fields or invalid data to see all validation errors at once.",
+        story:
+          "Form with multiple validation errors. Try submitting with empty fields or invalid data to see all validation errors at once.",
       },
     },
   },
@@ -898,7 +973,9 @@ export const Accessibility: StoryObj<typeof Form> = {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (validateEmail(email)) {
-        alert("Form submitted! Try using keyboard navigation: Tab to navigate, Enter to submit.");
+        alert(
+          "Form submitted! Try using keyboard navigation: Tab to navigate, Enter to submit.",
+        );
       }
     };
 
@@ -909,22 +986,22 @@ export const Accessibility: StoryObj<typeof Form> = {
             <Label htmlFor="acc-name" variant="required">
               Name
             </Label>
-            <Input 
-              id="acc-name" 
-              name="name" 
+            <Input
+              id="acc-name"
+              name="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your name" 
-              required 
+              placeholder="Enter your name"
+              required
             />
           </div>
           <div className="space-y-2">
             <Label htmlFor="acc-email" variant="required">
               Email
             </Label>
-            <Input 
-              id="acc-email" 
-              name="email" 
+            <Input
+              id="acc-email"
+              name="email"
               type="email"
               value={email}
               onChange={(e) => {
@@ -935,8 +1012,8 @@ export const Accessibility: StoryObj<typeof Form> = {
               error={!!emailError}
               aria-invalid={!!emailError}
               aria-describedby={emailError ? "acc-email-error" : undefined}
-              placeholder="Enter your email" 
-              required 
+              placeholder="Enter your email"
+              required
             />
             {emailError && (
               <ErrorMessage message={emailError} id="acc-email-error" />
@@ -947,7 +1024,9 @@ export const Accessibility: StoryObj<typeof Form> = {
           </Button>
         </Form>
         <div className="max-w-md text-sm text-gray-600 space-y-2 p-4 bg-gray-50 rounded">
-          <p><strong>Accessibility Features:</strong></p>
+          <p>
+            <strong>Accessibility Features:</strong>
+          </p>
           <ul className="list-disc list-inside space-y-1">
             <li>Tab navigation between fields</li>
             <li>Enter key to submit form</li>
@@ -962,7 +1041,8 @@ export const Accessibility: StoryObj<typeof Form> = {
   parameters: {
     docs: {
       description: {
-        story: "Form demonstrating accessibility features. Try keyboard navigation (Tab to move, Enter to submit) and screen reader compatibility.",
+        story:
+          "Form demonstrating accessibility features. Try keyboard navigation (Tab to move, Enter to submit) and screen reader compatibility.",
       },
     },
   },
@@ -978,9 +1058,9 @@ export const WithReactHookForm: StoryObj<typeof Form> = {
 
     const form = useForm<FormData>({
       defaultValues: {
-        name: '',
-        email: '',
-        message: '',
+        name: "",
+        email: "",
+        message: "",
       },
     });
 
@@ -990,13 +1070,13 @@ export const WithReactHookForm: StoryObj<typeof Form> = {
     const onSubmit = async (data: FormData) => {
       setIsSubmitting(true);
       setSuccess(null);
-      
+
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
       setIsSubmitting(false);
       setSuccess(`Form submitted! Data: ${JSON.stringify(data)}`);
-      
+
       // Reset form after 3 seconds
       setTimeout(() => {
         form.reset();
@@ -1016,13 +1096,13 @@ export const WithReactHookForm: StoryObj<typeof Form> = {
           <FormField<FormData>
             name="name"
             label="Name"
-            rules={{ required: 'Name is required' }}
+            rules={{ required: "Name is required" }}
           >
             {({ register, error }) => (
               <>
                 <Input
                   id="name"
-                  {...register('name')}
+                  {...register("name")}
                   error={!!error}
                   helperText={error}
                   disabled={isSubmitting}
@@ -1035,10 +1115,10 @@ export const WithReactHookForm: StoryObj<typeof Form> = {
             name="email"
             label="Email"
             rules={{
-              required: 'Email is required',
+              required: "Email is required",
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: 'Invalid email address',
+                message: "Invalid email address",
               },
             }}
           >
@@ -1047,7 +1127,7 @@ export const WithReactHookForm: StoryObj<typeof Form> = {
                 <Input
                   id="email"
                   type="email"
-                  {...register('email')}
+                  {...register("email")}
                   error={!!error}
                   helperText={error}
                   disabled={isSubmitting}
@@ -1060,10 +1140,10 @@ export const WithReactHookForm: StoryObj<typeof Form> = {
             name="message"
             label="Message"
             rules={{
-              required: 'Message is required',
+              required: "Message is required",
               minLength: {
                 value: 10,
-                message: 'Message must be at least 10 characters',
+                message: "Message must be at least 10 characters",
               },
             }}
           >
@@ -1071,7 +1151,7 @@ export const WithReactHookForm: StoryObj<typeof Form> = {
               <>
                 <Textarea
                   id="message"
-                  {...register('message')}
+                  {...register("message")}
                   error={!!error}
                   rows={4}
                   disabled={isSubmitting}
@@ -1082,12 +1162,14 @@ export const WithReactHookForm: StoryObj<typeof Form> = {
           </FormField>
 
           <Button type="submit" variant="primary" disabled={isSubmitting}>
-            {isSubmitting ? 'Submitting...' : 'Submit'}
+            {isSubmitting ? "Submitting..." : "Submit"}
           </Button>
         </Form>
         <div className="max-w-md text-sm text-gray-600 p-4 bg-gray-50 rounded">
           <strong>Form Values:</strong>
-          <pre className="mt-2 text-xs">{JSON.stringify(form.watch(), null, 2)}</pre>
+          <pre className="mt-2 text-xs">
+            {JSON.stringify(form.watch(), null, 2)}
+          </pre>
         </div>
       </div>
     );
@@ -1095,7 +1177,8 @@ export const WithReactHookForm: StoryObj<typeof Form> = {
   parameters: {
     docs: {
       description: {
-        story: 'Form with react-hook-form integration. Demonstrates validation rules, error handling, and form state management.',
+        story:
+          "Form with react-hook-form integration. Demonstrates validation rules, error handling, and form state management.",
       },
     },
   },
@@ -1114,29 +1197,29 @@ export const ReactHookFormWithComplexValidation: StoryObj<typeof Form> = {
 
     const form = useForm<RegistrationData>({
       defaultValues: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        age: '',
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        age: "",
       },
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [success, setSuccess] = useState<string | null>(null);
 
-    const password = form.watch('password');
+    const password = form.watch("password");
 
     const onSubmit = async (_data: RegistrationData) => {
       setIsSubmitting(true);
       setSuccess(null);
-      
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       setIsSubmitting(false);
-      setSuccess('Registration successful!');
-      
+      setSuccess("Registration successful!");
+
       setTimeout(() => {
         form.reset();
         setSuccess(null);
@@ -1155,12 +1238,12 @@ export const ReactHookFormWithComplexValidation: StoryObj<typeof Form> = {
           <FormField<RegistrationData>
             name="firstName"
             label="First Name"
-            rules={{ required: 'First name is required' }}
+            rules={{ required: "First name is required" }}
           >
             {({ register, error }) => (
               <Input
                 id="firstName"
-                {...register('firstName')}
+                {...register("firstName")}
                 error={!!error}
                 helperText={error}
                 disabled={isSubmitting}
@@ -1171,12 +1254,12 @@ export const ReactHookFormWithComplexValidation: StoryObj<typeof Form> = {
           <FormField<RegistrationData>
             name="lastName"
             label="Last Name"
-            rules={{ required: 'Last name is required' }}
+            rules={{ required: "Last name is required" }}
           >
             {({ register, error }) => (
               <Input
                 id="lastName"
-                {...register('lastName')}
+                {...register("lastName")}
                 error={!!error}
                 helperText={error}
                 disabled={isSubmitting}
@@ -1188,10 +1271,10 @@ export const ReactHookFormWithComplexValidation: StoryObj<typeof Form> = {
             name="email"
             label="Email"
             rules={{
-              required: 'Email is required',
+              required: "Email is required",
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: 'Invalid email address',
+                message: "Invalid email address",
               },
             }}
           >
@@ -1199,7 +1282,7 @@ export const ReactHookFormWithComplexValidation: StoryObj<typeof Form> = {
               <Input
                 id="email"
                 type="email"
-                {...register('email')}
+                {...register("email")}
                 error={!!error}
                 helperText={error}
                 disabled={isSubmitting}
@@ -1211,9 +1294,9 @@ export const ReactHookFormWithComplexValidation: StoryObj<typeof Form> = {
             name="age"
             label="Age"
             rules={{
-              required: 'Age is required',
-              min: { value: 18, message: 'Must be at least 18 years old' },
-              max: { value: 120, message: 'Invalid age' },
+              required: "Age is required",
+              min: { value: 18, message: "Must be at least 18 years old" },
+              max: { value: 120, message: "Invalid age" },
               valueAsNumber: true,
             }}
           >
@@ -1221,7 +1304,7 @@ export const ReactHookFormWithComplexValidation: StoryObj<typeof Form> = {
               <Input
                 id="age"
                 type="number"
-                {...register('age', { valueAsNumber: true })}
+                {...register("age", { valueAsNumber: true })}
                 error={!!error}
                 helperText={error}
                 disabled={isSubmitting}
@@ -1233,14 +1316,15 @@ export const ReactHookFormWithComplexValidation: StoryObj<typeof Form> = {
             name="password"
             label="Password"
             rules={{
-              required: 'Password is required',
+              required: "Password is required",
               minLength: {
                 value: 8,
-                message: 'Password must be at least 8 characters',
+                message: "Password must be at least 8 characters",
               },
               pattern: {
                 value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-                message: 'Password must contain uppercase, lowercase, and number',
+                message:
+                  "Password must contain uppercase, lowercase, and number",
               },
             }}
           >
@@ -1248,7 +1332,7 @@ export const ReactHookFormWithComplexValidation: StoryObj<typeof Form> = {
               <Input
                 id="password"
                 type="password"
-                {...register('password')}
+                {...register("password")}
                 error={!!error}
                 helperText={error}
                 disabled={isSubmitting}
@@ -1260,16 +1344,16 @@ export const ReactHookFormWithComplexValidation: StoryObj<typeof Form> = {
             name="confirmPassword"
             label="Confirm Password"
             rules={{
-              required: 'Please confirm your password',
+              required: "Please confirm your password",
               validate: (value) =>
-                value === password || 'Passwords do not match',
+                value === password || "Passwords do not match",
             }}
           >
             {({ register, error }) => (
               <Input
                 id="confirmPassword"
                 type="password"
-                {...register('confirmPassword')}
+                {...register("confirmPassword")}
                 error={!!error}
                 helperText={error}
                 disabled={isSubmitting}
@@ -1278,7 +1362,7 @@ export const ReactHookFormWithComplexValidation: StoryObj<typeof Form> = {
           </FormField>
 
           <Button type="submit" variant="primary" disabled={isSubmitting}>
-            {isSubmitting ? 'Registering...' : 'Register'}
+            {isSubmitting ? "Registering..." : "Register"}
           </Button>
         </Form>
       </div>
@@ -1287,7 +1371,8 @@ export const ReactHookFormWithComplexValidation: StoryObj<typeof Form> = {
   parameters: {
     docs: {
       description: {
-        story: 'Complex form with react-hook-form showing advanced validation: password strength, password confirmation matching, and numeric validation.',
+        story:
+          "Complex form with react-hook-form showing advanced validation: password strength, password confirmation matching, and numeric validation.",
       },
     },
   },
@@ -1299,26 +1384,27 @@ export const WithEvents: StoryObj<typeof Form> = {
     const [name, setName] = useState("");
     const handleSubmit = fn((e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      console.log('Form submitted:', { name });
+      console.log("Form submitted:", { name });
     });
-    
+
     return (
       <div className="space-y-4">
         <p className="text-sm text-gray-600">
-          Fill in the form and submit. Check the Actions panel to see events being fired.
+          Fill in the form and submit. Check the Actions panel to see events
+          being fired.
         </p>
         <Form onSubmit={handleSubmit} className="max-w-md">
           <div className="space-y-2">
             <Label htmlFor="name" variant="required">
               Name
             </Label>
-            <Input 
-              id="name" 
-              name="name" 
+            <Input
+              id="name"
+              name="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your name" 
-              required 
+              placeholder="Enter your name"
+              required
             />
           </div>
           <Button type="submit" variant="regular">
@@ -1330,19 +1416,20 @@ export const WithEvents: StoryObj<typeof Form> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = canvas.getByPlaceholderText('Enter your name');
-    const button = canvas.getByText('Submit');
-    
-    await userEvent.type(input, 'Test User');
+    const input = canvas.getByPlaceholderText("Enter your name");
+    const button = canvas.getByText("Submit");
+
+    await userEvent.type(input, "Test User");
     await userEvent.click(button);
     await waitFor(() => {
-      expect(input).toHaveValue('Test User');
+      expect(input).toHaveValue("Test User");
     });
   },
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates form events. Fill in and submit the form, then check the Actions panel to see events being logged.',
+        story:
+          "Demonstrates form events. Fill in and submit the form, then check the Actions panel to see events being logged.",
       },
     },
   },
@@ -1355,20 +1442,20 @@ export const DefaultState: StoryObj<typeof Form> = {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
     };
-    
+
     return (
       <Form onSubmit={handleSubmit} className="max-w-md">
         <div className="space-y-2">
           <Label htmlFor="name" variant="required">
             Name
           </Label>
-          <Input 
-            id="name" 
-            name="name" 
+          <Input
+            id="name"
+            name="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Enter your name" 
-            required 
+            placeholder="Enter your name"
+            required
           />
         </div>
         <Button type="submit" variant="regular">
@@ -1380,7 +1467,8 @@ export const DefaultState: StoryObj<typeof Form> = {
   parameters: {
     docs: {
       description: {
-        story: 'Default state - form in normal state without loading, error, or success messages.',
+        story:
+          "Default state - form in normal state without loading, error, or success messages.",
       },
     },
   },
@@ -1390,27 +1478,27 @@ export const LoadingState: StoryObj<typeof Form> = {
   render: () => {
     const [name, setName] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
-    
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       setIsSubmitting(true);
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       setIsSubmitting(false);
     };
-    
+
     return (
       <Form onSubmit={handleSubmit} className="max-w-md" loading={isSubmitting}>
         <div className="space-y-2">
           <Label htmlFor="name" variant="required">
             Name
           </Label>
-          <Input 
-            id="name" 
-            name="name" 
+          <Input
+            id="name"
+            name="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             disabled={isSubmitting}
-            required 
+            required
           />
         </div>
         <Button type="submit" variant="regular" disabled={isSubmitting}>
@@ -1422,7 +1510,7 @@ export const LoadingState: StoryObj<typeof Form> = {
   parameters: {
     docs: {
       description: {
-        story: 'Loading state - form shows loading indicator while submitting.',
+        story: "Loading state - form shows loading indicator while submitting.",
       },
     },
   },
@@ -1434,24 +1522,24 @@ export const ErrorState: StoryObj<typeof Form> = {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
     };
-    
+
     return (
-      <Form 
-        onSubmit={handleSubmit} 
-        className="max-w-md" 
+      <Form
+        onSubmit={handleSubmit}
+        className="max-w-md"
         error="Please fix the errors below and try again."
       >
         <div className="space-y-2">
           <Label htmlFor="name" variant="required">
             Name
           </Label>
-          <Input 
-            id="name" 
-            name="name" 
+          <Input
+            id="name"
+            name="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             error
-            required 
+            required
           />
         </div>
         <Button type="submit" variant="regular">
@@ -1463,7 +1551,7 @@ export const ErrorState: StoryObj<typeof Form> = {
   parameters: {
     docs: {
       description: {
-        story: 'Error state - form displays a global error message.',
+        story: "Error state - form displays a global error message.",
       },
     },
   },
@@ -1475,23 +1563,23 @@ export const SuccessState: StoryObj<typeof Form> = {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
     };
-    
+
     return (
-      <Form 
-        onSubmit={handleSubmit} 
-        className="max-w-md" 
+      <Form
+        onSubmit={handleSubmit}
+        className="max-w-md"
         success="Form submitted successfully!"
       >
         <div className="space-y-2">
           <Label htmlFor="name" variant="required">
             Name
           </Label>
-          <Input 
-            id="name" 
-            name="name" 
+          <Input
+            id="name"
+            name="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            required 
+            required
           />
         </div>
         <Button type="submit" variant="regular">
@@ -1503,7 +1591,7 @@ export const SuccessState: StoryObj<typeof Form> = {
   parameters: {
     docs: {
       description: {
-        story: 'Success state - form displays a success message.',
+        story: "Success state - form displays a success message.",
       },
     },
   },

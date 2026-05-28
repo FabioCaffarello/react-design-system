@@ -1,19 +1,19 @@
 /**
  * PageHeader Component
- * 
+ *
  * Page header component with title, description, breadcrumb, and actions.
- * 
+ *
  * @see EPIC-004: PageHeader Component (Molecule)
  */
 
-'use client';
+"use client";
 
-import React from 'react';
-import Breadcrumb from '../Breadcrumb/Breadcrumb';
-import { Text } from '../../atoms';
-import type { PageHeaderProps } from './types';
-import { cn, cva } from '../../utils';
-import { getSpacingClass } from '../../tokens/spacing';
+import React from "react";
+import Breadcrumb from "../Breadcrumb/Breadcrumb";
+import { Text } from "../../primitives";
+import type { PageHeaderProps } from "./types";
+import { cn, cva } from "../../utils";
+import { getSpacingClass } from "../../tokens/spacing";
 
 /**
  * PageHeader Variants using CVA
@@ -21,25 +21,25 @@ import { getSpacingClass } from '../../tokens/spacing';
  */
 const pageHeaderVariants = cva(
   // Base classes
-  cn('w-full', 'flex', 'flex-col', 'gap-2'),
+  cn("w-full", "flex", "flex-col", "gap-2"),
   {
     variants: {
       variant: {
-        default: cn(getSpacingClass('base', 'mb')),
-        compact: cn(getSpacingClass('sm', 'mb')),
+        default: cn(getSpacingClass("base", "mb")),
+        compact: cn(getSpacingClass("sm", "mb")),
       },
     },
     defaultVariants: {
-      variant: 'default',
+      variant: "default",
     },
-  }
+  },
 );
 
 /**
  * PageHeader Component
- * 
+ *
  * Page header with title, description, breadcrumb, and actions.
- * 
+ *
  * @example
  * ```tsx
  * <PageHeader
@@ -58,19 +58,14 @@ export function PageHeader({
   description,
   breadcrumb,
   actions,
-  variant = 'default',
+  variant = "default",
   className,
   ...props
 }: PageHeaderProps) {
   return (
-    <div
-      className={cn(pageHeaderVariants({ variant }), className)}
-      {...props}
-    >
+    <div className={cn(pageHeaderVariants({ variant }), className)} {...props}>
       {/* Breadcrumb */}
-      {breadcrumb && breadcrumb.length > 0 && (
-        <Breadcrumb items={breadcrumb} />
-      )}
+      {breadcrumb && breadcrumb.length > 0 && <Breadcrumb items={breadcrumb} />}
 
       {/* Title and Actions Row */}
       <div className="flex items-start justify-between gap-4">
@@ -88,9 +83,7 @@ export function PageHeader({
 
         {/* Actions */}
         {actions && (
-          <div className="flex items-center gap-2 flex-shrink-0">
-            {actions}
-          </div>
+          <div className="flex items-center gap-2 flex-shrink-0">{actions}</div>
         )}
       </div>
     </div>

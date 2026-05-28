@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
-import ButtonGroup from './ButtonGroup';
-import Button from '../../atoms/Button/Button';
+import type { Meta, StoryObj } from "@storybook/react";
+import { useState } from "react";
+import ButtonGroup from "./ButtonGroup";
+import Button from "../../primitives/Button/Button";
 
 const meta: Meta<typeof ButtonGroup> = {
-  title: 'Molecules/ButtonGroup',
+  title: "Molecules/ButtonGroup",
   component: ButtonGroup,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -35,12 +35,12 @@ A container component for grouping related buttons together.
   },
   argTypes: {
     orientation: {
-      control: 'select',
-      options: ['horizontal', 'vertical'],
+      control: "select",
+      options: ["horizontal", "vertical"],
     },
     size: {
-      control: 'select',
-      options: ['sm', 'md', 'lg'],
+      control: "select",
+      options: ["sm", "md", "lg"],
     },
   },
 };
@@ -51,25 +51,25 @@ type Story = StoryObj<typeof ButtonGroup>;
 export const Default: Story = {
   render: () => {
     const [activeButton, setActiveButton] = useState<string | null>(null);
-    
+
     return (
       <div className="space-y-4">
         <ButtonGroup>
-          <Button 
-            variant={activeButton === 'left' ? 'primary' : 'secondary'}
-            onClick={() => setActiveButton('left')}
+          <Button
+            variant={activeButton === "left" ? "primary" : "secondary"}
+            onClick={() => setActiveButton("left")}
           >
             Left
           </Button>
-          <Button 
-            variant={activeButton === 'middle' ? 'primary' : 'secondary'}
-            onClick={() => setActiveButton('middle')}
+          <Button
+            variant={activeButton === "middle" ? "primary" : "secondary"}
+            onClick={() => setActiveButton("middle")}
           >
             Middle
           </Button>
-          <Button 
-            variant={activeButton === 'right' ? 'primary' : 'secondary'}
-            onClick={() => setActiveButton('right')}
+          <Button
+            variant={activeButton === "right" ? "primary" : "secondary"}
+            onClick={() => setActiveButton("right")}
           >
             Right
           </Button>
@@ -85,7 +85,8 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Button group with real state. Click buttons to see them activate.",
+        story:
+          "Button group with real state. Click buttons to see them activate.",
       },
     },
   },
@@ -131,29 +132,29 @@ export const WithVariants: Story = {
 export const WithActions: Story = {
   render: () => {
     const [actionHistory, setActionHistory] = useState<string[]>([]);
-    
+
     const handleAction = (action: string) => {
-      setActionHistory(prev => [action, ...prev].slice(0, 5));
+      setActionHistory((prev) => [action, ...prev].slice(0, 5));
     };
-    
+
     return (
       <div className="space-y-4">
         <ButtonGroup>
-          <Button 
+          <Button
             variant="primary"
-            onClick={() => handleAction('Save clicked')}
+            onClick={() => handleAction("Save clicked")}
           >
             Save
           </Button>
-          <Button 
+          <Button
             variant="secondary"
-            onClick={() => handleAction('Cancel clicked')}
+            onClick={() => handleAction("Cancel clicked")}
           >
             Cancel
           </Button>
-          <Button 
+          <Button
             variant="outline"
-            onClick={() => handleAction('Delete clicked')}
+            onClick={() => handleAction("Delete clicked")}
           >
             Delete
           </Button>
@@ -174,7 +175,8 @@ export const WithActions: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Button group with real actions. Click buttons to see them logged.",
+        story:
+          "Button group with real actions. Click buttons to see them logged.",
       },
     },
   },
@@ -192,7 +194,8 @@ export const HorizontalState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Horizontal state - buttons are arranged horizontally (default).',
+        story:
+          "Horizontal state - buttons are arranged horizontally (default).",
       },
     },
   },
@@ -209,7 +212,7 @@ export const VerticalState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Vertical state - buttons are arranged vertically.',
+        story: "Vertical state - buttons are arranged vertically.",
       },
     },
   },
@@ -226,7 +229,8 @@ export const AttachedState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Attached state - buttons are attached together without spacing.',
+        story:
+          "Attached state - buttons are attached together without spacing.",
       },
     },
   },
@@ -243,7 +247,7 @@ export const DetachedState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Detached state - buttons have normal spacing between them.',
+        story: "Detached state - buttons have normal spacing between them.",
       },
     },
   },

@@ -1,27 +1,35 @@
-'use client';
+"use client";
 
-import { useFormContext } from './FormContext';
-import { ErrorMessage, Label } from '../../atoms';
-import { cn } from '../../utils';
-import { 
-  getSpacingClass, 
-  getTypographySizeFromFontSize, 
+import { useFormContext } from "./FormContext";
+import { ErrorMessage, Label } from "../../primitives";
+import { cn } from "../../utils";
+import {
+  getSpacingClass,
+  getTypographySizeFromFontSize,
   getTypographyWeightFromFontWeight,
-  getColorClass
-} from '../../tokens';
-import type { FieldValues, Path, RegisterOptions } from 'react-hook-form';
-import type { ReactNode } from 'react';
-import type { UseFormReturn } from 'react-hook-form';
+  getColorClass,
+} from "../../tokens";
+import type { FieldValues, Path, RegisterOptions } from "react-hook-form";
+import type { ReactNode } from "react";
+import type { UseFormReturn } from "react-hook-form";
 
-export interface FormFieldProps<TFieldValues extends FieldValues = FieldValues> {
+export interface FormFieldProps<
+  TFieldValues extends FieldValues = FieldValues,
+> {
   name: Path<TFieldValues>;
   label?: string;
   children: (props: {
     name: string;
-    register: (fieldName: Path<TFieldValues>) => ReturnType<UseFormReturn<TFieldValues>['register']>;
+    register: (
+      fieldName: Path<TFieldValues>,
+    ) => ReturnType<UseFormReturn<TFieldValues>["register"]>;
     error?: string;
     value?: unknown;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
+    onChange?: (
+      e: React.ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >,
+    ) => void;
     onBlur?: () => void;
   }) => ReactNode;
   rules?: RegisterOptions<TFieldValues>;
@@ -30,10 +38,10 @@ export interface FormFieldProps<TFieldValues extends FieldValues = FieldValues> 
 
 /**
  * FormField Component
- * 
+ *
  * A wrapper component for form fields that integrates with react-hook-form.
  * Provides register, error, and validation state to children.
- * 
+ *
  * @example
  * ```tsx
  * <FormField name="email" label="Email">
@@ -52,12 +60,14 @@ export function FormField<TFieldValues extends FieldValues = FieldValues>({
   label,
   children,
   rules,
-  className = '',
+  className = "",
 }: FormFieldProps<TFieldValues>) {
   const { form } = useFormContext<TFieldValues>();
-  
+
   if (!form) {
-    throw new Error('FormField must be used within a Form component with react-hook-form integration');
+    throw new Error(
+      "FormField must be used within a Form component with react-hook-form integration",
+    );
   }
 
   const {
@@ -71,15 +81,22 @@ export function FormField<TFieldValues extends FieldValues = FieldValues>({
   const value = watch(name);
 
   return (
-    <div className={cn('flex', 'flex-col', getSpacingClass('sm', 'gap'), className)}>
+    <div
+      className={cn(
+        "flex",
+        "flex-col",
+        getSpacingClass("sm", "gap"),
+        className,
+      )}
+    >
       {label && (
-        <Label 
+        <Label
           htmlFor={name}
           className={cn(
-            'block',
-            getTypographySizeFromFontSize('sm'),
-            getTypographyWeightFromFontWeight('medium'),
-            getColorClass('neutral', 'dark', 'text')
+            "block",
+            getTypographySizeFromFontSize("sm"),
+            getTypographyWeightFromFontWeight("medium"),
+            getColorClass("neutral", "dark", "text"),
           )}
         >
           {label}

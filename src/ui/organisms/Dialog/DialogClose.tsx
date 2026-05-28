@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { cloneElement, isValidElement, type ReactElement } from 'react';
-import { X } from 'lucide-react';
-import { useDialogContext } from '../../providers/DialogContext';
-import Button from '../../atoms/Button/Button';
+import { cloneElement, isValidElement, type ReactElement } from "react";
+import { X } from "lucide-react";
+import { useDialogContext } from "../../providers/DialogContext";
+import Button from "../../primitives/Button/Button";
 
 export interface DialogCloseProps {
-  'aria-label'?: string;
+  "aria-label"?: string;
   className?: string;
   asChild?: boolean;
   children?: ReactElement;
 }
 
 export function DialogClose({
-  'aria-label': ariaLabel = 'Close dialog',
-  className = '',
+  "aria-label": ariaLabel = "Close dialog",
+  className = "",
   asChild = false,
   children,
 }: DialogCloseProps) {

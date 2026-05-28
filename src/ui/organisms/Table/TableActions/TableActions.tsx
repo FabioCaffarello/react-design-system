@@ -1,30 +1,34 @@
-'use client';
+"use client";
 
-import type { HTMLAttributes } from 'react';
-import Dropdown from '../../../molecules/Dropdown/Dropdown';
-import { Button } from '../../../atoms';
-import { MoreVertical } from 'lucide-react';
+import type { HTMLAttributes } from "react";
+import Dropdown from "../../../molecules/Dropdown/Dropdown";
+import { Button } from "../../../primitives";
+import { MoreVertical } from "lucide-react";
 
-export interface TableAction<T extends Record<string, unknown> = Record<string, unknown>> {
+export interface TableAction<
+  T extends Record<string, unknown> = Record<string, unknown>,
+> {
   label: string;
   onClick: (row: T) => void;
-  variant?: 'default' | 'danger';
+  variant?: "default" | "danger";
   disabled?: boolean;
   icon?: React.ReactNode;
 }
 
-export interface TableActionsProps<T extends Record<string, unknown> = Record<string, unknown>> extends HTMLAttributes<HTMLDivElement> {
+export interface TableActionsProps<
+  T extends Record<string, unknown> = Record<string, unknown>,
+> extends HTMLAttributes<HTMLDivElement> {
   actions: TableAction<T>[];
   row: T;
-  align?: 'left' | 'right';
+  align?: "left" | "right";
 }
 
 /**
  * TableActions Component
- * 
+ *
  * Dropdown menu for row actions in tables.
  * Follows Atomic Design principles as a Molecule component.
- * 
+ *
  * @example
  * ```tsx
  * <TableActions
@@ -36,11 +40,13 @@ export interface TableActionsProps<T extends Record<string, unknown> = Record<st
  * />
  * ```
  */
-export default function TableActions<T extends Record<string, unknown> = Record<string, unknown>>({
+export default function TableActions<
+  T extends Record<string, unknown> = Record<string, unknown>,
+>({
   actions,
   row,
-  align = 'right',
-  className = '',
+  align = "right",
+  className = "",
   ...props
 }: TableActionsProps<T>) {
   const dropdownItems = actions.map((action) => ({

@@ -1,15 +1,21 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef, useCallback, type KeyboardEvent } from 'react';
-import { createPortal } from 'react-dom';
-import { Search, Command } from 'lucide-react';
-import { getColorClass } from '../../tokens/colors';
-import { getSpacingClass } from '../../tokens/spacing';
-import { getRadiusClass } from '../../tokens/radius';
-import { getShadowClass } from '../../tokens/shadows';
-import { getZIndexClass } from '../../tokens/z-index';
-import { getAnimationClass } from '../../tokens/animations';
-import Input from '../../atoms/Input/Input';
+import {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  type KeyboardEvent,
+} from "react";
+import { createPortal } from "react-dom";
+import { Search, Command } from "lucide-react";
+import { getColorClass } from "../../tokens/colors";
+import { getSpacingClass } from "../../tokens/spacing";
+import { getRadiusClass } from "../../tokens/radius";
+import { getShadowClass } from "../../tokens/shadows";
+import { getZIndexClass } from "../../tokens/z-index";
+import { getAnimationClass } from "../../tokens/animations";
+import Input from "../../primitives/Input/Input";
 
 export interface CommandItem {
   id: string;
@@ -34,11 +40,11 @@ export interface CommandPaletteProps {
 
 /**
  * CommandPalette Component
- * 
+ *
  * A command palette component for quick command search and execution.
  * Supports keyboard navigation, grouping, and filtering.
  * Follows Atomic Design principles as an Organism component.
- * 
+ *
  * @example
  * ```tsx
  * <CommandPalette
@@ -55,12 +61,12 @@ export default function CommandPalette({
   defaultOpen = false,
   onOpenChange,
   trigger,
-  placeholder = 'Type a command or search...',
-  emptyMessage = 'No commands found',
-  className = '',
+  placeholder = "Type a command or search...",
+  emptyMessage = "No commands found",
+  className = "",
 }: CommandPaletteProps) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -74,31 +80,39 @@ export default function CommandPalette({
     const query = searchQuery.toLowerCase();
     const matchesLabel = item.label.toLowerCase().includes(query);
     const matchesDescription = item.description?.toLowerCase().includes(query);
-    const matchesKeywords = item.keywords?.some((keyword) => keyword.toLowerCase().includes(query));
+    const matchesKeywords = item.keywords?.some((keyword) =>
+      keyword.toLowerCase().includes(query),
+    );
     return matchesLabel || matchesDescription || matchesKeywords;
   });
 
   // Group items
-  const groupedItems = filteredItems.reduce((acc, item) => {
-    const group = item.group || 'Other';
-    if (!acc[group]) {
-      acc[group] = [];
-    }
-    acc[group].push(item);
-    return acc;
-  }, {} as Record<string, CommandItem[]>);
+  const groupedItems = filteredItems.reduce(
+    (acc, item) => {
+      const group = item.group || "Other";
+      if (!acc[group]) {
+        acc[group] = [];
+      }
+      acc[group].push(item);
+      return acc;
+    },
+    {} as Record<string, CommandItem[]>,
+  );
 
-  const handleOpenChange = useCallback((newOpen: boolean) => {
-    if (!isControlled) {
-      setInternalOpen(newOpen);
-    }
-    onOpenChange?.(newOpen);
-    if (newOpen) {
-      setSearchQuery('');
-      setSelectedIndex(0);
-      setTimeout(() => inputRef.current?.focus(), 0);
-    }
-  }, [isControlled, onOpenChange]);
+  const handleOpenChange = useCallback(
+    (newOpen: boolean) => {
+      if (!isControlled) {
+        setInternalOpen(newOpen);
+      }
+      onOpenChange?.(newOpen);
+      if (newOpen) {
+        setSearchQuery("");
+        setSelectedIndex(0);
+        setTimeout(() => inputRef.current?.focus(), 0);
+      }
+    },
+    [isControlled, onOpenChange],
+  );
 
   const handleSelect = (item: CommandItem) => {
     item.action();
@@ -106,24 +120,24 @@ export default function CommandPalette({
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Escape') {
+    if (e.key === "Escape") {
       handleOpenChange(false);
       return;
     }
 
-    if (e.key === 'ArrowDown') {
+    if (e.key === "ArrowDown") {
       e.preventDefault();
       setSelectedIndex((prev) => Math.min(prev + 1, filteredItems.length - 1));
       return;
     }
 
-    if (e.key === 'ArrowUp') {
+    if (e.key === "ArrowUp") {
       e.preventDefault();
       setSelectedIndex((prev) => Math.max(prev - 1, 0));
       return;
     }
 
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault();
       if (filteredItems[selectedIndex]) {
         handleSelect(filteredItems[selectedIndex]);
@@ -135,9 +149,17 @@ export default function CommandPalette({
   // Scroll selected item into view
   useEffect(() => {
     if (listRef.current && selectedIndex >= 0) {
-      const selectedElement = listRef.current.querySelector(`[data-index="${selectedIndex}"]`);
-      if (selectedElement && typeof selectedElement.scrollIntoView === 'function') {
-        selectedElement.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      const selectedElement = listRef.current.querySelector(
+        `[data-index="${selectedIndex}"]`,
+      );
+      if (
+        selectedElement &&
+        typeof selectedElement.scrollIntoView === "function"
+      ) {
+        selectedElement.scrollIntoView({
+          block: "nearest",
+          behavior: "smooth",
+        });
       }
     }
   }, [selectedIndex]);
@@ -150,14 +172,21 @@ export default function CommandPalette({
   // Keyboard shortcut (Cmd/Ctrl + K)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         handleOpenChange(!isOpen);
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown as unknown as EventListener);
-    return () => document.removeEventListener('keydown', handleKeyDown as unknown as EventListener);
+    document.addEventListener(
+      "keydown",
+      handleKeyDown as unknown as EventListener,
+    );
+    return () =>
+      document.removeEventListener(
+        "keydown",
+        handleKeyDown as unknown as EventListener,
+      );
   }, [isOpen, handleOpenChange]);
 
   const commandPaletteContent = isOpen ? (
@@ -165,14 +194,14 @@ export default function CommandPalette({
       className={`
         fixed
         inset-0
-        ${getZIndexClass('modal-backdrop')}
+        ${getZIndexClass("modal-backdrop")}
         bg-black
         bg-opacity-50
         flex
         items-start
         justify-center
         pt-[20vh]
-        ${getAnimationClass('base')}
+        ${getAnimationClass("base")}
       `}
       onClick={() => handleOpenChange(false)}
     >
@@ -180,26 +209,30 @@ export default function CommandPalette({
         className={`
           w-full
           max-w-2xl
-          ${getSpacingClass('base', 'mx')}
+          ${getSpacingClass("base", "mx")}
           bg-white
-          ${getRadiusClass('lg')}
-          ${getShadowClass('xl')}
-          ${getZIndexClass('modal')}
-          ${getAnimationClass('base')}
+          ${getRadiusClass("lg")}
+          ${getShadowClass("xl")}
+          ${getZIndexClass("modal")}
+          ${getAnimationClass("base")}
           ${className}
         `}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Input */}
-        <div className={`
+        <div
+          className={`
           flex
           items-center
           gap-3
-          ${getSpacingClass('base', 'p')}
+          ${getSpacingClass("base", "p")}
           border-b
           border-gray-200
-        `}>
-          <Search className={`h-5 w-5 ${getColorClass('neutral', 'DEFAULT', 'text')}`} />
+        `}
+        >
+          <Search
+            className={`h-5 w-5 ${getColorClass("neutral", "DEFAULT", "text")}`}
+          />
           <Input
             ref={inputRef}
             value={searchQuery}
@@ -209,17 +242,19 @@ export default function CommandPalette({
             className="flex-1 border-0 focus:ring-0"
             autoFocus
           />
-          <div className={`
+          <div
+            className={`
             flex
             items-center
             gap-1
-            ${getSpacingClass('sm', 'px')}
-            ${getSpacingClass('xs', 'py')}
-            ${getRadiusClass('sm')}
+            ${getSpacingClass("sm", "px")}
+            ${getSpacingClass("xs", "py")}
+            ${getRadiusClass("sm")}
             bg-gray-100
             text-xs
             text-gray-500
-          `}>
+          `}
+          >
             <Command className="h-3 w-3" />
             <span>K</span>
           </div>
@@ -231,31 +266,35 @@ export default function CommandPalette({
           className={`
             max-h-96
             overflow-y-auto
-            ${getSpacingClass('sm', 'py')}
+            ${getSpacingClass("sm", "py")}
           `}
         >
           {Object.keys(groupedItems).length === 0 ? (
-            <div className={`
-              ${getSpacingClass('lg', 'p')}
+            <div
+              className={`
+              ${getSpacingClass("lg", "p")}
               text-center
               text-sm
-              ${getColorClass('neutral', 'DEFAULT', 'text')}
-            `}>
+              ${getColorClass("neutral", "DEFAULT", "text")}
+            `}
+            >
               {emptyMessage}
             </div>
           ) : (
             Object.entries(groupedItems).map(([group, groupItems]) => (
               <div key={group}>
-                {group !== 'Other' && (
-                  <div className={`
-                    ${getSpacingClass('sm', 'px')}
-                    ${getSpacingClass('xs', 'py')}
+                {group !== "Other" && (
+                  <div
+                    className={`
+                    ${getSpacingClass("sm", "px")}
+                    ${getSpacingClass("xs", "py")}
                     text-xs
                     font-semibold
-                    ${getColorClass('neutral', 'DEFAULT', 'text')}
+                    ${getColorClass("neutral", "DEFAULT", "text")}
                     uppercase
                     tracking-wider
-                  `}>
+                  `}
+                  >
                     {group}
                   </div>
                 )}
@@ -274,35 +313,42 @@ export default function CommandPalette({
                         flex
                         items-center
                         gap-3
-                        ${getSpacingClass('base', 'px')}
-                        ${getSpacingClass('md', 'py')}
+                        ${getSpacingClass("base", "px")}
+                        ${getSpacingClass("md", "py")}
                         text-left
-                        ${getAnimationClass('base')}
-                        ${isSelected
-                          ? getColorClass('primary', 'light', 'bg')
-                          : 'hover:bg-gray-50'
+                        ${getAnimationClass("base")}
+                        ${
+                          isSelected
+                            ? getColorClass("primary", "light", "bg")
+                            : "hover:bg-gray-50"
                         }
                       `}
                     >
                       {item.icon && (
-                        <div className={`
-                          ${isSelected
-                            ? getColorClass('primary', 'DEFAULT', 'text')
-                            : getColorClass('neutral', 'DEFAULT', 'text')
+                        <div
+                          className={`
+                          ${
+                            isSelected
+                              ? getColorClass("primary", "DEFAULT", "text")
+                              : getColorClass("neutral", "DEFAULT", "text")
                           }
-                        `}>
+                        `}
+                        >
                           {item.icon}
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <div className={`
+                        <div
+                          className={`
                           text-sm
                           font-medium
-                          ${isSelected
-                            ? getColorClass('primary', 'DEFAULT', 'text')
-                            : 'text-gray-900'
+                          ${
+                            isSelected
+                              ? getColorClass("primary", "DEFAULT", "text")
+                              : "text-gray-900"
                           }
-                        `}>
+                        `}
+                        >
                           {item.label}
                         </div>
                         {item.description && (
@@ -327,7 +373,8 @@ export default function CommandPalette({
       {trigger ? (
         <div onClick={() => handleOpenChange(true)}>{trigger}</div>
       ) : null}
-      {typeof window !== 'undefined' && createPortal(commandPaletteContent, document.body)}
+      {typeof window !== "undefined" &&
+        createPortal(commandPaletteContent, document.body)}
     </>
   );
 }

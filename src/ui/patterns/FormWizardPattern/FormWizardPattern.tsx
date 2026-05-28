@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Stepper } from '../../organisms';
-import { Container } from '../../layouts/Container/Container';
-import { Stack } from '../../layouts/Stack/Stack';
-import { Button } from '../../atoms';
-import type { StepperStep } from '../../organisms';
+import React, { useState } from "react";
+import { Stepper } from "../../organisms";
+import { Container } from "../../layouts/Container/Container";
+import { Stack } from "../../layouts/Stack/Stack";
+import { Button } from "../../primitives";
+import type { StepperStep } from "../../organisms";
 
 export interface FormWizardStep extends StepperStep {
   /**
@@ -43,10 +43,10 @@ export interface FormWizardPatternProps {
 
 /**
  * FormWizardPattern - A complete form wizard pattern combining Stepper and Form
- * 
+ *
  * This pattern solves the common UX problem of multi-step forms with validation.
  * It combines Stepper for navigation and Form for data collection.
- * 
+ *
  * @example
  * ```tsx
  * <FormWizardPattern
@@ -67,7 +67,7 @@ export function FormWizardPattern({
 
   const handleNext = async () => {
     const step = steps[currentStep];
-    
+
     // Validate current step if validation function exists
     if (step.validate) {
       const isValid = await step.validate();
@@ -124,13 +124,14 @@ export function FormWizardPattern({
             title: step.title,
             content: step.content,
             description: step.description,
-            status: index < currentStep
-              ? 'completed'
-              : index === currentStep
-              ? hasError
-                ? 'error'
-                : 'active'
-              : 'pending',
+            status:
+              index < currentStep
+                ? "completed"
+                : index === currentStep
+                  ? hasError
+                    ? "error"
+                    : "active"
+                  : "pending",
           }))}
           currentStep={currentStep}
           onStepChange={handleStepClick}
@@ -141,9 +142,13 @@ export function FormWizardPattern({
         <div className="bg-white rounded-lg border p-6">
           <Stack spacing="md">
             <div>
-              <h2 className="text-2xl font-semibold">{currentStepData.title}</h2>
+              <h2 className="text-2xl font-semibold">
+                {currentStepData.title}
+              </h2>
               {currentStepData.description && (
-                <p className="text-gray-600 mt-1">{currentStepData.description}</p>
+                <p className="text-gray-600 mt-1">
+                  {currentStepData.description}
+                </p>
               )}
             </div>
 
@@ -155,9 +160,7 @@ export function FormWizardPattern({
               </div>
             )}
 
-            <div className="min-h-[200px]">
-              {currentStepData.fields}
-            </div>
+            <div className="min-h-[200px]">{currentStepData.fields}</div>
 
             {/* Navigation Buttons */}
             <div className="flex justify-between pt-4 border-t">
@@ -168,11 +171,8 @@ export function FormWizardPattern({
               >
                 Back
               </Button>
-              <Button
-                variant="primary"
-                onClick={handleNext}
-              >
-                {isLastStep ? 'Complete' : 'Next'}
+              <Button variant="primary" onClick={handleNext}>
+                {isLastStep ? "Complete" : "Next"}
               </Button>
             </div>
           </Stack>

@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
-import { expect, userEvent, within, waitFor } from '@storybook/test';
-import { fn } from '@storybook/test';
-import CommandPalette from './CommandPalette';
-import Button from '../../atoms/Button/Button';
+import type { Meta, StoryObj } from "@storybook/react";
+import { useState } from "react";
+import { expect, userEvent, within, waitFor } from "@storybook/test";
+import { fn } from "@storybook/test";
+import CommandPalette from "./CommandPalette";
+import Button from "../../primitives/Button/Button";
 import {
   FileText,
   Folder,
@@ -14,14 +14,14 @@ import {
   Moon,
   Sun,
   Bell,
-} from 'lucide-react';
+} from "lucide-react";
 
 const meta: Meta<typeof CommandPalette> = {
-  title: 'Organisms/CommandPalette',
+  title: "Organisms/CommandPalette",
   component: CommandPalette,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
-    layout: 'fullscreen',
+    layout: "fullscreen",
     docs: {
       description: {
         component: `
@@ -52,56 +52,56 @@ A command palette component for quick command search and execution. Supports key
   },
   argTypes: {
     items: {
-      description: 'Array of command items to display',
+      description: "Array of command items to display",
       control: false,
     },
     open: {
-      description: 'Controlled open state',
-      control: 'boolean',
+      description: "Controlled open state",
+      control: "boolean",
       table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'undefined' },
+        type: { summary: "boolean" },
+        defaultValue: { summary: "undefined" },
       },
     },
     defaultOpen: {
-      description: 'Default open state (uncontrolled)',
-      control: 'boolean',
+      description: "Default open state (uncontrolled)",
+      control: "boolean",
       table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
+        type: { summary: "boolean" },
+        defaultValue: { summary: "false" },
       },
     },
     onOpenChange: {
-      description: 'Callback fired when the open state changes',
-      action: 'onOpenChange',
-      category: 'Events',
+      description: "Callback fired when the open state changes",
+      action: "onOpenChange",
+      category: "Events",
       table: {
-        type: { summary: '(open: boolean) => void' },
+        type: { summary: "(open: boolean) => void" },
       },
     },
     trigger: {
-      description: 'Custom trigger element',
+      description: "Custom trigger element",
       control: false,
     },
     placeholder: {
-      description: 'Placeholder text for the search input',
-      control: 'text',
+      description: "Placeholder text for the search input",
+      control: "text",
       table: {
-        type: { summary: 'string' },
+        type: { summary: "string" },
         defaultValue: { summary: "'Type a command or search...'" },
       },
     },
     emptyMessage: {
-      description: 'Message to display when no commands match the search',
-      control: 'text',
+      description: "Message to display when no commands match the search",
+      control: "text",
       table: {
-        type: { summary: 'string' },
+        type: { summary: "string" },
         defaultValue: { summary: "'No commands found'" },
       },
     },
     className: {
-      description: 'Additional CSS classes',
-      control: 'text',
+      description: "Additional CSS classes",
+      control: "text",
     },
   },
 };
@@ -110,10 +110,10 @@ export default meta;
 type Story = StoryObj<typeof CommandPalette>;
 
 const basicCommands = [
-  { id: '1', label: 'New File', action: () => alert('New File') },
-  { id: '2', label: 'Open File', action: () => alert('Open File') },
-  { id: '3', label: 'Save', action: () => alert('Save') },
-  { id: '4', label: 'Save As', action: () => alert('Save As') },
+  { id: "1", label: "New File", action: () => alert("New File") },
+  { id: "2", label: "Open File", action: () => alert("Open File") },
+  { id: "3", label: "Save", action: () => alert("Save") },
+  { id: "4", label: "Save As", action: () => alert("Save As") },
 ];
 
 export const Default: Story = {
@@ -122,7 +122,7 @@ export const Default: Story = {
     const handleOpenChange = fn((newOpen: boolean) => {
       setOpen(newOpen);
     });
-    
+
     return (
       <div className="p-8">
         <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
@@ -139,25 +139,33 @@ export const Default: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button', { name: /open command palette/i });
-    
+    const button = canvas.getByRole("button", {
+      name: /open command palette/i,
+    });
+
     // Click to open
     await userEvent.click(button);
-    
+
     // Wait for palette to appear in document.body (portal)
     await waitFor(() => {
-      const input = within(document.body).getByPlaceholderText(/type a command or search/i);
+      const input = within(document.body).getByPlaceholderText(
+        /type a command or search/i,
+      );
       expect(input).toBeInTheDocument();
     });
-    
+
     // Type to search
-    const input = within(document.body).getByPlaceholderText(/type a command or search/i);
-    await userEvent.type(input, 'save');
-    
+    const input = within(document.body).getByPlaceholderText(
+      /type a command or search/i,
+    );
+    await userEvent.type(input, "save");
+
     // Check that filtered results appear (look for button with "Save" text in the command palette)
     await waitFor(() => {
-      const buttons = within(document.body).getAllByRole('button');
-      const saveButton = buttons.find(btn => btn.textContent?.toLowerCase().includes('save'));
+      const buttons = within(document.body).getAllByRole("button");
+      const saveButton = buttons.find((btn) =>
+        btn.textContent?.toLowerCase().includes("save"),
+      );
       expect(saveButton).toBeDefined();
     });
   },
@@ -167,12 +175,32 @@ export const WithIcons: Story = {
   render: () => {
     const [open, setOpen] = useState(false);
     const commandsWithIcons = [
-      { id: '1', label: 'New File', icon: <FileText className="h-4 w-4" />, action: () => alert('New File') },
-      { id: '2', label: 'Open Folder', icon: <Folder className="h-4 w-4" />, action: () => alert('Open Folder') },
-      { id: '3', label: 'Search', icon: <Search className="h-4 w-4" />, action: () => alert('Search') },
-      { id: '4', label: 'Settings', icon: <Settings className="h-4 w-4" />, action: () => alert('Settings') },
+      {
+        id: "1",
+        label: "New File",
+        icon: <FileText className="h-4 w-4" />,
+        action: () => alert("New File"),
+      },
+      {
+        id: "2",
+        label: "Open Folder",
+        icon: <Folder className="h-4 w-4" />,
+        action: () => alert("Open Folder"),
+      },
+      {
+        id: "3",
+        label: "Search",
+        icon: <Search className="h-4 w-4" />,
+        action: () => alert("Search"),
+      },
+      {
+        id: "4",
+        label: "Settings",
+        icon: <Settings className="h-4 w-4" />,
+        action: () => alert("Settings"),
+      },
     ];
-    
+
     return (
       <div className="p-8">
         <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
@@ -190,14 +218,39 @@ export const WithGroups: Story = {
   render: () => {
     const [open, setOpen] = useState(false);
     const groupedCommands = [
-      { id: '1', label: 'New File', group: 'File', action: () => alert('New File') },
-      { id: '2', label: 'Open File', group: 'File', action: () => alert('Open File') },
-      { id: '3', label: 'Save', group: 'File', action: () => alert('Save') },
-      { id: '4', label: 'User Settings', group: 'Settings', action: () => alert('User Settings') },
-      { id: '5', label: 'Preferences', group: 'Settings', action: () => alert('Preferences') },
-      { id: '6', label: 'Search', group: 'Actions', action: () => alert('Search') },
+      {
+        id: "1",
+        label: "New File",
+        group: "File",
+        action: () => alert("New File"),
+      },
+      {
+        id: "2",
+        label: "Open File",
+        group: "File",
+        action: () => alert("Open File"),
+      },
+      { id: "3", label: "Save", group: "File", action: () => alert("Save") },
+      {
+        id: "4",
+        label: "User Settings",
+        group: "Settings",
+        action: () => alert("User Settings"),
+      },
+      {
+        id: "5",
+        label: "Preferences",
+        group: "Settings",
+        action: () => alert("Preferences"),
+      },
+      {
+        id: "6",
+        label: "Search",
+        group: "Actions",
+        action: () => alert("Search"),
+      },
     ];
-    
+
     return (
       <div className="p-8">
         <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
@@ -216,35 +269,35 @@ export const WithDescriptions: Story = {
     const [open, setOpen] = useState(false);
     const commandsWithDescriptions = [
       {
-        id: '1',
-        label: 'New File',
-        description: 'Create a new file',
+        id: "1",
+        label: "New File",
+        description: "Create a new file",
         icon: <FileText className="h-4 w-4" />,
-        action: () => alert('New File'),
+        action: () => alert("New File"),
       },
       {
-        id: '2',
-        label: 'Open File',
-        description: 'Open an existing file',
+        id: "2",
+        label: "Open File",
+        description: "Open an existing file",
         icon: <Folder className="h-4 w-4" />,
-        action: () => alert('Open File'),
+        action: () => alert("Open File"),
       },
       {
-        id: '3',
-        label: 'User Profile',
-        description: 'View and edit your profile',
+        id: "3",
+        label: "User Profile",
+        description: "View and edit your profile",
         icon: <User className="h-4 w-4" />,
-        action: () => alert('User Profile'),
+        action: () => alert("User Profile"),
       },
       {
-        id: '4',
-        label: 'Notifications',
-        description: 'View your notifications',
+        id: "4",
+        label: "Notifications",
+        description: "View your notifications",
         icon: <Bell className="h-4 w-4" />,
-        action: () => alert('Notifications'),
+        action: () => alert("Notifications"),
       },
     ];
-    
+
     return (
       <div className="p-8">
         <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
@@ -263,31 +316,31 @@ export const WithKeywords: Story = {
     const [open, setOpen] = useState(false);
     const commandsWithKeywords = [
       {
-        id: '1',
-        label: 'Toggle Dark Mode',
-        description: 'Switch between light and dark theme',
-        keywords: ['dark', 'theme', 'mode', 'light'],
+        id: "1",
+        label: "Toggle Dark Mode",
+        description: "Switch between light and dark theme",
+        keywords: ["dark", "theme", "mode", "light"],
         icon: <Moon className="h-4 w-4" />,
-        action: () => alert('Toggle Dark Mode'),
+        action: () => alert("Toggle Dark Mode"),
       },
       {
-        id: '2',
-        label: 'Toggle Light Mode',
-        description: 'Switch to light theme',
-        keywords: ['light', 'theme', 'mode', 'bright'],
+        id: "2",
+        label: "Toggle Light Mode",
+        description: "Switch to light theme",
+        keywords: ["light", "theme", "mode", "bright"],
         icon: <Sun className="h-4 w-4" />,
-        action: () => alert('Toggle Light Mode'),
+        action: () => alert("Toggle Light Mode"),
       },
       {
-        id: '3',
-        label: 'Sign Out',
-        description: 'Sign out of your account',
-        keywords: ['logout', 'exit', 'signout', 'leave'],
+        id: "3",
+        label: "Sign Out",
+        description: "Sign out of your account",
+        keywords: ["logout", "exit", "signout", "leave"],
         icon: <LogOut className="h-4 w-4" />,
-        action: () => alert('Sign Out'),
+        action: () => alert("Sign Out"),
       },
     ];
-    
+
     return (
       <div className="p-8">
         <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
@@ -314,7 +367,7 @@ export const ManyCommands: Story = {
       group: `Group ${Math.floor(i / 10) + 1}`,
       action: () => alert(`Command ${i + 1}`),
     }));
-    
+
     return (
       <div className="p-8">
         <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
@@ -345,13 +398,17 @@ export const EmptyState: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button', { name: /open command palette/i });
-    
+    const button = canvas.getByRole("button", {
+      name: /open command palette/i,
+    });
+
     await userEvent.click(button);
-    
+
     // Wait for empty message
     await waitFor(() => {
-      expect(within(document.body).getByText(/no commands available/i)).toBeInTheDocument();
+      expect(
+        within(document.body).getByText(/no commands available/i),
+      ).toBeInTheDocument();
     });
   },
 };
@@ -360,15 +417,15 @@ export const KeyboardNavigation: Story = {
   render: () => {
     const [open, setOpen] = useState(false);
     const [selectedCommand, setSelectedCommand] = useState<string | null>(null);
-    
-    const commandsWithActions = basicCommands.map(cmd => ({
+
+    const commandsWithActions = basicCommands.map((cmd) => ({
       ...cmd,
       action: () => {
         setSelectedCommand(cmd.label);
         setOpen(false);
       },
     }));
-    
+
     return (
       <div className="p-8">
         <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
@@ -390,27 +447,37 @@ export const KeyboardNavigation: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button', { name: /open command palette/i });
-    
+    const button = canvas.getByRole("button", {
+      name: /open command palette/i,
+    });
+
     await userEvent.click(button);
-    
+
     // Wait for palette to appear in document.body (portal)
     await waitFor(() => {
-      const input = within(document.body).getByPlaceholderText(/type a command or search/i);
+      const input = within(document.body).getByPlaceholderText(
+        /type a command or search/i,
+      );
       expect(input).toBeInTheDocument();
     });
-    
-    const input = within(document.body).getByPlaceholderText(/type a command or search/i);
+
+    const input = within(document.body).getByPlaceholderText(
+      /type a command or search/i,
+    );
     await expect(input).toHaveFocus();
-    
+
     // Navigate with arrow keys
-    await userEvent.keyboard('{ArrowDown}');
-    await userEvent.keyboard('{ArrowDown}');
-    await userEvent.keyboard('{Enter}');
-    
+    await userEvent.keyboard("{ArrowDown}");
+    await userEvent.keyboard("{ArrowDown}");
+    await userEvent.keyboard("{Enter}");
+
     // Should close after selection
     await waitFor(() => {
-      expect(within(document.body).queryByPlaceholderText(/type a command or search/i)).not.toBeInTheDocument();
+      expect(
+        within(document.body).queryByPlaceholderText(
+          /type a command or search/i,
+        ),
+      ).not.toBeInTheDocument();
     });
   },
 };
@@ -420,31 +487,31 @@ export const SearchWithKeywords: Story = {
     const [open, setOpen] = useState(false);
     const commandsWithKeywords = [
       {
-        id: '1',
-        label: 'Toggle Dark Mode',
-        description: 'Switch between light and dark theme',
-        keywords: ['dark', 'theme', 'mode', 'light'],
+        id: "1",
+        label: "Toggle Dark Mode",
+        description: "Switch between light and dark theme",
+        keywords: ["dark", "theme", "mode", "light"],
         icon: <Moon className="h-4 w-4" />,
-        action: () => alert('Toggle Dark Mode'),
+        action: () => alert("Toggle Dark Mode"),
       },
       {
-        id: '2',
-        label: 'Toggle Light Mode',
-        description: 'Switch to light theme',
-        keywords: ['light', 'theme', 'mode', 'bright'],
+        id: "2",
+        label: "Toggle Light Mode",
+        description: "Switch to light theme",
+        keywords: ["light", "theme", "mode", "bright"],
         icon: <Sun className="h-4 w-4" />,
-        action: () => alert('Toggle Light Mode'),
+        action: () => alert("Toggle Light Mode"),
       },
       {
-        id: '3',
-        label: 'Sign Out',
-        description: 'Sign out of your account',
-        keywords: ['logout', 'exit', 'signout', 'leave'],
+        id: "3",
+        label: "Sign Out",
+        description: "Sign out of your account",
+        keywords: ["logout", "exit", "signout", "leave"],
         icon: <LogOut className="h-4 w-4" />,
-        action: () => alert('Sign Out'),
+        action: () => alert("Sign Out"),
       },
     ];
-    
+
     return (
       <div className="p-8">
         <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
@@ -454,33 +521,42 @@ export const SearchWithKeywords: Story = {
           onOpenChange={setOpen}
         />
         <p className="mt-4 text-sm text-gray-600">
-          Try searching for "dark", "theme", "logout", etc. Keywords are also searchable.
+          Try searching for "dark", "theme", "logout", etc. Keywords are also
+          searchable.
         </p>
       </div>
     );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button', { name: /open command palette/i });
-    
+    const button = canvas.getByRole("button", {
+      name: /open command palette/i,
+    });
+
     await userEvent.click(button);
-    
+
     // Wait for palette to appear in document.body (portal)
     await waitFor(() => {
-      const input = within(document.body).getByPlaceholderText(/type a command or search/i);
+      const input = within(document.body).getByPlaceholderText(
+        /type a command or search/i,
+      );
       expect(input).toBeInTheDocument();
     });
-    
-    const input = within(document.body).getByPlaceholderText(/type a command or search/i);
-    
+
+    const input = within(document.body).getByPlaceholderText(
+      /type a command or search/i,
+    );
+
     // Search by keyword
     await userEvent.clear(input);
-    await userEvent.type(input, 'logout');
-    
+    await userEvent.type(input, "logout");
+
     // Should find "Sign Out" via keyword (in document.body portal)
     await waitFor(() => {
-      const buttons = within(document.body).getAllByRole('button');
-      const signOutButton = buttons.find(btn => btn.textContent?.toLowerCase().includes('sign out'));
+      const buttons = within(document.body).getAllByRole("button");
+      const signOutButton = buttons.find((btn) =>
+        btn.textContent?.toLowerCase().includes("sign out"),
+      );
       expect(signOutButton).toBeDefined();
     });
   },
@@ -494,21 +570,22 @@ export const WithEvents: Story = {
       setOpen(newOpen);
     });
     const handleCommandAction = fn((command: string) => {
-      console.log('Command executed:', command);
+      console.log("Command executed:", command);
     });
-    
-    const commandsWithActions = basicCommands.map(cmd => ({
+
+    const commandsWithActions = basicCommands.map((cmd) => ({
       ...cmd,
       action: () => {
         handleCommandAction(cmd.label);
         setOpen(false);
       },
     }));
-    
+
     return (
       <div className="p-8 space-y-4">
         <p className="text-sm text-gray-600">
-          Open the command palette and select a command. Check the Actions panel to see events being fired.
+          Open the command palette and select a command. Check the Actions panel
+          to see events being fired.
         </p>
         <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
         <CommandPalette
@@ -521,18 +598,23 @@ export const WithEvents: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole('button', { name: /open command palette/i });
-    
+    const button = canvas.getByRole("button", {
+      name: /open command palette/i,
+    });
+
     await userEvent.click(button);
     await waitFor(() => {
-      const input = within(document.body).getByPlaceholderText(/type a command or search/i);
+      const input = within(document.body).getByPlaceholderText(
+        /type a command or search/i,
+      );
       expect(input).toBeInTheDocument();
     });
   },
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates command palette events. Open and select commands, then check the Actions panel to see events being logged.',
+        story:
+          "Demonstrates command palette events. Open and select commands, then check the Actions panel to see events being logged.",
       },
     },
   },
@@ -547,7 +629,7 @@ export const ClosedState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Closed state - command palette is not visible.',
+        story: "Closed state - command palette is not visible.",
       },
     },
   },
@@ -561,7 +643,7 @@ export const OpenState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Open state - command palette is visible.',
+        story: "Open state - command palette is visible.",
       },
     },
   },
@@ -571,12 +653,32 @@ export const WithIconsState: Story = {
   render: () => {
     const [open, setOpen] = useState(false);
     const commandsWithIcons = [
-      { id: '1', label: 'New File', icon: <FileText className="h-4 w-4" />, action: () => {} },
-      { id: '2', label: 'Open Folder', icon: <Folder className="h-4 w-4" />, action: () => {} },
-      { id: '3', label: 'Search', icon: <Search className="h-4 w-4" />, action: () => {} },
-      { id: '4', label: 'Settings', icon: <Settings className="h-4 w-4" />, action: () => {} },
+      {
+        id: "1",
+        label: "New File",
+        icon: <FileText className="h-4 w-4" />,
+        action: () => {},
+      },
+      {
+        id: "2",
+        label: "Open Folder",
+        icon: <Folder className="h-4 w-4" />,
+        action: () => {},
+      },
+      {
+        id: "3",
+        label: "Search",
+        icon: <Search className="h-4 w-4" />,
+        action: () => {},
+      },
+      {
+        id: "4",
+        label: "Settings",
+        icon: <Settings className="h-4 w-4" />,
+        action: () => {},
+      },
     ];
-    
+
     return (
       <div className="p-8">
         <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
@@ -591,7 +693,7 @@ export const WithIconsState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'With icons state - commands display icons.',
+        story: "With icons state - commands display icons.",
       },
     },
   },
@@ -601,13 +703,13 @@ export const WithGroupsState: Story = {
   render: () => {
     const [open, setOpen] = useState(false);
     const groupedCommands = [
-      { id: '1', label: 'New File', group: 'File', action: () => {} },
-      { id: '2', label: 'Open File', group: 'File', action: () => {} },
-      { id: '3', label: 'Save', group: 'File', action: () => {} },
-      { id: '4', label: 'User Settings', group: 'Settings', action: () => {} },
-      { id: '5', label: 'Preferences', group: 'Settings', action: () => {} },
+      { id: "1", label: "New File", group: "File", action: () => {} },
+      { id: "2", label: "Open File", group: "File", action: () => {} },
+      { id: "3", label: "Save", group: "File", action: () => {} },
+      { id: "4", label: "User Settings", group: "Settings", action: () => {} },
+      { id: "5", label: "Preferences", group: "Settings", action: () => {} },
     ];
-    
+
     return (
       <div className="p-8">
         <Button onClick={() => setOpen(true)}>Open Command Palette</Button>
@@ -622,7 +724,7 @@ export const WithGroupsState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'With groups state - commands are organized into groups.',
+        story: "With groups state - commands are organized into groups.",
       },
     },
   },
@@ -646,7 +748,7 @@ export const NoCommands: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Empty state - no commands are available.',
+        story: "Empty state - no commands are available.",
       },
     },
   },

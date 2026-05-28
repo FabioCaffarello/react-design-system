@@ -1,15 +1,28 @@
-'use client';
+"use client";
 
-import { useEffect, useState, type HTMLAttributes } from 'react';
-import { X, CheckCircle2, AlertCircle, AlertTriangle, Info } from 'lucide-react';
-import { type Toast as ToastType } from '../../providers/ToastContext';
-import { getColorClass, getRadiusClass, getShadowClass } from '../../tokens';
-import Button from '../../atoms/Button/Button';
+import { useEffect, useState, type HTMLAttributes } from "react";
+import {
+  X,
+  CheckCircle2,
+  AlertCircle,
+  AlertTriangle,
+  Info,
+} from "lucide-react";
+import { type Toast as ToastType } from "../../providers/ToastContext";
+import { getColorClass, getRadiusClass, getShadowClass } from "../../tokens";
+import Button from "../../primitives/Button/Button";
 
-export interface ToastProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
+export interface ToastProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
   toast: ToastType;
   onDismiss: (id: string) => void;
-  position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
+  position?:
+    | "top-right"
+    | "top-left"
+    | "bottom-right"
+    | "bottom-left"
+    | "top-center"
+    | "bottom-center";
 }
 
 const variantIcons = {
@@ -20,13 +33,20 @@ const variantIcons = {
 };
 
 const variantColors = {
-  success: 'success',
-  error: 'error',
-  warning: 'warning',
-  info: 'info',
+  success: "success",
+  error: "error",
+  warning: "warning",
+  info: "info",
 } as const;
 
-export function Toast({ toast, onDismiss, position = 'top-right', className = '', style, ...props }: ToastProps) {
+export function Toast({
+  toast,
+  onDismiss,
+  position = "top-right",
+  className = "",
+  style,
+  ...props
+}: ToastProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const Icon = variantIcons[toast.variant];
@@ -55,12 +75,12 @@ export function Toast({ toast, onDismiss, position = 'top-right', className = ''
   }, []);
 
   const positionClasses = {
-    'top-right': 'top-4 right-4',
-    'top-left': 'top-4 left-4',
-    'bottom-right': 'bottom-4 right-4',
-    'bottom-left': 'bottom-4 left-4',
-    'top-center': 'top-4 left-1/2 -translate-x-1/2',
-    'bottom-center': 'bottom-4 left-1/2 -translate-x-1/2',
+    "top-right": "top-4 right-4",
+    "top-left": "top-4 left-4",
+    "bottom-right": "bottom-4 right-4",
+    "bottom-left": "bottom-4 left-4",
+    "top-center": "top-4 left-1/2 -translate-x-1/2",
+    "bottom-center": "bottom-4 left-1/2 -translate-x-1/2",
   };
 
   const handleDismiss = () => {
@@ -76,13 +96,13 @@ export function Toast({ toast, onDismiss, position = 'top-right', className = ''
         fixed ${positionClasses[position]} z-50
         w-full max-w-sm
         transition-all duration-300 ease-in-out
-        ${isVisible && !isExiting ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}
-        ${isExiting ? 'opacity-0 translate-y-2' : ''}
+        ${isVisible && !isExiting ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"}
+        ${isExiting ? "opacity-0 translate-y-2" : ""}
         ${className}
       `}
       style={style}
       role="alert"
-      aria-live={toast.variant === 'error' ? 'assertive' : 'polite'}
+      aria-live={toast.variant === "error" ? "assertive" : "polite"}
       aria-atomic="true"
       {...props}
     >
@@ -91,24 +111,30 @@ export function Toast({ toast, onDismiss, position = 'top-right', className = ''
           flex items-start gap-3
           p-4
           bg-white
-          ${getRadiusClass('lg')}
-          ${getShadowClass('lg')}
+          ${getRadiusClass("lg")}
+          ${getShadowClass("lg")}
           border
-          ${getColorClass(colorRole, 'DEFAULT', 'border')}
+          ${getColorClass(colorRole, "DEFAULT", "border")}
         `}
       >
         {/* Icon */}
-        <div className={`flex-shrink-0 ${getColorClass(colorRole, 'DEFAULT', 'text')}`}>
+        <div
+          className={`flex-shrink-0 ${getColorClass(colorRole, "DEFAULT", "text")}`}
+        >
           <Icon className="h-5 w-5" aria-hidden="true" />
         </div>
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <div className={`font-medium ${getColorClass('neutral', 'dark', 'text')}`}>
+          <div
+            className={`font-medium ${getColorClass("neutral", "dark", "text")}`}
+          >
             {toast.title}
           </div>
           {toast.description && (
-            <div className={`mt-1 text-sm ${getColorClass('neutral', 'DEFAULT', 'text')}`}>
+            <div
+              className={`mt-1 text-sm ${getColorClass("neutral", "DEFAULT", "text")}`}
+            >
               {toast.description}
             </div>
           )}
