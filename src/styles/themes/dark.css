@@ -37,55 +37,55 @@
    * Inverted for dark backgrounds
    * ============================================ */
 
-  --color-text-primary: var(--color-slate-50);
-  --color-text-secondary: var(--color-slate-300);
-  --color-text-tertiary: var(--color-slate-400);
-  --color-text-quaternary: var(--color-slate-500);
-  --color-text-placeholder: var(--color-slate-500);
-  --color-text-disabled: var(--color-slate-600);
-  --color-text-inverse: var(--color-slate-900);
-  --color-text-inverse-secondary: var(--color-slate-700);
+  --color-fg-primary: var(--color-slate-50);
+  --color-fg-secondary: var(--color-slate-300);
+  --color-fg-tertiary: var(--color-slate-400);
+  --color-fg-quaternary: var(--color-slate-500);
+  --color-fg-placeholder: var(--color-slate-500);
+  --color-fg-disabled: var(--color-slate-600);
+  --color-fg-inverse: var(--color-slate-900);
+  --color-fg-inverse-secondary: var(--color-slate-700);
 
   /* Link colors */
-  --color-text-link: var(--color-indigo-400);
-  --color-text-link-hover: var(--color-indigo-300);
-  --color-text-link-active: var(--color-indigo-200);
-  --color-text-link-visited: var(--color-violet-400);
+  --color-fg-link: var(--color-indigo-400);
+  --color-fg-link-hover: var(--color-indigo-300);
+  --color-fg-link-active: var(--color-indigo-200);
+  --color-fg-link-visited: var(--color-violet-400);
 
   /* Brand text */
-  --color-text-brand: var(--color-indigo-400);
-  --color-text-brand-secondary: var(--color-violet-400);
+  --color-fg-brand: var(--color-indigo-400);
+  --color-fg-brand-secondary: var(--color-violet-400);
 
   /* Feedback text */
-  --color-text-success: var(--color-emerald-400);
-  --color-text-warning: var(--color-amber-400);
-  --color-text-error: var(--color-rose-400);
-  --color-text-info: var(--color-sky-400);
+  --color-fg-success: var(--color-emerald-400);
+  --color-fg-warning: var(--color-amber-400);
+  --color-fg-error: var(--color-rose-400);
+  --color-fg-info: var(--color-sky-400);
 
   /* ============================================
    * BACKGROUND COLORS
    * Dark scale
    * ============================================ */
 
-  --color-bg-base: var(--color-slate-950);
-  --color-bg-subtle: var(--color-slate-900);
-  --color-bg-muted: var(--color-slate-800);
-  --color-bg-emphasis: var(--color-slate-700);
-  --color-bg-strong: var(--color-slate-600);
-  --color-bg-inverse: var(--color-slate-50);
-  --color-bg-inverse-subtle: var(--color-slate-100);
+  --color-surface-canvas: var(--color-slate-950);
+  --color-surface-subtle: var(--color-slate-900);
+  --color-surface-muted: var(--color-slate-800);
+  --color-surface-emphasis: var(--color-slate-700);
+  --color-surface-strong: var(--color-slate-600);
+  --color-surface-inverse: var(--color-slate-50);
+  --color-surface-inverse-subtle: var(--color-slate-100);
 
   /* Brand backgrounds */
-  --color-bg-brand-subtle: var(--color-indigo-950);
-  --color-bg-brand-muted: var(--color-indigo-900);
-  --color-bg-brand: var(--color-indigo-500);
-  --color-bg-brand-emphasis: var(--color-indigo-400);
+  --color-surface-brand-subtle: var(--color-indigo-950);
+  --color-surface-brand-muted: var(--color-indigo-900);
+  --color-surface-brand: var(--color-indigo-500);
+  --color-surface-brand-emphasis: var(--color-indigo-400);
 
-  --color-bg-secondary-subtle: var(--color-violet-950);
-  --color-bg-secondary: var(--color-violet-500);
+  --color-surface-secondary-subtle: var(--color-violet-950);
+  --color-surface-secondary: var(--color-violet-500);
 
-  --color-bg-accent-subtle: var(--color-cyan-950);
-  --color-bg-accent: var(--color-cyan-500);
+  --color-surface-accent-subtle: var(--color-cyan-950);
+  --color-surface-accent: var(--color-cyan-500);
 
   /* ============================================
    * SURFACE COLORS
@@ -111,30 +111,30 @@
    * Lighter borders on dark backgrounds
    * ============================================ */
 
-  --color-border-default: var(--color-slate-700);
-  --color-border-muted: var(--color-slate-800);
-  --color-border-subtle: var(--color-slate-800);
-  --color-border-emphasis: var(--color-slate-600);
-  --color-border-strong: var(--color-slate-500);
-  --color-border-inverse: var(--color-slate-200);
-  --color-border-focus: var(--color-indigo-400);
+  --color-line-default: var(--color-slate-700);
+  --color-line-muted: var(--color-slate-800);
+  --color-line-subtle: var(--color-slate-800);
+  --color-line-emphasis: var(--color-slate-600);
+  --color-line-strong: var(--color-slate-500);
+  --color-line-inverse: var(--color-slate-200);
+  --color-line-focus: var(--color-indigo-400);
 
   /* ============================================
    * STATE COLORS
    * Adjusted for dark theme
    * ============================================ */
 
-  --color-state-hover: var(--color-slate-800);
-  --color-state-hover-subtle: var(--color-slate-850);
-  --color-state-active: var(--color-slate-700);
-  --color-state-selected: var(--color-indigo-950);
-  --color-state-selected-subtle: var(--color-indigo-900);
-  --color-state-disabled: var(--color-slate-800);
-  --color-state-focus: var(--color-indigo-900);
+  --color-surface-hover: var(--color-slate-800);
+  --color-surface-hover-subtle: var(--color-slate-850);
+  --color-surface-active: var(--color-slate-700);
+  --color-surface-selected: var(--color-indigo-950);
+  --color-surface-selected-subtle: var(--color-indigo-900);
+  /* state-disabled fused into surface-disabled (identical values) */
+  --color-surface-focus: var(--color-indigo-900);
 
   /* Brand state colors */
-  --color-state-hover-brand: var(--color-indigo-500);
-  --color-state-active-brand: var(--color-indigo-600);
+  --color-surface-hover-brand: var(--color-indigo-500);
+  --color-surface-active-brand: var(--color-indigo-600);
 
   /* ============================================
    * FEEDBACK COLORS
@@ -286,10 +286,10 @@
 
     /* Apply all dark theme variables */
     --color-brand-primary: var(--color-indigo-400);
-    --color-text-primary: var(--color-slate-50);
-    --color-bg-base: var(--color-slate-950);
+    --color-fg-primary: var(--color-slate-50);
+    --color-surface-canvas: var(--color-slate-950);
     --color-surface-base: var(--color-slate-900);
-    --color-border-default: var(--color-slate-700);
+    --color-line-default: var(--color-slate-700);
     /* ... other variables would inherit from .dark */
   }
 }

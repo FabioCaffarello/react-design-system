@@ -44,9 +44,9 @@
   --color-brand-accent-dark: var(--color-indigo-500);
 
   /* Background subtle colors - very muted */
-  --color-bg-brand-subtle: var(--color-slate-50);
-  --color-bg-secondary-subtle: var(--color-slate-50);
-  --color-bg-accent-subtle: var(--color-slate-50);
+  --color-surface-brand-subtle: var(--color-slate-50);
+  --color-surface-secondary-subtle: var(--color-slate-50);
+  --color-surface-accent-subtle: var(--color-slate-50);
 
   /* ============================================
    * BORDER RADIUS
@@ -115,11 +115,11 @@
    * More prominent borders instead of shadows
    * ============================================ */
 
-  --color-border-default: var(--color-slate-200);
-  --color-border-emphasis: var(--color-slate-300);
+  --color-line-default: var(--color-slate-200);
+  --color-line-emphasis: var(--color-slate-300);
 
   /* Card border visible */
-  --surface-card-border: var(--color-border-default);
+  --surface-card-border: var(--color-line-default);
 
   /* ============================================
    * TRANSITIONS
@@ -154,17 +154,17 @@
   --color-brand-secondary: var(--color-slate-400);
   --color-brand-accent: var(--color-indigo-300);
 
-  --color-bg-brand-subtle: var(--color-slate-900);
-  --color-bg-secondary-subtle: var(--color-slate-900);
-  --color-bg-accent-subtle: var(--color-slate-900);
+  --color-surface-brand-subtle: var(--color-slate-900);
+  --color-surface-secondary-subtle: var(--color-slate-900);
+  --color-surface-accent-subtle: var(--color-slate-900);
 
   /* Slightly visible shadows in dark mode */
   --shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.2);
   --shadow-card-hover:
     0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
 
-  --color-border-default: var(--color-slate-700);
-  --color-border-emphasis: var(--color-slate-600);
+  --color-line-default: var(--color-slate-700);
+  --color-line-emphasis: var(--color-slate-600);
 
   --gradient-hero: var(--color-indigo-400);
   --gradient-hero-subtle: var(--color-slate-900);
@@ -176,7 +176,7 @@
 
 [data-variant="minimal"] .card,
 .variant-minimal .card {
-  border: 1px solid var(--color-border-default);
+  border: 1px solid var(--color-line-default);
 }
 
 [data-variant="minimal"] .button-primary,

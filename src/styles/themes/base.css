@@ -120,7 +120,7 @@
 
   --scrollbar-width: 8px;
   --scrollbar-width-thin: 4px;
-  --scrollbar-track-bg: var(--color-bg-subtle);
+  --scrollbar-track-bg: var(--color-surface-subtle);
   --scrollbar-thumb-bg: var(--color-slate-300);
   --scrollbar-thumb-hover-bg: var(--color-slate-400);
   --scrollbar-radius: var(--radius-full);
@@ -185,7 +185,7 @@
 
 /* Keyboard focus only (not mouse/touch) */
 *:focus-visible {
-  outline: 2px solid var(--color-border-focus);
+  outline: 2px solid var(--color-line-focus);
   outline-offset: 2px;
 }
 
@@ -199,8 +199,8 @@
   position: absolute;
   top: -40px;
   left: 0;
-  background: var(--color-bg-base);
-  color: var(--color-text-primary);
+  background: var(--color-surface-canvas);
+  color: var(--color-fg-primary);
   padding: var(--spacing-2) var(--spacing-4);
   z-index: var(--z-max);
   transition: top var(--duration-fast) var(--ease-default);

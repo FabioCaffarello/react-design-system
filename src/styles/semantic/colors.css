@@ -32,55 +32,55 @@
    * For all text content
    * ============================================ */
 
-  --color-text-primary: var(--color-slate-900);
-  --color-text-secondary: var(--color-slate-600);
-  --color-text-tertiary: var(--color-slate-500);
-  --color-text-quaternary: var(--color-slate-400);
-  --color-text-placeholder: var(--color-slate-400);
-  --color-text-disabled: var(--color-slate-300);
-  --color-text-inverse: var(--color-white);
-  --color-text-inverse-secondary: var(--color-slate-200);
+  --color-fg-primary: var(--color-slate-900);
+  --color-fg-secondary: var(--color-slate-600);
+  --color-fg-tertiary: var(--color-slate-500);
+  --color-fg-quaternary: var(--color-slate-400);
+  --color-fg-placeholder: var(--color-slate-400);
+  --color-fg-disabled: var(--color-slate-300);
+  --color-fg-inverse: var(--color-white);
+  --color-fg-inverse-secondary: var(--color-slate-200);
 
   /* Link colors */
-  --color-text-link: var(--color-indigo-600);
-  --color-text-link-hover: var(--color-indigo-700);
-  --color-text-link-active: var(--color-indigo-800);
-  --color-text-link-visited: var(--color-violet-600);
+  --color-fg-link: var(--color-indigo-600);
+  --color-fg-link-hover: var(--color-indigo-700);
+  --color-fg-link-active: var(--color-indigo-800);
+  --color-fg-link-visited: var(--color-violet-600);
 
   /* Brand text */
-  --color-text-brand: var(--color-brand-primary);
-  --color-text-brand-secondary: var(--color-brand-secondary);
+  --color-fg-brand: var(--color-brand-primary);
+  --color-fg-brand-secondary: var(--color-brand-secondary);
 
   /* Feedback text */
-  --color-text-success: var(--color-emerald-700);
-  --color-text-warning: var(--color-amber-700);
-  --color-text-error: var(--color-rose-700);
-  --color-text-info: var(--color-sky-700);
+  --color-fg-success: var(--color-emerald-700);
+  --color-fg-warning: var(--color-amber-700);
+  --color-fg-error: var(--color-rose-700);
+  --color-fg-info: var(--color-sky-700);
 
   /* ============================================
    * BACKGROUND COLORS
    * For surfaces and containers
    * ============================================ */
 
-  --color-bg-base: var(--color-white);
-  --color-bg-subtle: var(--color-slate-50);
-  --color-bg-muted: var(--color-slate-100);
-  --color-bg-emphasis: var(--color-slate-200);
-  --color-bg-strong: var(--color-slate-300);
-  --color-bg-inverse: var(--color-slate-900);
-  --color-bg-inverse-subtle: var(--color-slate-800);
+  --color-surface-canvas: var(--color-white);
+  --color-surface-subtle: var(--color-slate-50);
+  --color-surface-muted: var(--color-slate-100);
+  --color-surface-emphasis: var(--color-slate-200);
+  --color-surface-strong: var(--color-slate-300);
+  --color-surface-inverse: var(--color-slate-900);
+  --color-surface-inverse-subtle: var(--color-slate-800);
 
   /* Brand backgrounds */
-  --color-bg-brand-subtle: var(--color-indigo-50);
-  --color-bg-brand-muted: var(--color-indigo-100);
-  --color-bg-brand: var(--color-indigo-500);
-  --color-bg-brand-emphasis: var(--color-indigo-600);
+  --color-surface-brand-subtle: var(--color-indigo-50);
+  --color-surface-brand-muted: var(--color-indigo-100);
+  --color-surface-brand: var(--color-indigo-500);
+  --color-surface-brand-emphasis: var(--color-indigo-600);
 
-  --color-bg-secondary-subtle: var(--color-violet-50);
-  --color-bg-secondary: var(--color-violet-500);
+  --color-surface-secondary-subtle: var(--color-violet-50);
+  --color-surface-secondary: var(--color-violet-500);
 
-  --color-bg-accent-subtle: var(--color-cyan-50);
-  --color-bg-accent: var(--color-cyan-500);
+  --color-surface-accent-subtle: var(--color-cyan-50);
+  --color-surface-accent: var(--color-cyan-500);
 
   /* ============================================
    * SURFACE COLORS
@@ -98,39 +98,39 @@
    * For all border styles
    * ============================================ */
 
-  --color-border-default: var(--color-slate-200);
-  --color-border-muted: var(--color-slate-100);
-  --color-border-subtle: var(--color-slate-100);
-  --color-border-emphasis: var(--color-slate-300);
-  --color-border-strong: var(--color-slate-400);
-  --color-border-inverse: var(--color-slate-700);
+  --color-line-default: var(--color-slate-200);
+  --color-line-muted: var(--color-slate-100);
+  --color-line-subtle: var(--color-slate-100);
+  --color-line-emphasis: var(--color-slate-300);
+  --color-line-strong: var(--color-slate-400);
+  --color-line-inverse: var(--color-slate-700);
 
   /* Focus borders */
-  --color-border-focus: var(--color-indigo-500);
-  --color-border-focus-ring: var(--color-indigo-500);
+  --color-line-focus: var(--color-indigo-500);
+  --color-line-focus-ring: var(--color-indigo-500);
 
   /* Brand borders */
-  --color-border-brand: var(--color-indigo-500);
-  --color-border-secondary: var(--color-violet-500);
-  --color-border-accent: var(--color-cyan-500);
+  --color-line-brand: var(--color-indigo-500);
+  --color-line-secondary: var(--color-violet-500);
+  --color-line-accent: var(--color-cyan-500);
 
   /* ============================================
    * STATE COLORS
    * For interactive states
    * ============================================ */
 
-  --color-state-hover: var(--color-slate-50);
-  --color-state-hover-subtle: var(--color-slate-50);
-  --color-state-active: var(--color-slate-100);
-  --color-state-selected: var(--color-indigo-50);
-  --color-state-selected-subtle: var(--color-indigo-50);
-  --color-state-disabled: var(--color-slate-100);
-  --color-state-disabled-subtle: var(--color-slate-50);
-  --color-state-focus: var(--color-indigo-100);
+  --color-surface-hover: var(--color-slate-50);
+  --color-surface-hover-subtle: var(--color-slate-50);
+  --color-surface-active: var(--color-slate-100);
+  --color-surface-selected: var(--color-indigo-50);
+  --color-surface-selected-subtle: var(--color-indigo-50);
+  /* state-disabled fused into surface-disabled (identical values) */
+  --color-surface-disabled-subtle: var(--color-slate-50);
+  --color-surface-focus: var(--color-indigo-100);
 
   /* Brand state colors */
-  --color-state-hover-brand: var(--color-indigo-600);
-  --color-state-active-brand: var(--color-indigo-700);
+  --color-surface-hover-brand: var(--color-indigo-600);
+  --color-surface-active-brand: var(--color-indigo-700);
 
   /* ============================================
    * FEEDBACK COLORS

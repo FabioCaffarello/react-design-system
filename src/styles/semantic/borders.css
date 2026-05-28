@@ -42,25 +42,25 @@
 
   /* Default border */
   --border-default: var(--border-width-default) var(--border-style-solid)
-    var(--color-border-default);
+    var(--color-line-default);
   --border-muted: var(--border-width-default) var(--border-style-solid)
-    var(--color-border-muted);
+    var(--color-line-muted);
   --border-subtle: var(--border-width-default) var(--border-style-solid)
-    var(--color-border-subtle);
+    var(--color-line-subtle);
   --border-emphasis: var(--border-width-default) var(--border-style-solid)
-    var(--color-border-emphasis);
+    var(--color-line-emphasis);
   --border-strong: var(--border-width-default) var(--border-style-solid)
-    var(--color-border-strong);
+    var(--color-line-strong);
 
   /* Brand borders */
   --border-brand: var(--border-width-default) var(--border-style-solid)
-    var(--color-border-brand);
+    var(--color-line-brand);
   --border-brand-emphasis: var(--border-width-medium) var(--border-style-solid)
-    var(--color-border-brand);
+    var(--color-line-brand);
 
   /* Focus borders */
   --border-focus: var(--border-width-medium) var(--border-style-solid)
-    var(--color-border-focus);
+    var(--color-line-focus);
 
   /* Feedback borders */
   --border-success: var(--border-width-default) var(--border-style-solid)
@@ -82,13 +82,13 @@
 
   /* Dashed borders */
   --border-dashed: var(--border-width-default) var(--border-style-dashed)
-    var(--color-border-default);
+    var(--color-line-default);
   --border-dashed-emphasis: var(--border-width-default)
-    var(--border-style-dashed) var(--color-border-emphasis);
+    var(--border-style-dashed) var(--color-line-emphasis);
 
   /* Dotted borders */
   --border-dotted: var(--border-width-default) var(--border-style-dotted)
-    var(--color-border-default);
+    var(--color-line-default);
 
   /* ============================================
    * OUTLINE TOKENS
@@ -96,7 +96,7 @@
    * ============================================ */
 
   --outline-none: none;
-  --outline-default: 2px solid var(--color-border-focus);
+  --outline-default: 2px solid var(--color-line-focus);
   --outline-offset: 2px;
 
   /* Focus ring */
