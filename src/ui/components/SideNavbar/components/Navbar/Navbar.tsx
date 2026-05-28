@@ -104,8 +104,8 @@ function Navbar({
         )}
         style={{
           position: "relative", // Ensure relative positioning for absolute children (toggle)
-          backgroundColor: "var(--color-card)",
-          borderRight: "1px solid var(--color-border)",
+          backgroundColor: "var(--color-surface-raised)",
+          borderRight: "1px solid var(--color-line-default)",
           width: navbarWidth,
           transitionProperty: "width",
           transitionDuration: `${rootTheme.animationDuration}ms`,
@@ -121,7 +121,7 @@ function Navbar({
         {showToggle && togglePosition === "top" && (
           <div
             className="flex-shrink-0 p-2"
-            style={{ borderBottom: "1px solid var(--color-border)" }}
+            style={{ borderBottom: "1px solid var(--color-line-default)" }}
           >
             <NavbarToggle />
           </div>
@@ -155,7 +155,7 @@ function Navbar({
         {showToggle && togglePosition === "bottom" && (
           <div
             className="flex-shrink-0 p-2"
-            style={{ borderTop: "1px solid var(--color-border)" }}
+            style={{ borderTop: "1px solid var(--color-line-default)" }}
           >
             <NavbarToggle />
           </div>
