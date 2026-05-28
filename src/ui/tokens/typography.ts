@@ -8,6 +8,7 @@
 export type FontFamily = "sans" | "serif" | "mono";
 export type FontWeight = "light" | "normal" | "medium" | "semibold" | "bold";
 export type FontSize =
+  | "2xs"
   | "xs"
   | "sm"
   | "base"
@@ -64,6 +65,7 @@ export class TypographyTokenFactory {
    */
   static createFontSize(size: FontSize): TypographyToken["fontSize"] {
     const sizeMap: Record<FontSize, { px: number; tailwind: string }> = {
+      "2xs": { px: 10, tailwind: "text-2xs" }, // micro-text (badge counters, mini chips)
       xs: { px: 12, tailwind: "text-xs" },
       sm: { px: 14, tailwind: "text-sm" },
       base: { px: 16, tailwind: "text-base" },

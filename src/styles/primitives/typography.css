@@ -34,6 +34,11 @@
 
   --font-size-2xs: 0.625rem; /* 10px */
   --font-size-xs: 0.75rem; /* 12px */
+
+  /* Tailwind 4 utility-generating namespace (--text-*).
+   * text-2xs (10px) is industry-standard for micro-text on badge
+   * counters / mini chips; size-only, no default line-height. */
+  --text-2xs: var(--font-size-2xs);
   --font-size-sm: 0.875rem; /* 14px */
   --font-size-base: 1rem; /* 16px */
   --font-size-lg: 1.125rem; /* 18px */
