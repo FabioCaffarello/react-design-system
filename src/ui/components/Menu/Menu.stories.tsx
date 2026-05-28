@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 
 const meta: Meta<typeof Menu> = {
-  title: "Molecules/Menu",
+  title: "Components/Menu",
   component: Menu,
   tags: ["autodocs"],
   parameters: {

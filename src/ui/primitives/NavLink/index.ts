@@ -4,6 +4,7 @@
  * Exports for the NavLink component and related types.
  */
 
+export { default } from "./NavLink";
 export { default as NavLink } from "./NavLink";
 export { NavLink as NavLinkComponent } from "./NavLink";
 export type { NavLinkProps, NavLinkVariant, NavLinkSize } from "./types";

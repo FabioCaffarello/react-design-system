@@ -4,7 +4,7 @@ import { expect, userEvent, within, waitFor } from "@storybook/test";
 import Accordion from "./Accordion";
 
 const meta: Meta<typeof Accordion> = {
-  title: "Molecules/Accordion",
+  title: "Components/Accordion",
   component: Accordion,
   tags: ["autodocs"],
   parameters: {

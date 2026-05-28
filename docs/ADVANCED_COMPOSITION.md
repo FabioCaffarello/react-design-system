@@ -15,7 +15,7 @@ Compound components permitem criar componentes complexos onde múltiplos sub-com
 #### Exemplo: Dialog Component
 
 ```tsx
-import { Dialog } from '@fabio.caffarello/react-design-system';
+import { Dialog } from "@fabio.caffarello/react-design-system";
 
 function Example() {
   return (
@@ -26,9 +26,7 @@ function Example() {
           <Dialog.Title>Dialog Title</Dialog.Title>
           <Dialog.Description>Dialog description</Dialog.Description>
         </Dialog.Header>
-        <Dialog.Body>
-          Content goes here
-        </Dialog.Body>
+        <Dialog.Body>Content goes here</Dialog.Body>
         <Dialog.Footer>
           <Dialog.Close>Cancel</Dialog.Close>
           <Dialog.Action>Confirm</Dialog.Action>
@@ -65,7 +63,7 @@ function DataFetcher({ url, children }) {
 
   useEffect(() => {
     fetch(url)
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(setData)
       .catch(setError)
       .finally(() => setLoading(false));
@@ -81,7 +79,7 @@ function DataFetcher({ url, children }) {
     if (error) return <ErrorMessage error={error} />;
     return <UserList users={data} />;
   }}
-</DataFetcher>
+</DataFetcher>;
 ```
 
 #### Benefícios
@@ -103,10 +101,10 @@ Compor múltiplos hooks para criar lógica complexa reutilizável.
 #### Exemplo: useFormWithValidation
 
 ```tsx
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 const schema = z.object({
   email: z.string().email(),
@@ -139,10 +137,14 @@ function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Input {...register('email')} error={errors.email} />
-      <Input {...register('password')} type="password" error={errors.password} />
+      <Input {...register("email")} error={errors.email} />
+      <Input
+        {...register("password")}
+        type="password"
+        error={errors.password}
+      />
       <Button type="submit" disabled={submitted}>
-        {submitted ? 'Submitting...' : 'Login'}
+        {submitted ? "Submitting..." : "Login"}
       </Button>
     </form>
   );
@@ -172,9 +174,7 @@ function AppProviders({ children }) {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <ToastProvider>
-          {children}
-        </ToastProvider>
+        <ToastProvider>{children}</ToastProvider>
       </AuthProvider>
     </ThemeProvider>
   );
@@ -193,10 +193,10 @@ function App() {
 function ThemedButton() {
   const theme = useTheme();
   const { user } = useAuth();
-  
+
   return (
-    <Button variant={theme.mode === 'dark' ? 'primary' : 'secondary'}>
-      {user ? `Hello, ${user.name}` : 'Login'}
+    <Button variant={theme.mode === "dark" ? "primary" : "secondary"}>
+      {user ? `Hello, ${user.name}` : "Login"}
     </Button>
   );
 }
@@ -237,7 +237,7 @@ function Card({ header, footer, children }) {
   footer={<CardFooter>Actions</CardFooter>}
 >
   Content
-</Card>
+</Card>;
 ```
 
 #### Benefícios
@@ -265,8 +265,10 @@ function ControlledInput({ value, onChange }) {
 
 // Usage
 function Form() {
-  const [value, setValue] = useState('');
-  return <ControlledInput value={value} onChange={(e) => setValue(e.target.value)} />;
+  const [value, setValue] = useState("");
+  return (
+    <ControlledInput value={value} onChange={(e) => setValue(e.target.value)} />
+  );
 }
 ```
 
@@ -275,7 +277,7 @@ function Form() {
 ```tsx
 function UncontrolledInput({ defaultValue, onBlur }) {
   const inputRef = useRef(null);
-  
+
   return (
     <input
       ref={inputRef}
@@ -286,17 +288,22 @@ function UncontrolledInput({ defaultValue, onBlur }) {
 }
 
 // Usage
-<UncontrolledInput defaultValue="initial" onBlur={(value) => console.log(value)} />
+<UncontrolledInput
+  defaultValue="initial"
+  onBlur={(value) => console.log(value)}
+/>;
 ```
 
 #### Quando Usar Cada Um
 
 **Controlled**:
+
 - Quando você precisa de controle total
 - Para validação em tempo real
 - Para sincronização com estado externo
 
 **Uncontrolled**:
+
 - Para performance (menos re-renders)
 - Quando você não precisa de controle fino
 - Para formulários simples
@@ -337,14 +344,16 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   return <input ref={ref} {...props} />;
 });
 
-const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>((props, ref) => {
-  return (
-    <div className="search-input">
-      <Icon name="search" />
-      <Input ref={ref} {...props} />
-    </div>
-  );
-});
+const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
+  (props, ref) => {
+    return (
+      <div className="search-input">
+        <Icon name="search" />
+        <Input ref={ref} {...props} />
+      </div>
+    );
+  },
+);
 ```
 
 ### 3. Higher-Order Components (HOCs)
@@ -355,18 +364,18 @@ Criar componentes que envolvem outros componentes.
 function withLoading<P extends object>(Component: React.ComponentType<P>) {
   return function WithLoadingComponent(props: P & { loading?: boolean }) {
     const { loading, ...rest } = props;
-    
+
     if (loading) {
       return <Spinner />;
     }
-    
+
     return <Component {...(rest as P)} />;
   };
 }
 
 // Usage
 const ButtonWithLoading = withLoading(Button);
-<ButtonWithLoading loading={isLoading}>Submit</ButtonWithLoading>
+<ButtonWithLoading loading={isLoading}>Submit</ButtonWithLoading>;
 ```
 
 ## Best Practices
@@ -374,6 +383,7 @@ const ButtonWithLoading = withLoading(Button);
 ### 1. Prefira Composição sobre Herança
 
 ✅ **Bom**:
+
 ```tsx
 function Card({ children, header, footer }) {
   return (
@@ -387,6 +397,7 @@ function Card({ children, header, footer }) {
 ```
 
 ❌ **Evitar**:
+
 ```tsx
 class Card extends BaseCard {
   // Inheritance

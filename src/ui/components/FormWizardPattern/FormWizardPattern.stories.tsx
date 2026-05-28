@@ -7,7 +7,7 @@ import { Input, Checkbox } from "../../primitives";
 import type { FormWizardStep } from "./FormWizardPattern";
 
 const meta: Meta<typeof FormWizardPattern> = {
-  title: "Patterns/FormWizardPattern",
+  title: "Components/FormWizardPattern",
   component: FormWizardPattern,
   tags: ["autodocs"],
   parameters: {

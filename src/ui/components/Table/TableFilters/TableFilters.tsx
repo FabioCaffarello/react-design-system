@@ -3,6 +3,7 @@
 import type { HTMLAttributes } from "react";
 import { useState } from "react";
 import { Input, Select, Label, Button } from "../../../primitives";
+import { getSpacingClass } from "../../../tokens/spacing";
 import { X, Filter } from "lucide-react";
 
 export type FilterType = "text" | "select" | "date";
@@ -97,7 +98,9 @@ export default function TableFilters({
             <Filter className="h-4 w-4" />
             <span>Filters</span>
             {activeFilterCount > 0 && (
-              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800">
+              <span
+                className={`inline-flex items-center ${getSpacingClass("sm", "px")} ${getSpacingClass("0.5", "py")} rounded text-xs font-medium bg-indigo-100 text-indigo-800`}
+              >
                 {activeFilterCount}
               </span>
             )}

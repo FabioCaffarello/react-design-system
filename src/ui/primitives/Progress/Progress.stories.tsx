@@ -3,7 +3,7 @@ import React from "react";
 import Progress from "./Progress";
 
 const meta: Meta<typeof Progress> = {
-  title: "Atoms/Progress",
+  title: "Primitives/Progress",
   component: Progress,
   parameters: {
     docs: {

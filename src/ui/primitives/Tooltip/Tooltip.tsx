@@ -14,6 +14,7 @@ import {
   cloneElement,
   isValidElement,
 } from "react";
+import { getBorderWidthClass } from "../../tokens/borders";
 import { getColorClass } from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
@@ -196,7 +197,13 @@ export default function Tooltip({
   );
 
   const arrowVariants = cva(
-    cn("absolute", "w-0", "h-0", "border-4", "border-transparent"),
+    cn(
+      "absolute",
+      "w-0",
+      "h-0",
+      getBorderWidthClass("thick"),
+      "border-transparent",
+    ),
     {
       variants: {
         position: {

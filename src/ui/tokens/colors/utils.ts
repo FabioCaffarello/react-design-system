@@ -14,9 +14,9 @@ import type {
   SemanticColorName,
   GetColorOptions,
   GetColorClassOptions,
-} from './types';
-import { getPrimitiveColor } from './primitives';
-import { getSemanticColor } from './semantic';
+} from "./types";
+import { getPrimitiveColor } from "./primitives";
+import { getSemanticColor } from "./semantic";
 
 /**
  * Get a primitive color value in the specified format
@@ -24,30 +24,32 @@ import { getSemanticColor } from './semantic';
 export function getColor(
   name: PrimitiveColorName,
   scale: ColorScale,
-  options: GetColorOptions = {}
+  options: GetColorOptions = {},
 ): string {
-  const { format = 'hex', opacity } = options;
+  const { format = "hex", opacity } = options;
   const token = getPrimitiveColor(name, scale);
 
   let value: string;
   switch (format) {
-    case 'rgb':
-      value = opacity !== undefined
-        ? `rgba(${token.rgb}, ${opacity})`
-        : `rgb(${token.rgb})`;
+    case "rgb":
+      value =
+        opacity !== undefined
+          ? `rgba(${token.rgb}, ${opacity})`
+          : `rgb(${token.rgb})`;
       break;
-    case 'hsl':
-      value = opacity !== undefined
-        ? `hsla(${token.hsl}, ${opacity})`
-        : `hsl(${token.hsl})`;
+    case "hsl":
+      value =
+        opacity !== undefined
+          ? `hsla(${token.hsl}, ${opacity})`
+          : `hsl(${token.hsl})`;
       break;
-    case 'cssVar':
+    case "cssVar":
       value = token.cssVar;
       break;
-    case 'tailwind':
+    case "tailwind":
       value = token.tailwind;
       break;
-    case 'hex':
+    case "hex":
     default:
       value = token.hex;
   }
@@ -60,31 +62,33 @@ export function getColor(
  */
 export function getSemanticColorValue(
   role: SemanticColorName,
-  shade: 'light' | 'DEFAULT' | 'dark' | 'contrast' = 'DEFAULT',
-  options: GetColorOptions = {}
+  shade: "light" | "DEFAULT" | "dark" | "contrast" = "DEFAULT",
+  options: GetColorOptions = {},
 ): string {
-  const { format = 'hex', opacity } = options;
+  const { format = "hex", opacity } = options;
   const token = getSemanticColor(role, shade);
 
   let value: string;
   switch (format) {
-    case 'rgb':
-      value = opacity !== undefined
-        ? `rgba(${token.rgb}, ${opacity})`
-        : `rgb(${token.rgb})`;
+    case "rgb":
+      value =
+        opacity !== undefined
+          ? `rgba(${token.rgb}, ${opacity})`
+          : `rgb(${token.rgb})`;
       break;
-    case 'hsl':
-      value = opacity !== undefined
-        ? `hsla(${token.hsl}, ${opacity})`
-        : `hsl(${token.hsl})`;
+    case "hsl":
+      value =
+        opacity !== undefined
+          ? `hsla(${token.hsl}, ${opacity})`
+          : `hsl(${token.hsl})`;
       break;
-    case 'cssVar':
+    case "cssVar":
       value = token.cssVar;
       break;
-    case 'tailwind':
+    case "tailwind":
       value = token.tailwind;
       break;
-    case 'hex':
+    case "hex":
     default:
       value = token.hex;
   }
@@ -98,9 +102,14 @@ export function getSemanticColorValue(
 export function getColorClass(
   name: PrimitiveColorName,
   scale: ColorScale,
-  options: GetColorClassOptions = {}
+  options: GetColorClassOptions = {},
 ): string {
-  const { type = 'text', hover = false, focus = false, active = false } = options;
+  const {
+    type = "text",
+    hover = false,
+    focus = false,
+    active = false,
+  } = options;
   const token = getPrimitiveColor(name, scale);
   const base = `${type}-${token.tailwind}`;
 
@@ -116,7 +125,7 @@ export function getColorClass(
     classes.push(`active:${type}-${token.tailwind}`);
   }
 
-  return classes.join(' ');
+  return classes.join(" ");
 }
 
 /**
@@ -124,28 +133,36 @@ export function getColorClass(
  */
 export function getSemanticColorClass(
   role: SemanticColorName,
-  shade: 'light' | 'DEFAULT' | 'dark' = 'DEFAULT',
-  options: GetColorClassOptions = {}
+  shade: "light" | "DEFAULT" | "dark" = "DEFAULT",
+  options: GetColorClassOptions = {},
 ): string {
-  const { type = 'text', hover = false, focus = false, active = false } = options;
+  const {
+    type = "text",
+    hover = false,
+    focus = false,
+    active = false,
+  } = options;
   const token = getSemanticColor(role, shade);
   const base = `${type}-${token.tailwind}`;
 
   const classes: string[] = [base];
 
   if (hover) {
-    const hoverToken = getSemanticColor(role, shade === 'DEFAULT' ? 'dark' : 'DEFAULT');
+    const hoverToken = getSemanticColor(
+      role,
+      shade === "DEFAULT" ? "dark" : "DEFAULT",
+    );
     classes.push(`hover:${type}-${hoverToken.tailwind}`);
   }
   if (focus) {
     classes.push(`focus:${type}-${token.tailwind}`);
   }
   if (active) {
-    const activeToken = getSemanticColor(role, 'dark');
+    const activeToken = getSemanticColor(role, "dark");
     classes.push(`active:${type}-${activeToken.tailwind}`);
   }
 
-  return classes.join(' ');
+  return classes.join(" ");
 }
 
 /**
@@ -154,7 +171,7 @@ export function getSemanticColorClass(
 export function getHoverColorClass(
   name: PrimitiveColorName,
   scale: ColorScale,
-  type: 'text' | 'bg' | 'border' = 'bg'
+  type: "text" | "bg" | "border" = "bg",
 ): string {
   const token = getPrimitiveColor(name, scale);
   return `hover:${type}-${token.tailwind}`;
@@ -166,7 +183,7 @@ export function getHoverColorClass(
 export function getFocusColorClass(
   name: PrimitiveColorName,
   scale: ColorScale,
-  type: 'text' | 'bg' | 'border' = 'border'
+  type: "text" | "bg" | "border" = "border",
 ): string {
   const token = getPrimitiveColor(name, scale);
   return `focus:${type}-${token.tailwind}`;
@@ -177,7 +194,7 @@ export function getFocusColorClass(
  */
 export function getFocusRingClass(
   name: PrimitiveColorName,
-  scale: ColorScale
+  scale: ColorScale,
 ): string {
   const token = getPrimitiveColor(name, scale);
   return `focus:ring-${token.tailwind}`;
@@ -205,8 +222,8 @@ export function isLightColor(hex: string): boolean {
 /**
  * Get contrast color (black or white) for a given color
  */
-export function getContrastColor(hex: string): '#000000' | '#ffffff' {
-  return isLightColor(hex) ? '#000000' : '#ffffff';
+export function getContrastColor(hex: string): "#000000" | "#ffffff" {
+  return isLightColor(hex) ? "#000000" : "#ffffff";
 }
 
 /**
@@ -225,7 +242,11 @@ function hexToRgbArray(hex: string): [number, number, number] | null {
 /**
  * Blend two colors together
  */
-export function blendColors(color1: string, color2: string, weight: number = 0.5): string {
+export function blendColors(
+  color1: string,
+  color2: string,
+  weight: number = 0.5,
+): string {
   const rgb1 = hexToRgbArray(color1);
   const rgb2 = hexToRgbArray(color2);
 
@@ -242,12 +263,12 @@ export function blendColors(color1: string, color2: string, weight: number = 0.5
  * Lighten a color by a percentage
  */
 export function lighten(hex: string, percent: number): string {
-  return blendColors(hex, '#ffffff', percent / 100);
+  return blendColors(hex, "#ffffff", percent / 100);
 }
 
 /**
  * Darken a color by a percentage
  */
 export function darken(hex: string, percent: number): string {
-  return blendColors(hex, '#000000', percent / 100);
+  return blendColors(hex, "#000000", percent / 100);
 }

@@ -4,7 +4,7 @@ import Avatar from "./Avatar";
 import { AvatarGroup } from "./AvatarGroup";
 
 const meta: Meta<typeof Avatar> = {
-  title: "Atoms/Avatar",
+  title: "Primitives/Avatar",
   component: Avatar,
   parameters: {
     docs: {

@@ -6,7 +6,7 @@ import Card from "./Card";
 import { Text, Button } from "../../primitives";
 
 const meta: Meta<typeof Card> = {
-  title: "Molecules/Card",
+  title: "Components/Card",
   component: Card,
   parameters: {
     docs: {

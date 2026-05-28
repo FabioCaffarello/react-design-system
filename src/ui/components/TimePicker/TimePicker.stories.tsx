@@ -5,7 +5,7 @@ import { useState } from "react";
 import TimePicker from "./TimePicker";
 
 const meta: Meta<typeof TimePicker> = {
-  title: "Molecules/TimePicker",
+  title: "Components/TimePicker",
   component: TimePicker,
   tags: ["autodocs"],
   parameters: {

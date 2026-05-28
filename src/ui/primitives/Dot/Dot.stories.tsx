@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import Dot from "./Dot";
 
 const meta: Meta<typeof Dot> = {
-  title: "Atoms/Dot",
+  title: "Primitives/Dot",
   component: Dot,
   tags: ["autodocs"],
   parameters: {

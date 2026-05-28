@@ -6,7 +6,7 @@ import Dropdown from "./Dropdown";
 import { Button } from "../../primitives";
 
 const meta = {
-  title: "Molecules/Dropdown",
+  title: "Components/Dropdown",
   component: Dropdown,
   parameters: {
     layout: "centered",

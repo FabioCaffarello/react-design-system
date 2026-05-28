@@ -43,13 +43,13 @@ const preview: Preview = {
             id: "audio-caption",
             enabled: true,
           },
-          
+
           // Perceivable - Time-based Media
           {
             id: "video-description",
             enabled: true,
           },
-          
+
           // Perceivable - Adaptable
           {
             id: "html-has-lang",
@@ -63,7 +63,7 @@ const preview: Preview = {
             id: "valid-lang",
             enabled: true,
           },
-          
+
           // Perceivable - Distinguishable
           {
             id: "color-contrast",
@@ -77,7 +77,7 @@ const preview: Preview = {
             id: "avoid-inline-spacing",
             enabled: true,
           },
-          
+
           // Operable - Keyboard Accessible
           {
             id: "keyboard",
@@ -95,7 +95,7 @@ const preview: Preview = {
             id: "focus-order-semantics",
             enabled: true,
           },
-          
+
           // Operable - Enough Time
           {
             id: "meta-refresh",
@@ -105,13 +105,13 @@ const preview: Preview = {
             id: "timed-media",
             enabled: true,
           },
-          
+
           // Operable - Seizures and Physical Reactions
           {
             id: "blink",
             enabled: true,
           },
-          
+
           // Operable - Navigable
           {
             id: "bypass",
@@ -145,7 +145,7 @@ const preview: Preview = {
             id: "scrollable-region-focusable",
             enabled: true,
           },
-          
+
           // Understandable - Readable
           {
             id: "html-lang-valid",
@@ -155,7 +155,7 @@ const preview: Preview = {
             id: "valid-lang",
             enabled: true,
           },
-          
+
           // Understandable - Predictable
           {
             id: "meta-refresh",
@@ -165,7 +165,7 @@ const preview: Preview = {
             id: "page-has-heading-one",
             enabled: true,
           },
-          
+
           // Understandable - Input Assistance
           {
             id: "label",
@@ -183,7 +183,7 @@ const preview: Preview = {
             id: "error-message",
             enabled: true,
           },
-          
+
           // Robust - Parsing
           {
             id: "duplicate-id",
@@ -197,7 +197,7 @@ const preview: Preview = {
             id: "duplicate-id-aria",
             enabled: true,
           },
-          
+
           // Robust - Name, Role, Value
           {
             id: "aria-allowed-attr",
@@ -303,18 +303,18 @@ const preview: Preview = {
       },
       options: {
         checks: {
-          "color-contrast": { 
-            options: { 
+          "color-contrast": {
+            options: {
               noScroll: true,
               // WCAG 2.1 AA: 4.5:1 for normal text, 3:1 for large text
               contrastRatio: 4.5,
-            } 
+            },
           },
         },
         restoreScroll: true,
         runOnly: {
-          type: 'tag',
-          values: ['wcag2a', 'wcag2aa', 'wcag21aa', 'best-practice'],
+          type: "tag",
+          values: ["wcag2a", "wcag2aa", "wcag21aa", "best-practice"],
         },
       },
     },
@@ -415,4 +415,3 @@ const preview: Preview = {
 };
 
 export default preview;
-

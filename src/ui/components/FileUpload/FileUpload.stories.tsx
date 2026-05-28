@@ -6,7 +6,7 @@ import FileUpload from "./FileUpload";
 import type { FileUploadFile } from "./FileUpload";
 
 const meta: Meta<typeof FileUpload> = {
-  title: "Molecules/FileUpload",
+  title: "Components/FileUpload",
   component: FileUpload,
   tags: ["autodocs"],
   parameters: {

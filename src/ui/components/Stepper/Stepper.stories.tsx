@@ -6,7 +6,7 @@ import Stepper from "./Stepper";
 import Input from "../../primitives/Input/Input";
 
 const meta: Meta<typeof Stepper> = {
-  title: "Organisms/Stepper",
+  title: "Components/Stepper",
   component: Stepper,
   tags: ["autodocs"],
   parameters: {

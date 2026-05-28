@@ -69,8 +69,8 @@ const badgeVariants = cva(
       },
       size: {
         sm: cn(
-          "px-1.5", // Specific value expected by test
-          "py-0.5", // Specific value expected by test
+          getSpacingClass("1.5", "px"),
+          getSpacingClass("0.5", "py"),
           getTypographySize("caption"),
         ),
         md: cn(

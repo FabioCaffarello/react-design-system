@@ -160,7 +160,7 @@ export function FormWizardPattern({
               </div>
             )}
 
-            <div className="min-h-[200px]">{currentStepData.fields}</div>
+            <div className="min-h-48">{currentStepData.fields}</div>
 
             {/* Navigation Buttons */}
             <div className="flex justify-between pt-4 border-t">

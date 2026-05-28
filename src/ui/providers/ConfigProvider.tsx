@@ -1,17 +1,23 @@
-'use client';
+"use client";
 
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useMemo, useEffect, type ReactNode } from 'react';
-import { SPACING_TOKENS } from '../tokens/spacing';
-import { TYPOGRAPHY_TOKENS } from '../tokens/typography';
-import { BREAKPOINT_TOKENS } from '../tokens/breakpoints';
-import { ANIMATION_TOKENS } from '../tokens/animations';
-import type { BreakpointName, BreakpointToken } from '../tokens/breakpoints';
-import type { SpacingToken } from '../tokens/spacing';
+import {
+  createContext,
+  useContext,
+  useMemo,
+  useEffect,
+  type ReactNode,
+} from "react";
+import { SPACING_TOKENS } from "../tokens/spacing";
+import { TYPOGRAPHY_TOKENS } from "../tokens/typography";
+import { BREAKPOINT_TOKENS } from "../tokens/breakpoints";
+import { ANIMATION_TOKENS } from "../tokens/animations";
+import type { BreakpointName, BreakpointToken } from "../tokens/breakpoints";
+import type { SpacingToken } from "../tokens/spacing";
 
 /**
  * Design System Configuration
- * 
+ *
  * Centralizes all design system configuration including:
  * - Breakpoints for responsive design
  * - Design tokens (spacing, typography, colors)
@@ -22,23 +28,32 @@ export interface DesignSystemConfig {
   /**
    * Responsive breakpoints
    */
-  breakpoints: Record<BreakpointName, { name: BreakpointName; minWidth: number; px: string; rem: string; tailwind: string }>;
-  
+  breakpoints: Record<
+    BreakpointName,
+    {
+      name: BreakpointName;
+      minWidth: number;
+      px: string;
+      rem: string;
+      tailwind: string;
+    }
+  >;
+
   /**
    * Spacing tokens
    */
   spacing: typeof SPACING_TOKENS;
-  
+
   /**
    * Typography tokens
    */
   typography: typeof TYPOGRAPHY_TOKENS;
-  
+
   /**
    * Animation tokens
    */
   animations: typeof ANIMATION_TOKENS;
-  
+
   /**
    * Feature flags
    */
@@ -47,18 +62,18 @@ export interface DesignSystemConfig {
      * Enable reduced motion for accessibility
      */
     reducedMotion?: boolean;
-    
+
     /**
      * Enable high contrast mode
      */
     highContrast?: boolean;
-    
+
     /**
      * Enable debug mode
      */
     debug?: boolean;
   };
-  
+
   /**
    * Behavior configurations
    */
@@ -67,12 +82,12 @@ export interface DesignSystemConfig {
      * Default animation duration in ms
      */
     defaultAnimationDuration?: number;
-    
+
     /**
      * Default transition duration in ms
      */
     defaultTransitionDuration?: number;
-    
+
     /**
      * Enable focus visible outline
      */
@@ -113,7 +128,7 @@ export interface ConfigContextValue {
   /**
    * Check if feature is enabled
    */
-  isFeatureEnabled: (feature: keyof DesignSystemConfig['features']) => boolean;
+  isFeatureEnabled: (feature: keyof DesignSystemConfig["features"]) => boolean;
   /**
    * Update configuration (for runtime updates)
    */
@@ -131,15 +146,15 @@ export interface ConfigProviderProps {
   /**
    * Strategy for configuration (default, custom, theme-based)
    */
-  strategy?: 'default' | 'custom' | 'theme-based';
+  strategy?: "default" | "custom" | "theme-based";
 }
 
 /**
  * ConfigProvider Component
- * 
+ *
  * Provides design system configuration context to the application.
  * Uses Strategy Pattern for different configuration strategies.
- * 
+ *
  * @example
  * ```tsx
  * <ConfigProvider config={{ features: { debug: true } }}>
@@ -150,12 +165,12 @@ export interface ConfigProviderProps {
 export function ConfigProvider({
   children,
   config: customConfig,
-  strategy: _strategy = 'default',
+  strategy: _strategy = "default",
 }: ConfigProviderProps) {
   // Merge custom config with defaults
   const config = useMemo<DesignSystemConfig>(() => {
     const baseConfig = { ...defaultConfig };
-    
+
     if (customConfig) {
       return {
         ...baseConfig,
@@ -174,33 +189,33 @@ export function ConfigProvider({
         },
       };
     }
-    
+
     return baseConfig;
   }, [customConfig]);
 
   // Apply reduced motion if enabled (SSR-safe)
   useEffect(() => {
-    if (typeof document === 'undefined') {
+    if (typeof document === "undefined") {
       return;
     }
 
     if (config.features.reducedMotion) {
-      document.documentElement.style.setProperty('--motion-reduce', '1');
+      document.documentElement.style.setProperty("--motion-reduce", "1");
     } else {
-      document.documentElement.style.removeProperty('--motion-reduce');
+      document.documentElement.style.removeProperty("--motion-reduce");
     }
   }, [config.features.reducedMotion]);
 
   // Apply high contrast if enabled (SSR-safe)
   useEffect(() => {
-    if (typeof document === 'undefined') {
+    if (typeof document === "undefined") {
       return;
     }
 
     if (config.features.highContrast) {
-      document.documentElement.classList.add('high-contrast');
+      document.documentElement.classList.add("high-contrast");
     } else {
-      document.documentElement.classList.remove('high-contrast');
+      document.documentElement.classList.remove("high-contrast");
     }
   }, [config.features.highContrast]);
 
@@ -208,30 +223,32 @@ export function ConfigProvider({
     () => (scale: keyof typeof SPACING_TOKENS) => {
       return config.spacing[scale];
     },
-    [config.spacing]
+    [config.spacing],
   );
 
   const getBreakpoint = useMemo(
     () => (name: BreakpointName) => {
       return config.breakpoints[name];
     },
-    [config.breakpoints]
+    [config.breakpoints],
   );
 
   const isFeatureEnabled = useMemo(
-    () => (feature: keyof DesignSystemConfig['features']) => {
+    () => (feature: keyof DesignSystemConfig["features"]) => {
       return config.features[feature] ?? false;
     },
-    [config.features]
+    [config.features],
   );
 
   const updateConfig = useMemo(
     () => (_updates: Partial<DesignSystemConfig>) => {
       // This is a placeholder - in a real implementation, you'd use state
       // For now, config is immutable. Future enhancement could add state management.
-      console.warn('ConfigProvider: updateConfig called but config is immutable. Consider using state management for dynamic updates.');
+      console.warn(
+        "ConfigProvider: updateConfig called but config is immutable. Consider using state management for dynamic updates.",
+      );
     },
-    []
+    [],
   );
 
   const value: ConfigContextValue = {
@@ -243,21 +260,19 @@ export function ConfigProvider({
   };
 
   return (
-    <ConfigContext.Provider value={value}>
-      {children}
-    </ConfigContext.Provider>
+    <ConfigContext.Provider value={value}>{children}</ConfigContext.Provider>
   );
 }
 
 /**
  * Hook to use config context
- * 
+ *
  * @throws Error if used outside ConfigProvider
  */
 export function useConfig(): ConfigContextValue {
   const context = useContext(ConfigContext);
   if (context === undefined) {
-    throw new Error('useConfig must be used within a ConfigProvider');
+    throw new Error("useConfig must be used within a ConfigProvider");
   }
   return context;
 }

@@ -1,12 +1,12 @@
 /**
  * Border Tokens
- * 
+ *
  * Centralized border system for consistent borders and dividers.
  * Uses Factory Pattern for type-safe token creation.
  */
 
-export type BorderWidth = 'none' | 'thin' | 'base' | 'medium' | 'thick';
-export type BorderStyle = 'solid' | 'dashed' | 'dotted';
+export type BorderWidth = "none" | "thin" | "base" | "medium" | "thick";
+export type BorderStyle = "solid" | "dashed" | "dotted";
 
 export interface BorderToken {
   width: {
@@ -26,27 +26,27 @@ export class BorderTokenFactory {
   /**
    * Create a border width token
    */
-  static createWidth(width: BorderWidth): BorderToken['width'] {
+  static createWidth(width: BorderWidth): BorderToken["width"] {
     const widthMap: Record<BorderWidth, { px: number; tailwind: string }> = {
       none: {
         px: 0,
-        tailwind: 'border-0',
+        tailwind: "border-0",
       },
       thin: {
         px: 1,
-        tailwind: 'border',
+        tailwind: "border",
       },
       base: {
         px: 1,
-        tailwind: 'border',
+        tailwind: "border",
       },
       medium: {
         px: 2,
-        tailwind: 'border-2',
+        tailwind: "border-2",
       },
       thick: {
         px: 4,
-        tailwind: 'border-4',
+        tailwind: "border-4",
       },
     };
 
@@ -61,7 +61,7 @@ export class BorderTokenFactory {
   /**
    * Create a complete border token
    */
-  static create(width: BorderWidth, style: BorderStyle = 'solid'): BorderToken {
+  static create(width: BorderWidth, style: BorderStyle = "solid"): BorderToken {
     return {
       width: this.createWidth(width),
       style,
@@ -74,17 +74,17 @@ export class BorderTokenFactory {
  * Pre-defined border tokens
  */
 export const BORDER_TOKENS = {
-  none: BorderTokenFactory.create('none'),
-  thin: BorderTokenFactory.create('thin'),
-  base: BorderTokenFactory.create('base'),
-  medium: BorderTokenFactory.create('medium'),
-  thick: BorderTokenFactory.create('thick'),
+  none: BorderTokenFactory.create("none"),
+  thin: BorderTokenFactory.create("thin"),
+  base: BorderTokenFactory.create("base"),
+  medium: BorderTokenFactory.create("medium"),
+  thick: BorderTokenFactory.create("thick"),
   // Dashed variants
-  thinDashed: BorderTokenFactory.create('thin', 'dashed'),
-  baseDashed: BorderTokenFactory.create('base', 'dashed'),
+  thinDashed: BorderTokenFactory.create("thin", "dashed"),
+  baseDashed: BorderTokenFactory.create("base", "dashed"),
   // Dotted variants
-  thinDotted: BorderTokenFactory.create('thin', 'dotted'),
-  baseDotted: BorderTokenFactory.create('base', 'dotted'),
+  thinDotted: BorderTokenFactory.create("thin", "dotted"),
+  baseDotted: BorderTokenFactory.create("base", "dotted"),
 } as const;
 
 /**
@@ -106,9 +106,9 @@ export function getBorderWidthClass(width: BorderWidth): string {
  */
 export function getBorderStyleClass(style: BorderStyle): string {
   const styleMap: Record<BorderStyle, string> = {
-    solid: 'border-solid',
-    dashed: 'border-dashed',
-    dotted: 'border-dotted',
+    solid: "border-solid",
+    dashed: "border-dashed",
+    dotted: "border-dotted",
   };
   return styleMap[style];
 }
@@ -116,6 +116,9 @@ export function getBorderStyleClass(style: BorderStyle): string {
 /**
  * Helper function to get complete border classes
  */
-export function getBorderClasses(width: BorderWidth, style: BorderStyle = 'solid'): string {
+export function getBorderClasses(
+  width: BorderWidth,
+  style: BorderStyle = "solid",
+): string {
   return `${getBorderWidthClass(width)} ${getBorderStyleClass(style)}`;
 }

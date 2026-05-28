@@ -13,9 +13,13 @@
    * FONT FAMILIES
    * ============================================ */
 
-  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans:
+    ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --font-mono:
+    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono",
+    monospace;
 
   /* Brand font - can be customized */
   --font-brand: var(--font-sans);
@@ -28,20 +32,25 @@
    * Scale based on 1rem = 16px
    * ============================================ */
 
-  --font-size-2xs: 0.625rem;   /* 10px */
-  --font-size-xs: 0.75rem;     /* 12px */
-  --font-size-sm: 0.875rem;    /* 14px */
-  --font-size-base: 1rem;      /* 16px */
-  --font-size-lg: 1.125rem;    /* 18px */
-  --font-size-xl: 1.25rem;     /* 20px */
-  --font-size-2xl: 1.5rem;     /* 24px */
-  --font-size-3xl: 1.875rem;   /* 30px */
-  --font-size-4xl: 2.25rem;    /* 36px */
-  --font-size-5xl: 3rem;       /* 48px */
-  --font-size-6xl: 3.75rem;    /* 60px */
-  --font-size-7xl: 4.5rem;     /* 72px */
-  --font-size-8xl: 6rem;       /* 96px */
-  --font-size-9xl: 8rem;       /* 128px */
+  --font-size-2xs: 0.625rem; /* 10px */
+  --font-size-xs: 0.75rem; /* 12px */
+
+  /* Tailwind 4 utility-generating namespace (--text-*).
+   * text-2xs (10px) is industry-standard for micro-text on badge
+   * counters / mini chips; size-only, no default line-height. */
+  --text-2xs: var(--font-size-2xs);
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-base: 1rem; /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
+  --font-size-xl: 1.25rem; /* 20px */
+  --font-size-2xl: 1.5rem; /* 24px */
+  --font-size-3xl: 1.875rem; /* 30px */
+  --font-size-4xl: 2.25rem; /* 36px */
+  --font-size-5xl: 3rem; /* 48px */
+  --font-size-6xl: 3.75rem; /* 60px */
+  --font-size-7xl: 4.5rem; /* 72px */
+  --font-size-8xl: 6rem; /* 96px */
+  --font-size-9xl: 8rem; /* 128px */
 
   /* ============================================
    * FONT WEIGHTS
@@ -69,14 +78,14 @@
   --line-height-loose: 2;
 
   /* Specific line heights */
-  --line-height-3: 0.75rem;    /* 12px */
-  --line-height-4: 1rem;       /* 16px */
-  --line-height-5: 1.25rem;    /* 20px */
-  --line-height-6: 1.5rem;     /* 24px */
-  --line-height-7: 1.75rem;    /* 28px */
-  --line-height-8: 2rem;       /* 32px */
-  --line-height-9: 2.25rem;    /* 36px */
-  --line-height-10: 2.5rem;    /* 40px */
+  --line-height-3: 0.75rem; /* 12px */
+  --line-height-4: 1rem; /* 16px */
+  --line-height-5: 1.25rem; /* 20px */
+  --line-height-6: 1.5rem; /* 24px */
+  --line-height-7: 1.75rem; /* 28px */
+  --line-height-8: 2rem; /* 32px */
+  --line-height-9: 2.25rem; /* 36px */
+  --line-height-10: 2.5rem; /* 40px */
 
   /* ============================================
    * LETTER SPACING

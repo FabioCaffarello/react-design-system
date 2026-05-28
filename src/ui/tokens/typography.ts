@@ -1,14 +1,31 @@
 /**
  * Typography Tokens
- * 
+ *
  * Centralized typography system with font families, sizes, weights, and line heights.
  * Uses Factory Pattern for type-safe token creation.
  */
 
-export type FontFamily = 'sans' | 'serif' | 'mono';
-export type FontWeight = 'light' | 'normal' | 'medium' | 'semibold' | 'bold';
-export type FontSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl';
-export type LineHeight = 'none' | 'tight' | 'snug' | 'normal' | 'relaxed' | 'loose';
+export type FontFamily = "sans" | "serif" | "mono";
+export type FontWeight = "light" | "normal" | "medium" | "semibold" | "bold";
+export type FontSize =
+  | "2xs"
+  | "xs"
+  | "sm"
+  | "base"
+  | "lg"
+  | "xl"
+  | "2xl"
+  | "3xl"
+  | "4xl"
+  | "5xl"
+  | "6xl";
+export type LineHeight =
+  | "none"
+  | "tight"
+  | "snug"
+  | "normal"
+  | "relaxed"
+  | "loose";
 
 export interface TypographyToken {
   fontSize: {
@@ -46,18 +63,19 @@ export class TypographyTokenFactory {
   /**
    * Create font size token
    */
-  static createFontSize(size: FontSize): TypographyToken['fontSize'] {
+  static createFontSize(size: FontSize): TypographyToken["fontSize"] {
     const sizeMap: Record<FontSize, { px: number; tailwind: string }> = {
-      xs: { px: 12, tailwind: 'text-xs' },
-      sm: { px: 14, tailwind: 'text-sm' },
-      base: { px: 16, tailwind: 'text-base' },
-      lg: { px: 18, tailwind: 'text-lg' },
-      xl: { px: 20, tailwind: 'text-xl' },
-      '2xl': { px: 24, tailwind: 'text-2xl' },
-      '3xl': { px: 30, tailwind: 'text-3xl' },
-      '4xl': { px: 36, tailwind: 'text-4xl' },
-      '5xl': { px: 48, tailwind: 'text-5xl' },
-      '6xl': { px: 60, tailwind: 'text-6xl' },
+      "2xs": { px: 10, tailwind: "text-2xs" }, // micro-text (badge counters, mini chips)
+      xs: { px: 12, tailwind: "text-xs" },
+      sm: { px: 14, tailwind: "text-sm" },
+      base: { px: 16, tailwind: "text-base" },
+      lg: { px: 18, tailwind: "text-lg" },
+      xl: { px: 20, tailwind: "text-xl" },
+      "2xl": { px: 24, tailwind: "text-2xl" },
+      "3xl": { px: 30, tailwind: "text-3xl" },
+      "4xl": { px: 36, tailwind: "text-4xl" },
+      "5xl": { px: 48, tailwind: "text-5xl" },
+      "6xl": { px: 60, tailwind: "text-6xl" },
     };
 
     const config = sizeMap[size];
@@ -72,14 +90,14 @@ export class TypographyTokenFactory {
   /**
    * Create line height token
    */
-  static createLineHeight(height: LineHeight): TypographyToken['lineHeight'] {
+  static createLineHeight(height: LineHeight): TypographyToken["lineHeight"] {
     const heightMap: Record<LineHeight, { value: number; tailwind: string }> = {
-      none: { value: 1, tailwind: 'leading-none' },
-      tight: { value: 1.25, tailwind: 'leading-tight' },
-      snug: { value: 1.375, tailwind: 'leading-snug' },
-      normal: { value: 1.5, tailwind: 'leading-normal' },
-      relaxed: { value: 1.625, tailwind: 'leading-relaxed' },
-      loose: { value: 2, tailwind: 'leading-loose' },
+      none: { value: 1, tailwind: "leading-none" },
+      tight: { value: 1.25, tailwind: "leading-tight" },
+      snug: { value: 1.375, tailwind: "leading-snug" },
+      normal: { value: 1.5, tailwind: "leading-normal" },
+      relaxed: { value: 1.625, tailwind: "leading-relaxed" },
+      loose: { value: 2, tailwind: "leading-loose" },
     };
 
     const config = heightMap[height];
@@ -94,11 +112,11 @@ export class TypographyTokenFactory {
    */
   static createFontWeight(weight: FontWeight): FontWeightToken {
     const weightMap: Record<FontWeight, { value: number; tailwind: string }> = {
-      light: { value: 300, tailwind: 'font-light' },
-      normal: { value: 400, tailwind: 'font-normal' },
-      medium: { value: 500, tailwind: 'font-medium' },
-      semibold: { value: 600, tailwind: 'font-semibold' },
-      bold: { value: 700, tailwind: 'font-bold' },
+      light: { value: 300, tailwind: "font-light" },
+      normal: { value: 400, tailwind: "font-normal" },
+      medium: { value: 500, tailwind: "font-medium" },
+      semibold: { value: 600, tailwind: "font-semibold" },
+      bold: { value: 700, tailwind: "font-bold" },
     };
 
     const config = weightMap[weight];
@@ -111,7 +129,11 @@ export class TypographyTokenFactory {
   /**
    * Create complete typography token
    */
-  static create(size: FontSize, lineHeight: LineHeight = 'normal', weight: FontWeight = 'normal'): TypographyToken {
+  static create(
+    size: FontSize,
+    lineHeight: LineHeight = "normal",
+    weight: FontWeight = "normal",
+  ): TypographyToken {
     return {
       fontSize: this.createFontSize(size),
       lineHeight: this.createLineHeight(lineHeight),
@@ -125,19 +147,21 @@ export class TypographyTokenFactory {
  */
 export const FONT_FAMILY_TOKENS: Record<FontFamily, FontFamilyToken> = {
   sans: {
-    name: 'sans',
-    stack: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
-    tailwind: 'font-sans',
+    name: "sans",
+    stack:
+      'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
+    tailwind: "font-sans",
   },
   serif: {
-    name: 'serif',
+    name: "serif",
     stack: 'ui-serif, Georgia, Cambria, "Times New Roman", Times, serif',
-    tailwind: 'font-serif',
+    tailwind: "font-serif",
   },
   mono: {
-    name: 'mono',
-    stack: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-    tailwind: 'font-mono',
+    name: "mono",
+    stack:
+      'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+    tailwind: "font-mono",
   },
 } as const;
 
@@ -145,11 +169,11 @@ export const FONT_FAMILY_TOKENS: Record<FontFamily, FontFamilyToken> = {
  * Font weight tokens
  */
 export const FONT_WEIGHT_TOKENS: Record<FontWeight, FontWeightToken> = {
-  light: TypographyTokenFactory.createFontWeight('light'),
-  normal: TypographyTokenFactory.createFontWeight('normal'),
-  medium: TypographyTokenFactory.createFontWeight('medium'),
-  semibold: TypographyTokenFactory.createFontWeight('semibold'),
-  bold: TypographyTokenFactory.createFontWeight('bold'),
+  light: TypographyTokenFactory.createFontWeight("light"),
+  normal: TypographyTokenFactory.createFontWeight("normal"),
+  medium: TypographyTokenFactory.createFontWeight("medium"),
+  semibold: TypographyTokenFactory.createFontWeight("semibold"),
+  bold: TypographyTokenFactory.createFontWeight("bold"),
 } as const;
 
 /**
@@ -157,35 +181,39 @@ export const FONT_WEIGHT_TOKENS: Record<FontWeight, FontWeightToken> = {
  */
 export const TYPOGRAPHY_TOKENS = {
   // Headings
-  h1: TypographyTokenFactory.create('4xl', 'tight', 'bold'),
-  h2: TypographyTokenFactory.create('3xl', 'tight', 'bold'),
-  h3: TypographyTokenFactory.create('2xl', 'snug', 'semibold'),
-  h4: TypographyTokenFactory.create('xl', 'snug', 'semibold'),
-  h5: TypographyTokenFactory.create('lg', 'normal', 'medium'),
-  h6: TypographyTokenFactory.create('base', 'normal', 'medium'),
+  h1: TypographyTokenFactory.create("4xl", "tight", "bold"),
+  h2: TypographyTokenFactory.create("3xl", "tight", "bold"),
+  h3: TypographyTokenFactory.create("2xl", "snug", "semibold"),
+  h4: TypographyTokenFactory.create("xl", "snug", "semibold"),
+  h5: TypographyTokenFactory.create("lg", "normal", "medium"),
+  h6: TypographyTokenFactory.create("base", "normal", "medium"),
 
   // Body text
-  body: TypographyTokenFactory.create('base', 'relaxed', 'normal'),
-  bodySmall: TypographyTokenFactory.create('sm', 'relaxed', 'normal'),
-  bodyLarge: TypographyTokenFactory.create('lg', 'relaxed', 'normal'),
+  body: TypographyTokenFactory.create("base", "relaxed", "normal"),
+  bodySmall: TypographyTokenFactory.create("sm", "relaxed", "normal"),
+  bodyLarge: TypographyTokenFactory.create("lg", "relaxed", "normal"),
 
   // UI elements
-  label: TypographyTokenFactory.create('sm', 'normal', 'medium'),
-  caption: TypographyTokenFactory.create('xs', 'normal', 'normal'),
-  button: TypographyTokenFactory.create('base', 'normal', 'medium'),
+  label: TypographyTokenFactory.create("sm", "normal", "medium"),
+  caption: TypographyTokenFactory.create("xs", "normal", "normal"),
+  button: TypographyTokenFactory.create("base", "normal", "medium"),
 } as const;
 
 /**
  * Helper function to get typography token
  */
-export function getTypography(variant: keyof typeof TYPOGRAPHY_TOKENS): TypographyToken {
+export function getTypography(
+  variant: keyof typeof TYPOGRAPHY_TOKENS,
+): TypographyToken {
   return TYPOGRAPHY_TOKENS[variant];
 }
 
 /**
  * Helper function to get typography classes as string
  */
-export function getTypographyClasses(variant: keyof typeof TYPOGRAPHY_TOKENS): string {
+export function getTypographyClasses(
+  variant: keyof typeof TYPOGRAPHY_TOKENS,
+): string {
   const token = TYPOGRAPHY_TOKENS[variant];
   return `${token.fontSize.tailwind} ${token.lineHeight.tailwind} ${token.fontWeight.tailwind}`;
 }
@@ -193,7 +221,9 @@ export function getTypographyClasses(variant: keyof typeof TYPOGRAPHY_TOKENS): s
 /**
  * Helper function to get only font size class
  */
-export function getTypographySize(variant: keyof typeof TYPOGRAPHY_TOKENS): string {
+export function getTypographySize(
+  variant: keyof typeof TYPOGRAPHY_TOKENS,
+): string {
   return TYPOGRAPHY_TOKENS[variant].fontSize.tailwind;
 }
 
@@ -208,7 +238,9 @@ export function getTypographySizeFromFontSize(size: FontSize): string {
 /**
  * Helper function to get only font weight class
  */
-export function getTypographyWeight(variant: keyof typeof TYPOGRAPHY_TOKENS): string {
+export function getTypographyWeight(
+  variant: keyof typeof TYPOGRAPHY_TOKENS,
+): string {
   return TYPOGRAPHY_TOKENS[variant].fontWeight.tailwind;
 }
 
@@ -223,6 +255,8 @@ export function getTypographyWeightFromFontWeight(weight: FontWeight): string {
 /**
  * Helper function to get only line height class
  */
-export function getTypographyLineHeight(variant: keyof typeof TYPOGRAPHY_TOKENS): string {
+export function getTypographyLineHeight(
+  variant: keyof typeof TYPOGRAPHY_TOKENS,
+): string {
   return TYPOGRAPHY_TOKENS[variant].lineHeight.tailwind;
 }

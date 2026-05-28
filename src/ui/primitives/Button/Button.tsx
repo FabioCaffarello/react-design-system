@@ -102,22 +102,22 @@ const buttonVariants = cva(
       },
       size: {
         sm: cn(
-          "px-3", // md = 3 (12px) - matches test expectation
-          "py-1.5", // 6px - not in tokens, keeping hardcoded for exact match
+          getSpacingClass("md", "px"),
+          getSpacingClass("1.5", "py"),
           getTypographySize("bodySmall"),
-          "gap-1.5",
+          getSpacingClass("1.5", "gap"),
         ),
         md: cn(
-          getSpacingClass("base", "px"), // px-4
-          getSpacingClass("sm", "py"), // py-2
+          getSpacingClass("base", "px"),
+          getSpacingClass("sm", "py"),
           getTypographySize("body"),
-          "gap-2",
+          getSpacingClass("sm", "gap"),
         ),
         lg: cn(
-          getSpacingClass("lg", "px"), // px-6
-          getSpacingClass("md", "py"), // py-3
+          getSpacingClass("lg", "px"),
+          getSpacingClass("md", "py"),
           getTypographySize("bodyLarge"),
-          "gap-2.5",
+          getSpacingClass("2.5", "gap"),
         ),
       },
     },

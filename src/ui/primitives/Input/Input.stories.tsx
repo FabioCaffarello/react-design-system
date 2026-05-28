@@ -6,7 +6,7 @@ import Input from "./Input";
 import { Mail, Search, Lock, User } from "lucide-react";
 
 const meta: Meta<typeof Input> = {
-  title: "Atoms/Input",
+  title: "Primitives/Input",
   component: Input,
   tags: ["autodocs"],
   parameters: {

@@ -5,7 +5,7 @@ import { useState } from "react";
 import Chip from "./Chip";
 
 const meta: Meta<typeof Chip> = {
-  title: "Atoms/Chip",
+  title: "Primitives/Chip",
   component: Chip,
   tags: ["autodocs"],
   parameters: {

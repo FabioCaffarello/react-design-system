@@ -3,7 +3,7 @@ import ErrorMessage from "./ErrorMessage";
 import { Label, Input } from "../";
 
 const meta: Meta<typeof ErrorMessage> = {
-  title: "Atoms/ErrorMessage",
+  title: "Primitives/ErrorMessage",
   component: ErrorMessage,
   tags: ["autodocs"],
   parameters: {

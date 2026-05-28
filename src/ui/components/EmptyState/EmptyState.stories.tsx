@@ -6,7 +6,7 @@ import { FileText, Inbox, FolderOpen } from "lucide-react";
 import EmptyState from "./EmptyState";
 
 const meta = {
-  title: "Molecules/EmptyState",
+  title: "Components/EmptyState",
   component: EmptyState,
   parameters: {
     layout: "centered",

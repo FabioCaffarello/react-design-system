@@ -6,7 +6,7 @@ import Popover from "./Popover";
 import { Button } from "../../primitives";
 
 const meta: Meta<typeof Popover> = {
-  title: "Molecules/Popover",
+  title: "Components/Popover",
   component: Popover,
   tags: ["autodocs"],
   parameters: {

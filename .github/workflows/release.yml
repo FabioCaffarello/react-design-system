@@ -4,9 +4,9 @@ on:
   push:
     branches: [main]
     paths-ignore:
-      - '**.md'
-      - '.github/**'
-      - 'docs/**'
+      - "**.md"
+      - ".github/**"
+      - "docs/**"
 
 permissions:
   contents: write
@@ -32,7 +32,7 @@ jobs:
         id: settings-parser
         uses: christian-ci/action-yaml-github-output@v2
         with:
-          file_path: './.github/ci-settings.yml'
+          file_path: "./.github/ci-settings.yml"
 
       - name: Setup Node
         uses: volta-cli/action@v4

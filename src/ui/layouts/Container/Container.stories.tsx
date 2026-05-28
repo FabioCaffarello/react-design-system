@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Container } from './Container';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Container } from "./Container";
 
 const meta: Meta<typeof Container> = {
-  title: 'Layouts/Container',
+  title: "Layouts/Container",
   component: Container,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -38,23 +38,23 @@ Focused on structure and spacing without business logic.
   },
   argTypes: {
     maxWidth: {
-      control: 'select',
-      options: ['sm', 'md', 'lg', 'xl', '2xl', 'full'],
-      description: 'Maximum width of the container',
+      control: "select",
+      options: ["sm", "md", "lg", "xl", "2xl", "full"],
+      description: "Maximum width of the container",
     },
     paddingX: {
-      control: 'select',
-      options: ['xs', 'sm', 'md', 'base', 'lg', 'xl'],
-      description: 'Horizontal padding',
+      control: "select",
+      options: ["xs", "sm", "md", "base", "lg", "xl"],
+      description: "Horizontal padding",
     },
     paddingY: {
-      control: 'select',
-      options: ['xs', 'sm', 'md', 'base', 'lg', 'xl'],
-      description: 'Vertical padding',
+      control: "select",
+      options: ["xs", "sm", "md", "base", "lg", "xl"],
+      description: "Vertical padding",
     },
     center: {
-      control: 'boolean',
-      description: 'Center the container content',
+      control: "boolean",
+      description: "Center the container content",
     },
   },
 };
@@ -75,8 +75,12 @@ export const Default: Story = {
 export const MaxWidths: Story = {
   render: () => (
     <div className="space-y-4">
-      {(['sm', 'md', 'lg', 'xl', '2xl'] as const).map((width) => (
-        <Container key={width} maxWidth={width} className="bg-gray-100 p-4 rounded">
+      {(["sm", "md", "lg", "xl", "2xl"] as const).map((width) => (
+        <Container
+          key={width}
+          maxWidth={width}
+          className="bg-gray-100 p-4 rounded"
+        >
           <p>Max width: {width}</p>
         </Container>
       ))}
@@ -87,7 +91,7 @@ export const MaxWidths: Story = {
 export const PaddingVariations: Story = {
   render: () => (
     <div className="space-y-4">
-      {(['xs', 'sm', 'md', 'base', 'lg', 'xl'] as const).map((padding) => (
+      {(["xs", "sm", "md", "base", "lg", "xl"] as const).map((padding) => (
         <Container
           key={padding}
           paddingX={padding}
@@ -114,7 +118,7 @@ export const NotCentered: Story = {
 
 export const FullWidth: Story = {
   args: {
-    maxWidth: 'full',
+    maxWidth: "full",
     children: (
       <div className="bg-gray-100 p-4 rounded">
         <p>Full width container (no max-width constraint)</p>
@@ -135,7 +139,7 @@ export const DefaultState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Default state - container with standard max-width and padding.',
+        story: "Default state - container with standard max-width and padding.",
       },
     },
   },
@@ -143,7 +147,7 @@ export const DefaultState: Story = {
 
 export const FullWidthState: Story = {
   args: {
-    maxWidth: 'full',
+    maxWidth: "full",
     children: (
       <div className="bg-gray-100 p-4 rounded">
         <p>Full width container (no max-width constraint)</p>
@@ -153,7 +157,7 @@ export const FullWidthState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Full width state - container without max-width constraint.',
+        story: "Full width state - container without max-width constraint.",
       },
     },
   },
@@ -171,7 +175,7 @@ export const NotCenteredState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Not centered state - container aligned to left.',
+        story: "Not centered state - container aligned to left.",
       },
     },
   },
@@ -179,7 +183,7 @@ export const NotCenteredState: Story = {
 
 export const SmallMaxWidthState: Story = {
   args: {
-    maxWidth: 'sm',
+    maxWidth: "sm",
     children: (
       <div className="bg-gray-100 p-4 rounded">
         <p>Small max width container</p>
@@ -189,7 +193,7 @@ export const SmallMaxWidthState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Small max width state - container with small max-width.',
+        story: "Small max width state - container with small max-width.",
       },
     },
   },
@@ -197,7 +201,7 @@ export const SmallMaxWidthState: Story = {
 
 export const LargeMaxWidthState: Story = {
   args: {
-    maxWidth: 'lg',
+    maxWidth: "lg",
     children: (
       <div className="bg-gray-100 p-4 rounded">
         <p>Large max width container</p>
@@ -207,7 +211,7 @@ export const LargeMaxWidthState: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Large max width state - container with large max-width.',
+        story: "Large max width state - container with large max-width.",
       },
     },
   },

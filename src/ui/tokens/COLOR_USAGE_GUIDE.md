@@ -7,93 +7,113 @@ This guide defines the strategic use of color tokens across the design system. C
 ## Color Roles
 
 ### Primary
+
 **Purpose**: Main actions, important links, primary CTAs
 
 **Usage**:
+
 - Primary action buttons
 - Important links
 - Key navigation elements
 - Brand elements
 
 **Example**:
+
 ```tsx
 <Button variant="primary">Save Changes</Button>
 ```
 
 ### Secondary
+
 **Purpose**: Accents, active states, highlights (pink/rose in playground)
 
 **Usage**:
+
 - Active tab indicators
 - Accent elements
 - Secondary actions
 - Interactive highlights
 
 **Example**:
+
 ```tsx
 className={getColorClass('secondary', 'DEFAULT', 'bg')}
 ```
 
 ### Success
+
 **Purpose**: Validation, confirmations, positive feedback
 
 **Usage**:
+
 - Success messages
 - Validation indicators
 - Confirmation states
 - Positive feedback
 
 **Example**:
+
 ```tsx
 <Badge variant="success">Valid</Badge>
 ```
 
 ### Warning
+
 **Purpose**: Warnings, pending states, attention needed
 
 **Usage**:
+
 - Warning messages
 - Pending states
 - Attention indicators
 - Caution states
 
 **Example**:
+
 ```tsx
 <Badge variant="warning">Unsaved</Badge>
 ```
 
 ### Error
+
 **Purpose**: Errors, critical states, destructive actions
 
 **Usage**:
+
 - Error messages
 - Critical states
 - Destructive actions
 - Failure indicators
 
 **Example**:
+
 ```tsx
 <Badge variant="error">Error</Badge>
 ```
 
 ### Info
+
 **Purpose**: Information, tooltips, neutral information
 
 **Usage**:
+
 - Information messages
 - Tooltips
 - Help text
 - Neutral information
 
 **Example**:
+
 ```tsx
 <Tooltip>Information</Tooltip>
 ```
 
 ### Neutral
+
 **Purpose**: Text, borders, backgrounds, default states
 
 **Usage**:
+
 - Body text
 - Borders
 - Backgrounds
@@ -101,6 +121,7 @@ className={getColorClass('secondary', 'DEFAULT', 'bg')}
 - Disabled states
 
 **Example**:
+
 ```tsx
 className={getColorClass('neutral', 'DEFAULT', 'text')}
 ```
@@ -119,19 +140,22 @@ Each color role has three shades:
 ### States
 
 #### Active State
+
 ```tsx
-className={isActive 
+className={isActive
   ? `${getColorClass('secondary', 'DEFAULT', 'bg')} ${getColorClass('secondary', 'contrast', 'text')}`
   : 'hover:bg-gray-100'
 }
 ```
 
 #### Hover State
+
 ```tsx
 className={`hover:${getColorClass('primary', 'light', 'bg')}`}
 ```
 
 #### Disabled State
+
 ```tsx
 className={`${getColorClass('neutral', 'DEFAULT', 'text')} opacity-50`}
 ```
@@ -139,12 +163,14 @@ className={`${getColorClass('neutral', 'DEFAULT', 'text')} opacity-50`}
 ### Contexts
 
 #### Buttons
+
 - Primary actions: `primary`
 - Secondary actions: `secondary` or `outline`
 - Destructive: `error`
 - Neutral: `neutral`
 
 #### Badges
+
 - Success: `success`
 - Warning: `warning`
 - Error: `error`
@@ -152,11 +178,13 @@ className={`${getColorClass('neutral', 'DEFAULT', 'text')} opacity-50`}
 - Default: `neutral`
 
 #### Borders
+
 - Default: `neutral`
 - Active: `primary` or `secondary`
 - Error: `error`
 
 #### Backgrounds
+
 - Default: `neutral` (light)
 - Active: `primary` or `secondary` (light)
 - Hover: `neutral` or `primary` (light)
@@ -172,28 +200,33 @@ className={`${getColorClass('neutral', 'DEFAULT', 'text')} opacity-50`}
 ## Anti-Patterns
 
 ❌ **Don't**: Hardcode colors
+
 ```tsx
-className="bg-pink-500" // ❌
+className = "bg-pink-500"; // ❌
 ```
 
 ✅ **Do**: Use tokens
+
 ```tsx
 className={getColorClass('secondary', 'DEFAULT', 'bg')} // ✅
 ```
 
 ❌ **Don't**: Use wrong semantic meaning
+
 ```tsx
-<Button className={getColorClass('error', 'DEFAULT', 'bg')}>Save</Button> // ❌
+<Button className={getColorClass("error", "DEFAULT", "bg")}>Save</Button> // ❌
 ```
 
 ✅ **Do**: Use appropriate semantic meaning
+
 ```tsx
-<Button className={getColorClass('primary', 'DEFAULT', 'bg')}>Save</Button> // ✅
+<Button className={getColorClass("primary", "DEFAULT", "bg")}>Save</Button> // ✅
 ```
 
 ## Theme Support
 
 Colors automatically adapt to light/dark themes through the `ColorStrategy` pattern. The system uses:
+
 - `LightColorStrategy` for light theme
 - `DarkColorStrategy` for dark theme
 
@@ -212,11 +245,13 @@ When migrating from hardcoded colors to tokens:
 ## Examples
 
 ### Tab Navigation
+
 ```tsx
 <Tabs.Trigger
-  className={isActive 
-    ? `${getColorClass('secondary', 'DEFAULT', 'bg')} ${getColorClass('secondary', 'contrast', 'text')}`
-    : 'hover:bg-gray-100'
+  className={
+    isActive
+      ? `${getColorClass("secondary", "DEFAULT", "bg")} ${getColorClass("secondary", "contrast", "text")}`
+      : "hover:bg-gray-100"
   }
 >
   Tab Label
@@ -224,11 +259,12 @@ When migrating from hardcoded colors to tokens:
 ```
 
 ### Status Badge
+
 ```tsx
 <Badge
   className={`
-    ${getColorClass(status === 'success' ? 'success' : 'error', 'DEFAULT', 'bg')}
-    ${getColorClass(status === 'success' ? 'success' : 'error', 'contrast', 'text')}
+    ${getColorClass(status === "success" ? "success" : "error", "DEFAULT", "bg")}
+    ${getColorClass(status === "success" ? "success" : "error", "contrast", "text")}
   `}
 >
   {status}
@@ -236,11 +272,12 @@ When migrating from hardcoded colors to tokens:
 ```
 
 ### Border
+
 ```tsx
 <div
   className={`
     border
-    ${getColorClass('neutral', 'DEFAULT', 'border')}
+    ${getColorClass("neutral", "DEFAULT", "border")}
   `}
 >
   Content

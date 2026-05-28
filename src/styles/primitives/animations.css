@@ -24,11 +24,11 @@
   --duration-1000: 1000ms;
 
   /* Semantic durations */
-  --duration-instant: var(--duration-75);    /* Micro interactions */
-  --duration-fast: var(--duration-150);      /* Quick feedback */
-  --duration-normal: var(--duration-200);    /* Standard transitions */
-  --duration-slow: var(--duration-300);      /* Deliberate animations */
-  --duration-slower: var(--duration-500);    /* Complex animations */
+  --duration-instant: var(--duration-75); /* Micro interactions */
+  --duration-fast: var(--duration-150); /* Quick feedback */
+  --duration-normal: var(--duration-200); /* Standard transitions */
+  --duration-slow: var(--duration-300); /* Deliberate animations */
+  --duration-slower: var(--duration-500); /* Complex animations */
 
   /* ============================================
    * EASINGS
@@ -56,12 +56,13 @@
    * ============================================ */
 
   /* Property-specific */
-  --transition-colors: color var(--duration-fast) var(--ease-default),
-                       background-color var(--duration-fast) var(--ease-default),
-                       border-color var(--duration-fast) var(--ease-default),
-                       text-decoration-color var(--duration-fast) var(--ease-default),
-                       fill var(--duration-fast) var(--ease-default),
-                       stroke var(--duration-fast) var(--ease-default);
+  --transition-colors:
+    color var(--duration-fast) var(--ease-default),
+    background-color var(--duration-fast) var(--ease-default),
+    border-color var(--duration-fast) var(--ease-default),
+    text-decoration-color var(--duration-fast) var(--ease-default),
+    fill var(--duration-fast) var(--ease-default),
+    stroke var(--duration-fast) var(--ease-default);
 
   --transition-opacity: opacity var(--duration-fast) var(--ease-default);
 
@@ -72,11 +73,12 @@
   /* Combined transitions */
   --transition-all: all var(--duration-normal) var(--ease-default);
 
-  --transition-common: color var(--duration-fast) var(--ease-default),
-                       background-color var(--duration-fast) var(--ease-default),
-                       border-color var(--duration-fast) var(--ease-default),
-                       box-shadow var(--duration-fast) var(--ease-default),
-                       opacity var(--duration-fast) var(--ease-default);
+  --transition-common:
+    color var(--duration-fast) var(--ease-default),
+    background-color var(--duration-fast) var(--ease-default),
+    border-color var(--duration-fast) var(--ease-default),
+    box-shadow var(--duration-fast) var(--ease-default),
+    opacity var(--duration-fast) var(--ease-default);
 
   /* ============================================
    * ANIMATION DELAYS
@@ -191,14 +193,16 @@
 }
 
 @keyframes ping {
-  75%, 100% {
+  75%,
+  100% {
     transform: scale(2);
     opacity: 0;
   }
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -207,7 +211,8 @@
 }
 
 @keyframes bounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(-25%);
     animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
@@ -218,7 +223,8 @@
 }
 
 @keyframes shake {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0);
   }
   25% {

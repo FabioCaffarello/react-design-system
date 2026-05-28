@@ -39,7 +39,7 @@ const sampleData: SampleData[] = [
 ];
 
 const meta: Meta<typeof Table> = {
-  title: "Organisms/Table",
+  title: "Components/Table",
   component: Table,
   parameters: {
     docs: {

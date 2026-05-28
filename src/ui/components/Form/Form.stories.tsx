@@ -15,7 +15,7 @@ import {
 } from "../../primitives";
 
 const meta: Meta<typeof Form> = {
-  title: "Molecules/Form",
+  title: "Components/Form",
   component: Form,
   parameters: {
     docs: {

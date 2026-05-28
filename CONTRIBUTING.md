@@ -59,7 +59,7 @@ Veja [COMPONENT_STRUCTURE_STANDARD.md](./COMPONENT_STRUCTURE_STANDARD.md) para d
 ```typescript
 // ✅ Bom
 export interface ButtonProps {
-  variant?: 'primary' | 'secondary';
+  variant?: "primary" | "secondary";
   onClick?: (e: MouseEvent) => void;
 }
 
@@ -148,12 +148,12 @@ Exemplo: `feat: adiciona suporte a keyboard navigation no Dropdown`
 
 Todos os componentes devem ter JSDoc completo:
 
-```typescript
+````typescript
 /**
  * Button Component
- * 
+ *
  * A styled button component with variants and sizes.
- * 
+ *
  * @example
  * ```tsx
  * <Button variant="primary" onClick={handleClick}>
@@ -161,7 +161,7 @@ Todos os componentes devem ter JSDoc completo:
  * </Button>
  * ```
  */
-```
+````
 
 ## Processo de Review
 

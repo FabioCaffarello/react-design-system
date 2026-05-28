@@ -5,6 +5,7 @@ import { useSidebarRequired } from "../../contexts/SidebarContext";
 import { useSideNavbarStateRequired } from "../../contexts/SideNavbarStateContext";
 import { useSideNavbarThemeRequired } from "../../contexts/SideNavbarThemeContext";
 import Collapsible from "../../../../primitives/Collapsible/Collapsible";
+import { getSpacingClass } from "../../../../tokens/spacing";
 import type { SidebarGroupProps } from "../../types";
 
 /**
@@ -95,8 +96,8 @@ export default function SidebarGroup({
             items-center
             justify-between
             w-full
-            px-3
-            py-2.5
+            ${getSpacingClass("md", "px")}
+            ${getSpacingClass("2.5", "py")}
             text-left
             transition-colors
             duration-150

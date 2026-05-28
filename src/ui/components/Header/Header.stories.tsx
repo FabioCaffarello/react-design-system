@@ -13,7 +13,7 @@ import SideNavbar from "../../components/SideNavbar/SideNavbar";
 import { Home, Settings } from "lucide-react";
 
 const meta: Meta<typeof Header> = {
-  title: "Molecules/Header",
+  title: "Components/Header",
   component: Header,
   tags: ["autodocs"],
   parameters: {

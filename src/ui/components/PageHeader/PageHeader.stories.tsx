@@ -10,7 +10,7 @@ import { Button } from "../../primitives/Button/Button";
 import { Plus, Edit, Trash2 } from "lucide-react";
 
 const meta: Meta<typeof PageHeader> = {
-  title: "Molecules/PageHeader",
+  title: "Components/PageHeader",
   component: PageHeader,
   tags: ["autodocs"],
   parameters: {

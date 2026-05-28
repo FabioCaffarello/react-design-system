@@ -82,7 +82,7 @@ function ToastDemo({
 }
 
 const meta: Meta<typeof ToastProvider> = {
-  title: "Organisms/Toast",
+  title: "Components/Toast",
   component: ToastProvider,
   parameters: {
     docs: {

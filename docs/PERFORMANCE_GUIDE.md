@@ -5,6 +5,7 @@ Este documento descreve estratégias e técnicas para otimizar performance do Re
 ## Visão Geral
 
 Performance é crítica para um design system. Este guia cobre:
+
 - Otimizações de build
 - Code splitting
 - Lazy loading
@@ -20,14 +21,15 @@ O design system já implementa code splitting por categoria:
 ```typescript
 // vite.config.ts
 manualChunks: (id) => {
-  if (id.includes('/atoms/')) return 'atoms';
-  if (id.includes('/molecules/')) return 'molecules';
-  if (id.includes('/organisms/')) return 'organisms';
-  if (id.includes('/tokens/')) return 'tokens';
-}
+  if (id.includes("/atoms/")) return "atoms";
+  if (id.includes("/molecules/")) return "molecules";
+  if (id.includes("/organisms/")) return "organisms";
+  if (id.includes("/tokens/")) return "tokens";
+};
 ```
 
 **Benefícios**:
+
 - Chunks menores
 - Carregamento paralelo
 - Cache mais eficiente
@@ -41,7 +43,7 @@ Stories pesadas podem ser carregadas sob demanda:
 stories: [
   "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   // Stories pesadas podem ser lazy loaded
-]
+];
 ```
 
 ### Tree Shaking
@@ -50,8 +52,8 @@ O Vite já otimiza tree shaking automaticamente. Para garantir:
 
 ```typescript
 // Use named exports
-export { Button } from './Button';
-export { Input } from './Input';
+export { Button } from "./Button";
+export { Input } from "./Input";
 
 // Evite barrel exports muito grandes
 // ❌ export * from './all-components';
@@ -83,7 +85,7 @@ const memoizedCallback = useCallback(() => doSomething(a, b), [a, b]);
 Para listas grandes, use virtualização:
 
 ```tsx
-import { useVirtualizer } from '@tanstack/react-virtual';
+import { useVirtualizer } from "@tanstack/react-virtual";
 
 // Virtualize long lists
 ```
@@ -112,9 +114,13 @@ Carregue apenas addons necessários em desenvolvimento:
 
 ```typescript
 // .storybook/main.ts
-addons: process.env.NODE_ENV === 'production'
-  ? [/* all addons */]
-  : [/* essential addons only */]
+addons: process.env.NODE_ENV === "production"
+  ? [
+      /* all addons */
+    ]
+  : [
+      /* essential addons only */
+    ];
 ```
 
 ### Lazy Story Loading
@@ -156,7 +162,7 @@ Use `storybook-addon-performance` para monitorar:
 
 ```typescript
 // Já configurado
-"storybook-addon-performance"
+"storybook-addon-performance";
 ```
 
 ### Lighthouse CI
@@ -176,7 +182,7 @@ Integre Lighthouse para métricas contínuas:
 ### 1. Lazy Load Components Pesados
 
 ```tsx
-const HeavyComponent = lazy(() => import('./HeavyComponent'));
+const HeavyComponent = lazy(() => import("./HeavyComponent"));
 ```
 
 ### 2. Otimize Imagens

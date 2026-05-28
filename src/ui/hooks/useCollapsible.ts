@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 
 export interface UseCollapsibleOptions {
   defaultOpen?: boolean;
@@ -17,11 +17,11 @@ export interface UseCollapsibleReturn {
 
 /**
  * useCollapsible Hook
- * 
+ *
  * Reusable hook for collapsible component logic.
  * Supports both controlled and uncontrolled modes.
  * Optional localStorage persistence.
- * 
+ *
  * @example
  * ```tsx
  * const { isOpen, toggle } = useCollapsible({
@@ -38,10 +38,10 @@ export function useCollapsible({
 }: UseCollapsibleOptions): UseCollapsibleReturn {
   // Load initial state from localStorage if storageKey is provided
   const getInitialState = useCallback((): boolean => {
-    if (storageKey && typeof window !== 'undefined') {
+    if (storageKey && typeof window !== "undefined") {
       const stored = localStorage.getItem(storageKey);
       if (stored !== null) {
-        return stored === 'true';
+        return stored === "true";
       }
     }
     return defaultOpen;
@@ -54,7 +54,7 @@ export function useCollapsible({
 
   // Persist to localStorage when state changes
   useEffect(() => {
-    if (storageKey && typeof window !== 'undefined' && open === undefined) {
+    if (storageKey && typeof window !== "undefined" && open === undefined) {
       localStorage.setItem(storageKey, String(internalOpen));
     }
   }, [internalOpen, storageKey, open]);
@@ -68,7 +68,7 @@ export function useCollapsible({
       // In controlled mode, parent handles state
       onOpenChange?.(newOpen);
     },
-    [open, onOpenChange]
+    [open, onOpenChange],
   );
 
   const toggle = useCallback(() => {

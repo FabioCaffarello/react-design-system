@@ -26,9 +26,9 @@ export type {
   ThemeColors,
   GetColorOptions,
   GetColorClassOptions,
-} from './types';
+} from "./types";
 
-export { COLOR_SCALES } from './types';
+export { COLOR_SCALES } from "./types";
 
 // Primitive color palettes
 export {
@@ -54,7 +54,7 @@ export {
   PRIMITIVE_COLORS,
   getPrimitiveColor,
   getPrimitiveColorPalette,
-} from './primitives';
+} from "./primitives";
 
 // Semantic colors
 export {
@@ -63,7 +63,7 @@ export {
   SEMANTIC_COLORS_DARK,
   getSemanticColor,
   getSemanticColorRole,
-} from './semantic';
+} from "./semantic";
 
 // Utilities
 export {
@@ -80,24 +80,24 @@ export {
   blendColors,
   lighten,
   darken,
-} from './utils';
+} from "./utils";
 
 // Re-export brand colors for convenience
 export const BRAND_COLORS = {
   primary: {
-    name: 'indigo' as const,
+    name: "indigo" as const,
     light: 400 as const,
     default: 500 as const,
     dark: 600 as const,
   },
   secondary: {
-    name: 'violet' as const,
+    name: "violet" as const,
     light: 400 as const,
     default: 500 as const,
     dark: 600 as const,
   },
   accent: {
-    name: 'cyan' as const,
+    name: "cyan" as const,
     light: 400 as const,
     default: 500 as const,
     dark: 600 as const,

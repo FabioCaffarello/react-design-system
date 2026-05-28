@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/addon-docs/blocks';
+import { Meta } from "@storybook/addon-docs/blocks";
 
 <Meta title="Design System/Guides/Performance" />
 
@@ -18,6 +18,7 @@ Componentes otimizados com `React.memo` para prevenir re-renders desnecessários
 - ✅ **Spinner** - Componente de loading usado frequentemente
 
 **Quando usar React.memo:**
+
 - Componentes que recebem props que raramente mudam
 - Componentes renderizados em listas grandes
 - Componentes puros (mesma entrada = mesma saída)
@@ -33,11 +34,13 @@ Hooks de memoização usados em:
 - ✅ **Separator** - Classes CSS memoizadas
 
 **Quando usar useMemo:**
+
 - Cálculos custosos (filtros, sorts, transformações)
 - Valores derivados de props/state
 - Objetos e arrays passados como props
 
 **Quando usar useCallback:**
+
 - Funções passadas como props para componentes memoizados
 - Event handlers em listas
 - Dependências de outros hooks
@@ -47,7 +50,7 @@ Hooks de memoização usados em:
 Implementado no **Table** para grandes datasets:
 
 ```tsx
-import { Table } from '@fabio.caffarello/react-design-system';
+import { Table } from "@fabio.caffarello/react-design-system";
 
 <Table
   data={largeDataset}
@@ -57,10 +60,11 @@ import { Table } from '@fabio.caffarello/react-design-system';
     containerHeight: 400,
     overscan: 5,
   }}
-/>
+/>;
 ```
 
 **Benefícios:**
+
 - Renderiza apenas itens visíveis
 - Performance constante independente do tamanho do dataset
 - Scroll suave mesmo com milhares de itens
@@ -71,13 +75,14 @@ Entry points separados para tree shaking:
 
 ```tsx
 // Import apenas atoms
-import { Button, Input } from '@fabio.caffarello/react-design-system/atoms';
+import { Button, Input } from "@fabio.caffarello/react-design-system/atoms";
 
 // Import apenas molecules
-import { Card, Form } from '@fabio.caffarello/react-design-system/molecules';
+import { Card, Form } from "@fabio.caffarello/react-design-system/molecules";
 ```
 
 **Benefícios:**
+
 - Bundle size reduzido
 - Carregamento mais rápido
 - Melhor tree shaking
@@ -87,20 +92,22 @@ import { Card, Form } from '@fabio.caffarello/react-design-system/molecules';
 ### 1. Evitar Re-renders Desnecessários
 
 **❌ Ruim:**
+
 ```tsx
 function MyComponent() {
-  const handleClick = () => console.log('click');
+  const handleClick = () => console.log("click");
   return <Button onClick={handleClick} />; // Nova função a cada render
 }
 ```
 
 **✅ Bom:**
+
 ```tsx
-import { useCallback } from 'react';
-import { Button } from '@fabio.caffarello/react-design-system';
+import { useCallback } from "react";
+import { Button } from "@fabio.caffarello/react-design-system";
 
 function MyComponent() {
-  const handleClick = useCallback(() => console.log('click'), []);
+  const handleClick = useCallback(() => console.log("click"), []);
   return <Button onClick={handleClick} />;
 }
 ```
@@ -108,26 +115,34 @@ function MyComponent() {
 ### 2. Memoizar Listas
 
 **❌ Ruim:**
+
 ```tsx
-{items.map(item => <Card key={item.id}>{item.content}</Card>)}
+{
+  items.map((item) => <Card key={item.id}>{item.content}</Card>);
+}
 ```
 
 **✅ Bom:**
+
 ```tsx
-import { memo } from 'react';
-import { Card } from '@fabio.caffarello/react-design-system';
+import { memo } from "react";
+import { Card } from "@fabio.caffarello/react-design-system";
 
 const MemoizedCard = memo(Card);
-{items.map(item => <MemoizedCard key={item.id}>{item.content}</MemoizedCard>)}
+{
+  items.map((item) => (
+    <MemoizedCard key={item.id}>{item.content}</MemoizedCard>
+  ));
+}
 ```
 
 ### 3. Lazy Loading de Componentes Pesados
 
 ```tsx
-import { lazy, Suspense } from 'react';
-import { Spinner } from '@fabio.caffarello/react-design-system';
+import { lazy, Suspense } from "react";
+import { Spinner } from "@fabio.caffarello/react-design-system";
 
-const HeavyComponent = lazy(() => import('./HeavyComponent'));
+const HeavyComponent = lazy(() => import("./HeavyComponent"));
 
 function App() {
   return (
@@ -142,22 +157,21 @@ function App() {
 
 ```tsx
 // Para listas com > 100 itens
-import { Table } from '@fabio.caffarello/react-design-system';
+import { Table } from "@fabio.caffarello/react-design-system";
 
-<Table
-  data={largeDataset}
-  virtualScrolling
-/>
+<Table data={largeDataset} virtualScrolling />;
 ```
 
 ## Benchmarks
 
 ### Antes das Otimizações
+
 - Render inicial: ~150ms
 - Re-render de lista (100 itens): ~80ms
 - Bundle size: ~250KB
 
 ### Depois das Otimizações
+
 - Render inicial: ~100ms (33% melhoria)
 - Re-render de lista (100 itens): ~40ms (50% melhoria)
 - Bundle size: ~180KB (28% redução com code splitting)

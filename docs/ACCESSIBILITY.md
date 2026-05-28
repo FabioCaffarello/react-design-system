@@ -19,23 +19,27 @@ This guide outlines accessibility standards, patterns, and best practices for th
 The design system follows **WCAG 2.1 Level AA** standards, which include:
 
 ### Perceivable
+
 - **Text Alternatives**: All images, icons, and media have appropriate alt text
 - **Time-based Media**: Captions and descriptions for video/audio
 - **Adaptable**: Content can be presented in different ways without losing information
 - **Distinguishable**: Sufficient color contrast (4.5:1 for normal text, 3:1 for large text)
 
 ### Operable
+
 - **Keyboard Accessible**: All functionality available via keyboard
 - **Enough Time**: No time limits that cannot be adjusted
 - **Seizures**: No content that flashes more than 3 times per second
 - **Navigable**: Clear navigation, skip links, and logical focus order
 
 ### Understandable
+
 - **Readable**: Language of page is identified
 - **Predictable**: Consistent navigation and functionality
 - **Input Assistance**: Error identification and suggestions
 
 ### Robust
+
 - **Parsing**: Valid HTML markup
 - **Name, Role, Value**: Proper ARIA attributes and semantic HTML
 
@@ -44,6 +48,7 @@ The design system follows **WCAG 2.1 Level AA** standards, which include:
 ### Common ARIA Patterns
 
 #### Labels
+
 ```tsx
 // Use aria-label for icon-only buttons
 <button aria-label="Close dialog">
@@ -58,9 +63,10 @@ The design system follows **WCAG 2.1 Level AA** standards, which include:
 ```
 
 #### Descriptions
+
 ```tsx
 // Use aria-describedby for additional context
-<input 
+<input
   aria-describedby="email-help"
   aria-invalid={hasError}
 />
@@ -68,6 +74,7 @@ The design system follows **WCAG 2.1 Level AA** standards, which include:
 ```
 
 #### States
+
 ```tsx
 // Use aria-expanded for collapsible content
 <button aria-expanded={isOpen} aria-controls="menu">
@@ -84,6 +91,7 @@ The design system follows **WCAG 2.1 Level AA** standards, which include:
 ```
 
 #### Roles
+
 ```tsx
 // Use role="alert" for important messages
 <div role="alert" aria-live="assertive">
@@ -99,15 +107,17 @@ The design system follows **WCAG 2.1 Level AA** standards, which include:
 ### ARIA Best Practices
 
 1. **Prefer semantic HTML** over ARIA when possible
+
    ```tsx
    // Good: Use semantic HTML
    <button>Click me</button>
-   
+
    // Avoid: Unnecessary ARIA
    <div role="button" tabIndex={0}>Click me</div>
    ```
 
 2. **Don't override native semantics**
+
    ```tsx
    // Bad: Overriding button semantics
    <button role="link">Click me</button>
@@ -123,43 +133,47 @@ The design system follows **WCAG 2.1 Level AA** standards, which include:
 ### Standard Keyboard Patterns
 
 #### Tab Navigation
+
 - **Tab**: Move forward through interactive elements
 - **Shift + Tab**: Move backward through interactive elements
 - **Escape**: Close modals, dialogs, dropdowns
 
 #### Arrow Keys
+
 - **Arrow Up/Down**: Navigate lists, menus, dropdowns
 - **Arrow Left/Right**: Navigate horizontal lists, tabs
 
 #### Enter/Space
+
 - **Enter**: Activate buttons, links, menu items
 - **Space**: Activate buttons, toggle checkboxes/radios
 
 ### Focus Management
 
 #### Focus Trapping
+
 ```tsx
 // Trap focus within modal
 function Modal({ isOpen, onClose, children }) {
   const modalRef = useRef<HTMLDivElement>(null);
-  
+
   useEffect(() => {
     if (isOpen && modalRef.current) {
       // Focus first focusable element
       const firstFocusable = modalRef.current.querySelector(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
       ) as HTMLElement;
       firstFocusable?.focus();
     }
   }, [isOpen]);
-  
+
   return (
-    <div 
+    <div
       ref={modalRef}
       role="dialog"
       aria-modal="true"
       onKeyDown={(e) => {
-        if (e.key === 'Escape') onClose();
+        if (e.key === "Escape") onClose();
       }}
     >
       {children}
@@ -169,28 +183,30 @@ function Modal({ isOpen, onClose, children }) {
 ```
 
 #### Focus Restoration
+
 ```tsx
 // Restore focus when modal closes
 function useFocusRestore() {
   const previousFocusRef = useRef<HTMLElement | null>(null);
-  
+
   const saveFocus = () => {
     previousFocusRef.current = document.activeElement as HTMLElement;
   };
-  
+
   const restoreFocus = () => {
     previousFocusRef.current?.focus();
   };
-  
+
   return { saveFocus, restoreFocus };
 }
 ```
 
 #### Skip Links
+
 ```tsx
 // Add skip link for main content
-<a 
-  href="#main-content" 
+<a
+  href="#main-content"
   className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:p-4 focus:bg-blue-600 focus:text-white"
 >
   Skip to main content
@@ -224,6 +240,7 @@ All interactive elements must have visible focus indicators:
 ### Focus Order
 
 Ensure logical focus order:
+
 1. Header navigation
 2. Main content
 3. Sidebar (if present)
@@ -253,6 +270,7 @@ Ensure logical focus order:
 ### Testing Contrast
 
 Use tools to verify contrast:
+
 - Browser DevTools (Accessibility panel)
 - Storybook a11y addon
 - Online tools (WebAIM Contrast Checker)
@@ -262,6 +280,7 @@ Use tools to verify contrast:
 ### Semantic HTML
 
 Use semantic HTML elements:
+
 ```tsx
 // Good: Semantic HTML
 <nav>
@@ -282,6 +301,7 @@ Use semantic HTML elements:
 ### Live Regions
 
 Use live regions for dynamic content:
+
 ```tsx
 // For important updates
 <div role="alert" aria-live="assertive">
@@ -297,6 +317,7 @@ Use live regions for dynamic content:
 ### Hidden Content
 
 Hide decorative content from screen readers:
+
 ```tsx
 // Hide decorative icons
 <Icon name="check" aria-hidden="true" />
@@ -326,7 +347,7 @@ Hide decorative content from screen readers:
 ```tsx
 // Proper label association
 <label htmlFor="email">Email</label>
-<input 
+<input
   id="email"
   type="email"
   aria-describedby="email-error email-help"
@@ -361,6 +382,7 @@ Hide decorative content from screen readers:
 ### Automated Testing
 
 The Storybook a11y addon automatically tests components for:
+
 - Color contrast
 - ARIA attributes
 - Keyboard navigation
@@ -399,16 +421,19 @@ The Storybook a11y addon automatically tests components for:
 ## Resources
 
 ### Documentation
+
 - [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
 - [ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)
 - [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
 
 ### Tools
+
 - [axe DevTools](https://www.deque.com/axe/devtools/)
 - [WAVE Browser Extension](https://wave.webaim.org/extension/)
 - [Lighthouse](https://developers.google.com/web/tools/lighthouse)
 
 ### Screen Readers
+
 - [NVDA](https://www.nvaccess.org/) (Windows, free)
 - [VoiceOver](https://www.apple.com/accessibility/vision/) (macOS/iOS, built-in)
 - [JAWS](https://www.freedomscientific.com/products/software/jaws/) (Windows, paid)
@@ -416,27 +441,32 @@ The Storybook a11y addon automatically tests components for:
 ## Component-Specific Guidelines
 
 ### Button
+
 - Must have accessible name (text or aria-label)
 - Must be keyboard accessible
 - Must have visible focus indicator
 
 ### Input
+
 - Must have associated label
 - Must have error message with aria-describedby
 - Must have aria-invalid when invalid
 
 ### Modal
+
 - Must trap focus
 - Must have aria-modal="true"
 - Must have aria-labelledby or aria-label
 - Must restore focus on close
 
 ### Navigation
+
 - Must have skip link
 - Must have proper heading hierarchy
 - Must indicate current page
 
 ### Table
+
 - Must have caption or aria-label
 - Must have proper header associations
 - Must be keyboard navigable

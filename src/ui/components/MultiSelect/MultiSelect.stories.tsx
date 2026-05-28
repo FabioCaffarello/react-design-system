@@ -5,7 +5,7 @@ import { expect, userEvent, within, waitFor } from "@storybook/test";
 import MultiSelect from "./MultiSelect";
 
 const meta: Meta<typeof MultiSelect> = {
-  title: "Molecules/MultiSelect",
+  title: "Components/MultiSelect",
   component: MultiSelect,
   tags: ["autodocs"],
   parameters: {

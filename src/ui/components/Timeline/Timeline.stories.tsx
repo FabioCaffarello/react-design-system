@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 const meta: Meta<typeof Timeline> = {
-  title: "Organisms/Timeline",
+  title: "Components/Timeline",
   component: Timeline,
   tags: ["autodocs"],
   parameters: {

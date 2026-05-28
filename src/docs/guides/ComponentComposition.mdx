@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/addon-docs/blocks';
+import { Meta } from "@storybook/addon-docs/blocks";
 
 <Meta title="Design System/Guides/Component Composition" />
 
@@ -43,7 +43,7 @@ function UserCard({ user, showAvatar, showName, showButton, ... }) {
 ### Padrão 1: Container + Content
 
 ```tsx
-import { Card, Text, Button } from '@fabio.caffarello/react-design-system';
+import { Card, Text, Button } from "@fabio.caffarello/react-design-system";
 
 function ProductCard({ product }) {
   return (
@@ -60,7 +60,13 @@ function ProductCard({ product }) {
 ### Padrão 2: Form Composition
 
 ```tsx
-import { Form, Input, Label, Button, Card } from '@fabio.caffarello/react-design-system';
+import {
+  Form,
+  Input,
+  Label,
+  Button,
+  Card,
+} from "@fabio.caffarello/react-design-system";
 
 function LoginForm() {
   return (
@@ -68,11 +74,13 @@ function LoginForm() {
       <Form onSubmit={handleSubmit}>
         <Label htmlFor="email">Email</Label>
         <Input id="email" type="email" required />
-        
+
         <Label htmlFor="password">Password</Label>
         <Input id="password" type="password" required />
-        
-        <Button type="submit" variant="primary">Login</Button>
+
+        <Button type="submit" variant="primary">
+          Login
+        </Button>
       </Form>
     </Card>
   );
@@ -82,7 +90,12 @@ function LoginForm() {
 ### Padrão 3: List Composition
 
 ```tsx
-import { Card, Text, Button, Separator } from '@fabio.caffarello/react-design-system';
+import {
+  Card,
+  Text,
+  Button,
+  Separator,
+} from "@fabio.caffarello/react-design-system";
 
 function UserList({ users }) {
   return (
@@ -105,26 +118,18 @@ function UserList({ users }) {
 ### Padrão 4: Layout Composition
 
 ```tsx
-import { Card, Separator } from '@fabio.caffarello/react-design-system';
+import { Card, Separator } from "@fabio.caffarello/react-design-system";
 
 function DashboardLayout({ header, sidebar, content, footer }) {
   return (
     <div className="flex h-screen">
-      <aside className="w-64">
-        {sidebar}
-      </aside>
+      <aside className="w-64">{sidebar}</aside>
       <main className="flex-1 flex flex-col">
-        <header className="p-4">
-          {header}
-        </header>
+        <header className="p-4">{header}</header>
         <Separator />
-        <div className="flex-1 p-4 overflow-auto">
-          {content}
-        </div>
+        <div className="flex-1 p-4 overflow-auto">{content}</div>
         <Separator />
-        <footer className="p-4">
-          {footer}
-        </footer>
+        <footer className="p-4">{footer}</footer>
       </main>
     </div>
   );
@@ -138,7 +143,12 @@ function DashboardLayout({ header, sidebar, content, footer }) {
 Crie wrappers que combinam múltiplos componentes:
 
 ```tsx
-import { Card, Input, Label, ErrorMessage } from '@fabio.caffarello/react-design-system';
+import {
+  Card,
+  Input,
+  Label,
+  ErrorMessage,
+} from "@fabio.caffarello/react-design-system";
 
 interface FormFieldProps {
   label: string;
@@ -159,7 +169,7 @@ function FormField({ label, error, children }: FormFieldProps) {
 // Uso
 <FormField label="Email" error={errors.email}>
   <Input type="email" />
-</FormField>
+</FormField>;
 ```
 
 ### Compound Components
@@ -167,7 +177,7 @@ function FormField({ label, error, children }: FormFieldProps) {
 Use compound components para componentes relacionados:
 
 ```tsx
-import { Card, Text, Button } from '@fabio.caffarello/react-design-system';
+import { Card, Text, Button } from "@fabio.caffarello/react-design-system";
 
 interface ModalProps {
   children: React.ReactNode;
@@ -203,7 +213,7 @@ Modal.Footer = function ModalFooter({ children }) {
     <Button variant="secondary">Cancel</Button>
     <Button variant="primary">Confirm</Button>
   </Modal.Footer>
-</Modal>
+</Modal>;
 ```
 
 ## Composição com Hooks
@@ -211,10 +221,10 @@ Modal.Footer = function ModalFooter({ children }) {
 ### Custom Hooks para Composição
 
 ```tsx
-import { useState } from 'react';
-import { Input, Button, Card } from '@fabio.caffarello/react-design-system';
+import { useState } from "react";
+import { Input, Button, Card } from "@fabio.caffarello/react-design-system";
 
-function useFormField(initialValue = '') {
+function useFormField(initialValue = "") {
   const [value, setValue] = useState(initialValue);
   const [error, setError] = useState<string | undefined>();
 
@@ -255,20 +265,17 @@ function LoginForm() {
 ### Usando Organisms Existentes
 
 ```tsx
-import { Table, DataGrid, Stepper } from '@fabio.caffarello/react-design-system';
+import {
+  Table,
+  DataGrid,
+  Stepper,
+} from "@fabio.caffarello/react-design-system";
 
 function DataManagementPage() {
   return (
     <div>
-      <Stepper
-        steps={['Upload', 'Review', 'Confirm']}
-        currentStep={0}
-      />
-      <DataGrid
-        data={data}
-        columns={columns}
-        onExport={handleExport}
-      />
+      <Stepper steps={["Upload", "Review", "Confirm"]} currentStep={0} />
+      <DataGrid data={data} columns={columns} onExport={handleExport} />
     </div>
   );
 }
@@ -296,13 +303,17 @@ function UserCardWithEverything({ user, showStats, showActions, ... }) {
 // ✅ Correto: Props para variar comportamento
 function Button({ variant, size, children, ...props }) {
   // Usa Button do design system com props
-  return <Button variant={variant} size={size} {...props}>{children}</Button>;
+  return (
+    <Button variant={variant} size={size} {...props}>
+      {children}
+    </Button>
+  );
 }
 
 // ❌ Evitar: Múltiplos componentes para variações
-function PrimaryButton() { }
-function SecondaryButton() { }
-function SmallButton() { }
+function PrimaryButton() {}
+function SecondaryButton() {}
+function SmallButton() {}
 ```
 
 ### 3. Compose, Don't Modify
@@ -333,7 +344,7 @@ import {
   Table,
   Text,
   Separator,
-} from '@fabio.caffarello/react-design-system';
+} from "@fabio.caffarello/react-design-system";
 
 function Dashboard() {
   return (
@@ -364,10 +375,7 @@ function Dashboard() {
 
       {/* Data Table */}
       <Card padding="large">
-        <Table
-          data={data}
-          columns={columns}
-        />
+        <Table data={data} columns={columns} />
       </Card>
     </div>
   );

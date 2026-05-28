@@ -5,7 +5,7 @@ import { useState } from "react";
 import Switch from "./Switch";
 
 const meta: Meta<typeof Switch> = {
-  title: "Atoms/Switch",
+  title: "Primitives/Switch",
   component: Switch,
   tags: ["autodocs"],
   parameters: {

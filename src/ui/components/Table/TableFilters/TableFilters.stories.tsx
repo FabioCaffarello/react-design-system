@@ -5,7 +5,7 @@ import { useState } from "react";
 import TableFilters, { type FilterValue } from "./TableFilters";
 
 const meta: Meta<typeof TableFilters> = {
-  title: "Organisms/Table/TableFilters",
+  title: "Components/Table/TableFilters",
   component: TableFilters,
   parameters: {
     docs: {

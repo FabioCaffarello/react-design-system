@@ -53,22 +53,22 @@
    * Sharp, professional corners
    * ============================================ */
 
-  --radius-button: var(--radius-md);        /* 4px */
-  --radius-button-sm: var(--radius-sm);     /* 2px */
-  --radius-button-lg: var(--radius-lg);     /* 6px */
+  --radius-button: var(--radius-md); /* 4px */
+  --radius-button-sm: var(--radius-sm); /* 2px */
+  --radius-button-lg: var(--radius-lg); /* 6px */
 
-  --radius-input: var(--radius-md);         /* 4px */
-  --radius-input-sm: var(--radius-sm);      /* 2px */
-  --radius-input-lg: var(--radius-lg);      /* 6px */
+  --radius-input: var(--radius-md); /* 4px */
+  --radius-input-sm: var(--radius-sm); /* 2px */
+  --radius-input-lg: var(--radius-lg); /* 6px */
 
-  --radius-card: var(--radius-lg);          /* 6px */
-  --radius-card-sm: var(--radius-md);       /* 4px */
-  --radius-card-lg: var(--radius-xl);       /* 8px */
+  --radius-card: var(--radius-lg); /* 6px */
+  --radius-card-sm: var(--radius-md); /* 4px */
+  --radius-card-lg: var(--radius-xl); /* 8px */
 
-  --radius-modal: var(--radius-xl);         /* 8px */
-  --radius-dropdown: var(--radius-lg);      /* 6px */
-  --radius-popover: var(--radius-lg);       /* 6px */
-  --radius-tooltip: var(--radius-md);       /* 4px */
+  --radius-modal: var(--radius-xl); /* 8px */
+  --radius-dropdown: var(--radius-lg); /* 6px */
+  --radius-popover: var(--radius-lg); /* 6px */
+  --radius-tooltip: var(--radius-md); /* 4px */
 
   /* ============================================
    * SHADOWS
@@ -76,9 +76,12 @@
    * ============================================ */
 
   --shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-card-hover: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-dropdown: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
-  --shadow-modal: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-card-hover:
+    0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-dropdown:
+    0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+  --shadow-modal:
+    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-button: none;
   --shadow-button-hover: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 
@@ -157,7 +160,8 @@
 
   /* Slightly visible shadows in dark mode */
   --shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.2);
-  --shadow-card-hover: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+  --shadow-card-hover:
+    0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
 
   --color-border-default: var(--color-slate-700);
   --color-border-emphasis: var(--color-slate-600);

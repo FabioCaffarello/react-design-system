@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { cn } from "../../../../utils";
+import { getSpacingClass } from "../../../../tokens/spacing";
 import type { NavbarGroupProps } from "../../types";
 
 /**
@@ -36,14 +37,17 @@ export function NavbarGroup({
       {label && (
         <div
           className={cn(
-            "px-2 py-1.5 text-xs text-gray-500 uppercase tracking-wider", // py-1.5 para melhor espaçamento vertical
+            getSpacingClass("sm", "px"),
+            getSpacingClass("1.5", "py"),
+            "text-xs text-gray-500 uppercase tracking-wider",
             collapsible && "cursor-pointer hover:text-gray-700",
           )}
           onClick={collapsible ? () => setIsCollapsed(!isCollapsed) : undefined}
         >
-          <div className="flex items-center gap-1.5">
+          <div
+            className={cn("flex items-center", getSpacingClass("1.5", "gap"))}
+          >
             {" "}
-            {/* gap-1.5 para melhor espaçamento entre chevron e label */}
             {collapsible && (
               <span className="shrink-0">
                 {isCollapsed ? (
