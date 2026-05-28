@@ -2,6 +2,7 @@
 
 import type { HTMLAttributes } from "react";
 import { useTableContext } from "./TableContext";
+import { getZIndexClass } from "../../tokens/z-index";
 import TableHeaderRow from "./TableHeaderRow";
 
 export interface TableHeaderProps
@@ -23,7 +24,10 @@ export default function TableHeader({
   // columns is accessed via TableHeaderRow which uses useTableContext
 
   return (
-    <thead className={`bg-gray-50 sticky top-0 z-10 ${className}`} {...props}>
+    <thead
+      className={`bg-gray-50 sticky top-0 ${getZIndexClass("sticky")} ${className}`}
+      {...props}
+    >
       <TableHeaderRow />
     </thead>
   );

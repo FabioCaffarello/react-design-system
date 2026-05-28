@@ -4,6 +4,7 @@ import React from "react";
 import { useNavbarRequired } from "../../contexts/NavbarContext";
 import { cn } from "../../../../utils";
 import { getSpacingClass } from "../../../../tokens/spacing";
+import { getZIndexClass } from "../../../../tokens/z-index";
 import Tooltip from "../../../../primitives/Tooltip/Tooltip";
 import type { NavbarItemProps, NavbarLabelMode } from "../../types";
 
@@ -202,7 +203,7 @@ export default function NavbarItem({
           "box-border",
           "flex items-center justify-center",
           // Garantir que ícone não sobreponha label - z-index menor que label
-          effectiveLabelMode === "tooltip" ? "relative z-0" : "relative z-0",
+          `relative ${getZIndexClass("base")}`,
         )}
         style={{
           // Garantir dimensões mínimas fixas para evitar "pular"

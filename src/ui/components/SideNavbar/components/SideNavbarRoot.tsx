@@ -6,6 +6,7 @@ import { useSideNavbarThemeRequired } from "../contexts/SideNavbarThemeContext";
 import { useSideNavbarConfigRequired } from "../contexts/SideNavbarConfigContext";
 import { useSideNavbarToggleContextRequired } from "../contexts/SideNavbarToggleContext";
 import { cn } from "../../../utils";
+import { getZIndexClass } from "../../../tokens/z-index";
 import SideNavbarResizeHandle from "./SideNavbarResizeHandle";
 import SideNavbarBackdrop from "./SideNavbarBackdrop";
 import SideNavbarToggle from "./SideNavbarToggle";
@@ -121,7 +122,9 @@ export default function SideNavbarRoot({
   // IMPORTANTE: Em desktop, sempre usar 'relative' para ficar no mesmo plano do conteúdo
   // Apenas em mobile overlay usar 'fixed' para sobrepor o conteúdo
   const shouldUseFixed = isMounted && isMobileOverlay;
-  const positionClass = shouldUseFixed ? "fixed left-0 top-0 z-50" : "relative";
+  const positionClass = shouldUseFixed
+    ? `fixed left-0 top-0 ${getZIndexClass("fixed")}`
+    : "relative";
 
   return (
     <>

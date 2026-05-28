@@ -4,6 +4,7 @@ import { type HTMLAttributes } from "react";
 import { useSideNavbarStateRequired } from "../contexts/SideNavbarStateContext";
 import { useSideNavbarThemeRequired } from "../contexts/SideNavbarThemeContext";
 import { useSideNavbarConfigRequired } from "../contexts/SideNavbarConfigContext";
+import { getZIndexClass } from "../../../tokens/z-index";
 
 export interface SideNavbarBackdropProps
   extends HTMLAttributes<HTMLDivElement> {
@@ -66,7 +67,7 @@ export default function SideNavbarBackdrop({
       className={`
         fixed inset-0
         bg-black/50
-        z-40
+        ${getZIndexClass("modal-backdrop")}
         ${className}
       `}
       style={{

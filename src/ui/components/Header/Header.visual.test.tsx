@@ -109,7 +109,7 @@ describe("Header Visual Validation (TASK-039)", () => {
       );
 
       const header = container.querySelector("header");
-      expect(header).toHaveClass("sticky", "top-0", "z-50");
+      expect(header).toHaveClass("sticky", "top-0", "z-[1020]");
     });
 
     it("should apply backdrop blur when sticky", () => {
