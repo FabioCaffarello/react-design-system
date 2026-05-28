@@ -51,3 +51,63 @@ rastreável junto dos outros itens não-blockers.
 Phase 7 rodar primeiro, ela vai escrever contra a API do shim
 (currently live) e ter que ser refeita pós-consolidação. Detalhes
 no doc da Phase 9.
+
+## Coverage gap: subcomponents (SideNavbar internals)
+
+**Descoberto em:** #4, ao medir coverage pós-deleção de variants.
+**Arquivos:** `SideNavbar/components/{SidebarContent,
+SideNavbarBackdrop, SideNavbarResizeHandle, NavbarContent,
+NavbarGroup}.tsx` — todos em 0%.
+**Diagnóstico:** subcomponentes renderizados só pelo SideNavbar pai.
+Coverage zero sugere que os testes do pai não exercem esses caminhos.
+**Abordagem:** estender testes de `SideNavbar.tsx` pra exercitar os
+subcomponentes via integração — NÃO criar test files isolados pra
+cada subcomponente. Não-blocker.
+
+## Coverage gap: composition patterns
+
+**Descoberto em:** #4.
+**Arquivos:** `FormWizardPattern`, `SearchAndFilterPattern`,
+`DataTablePattern`, `LoginBox` — todos em 0%.
+**Diagnóstico:** composições inteiras de produto, encapsulam fluxos
+que valem testar isoladamente.
+**Abordagem:** test file próprio por pattern, focando no fluxo (não
+em cada subcomponente). Não-blocker.
+
+## Coverage gap: hooks com lógica pura
+
+**Descoberto em:** #4.
+**Arquivos em 0% confirmados pelo report:**
+
+- `src/ui/components/Form/useFormFieldArray.ts`
+- `src/ui/components/Toast/useToast.ts`
+- `src/ui/components/Table/useColumnResizing.ts`
+- `src/ui/components/Navigation/hooks/useNavigationActiveState.ts`
+- `src/ui/components/SideNavbar/hooks/useGroupState.ts`
+- `src/ui/components/SideNavbar/hooks/useNavbar.ts`
+- `src/ui/components/SideNavbar/hooks/useSidebar.ts`
+- `src/ui/components/SideNavbar/hooks/useSideNavbar.ts`
+
+**Diagnóstico:** lógica pura sem teste é red flag. Hooks deveriam
+ter teste unitário próprio. Nenhum dos 18 hooks do `src/ui/` tem
+arquivo `.test.ts` dedicado — os 8 acima caem em 0% porque não são
+exercitados nem indiretamente.
+**Abordagem:** test file próprio por hook usando
+`@testing-library/react` `renderHook`. **Maior prioridade dos três
+itens de coverage.**
+
+### Nota sobre o threshold em si
+
+O coverage threshold global de **80%** configurado em
+`vite.config.ts` (`statements / branches / functions / lines`)
+provavelmente merece revisão — pode estar mal calibrado pro perfil
+real do projeto. Realidade atual pós-#4: ~65% / 61% / 64% / 67%,
+com gap distribuído nos três tipos de arquivo acima, não num único
+ponto.
+
+Mono-brand solo com cobertura via integração pesada (parent
+component testa muitos subcomponentes) tende a render coverage real
+mais baixa que o número de bugs detectados sugere. Decisão entre
+**baixar threshold pra 65-70%** vs. **subir coverage real pra 80%**
+é parte do trabalho desses três itens, não pré-requisito — atacar
+um ou outro ajuda a aproximar o número.
