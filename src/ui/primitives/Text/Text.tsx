@@ -6,8 +6,69 @@ import type {
 } from "react";
 import { forwardRef } from "react";
 import { getTypographyClasses } from "../../tokens/typography";
-import { getColorClass } from "../../tokens/colors";
 import { cn } from "../../utils";
+
+type TextColorRole =
+  | "primary"
+  | "secondary"
+  | "success"
+  | "warning"
+  | "error"
+  | "info"
+  | "neutral";
+type TextColorShade = "light" | "DEFAULT" | "dark" | "contrast";
+
+// Lookup table: literal Tailwind classes so v4 can detect them at build.
+// Brand/feedback DEFAULT cells use semantic tokens; light/dark cells stay
+// primitive (no semantic equivalent for shade variants). Neutral cells
+// use the Phase 7 semantic suggestions (text-fg-{primary,secondary,...}).
+const TEXT_COLOR_CLASSES: Record<
+  TextColorRole,
+  Record<TextColorShade, string>
+> = {
+  primary: {
+    light: "text-indigo-400",
+    DEFAULT: "text-fg-brand",
+    dark: "text-indigo-600",
+    contrast: "text-fg-inverse",
+  },
+  secondary: {
+    light: "text-pink-300",
+    DEFAULT: "text-fg-brand-secondary",
+    dark: "text-pink-600",
+    contrast: "text-fg-inverse",
+  },
+  success: {
+    light: "text-green-300",
+    DEFAULT: "text-fg-success",
+    dark: "text-success-dark",
+    contrast: "text-fg-inverse",
+  },
+  warning: {
+    light: "text-yellow-300",
+    DEFAULT: "text-fg-warning",
+    dark: "text-warning-dark",
+    contrast: "text-fg-inverse",
+  },
+  error: {
+    light: "text-red-300",
+    DEFAULT: "text-fg-error",
+    dark: "text-error-dark",
+    contrast: "text-fg-inverse",
+  },
+  info: {
+    light: "text-blue-300",
+    DEFAULT: "text-fg-info",
+    dark: "text-info-dark",
+    contrast: "text-fg-inverse",
+  },
+  neutral: {
+    light: "text-fg-tertiary",
+    DEFAULT: "text-fg-secondary",
+    dark: "text-fg-primary",
+    contrast: "text-fg-inverse",
+  },
+};
 
 interface Props<T extends ElementType>
   extends HTMLAttributes<JSX.IntrinsicElements> {
@@ -24,15 +85,8 @@ interface Props<T extends ElementType>
   bold?: boolean;
   italic?: boolean;
   color?: string;
-  colorRole?:
-    | "primary"
-    | "secondary"
-    | "success"
-    | "warning"
-    | "error"
-    | "info"
-    | "neutral";
-  colorShade?: "light" | "DEFAULT" | "dark" | "contrast";
+  colorRole?: TextColorRole;
+  colorShade?: TextColorShade;
 }
 
 type ReturnProps<P extends ElementType> = Props<P> &
@@ -99,23 +153,12 @@ function TextComponent<T extends ElementType = "p">(
     classNames.push("italic");
   }
 
-  // Apply color - prefer semantic colorRole/colorShade over custom color
-  if (colorRole && colorShade) {
-    classNames.push(getColorClass(colorRole, colorShade, "text"));
-  } else if (color) {
-    // Fallback to custom color if provided
-    // Note: Custom colors should use complete class names that Tailwind can detect
-    // For dynamic colors, consider using inline styles or adding to safelist
-    // This is a limitation - we can't dynamically construct Tailwind classes
-    // For now, we'll use inline style as fallback for custom colors
-    // classNames.push(`text-${color}`); // This won't work with Tailwind v4
-    // Instead, we'll apply it as inline style if needed
-    // For now, fallback to default if custom color is provided
-    classNames.push(getColorClass("neutral", "dark", "text"));
-  } else {
-    // Default color
-    classNames.push(getColorClass("neutral", "dark", "text"));
-  }
+  // Apply color via lookup table. `color` prop is accepted for API
+  // back-compat but Tailwind v4 can't generate dynamic `text-${color}`
+  // classes, so it has no visual effect — colorRole/colorShade are
+  // the supported channel.
+  void color;
+  classNames.push(TEXT_COLOR_CLASSES[colorRole][colorShade]);
 
   return <Tag ref={ref} className={cn(...classNames, className)} {...rest} />;
 }

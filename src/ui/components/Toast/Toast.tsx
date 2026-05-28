@@ -37,11 +37,18 @@ const variantIcons = {
   info: Info,
 };
 
-const variantColors = {
-  success: "success",
-  error: "error",
-  warning: "warning",
-  info: "info",
+const variantBorderClass = {
+  success: "border-success",
+  error: "border-error",
+  warning: "border-warning",
+  info: "border-info",
+} as const;
+
+const variantTextClass = {
+  success: "text-fg-success",
+  error: "text-fg-error",
+  warning: "text-fg-warning",
+  info: "text-fg-info",
 } as const;
 
 export function Toast({
@@ -55,7 +62,6 @@ export function Toast({
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const Icon = variantIcons[toast.variant];
-  const colorRole = variantColors[toast.variant];
 
   // Auto-dismiss
   useEffect(() => {
@@ -119,13 +125,11 @@ export function Toast({
           ${getRadiusClass("lg")}
           ${getShadowClass("lg")}
           border
-          ${getColorClass(colorRole, "DEFAULT", "border")}
+          ${variantBorderClass[toast.variant]}
         `}
       >
         {/* Icon */}
-        <div
-          className={`flex-shrink-0 ${getColorClass(colorRole, "DEFAULT", "text")}`}
-        >
+        <div className={`flex-shrink-0 ${variantTextClass[toast.variant]}`}>
           <Icon className="h-5 w-5" aria-hidden="true" />
         </div>
 

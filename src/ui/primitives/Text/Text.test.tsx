@@ -51,8 +51,7 @@ describe("Text", () => {
       </Text>,
     );
     const text = container.querySelector("p");
-    // Component uses getColorClass which returns semantic color classes
-    expect(text).toHaveClass("text-red-600"); // error dark variant
+    expect(text).toHaveClass("text-error-dark");
   });
 
   it("applies custom className", () => {
