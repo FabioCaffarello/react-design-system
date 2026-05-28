@@ -6,7 +6,6 @@ import { Text } from "../../primitives";
 import { cn } from "../../utils";
 import {
   getSpacingClass,
-  getColorClass,
   getTypographySize,
   getTypographyWeightFromFontWeight,
 } from "../../tokens";
@@ -79,7 +78,7 @@ export default function EmptyState({
         className={cn(
           getTypographySize("h4"),
           getTypographyWeightFromFontWeight("semibold"),
-          getColorClass("neutral", "dark", "text"),
+          "text-fg-primary",
           getSpacingClass("sm", "mb"),
         )}
       >
@@ -90,7 +89,7 @@ export default function EmptyState({
         as="p"
         className={cn(
           getTypographySize("bodySmall"),
-          getColorClass("neutral", "DEFAULT", "text"),
+          "text-fg-secondary",
           getSpacingClass("md", "mb"),
           "max-w-sm", // Max width utility - justified as layout constraint
         )}

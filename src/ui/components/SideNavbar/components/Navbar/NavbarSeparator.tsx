@@ -26,13 +26,7 @@ export default function NavbarSeparator({
   if (orientation === "vertical") {
     return (
       <div
-        className={cn(
-          "w-px",
-          "h-6",
-          "bg-[var(--color-border)]",
-          "mx-auto",
-          className,
-        )}
+        className={cn("w-px", "h-6", "bg-line-default", "mx-auto", className)}
         role="separator"
         aria-orientation="vertical"
         {...props}
@@ -45,7 +39,7 @@ export default function NavbarSeparator({
       className={cn(
         "w-full",
         "h-px",
-        "bg-[var(--color-border)]",
+        "bg-line-default",
         "my-2", // my-2 (8px) para consistência com gap-2 usado em outros lugares
         "flex-shrink-0", // Prevenir que separator encolha
         className,
