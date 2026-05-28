@@ -28,7 +28,7 @@ describe("Label", () => {
       "block",
       "text-sm",
       "font-medium",
-      "text-gray-700",
+      "text-fg-primary",
     );
   });
 
@@ -42,7 +42,7 @@ describe("Label", () => {
     expect(label).toHaveClass(
       "after:content-['*']",
       "after:ml-0.5",
-      "after:text-red-500",
+      "after:text-fg-error",
     );
   });
 
@@ -56,7 +56,7 @@ describe("Label", () => {
     expect(label).toHaveClass(
       "after:content-['(optional)']",
       "after:ml-1",
-      "after:text-gray-400",
+      "after:text-fg-tertiary",
     );
   });
 
