@@ -84,6 +84,25 @@ Phase 7 rodar primeiro, ela vai escrever contra a API do shim
 (currently live) e ter que ser refeita pós-consolidação. Detalhes
 no doc da Phase 9.
 
+## `--color-slate-850` referenced but undefined
+
+**Descoberto em:** Phase 9, durante o rename de namespace (PASSO 3).
+**Estado:** `themes/dark.css:128` referencia `var(--color-slate-850)` na
+declaração de `--color-surface-hover-subtle` (anteriormente
+`--color-state-hover-subtle`). A escala primitiva de slate em
+`primitives/colors.css` vai de `50/100/200/.../900/950` — não há
+`slate-850`. A var resolve como `unset`, herdando o valor inicial pra
+`background-color` (transparente) ou cascateando por especificidade.
+**Por que importa:** hover-subtle no dark mode provavelmente não tem o
+visual pretendido. Fallback silencioso, fácil de não notar até alguém
+inspecionar.
+**Pré-existente, fora do escopo da Phase 9 — o rename só preservou a
+referência quebrada.**
+**Cleanup:** ou trocar pra um valor existente (`slate-800` ou
+`slate-900`, dependendo do contraste desejado com `hover` = `slate-800`)
+ou adicionar `slate-850` à escala primitiva se houver intent (Tailwind
+não tem `850` nativo, então seria token custom). PR pequeno.
+
 ## Coverage gap: subcomponents (SideNavbar internals)
 
 **Descoberto em:** #4, ao medir coverage pós-deleção de variants.
