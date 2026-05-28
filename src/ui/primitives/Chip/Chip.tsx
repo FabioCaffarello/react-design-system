@@ -2,7 +2,6 @@
 
 import { forwardRef, type ReactNode } from "react";
 import { X } from "lucide-react";
-import { getColorClass } from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getTypographySize } from "../../tokens/typography";
@@ -50,20 +49,20 @@ const chipVariants = cva(
     variants: {
       variant: {
         default: cn(
-          getColorClass("neutral", "light", "bg"),
-          getColorClass("neutral", "dark", "text"),
+          "bg-surface-muted",
+          "text-fg-primary",
           "border",
-          getColorClass("neutral", "DEFAULT", "border"),
+          "border-line-default",
         ),
         outlined: cn(
           "bg-transparent",
-          getColorClass("neutral", "dark", "text"),
+          "text-fg-primary",
           "border",
-          getColorClass("neutral", "DEFAULT", "border"),
+          "border-line-default",
         ),
         filled: cn(
           "bg-surface-brand",
-          "text-white",
+          "text-fg-inverse",
           "border",
           "border-transparent",
         ),
@@ -88,7 +87,7 @@ const chipVariants = cva(
       selected: {
         true: cn(
           "bg-surface-brand",
-          "text-white",
+          "text-fg-inverse",
           "border",
           "border-line-brand",
         ),
@@ -186,7 +185,7 @@ const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(
         onRemove && getSpacingClass("xs", "pr"),
         isInteractive &&
           !disabled &&
-          "cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2",
+          "cursor-pointer focus:outline-none focus:ring-2 focus:ring-line-focus focus:ring-offset-2",
         className,
       )}
       role={role}
@@ -224,7 +223,7 @@ const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(
             "transition-colors",
             "focus:outline-none",
             "focus:ring-2",
-            "focus:ring-indigo-500",
+            "focus:ring-line-focus",
             "focus:ring-offset-1",
           )}
           aria-label={`Remove ${accessibleLabel || "chip"}`}
