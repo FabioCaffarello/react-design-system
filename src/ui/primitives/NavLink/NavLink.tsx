@@ -94,17 +94,17 @@ const navLinkVariants = cva(
       {
         variant: "underline",
         size: "sm",
-        class: "pb-0.5",
+        class: getSpacingClass("0.5", "pb"),
       },
       {
         variant: "underline",
         size: "md",
-        class: "pb-1",
+        class: getSpacingClass("xs", "pb"),
       },
       {
         variant: "underline",
         size: "lg",
-        class: "pb-1.5",
+        class: getSpacingClass("1.5", "pb"),
       },
       {
         variant: "background",

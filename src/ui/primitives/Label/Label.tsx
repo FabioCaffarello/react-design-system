@@ -5,6 +5,7 @@ import {
   getTypographyWeight,
 } from "../../tokens/typography";
 import { getColorClass } from "../../tokens/colors";
+import { getSpacingClass } from "../../tokens/spacing";
 import { cn } from "../../utils";
 
 interface Props extends LabelHTMLAttributes<HTMLLabelElement> {
@@ -50,7 +51,7 @@ const Label = memo(
         default: "",
         required: cn(
           "after:content-['*']",
-          "after:ml-0.5", // xs spacing = 0.5 (2px)
+          `after:${getSpacingClass("0.5", "ml")}`,
           "after:text-red-500", // error DEFAULT color
         ),
         optional: cn(

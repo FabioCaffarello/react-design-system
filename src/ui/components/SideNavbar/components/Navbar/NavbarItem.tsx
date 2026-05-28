@@ -3,6 +3,7 @@
 import React from "react";
 import { useNavbarRequired } from "../../contexts/NavbarContext";
 import { cn } from "../../../../utils";
+import { getSpacingClass } from "../../../../tokens/spacing";
 import Tooltip from "../../../../primitives/Tooltip/Tooltip";
 import type { NavbarItemProps, NavbarLabelMode } from "../../types";
 
@@ -70,8 +71,8 @@ const BADGE_VARIANTS = {
  */
 const LABEL_STYLES: Record<NavbarLabelMode, string> = {
   tooltip: "", // Uses existing tooltip behavior
-  inline: "flex-row gap-2 w-full px-3",
-  below: "flex-col gap-1.5", // Aumentado de gap-1 para gap-1.5 para melhor espaçamento
+  inline: `flex-row ${getSpacingClass("sm", "gap")} w-full ${getSpacingClass("md", "px")}`,
+  below: `flex-col ${getSpacingClass("1.5", "gap")}`,
 };
 
 export default function NavbarItem({
@@ -160,7 +161,9 @@ export default function NavbarItem({
     // Remover todas as transições que possam causar movimento
     "[&>*]:!transition-none",
     "[&>*]:!transform-none",
-    effectiveLabelMode === "tooltip" ? sizeConfig.container : "px-2 py-1.5",
+    effectiveLabelMode === "tooltip"
+      ? sizeConfig.container
+      : cn(getSpacingClass("sm", "px"), getSpacingClass("1.5", "py")),
     effectiveLabelMode !== "tooltip" && LABEL_STYLES[effectiveLabelMode],
     disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
     className,

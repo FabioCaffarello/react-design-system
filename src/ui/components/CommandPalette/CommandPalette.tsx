@@ -352,7 +352,9 @@ export default function CommandPalette({
                           {item.label}
                         </div>
                         {item.description && (
-                          <div className="text-xs text-gray-500 mt-0.5">
+                          <div
+                            className={`text-xs text-gray-500 ${getSpacingClass("0.5", "mt")}`}
+                          >
                             {item.description}
                           </div>
                         )}
