@@ -5,7 +5,6 @@ import { FormProvider } from "./FormProvider";
 import type { FieldValues, UseFormReturn } from "react-hook-form";
 import { cn } from "../../utils";
 import {
-  getColorClass,
   getSpacingClass,
   getRadiusClass,
   getTypographySizeFromFontSize,
@@ -119,10 +118,10 @@ export default function Form<TFieldValues extends FieldValues = FieldValues>({
               className={cn(
                 getSpacingClass("md", "p"),
                 getTypographySizeFromFontSize("sm"),
-                getColorClass("error", "dark", "text"),
-                getColorClass("error", "light", "bg"),
+                "text-error-dark",
+                "bg-error-bg",
                 "border",
-                getColorClass("error", "DEFAULT", "border"),
+                "border-error",
                 getRadiusClass("md"),
               )}
             >
@@ -135,10 +134,10 @@ export default function Form<TFieldValues extends FieldValues = FieldValues>({
               className={cn(
                 getSpacingClass("md", "p"),
                 getTypographySizeFromFontSize("sm"),
-                getColorClass("success", "dark", "text"),
-                getColorClass("success", "light", "bg"),
+                "text-success-dark",
+                "bg-success-bg",
                 "border",
-                getColorClass("success", "DEFAULT", "border"),
+                "border-success",
                 getRadiusClass("md"),
               )}
             >
@@ -176,10 +175,10 @@ export default function Form<TFieldValues extends FieldValues = FieldValues>({
           className={cn(
             getSpacingClass("md", "p"),
             getTypographySizeFromFontSize("sm"),
-            getColorClass("error", "dark", "text"),
-            getColorClass("error", "light", "bg"),
+            "text-error-dark",
+            "bg-error-bg",
             "border",
-            getColorClass("error", "DEFAULT", "border"),
+            "border-error",
             getRadiusClass("md"),
           )}
         >
@@ -192,10 +191,10 @@ export default function Form<TFieldValues extends FieldValues = FieldValues>({
           className={cn(
             getSpacingClass("md", "p"),
             getTypographySizeFromFontSize("sm"),
-            getColorClass("success", "dark", "text"),
-            getColorClass("success", "light", "bg"),
+            "text-success-dark",
+            "bg-success-bg",
             "border",
-            getColorClass("success", "DEFAULT", "border"),
+            "border-success",
             getRadiusClass("md"),
           )}
         >

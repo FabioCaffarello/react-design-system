@@ -328,7 +328,7 @@ export default function FileUpload({
                 getColorClass("neutral", "DEFAULT", "border"),
                 getRadiusClass("md"),
                 fileUpload.error
-                  ? getColorClass("error", "light", "bg")
+                  ? "bg-error-bg"
                   : getColorClass("neutral", "light", "bg"),
               )}
             >
@@ -382,16 +382,12 @@ export default function FileUpload({
                     )}
                   >
                     <AlertCircle
-                      className={cn(
-                        "h-3",
-                        "w-3",
-                        getColorClass("error", "DEFAULT", "text"),
-                      )}
+                      className={cn("h-3", "w-3", "text-fg-error")}
                     />
                     <span
                       className={cn(
                         getTypographySizeFromFontSize("xs"),
-                        getColorClass("error", "DEFAULT", "text"),
+                        "text-fg-error",
                       )}
                     >
                       {fileUpload.error}
@@ -406,13 +402,7 @@ export default function FileUpload({
               </div>
 
               {!fileUpload.error && !showProgress && (
-                <CheckCircle2
-                  className={cn(
-                    "h-5",
-                    "w-5",
-                    getColorClass("success", "DEFAULT", "text"),
-                  )}
-                />
+                <CheckCircle2 className={cn("h-5", "w-5", "text-fg-success")} />
               )}
 
               <Button

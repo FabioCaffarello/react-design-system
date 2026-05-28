@@ -73,10 +73,10 @@ const buttonVariants = cva(
           "focus:ring-line-secondary",
         ),
         error: cn(
-          getColorClass("error", "DEFAULT", "bg"),
+          "bg-error",
           "text-fg-inverse",
           "hover:opacity-90",
-          getFocusRingClass("error", "DEFAULT"),
+          "focus:ring-error",
         ),
         outline: cn(
           "border-2",

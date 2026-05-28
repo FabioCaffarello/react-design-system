@@ -6,7 +6,7 @@ import {
   getTypographyClasses,
   getTypographySize,
 } from "../../tokens/typography";
-import { getColorClass, getFocusColorClass } from "../../tokens/colors";
+import { getColorClass } from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import { cn, cva } from "../../utils";
@@ -35,8 +35,8 @@ const HelperText = memo(function HelperText({
       cn(
         getSpacingClass("xs", "mt"),
         getTypographyClasses("caption"),
-        error && getColorClass("error", "DEFAULT", "text"),
-        success && getColorClass("success", "DEFAULT", "text"),
+        error && "text-fg-error",
+        success && "text-fg-success",
         !error && !success && getColorClass("neutral", "DEFAULT", "text"),
       ),
     [error, success],
@@ -166,15 +166,9 @@ const Input = memo(
     // Memoize focus ring colors
     const primaryFocusRing = useMemo(() => "focus:border-line-focus", []);
 
-    const errorFocusRing = useMemo(
-      () => getFocusColorClass("error", "DEFAULT", "border"),
-      [],
-    );
+    const errorFocusRing = useMemo(() => "focus:border-error", []);
 
-    const successFocusRing = useMemo(
-      () => getFocusColorClass("success", "DEFAULT", "border"),
-      [],
-    );
+    const successFocusRing = useMemo(() => "focus:border-success", []);
 
     const getFocusRingColor = useMemo(
       () => primaryFocusRing.replace("focus:border-", "focus:ring-"),
@@ -245,13 +239,13 @@ const Input = memo(
           state: {
             default: "",
             error: cn(
-              getColorClass("error", "DEFAULT", "border"),
-              getFocusColorClass("error", "DEFAULT", "border"),
+              "border-error",
+              "focus:border-error",
               getStateFocusRingColor("error"),
             ),
             success: cn(
-              getColorClass("success", "DEFAULT", "border"),
-              getFocusColorClass("success", "DEFAULT", "border"),
+              "border-success",
+              "focus:border-success",
               getStateFocusRingColor("success"),
             ),
           },

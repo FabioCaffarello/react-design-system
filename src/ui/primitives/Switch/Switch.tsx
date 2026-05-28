@@ -101,7 +101,7 @@ const Switch = memo(
           checked
             ? "bg-surface-brand"
             : getColorClass("neutral", "light", "bg"),
-          error && !checked && getColorClass("error", "DEFAULT", "border"),
+          error && !checked && "border-error",
           disabled && "opacity-50 cursor-not-allowed",
           className,
         ),
@@ -192,7 +192,7 @@ const Switch = memo(
                   getTypographySize("bodySmall"),
                   getTypographyWeight("label"),
                   error
-                    ? getColorClass("error", "DEFAULT", "text")
+                    ? "text-fg-error"
                     : getColorClass("neutral", "dark", "text"),
                   disabled ? "opacity-50" : "cursor-pointer",
                 )}
@@ -207,7 +207,7 @@ const Switch = memo(
                   getSpacingClass("xs", "mt"),
                   getTypographySize("bodySmall"),
                   error
-                    ? getColorClass("error", "DEFAULT", "text")
+                    ? "text-fg-error"
                     : getColorClass("neutral", "DEFAULT", "text"),
                 )}
               >

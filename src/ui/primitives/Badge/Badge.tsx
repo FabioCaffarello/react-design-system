@@ -94,38 +94,22 @@ const badgeVariants = cva(
       {
         variant: "success",
         style: "solid",
-        class: cn(
-          getColorClass("success", "light", "bg"),
-          getColorClass("success", "dark", "text"),
-          getColorClass("success", "DEFAULT", "border"),
-        ),
+        class: cn("bg-success-bg", "text-success-dark", "border-success"),
       },
       {
         variant: "warning",
         style: "solid",
-        class: cn(
-          getColorClass("warning", "light", "bg"),
-          getColorClass("warning", "dark", "text"),
-          getColorClass("warning", "DEFAULT", "border"),
-        ),
+        class: cn("bg-warning-bg", "text-warning-dark", "border-warning"),
       },
       {
         variant: "error",
         style: "solid",
-        class: cn(
-          getColorClass("error", "light", "bg"),
-          getColorClass("error", "dark", "text"),
-          getColorClass("error", "DEFAULT", "border"),
-        ),
+        class: cn("bg-error-bg", "text-error-dark", "border-error"),
       },
       {
         variant: "info",
         style: "solid",
-        class: cn(
-          getColorClass("info", "light", "bg"),
-          getColorClass("info", "dark", "text"),
-          getColorClass("info", "DEFAULT", "border"),
-        ),
+        class: cn("bg-info-bg", "text-info-dark", "border-info"),
       },
       {
         variant: "neutral",
@@ -150,38 +134,22 @@ const badgeVariants = cva(
       {
         variant: "success",
         style: "outline",
-        class: cn(
-          "bg-transparent",
-          getColorClass("success", "DEFAULT", "border"),
-          getColorClass("success", "DEFAULT", "text"),
-        ),
+        class: cn("bg-transparent", "border-success", "text-fg-success"),
       },
       {
         variant: "warning",
         style: "outline",
-        class: cn(
-          "bg-transparent",
-          getColorClass("warning", "DEFAULT", "border"),
-          getColorClass("warning", "DEFAULT", "text"),
-        ),
+        class: cn("bg-transparent", "border-warning", "text-fg-warning"),
       },
       {
         variant: "error",
         style: "outline",
-        class: cn(
-          "bg-transparent",
-          getColorClass("error", "DEFAULT", "border"),
-          getColorClass("error", "DEFAULT", "text"),
-        ),
+        class: cn("bg-transparent", "border-error", "text-fg-error"),
       },
       {
         variant: "info",
         style: "outline",
-        class: cn(
-          "bg-transparent",
-          getColorClass("info", "DEFAULT", "border"),
-          getColorClass("info", "DEFAULT", "text"),
-        ),
+        class: cn("bg-transparent", "border-info", "text-fg-info"),
       },
       {
         variant: "neutral",

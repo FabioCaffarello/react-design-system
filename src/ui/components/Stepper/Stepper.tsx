@@ -2,7 +2,6 @@
 
 import { useState, type ReactNode } from "react";
 import { Check } from "lucide-react";
-import { getColorClass } from "../../tokens/colors";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getRadiusClass } from "../../tokens/radius";
 import { getAnimationClass } from "../../tokens/animations";
@@ -139,11 +138,11 @@ export default function Stepper({
                       ${getAnimationClass("base")}
                       ${
                         status === "completed"
-                          ? `${getColorClass("success", "DEFAULT", "bg")} ${getColorClass("success", "DEFAULT", "border")} text-white`
+                          ? `${"bg-success"} ${"border-success"} text-white`
                           : status === "active"
                             ? `${"bg-surface-brand"} ${"border-line-brand"} text-white`
                             : status === "error"
-                              ? `${getColorClass("error", "DEFAULT", "bg")} ${getColorClass("error", "DEFAULT", "border")} text-white`
+                              ? `${"bg-error"} ${"border-error"} text-white`
                               : "bg-white border-gray-300 text-gray-400"
                       }
                       ${!allowNavigation || step.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
@@ -161,7 +160,7 @@ export default function Stepper({
                         w-0.5
                         h-12
                         mt-2
-                        ${status === "completed" ? getColorClass("success", "DEFAULT", "bg") : "bg-gray-300"}
+                        ${status === "completed" ? "bg-success" : "bg-gray-300"}
                       `}
                     />
                   )}
@@ -254,11 +253,11 @@ export default function Stepper({
                     ${getAnimationClass("base")}
                     ${
                       status === "completed"
-                        ? `${getColorClass("success", "DEFAULT", "bg")} ${getColorClass("success", "DEFAULT", "border")} text-white`
+                        ? `${"bg-success"} ${"border-success"} text-white`
                         : status === "active"
                           ? `${"bg-surface-brand"} ${"border-line-brand"} text-white`
                           : status === "error"
-                            ? `${getColorClass("error", "DEFAULT", "bg")} ${getColorClass("error", "DEFAULT", "border")} text-white`
+                            ? `${"bg-error"} ${"border-error"} text-white`
                             : "bg-white border-gray-300 text-gray-400"
                     }
                     ${!allowNavigation || step.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
@@ -293,7 +292,7 @@ export default function Stepper({
                 <div className={`flex-1 mx-2 ${getSpacingClass("base", "mx")}`}>
                   <Separator
                     className={`
-                      ${status === "completed" ? getColorClass("success", "DEFAULT", "border") : "border-gray-300"}
+                      ${status === "completed" ? "border-success" : "border-gray-300"}
                     `}
                   />
                 </div>

@@ -10,7 +10,7 @@ import {
 } from "react";
 import type { InputHTMLAttributes, ReactNode } from "react";
 import { getTypographyClasses } from "../../tokens/typography";
-import { getColorClass, getFocusColorClass } from "../../tokens/colors";
+import { getColorClass } from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import { cn } from "../../utils";
@@ -73,10 +73,7 @@ const Checkbox = memo(
     // Memoize focus ring colors
     const primaryFocusRing = useMemo(() => "focus:border-line-focus", []);
 
-    const errorFocusRing = useMemo(
-      () => getFocusColorClass("error", "DEFAULT", "border"),
-      [],
-    );
+    const errorFocusRing = useMemo(() => "focus:border-error", []);
 
     const focusRingColor = useMemo(
       () =>
@@ -102,7 +99,7 @@ const Checkbox = memo(
           "disabled:opacity-50",
           "disabled:cursor-not-allowed",
           "cursor-pointer",
-          error && getColorClass("error", "DEFAULT", "border"),
+          error && "border-error",
           className,
         ),
       [focusRingColor, error, className],
@@ -175,7 +172,7 @@ const Checkbox = memo(
               getSpacingClass("xs", "mt"),
               getTypographyClasses("caption"),
               error
-                ? getColorClass("error", "DEFAULT", "text")
+                ? "text-fg-error"
                 : getColorClass("neutral", "DEFAULT", "text"),
             )}
             role={error ? "alert" : undefined}

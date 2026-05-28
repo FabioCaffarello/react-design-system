@@ -1,5 +1,4 @@
 import type { HTMLAttributes } from "react";
-import { getColorClass } from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import { cn } from "../../utils";
@@ -14,21 +13,9 @@ export default function Info({
   ...props
 }: InfoProps) {
   const variantClasses = {
-    warning: cn(
-      getColorClass("warning", "light", "bg"),
-      getColorClass("warning", "dark", "text"),
-      getColorClass("warning", "DEFAULT", "border"),
-    ),
-    error: cn(
-      getColorClass("error", "light", "bg"),
-      getColorClass("error", "dark", "text"),
-      getColorClass("error", "DEFAULT", "border"),
-    ),
-    info: cn(
-      getColorClass("info", "light", "bg"),
-      getColorClass("info", "dark", "text"),
-      getColorClass("info", "DEFAULT", "border"),
-    ),
+    warning: cn("bg-warning-bg", "text-warning-dark", "border-warning"),
+    error: cn("bg-error-bg", "text-error-dark", "border-error"),
+    info: cn("bg-info-bg", "text-info-dark", "border-info"),
   };
 
   return (
