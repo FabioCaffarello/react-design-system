@@ -36,7 +36,6 @@
 
 ### Design Tokens
 
-- [**TOKENS_VERSIONING.md**](./TOKENS_VERSIONING.md) - Versionamento de tokens
 - [**COLOR_USAGE_GUIDE.md**](../src/ui/tokens/COLOR_USAGE_GUIDE.md) - Guia de uso de cores
 
 ### Integração
@@ -100,10 +99,6 @@ npm run test:e2e:debug           # E2E em modo debug
 npm run test:visual              # Visual regression
 ```
 
-### Migração
-
-A migração de tokens é gerenciada através da API de versioning em `src/ui/tokens/versioning.ts`.
-
 ## 📚 Por Tópico
 
 ### Para Começar
@@ -120,8 +115,7 @@ A migração de tokens é gerenciada através da API de versioning em `src/ui/to
 
 ### Para Designers
 
-1. [TOKENS_VERSIONING.md](./TOKENS_VERSIONING.md)
-2. [CATEGORIZATION_GUIDE.md](./CATEGORIZATION_GUIDE.md)
+1. [CATEGORIZATION_GUIDE.md](./CATEGORIZATION_GUIDE.md)
 
 ### Para Automação
 
@@ -142,8 +136,6 @@ A migração de tokens é gerenciada através da API de versioning em `src/ui/to
 **...otimizar performance**: [PERFORMANCE_GUIDE.md](./PERFORMANCE_GUIDE.md)
 
 **...integrar Figma**: [MCP_AUTOMATIONS.md](./MCP_AUTOMATIONS.md) (via MCP)
-
-**...migrar tokens**: [TOKENS_VERSIONING.md](./TOKENS_VERSIONING.md)
 
 **...compor componentes**: [ADVANCED_COMPOSITION.md](./ADVANCED_COMPOSITION.md)
 

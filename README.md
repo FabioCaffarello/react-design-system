@@ -300,7 +300,6 @@ See [Flow Documentation](./src/ui/organisms/Flow/Flow.mdx) for complete API refe
 ### Integration & Migration
 
 - [Figma Integration](./docs/FIGMA_INTEGRATION.md) - Figma integration guide
-- [Token Versioning](./docs/TOKENS_VERSIONING.md) - Design token versioning
 
 ### Processes
 
