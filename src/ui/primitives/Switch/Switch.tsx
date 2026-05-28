@@ -5,6 +5,7 @@ import type { InputHTMLAttributes } from "react";
 import { getColorClass, getFocusColorClass } from "../../tokens/colors";
 import { getAnimationClass } from "../../tokens/animations";
 import { getSpacingClass } from "../../tokens/spacing";
+import { getSwitchClasses } from "../../tokens/switch";
 import {
   getTypographySize,
   getTypographyWeight,
@@ -71,29 +72,8 @@ const Switch = memo(
       [description, switchId],
     );
 
-    // Memoize size configurations
-    const sizeConfig = useMemo(
-      () => ({
-        sm: {
-          track: "w-9 h-5",
-          thumb: "w-4 h-4",
-          translate: "translate-x-4",
-        },
-        md: {
-          track: "w-11 h-6",
-          thumb: "w-5 h-5",
-          translate: "translate-x-5",
-        },
-        lg: {
-          track: "w-14 h-7",
-          thumb: "w-6 h-6",
-          translate: "translate-x-7",
-        },
-      }),
-      [],
-    );
-
-    const config = useMemo(() => sizeConfig[size], [sizeConfig, size]);
+    // Component-scoped tokens (SWITCH_TOKENS) drive track/thumb/translate.
+    const config = useMemo(() => getSwitchClasses(size), [size]);
 
     // Memoize focus ring color
     const focusRingColor = useMemo(
