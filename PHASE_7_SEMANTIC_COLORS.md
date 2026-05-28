@@ -154,6 +154,30 @@ Radio/Select):**
   auxiliar / caption-like", NÃO `fg-quaternary` mesmo com o valor mais
   próximo. Papel vence shade (precedente do piloto-B, Decisão 2).
 
+**Precedentes do batch Overlay (Modal/DrawerContent/DrawerHeader/
+DrawerFooter):**
+
+- **Container de modal/popover → `bg-surface-overlay`.** Modal e Drawer
+  vivem na camada de elevação acima de `surface-base` (que é o tier de
+  conteúdo/formulário), que por sua vez vive acima de `surface-canvas`
+  (chão da página). Sistema tem hierarquia validada de três tiers:
+  `surface-canvas` → `surface-base` → `surface-overlay`. Use o tier
+  certo conforme onde o componente "flutua" na pilha visual.
+- **Magnitude de hover proporcional à proeminência do elemento.**
+  - Elemento acionável PRINCIPAL (nav item, primary button, link
+    principal): hover sobe múltiplos papéis (ex.: `fg-tertiary` →
+    `fg-primary`, salto de 3 papéis) para chamar atenção.
+  - Elemento acionável SECUNDÁRIO (close icon, dismiss, dropdown
+    chevron, tooltip trigger): hover sobe 1 papel (ex.: `fg-tertiary`
+    → `fg-secondary`) para confirmar interação sem competir por
+    atenção.
+  - Regra prática: se o usuário olha a tela buscando o elemento →
+    hover forte. Se o elemento existe para o usuário fechar/dispensar
+    algo que já encontrou → hover discreto.
+  - Casos de aplicação registrados: nav item subtle (piloto-B site
+    193, hover forte); close button Modal (Modal:155/167, hover
+    discreto).
+
 ## Mesma família da Phase 8
 
 Tokens semânticos existem mas não são consumidos. Mesma patologia,
