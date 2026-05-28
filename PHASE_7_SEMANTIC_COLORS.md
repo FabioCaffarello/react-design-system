@@ -96,6 +96,49 @@ src/ui/tokens/colors.ts`. Remover também os 4 re-exports legacy
    (eslint plugin tailwind ou regex no CI) que barre cores cruas em
    `src/ui/`, pra impedir regressão.
 
+## Heurística de tradução (registrada do piloto)
+
+Mapeamento canônico de papel visual → token semântico. Use como ponto
+de partida; o contexto do componente pode pedir desvio (registrar como
+decisão "média"/"baixa" confiança e consultar).
+
+| Papel visual                               | Token semântico                        |
+| ------------------------------------------ | -------------------------------------- |
+| title / heading                            | `text-fg-primary`                      |
+| subtitle / description                     | `text-fg-secondary`                    |
+| placeholder                                | `text-fg-placeholder`                  |
+| disabled (state, não hierarquia)           | `text-fg-disabled`                     |
+| timestamp / caption                        | `text-fg-tertiary`                     |
+| link                                       | `text-fg-link`                         |
+| error / success / warning / info message   | `text-fg-{error,success,warning,info}` |
+| brand idle (active state default)          | `text-fg-brand`                        |
+| brand emphasized (selected/active intenso) | `text-fg-brand-emphasis`               |
+| separator / divider                        | `bg-line-default`                      |
+| active item bg (neutro)                    | `bg-surface-active`                    |
+| selected item bg (brand)                   | `bg-surface-brand-muted`               |
+| hover bg (neutro mais sutil)               | `bg-surface-hover`                     |
+| focus ring                                 | `focus:ring-line-focus`                |
+| text sobre fundo colorido escuro           | `text-fg-inverse`                      |
+
+**Precedentes do piloto (registram decisões já validadas):**
+
+- **Disabled state usa `fg-disabled`, não `fg-quaternary`.** Mesmo
+  quando o shade original (slate-400) bate exato com `fg-quaternary`, o
+  papel correto é de _estado_, não de hierarquia. Aceita shift visual
+  de slate-400 → slate-300.
+- **Active brand state usa `fg-brand-emphasis`, não `fg-link`.**
+  `fg-link` é reservado para hyperlinks navegáveis; nav item ativo é
+  estado de seleção, papel distinto.
+- **Tokens novos só por papel, não por shade.** `fg-brand-emphasis`
+  preenche um papel novo (selected/active intensified). `fg-strong`
+  (slate-700) NÃO foi criado — só preencheria gap de shade entre
+  `fg-secondary` (slate-600) e `fg-primary` (slate-900) sem trazer
+  papel novo.
+- **Shifts de hue aceitos em feedback canônico.** `bg-red-500` migra
+  para `bg-error` (rose-500); `bg-green-500` migra para `bg-success`
+  (emerald-500). Sistema escolheu rose/emerald como paleta canônica de
+  feedback — manter red/green literal é inconsistência.
+
 ## Mesma família da Phase 8
 
 Tokens semânticos existem mas não são consumidos. Mesma patologia,
