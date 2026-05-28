@@ -103,6 +103,26 @@ referência quebrada.**
 ou adicionar `slate-850` à escala primitiva se houver intent (Tailwind
 não tem `850` nativo, então seria token custom). PR pequeno.
 
+## Tailwind v4 markdown auto-scan generates orphan utilities
+
+**Descoberto em:** Phase 9, durante verificação empírica do PASSO 4.
+**Estado:** Tailwind v4 auto-scan está capturando exemplos de classe
+citados em prosa nos docs `PHASE_*.md`, gerando utilities inofensivas
+mas órfãs no bundle. Ex.: após Phase 9, o storybook-static CSS contém
+`.bg-\[var\(--color-bg-base\)\]` mesmo após o rename eliminar
+`--color-bg-base` da escala — porque o doc da Phase 9 cita essa string
+em backticks como exemplo do antes da migração. Tailwind enxerga a
+string e gera o utility. A var apontada não existe mais, então
+`var(--color-bg-base)` resolve como `unset` em runtime.
+**Por que importa:** poluição silenciosa do CSS bundle. Tamanho
+desprezível mas cria ruído em auditorias futuras ("essa classe
+ainda existe? por quê?").
+**Cleanup:** configurar `@source not "*.md"` no `styles/index.css`
+(v4 suporta `@source not` pra exclusão), ou padronizar exemplos de
+classe nos docs pra usar fences que não casem com pattern Tailwind
+(ex.: envolver em `\`` invertido ou prefixar com `~`). PR pequeno
+isolado.
+
 ## Coverage gap: subcomponents (SideNavbar internals)
 
 **Descoberto em:** #4, ao medir coverage pós-deleção de variants.
