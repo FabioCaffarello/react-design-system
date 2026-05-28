@@ -88,6 +88,11 @@ export { GRADIENT_TOKENS, getGradient, getGradientClass } from "./gradients";
 export * from "./sidebar";
 export { SIDEBAR_TOKENS, getNestedIndentClass } from "./sidebar";
 
+// Switch (component-scoped tokens)
+export * from "./switch";
+export { SWITCH_TOKENS, getSwitchClasses } from "./switch";
+export type { SwitchSizeToken } from "./switch";
+
 // Tokens Factory
 export * from "./tokens.factory";
 export {

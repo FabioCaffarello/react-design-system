@@ -69,9 +69,19 @@ Spacing tokens are based on a 4px base unit, providing consistent spacing throug
 
 ### Spacing Scale
 
+The scale is based on a 4px base unit. Half-steps (`0.5`, `1.5`, `2.5`, `3.5`)
+exist to cover micro-spacing in fine UI controls (badge padding, switch
+geometry, separator thickness). Without them components would reach for raw
+Tailwind `p-1.5` / `gap-2.5` / etc. and bypass the scale.
+
+- `none` - 0px
+- `0.5` - 2px _(half-step)_
 - `xs` - 4px
+- `1.5` - 6px _(half-step)_
 - `sm` - 8px
+- `2.5` - 10px _(half-step)_
 - `md` - 12px
+- `3.5` - 14px _(half-step)_
 - `base` - 16px
 - `lg` - 24px
 - `xl` - 32px
@@ -303,6 +313,39 @@ import { getGradientClass } from "@fabio.caffarello/react-design-system";
 
 const gradientClass = getGradientClass("primary", "to-r"); // 'bg-gradient-to-r from-[...] via-[...] to-[...]'
 ```
+
+## Component-Scoped Tokens
+
+Some dimensions are anatomical to a single component and would pollute the
+global scale if added there. They live in their own token file under
+`src/ui/tokens/<component>.ts` and are exported alongside the global tokens.
+
+The rule of thumb: a value lives in the global spacing scale **only if**
+multiple components reach for it. One-off geometry (a switch's track width,
+a sidebar's nested-indent ladder) stays in component-scoped tokens.
+
+### Switch
+
+The switch's track / thumb / on-state translation per size variant.
+Values are tied to the visual anatomy of the control — not to general spacing.
+
+- `sm` — 36 × 20 track, 16 × 16 thumb, translate 16
+- `md` — 44 × 24 track, 20 × 20 thumb, translate 20
+- `lg` — 56 × 28 track, 24 × 24 thumb, translate 28
+
+```tsx
+import { getSwitchClasses } from "@fabio.caffarello/react-design-system";
+
+const { track, thumb, translate } = getSwitchClasses("md");
+// track     -> "w-11 h-6"
+// thumb     -> "w-5 h-5"
+// translate -> "translate-x-5"
+```
+
+### Sidebar
+
+See [`SIDEBAR_TOKENS`](#z-index-tokens) above — sidebar carries its own
+icon sizing, item padding, nested-indent ladder, and color states.
 
 ## Best Practices
 

@@ -7,9 +7,13 @@
 
 export type SpacingScale =
   | 0
+  | 0.5
   | 1
+  | 1.5
   | 2
+  | 2.5
   | 3
+  | 3.5
   | 4
   | 5
   | 6
@@ -61,9 +65,13 @@ export class SpacingTokenFactory {
   private static getTailwindClass(scale: SpacingScale): string {
     const tailwindMap: Record<SpacingScale, string> = {
       0: "0",
+      0.5: "0.5", // 2px — half-step, used by fine UI (badges, switches, separators)
       1: "1", // 4px
+      1.5: "1.5", // 6px — half-step
       2: "2", // 8px
+      2.5: "2.5", // 10px — half-step
       3: "3", // 12px
+      3.5: "3.5", // 14px — half-step
       4: "4", // 16px
       5: "5", // 20px
       6: "6", // 24px
@@ -89,11 +97,15 @@ export class SpacingTokenFactory {
  * Pre-defined spacing tokens
  */
 export const SPACING_TOKENS = {
-  // Micro spacing (0-12px)
+  // Micro spacing (0-14px)
   none: SpacingTokenFactory.create(0),
+  "0.5": SpacingTokenFactory.create(0.5), // 2px (half-step)
   xs: SpacingTokenFactory.create(1), // 4px
+  "1.5": SpacingTokenFactory.create(1.5), // 6px (half-step)
   sm: SpacingTokenFactory.create(2), // 8px
+  "2.5": SpacingTokenFactory.create(2.5), // 10px (half-step)
   md: SpacingTokenFactory.create(3), // 12px
+  "3.5": SpacingTokenFactory.create(3.5), // 14px (half-step)
 
   // Standard spacing (16-32px)
   base: SpacingTokenFactory.create(4), // 16px
