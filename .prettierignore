@@ -1,0 +1,17 @@
+# Build artifacts
+dist
+dist-ssr
+storybook-static
+coverage
+
+# Dependencies
+node_modules
+
+# Templates (Handlebars — not valid TS/JS)
+plop-templates
+
+# Generated
+*.log
+*storybook.log
+package-lock.json
+CHANGELOG.md

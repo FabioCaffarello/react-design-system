@@ -2,20 +2,28 @@ name: Release
 
 on:
   push:
-    branches: [main]
+    branches: [main, beta, alpha]
     paths-ignore:
       - "**.md"
       - ".github/**"
       - "docs/**"
+  workflow_dispatch:
 
 permissions:
   contents: write
+  issues: write
+  pull-requests: write
   id-token: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   release:
+    name: Semantic release
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     defaults:
       run:
         shell: bash
@@ -28,49 +36,24 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Parse additional settings
-        id: settings-parser
-        uses: christian-ci/action-yaml-github-output@v2
-        with:
-          file_path: "./.github/ci-settings.yml"
-
-      - name: Setup Node
-        uses: volta-cli/action@v4
-        with:
-          node-version: "${{ steps.settings-parser.outputs.node-version }}"
-          package-json-path: "${{ github.workspace }}/package.json"
-
-      - name: Print runtime versions
-        id: versions
-        run: |
-          echo "Node: $(node --version)"
-          echo "NPM: $(npm --version)"
-          node_ver=$(node --version)
-          node_ver_clean=${node_ver#v}
-          echo "node_version=$node_ver_clean" >> $GITHUB_OUTPUT
-
-      - name: Cache npm
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-
-
-      - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+      - name: Setup
+        uses: ./.github/actions/setup
 
       - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Run tests
-        run: |
-          npm run lint
-          npm run test
+      - name: Lint
+        run: npm run lint
 
-      - name: Build package
+      - name: Typecheck
+        run: npx tsc --noEmit -p tsconfig.json
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
         run: npm run build
 
       - name: Semantic Release
@@ -88,10 +71,9 @@ jobs:
       - name: Summary
         if: always()
         run: |
-          if [ "${{ steps.semantic-release.outputs.new_release_published }}" == "true" ]; then
-            echo "✅ New release published: ${{ steps.semantic-release.outputs.new_release_version }}"
-            echo "✅ Changelog updated"
-            echo "✅ Package published to npm"
+          if [ "${{ steps.semantic-release.outputs.new_release_published }}" = "true" ]; then
+            echo "New release published: ${{ steps.semantic-release.outputs.new_release_version }}"
+            echo "Changelog updated and package published to npm."
           else
-            echo "⏭️  No new release published"
+            echo "No new release published."
           fi

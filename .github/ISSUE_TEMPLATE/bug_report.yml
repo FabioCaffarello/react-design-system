@@ -1,0 +1,83 @@
+name: Bug report
+description: Something in the design system is broken or behaves unexpectedly.
+title: "fix: <short description>"
+labels:
+  - bug
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Please fill in as much as you can — the more
+        detail, the faster this gets fixed.
+
+  - type: input
+    id: package-version
+    attributes:
+      label: Package version
+      description: "Output of `npm ls @fabio.caffarello/react-design-system` (or the version field from package.json)."
+      placeholder: 1.10.4
+    validations:
+      required: true
+
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Which layer is affected?
+      multiple: true
+      options:
+        - primitives
+        - components
+        - layouts
+        - tokens
+        - hooks / providers
+        - tooling / CI
+        - not sure
+    validations:
+      required: true
+
+  - type: input
+    id: component
+    attributes:
+      label: Component or token name
+      placeholder: "Button, Modal, --color-surface, ..."
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe the bug in one or two paragraphs.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: Minimal repro — Storybook story, code snippet, or a link to a sandbox.
+      placeholder: |
+        1. Render `<Button loading />`
+        2. Click it
+        3. See ...
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser, OS, React version, Node version (if relevant).
+      placeholder: "Chrome 125 on macOS 15, React 19.0.0"
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
+      description: Logs, screenshots, related issues.

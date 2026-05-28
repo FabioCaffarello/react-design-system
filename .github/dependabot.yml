@@ -1,0 +1,66 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Etc/UTC
+    open-pull-requests-limit: 10
+    versioning-strategy: increase
+    commit-message:
+      prefix: build
+      prefix-development: chore
+      include: scope
+    labels:
+      - dependencies
+      - npm
+    groups:
+      storybook:
+        patterns:
+          - storybook
+          - "@storybook/*"
+          - "storybook-*"
+      testing:
+        patterns:
+          - vitest
+          - "@vitest/*"
+          - "@testing-library/*"
+          - jsdom
+          - playwright
+          - "@playwright/*"
+      linting:
+        patterns:
+          - eslint
+          - "@eslint/*"
+          - "eslint-*"
+          - typescript-eslint
+          - prettier
+      react:
+        patterns:
+          - react
+          - react-dom
+          - "@types/react"
+          - "@types/react-dom"
+          - react-hook-form
+          - "@hookform/*"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Etc/UTC
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: ci
+      include: scope
+    labels:
+      - dependencies
+      - github-actions
+    groups:
+      actions:
+        patterns:
+          - "*"

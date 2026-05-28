@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Storybook (component docs)
+    url: https://fabiocaffarello.github.io/react-design-system/
+    about: Browse components, primitives, layouts, and tokens before filing an issue.
+  - name: Discussions
+    url: https://github.com/FabioCaffarello/react-design-system/discussions
+    about: Questions, ideas, and design conversations live here — not in issues.

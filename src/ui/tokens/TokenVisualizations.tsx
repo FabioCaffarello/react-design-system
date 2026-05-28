@@ -5,7 +5,6 @@
  */
 
 import {
-  COLOR_TOKENS_LIGHT,
   SPACING_TOKENS,
   SHADOW_TOKENS,
   RADIUS_TOKENS,
@@ -14,7 +13,7 @@ import {
   OPACITY_TOKENS,
   GRADIENT_TOKENS,
 } from "./index";
-import type { ColorRole } from "./colors";
+import { COLOR_TOKENS_LIGHT, type ColorRole } from "./colors";
 
 /**
  * Color Palette Visualization

@@ -1,0 +1,82 @@
+name: Deploy Storybook to Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - ".storybook/**"
+      - "public/**"
+      - "package.json"
+      - "package-lock.json"
+      - "vite.config.ts"
+      - "tsconfig*.json"
+      - ".github/workflows/deploy-storybook.yml"
+      - ".github/actions/setup/action.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build Storybook
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      base_path: ${{ steps.pages.outputs.base_path }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Clear Storybook and Vite cache
+        run: |
+          rm -rf node_modules/.cache/storybook
+          rm -rf node_modules/.vite
+          rm -rf storybook-static
+
+      - name: Build Storybook with base path
+        env:
+          # Consumed by .storybook/main.ts viteFinal — sets Vite's `base` so the
+          # preview iframe's bundled assets resolve under the Pages subpath.
+          # The manager UI emits relative ("./") paths and works as-is.
+          STORYBOOK_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: npm run build-storybook
+
+      - name: Verify Storybook output
+        run: |
+          test -f storybook-static/index.html
+          test -f storybook-static/iframe.html
+          test -d storybook-static/assets
+          test -d storybook-static/sb-manager
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: storybook-static
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
