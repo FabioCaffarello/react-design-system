@@ -5,6 +5,7 @@ import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { useSideNavbarStateRequired } from "../contexts/SideNavbarStateContext";
 import { useSideNavbarThemeRequired } from "../contexts/SideNavbarThemeContext";
 import { useSideNavbarConfigRequired } from "../contexts/SideNavbarConfigContext";
+import { getZIndexClass, Z_INDEX_TOKENS } from "../../../tokens/z-index";
 import Tooltip from "../../../primitives/Tooltip/Tooltip";
 import type {
   SideNavbarToggleProps,
@@ -27,7 +28,7 @@ const iconSizeClasses = {
 };
 
 const positionClasses: Record<SideNavbarTogglePosition, string> = {
-  floating: "absolute z-[100]", // Right edge of navbar, vertically centered - position set via style
+  floating: `absolute ${getZIndexClass("fixed")}`, // Right edge of navbar, vertically centered - position set via style
   // micro-z: toggle above adjacent siblings in absolute corner position
   top: "absolute top-2 right-2 z-10",
   // micro-z: toggle above adjacent siblings in absolute corner position
@@ -233,7 +234,9 @@ export default function SideNavbarToggle({
             }
           : {}),
         ...(position !== "floating" ? edgeFollowingStyle : {}),
-        ...(position === "floating" ? { zIndex: 100 } : {}), // Ensure z-index is applied inline for floating position
+        ...(position === "floating"
+          ? { zIndex: Z_INDEX_TOKENS.fixed.value }
+          : {}), // Ensure z-index is applied inline for floating position
         ...style,
       }}
       aria-label={ariaLabel || defaultAriaLabel}
@@ -275,7 +278,7 @@ export default function SideNavbarToggle({
           // We compensate by adjusting the button's right value
           top: "1rem",
           transform: "translateY(-50%)",
-          zIndex: 100,
+          zIndex: Z_INDEX_TOKENS.fixed.value,
         }}
       >
         {floatingButton}
