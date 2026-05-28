@@ -149,8 +149,8 @@ export default function SideNavbarRoot({
             // Em desktop: sempre 'relative' para ficar no mesmo plano do conteúdo
             // Em mobile overlay: 'fixed' para sobrepor o conteúdo
             position: shouldUseFixed ? "fixed" : "relative",
-            backgroundColor: "var(--color-muted)",
-            borderRight: "1px solid var(--color-border)",
+            backgroundColor: "var(--color-surface-subtle)",
+            borderRight: "1px solid var(--color-line-default)",
             width: displayedWidth,
             minWidth: displayedWidth,
             transitionProperty: isResizing
