@@ -15,6 +15,7 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git rm:*)",
+      "Bash(git push:*)",
       "Read",
       "Edit",
       "Write",
@@ -23,7 +24,6 @@
     ],
     "deny": [
       "Bash(rm -rf /:*)",
-      "Bash(git push:*)",
       "Bash(npm publish:*)",
       "Read(./.env)",
       "Read(./.env.*)",
