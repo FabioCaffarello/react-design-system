@@ -270,7 +270,6 @@ See [Flow Documentation](./src/ui/organisms/Flow/Flow.mdx) for complete API refe
 ### Quick Start
 
 - [**Documentation Index**](./docs/INDEX.md) - Índice completo de documentação
-- [**Quick Start MCP**](./docs/QUICK_START_MCP.md) - Comece a usar MCPs em 5 minutos
 
 ### Core Documentation
 
@@ -282,24 +281,12 @@ See [Flow Documentation](./src/ui/organisms/Flow/Flow.mdx) for complete API refe
 - [Categorization Guide](./docs/CATEGORIZATION_GUIDE.md) - Component categorization rules
 - [Advanced Composition](./docs/ADVANCED_COMPOSITION.md) - Advanced composition patterns
 
-### MCP & Automation
-
-- [MCP Strategy](./docs/MCP_STRATEGY.md) - Complete MCP strategy
-- [MCP Setup](./docs/MCP_SETUP.md) - MCP configuration guide
-- [MCP Automations](./docs/MCP_AUTOMATIONS.md) - Available automations
-- [Figma MCP Integration](./docs/FIGMA_MCP_INTEGRATION.md) - Figma MCP server
-- [Design Systems MCP](./docs/DESIGN_SYSTEMS_MCP.md) - Design Systems MCP
-
 ### Testing & Quality
 
 - [Testing Strategy](./docs/TESTING_STRATEGY.md) - Complete testing strategy
 - [E2E Testing](./docs/E2E_TESTING.md) - End-to-end testing with Playwright
 - [Performance Guide](./docs/PERFORMANCE_GUIDE.md) - Performance optimization
 - [Visual Regression Testing](./docs/VISUAL_REGRESSION_TESTING.md) - Chromatic setup
-
-### Integration & Migration
-
-- [Figma Integration](./docs/FIGMA_INTEGRATION.md) - Figma integration guide
 
 ### Processes
 

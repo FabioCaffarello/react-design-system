@@ -2,10 +2,6 @@
 
 Índice completo de toda a documentação do React Design System.
 
-## 🚀 Quick Start
-
-- [**QUICK_START_MCP.md**](./QUICK_START_MCP.md) - Comece a usar MCPs em 5 minutos
-
 ## 📖 Documentação Principal
 
 ### Storybook
@@ -20,14 +16,6 @@
 - [**ARCHITECTURE.md**](./ARCHITECTURE.md) - Arquitetura do design system
 - [**CATEGORIZATION_GUIDE.md**](./CATEGORIZATION_GUIDE.md) - Guia de categorização
 - [**ADVANCED_COMPOSITION.md**](./ADVANCED_COMPOSITION.md) - Padrões de composição avançada
-
-### MCP (Model Context Protocol)
-
-- [**MCP_STRATEGY.md**](./MCP_STRATEGY.md) - Estratégia completa de MCPs
-- [**MCP_SETUP.md**](./MCP_SETUP.md) - Setup e configuração
-- [**MCP_AUTOMATIONS.md**](./MCP_AUTOMATIONS.md) - Automações disponíveis
-- [**DESIGN_SYSTEMS_MCP.md**](./DESIGN_SYSTEMS_MCP.md) - Design Systems MCP
-- [**MCP_EXTRACTOR.md**](./MCP_EXTRACTOR.md) - MCP Design System Extractor
 
 ### Testes
 
@@ -75,18 +63,6 @@ npm run generate-story-index      # Índice de stories
 npm run generate-context-diagram # Diagrama de contextos
 ```
 
-### MCP
-
-```bash
-npm run mcp:health-check          # Valida conexão MCP
-npm run mcp:generate-docs         # Gera documentação via MCP
-npm run mcp:figma-sync-tokens     # Sync tokens do Figma
-npm run mcp:validate-architecture # Valida arquitetura via MCP
-npm run mcp:extract-metadata      # Extrai metadata
-npm run mcp:sync-all              # Sync completo
-npm run mcp:validate-all          # Validação completa
-```
-
 ### Testes
 
 ```bash
@@ -102,9 +78,8 @@ npm run test:visual              # Visual regression
 
 ### Para Começar
 
-1. [QUICK_START_MCP.md](./QUICK_START_MCP.md)
-2. [STORYBOOK_GUIDE.md](./STORYBOOK_GUIDE.md)
-3. [ARCHITECTURE.md](./ARCHITECTURE.md)
+1. [STORYBOOK_GUIDE.md](./STORYBOOK_GUIDE.md)
+2. [ARCHITECTURE.md](./ARCHITECTURE.md)
 
 ### Para Desenvolvedores
 
@@ -116,17 +91,9 @@ npm run test:visual              # Visual regression
 
 1. [CATEGORIZATION_GUIDE.md](./CATEGORIZATION_GUIDE.md)
 
-### Para Automação
-
-1. [MCP_STRATEGY.md](./MCP_STRATEGY.md)
-2. [MCP_AUTOMATIONS.md](./MCP_AUTOMATIONS.md)
-3. [MCP_SETUP.md](./MCP_SETUP.md)
-
 ## 🔍 Busca Rápida
 
 ### Quero...
-
-**...usar MCPs**: [QUICK_START_MCP.md](./QUICK_START_MCP.md)
 
 **...entender addons**: [STORYBOOK_ADDONS.md](./STORYBOOK_ADDONS.md)
 
@@ -134,19 +101,13 @@ npm run test:visual              # Visual regression
 
 **...otimizar performance**: [PERFORMANCE_GUIDE.md](./PERFORMANCE_GUIDE.md)
 
-**...integrar Figma**: [MCP_AUTOMATIONS.md](./MCP_AUTOMATIONS.md) (via MCP)
-
 **...compor componentes**: [ADVANCED_COMPOSITION.md](./ADVANCED_COMPOSITION.md)
 
 **...validar arquitetura**: [ARCHITECTURE.md](./ARCHITECTURE.md)
 
-**...automatizar tarefas**: [MCP_AUTOMATIONS.md](./MCP_AUTOMATIONS.md)
-
 ## 📊 Estatísticas
 
 - **Documentação completa** de todos os aspectos do design system
-- **9 scripts** de automação MCP
-- **8 scripts** de geração/validação
 - **Testes E2E** configurados com Playwright
 
 ## 🆘 Precisa de Ajuda?
