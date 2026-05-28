@@ -1,0 +1,45 @@
+name: Setup
+description: >-
+  Parse .github/ci-settings.yml, set up Node via Volta, cache npm,
+  and install dependencies with the project's required flags.
+
+outputs:
+  node-version:
+    description: Node version (clean, no leading "v") as resolved from ci-settings.yml.
+    value: ${{ steps.versions.outputs.node_version }}
+
+runs:
+  using: composite
+  steps:
+    - name: Parse CI settings
+      id: settings-parser
+      uses: christian-ci/action-yaml-github-output@v2
+      with:
+        file_path: ./.github/ci-settings.yml
+
+    - name: Set up Node via Volta
+      uses: volta-cli/action@v4
+      with:
+        node-version: ${{ steps.settings-parser.outputs.node-version }}
+        package-json-path: ${{ github.workspace }}/package.json
+
+    - name: Print runtime versions
+      id: versions
+      shell: bash
+      run: |
+        echo "Node: $(node --version)"
+        echo "NPM:  $(npm --version)"
+        node_ver=$(node --version)
+        echo "node_version=${node_ver#v}" >> "$GITHUB_OUTPUT"
+
+    - name: Cache npm
+      uses: actions/cache@v4
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-
+
+    - name: Install dependencies
+      shell: bash
+      run: npm ci --legacy-peer-deps
