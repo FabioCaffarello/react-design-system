@@ -18,6 +18,7 @@ import { HeaderNavigation } from "./components/HeaderNavigation";
 import { HeaderActions } from "./components/HeaderActions";
 import { HeaderHamburger } from "./components/HeaderHamburger";
 import { HeaderMobileMenu } from "./components/HeaderMobileMenu";
+import { getZIndexClass } from "../../tokens/z-index";
 import type { HeaderProps } from "./types";
 import { cn, cva } from "../../utils";
 import { Container } from "../../layouts";
@@ -97,7 +98,7 @@ export function Header({
       <header
         className={cn(
           headerVariants({ variant }),
-          sticky && "sticky top-0 z-50",
+          sticky && `sticky top-0 ${getZIndexClass("sticky")}`,
           sticky && "backdrop-blur-sm bg-white/95",
           className,
         )}

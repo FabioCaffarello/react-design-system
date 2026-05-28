@@ -2,6 +2,7 @@
 
 import { createPortal } from "react-dom";
 import { useToastContext } from "../../providers/ToastContext";
+import { getZIndexClass } from "../../tokens/z-index";
 import { Toast } from "./Toast";
 
 export interface ToastContainerProps {
@@ -27,7 +28,7 @@ export function ToastContainer({
 
   const container = (
     <div
-      className="fixed inset-0 pointer-events-none z-50"
+      className={`fixed inset-0 pointer-events-none ${getZIndexClass("toast")}`}
       aria-live="polite"
       aria-label="Notifications"
     >

@@ -4,6 +4,7 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
+import { getZIndexClass } from "../../tokens/z-index";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   isOpen: boolean;
@@ -85,7 +86,12 @@ export default function Modal({
 
   if (!isOpen) return null;
 
-  const baseClasses = ["fixed", "inset-0", "z-50", "overflow-y-auto"];
+  const baseClasses = [
+    "fixed",
+    "inset-0",
+    getZIndexClass("modal"),
+    "overflow-y-auto",
+  ];
 
   const overlayClasses = [
     "fixed",

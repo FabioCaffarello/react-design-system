@@ -36,6 +36,38 @@ Se a intenção original do design era 18×20 (não-quadrado), reverter
 **Como decidir:** olhar o design original ou o componente renderizado;
 quadrado é mais provavelmente o intent.
 
+## NavbarItem — z-index duplicado em className e style inline
+
+**Descoberto em:** Phase 8 commit 3 (micro-z documentation).
+**Estado:** `NavbarItem.tsx` tem `"relative z-10"` no `className` E
+`zIndex: 10` no `style` inline — mesmo elemento `<span>` do label,
+mesmo valor, definição dupla. Inline `style` ganha precedência CSS,
+então o className `z-10` é no-op silencioso.
+**Por que importa:** quem chega no arquivo pra debugar stacking pode
+modificar o className achando que está mudando comportamento — e nada
+muda porque o style inline sobrescreve. Trap futuro.
+**Abordagem:** escolher UMA forma (className OU inline) e remover a
+outra. Comentários `// micro-z:` adjacentes em ambos os sítios
+referenciam mutuamente o problema, então o trap está sinalizado até a
+limpeza. Polish, não blocker.
+
+## Dialog:128 `relative z-50` é redundante
+
+**Descoberto em:** Phase 8, mapeamento do passo 2.
+**Estado:** `DialogContent.tsx:128` tem `relative z-50` no inner content,
+mas o wrapper pai (`DialogContent.tsx:109`) já está em `z-50` e o
+overlay é sibling DOM renderizado ANTES do content. Empilhamento via
+DOM order já garante content acima do overlay sem que o content
+precise de z-index próprio.
+**Por que importa:** código defensivo desnecessário; após a migração
+da Phase 8, ambos viram `getZIndexClass("modal")` — o segundo continua
+redundante, agora gritando mais alto.
+**Abordagem:** PR pequeno separado removendo o `relative
+${getZIndexClass("modal")}` da linha 128. Polish, não blocker.
+Phase 8 já fechou; agora os dois sítios estão simétricos como
+`getZIndexClass("modal")` — a redundância do interno ficou ainda
+mais visível.
+
 ## Phase 9 — Color shim consolidation
 
 **Descoberto em:** #4.

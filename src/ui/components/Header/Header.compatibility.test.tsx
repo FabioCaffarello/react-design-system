@@ -390,10 +390,10 @@ describe("Header + SideNavbar Compatibility", () => {
         </DashboardLayout>,
       );
 
-      // Header should have z-50 when sticky
+      // Header should have z-sticky (1020) when sticky
       const header = container.querySelector("header.sticky");
       if (header) {
-        expect(header).toHaveClass("z-50");
+        expect(header).toHaveClass("z-[1020]");
       }
     });
   });

@@ -147,7 +147,7 @@ describe("Header + DashboardLayout Integration (TASK-025)", () => {
 
       const header = container.querySelector("header.sticky");
       expect(header).toBeInTheDocument();
-      expect(header).toHaveClass("sticky", "top-0", "z-50");
+      expect(header).toHaveClass("sticky", "top-0", "z-[1020]");
     });
   });
 

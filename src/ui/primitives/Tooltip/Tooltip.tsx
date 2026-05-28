@@ -19,6 +19,7 @@ import { getColorClass } from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getTypographySize } from "../../tokens/typography";
+import { getZIndexClass } from "../../tokens/z-index";
 import { cn, cva } from "../../utils";
 
 export interface TooltipProps extends HTMLAttributes<HTMLDivElement> {
@@ -147,7 +148,7 @@ export default function Tooltip({
   const tooltipVariants = cva(
     cn(
       "absolute",
-      "z-50",
+      getZIndexClass("tooltip"),
       getSpacingClass("sm", "px"),
       getSpacingClass("xs", "py"),
       getTypographySize("caption"),

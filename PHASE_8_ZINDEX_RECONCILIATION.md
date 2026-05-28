@@ -1,8 +1,40 @@
 # Fase 8 — Reconciliação do sistema de z-index
 
-**Status:** planejada, adiada para depois do cleanup pós-prune.
+**Status:** ✅ concluída em 2026-05-28 na branch
+`phase/08-zindex-reconciliation`.
 **Origem:** descoberta no #3b durante a investigação do `z-[100]` do
 `SideNavbarToggle` (item B1 do plano).
+
+## Resultado
+
+- 4 commits feat/docs + 1 commit doc de pré-achados:
+  - `73523e1` docs: registro de achados pré-commit
+  - `4afc0bf` feat(tokens): consumo de z semântico de topo (Toast,
+    Tooltip, Modal/Dialog, DatePicker popover) — 7 sites
+  - `49af09b` feat(tokens): consumo estrutural (sticky, fixed,
+    modal-backdrop, base) — 5 sites + 4 testes do Header
+  - `f7e22ed` docs: 14 comentários `// micro-z:` justificando
+    exceções remanescentes
+  - `3b406c6` feat(tokens): SideNavbarToggle floating `z-[100]` →
+    `fixed` (1030) — fecha o último magic number
+- Critério de pronto atendido: zero raw `z-N`/`z-[N]` em código de
+  componente fora das 14 exceções `// micro-z:` documentadas
+  (Dropdown internals, Toggle non-floating, ResizeHandle, NavbarItem
+  label, AvatarGroup stacking, Navbar item gap).
+- Pareou com o achado da Phase 7 (consumo de cor semântica): mesma
+  patologia — tokens definidos, código não consome — agora fechado
+  no domínio Z.
+
+## Follow-ups deixados pra polish
+
+- `Dialog/DialogContent.tsx:128` `relative z-[1050]` redundante
+  (já registrado no BACKLOG).
+- `NavbarItem.tsx` z-index duplicado em className + style inline
+  (já registrado no BACKLOG; marcado com cross-refs em ambos os
+  sítios).
+- `modal-backdrop` como camada Z separada serve só 1 componente —
+  decisão futura de manter, mover pra `tokens/sidebar.ts`, ou
+  consolidar com `modal` (achado lateral abaixo).
 
 ## Problema
 
@@ -115,3 +147,39 @@ componentes consomem `text-gray-500` cru). Mesma patologia, domínio
 diferente: o design system **define** o sistema mas o código **não usa**.
 A solução é a mesma — propagar consumo, fechar com lint rule pra
 impedir regressão.
+
+## Achado lateral — `modal-backdrop` como layer Z separada é underused
+
+Durante o mapeamento (passo 2), só **um** componente em todo o
+`src/ui/` justifica `modal-backdrop` como camada Z separada:
+`SideNavbarBackdrop.tsx:69`. Modal e Dialog **não** layeram backdrop e
+content em z-indexes diferentes — ambos colocam tudo num mesmo wrapper
+`fixed inset-0 z-50`, com overlay e content como siblings DOM (overlay
+renderizado primeiro), contando com DOM order pro empilhamento.
+
+Implicação: a escala de z-index atual (9 layers, `base/dropdown/sticky/
+fixed/modal-backdrop/modal/popover/tooltip/toast`) foi desenhada com
+um perfil de uso que o código real não confirma. `modal-backdrop`
+existe como conceito mas só serve UM componente. Os outros 8 níveis
+têm 1+ consumidor real (após a migração da Phase 8).
+
+Vale revisar a escala numa próxima rodada de polish — possíveis ações:
+manter `modal-backdrop` só como reserva pro caso `SideNavbarBackdrop`,
+mover pra `tokens/sidebar.ts` se virar único uso isolado, ou consolidar
+a camada com `modal` se decidir que backdrops sempre acompanham o modal
+no mesmo z. Não bloqueia Phase 8.
+
+### Achado lateral — `zIndex: 'auto'` deliberado em NavbarItem
+
+Durante a documentação dos 14 micro-z (commit 3), apareceu um caso
+conceitualmente diferente dos demais: `NavbarItem.tsx` tem
+`zIndex: effectiveLabelMode !== "tooltip" ? 0 : "auto"` — valor não
+numérico no branch tooltip. `'auto'` é usado deliberadamente para
+**evitar criação de stacking context** quando o item está em modo
+tooltip; o tooltip portala para o `<body>` e qualquer stacking context
+intermediário no caminho do componente até a raiz pode atrapalhar o
+layering global do tooltip.
+
+Registrado como micro-z pra inventário, mas é uma técnica de
+_stacking suppression_ — não "uma layer interna". Vale categoria
+própria se a Phase 8 voltar pra revisão futura.
