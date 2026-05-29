@@ -2,7 +2,6 @@
 
 import { forwardRef, memo, useMemo, useCallback } from "react";
 import type { InputHTMLAttributes } from "react";
-import { getColorClass } from "../../tokens/colors";
 import { getAnimationClass } from "../../tokens/animations";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getSwitchClasses } from "../../tokens/switch";
@@ -98,9 +97,7 @@ const Switch = memo(
           focusRingColor,
           "focus:ring-offset-2",
           config.track,
-          checked
-            ? "bg-surface-brand"
-            : getColorClass("neutral", "light", "bg"),
+          checked ? "bg-surface-brand" : "bg-surface-muted",
           error && !checked && "border-error",
           disabled && "opacity-50 cursor-not-allowed",
           className,
@@ -114,7 +111,7 @@ const Switch = memo(
           "pointer-events-none",
           "inline-block",
           "rounded-full",
-          "bg-white",
+          "bg-surface-base",
           "shadow",
           "transform",
           getAnimationClass("base"),
@@ -191,9 +188,7 @@ const Switch = memo(
                   "block",
                   getTypographySize("bodySmall"),
                   getTypographyWeight("label"),
-                  error
-                    ? "text-fg-error"
-                    : getColorClass("neutral", "dark", "text"),
+                  error ? "text-fg-error" : "text-fg-primary",
                   disabled ? "opacity-50" : "cursor-pointer",
                 )}
               >
@@ -206,9 +201,7 @@ const Switch = memo(
                 className={cn(
                   getSpacingClass("xs", "mt"),
                   getTypographySize("bodySmall"),
-                  error
-                    ? "text-fg-error"
-                    : getColorClass("neutral", "DEFAULT", "text"),
+                  error ? "text-fg-error" : "text-fg-secondary",
                 )}
               >
                 {description}
