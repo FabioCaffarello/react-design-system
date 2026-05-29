@@ -3,7 +3,6 @@ import { Button, Input, Label } from "../../primitives";
 import { cn } from "../../utils";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getRadiusClass } from "../../tokens/radius";
-import { getColorClass } from "../../tokens/colors";
 
 interface Props extends HTMLAttributes<HTMLFormElement> {
   onForgotPasswordClick: () => void;
@@ -18,7 +17,7 @@ export default function LoginBox({
     <div
       className={cn(
         getSpacingClass("base", "p"),
-        getColorClass("neutral", "light", "bg"),
+        "bg-surface-muted",
         getRadiusClass("md"),
         className,
       )}
