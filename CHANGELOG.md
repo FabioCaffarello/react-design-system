@@ -1,3 +1,20 @@
+## [1.14.1](https://github.com/FabioCaffarello/react-design-system/compare/v1.14.0...v1.14.1) (2026-05-29)
+
+
+### 🐛 Bug Fixes
+
+* **build:** pin tsconfig rootDir to ./src for stable d.ts emission ([4c2bfa7](https://github.com/FabioCaffarello/react-design-system/commit/4c2bfa79d91204d69925796301fccb2c24e2844d))
+* **storybook:** enable GFM in MDX pipeline (install remark-gfm) ([bd6aeaa](https://github.com/FabioCaffarello/react-design-system/commit/bd6aeaab9efe69353d8dd2f9835530b56364f4ee))
+
+
+### 📝 Documentation
+
+* **legacy:** delete EventCatalog ([476115e](https://github.com/FabioCaffarello/react-design-system/commit/476115e5e7a83e736fd0f5fb616d6362385948af))
+* **legacy:** delete Performance guide, preserve actionable surface ([a7f9d12](https://github.com/FabioCaffarello/react-design-system/commit/a7f9d12520db5b503abf2110992c778c79113ed9))
+* **legacy:** delete StateCatalog ([3d32d47](https://github.com/FabioCaffarello/react-design-system/commit/3d32d476ac53f11d1d6a5f79f141fe6d66ea3f4b))
+* **legacy:** rewrite Component Composition guide ([4e87328](https://github.com/FabioCaffarello/react-design-system/commit/4e87328477472376c1ce9bda1a16a8b73ccc8c7b))
+* **legacy:** rewrite Component Status and drop custom React table ([bdd1e01](https://github.com/FabioCaffarello/react-design-system/commit/bdd1e01b250e444b6b101f48e9396b728f2bbb85))
+
 ## [1.14.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.13.1...v1.14.0) (2026-05-29)
 
 
