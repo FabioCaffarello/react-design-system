@@ -3,7 +3,7 @@
 import { memo, useMemo, useCallback } from "react";
 import type { HTMLAttributes } from "react";
 import { cn, cva } from "../../utils";
-import { getColorClass, getRadiusClass, getSpacingClass } from "../../tokens";
+import { getRadiusClass, getSpacingClass } from "../../tokens";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   variant?: "default" | "hover" | "selected";
@@ -41,10 +41,10 @@ const Card = memo(function Card({
 }: Props) {
   const cardVariants = cva(
     cn(
-      "bg-white",
+      "bg-surface-base",
       getRadiusClass("lg"),
       "border",
-      getColorClass("neutral", "DEFAULT", "border"),
+      "border-line-default",
       "shadow-sm",
     ),
     {
