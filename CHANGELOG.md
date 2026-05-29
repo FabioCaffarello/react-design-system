@@ -1,3 +1,26 @@
+## [1.12.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.11.1...v1.12.0) (2026-05-29)
+
+
+### ✨ Features
+
+* **lint:** implement no-raw-color-classes rule ([86cca43](https://github.com/FabioCaffarello/react-design-system/commit/86cca4331963ad4937b3d788b575b684f2eb9f67))
+* **lint:** scaffold local eslint plugin for color discipline ([d50dd76](https://github.com/FabioCaffarello/react-design-system/commit/d50dd76adc02d62e121f4a76304af5882f54a1dc))
+* **lint:** wire ds/no-raw-color-classes into eslint.config.js ([83041f3](https://github.com/FabioCaffarello/react-design-system/commit/83041f30f1006fd1d8b7fa9d3b4248313adc7c5d))
+
+
+### 🐛 Bug Fixes
+
+* **text:** mark Text.tsx variant colors as documented literal exceptions ([b66ef34](https://github.com/FabioCaffarello/react-design-system/commit/b66ef34c8e42fcd5ef868df3498894680555273e))
+* **tokens:** migrate SIDEBAR_TOKENS raw color classes to semantic tokens ([0692365](https://github.com/FabioCaffarello/react-design-system/commit/06923659903591244b0fe87bb4f293f313993f56))
+
+
+### 📝 Documentation
+
+* **backlog:** register Phase 12 follow-ups ([a313ae3](https://github.com/FabioCaffarello/react-design-system/commit/a313ae340f50b5f65e54daaa92b73893d22d0de8))
+* **claude/rules:** add colors.md with 9 semantic principles from Phase 7 ([bbab76e](https://github.com/FabioCaffarello/react-design-system/commit/bbab76edb672047240fcb7b9a06e9a72be5f9161))
+* **claude:** reference the enforcement layer in colors.md and CLAUDE.md ([95e3274](https://github.com/FabioCaffarello/react-design-system/commit/95e327491f8e89271d545f83236047e82d84cfd7)), closes [#3](https://github.com/FabioCaffarello/react-design-system/issues/3)
+* **claude:** update environment for post-Phase 7 vocabulary ([20b8a22](https://github.com/FabioCaffarello/react-design-system/commit/20b8a22503157270516bbefac1966a2467e5141d))
+
 ## [1.11.1](https://github.com/FabioCaffarello/react-design-system/compare/v1.11.0...v1.11.1) (2026-05-29)
 
 
