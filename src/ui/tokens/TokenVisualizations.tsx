@@ -13,15 +13,16 @@ import {
   OPACITY_TOKENS,
   GRADIENT_TOKENS,
 } from "./index";
-import { COLOR_TOKENS_LIGHT, type ColorRole } from "./colors";
+import { SEMANTIC_COLORS_LIGHT, type SemanticColorName } from "./colors/index";
 
 /**
  * Color Palette Visualization
  */
 export function ColorPalette() {
-  const colorRoles: ColorRole[] = [
+  const colorRoles: SemanticColorName[] = [
     "primary",
     "secondary",
+    "accent",
     "success",
     "warning",
     "error",
@@ -32,7 +33,7 @@ export function ColorPalette() {
   return (
     <div className="space-y-6">
       {colorRoles.map((role) => {
-        const color = COLOR_TOKENS_LIGHT[role];
+        const color = SEMANTIC_COLORS_LIGHT[role];
         return (
           <div key={role} className="space-y-2">
             <h3 className="text-sm font-semibold text-gray-700 capitalize">
