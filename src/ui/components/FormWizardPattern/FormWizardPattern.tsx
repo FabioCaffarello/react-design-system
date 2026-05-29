@@ -139,22 +139,22 @@ export function FormWizardPattern({
         />
 
         {/* Form Content */}
-        <div className="bg-white rounded-lg border p-6">
+        <div className="bg-surface-base rounded-lg border p-6">
           <Stack spacing="md">
             <div>
               <h2 className="text-2xl font-semibold">
                 {currentStepData.title}
               </h2>
               {currentStepData.description && (
-                <p className="text-gray-600 mt-1">
+                <p className="text-fg-secondary mt-1">
                   {currentStepData.description}
                 </p>
               )}
             </div>
 
             {hasError && (
-              <div className="bg-red-50 border border-red-200 rounded p-3">
-                <p className="text-sm text-red-800">
+              <div className="bg-error-bg border border-error-border rounded p-3">
+                <p className="text-sm text-fg-error">
                   Please fix the errors before proceeding.
                 </p>
               </div>
