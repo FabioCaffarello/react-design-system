@@ -297,6 +297,37 @@ Casos de aplicação:
 Aplicar em batches futuros para MultiSelect option marcada,
 Checkbox-as-row-selector, lista de items com seleção múltipla.
 
+**PRINCÍPIO — Família semântica incompleta justifica criação de token.**
+
+Quando um componente tem CVA/variants com N estados semânticos e o
+sistema de tokens cobre N-1 deles, criar o token faltante para
+completar a família é justificado mesmo se o caso parecer isolado.
+
+Critério prático (as três condições simultaneamente):
+
+- **Os outros membros da família já têm token?** Ex.: `success`,
+  `warning`, `error`, `info` → sim.
+- **O membro faltante representa estado semântico distinto?** Ex.:
+  `offline` ≠ `loading` ≠ `disabled`.
+- **Há consumidor real agora?** Ex.: Dot variant offline.
+
+Se todas as três sim, criar token completa coerência.
+
+Casos de aplicação:
+
+- `--color-status-neutral` para Dot variant offline. Família
+  `success`/`warning`/`error`/`info`/`neutral` agora completa para
+  status indicators.
+
+Contraste com **"papel vence shade"**: aqui o papel **existe**
+(status indicator) e a família está **incompleta**. Não é criar token
+para shade isolada — é fechar simetria estabelecida pelos outros
+membros.
+
+Contraste com **"exceção literal documentada"**: ali o caso é
+genuinamente isolado e não pertence a família semântica; aqui
+pertence.
+
 ## Mesma família da Phase 8
 
 Tokens semânticos existem mas não são consumidos. Mesma patologia,
