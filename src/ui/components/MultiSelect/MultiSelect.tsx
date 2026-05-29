@@ -6,7 +6,6 @@ import { Check } from "lucide-react";
 import AutocompleteList from "../Autocomplete/AutocompleteList";
 import type { AutocompleteOptionType } from "../Autocomplete/AutocompleteOption";
 import { cn } from "../../utils";
-import { getColorClass } from "../../tokens";
 import { getSpacingClass } from "../../tokens";
 import { getRadiusClass } from "../../tokens";
 
@@ -244,14 +243,6 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
 
     const shouldShowList = isOpen && (hasOptions || loading || emptyMessage);
 
-    // Get focus-within classes using primary color
-    const primaryBorderColor = "border-line-brand";
-    const primaryRingColor = getColorClass(
-      "primary",
-      "DEFAULT",
-      "border",
-    ).replace("border-", "ring-");
-
     return (
       <div ref={containerRef} className={cn("relative", className)}>
         <div
@@ -261,14 +252,14 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
             getSpacingClass("sm", "gap"),
             getSpacingClass("sm", "p"),
             "border",
-            getColorClass("neutral", "DEFAULT", "border"),
+            "border-line-default",
             getRadiusClass("md"),
             "min-h-10",
             "focus-within:outline-none",
             "focus-within:ring-2",
             "focus-within:ring-offset-2",
-            `focus-within:${primaryBorderColor}`,
-            `focus-within:${primaryRingColor}`,
+            "focus-within:border-line-brand",
+            "focus-within:ring-line-brand",
           )}
         >
           {selectedOptions.map((option) => (
