@@ -1,0 +1,51 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as SelectStories from "./Select.stories";
+
+<Meta of={SelectStories} />
+
+# Select
+
+Select renders a native `<select>` styled to match the design system, with `options`, optional `optionGroups`, label, helper text, and error / success states. Reach for it when the user picks exactly one value from a known set of more than five options — too many for Radio, too few for a search-driven combobox.
+
+## When to use
+
+- Use Select for "pick one from N" decisions where N is between roughly 5 and 50 — country, timezone, payment plan, role.
+- Use `optionGroups` to organize options into labelled clusters when the list spans multiple categories (timezones by continent, currencies by region).
+- Use `placeholder` for the initial "no selection" state so the trigger reads as a prompt before the user opens the list.
+- Use `error` + `helperText` for validation feedback — required-but-empty, server-rejected value.
+- Use `disabled` on individual options inside `options` when a value exists but is not currently selectable (sold-out tier, unavailable region).
+
+## When not to use
+
+- Use `Radio` (or a `RadioGroup`) when the option set is small enough (2 to 5) that seeing every option matters to the decision.
+- Use `Autocomplete` or a combobox when the list is large enough (more than ~50 options) that scanning becomes the user's primary cost — the search-driven control beats the scroll.
+- Use `MultiSelect` for "pick any subset" — Select forces a single value.
+- Use `Switch`, `Checkbox`, or `Radio` for binary or small-set decisions where the cost of opening a dropdown outweighs the screen space saved.
+
+## Anatomy
+
+Select renders in source order: an optional `label` (rendered as a separate `Label` primitive above), the `field trigger` (the styled native `<select>` showing the current value or placeholder), the `options list` (rendered by the browser, either flat from `options` or grouped from `optionGroups`), and an optional `helperText` row below carrying validation feedback with `role="alert"` when `error` is set.
+
+<Canvas of={SelectStories.Default} />
+
+## Examples
+
+<Canvas of={SelectStories.WithOptionGroups} />
+
+<Canvas of={SelectStories.WithError} />
+
+<Canvas of={SelectStories.Disabled} />
+
+## Props
+
+<Controls of={SelectStories.Default} />
+
+## Accessibility
+
+The native `<select>` carries the role (`combobox` in modern browsers), the keyboard behavior (Tab focuses, arrow keys move through options, Enter selects, type-ahead jumps to matching options), and the platform-native dropdown UI — assistive tech reads each option as it gains focus inside the open list.
+
+The `label` is bound via `htmlFor` so clicking it transfers focus to the select; the `helperText` and `error` regions get IDs that the select references through `aria-describedby` so screen readers announce them when focus arrives. When `error` is true, the helper region carries `role="alert"` so the validation feedback announces politely.
+
+For long lists, type-ahead matters more than visual scroll — the user types the first letter (or letters) of the option they want and the browser jumps to the first matching one. This works without any wiring on your side; do not add a custom search that disables it.
+
+When the select has no visible label (a compact filter row), set `aria-label` explicitly so the field has an accessible name. Same for selects placed next to an icon that visually labels them — the icon does not carry the accessible name.
