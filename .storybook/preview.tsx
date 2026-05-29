@@ -390,6 +390,32 @@ const preview: Preview = {
         type: "code",
       },
     },
+
+    // Opinionated sidebar order. Default alphabetical buried Design System
+    // in the middle (Components → Design System → Layouts → Primitives) and
+    // dropped first-time visitors on Components/Accordion arbitrarily. New
+    // order surfaces Design System first (with Introduction landing), then
+    // the three component layers. Within Design System, order is by
+    // consultation frequency, not alphabet.
+    options: {
+      storySort: {
+        order: [
+          "Design System",
+          [
+            "Introduction",
+            "Tokens",
+            "Guides",
+            ["Component Composition", "Performance"],
+            "Component Status",
+            "State Catalog",
+            "Event Catalog",
+          ],
+          "Primitives",
+          "Components",
+          "Layouts",
+        ],
+      },
+    },
   },
 
   // Global decorators
