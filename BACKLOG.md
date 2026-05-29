@@ -580,16 +580,20 @@ crescer pra cobrir mais auth patterns ou se deveria ser
 deprecated em favor de `Form` + composição custom. Sem urgência;
 componente atual funciona pro escopo que cobre.
 
-## Phase 13e — Retomar batteries-included CSS distribution
+## Phase 13e — closed (batteries-included CSS distribution shipped)
 
-**Descoberto em:** Phase B (interrompida) + Phase 13d.
-**Estado:** infraestrutura de exports CSS (`package.json "./styles"` + `assetFileNames` em vite.config.ts + `dist/react-design-system.css` como nome canônico) já está pronta. A Phase B implementou e validou empiricamente que `src/ui/styles-entry.ts` + entry novo em `build.lib` faz o Vite emitir o bundle CSS completo (~97 KB com tokens + dark + variants). Foi revertido porque o JS quebrava em consumer externo — bug pré-existente desde v1.0.0 que Phase 13d acabou de resolver.
-**Por que importa:** com JS funcionando pós-Phase 13d, Phase 13e é mecânico: re-aplicar o styles-entry, validar via `scripts/test-consumer.md` agora SEM erro JS, atualizar README com seção Installation & Usage.
-**Plano detalhado em commit message da Fase B (reverted)** — pode ser recuperado via `git log --all -S "styles-entry"` se necessário.
+**Status:** done. Phase 13e merged on top of Phase 13d. The distribution stack is complete for the first time in the library's 15-release history: JS works externally (Phase 13d single entry) AND CSS ships ready-to-use (Phase 13e ~97 KB bundle via `./styles` export). External consumer installs the package and gets a working themed UI in two lines with no Tailwind setup. Procedure documented in `scripts/test-consumer.md`.
+
+## Architecture decision: theme strategy is OS-aware auto-apply
+
+**Decided in:** Phase 13e (formally registered) — the behavior existed since `f56025d` (Jan 2026) but lived only as a comment in `src/styles/themes/dark.css` until Phase 13e found it the hard way.
+**Decision:** the DS applies dark mode automatically when the consumer's OS prefers dark (`@media (prefers-color-scheme: dark)`), with opt-out via `[data-theme="light"]` or `.light` on `<html>`. This is the same model used by Tailwind v4, Mantine, Chakra. Consumer can also opt in explicitly with `[data-theme="dark"]` / `.dark` regardless of OS.
+**Trade-off:** consumer that hardcodes `background: #fff` without using DS tokens looks broken on a dark-mode machine — text goes near-white, background stays white, contrast disappears. The fix is documented (use `bg-surface-canvas`) but it is a real onboarding gotcha.
+**Revisit:** only if a real consumer reports the auto-apply as friction. Default position is keep — it matches the industry default and the cost of `<html data-theme="light">` to opt out is one line.
 
 ## CI automation of external consumer validation
 
-**Descoberto em:** Phase 13d.
+**Descoberto em:** Phase 13d. Reinforced by Phase 13e (where the same procedure caught the theme-aware gotcha).
 **Estado:** procedure manual estabelecida em `scripts/test-consumer.md`. Roda quando alguém lembra; sem garantia automática contra regressão.
 **Por que importa:** o bug que `scripts/test-consumer.md` cobre passou despercebido por 14 releases e ~10 meses porque nada na CI exercitava o dist como consumer externo. Repetir não é se proteger — automatizar é.
 **Plano provável:** workflow GitHub Actions que (1) builda a library, (2) cria projeto Vite temp, (3) instala via tarball, (4) Playwright headless faz boot + render assertion + console.error counter, (5) falha o job se TypeError aparecer. Custo: ~2 min de CI por PR.
@@ -597,5 +601,10 @@ componente atual funciona pro escopo que cobre.
 ## Princípio "FINAL não é final até consumer externo validar"
 
 **Descoberto em:** Phase 13d, ao encontrar `.context/docs/SOLUCAO_ESTRUTURAL_FINAL.md` (deletado, lido via git history) que declarou "solução estrutural final" pro bug Next.js TDZ — solução que efetivamente resolveu Next.js SSR mas introduziu o bug cross-chunk que persistiu silenciosamente desde v1.0.0.
-**Estado:** lição não tem casa formal hoje. `.claude/rules/` cobre vocabulário, componentes, testes, stories, tokens — não cobre validação arquitetural de distribuição.
-**Proposta:** quando houver outra ocorrência similar (próxima decisão arquitetural ampla), criar `.claude/rules/architectural-decisions.md` (ou similar) registrando: nenhuma decisão arquitetural marcada "FINAL" sem validação contra consumer externo real. Não criar a rule antecipadamente — esperar a segunda ocorrência pra validar que o princípio é generalizável.
+**Ocorrências confirmadas (3):**
+
+1. Original — `SOLUCAO_ESTRUTURAL_FINAL.md` resolveu SSR mas quebrou consumer externo silently.
+2. Phase B (Phase 13c.7 abortada) — descoberta de que a library inteira estava broken externamente; CSS distribution work pausada para Phase 13d resolver o JS primeiro.
+3. Phase 13e — auto-theme via `@media (prefers-color-scheme: dark)` foi decisão arquitetural feita em código sem documentação pública; só apareceu como "bug visual" no test consumer porque test page hardcoded `background: #fff`. DS estava correto, decisão estava implícita.
+   **Padrão observado:** decisões arquiteturais marcadas "FINAL" ou tomadas em commits grandes ("feat: components evolution") sem documentação pública e sem validação externa silenciosamente compõem débito que aparece de forma surpreendente meses depois.
+   **Proposta:** com 3 ocorrências, princípio agora está validado o suficiente pra virar rule. Criar `.claude/rules/architectural-decisions.md` em phase próxima registrando: (a) nenhuma decisão arquitetural marcada "FINAL" sem validação contra consumer externo real; (b) decisões arquiteturais consumer-visible (theme strategy, distribution layout, exports map) devem ter documentação pública (README ou similar) sincronizada com o código.
