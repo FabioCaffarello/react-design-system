@@ -5,7 +5,7 @@ import { ChevronDown } from "lucide-react";
 import { useSideNavbarStateRequired } from "../contexts/SideNavbarStateContext";
 import { useSideNavbarThemeRequired } from "../contexts/SideNavbarThemeContext";
 import Collapsible from "../../../primitives/Collapsible/Collapsible";
-import { getSpacingClass, getColorClass } from "../../../tokens";
+import { getSpacingClass } from "../../../tokens";
 
 export interface SideNavbarGroupProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
@@ -118,7 +118,7 @@ export default function SideNavbarGroup({
   return (
     <div
       className={`
-        ${showBorder ? `border-b ${getColorClass("neutral", "DEFAULT", "border")}` : ""}
+        ${showBorder ? "border-b border-line-default" : ""}
         ${className}
       `}
       data-group-id={id}
@@ -136,7 +136,7 @@ export default function SideNavbarGroup({
             ${getSpacingClass("xs", "py")}
             text-left
             transition-colors
-            ${collapsible ? "hover:bg-neutral-100 cursor-pointer" : "cursor-default"}
+            ${collapsible ? "hover:bg-surface-active cursor-pointer" : "cursor-default"}
             disabled:cursor-default
           `}
           aria-expanded={!isCollapsed}
@@ -144,15 +144,9 @@ export default function SideNavbarGroup({
         >
           <div className="flex items-center gap-2 min-w-0">
             {icon && (
-              <span
-                className={`flex-shrink-0 ${getColorClass("neutral", "dark", "text")}`}
-              >
-                {icon}
-              </span>
+              <span className="flex-shrink-0 text-fg-primary">{icon}</span>
             )}
-            <span
-              className={`font-medium text-sm truncate ${getColorClass("neutral", "darker", "text")}`}
-            >
+            <span className="font-medium text-sm truncate text-fg-primary">
               {title}
             </span>
           </div>
@@ -170,7 +164,7 @@ export default function SideNavbarGroup({
               <ChevronDown
                 className={`
                   h-4 w-4
-                  ${getColorClass("neutral", "DEFAULT", "text")}
+                  text-fg-secondary
                   transition-transform
                   ${isCollapsed ? "-rotate-90" : "rotate-0"}
                 `}
