@@ -404,11 +404,11 @@ const preview: Preview = {
           [
             "Introduction",
             "Tokens",
+            "Providers",
+            ["AppProvider"],
             "Component Status",
             "Guides",
             ["Component Composition"],
-            "Providers",
-            ["AppProvider"],
           ],
           "Primitives",
           "Components",
