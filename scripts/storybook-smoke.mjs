@@ -16,6 +16,32 @@
 // poll ever needs to be simplified back to "just check body class",
 // don't — this dual gate is what makes the verdict mean "rendered",
 // not "Storybook picked story mode".
+//
+// Per-story allowlist:
+// Stories that intentionally emit console errors (e.g. demonstrating
+// fallback behavior with an invalid URL) declare parameters.smoke.
+// allowConsoleErrors with an array of patterns. Patterns are matched
+// against console.error text — strings via substring, "/regex/flags"
+// literals via RegExp. Matched messages move to allowedWarnings and
+// stop counting toward fail-error.
+//
+// Storybook 10 does NOT expose parameters via index.json (they can
+// be computed/functions; deliberate Storybook design). We read them
+// at runtime from window.__STORYBOOK_PREVIEW__.currentRender.story.
+// parameters, after the render-terminal check, with a small settle
+// window so late errors (e.g. <img onerror> after a network failure)
+// are captured before we finalize the verdict.
+//
+// Four cases for parameters.smoke validation, surfaced in the report:
+//   1. absent: normal story, nothing to do.
+//   2. allowConsoleErrors + reason (non-placeholder): correct use.
+//   3. allowConsoleErrors + reason missing/empty/placeholder
+//      (TODO/FIXME/tbd/wip/n/a): allowlist still applied, but story
+//      id is listed under undocumentedAllowlists — pressure without
+//      punishment.
+//   4. parameters.smoke declared but allowConsoleErrors empty/missing:
+//      story id is listed under deadSmokeConfigs — probable typo or
+//      stale config.
 
 import { createServer } from "node:http";
 import { readFile, stat, mkdir, writeFile, rm } from "node:fs/promises";
@@ -32,6 +58,7 @@ const DEFAULTS = {
   filter: null,
   port: 0,
   timeout: 5000,
+  settleMs: 150,
   baseUrl: null,
   screenshotDir: "smoke-failures",
 };
@@ -53,6 +80,7 @@ function parseArgs(argv) {
     else if (a === "--workers") args.workers = parseInt(next(), 10);
     else if (a === "--port") args.port = parseInt(next(), 10);
     else if (a === "--timeout") args.timeout = parseInt(next(), 10);
+    else if (a === "--settle-ms") args.settleMs = parseInt(next(), 10);
     else if (a === "--base-url") args.baseUrl = next();
     else if (a === "--screenshot-dir") args.screenshotDir = next();
     else if (a === "--help" || a === "-h") {
@@ -79,6 +107,8 @@ Options:
   --workers <n>            Parallel pages (default: 6)
   --port <n>               HTTP port for static server (default: random)
   --timeout <ms>           Per-story render timeout (default: 5000)
+  --settle-ms <ms>         Post-render settle window for late console
+                           errors (default: 150)
   --base-url <url>         Skip static server, use external URL
   --screenshot-dir <dir>   Where to write failure screenshots
                            (default: smoke-failures)
@@ -174,6 +204,50 @@ async function loadStoryIndex(staticDir) {
 
 function sanitizeId(id) {
   return id.replace(/[^a-zA-Z0-9._-]+/g, "_");
+}
+
+const PLACEHOLDER_REASONS = new Set(["todo", "fixme", "tbd", "wip", "n/a"]);
+
+function isPlaceholderReason(s) {
+  if (typeof s !== "string") return true;
+  const trimmed = s.trim().toLowerCase();
+  if (trimmed === "") return true;
+  return PLACEHOLDER_REASONS.has(trimmed);
+}
+
+function patternMatches(pattern, text) {
+  if (typeof pattern !== "string") return false;
+  const reMatch = pattern.match(/^\/(.+)\/([gimsuy]*)$/);
+  if (reMatch) {
+    try {
+      return new RegExp(reMatch[1], reMatch[2]).test(text);
+    } catch {
+      // malformed regex literal — fall back to substring match
+      return text.includes(pattern);
+    }
+  }
+  return text.includes(pattern);
+}
+
+// Resolves the four-case state of parameters.smoke. Used both to
+// apply the allowlist and to surface stories under
+// undocumentedAllowlists / deadSmokeConfigs in the final report.
+function evaluateSmokeConfig(smokeParam) {
+  if (!smokeParam || typeof smokeParam !== "object") {
+    return { declared: false, state: "absent", allow: [], reason: null };
+  }
+  const allow = Array.isArray(smokeParam.allowConsoleErrors)
+    ? smokeParam.allowConsoleErrors.filter((p) => typeof p === "string")
+    : [];
+  const reason =
+    typeof smokeParam.reason === "string" ? smokeParam.reason : null;
+  if (allow.length === 0) {
+    return { declared: true, state: "dead", allow: [], reason };
+  }
+  if (isPlaceholderReason(reason)) {
+    return { declared: true, state: "undocumented", allow, reason };
+  }
+  return { declared: true, state: "ok", allow, reason };
 }
 
 // Polls the page for terminal render state.
@@ -286,11 +360,62 @@ async function smokeStory(context, baseUrl, story, opts) {
     }
   }
 
-  // Promote console errors / pageerrors to failure even if Storybook
-  // declared main — a rendered overlay-free crash is still a crash.
+  // Settle window — captures late console.errors (typically <img>
+  // network failures whose onerror fires shortly after React mounts)
+  // so they are visible when we read parameters.smoke and partition.
+  // Skipped when render failed; the verdict is already terminal.
+  if (status === "pass") {
+    await page.waitForTimeout(opts.settleMs);
+  }
+
+  // Read parameters.smoke from the running preview. See header.
+  let smokeParam = null;
+  if (status === "pass") {
+    smokeParam = await page
+      .evaluate(() => {
+        try {
+          return (
+            window.__STORYBOOK_PREVIEW__?.currentRender?.story?.parameters
+              ?.smoke ?? null
+          );
+        } catch {
+          return null;
+        }
+      })
+      .catch(() => null);
+  }
+  const smokeConfig = evaluateSmokeConfig(smokeParam);
+
+  // Partition console errors against the allowlist (only if state === ok
+  // or undocumented — both apply patterns; dead has no patterns).
+  const allowedWarnings = [];
+  const remainingConsoleErrors = [];
+  for (const msg of consoleErrors) {
+    let matched = null;
+    if (
+      smokeConfig.declared &&
+      (smokeConfig.state === "ok" || smokeConfig.state === "undocumented") &&
+      smokeConfig.allow.length > 0
+    ) {
+      for (const p of smokeConfig.allow) {
+        if (patternMatches(p, msg)) {
+          matched = p;
+          break;
+        }
+      }
+    }
+    if (matched) {
+      allowedWarnings.push({ message: msg, matchedPattern: matched });
+    } else {
+      remainingConsoleErrors.push(msg);
+    }
+  }
+
+  // Promote remaining console errors / pageerrors to failure. Errors
+  // that matched the allowlist do not count.
   if (
     status === "pass" &&
-    (pageErrors.length > 0 || consoleErrors.length > 0)
+    (pageErrors.length > 0 || remainingConsoleErrors.length > 0)
   ) {
     status = "fail-error";
     detail = "console.error or pageerror after render";
@@ -321,9 +446,14 @@ async function smokeStory(context, baseUrl, story, opts) {
     detail,
     renderState: renderState ? renderState.state : null,
     errors: pageErrors.concat(
-      consoleErrors.map((m) => ({ message: m, source: "console.error" })),
+      remainingConsoleErrors.map((m) => ({
+        message: m,
+        source: "console.error",
+      })),
     ),
     warnings,
+    allowedWarnings,
+    smokeConfig,
     screenshot,
     durationMs,
   };
@@ -409,6 +539,7 @@ async function main() {
   const results = await workerPool(stories, args.workers, async (story) => {
     const r = await smokeStory(context, baseUrl, story, {
       timeout: args.timeout,
+      settleMs: args.settleMs,
       screenshotDir: screenshotAbs,
     });
     done++;
@@ -434,26 +565,56 @@ async function main() {
     return acc;
   }, {});
   const totalWarnings = results.reduce((acc, r) => acc + r.warnings.length, 0);
+  const totalAllowedWarnings = results.reduce(
+    (acc, r) => acc + r.allowedWarnings.length,
+    0,
+  );
+  const storiesWithAllowlist = results
+    .filter((r) => r.smokeConfig.state === "ok")
+    .map((r) => r.id);
+  const undocumentedAllowlists = results
+    .filter((r) => r.smokeConfig.state === "undocumented")
+    .map((r) => r.id);
+  const deadSmokeConfigs = results
+    .filter((r) => r.smokeConfig.state === "dead")
+    .map((r) => r.id);
 
   const report = {
     timestamp: new Date().toISOString(),
     baseUrl,
     workers: args.workers,
     timeoutMs: args.timeout,
+    settleMs: args.settleMs,
     durationMs: elapsed,
     total: results.length,
     passed,
     failed,
     byStatus,
     totalWarnings,
+    totalAllowedWarnings,
+    storiesWithAllowlist,
+    undocumentedAllowlists,
+    deadSmokeConfigs,
     stories: results,
   };
 
   const outAbs = resolve(ROOT, args.output);
   await writeFile(outAbs, JSON.stringify(report, null, 2));
   console.error(
-    `[smoke] done in ${(elapsed / 1000).toFixed(1)}s — passed=${passed} failed=${failed} warnings=${totalWarnings}`,
+    `[smoke] done in ${(elapsed / 1000).toFixed(1)}s — passed=${passed} failed=${failed} warnings=${totalWarnings} allowed=${totalAllowedWarnings} (${storiesWithAllowlist.length} stories)`,
   );
+  if (undocumentedAllowlists.length > 0) {
+    console.error(
+      `[smoke] ${undocumentedAllowlists.length} story/ies use smoke.allowConsoleErrors but smoke.reason is missing/placeholder:`,
+    );
+    for (const id of undocumentedAllowlists) console.error(`  - ${id}`);
+  }
+  if (deadSmokeConfigs.length > 0) {
+    console.error(
+      `[smoke] ${deadSmokeConfigs.length} story/ies declare parameters.smoke with no actionable content:`,
+    );
+    for (const id of deadSmokeConfigs) console.error(`  - ${id}`);
+  }
   console.error(`[smoke] report: ${outAbs}`);
 
   process.exit(failed === 0 ? 0 : 1);
