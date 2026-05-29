@@ -231,9 +231,9 @@ export default function DataGrid<
           items-center
           justify-between
           ${getSpacingClass("base", "p")}
-          bg-white
+          bg-surface-base
           border
-          border-gray-200
+          border-line-default
           rounded-lg
         `}
         >
