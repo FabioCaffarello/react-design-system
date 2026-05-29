@@ -51,6 +51,7 @@ npm run lint              # eslint
 npm run plop              # scaffold component
 npm run build             # library build
 npm run build-storybook   # static storybook
+npm run storybook:smoke   # runtime smoke-test all stories (Phase 13a)
 ```
 
 ## What NOT to do

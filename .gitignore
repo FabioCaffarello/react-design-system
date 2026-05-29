@@ -28,5 +28,9 @@ storybook-static
 
 coverage
 
+# Phase 13a smoke runner artifacts
+smoke-report.json
+smoke-failures/
+
 # Claude Code harness runtime
 .claude/scheduled_tasks.lock

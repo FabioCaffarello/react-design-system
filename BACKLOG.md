@@ -340,3 +340,88 @@ revisitar.
 (candidata: Phase 13+ se for sobre Storybook overhaul), checar se
 `TokenVisualizations.tsx` ainda precisa do exempt ou se pode adotar
 o vocabulário semântico junto com os outros componentes.
+
+## Storybook 8→9 deprecation warnings nas stories
+
+**Descoberto em:** Phase 13a, smoke run completo.
+**Estado:** o smoke runner capturou 9 instâncias idênticas de
+`"Accessing the Story Store is deprecated and will be removed in 9.0"`
+em 9 stories distintas. Não é código do projeto — vem de algum
+addon/dep que ainda chama a Story Store API legacy. Não bloqueia
+runtime; smoke ignora warnings.
+**Por que importa:** quando o Storybook 11+ remover a API, essas
+stories quebram. Tempo de tela próximo do upgrade major.
+**Ação:** rodar `npm run storybook:smoke` antes/depois do próximo
+upgrade major do Storybook; mapear as 9 stories via
+`smoke-report.json` (`stories[].warnings`); identificar a addon/dep
+que dispara; substituir pela API equivalente da versão alvo.
+
+## Phase 13b candidate — docs MDX per component
+
+**Descoberto em:** Phase 13a (escopo declarado: detecção, não
+documentação).
+**Estado:** stories cobrem demos visuais (variantes, estados, props).
+Falta o ladder documental "quando usar / quando não usar / anatomia
+/ variantes" em MDX por componente — o nível que dá conteúdo a um
+sidebar de Storybook como produto, não só catálogo.
+**Por que importa:** smoke garante que tudo renderiza; não diz quando
+o componente deve ser usado. Sem docs MDX, o Storybook funciona como
+referência visual mas não como guia de adoção.
+**Ação:** Phase própria. Triagem por componente: priorizar primitives
+e components de uso amplo (Button, Input, Card, Modal, Table). MDX
+puro nativo do Storybook 10 (`addon-docs`), não custom renderer.
+Smoke da Phase 13a cobre como gate de "alterar docs não quebrou
+renderização".
+
+## Phase 13c candidate — Storybook as product
+
+**Descoberto em:** Phase 13a (mesma cadeia; produto vs catálogo).
+**Estado:** o Storybook hoje é catálogo cru — sidebar agrupado por
+`Primitives/Components/Layouts`, sem theming customizado, sem landing
+page, sem navegação curatorial. Funciona como dev tool, não como
+publicação.
+**Por que importa:** se alguém entra primeira vez no Storybook
+deployado, precisa de orientação — o que é, onde começar, como
+adotar. Hoje cai direto no primeiro componente alfabético.
+**Ação:** Phase própria, **depois** de 13b (docs MDX são insumo da
+landing). Itens: theming do manager (Storybook theme override),
+landing page (Design System root), reorganização do sidebar com
+seções curatoriais, branding consistente com o monoprojeto. Smoke
+da Phase 13a continua sendo o gate.
+
+## Extrair lições metodológicas das Phases 12 e 13a
+
+**Descoberto em:** Phase 13a (terceira ocorrência do mesmo padrão).
+**Estado:** três phases recentes reforçaram a mesma regra
+metodológica — **"calibra o instrumento antes de aceitar a medição"**:
+
+- **Phase 7** — varredura BSD grep silenciosa, deixou `sidebar.ts`
+  para trás.
+- **Phase 12** — descoberta tardia do `sidebar.ts` levou a
+  reescrita da regra como custom ESLint rule (AST, não regex).
+- **Phase 13a** — race condition no detector gerou 577 falsos
+  positivos antes da calibragem; allowlist runtime exigiu pivot
+  porque a premissa do plano (`parameters` em `index.json`) era
+  impossível por design do Storybook 10.
+
+Padrão: quando o achado for grande e surpreendente, **dobrar a
+investigação do detector antes de tratar como dívida**. Quando o
+plano assume API/contrato sem probar, **probar primeiro**.
+
+**Por que importa:** o backlog já tem nota da Phase 10 prevendo
+`.claude/rules/cleanup.md` quando a próxima phase de cleanup
+acontecer (Phase 11 frente B continua adiada). 13a não foi cleanup
+em sentido estrito, mas reforça a mesma regra. Quando a próxima
+phase metodológica vier, a rule unificada precisa cobrir os 3
+casos.
+**Ação:** quando a próxima Phase de cleanup ou large refactor
+ocorrer, criar `.claude/rules/cleanup.md` (ou
+`.claude/rules/large-refactors.md`) com, no mínimo:
+
+- A armadilha `--include='{ts,tsx}'` em BSD grep (Phase 7).
+- A regra "se a varredura está silenciosa demais, suspeite do
+  grep, não da limpeza" (Phase 7 → 12).
+- A regra "calibra detector, não componente" — falsos positivos
+  são mais perigosos que falsos negativos (Phase 13a).
+- A regra "probe antes de codar contra premissa de API/contrato"
+  (Phase 13a allowlist).
