@@ -4,7 +4,7 @@
  * Storybook stories for the Navigation component.
  */
 
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Navigation } from "./Navigation";
 import type { NavItem } from "./types";
 import { Home, Settings, User, FileText, Bell } from "lucide-react";

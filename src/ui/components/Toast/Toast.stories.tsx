@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
-import { fn } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, userEvent, within, waitFor } from "storybook/test";
+import { fn } from "storybook/test";
 import { ToastContainer, useToast } from "./index";
 import { ToastProvider } from "../../providers/ToastProvider";
 import { Button } from "../../primitives";

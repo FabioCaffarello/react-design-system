@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { userEvent, within, waitFor } from "storybook/test";
 import { useState } from "react";
 import Dropdown from "./Dropdown";
 import { Button } from "../../primitives";

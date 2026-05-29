@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { expect, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, within, waitFor } from "storybook/test";
 import { DataTablePattern, type DataTableColumn } from "./DataTablePattern";
 import { Button } from "../../primitives";
 

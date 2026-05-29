@@ -50,8 +50,8 @@ Design System/
 
 ```tsx
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { fn } from '@storybook/test';
-import { expect, userEvent, within } from '@storybook/test';
+import { fn } from 'storybook/test';
+import { expect, userEvent, within } from 'storybook/test';
 import Component from './Component';
 
 // A página de docs vem de um Component.mdx irmão, anexado via
@@ -222,7 +222,7 @@ export const Accessibility: Story = {
 ### Eventos não aparecem no Actions panel
 
 - Certifique-se de usar `action: 'eventName'` no argTypes
-- Use `fn()` do `@storybook/test` para handlers
+- Use `fn()` do `storybook/test` para handlers
 
 ### Play functions não executam
 

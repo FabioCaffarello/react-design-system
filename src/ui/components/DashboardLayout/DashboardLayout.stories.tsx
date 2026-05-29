@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { expect, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, within, waitFor } from "storybook/test";
 import { DashboardLayout } from "./DashboardLayout";
 import { Button, Text } from "../../primitives";
 import { SideNavbar } from "../../components";
