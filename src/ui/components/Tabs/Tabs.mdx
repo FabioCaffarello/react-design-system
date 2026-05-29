@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as TabsStories from "./Tabs.stories";
+
+<Meta of={TabsStories} />
+
+# Tabs
+
+Tabs renders a row (or column) of triggers that switch between sibling content panels in the same page region. Reach for it when the user needs to compare or jump between alternative views of the same data — settings panels, profile sections, log filters, mode toggles inside a card.
+
+## When to use
+
+- Use Tabs to organize sibling views of one parent area — account profile / preferences / billing in a settings page, table / chart / map for the same dataset, code / preview / output for an editor.
+- Use `orientation="horizontal"` (default) for general content with enough horizontal room; `orientation="vertical"` for sidebars or long lists of tabs that would not fit horizontally.
+- Use `activationMode="manual"` (Tab + Enter to select) instead of the default automatic activation when each tab's content is expensive to render and you do not want arrow-key navigation to trigger expensive switches.
+- Use controlled mode (`value` + `onValueChange`) when external state must drive the active tab — deep links to a specific tab, syncing across instances.
+
+## When not to use
+
+- Use `Accordion` when the user benefits from seeing multiple expanded panels at once — Tabs is single-open by construction.
+- Use a route-driven layout when each tab is a distinct page with its own URL and history — Tabs stays inside one page surface.
+- Use `Toggle` or `Switch` for binary on / off — Tabs is for N-way navigation between content views.
+- Avoid Tabs when the user almost always needs all the content — stacking sections directly reads cleaner than forcing the user to click between them.
+
+## Anatomy
+
+Tabs renders via a compound API: the root `Tabs` mounts a `TabsProvider` carrying state and ARIA wiring, `Tabs.List` is the wrapper for the trigger row with `role="tablist"`, each `Tabs.Trigger` is a `<button role="tab">` representing one selectable tab, and each `Tabs.Content` is a `<div role="tabpanel">` containing the panel for one tab's value. Triggers and content are paired by matching `value` strings; the provider routes the active value between them.
+
+<Canvas of={TabsStories.Default} />
+
+## Examples
+
+<Canvas of={TabsStories.Vertical} />
+
+<Canvas of={TabsStories.WithDisabledTab} />
+
+<Canvas of={TabsStories.Controlled} />
+
+## Props
+
+<Controls of={TabsStories.Default} />
+
+## Accessibility
+
+Tabs implements the WAI-ARIA Tabs pattern. The `Tabs.List` carries `role="tablist"`, each `Tabs.Trigger` is `role="tab"` with `aria-selected` reflecting the active tab and `aria-controls` pointing at the corresponding `Tabs.Content`'s `id`. Each `Tabs.Content` carries `role="tabpanel"` and `aria-labelledby` pointing back at its trigger.
+
+Keyboard navigation follows the WAI pattern: Tab moves focus to the active trigger; arrow keys (left/right for horizontal, up/down for vertical) move between triggers and — in `activationMode="automatic"` (the default) — activate the focused tab in one motion. In `activationMode="manual"`, the user presses Enter or Space to activate; arrow keys only move focus. Home and End jump to the first / last trigger.
+
+When a tab is `disabled`, focus skips over it during arrow-key navigation but the trigger is still in the DOM and can be re-enabled at runtime. The disabled state is announced by screen readers.
+
+Only the active `Tabs.Content` renders by default — inactive panels are absent from the DOM, so focus management stays simple and initial render cost stays low.
+
+For accessible labeling, set `aria-label` on the `Tabs.List` describing the question the tabs answer ("View mode", "Settings section") — without it, screen readers announce "tab list" with no further context.

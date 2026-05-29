@@ -1,0 +1,48 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as HeaderStories from "./Header.stories";
+
+<Meta of={HeaderStories} />
+
+# Header
+
+Header renders the application's top chrome — logo, primary navigation, action area, and a responsive mobile menu — using a compound API so the consumer composes the slots they need without inheriting the ones they don't. Reach for it as the topmost element of any application shell.
+
+## When to use
+
+- Use Header as the top-of-page chrome for any product surface — the brand, the primary nav, and the user / account / action affordances live here.
+- Use `Header.Logo` for the brand mark (linked to home), `Header.Navigation` for the primary nav links, `Header.Actions` for sign-in / account / shortcut affordances, `Header.Hamburger` + `Header.MobileMenu` for the responsive collapsed state.
+- Use `variant="elevated"` to add a subtle shadow when the page scrolls beneath; `variant="bordered"` for a flat divider; `default` for no separation when the surface immediately below carries its own contrast.
+- Use `sticky` so the header stays visible during scroll; the component handles the `z-index` correctly via the design tokens.
+- Use `bare` when Header lives inside `DashboardLayout` and the layout owns the wrapping `<header>` element.
+
+## When not to use
+
+- Use `PageHeader` for the in-page heading of a content area (title, breadcrumb, primary actions); PageHeader sits inside the page, Header sits above it.
+- Use `SideNavbar` for vertical nav rails — Header is horizontal chrome.
+- Use a custom layout when the app shell has unusual chrome (no nav, no actions); avoid stretching Header to surfaces it was not designed for.
+
+## Anatomy
+
+Header renders in source order via a compound API: the outer `<header>` element (or a bare `<div>` when `bare`) wraps a row composed of `Header.Logo` (the brand mark, typically linked to home), `Header.Navigation` (the primary horizontal nav, hidden on mobile breakpoints), `Header.Actions` (the right-aligned account / shortcut area), `Header.Hamburger` (the mobile toggle button that opens the responsive menu, visible only on mobile breakpoints), and `Header.MobileMenu` (the panel that opens beneath the header on mobile, containing the collapsed nav + actions). Compound parts read context from `HeaderProvider`, which the root Header mounts automatically.
+
+<Canvas of={HeaderStories.Default} />
+
+## Examples
+
+<Canvas of={HeaderStories.WithNavigation} />
+
+<Canvas of={HeaderStories.Complete} />
+
+## Props
+
+<Controls of={HeaderStories.Default} />
+
+## Accessibility
+
+Header renders a native `<header>` landmark (or a bare wrapper when `bare`), so assistive tech recognises it as the page's banner region and exposes it via the landmarks rotor. The primary navigation inside should be wrapped in `<nav aria-label="Primary">` (or whatever name fits the role) so the rotor lists it alongside the page's other navigation landmarks.
+
+`Header.Hamburger` is a native `<button>` with `aria-controls` pointing at the mobile menu's `id` and `aria-expanded` reflecting the open/closed state — assistive tech announces the toggle state on focus. `Header.MobileMenu` is hidden via `display: none` (not `visibility: hidden`) when closed so its content is removed from the tab order until the user opens it.
+
+When `sticky`, the header stays in the document flow visually but the page below it can scroll under it — `aria-current` on the active nav link still reflects the current page, which the screen reader announces alongside the link name.
+
+For the logo's accessible name, ensure either the `Header.Logo` content has a visible text label (announced naturally) or — if the logo is image-only — pass an `aria-label` (or `alt` on the inner `<img>`) describing the brand.
