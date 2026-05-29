@@ -254,3 +254,89 @@ todos os modos, senão perdem a função.
 **Consumidores migrados (commit 39):** Modal:99, DrawerContent:86,
 CommandPalette:197, SideNavbarBackdrop:69 (descoberto durante a
 migração — não estava no inventário original deste item) e Chip:220.
+
+## Re-auditar escopo de cor da Phase 7 com idiom de grep correto
+
+**Descoberto em:** Phase 12, ao implementar `ds/no-raw-color-classes`.
+**Estado:** A varredura original da Phase 7 provavelmente usou
+`grep --include='*.{ts,tsx}'`, idiom que NÃO expande chaves em BSD grep
+(default do macOS) — o flag trata `*.{ts,tsx}` como pattern literal,
+casando zero arquivos. `src/ui/tokens/sidebar.ts` (arquivo `.ts`)
+escapou exatamente por isso: 8 raw color classes consumidas
+indiretamente via `export *` e descobertas apenas quando a ESLint rule
+varreu por AST.
+**Por que importa:** se sidebar.ts escapou, outros `.ts` podem ter
+escapado também. A rule do Phase 12 fecha o buraco de hoje em diante,
+mas o débito histórico permanece em arquivos que a rule não scaneia
+(ex.: utils/, providers/ se algum tiver classes inline em strings).
+**Ação:** rodar uma única vez
+
+```sh
+find src -type f \( -name '*.ts' -o -name '*.tsx' \) \
+  | xargs grep -lE '\b(text|bg|border|fill|stroke)-(gray|slate|zinc|red|green|blue|yellow|orange|pink|indigo|violet|cyan|emerald|amber|rose|sky|fuchsia|purple|teal|lime)-[0-9]+\b'
+```
+
+Listar os hits, classificar (legitimate exception / dead code /
+migration target) e fechar item-a-item. PR pequeno, escopo bounded
+pelos hits encontrados.
+
+## Documentar a armadilha BSD vs GNU `grep --include`
+
+**Descoberto em:** Phase 12 (mesmo achado do item anterior).
+**Estado:** Não existe rule/skill no `.claude/` dedicada a metodologia
+de cleanup/audit. A armadilha do `--include='*.{ts,tsx}'` é o tipo de
+coisa que vai morder de novo em qualquer phase de varredura.
+**Por que importa:** Phase 11 estabeleceu `.claude/rules/colors.md`
+como source-of-truth do vocabulário; uma `.claude/rules/cleanup.md`
+(ou `large-refactors.md`) cumpriria papel análogo para metodologia de
+sweep. Phase 12 é o segundo exemplo concreto de phase de cleanup
+(Phase 7 foi o primeiro); um terceiro vai aparecer.
+**Ação quando próxima phase de cleanup acontecer:** criar
+`.claude/rules/cleanup.md` com, no mínimo:
+
+- A armadilha `--include='{ts,tsx}'` em BSD grep — usar ripgrep, ou
+  GNU grep, ou `find + xargs grep`, ou múltiplos `--include` separados.
+- Princípio: "se a varredura está silenciosa demais, suspeite do grep,
+  não da limpeza" (lição direta da Phase 7 → Phase 12).
+- Quando promover uma varredura recorrente a check automatizado
+  (ESLint rule, hook, CI step) vs deixar como ad-hoc.
+
+## Auditar cor crua em `*.stories.tsx` (~586 hits)
+
+**Descoberto em:** Phase 12 PASSO 1 (investigação).
+**Estado:** A varredura encontrou 586 ocorrências de raw Tailwind
+color classes em arquivos `.stories.tsx` (vs 0 em `.test.tsx`, 43 em
+componentes — esses últimos resolvidos em Phase 12). Stories foram
+deliberadamente excluídos da `ds/no-raw-color-classes` rule porque o
+volume sugere mistura: alguns são demos intencionais da escala
+primitiva, outros são cor crua descuidada que sobrou de iterações
+anteriores.
+**Por que importa:** stories são a interface de documentação do design
+system; cor crua dentro de stories que NÃO está demonstrando a escala
+primitiva ensina o vocabulário errado a quem lê o Storybook. Também
+infla o `wc -l` "dívida de cor" do projeto sem servir propósito.
+**Ação:** Phase candidate. Triagem arquivo-a-arquivo:
+
+- Demos intencionais (`Tokens.mdx`, `Badge.stories.tsx` mostrando
+  pink-300 com legenda) → manter, marcar com `// exception:`.
+- Cor crua acidental → migrar pra semantic ou substituir por demo
+  abstrata.
+- Resultado final: rule pode ser estendida pra cobrir stories também,
+  com lista curta de exempt files.
+
+## Revisitar exempt de `TokenVisualizations.tsx`
+
+**Descoberto em:** Phase 12 (decisão de design ao escopar a rule).
+**Estado:** `src/ui/tokens/TokenVisualizations.tsx` foi explicitamente
+exempt da `ds/no-raw-color-classes` rule via `eslint.config.js` porque
+o arquivo IS o catálogo da escala primitiva — renderizar cada token
+exige nomeá-lo. Comentário no eslint config documenta o motivo.
+**Por que importa:** se o design system documentation for reescrito
+no futuro (Storybook MDX nativo, geração automática de cards de token
+a partir do CSS `@theme`, etc.), o arquivo pode deixar de precisar
+inline as classes primitivas. O exempt vira folclore se ninguém
+revisitar.
+**Ação:** quando uma Phase de docs do design system acontecer
+(candidata: Phase 13+ se for sobre Storybook overhaul), checar se
+`TokenVisualizations.tsx` ainda precisa do exempt ou se pode adotar
+o vocabulário semântico junto com os outros componentes.

@@ -27,36 +27,44 @@ const TEXT_COLOR_CLASSES: Record<
   Record<TextColorShade, string>
 > = {
   primary: {
+    // exception: variant color — no semantic equivalent (Principle 3, .claude/rules/colors.md)
     light: "text-indigo-400",
     DEFAULT: "text-fg-brand",
+    // exception: variant color — no semantic equivalent (Principle 3, .claude/rules/colors.md)
     dark: "text-indigo-600",
     contrast: "text-fg-inverse",
   },
   secondary: {
+    // exception: variant color — no semantic equivalent (Principle 3, .claude/rules/colors.md)
     light: "text-pink-300",
     DEFAULT: "text-fg-brand-secondary",
+    // exception: variant color — no semantic equivalent (Principle 3, .claude/rules/colors.md)
     dark: "text-pink-600",
     contrast: "text-fg-inverse",
   },
   success: {
+    // exception: variant color — no semantic equivalent (Principle 3, .claude/rules/colors.md)
     light: "text-green-300",
     DEFAULT: "text-fg-success",
     dark: "text-success-dark",
     contrast: "text-fg-inverse",
   },
   warning: {
+    // exception: variant color — no semantic equivalent (Principle 3, .claude/rules/colors.md)
     light: "text-yellow-300",
     DEFAULT: "text-fg-warning",
     dark: "text-warning-dark",
     contrast: "text-fg-inverse",
   },
   error: {
+    // exception: variant color — no semantic equivalent (Principle 3, .claude/rules/colors.md)
     light: "text-red-300",
     DEFAULT: "text-fg-error",
     dark: "text-error-dark",
     contrast: "text-fg-inverse",
   },
   info: {
+    // exception: variant color — no semantic equivalent (Principle 3, .claude/rules/colors.md)
     light: "text-blue-300",
     DEFAULT: "text-fg-info",
     dark: "text-info-dark",

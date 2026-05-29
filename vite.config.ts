@@ -150,7 +150,7 @@ export default defineConfig(() => {
       emptyOutDir: false,
     },
     test: {
-      include: ["src/**/*.test.{ts,tsx}"],
+      include: ["src/**/*.test.{ts,tsx}", "eslint-rules/**/*.test.js"],
       environment: "jsdom",
       setupFiles: ["src/setupTests.ts"],
       globals: true,
@@ -167,6 +167,7 @@ export default defineConfig(() => {
           "storybook-static/",
           "src/setupTests.ts",
           "src/vitest.shims.d.ts",
+          "eslint-rules/",
         ],
         thresholds: {
           lines: 80,

@@ -317,3 +317,22 @@ grep -rIn --include='*.tsx' \
 
 Both greps should return zero hits. If they don't, refactor before commit
 or document as a literal exception (Principle 3) with an inline comment.
+
+**Enforcement.** The regex above is implemented as a custom ESLint rule
+(`ds/no-raw-color-classes`, source under `eslint-rules/`) that runs in
+pre-commit (via lint-staged), pre-push (full `npm run lint`), and CI
+(the `lint` job in `.github/workflows/ci.yml`). Raw color classes in
+`src/ui/**/*.tsx` excluding stories, tests, and the meta-context file
+`src/ui/tokens/TokenVisualizations.tsx` trigger an error and block the
+commit/PR. The rule recognises three exception comment shapes (within
+~15 lines above the offending literal):
+
+- `// exception: <reason>` — generic Principle 3 marker.
+- `// micro-z: <reason>` — z-index inline/className pitfall (Phase 8).
+- `// <the-exact-class>: <reason>` — names the class being excused, the
+  canonical pattern used in `Badge.tsx` for `bg-pink-300`.
+
+Stories (`*.stories.tsx`) are intentionally out of the rule's scope
+pending a triage phase. The rule scans by AST, not by grep, so it does
+not share the BSD-vs-GNU `--include` brace-expansion pitfall that hid
+`src/ui/tokens/sidebar.ts` from the original Phase 7 sweep.
