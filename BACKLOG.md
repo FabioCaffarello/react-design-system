@@ -623,3 +623,71 @@ grep -rIn --include='*.stories.tsx' --include='*.mdx' \
 ```
 
 (checar suporte a negative lookahead no grep alvo — BSD grep não suporta PCRE; usar `grep -P` em GNU ou `rg` se disponível, ou inverter via dois passos `grep | grep -v`.) Atualizar o exemplo na própria `stories.md` no mesmo commit.
+
+## Phase C PR2 — a11y backlog real (post-noise silencing)
+
+**Descoberto em:** Phase C PR2, Passo 1 (baseline run de 852 stories) + Passo 2 (re-medição com noise rules silenciadas).
+**Estado:** `a11y.test` segue em `"todo"` em `.storybook/preview.tsx`. Três regras page-level (`region`, `landmark-one-main`, `page-has-heading-one`) silenciadas globalmente — instrumento aplica regra de página em iframe de componente, gerando 78% de ruído (2.806 nodes / ~492 stories were noise-only). Reativadas só em `DashboardLayout` (única que monta `<header>` + `<main>` + `<footer>`). Política documentada em `docs/ACCESSIBILITY.md` seção "Story-iframe exceptions".
+
+**Baseline real após silenciamento:** 802 nodes em 353 stories. Distribuição por impact:
+
+| Impact   | Nodes |
+| -------- | ----: |
+| critical |   221 |
+| serious  |   546 |
+| moderate |    29 |
+| minor    |     6 |
+
+**Por que importa:** virar `a11y.test: "error"` (meta no fim do funil) só é seguro depois de zerar critical e serious. Sem o silenciamento das 3 page-level rules, "error" bloqueava CI em 842/852 stories no primeiro push por falso-positivo de instrumento — viraria allowlist de exceção em massa (dívida carimbada de "resolvido", anti-padrão explícito da rule Phase 7).
+
+**Backlog agrupado por causa-raiz, não por regra:**
+
+### Family A — "Controle sem nome acessível" (146 nodes, ~57 stories)
+
+- `button-name` 92n/24s — **38n concentrados em SideNavbar** (icon-only menu buttons sem `aria-label`). Single anchor fix em SideNavbar pode derrubar 40%+ da família. Top: `components/sidenavbar/{variants,with-bottom-navigation,with-header,with-footer,with-header-and-footer}`.
+- `select-name` 25n/22s — espalhado: SearchAndFilterPattern (2), DataGrid pagination (2). Pequenos `<select>` sem label associado.
+- `aria-input-field-name` 18n/10s — **12n em Slider** (range handles dos sliders).
+- `label` 11n/10s — espalhado (SideNavbar 2, Textarea 2, MultiSelect 2).
+- `aria-command-name` 1n/1s — outlier.
+- `aria-dialog-name` 3n/3s — Dialog sem accessible name.
+
+**Anchor sugerido:** atacar SideNavbar primeiro (densidade mais alta + cluster claro). Validar se o padrão é `<button>` com só ícone Lucide — fix é `aria-label` no botão ou conversão para `<button aria-label="X"><Icon aria-hidden /></button>`.
+
+### Family B — "ARIA inválido" (124 nodes, ~24 stories)
+
+- `aria-allowed-attr` 62n em **APENAS 2 stories** — `components/datepicker/{open-state,with-events}` com 31 nodes cada (mesmo code path). Single fix em DatePicker fecha 62 nodes (28% da família crítica).
+- `aria-valid-attr-value` 21n/19s — top: SideNavbar (3), DashboardLayout (1 cada em ~5 stories).
+- `aria-hidden-focus` 17n/12s — **10n em Switch** (input `aria-hidden` mas focável; provável padrão de checkbox custom).
+- `aria-prohibited-attr` 15n em **APENAS 2 stories** — `components/rating/{read-only,read-only-state}`. Rating em read-only mode está usando atributo não permitido para o role.
+- `aria-required-parent` 4n/4s; `aria-required-children` 3n/3s; `aria-required-attr` 2n/1s — outliers individuais.
+
+**Anchor sugerido:** DatePicker primeiro (62 nodes / 1 fix) → Rating read-only (15 / 1 fix) → Switch (10 / 1 fix). Esses 3 anchors fecham 87 dos 124 nodes da família.
+
+### Family C — "Contraste de cor abaixo de WCAG 2.1 AA 4.5:1" (464 nodes, 274 stories)
+
+- `color-contrast` (serious) — cross-cuta o catálogo inteiro. Top concentração: Table full-featured (17), Table declarative-api (17), Timeline many-items (11), Badge accessibility (8), Badge variants (6).
+- **Cruza com `.claude/rules/colors.md` e `PHASE_7_SEMANTIC_COLORS.md`.** Provável raiz: punhado de combinações token-on-token abaixo de 4.5:1. Candidatos a investigar (inspecionar `sampleTargets` em `/tmp/a11y-baseline-report.json`):
+  - `text-fg-tertiary` ou `text-fg-quaternary` sobre `bg-surface-base` / `bg-surface-subtle`.
+  - `text-fg-secondary` sobre `bg-surface-muted`.
+  - Foreground brand sobre surface brand-subtle.
+- **Anchor sugerido:** abrir 3 stories de hotspot (`components/table/full-featured`, `primitives/badge/accessibility`, `components/timeline/many-items`), extrair os 30+ `sampleTargets` de cor, identificar 3-5 pares (text token, bg token) que falham, decidir caso-a-caso: subir contraste do token semântico (afeta todo o sistema), ou re-mapear o consumo desses componentes para tokens existentes que passam. Um fix de token pode fechar centenas de nodes — escala invertida do esforço.
+
+### Family D — "Landmark estrutural mal posicionado" (52 nodes, ~37 stories)
+
+- `landmark-complementary-is-top-level` 22n/20s — **SideNavbar** lidera: `<aside>` nested em outro landmark. Provável: stories de SideNavbar embrulham em outro `<aside>` ou em `<main>` para demo. Pode ser fix de story, não de componente.
+- `nested-interactive` 25n/18s — `components/menu` (4 nodes em placements) e `primitives/chip` (3 em clickable-and-removable) lideram. Chip com clickable + removable tem `<button>` dentro de `<button>` — fix arquitetural na anatomia do Chip.
+- `landmark-unique` 5n/4s; `landmark-no-duplicate-banner` 1n/1s — outliers.
+
+### Family E — "Outliers minor/serious isolados" (8 nodes)
+
+- `empty-heading` 6n/6s (minor) — cleanup.
+- `listitem` 2n/2s (serious) — `<li>` fora de `<ul>`/`<ol>`; check stories que renderizam `<li>` solto para layout.
+
+**Política de fechamento:**
+
+1. NÃO criar `parameters.a11y.allowConsoleErrors`-like allowlist temporária — vira dívida carimbada de "resolvido" (anti-padrão explícito).
+2. Atacar por anchor: o fix de 1 componente fecha N stories. Ordem sugerida por relação esforço/impacto: DatePicker (62/1 fix) → SideNavbar buttons (38+/1 cluster fix) → Rating read-only (15/1 fix) → color-contrast tokens (centenas/3-5 token fixes) → Switch (10/1 fix) → Slider (12/1 cluster fix).
+3. Cada anchor vira uma sub-phase própria. Re-rodar baseline após cada fix para confirmar que a aritmética bate (e que o fix não regrediu outra família).
+4. Quando critical+serious = 0, virar `a11y.test: "error"` em `.storybook/preview.tsx`. Não antes.
+
+**Caveat de medição:** 2 stories (`components/form--with-events`, `components/toast--clear-all`) ainda batem em race condition do axe-core no baseline paralelo (instrumento, não código). Rerun em serial bateu 0 nodes em Form e ~3 color-contrast em Toast (subset dos 464 acima). Para refresh futuro, rodar baseline com workers=1 OU criar `BrowserContext` por story.

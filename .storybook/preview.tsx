@@ -299,6 +299,47 @@ const preview: Preview = {
             id: "heading-order",
             enabled: true,
           },
+          // Storybook-iframe context exceptions — disabled GLOBALLY here,
+          // re-enabled per-story on components that actually render real
+          // page structure. See docs/ACCESSIBILITY.md "Story-iframe
+          // exceptions" for the rationale and the re-enable pattern.
+          //
+          // The three rules below are page-level: they assert structure
+          // about a full HTML document (one `<main>`, an `<h1>`, all
+          // meaningful content inside a landmark). A Storybook story
+          // iframe renders only the component under test — no header,
+          // no nav, no `<main>` wrapper. The component itself has no
+          // mandate to provide a page chrome; that's the consumer's
+          // responsibility at the application level.
+          //
+          // The Phase C baseline run (842 of 852 stories with at least
+          // one a11y violation) showed these three rules accounted for
+          // 2.788 of 2.817 moderate-severity nodes — 98,9% of moderate
+          // severity was instrument noise, not real accessibility debt.
+          // Leaving them enabled meant flipping `a11y.test: "error"`
+          // would block CI on every story for false positives.
+          //
+          // Re-enable in stories that DO render a full page structure
+          // (a `<main>`/landmark composition) by adding to the story
+          // meta:
+          //   parameters: {
+          //     a11y: {
+          //       config: {
+          //         rules: [
+          //           { id: "region", enabled: true },
+          //           { id: "landmark-one-main", enabled: true },
+          //           { id: "page-has-heading-one", enabled: true },
+          //         ],
+          //       },
+          //     },
+          //   }
+          // Currently only DashboardLayout meets that bar (renders
+          // `<header>` + `<main>` + `<footer>`). Header/Navigation/
+          // SideNavbar emit partial landmarks (header/nav/aside) but
+          // are not full pages — keep these rules off there.
+          { id: "region", enabled: false },
+          { id: "landmark-one-main", enabled: false },
+          { id: "page-has-heading-one", enabled: false },
         ],
       },
       options: {
