@@ -7,7 +7,6 @@ import Switch from "./Switch";
 const meta: Meta<typeof Switch> = {
   title: "Primitives/Switch",
   component: Switch,
-  tags: ["autodocs"],
   parameters: {
     layout: "centered",
     docs: {

@@ -8,7 +8,6 @@ import { Button } from "../../primitives";
 const meta: Meta<typeof Drawer> = {
   title: "Components/Drawer",
   component: Drawer,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

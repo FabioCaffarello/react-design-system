@@ -14,7 +14,6 @@ interface User {
 const meta: Meta<typeof DataTablePattern> = {
   title: "Components/DataTablePattern",
   component: DataTablePattern,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

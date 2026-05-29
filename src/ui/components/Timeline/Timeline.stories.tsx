@@ -14,7 +14,6 @@ import {
 const meta: Meta<typeof Timeline> = {
   title: "Components/Timeline",
   component: Timeline,
-  tags: ["autodocs"],
   parameters: {
     layout: "padded",
     docs: {

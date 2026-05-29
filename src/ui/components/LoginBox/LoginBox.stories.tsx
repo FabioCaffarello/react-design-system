@@ -7,7 +7,6 @@ import LoginBox from "./LoginBox";
 const meta: Meta<typeof LoginBox> = {
   title: "Components/LoginBox",
   component: LoginBox,
-  tags: ["autodocs"],
   parameters: {
     layout: "centered",
     actions: {

@@ -4,7 +4,6 @@ import Badge from "./Badge";
 const meta: Meta<typeof Badge> = {
   title: "Primitives/Badge",
   component: Badge,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

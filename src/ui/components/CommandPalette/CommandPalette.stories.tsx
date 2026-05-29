@@ -19,7 +19,6 @@ import {
 const meta: Meta<typeof CommandPalette> = {
   title: "Components/CommandPalette",
   component: CommandPalette,
-  tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
     docs: {

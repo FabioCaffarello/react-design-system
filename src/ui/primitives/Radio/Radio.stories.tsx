@@ -7,7 +7,6 @@ import Radio from "./Radio";
 const meta: Meta<typeof Radio> = {
   title: "Primitives/Radio",
   component: Radio,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

@@ -7,7 +7,6 @@ import ColorPicker from "./ColorPicker";
 const meta: Meta<typeof ColorPicker> = {
   title: "Components/ColorPicker",
   component: ColorPicker,
-  tags: ["autodocs"],
   parameters: {
     layout: "centered",
     docs: {

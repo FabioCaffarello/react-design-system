@@ -9,7 +9,6 @@ import type { FormWizardStep } from "./FormWizardPattern";
 const meta: Meta<typeof FormWizardPattern> = {
   title: "Components/FormWizardPattern",
   component: FormWizardPattern,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

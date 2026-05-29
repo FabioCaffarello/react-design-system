@@ -8,7 +8,6 @@ import { Home, Settings, Users, FileText } from "lucide-react";
 const meta: Meta<typeof DashboardLayout> = {
   title: "Components/DashboardLayout",
   component: DashboardLayout,
-  tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
     docs: {

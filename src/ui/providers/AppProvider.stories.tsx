@@ -68,7 +68,6 @@ The AppProvider uses a bottom-up composition strategy:
       },
     },
   },
-  tags: ["autodocs"],
 };
 
 export default meta;

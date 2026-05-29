@@ -7,7 +7,6 @@ import { Input } from "../../primitives";
 const meta: Meta<typeof Label> = {
   title: "Primitives/Label",
   component: Label,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

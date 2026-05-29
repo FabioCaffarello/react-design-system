@@ -7,7 +7,6 @@ import Textarea from "./Textarea";
 const meta: Meta<typeof Textarea> = {
   title: "Primitives/Textarea",
   component: Textarea,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

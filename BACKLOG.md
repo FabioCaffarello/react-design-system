@@ -478,3 +478,55 @@ storybook build. Calibrar com o threshold check do SKILL.md ("se
 mais de 1 em 10 precisa de exception-paragraph, template está
 errado") — se 13b2 já dispara o threshold, pausar e reabrir
 calibragem do template.
+
+## Filosofia docs registrada — autodocs OFF, MDX attached canônico
+
+**Descoberto em:** Phase 13b1 force-push fix (PR #30 CI breakage).
+**Estado:** Storybook 10 errors quando um CSF file tem
+`tags: ['autodocs']` E uma MDX attached
+(`<Meta of={Stories} />`) — `chooseDuplicate` em
+`node_modules/storybook/dist/core-server/index.js:9095` lança
+`"You created a component docs page for X, but also tagged the CSF
+file with autodocs. This is probably a mistake."`. A condição é
+asimétrica: dispara quando per-story tem o tag mas project-level
+não. Negação project-level (`tags: ['!autodocs']` em
+`.storybook/preview.tsx`) **não** propaga ao indexer — apenas remoção
+per-story silencia.
+**Por que importa:** Phase 13b1 escolheu MDX attached como única
+fonte de doc e removeu os 54 `tags: ['autodocs']` num batch
+(54 stories). Reativar autodocs requeriria migrar TODOS os
+componentes a MDX attached antes — caso contrário CI quebra na
+primeira colisão.
+**Ação:** **DO NOT** reintroduzir `tags: ['autodocs']` em nenhum
+`.stories.tsx`. Vale para refactors futuros, addon updates, ou
+scaffolds via plop. Defesas atuais: (a) `.claude/rules/stories.md`
+proíbe explicitamente; (b)
+`.claude/skills/component-doc/SKILL.md` documenta o caminho
+canônico. Se uma situação futura justificar reabertura, **migrar
+todos os componentes a MDX attached primeiro**, depois decidir.
+
+## Lição metodológica — mapear caminhos concorrentes antes de ativar feature
+
+**Descoberto em:** Phase 13b1 (CI breakage post-merge investigation).
+**Estado:** PASSO 1 da Phase 13b1 mapeou `addon-docs` presença e os
+11 MDX legacy, mas não mapeou todos os caminhos concorrentes de
+geração de docs no Storybook 10 (autodocs per-story tag, autodocs
+project tag, standalone MDX, attached MDX, custom DocsContainer).
+A ativação de MDX attached em Modal/Button colidiu com `tags:
+['autodocs']` em Button.stories no CI — local build não pegou (cache
+de storybook-static stale provavelmente). Storybook flagou; poderia
+ter sido silencioso se o caminho fosse outro.
+**Por que importa:** terceira ocorrência em Phases recentes do
+mesmo padrão. Phase 7 (BSD grep silencioso). Phase 12 (sweep miss
+em sidebar.ts). Phase 13a (race condition no detector). Phase 13b1
+(autodocs vs MDX coexistentes não mapeados). Cada uma reforça a
+mesma regra: **quando ativar feature nova em sistema com múltiplos
+caminhos pra fazer a mesma coisa, mapear TODOS os caminhos
+concorrentes E suas mecânicas de override antes de ativar**.
+**Ação:** quando a próxima Phase de cleanup ou large refactor
+ocorrer, criar `.claude/rules/cleanup.md` (ou
+`.claude/rules/large-refactors.md`) consolidando as regras das
+Phases 7/12/13a/13b1: (a) BSD grep trap, (b) "varredura silenciosa
+suspeite do instrumento", (c) "calibra detector não componente",
+(d) "probe API/contrato antes", (e) "mapear caminhos concorrentes
+antes de ativar feature em sistema com N maneiras de fazer X".

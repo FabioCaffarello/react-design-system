@@ -7,7 +7,6 @@ import Checkbox from "./Checkbox";
 const meta: Meta<typeof Checkbox> = {
   title: "Primitives/Checkbox",
   component: Checkbox,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

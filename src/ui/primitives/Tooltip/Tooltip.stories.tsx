@@ -36,7 +36,6 @@ A tooltip component that displays additional information on hover or focus. Supp
       },
     },
   },
-  tags: ["autodocs"],
   argTypes: {
     content: {
       control: "text",

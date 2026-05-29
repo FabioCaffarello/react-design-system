@@ -4,7 +4,6 @@ import Info from "./Info";
 const meta: Meta<typeof Info> = {
   title: "Primitives/Info",
   component: Info,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

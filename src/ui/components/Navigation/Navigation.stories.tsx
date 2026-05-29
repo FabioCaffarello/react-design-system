@@ -12,7 +12,6 @@ import { Home, Settings, User, FileText, Bell } from "lucide-react";
 const meta: Meta<typeof Navigation> = {
   title: "Components/Navigation",
   component: Navigation,
-  tags: ["autodocs"],
   parameters: {
     layout: "centered",
     docs: {

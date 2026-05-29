@@ -4,7 +4,6 @@ import { Stack } from "./Stack";
 const meta: Meta<typeof Stack> = {
   title: "Layouts/Stack",
   component: Stack,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

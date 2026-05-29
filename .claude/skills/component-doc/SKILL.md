@@ -16,6 +16,21 @@ The doc supplements the stories — it does not replace them. Reuse story
 exports via `<Canvas of={...} />` and `<Controls of={...} />`; do not
 duplicate code blocks.
 
+## Doc model — attached MDX is canonical, autodocs is off
+
+This project uses MDX attached docs (`<Meta of={ComponentStories} />`)
+as the canonical doc form. Autodocs is disabled — components without
+an `.mdx` do not show an aggregated doc page in the sidebar, only
+individual stories.
+
+**Do not re-introduce `tags: ['autodocs']` to any `.stories.tsx`
+file.** Storybook 10's indexer errors on the duplicate when a CSF file
+is tagged autodocs AND has an attached MDX
+(`You created a component docs page for X, but also tagged the CSF
+file with autodocs`). The error condition is asymmetric: per-story
+tag triggers it, project-level negation (`['!autodocs']`) does NOT
+silence it. The only safe path is keeping per-story tags clean.
+
 ## When to invoke
 
 - "Write docs for `<Component>`"

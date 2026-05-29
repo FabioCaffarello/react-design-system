@@ -4,7 +4,6 @@ import Spinner from "./Spinner";
 const meta: Meta<typeof Spinner> = {
   title: "Primitives/Spinner",
   component: Spinner,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

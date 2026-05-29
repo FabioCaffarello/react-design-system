@@ -8,7 +8,6 @@ import type { FileUploadFile } from "./FileUpload";
 const meta: Meta<typeof FileUpload> = {
   title: "Components/FileUpload",
   component: FileUpload,
-  tags: ["autodocs"],
   parameters: {
     layout: "padded",
     docs: {

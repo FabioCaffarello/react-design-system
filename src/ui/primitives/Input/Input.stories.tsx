@@ -8,7 +8,6 @@ import { Mail, Search, Lock, User } from "lucide-react";
 const meta: Meta<typeof Input> = {
   title: "Primitives/Input",
   component: Input,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
