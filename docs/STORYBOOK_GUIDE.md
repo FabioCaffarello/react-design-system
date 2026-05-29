@@ -2,6 +2,15 @@
 
 Este guia explica como usar e contribuir para o Storybook do design system.
 
+> ⚠️ **Manter em sincronia com `.claude/rules/stories.md`.**
+> Este guia descreve a mesma convenção de stories que a regra canônica em
+> `.claude/rules/stories.md`. Qualquer migração de taxonomia, mudança de
+> formato de doc (autodocs vs MDX-attached) ou troca de pacote de import
+> **DEVE** atualizar os dois arquivos no mesmo commit. Se apenas um dos
+> dois for tocado, sidebar e guia divergem e o próximo contribuinte segue
+> a versão errada — foi exatamente assim que este guia ficou desatualizado
+> entre Phase 13b1 e a renomeação Atoms/Molecules → Primitives/Components.
+
 ## Visão Geral
 
 O Storybook é a documentação interativa do design system. Cada componente tem suas próprias stories que demonstram:
@@ -17,38 +26,41 @@ O Storybook é a documentação interativa do design system. Cada componente tem
 
 ### Organização
 
-As stories estão organizadas por categoria:
+As stories estão organizadas pelos 4 segmentos de topo válidos
+(ver `.claude/rules/stories.md`):
 
 ```
+Primitives/
+├── Button/
+│   ├── Overview
+│   ├── Variants
+│   ├── States
+│   ├── Events
+│   └── Examples
+└── ...
+Components/
+└── ...
+Layouts/
+└── ...
 Design System/
-├── Atoms/
-│   ├── Button/
-│   │   ├── Overview
-│   │   ├── Variants
-│   │   ├── States
-│   │   ├── Events
-│   │   └── Examples
-│   └── ...
-├── Molecules/
-├── Organisms/
-├── Templates/
-├── Patterns/
-├── Layouts/
 └── ...
 ```
 
 ### Estrutura de um Arquivo de Story
 
 ```tsx
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from '@storybook/test';
 import { expect, userEvent, within } from '@storybook/test';
 import Component from './Component';
 
+// A página de docs vem de um Component.mdx irmão, anexado via
+// `<Meta of={ComponentStories} />`. NÃO adicione `tags: ['autodocs']`
+// — ver `.claude/rules/stories.md` e
+// `.claude/skills/component-doc/SKILL.md`.
 const meta: Meta<typeof Component> = {
-  title: 'Category/Component',
+  title: 'Primitives/Component', // Primitives | Components | Layouts | Design System
   component: Component,
-  tags: ['autodocs'],
   parameters: {
     docs: {
       description: {
@@ -129,11 +141,6 @@ export const InteractionTest: Story = {
 - Integração com Vitest
 - Testes unitários nas stories
 
-### @storybook/addon-mcp
-
-- Model Context Protocol
-- Integração com AI agents
-
 ## Comandos
 
 ```bash
@@ -142,12 +149,6 @@ npm run storybook
 
 # Build do Storybook
 npm run build-storybook
-
-# Validar stories
-npm run validate-stories
-
-# Gerar índice de stories
-npm run generate-story-index
 ```
 
 ## Boas Práticas
@@ -209,21 +210,6 @@ export const Accessibility: Story = {
   ),
 };
 ```
-
-## Validação
-
-Execute o script de validação para verificar se todas as stories seguem os padrões:
-
-```bash
-npm run validate-stories
-```
-
-O script verifica:
-
-- ✅ Events documentados
-- ✅ States documentados
-- ✅ Play functions presentes
-- ✅ Estrutura correta
 
 ## Troubleshooting
 

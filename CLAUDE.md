@@ -32,6 +32,7 @@ If unsure where something goes: composed of other UI → `components/`; pure str
 - Styling via tokens/Tailwind only. No hardcoded hex/px in components.
 - WCAG 2.1 AA: keyboard nav, ARIA, focus management.
 - Test coverage ≥ 80% per component.
+- Docs like `docs/STORYBOOK_GUIDE.md` and this file restate conventions whose canonical source is elsewhere (`.claude/rules/`, `package.json`). Before editing any rule or script that a doc restates — not just the doc itself — read `.claude/rules/docs-sync.md` and update every derived doc in the same commit.
 
 ## Color and tokens vocabulary
 
