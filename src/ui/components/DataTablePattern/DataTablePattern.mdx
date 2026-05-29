@@ -1,0 +1,49 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as DataTablePatternStories from "./DataTablePattern.stories";
+
+<Meta of={DataTablePatternStories} />
+
+# DataTablePattern
+
+DataTablePattern composes `SearchInput`, `Table`, and `Pagination` into a single pre-built surface for the common "search a list, show a paginated table" pattern. Reach for it when the consumer needs that shell verbatim and the underlying primitives would only repeat the same wiring across every list view.
+
+## When to use
+
+- Use DataTablePattern for list views with the same shape every time — searchable, paginated, optional row actions, optional toolbar — where customizing the primitives would only re-implement defaults.
+- Use it for back-office surfaces, internal tools, and admin pages where the table density and the search-plus-pagination interaction are the expected affordance.
+- Use `actions` to surface page-level affordances above the table (Create, Export, Import); the actions row sits between the search field and the table body.
+- Use `enableSearch={false}` or `enablePagination={false}` when the surface skips one of the parts — small lists do not need pagination, fixed lists do not need search.
+
+## When not to use
+
+- Use `DataGrid` when the surface needs deeper interactions — column reorder, virtual scrolling, grouping, export menus, faceted filters. DataTablePattern is the pre-built shell; DataGrid is the rich grid.
+- Use `Table` plus the consumer's own search / pagination wiring when the layout differs from the pattern shell (search elsewhere, custom pagination position, alternate empty state).
+- Use `SearchAndFilterPattern` when the surface needs faceted filters in addition to search — DataTablePattern only handles a single search query.
+
+## Anatomy
+
+DataTablePattern stacks vertically inside a `Container`: the `header row` carries an optional `SearchInput` on the left and the consumer's `actions` slot on the right; the `Table` renders the columns + data with the filtered, paginated view; the `pagination row` sits below the table when `enablePagination`. When the filtered set is empty, the table region is replaced by an `empty state` that the consumer may customize.
+
+<Canvas of={DataTablePatternStories.Default} />
+
+## Examples
+
+<Canvas of={DataTablePatternStories.WithActions} />
+
+<Canvas of={DataTablePatternStories.Loading} />
+
+<Canvas of={DataTablePatternStories.Empty} />
+
+## Props
+
+<Controls of={DataTablePatternStories.Default} />
+
+## Accessibility
+
+DataTablePattern inherits its primitives' accessibility — `SearchInput` carries the search semantics, `Table` carries the table semantics, `Pagination` carries the nav landmark and `aria-current`. The pattern wraps them in a `Container` with a region role so screen readers identify the list view as a unit.
+
+Search updates filter the visible rows; the row count announced via `aria-live="polite"` on the table body region so users hear how many results match without scrolling. When the filtered set is empty, the empty state region is announced as `role="status"` so the absence is noticed.
+
+The `actions` slot inherits its inner controls' semantics — the consumer is responsible for accessible names on the affordances they pass. When actions include a primary "Create" or "Add" button, position it on the right of the row so its prominence matches its weight.
+
+For accessible relationship between the search field and the table, the search input's `aria-controls` could point at the table's `id` (consumer-set) so assistive tech identifies them as paired — the component does not auto-wire this; pass `id` to the table explicitly when this relationship matters.

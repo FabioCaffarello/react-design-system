@@ -1,0 +1,49 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as SearchAndFilterPatternStories from "./SearchAndFilterPattern.stories";
+
+<Meta of={SearchAndFilterPatternStories} />
+
+# SearchAndFilterPattern
+
+SearchAndFilterPattern composes `SearchInput`, faceted filter controls (built from a `FilterConfig` array), and a consumer-supplied `renderItem` function into the standard "search plus faceted filter plus item list" shell. Reach for it when a list view needs both freeform query and structured filters and the consumer's surface would otherwise re-implement the same plumbing every time.
+
+## When to use
+
+- Use SearchAndFilterPattern for any list view that needs both freeform search and structured filtering — product catalogs, search results, content libraries, faceted result lists.
+- Use it when the consumer renders the item rows themselves through `renderItem` — cards, custom rows, image grids, whatever fits the data — while the pattern owns search and filter wiring.
+- Use `filters` config to declare the filter set as data (`id`, `label`, `type` of `select` / `multiselect` / `date` / `range`, `options`); the pattern renders the controls accordingly.
+- Use `searchFn` and `filterFn` for custom matching when the default substring search or equality filter does not fit.
+
+## When not to use
+
+- Use `DataTablePattern` for tabular lists without faceted filters; DataTablePattern is the search-plus-table shell, this is the search-plus-filter shell.
+- Use `Autocomplete` or `MultiSelect` for single-input picker surfaces — those are field-level controls, this is a list view shell.
+- Use a custom layout when the surface needs faceted filters in unusual positions (a sidebar of filters vs the default top row) — the pattern fixes the layout.
+
+## Anatomy
+
+SearchAndFilterPattern lays out vertically inside a `Container`: the `header row` carries a `SearchInput` plus the rendered filter controls (one per `FilterConfig` entry, kind decided by the entry's `type` field); below it, an optional `results count` line shows the filtered count when `showResultsCount`; the `item list region` renders each surviving item through `renderItem`; when the filtered set is empty, the region is replaced by an `empty state` carrying `emptyMessage`.
+
+<Canvas of={SearchAndFilterPatternStories.Default} />
+
+## Examples
+
+<Canvas of={SearchAndFilterPatternStories.SearchOnly} />
+
+<Canvas of={SearchAndFilterPatternStories.FiltersOnly} />
+
+## Props
+
+<Controls of={SearchAndFilterPatternStories.Default} />
+
+## Accessibility
+
+The header row is wrapped in a `<form role="search">` so assistive tech identifies it as a search region accessible via the rotor. `SearchInput` carries its own search semantics; the filter controls inherit their underlying primitive's accessibility — `Select`, `MultiSelect`, date pickers, range sliders.
+
+The results count is rendered with `aria-live="polite"` so assistive tech announces the count when it changes — typing a query, toggling a filter, both trigger the announcement after debounce.
+
+The item list region carries `role="region"` with `aria-label` from the consumer (the pattern does not auto-name it); when the filtered set is empty, the empty state region is announced as `role="status"`.
+
+For accessible labelling, ensure each filter in `FilterConfig` has a `label` so screen readers announce the field name when focus moves to the control; the label appears above or alongside the control depending on the consumer's CSS, but the underlying primitive uses `htmlFor` to bind.
+
+The pattern itself does not handle focus restoration after a filter change clears the focused row — if the consumer's `renderItem` includes focusable controls, focus moves to the body of the new list automatically.
