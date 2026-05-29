@@ -211,6 +211,45 @@ bullet, and the redirect is the value, not the navigation.
 If more than 2-3 links are needed, the doc is re-explaining instead
 of pointing — rewrite.
 
+## Trailing sections (exception)
+
+Sections after Accessibility are **not** template features. The
+template ends at Accessibility; anything below is an exception
+following the same Principle 3 pattern as the Props prose exception
+clause and the `.claude/rules/colors.md` "documented literal
+exception > forced token" rule.
+
+A trailing section is allowed only when **all three** of:
+
+- The component has a significant external integration concern that
+  carries consumer value (Form ↔ React Hook Form, Table ↔
+  TableProvider architecture, a component ↔ an established
+  third-party integration the consumer needs to understand).
+- The content does not fit naturally inside When to use, Examples, or
+  Accessibility — those sections are tried first, and folding wins
+  by default.
+- The trailing section is marked with an inline JSX comment naming
+  the reason, mirroring the Props exception marker. Format:
+
+```mdx
+{/* trailing-section exception: <reason> */}
+
+## <Section title>
+
+<content>
+```
+
+**Threshold check.** If more than one component in ten needs a
+trailing section, the template is missing something — pause and
+reopen calibration. Three or four in 32 (Phase 13b3 components batch)
+is already approaching the threshold.
+
+Trailing sections do not count toward the 270-540 prose total
+calibration — they are budgeted separately and should stay tight
+(80-200 words is the comfort zone). A trailing section that grows
+past 200 words is probably a separate doc trying to be born; split
+it instead of bloating the parent.
+
 ## Tone & voice
 
 - **English uniform** with the rest of `.claude/` and the codebase.
