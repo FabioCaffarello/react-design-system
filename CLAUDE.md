@@ -7,7 +7,7 @@ Built by me, maintained mainly through Claude Code prompts.
 
 - React 19 + TypeScript 5 (strict)
 - Vite (build), Vitest + Testing Library (test)
-- TailwindCSS v4 (CSS-first config via `@theme` in `src/styles/semantic/`, theme overrides in `src/styles/themes/`)
+- TailwindCSS v4 via `@tailwindcss/vite` plugin (CSS-first config via `@theme` in `src/styles/semantic/`, theme overrides in `src/styles/themes/`)
 - Storybook (docs)
 - Plop (scaffolding new components)
 

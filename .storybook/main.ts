@@ -54,16 +54,10 @@ const config: StorybookConfig = {
     // Improve module resolution for complex imports
     config.resolve.alias = config.resolve.alias || {};
 
-    // CRITICAL: Ensure PostCSS is configured for Tailwind CSS v4
-    // Explicitly configure PostCSS to use @tailwindcss/postcss
-    config.css = config.css || {};
-    if (!config.css.postcss) {
-      // Use the same configuration as postcss.config.mjs
-      const tailwindcssPlugin = (await import("@tailwindcss/postcss")).default;
-      config.css.postcss = {
-        plugins: [tailwindcssPlugin()],
-      };
-    }
+    // Tailwind v4 is wired via @tailwindcss/vite in vite.config.ts which
+    // Storybook 10 inherits through its merged Vite config. No PostCSS
+    // override needed — the plugin owns the CSS pipeline end-to-end and
+    // does not depend on postcss-import's strict @import ordering.
 
     // Ensure proper handling of client directives (Next.js compatibility)
     // Vite will ignore 'use client' directives, but we need to ensure they don't break module resolution
