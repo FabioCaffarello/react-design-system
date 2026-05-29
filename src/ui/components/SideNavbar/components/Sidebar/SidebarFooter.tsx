@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { useSidebarRequired } from "../../contexts/SidebarContext";
-import { getSpacingClass, getColorClass } from "../../../../tokens";
+import { getSpacingClass } from "../../../../tokens";
 import type { SidebarFooterProps } from "../../types";
 
 /**
@@ -45,8 +45,8 @@ export default function SidebarFooter({
       className={`
         flex-shrink-0
         ${paddingClass}
-        ${showBorder ? `border-t ${getColorClass("neutral", "DEFAULT", "border")}` : ""}
-        bg-gray-50
+        ${showBorder ? "border-t border-line-default" : ""}
+        bg-surface-subtle
         ${className}
       `}
       style={style}
