@@ -8,6 +8,8 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 import { defineConfig, globalIgnores } from "eslint/config";
 
+import dsColor from "./eslint-rules/index.js";
+
 export default defineConfig([
   globalIgnores(["dist", "storybook-static", "**/*.d.ts"]),
   {
@@ -28,7 +30,17 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    plugins: {
+      ds: dsColor,
+    },
     rules: {
+      // Design system: semantic color vocabulary enforcement.
+      // See .claude/rules/colors.md for the canonical vocabulary and
+      // the 9 role-choice principles (Phase 7). Principle 3 exceptions
+      // require an inline `// exception: <reason>` comment near the
+      // offending literal.
+      "ds/no-raw-color-classes": "error",
+
       // TypeScript rules (non-type-aware for better performance)
       "@typescript-eslint/no-explicit-any": [
         "warn",
@@ -75,7 +87,13 @@ export default defineConfig([
     },
   },
   {
-    // More lenient rules for stories and tests
+    // More lenient rules for stories and tests.
+    //
+    // Note: ds/no-raw-color-classes is intentionally NOT applied here.
+    // *.stories.tsx files currently carry ~586 raw color uses, a mix of
+    // intentional palette demos and legacy lazy color. A dedicated triage
+    // phase (see BACKLOG) will decide per-story; until then the rule
+    // stays scoped to shipped component source (src/ui/**/*.tsx).
     files: ["**/*.stories.{ts,tsx}", "**/*.test.{ts,tsx}"],
     extends: [
       js.configs.recommended,
@@ -125,6 +143,17 @@ export default defineConfig([
       "@typescript-eslint/no-unsafe-return": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/no-explicit-any": "warn",
+    },
+  },
+  {
+    // TokenVisualizations renders primitive color tokens by design
+    // (meta-documentation: the file IS the catalogue of the primitive
+    // scale that everything else avoids). Exempt from the semantic
+    // vocabulary rule. If the token-system docs are ever rewritten,
+    // revisit (see BACKLOG).
+    files: ["src/ui/tokens/TokenVisualizations.tsx"],
+    rules: {
+      "ds/no-raw-color-classes": "off",
     },
   },
   {
