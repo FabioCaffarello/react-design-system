@@ -1,0 +1,53 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as SliderStories from "./Slider.stories";
+
+<Meta of={SliderStories} />
+
+# Slider
+
+Slider renders a draggable thumb (or a pair of thumbs in `range` mode) over a track for choosing a numeric value or a numeric range. Reach for it when the value belongs to a continuous scale and the user benefits from a visual sense of where their choice sits — volume, opacity, brightness, price range, date span.
+
+## When to use
+
+- Use Slider for any continuous-scale numeric input where the user wants to feel their choice rather than type it — volume, brightness, opacity, font size, threshold tuning.
+- Use `variant="range"` for two-thumb selection — price range filters, date-range scrubbers, dual-cutoff thresholds. Pass `value` as `[min, max]`.
+- Use `marks` to anchor the thumb to specific points the user should be drawn to — preset price tiers, integer-only positions on a long scale, named breakpoints.
+- Use `showValue` to display the current numeric value next to the slider — required when the unit (currency, percentage, milliseconds) isn't implicit.
+- Use `step` to constrain the granularity — `step={1}` for integers, `step={0.1}` for fine adjustments, `step={5}` for coarse increments.
+
+## When not to use
+
+- Use `Input` with `type="number"` when the user knows the exact value and typing is faster than dragging — IDs, precise integers, large numbers.
+- Use `Select` or `Radio` when the value belongs to a discrete enumeration (small / medium / large) rather than a continuous scale.
+- Avoid Slider for binary on / off — use `Switch`.
+- Avoid Slider as the only mechanism for an accessibility-critical value — pair it with a numeric `Input` so keyboard-only and screen-reader users can type the exact value when dragging is impractical.
+
+## Anatomy
+
+Slider renders in source order: the `track` (the full-range bar), the `filled portion` (colored from start to the current value), the `thumb` (one in `single`, two in `range`), optional `marks` (anchor dots at specified positions), and an optional `value` display when `showValue` is true.
+
+<Canvas of={SliderStories.Default} />
+
+## Examples
+
+<Canvas of={SliderStories.Range} />
+
+<Canvas of={SliderStories.WithMarks} />
+
+## Props
+
+<Controls of={SliderStories.Default} />
+
+{/* exception: discriminated union (value type depends on variant) — SKILL.md Props handling exception clause */}
+
+`value` (and `defaultValue`) discriminate on `variant`: pass a single `number` for `variant="single"`, and a `[number, number]` tuple for `variant="range"`. The two pass paths share one Controls field.
+
+## Accessibility
+
+Slider renders a `<div role="slider">` with `aria-valuenow`, `aria-valuemin`, and `aria-valuemax` wired from the props — screen readers announce the current value, the range bounds, and the unit if you set `aria-valuetext` to a formatted string ("$25.00" instead of "25").
+
+Keyboard support: arrow keys nudge by `step`, Home / End jump to `min` / `max`, Page Up / Page Down move by larger increments (typically ten steps). In `range` mode, focus moves between the two thumbs via Tab; each thumb has its own `aria-valuenow`. Do not override the keyboard pattern — the convention is what users expect.
+
+When the unit is not obvious from context, set `aria-valuetext` to the formatted value so screen readers announce "twenty-five dollars" instead of "twenty-five". The numeric `aria-valuenow` is still required as the canonical machine-readable form, but `aria-valuetext` is what the user hears.
+
+Slider's primary drag affordance is mouse-and-touch; keyboard interaction is the fallback. Pair Slider with a visible numeric `Input` when precision matters more than feel — keyboard-only users and users on low-precision pointing devices benefit from being able to type the exact value.

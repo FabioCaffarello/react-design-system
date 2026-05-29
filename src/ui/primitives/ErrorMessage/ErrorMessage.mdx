@@ -1,0 +1,43 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as ErrorMessageStories from "./ErrorMessage.stories";
+
+<Meta of={ErrorMessageStories} />
+
+# ErrorMessage
+
+ErrorMessage renders validation feedback below a form control, with `role="alert"` and `aria-live="polite"` so screen readers announce the error when it appears. It pairs an alert icon with the message text so the failure is unmistakable visually and to assistive tech at the same time.
+
+## When to use
+
+- Use ErrorMessage immediately below the form control that failed validation — Input, Textarea, Select, Checkbox group, file picker.
+- Use it for client-side validation results (required missing, format wrong, length out of bounds) and for server-side errors that map cleanly to a specific field.
+- Bind the message to its input via the input's `aria-describedby` referencing the `id` you pass to ErrorMessage, so screen readers read the error as part of the field's accessible name when focus arrives.
+- Reach for it the moment any error appears, not after the user blurs or submits — the polite announcement is what makes the error felt at all by keyboard and screen-reader users.
+
+## When not to use
+
+- Use `Toast` for transient page-level failures that do not point at a specific field (network down, action failed).
+- Use inline help text wired with `aria-describedby` for guidance ("must contain a number") — that is instruction, not error. ErrorMessage's `role="alert"` will interrupt assistive tech inappropriately if used for hints.
+- Use a `Banner` or page-level notice for cross-field errors ("Email and password do not match a known account") — those belong above the form, not under one input.
+
+## Examples
+
+<Canvas of={ErrorMessageStories.Default} />
+
+<Canvas of={ErrorMessageStories.WithInput} />
+
+Multiple errors on one field render as separate ErrorMessage instances, each with its own `id` and announced in order by assistive tech.
+
+<Canvas of={ErrorMessageStories.MultipleErrors} />
+
+## Props
+
+<Controls of={ErrorMessageStories.Default} />
+
+## Accessibility
+
+The component wraps the message in a `<div role="alert" aria-live="polite">` so the announcement happens automatically when the element enters the DOM — no extra wiring is needed on the input side beyond `aria-describedby` pointing at the message's `id`.
+
+The leading `AlertCircle` icon is rendered with `aria-hidden="true"` so it does not get double-announced — the text alone carries the message. The `polite` live-region politeness means assistive tech finishes the current utterance before reading the error, which avoids cutting off the field name the user just heard.
+
+Focus is not moved automatically. If a submit handler discovers multiple errors at once, move focus to the first failing control yourself; the cascade of `polite` announcements stays in order without you having to orchestrate them.

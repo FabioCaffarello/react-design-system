@@ -1,0 +1,49 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as CollapsibleStories from "./Collapsible.stories";
+
+<Meta of={CollapsibleStories} />
+
+# Collapsible
+
+Collapsible wraps any `trigger` element and any `children` content so the content expands and collapses smoothly on click or keyboard activation. Reach for it when a section can be optional reading at a glance — secondary metadata, advanced settings, optional details a power user opens but most users skip.
+
+## When to use
+
+- Use Collapsible for optional or secondary content the user opens when interested — advanced filters, additional metadata, expandable list items, "show more" patterns.
+- Use it inside cards, list rows, or settings panels where space is at a premium and exposing every detail at all times would bury the primary content.
+- Use `defaultOpen` to set the initial state when most users will want the section open by default; leave it `false` when the section is genuinely supplementary.
+- Use `open` + `onOpenChange` for controlled mode when external state must drive the open/closed state — coordinated expand-all, persisted state in a parent, programmatic open on event.
+- Use `storageKey` to persist the open state in `localStorage` so the user's choice survives page reloads — sidebars, preference panels.
+
+## When not to use
+
+- Use `Accordion` for a vertical stack where only one item opens at a time — Accordion enforces single-open, Collapsible is independent.
+- Use `Dialog` or `Modal` for content the user must complete before continuing — Collapsible is non-blocking.
+- Use `Drawer` for surfaces that slide in from the edge — Collapsible animates height inline.
+- Avoid Collapsible to hide content the user always needs — the extra click compounds across the flow.
+
+## Anatomy
+
+Collapsible renders in source order: the `trigger` (any node passed via the `trigger` prop — a button, a row, anything clickable — wired as the toggle target with `aria-expanded` and `aria-controls`), and the `content` panel (the `children` rendered inside an animated container whose height transitions between `0` and the measured natural height when `open` toggles).
+
+<Canvas of={CollapsibleStories.Default} />
+
+## Examples
+
+<Canvas of={CollapsibleStories.Controlled} />
+
+<Canvas of={CollapsibleStories.Disabled} />
+
+## Props
+
+<Controls of={CollapsibleStories.Default} />
+
+## Accessibility
+
+The trigger carries `aria-expanded` reflecting the current open / closed state and `aria-controls` pointing at the panel's `id` — screen readers announce "expanded" or "collapsed" alongside the trigger's label, and the user knows from focus alone whether activating will open or close the panel.
+
+Keyboard activation works through whatever element you pass as `trigger` — if it is a `<button>`, Enter and Space both toggle. If you pass a non-button (a styled `<div>`), set `role="button"` and `tabIndex={0}` on it yourself so it joins the keyboard tab order; the component does not wrap non-interactive triggers.
+
+The height animation uses `duration` (default 200 ms) which is short enough to feel responsive without being abrupt. The component does not respect `prefers-reduced-motion` automatically; if your application disables animation globally for accessibility, override `duration` to `0` in the consumer.
+
+The panel content is in the DOM at all times — collapsing only hides it visually with `height: 0` and `overflow: hidden`. Assistive tech may still see hidden content; if it must be invisible to screen readers (form fields the user should not interact with while collapsed), wire `aria-hidden` and `inert` through the panel's props yourself.

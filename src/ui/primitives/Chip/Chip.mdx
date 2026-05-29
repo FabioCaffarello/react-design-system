@@ -1,0 +1,54 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as ChipStories from "./Chip.stories";
+
+<Meta of={ChipStories} />
+
+# Chip
+
+Chip renders a small interactive token — a filter, a selection, a removable tag, or a clickable category — that the user can add to, remove from, or select within a collection. Reach for it when each token can act on its own (toggle a filter, remove a tag) and you want the collection to read as a row of pills.
+
+## When to use
+
+- Use Chip for a filter token the user can apply or remove inline — search filters, tag selections, applied criteria above a result list.
+- Use Chip with `onRemove` for tokens the user added and can dismiss — selected attachments, applied tags on a card, mentioned people.
+- Use Chip with `selected` for "pick one or many from a set" patterns where Radio or Checkbox would feel too form-like — interest tags, category pickers, filter toggles.
+- Use `variant="filled"` (or `selected={true}`) for the on / chosen state and `variant="outlined"` or `variant="default"` for the off / unselected state.
+
+## When not to use
+
+- Use `Badge` for a non-interactive status or category label — Badge is a label, Chip is a control.
+- Use `Button` for a one-off action that belongs to a row but doesn't live inside a collection of similar tokens.
+- Use `MultiSelect` when the option set is long enough that listing all chips would crowd the page — a dropdown is the right affordance there.
+- Avoid Chip for binary on / off settings unrelated to a collection — use `Switch` or `Checkbox`.
+
+## Anatomy
+
+Chip renders in source order: the `label` (the `children` content — the chip's name or value) and, when `onRemove` is provided, a trailing `remove button` (an `X` icon) inside the same chip surface. When both `onClick` and `onRemove` are present, the click and the remove are two distinct hit targets with separate accessible names.
+
+<Canvas of={ChipStories.Default} />
+
+## Examples
+
+<Canvas of={ChipStories.Variants} />
+
+<Canvas of={ChipStories.Removable} />
+
+`onClick` makes the entire chip a single interactive surface; combine with `selected` to drive a toggle pattern.
+
+<Canvas of={ChipStories.Clickable} />
+
+## Props
+
+<Controls of={ChipStories.Default} />
+
+## Accessibility
+
+Chip's accessibility shape depends on which interactions are wired. A non-interactive Chip (no `onClick`, no `onRemove`) renders as a labelled token with no role — content is announced inline.
+
+When `onClick` is provided, the chip surface becomes interactive with an explicit `aria-label` describing what the click does (selecting a filter, applying a tag). Keyboard activation uses Enter / Space.
+
+When `onRemove` is provided, the trailing `X` is a separate `<button>` with its own `aria-label="Remove <label>"` so screen readers identify the destructive affordance distinctly from the chip itself. The user can Tab to the remove button independently of the chip surface.
+
+When both `onClick` and `onRemove` are present, the focus order is chip → remove button. Activating the chip toggles selection; activating the remove button removes the chip from the collection. Each surface carries its own accessible name; the chip's label text is not enough on its own — set `aria-label` explicitly when the click action would not be obvious from the visible text.
+
+For a collection of chips representing a single multi-select question (a row of filter chips), wrap the group in a container with `role="group"` and `aria-label` describing the question, so the collection's purpose is announced before each chip's individual label.

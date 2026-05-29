@@ -1,0 +1,51 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as TooltipStories from "./Tooltip.stories";
+
+<Meta of={TooltipStories} />
+
+# Tooltip
+
+Tooltip surfaces a short, supplementary string next to its trigger element on hover or focus — the kind of label that would clutter the surface if shown permanently but matters when the user pauses to consider an affordance. Reach for it for icon-button labels, abbreviated metadata, keyboard shortcut hints, and short explanations.
+
+## When to use
+
+- Use Tooltip to name an icon-only button so the affordance survives without text — close, edit, search, copy.
+- Use Tooltip to expand an abbreviation or short label — a column header showing "AOV" with a tooltip "Average order value".
+- Use Tooltip to surface keyboard shortcuts that the user discovers as they hover over an action — "Save (⌘S)", "New (N)".
+- Pick `position` so the tooltip does not occlude what the user is reading; default `top` works for most rows, `right` works for sidebar items, `bottom` for top-toolbar actions.
+- Tune `delay` upward (300-500 ms) when the trigger is dense (many adjacent icon buttons) so the tooltip does not flash on accidental hover.
+
+## When not to use
+
+- Use a visible label for any affordance the user must perceive on first glance — primary actions, destructive operations, settings unlikely to be discovered by hovering.
+- Use `Popover` for interactive content — Tooltip dismisses on blur and cannot receive focus itself; Popover stays open and accepts clicks.
+- Use inline help text wired with `aria-describedby` for form-field guidance — Tooltip does not announce until focus arrives.
+- Avoid Tooltip on touch-first surfaces — no hover, and tap-to-focus is awkward.
+
+## Anatomy
+
+Tooltip renders in source order: the `trigger` (any element passed as `children` — Tooltip wraps it without re-styling) and the `tooltip body` (a positioned overlay containing `content`, shown after `delay` on hover or immediately on focus, hidden on blur, mouse leave, or ESC). The body is portaled near the trigger with `position` deciding which side it appears on.
+
+<Canvas of={TooltipStories.Default} />
+
+## Examples
+
+<Canvas of={TooltipStories.Top} />
+
+Focus on the trigger reveals the tooltip immediately (no delay) so keyboard users get the same affordance as mouse users.
+
+<Canvas of={TooltipStories.KeyboardAccessible} />
+
+## Props
+
+<Controls of={TooltipStories.Default} />
+
+## Accessibility
+
+The component generates a unique `id` for the tooltip body and the trigger references it via `aria-describedby` — screen readers announce the tooltip content as a description of the trigger when focus arrives. The body itself carries `role="tooltip"`.
+
+Keyboard parity matters: hover triggers a delayed reveal (default 200 ms); focus triggers an immediate reveal so keyboard users do not wait. ESC hides the tooltip without moving focus, so the user can dismiss without losing their place.
+
+Tooltip is not a substitute for a visible label on a control. Screen readers announce the trigger's accessible name first, then the tooltip content as a description. If the trigger has no accessible name (a bare icon button), set `aria-label` on the trigger so the announcement is not empty — the tooltip alone does not give the control a name.
+
+Tooltip is unsafe on touch surfaces: there is no hover, and tap-to-focus is an inconsistent affordance. If the surface targets touch primarily, move the content into the visible label or into a `Popover`.

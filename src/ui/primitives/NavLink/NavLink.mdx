@@ -1,0 +1,43 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as NavLinkStories from "./NavLink.stories";
+
+<Meta of={NavLinkStories} />
+
+# NavLink
+
+NavLink renders an anchor element styled for primary navigation — sidebars, top bars, breadcrumb-style menus — with built-in active-state detection driven by the current route. Reach for it whenever the user is moving between pages, sections, or routes; reach for `Button` when the consequence is an action, not navigation.
+
+## When to use
+
+- Use NavLink for any navigation item in a sidebar, top bar, or in-page menu — every visible item in a navigation chrome should be a NavLink, not a styled `Button`.
+- Use `variant="default"` for inline link styling (color + hover only), `variant="underline"` for breadcrumb-style trails or in-text navigation, `variant="background"` for sidebar items that need a hovered surface fill.
+- Use the component's active-state detection (driven by route matching) so the current page reads as active automatically — do not pass `isActive` manually unless you are wiring custom matching logic.
+- Use `size` to match the surrounding density — `sm` for compact menus, `md` for general nav, `lg` for prominent navigation rails.
+
+## When not to use
+
+- Use `Button` for actions — submit, delete, open a modal, toggle a state. NavLink is anchor semantics; Button is action semantics.
+- Use a plain anchor (`<a>`) for one-off links inside body content (a reference link in a paragraph). NavLink is sized and weighted for navigation chrome, not for inline prose.
+- Use a `Tab` component for tabbed navigation within a page section — Tabs provide their own active-state and role semantics.
+
+## Examples
+
+<Canvas of={NavLinkStories.Default} />
+
+<Canvas of={NavLinkStories.Active} />
+
+<Canvas of={NavLinkStories.Variants} />
+
+## Props
+
+<Controls of={NavLinkStories.Default} />
+
+## Accessibility
+
+NavLink renders a native `<a>` element with `href`, so it inherits browser navigation semantics — Enter activates, right-click offers "open in new tab", screen readers announce it as a link. The active state sets `aria-current="page"` so assistive tech announces "current page" alongside the link's name when focus arrives.
+
+The focus indicator uses `focus:ring-2` with a tinted color so the keyboard focus stays visible against any surface. Do not strip the ring without replacing it.
+
+When NavLink wraps a collection of items that form a logical navigation group (a sidebar, a top-bar menu), wrap the group in `<nav aria-label="Primary"> ... </nav>` (or whatever name fits the role) so the group's purpose is announced before each link's individual label. Without the nav landmark, screen-reader users have to interpret each link as standalone, losing the grouping context.
+
+For navigation that triggers internal route changes without full reloads, hand off the actual navigation to the framework (Next.js `Link`, React Router) and use NavLink for the styling only — the active-state hook detects the current route regardless of routing library.

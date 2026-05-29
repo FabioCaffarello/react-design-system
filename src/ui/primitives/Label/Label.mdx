@@ -1,0 +1,43 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as LabelStories from "./Label.stories";
+
+<Meta of={LabelStories} />
+
+# Label
+
+Label renders a styled `<label>` element bound to a form control via `htmlFor`. Use it to give every input a visible, click-targetable name, and to signal whether the field is required or optional through the variant ladder. It extends all native `<label>` HTML attributes.
+
+## When to use
+
+- Use Label for every form control — `Input`, `Textarea`, `Select`, `Checkbox`, `Radio`, `Switch`, file pickers. The visible label is the primary affordance for both sighted users and assistive tech.
+- Use `variant="required"` to mark fields the user must complete. The asterisk is appended visually; pair it with `aria-required` on the input itself.
+- Use `variant="optional"` to mark fields the user can skip when most peers are required. The "(optional)" suffix is clearer than no marker at all.
+- Bind Label to its control via `htmlFor={input.id}` so clicking the label focuses the input — the keyboard target and the visual target stay coupled.
+
+## When not to use
+
+- Use `aria-label` directly on the input when no visible label is appropriate (a search input next to an icon, a quick filter chip). Label is for the cases where the name is visible on the page.
+- Use `Text` for descriptive copy that is not a control name — captions, help text, instructions. Help text is associated to the input via `aria-describedby`, not by wrapping it in Label.
+- Use `ErrorMessage` for validation feedback — its `role="alert"` is required there, and Label does not provide it.
+
+## Examples
+
+<Canvas of={LabelStories.Default} />
+
+The `required` and `optional` variants append visual markers via `::after` — the asterisk and the "(optional)" suffix. Both are decoration; communicate required-ness to assistive tech with `aria-required` on the input.
+
+<Canvas of={LabelStories.Required} />
+
+<Canvas of={LabelStories.WithInput} />
+
+## Props
+
+<Controls of={LabelStories.Default} />
+
+## Accessibility
+
+Label inherits the semantics of the native `<label>` element: a screen reader announces the label text when focus moves to the bound control, and clicking the label transfers focus to that control. The binding is established via `htmlFor` pointing at the input's `id` — both must be present for the association to work.
+
+The `required` variant displays an asterisk via CSS `::after`, which screen readers may or may not announce depending on the user's configuration. Do not rely on the visual marker alone: set `aria-required="true"` on the input. Same principle for `optional` — the suffix is a visual hint; if absence of `aria-required` is enough, no further attribute is needed.
+
+When the label text itself is long or contains formatting, the entire string is announced when the control receives focus. Keep label text concise; move longer instructions into help text wired with `aria-describedby`.

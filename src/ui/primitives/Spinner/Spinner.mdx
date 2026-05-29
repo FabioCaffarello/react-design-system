@@ -1,0 +1,41 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as SpinnerStories from "./Spinner.stories";
+
+<Meta of={SpinnerStories} />
+
+# Spinner
+
+Spinner renders a small animated circular loader that signals a request is in flight. Reach for it when an action has started but its outcome is not yet visible — fetching data, submitting a form, processing a background job — and the surface needs to acknowledge the activity without taking over the page.
+
+## When to use
+
+- Use Spinner inline next to or inside a `Button` while a submit, save, or destructive action is in progress — the spinner takes the slot the label used to occupy.
+- Use Spinner inside an empty content slot (a card body, a table row range) while data is loading and the layout shape is unknown.
+- Use `label` together with the spinner so screen-reader users hear "Loading..." instead of silence — the visible text and the announced text are the same.
+- Use `size` to match the surrounding scale — `sm` inside a button, `md` inline in a row, `lg` as the centerpiece of a loading state.
+
+## When not to use
+
+- Use `Skeleton` when the layout shape is known and you want the user to perceive structure before the content arrives — Skeleton sets expectation; Spinner only signals activity.
+- Use `Progress` when the operation has a measurable percentage — upload progress, multi-step migration. Spinner is for activities with no known duration.
+- Avoid Spinner for instant operations (under ~200 ms) — the flash is more distracting than the absence of feedback.
+
+## Examples
+
+<Canvas of={SpinnerStories.Default} />
+
+<Canvas of={SpinnerStories.Variants} />
+
+<Canvas of={SpinnerStories.WithLabel} />
+
+## Props
+
+<Controls of={SpinnerStories.Default} />
+
+## Accessibility
+
+Spinner sets `role="status"` and `aria-live="polite"` so assistive tech announces the `label` when it appears, without interrupting the current utterance. The icon itself is decorative — `aria-hidden="true"` — so only the label text reaches the screen reader.
+
+Provide a `label` whenever the spinner stands alone (not next to a visible "Loading..." text already), so the announcement is meaningful. Generic spinners with no label are invisible to screen-reader users — they see nothing change and hear nothing announced.
+
+The animation uses `motion-safe:animate-spin`, which respects the `prefers-reduced-motion` media query — users who request reduced motion get a static spinner. Do not override this with an unconditional animation class.
