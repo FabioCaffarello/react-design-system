@@ -11,7 +11,6 @@ import {
   ANIMATION_TOKENS,
   Z_INDEX_TOKENS,
   OPACITY_TOKENS,
-  GRADIENT_TOKENS,
 } from "./index";
 import { SEMANTIC_COLORS_LIGHT, type SemanticColorName } from "./colors/index";
 
@@ -315,31 +314,6 @@ export function OpacityReference() {
           />
           <div className="text-xs text-gray-500">{token.value}%</div>
           <div className="text-xs text-gray-500 font-mono">
-            {token.tailwind}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/**
- * Gradient Reference Visualization
- */
-export function GradientReference() {
-  const gradientEntries = Object.entries(GRADIENT_TOKENS);
-
-  return (
-    <div className="grid grid-cols-2 gap-4">
-      {gradientEntries.map(([key, token]) => (
-        <div key={key} className="space-y-2">
-          <div className="text-sm font-medium text-gray-700">{key}</div>
-          <div
-            className="w-full h-20 rounded-md"
-            style={{ background: token.value }}
-          />
-          <div className="text-xs text-gray-500">{token.description}</div>
-          <div className="text-xs text-gray-500 font-mono break-all">
             {token.tailwind}
           </div>
         </div>

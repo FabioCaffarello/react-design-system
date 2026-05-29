@@ -68,10 +68,6 @@ export { Z_INDEX_TOKENS, getZIndex, getZIndexClass } from "./z-index";
 export * from "./opacity";
 export { OPACITY_TOKENS, getOpacity, getOpacityClass } from "./opacity";
 
-// Gradients
-export * from "./gradients";
-export { GRADIENT_TOKENS, getGradient, getGradientClass } from "./gradients";
-
 // Sidebar (specific tokens)
 export * from "./sidebar";
 export { SIDEBAR_TOKENS, getNestedIndentClass } from "./sidebar";
