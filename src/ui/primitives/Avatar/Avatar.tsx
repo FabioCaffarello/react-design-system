@@ -6,7 +6,6 @@ import {
   type HTMLAttributes,
   type ReactNode,
 } from "react";
-import { getColorClass } from "../../tokens";
 import { cn } from "../../utils";
 
 export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
@@ -92,8 +91,8 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(function Avatar(
         "overflow-hidden",
         sizeClasses[size],
         variantClasses[variant],
-        getColorClass("neutral", "light", "bg"),
-        getColorClass("neutral", "dark", "text"),
+        "bg-surface-muted",
+        "text-fg-primary",
         className,
       )}
       role="img"
