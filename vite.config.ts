@@ -23,29 +23,40 @@ export default defineConfig(() => {
     },
     // Build configuration for library mode.
     //
-    // Single entry. Phase 13d collapsed the previous multi-entry layout
-    // (index + providers + primitives + components + tokens) because cross-
-    // chunk references (notably to cva from primitives) silently broke for
-    // external consumers since v1.0.0 — never caught because no test
-    // exercised the dist bundle from outside the repo. Single entry
-    // dissolves the cross-chunk class of bug structurally and preserves the
-    // original Next.js SSR / TDZ protection trivially: all providers and
-    // their dependencies live in one linear module, so no downstream
-    // bundler can split them apart in an order that breaks initialization.
+    // Two entries:
+    //   - index: the linear JS bundle (Phase 13d collapsed the previous
+    //     multi-entry layout — providers + primitives + components + tokens
+    //     — because cross-chunk references to cva silently broke external
+    //     distribution since v1.0.0). All component code, providers, hooks,
+    //     and tokens live in this single bundle. No cross-chunk references
+    //     possible. SSR / TDZ initialization order preserved trivially.
+    //   - styles: a build-time scaffolding entry whose only job is to
+    //     side-effect import src/style.css so Vite extracts the token
+    //     cascade to dist/react-design-system.css. Consumers reach the CSS
+    //     via the package.json "./styles" export, not this JS shell.
+    //     The shell itself is ~30 bytes of dead code in dist/styles/ —
+    //     trivial overhead for the architectural clarity it provides.
     build: {
       lib: {
-        entry: "src/ui/index.ts",
+        entry: {
+          index: "src/ui/index.ts",
+          styles: "src/ui/styles-entry.ts",
+        },
         name: "ReactDesignSystem",
-        fileName: (format) => (format === "es" ? "index.js" : "index.cjs"),
+        fileName: (format, entryName) => {
+          const ext = format === "es" ? "js" : "cjs";
+          return entryName === "index"
+            ? `index.${ext}`
+            : `${entryName}/index.${ext}`;
+        },
         formats: ["es", "cjs"],
       },
       minify: "esbuild",
       target: "es2015",
       cssMinify: true,
-      // CSS will be emitted as a single asset alongside the JS bundle when a
-      // future entry imports the global stylesheet (Phase 13e). Keeping
-      // cssCodeSplit: false + assetFileNames so the CSS asset lands at the
-      // expected /styles export path the moment it has content.
+      // Single CSS bundle pinned to dist/react-design-system.css via
+      // assetFileNames below — matches the path the package.json "./styles"
+      // export resolves to.
       cssCodeSplit: false,
       sourcemap: true,
       chunkSizeWarningLimit: 1000,
