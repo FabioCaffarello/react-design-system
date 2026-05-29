@@ -1,3 +1,23 @@
+## [1.13.1](https://github.com/FabioCaffarello/react-design-system/compare/v1.13.0...v1.13.1) (2026-05-29)
+
+
+### 🐛 Bug Fixes
+
+* **storybook:** remove autodocs tags from all stories — MDX attached is canonical ([004990e](https://github.com/FabioCaffarello/react-design-system/commit/004990ec652ba2ad9fac91ebee2a370e1158c582))
+
+
+### 📝 Documentation
+
+* **backlog:** register Phase 13b1 follow-ups ([ea7f3e9](https://github.com/FabioCaffarello/react-design-system/commit/ea7f3e995d28bfe649fc068c50ce697ad4f45c65))
+* **button:** document Button as gold standard ([02effc3](https://github.com/FabioCaffarello/react-design-system/commit/02effc3a98c9f8f15f2358018e8543d864e2fe05))
+* **claude:** add component-doc skill with corrected template ([8923fd9](https://github.com/FabioCaffarello/react-design-system/commit/8923fd9d6cf41193ceabc4c8f948b1c363ea88bc))
+* **modal:** document Modal as gold standard ([62efecd](https://github.com/FabioCaffarello/react-design-system/commit/62efecd20ea9a19f434bc78fe074a98b5c8ad5fc))
+
+
+### ♻️ Code Refactoring
+
+* **claude:** calibrate component-doc skill based on gold standards ([7c91dd5](https://github.com/FabioCaffarello/react-design-system/commit/7c91dd51ae93b42dfd1a5a06019605f701bb10b2))
+
 ## [1.13.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.12.0...v1.13.0) (2026-05-29)
 
 
