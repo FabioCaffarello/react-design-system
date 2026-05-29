@@ -7,7 +7,7 @@ Built by me, maintained mainly through Claude Code prompts.
 
 - React 19 + TypeScript 5 (strict)
 - Vite (build), Vitest + Testing Library (test)
-- TailwindCSS (utility-first, tokens in `src/style.css`)
+- TailwindCSS v4 (CSS-first config via `@theme` in `src/styles/semantic/`, theme overrides in `src/styles/themes/`)
 - Storybook (docs)
 - Plop (scaffolding new components)
 
@@ -32,6 +32,12 @@ If unsure where something goes: composed of other UI → `components/`; pure str
 - Styling via tokens/Tailwind only. No hardcoded hex/px in components.
 - WCAG 2.1 AA: keyboard nav, ARIA, focus management.
 - Test coverage ≥ 80% per component.
+
+## Color and tokens vocabulary
+
+This project has a canonical semantic color vocabulary established in Phase 7 (see `PHASE_7_SEMANTIC_COLORS.md` for history). Before applying any color to a component — new or existing — read `.claude/rules/colors.md`. It covers the canonical class families, 9 principles for role choice, special cases, and an automated validation grep.
+
+Same discipline for tokens generally: `.claude/rules/tokens.md`.
 
 ## Commands
 
