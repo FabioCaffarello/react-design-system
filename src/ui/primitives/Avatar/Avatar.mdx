@@ -1,0 +1,47 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as AvatarStories from "./Avatar.stories";
+
+<Meta of={AvatarStories} />
+
+# Avatar
+
+Avatar renders a user's profile image with a built-in fallback to initials (or any custom node) when the image is absent or fails to load. Reach for it whenever a person, team, or workspace identity needs a visual handle — comment authors, assignees, mention pills, profile menus, account switchers.
+
+## When to use
+
+- Use Avatar to identify a person or entity inline next to their name, in a list of authors, or as the trigger of a profile menu.
+- Use Avatar with `src` when a profile image is available and `fallback` set to initials (or a node) so the component degrades gracefully when the image 404s, times out, or is missing.
+- Use `size` to match the surrounding scale — `xs` and `sm` for compact rows and inline mentions, `md` for general use, `lg` and `xl` for profile headers and account screens.
+- Use `variant="square"` or `variant="rounded"` for brand / workspace / team avatars when "person" is the wrong mental model; keep `variant="circle"` for users.
+
+## When not to use
+
+- Use `Icon` for category or action glyphs that aren't identity-bearing — Avatar always implies a person or entity behind it.
+- Use a plain text byline when the surrounding density makes the avatar redundant — comment threads with thumbnails on every reply, for example.
+- Avoid Avatar without `fallback` and without `src`. The empty state is unhelpful; pass at least initials or a node so the slot always carries information.
+
+## Examples
+
+<Canvas of={AvatarStories.Default} />
+
+<Canvas of={AvatarStories.WithImage} />
+
+The component auto-detects image load failures and swaps to `fallback`. The `ImageError` story uses a deliberately invalid URL to demonstrate the fallback path; the smoke runner's allowlist whitelists the resulting `net::ERR_NAME_NOT_RESOLVED` console error for that single story.
+
+<Canvas of={AvatarStories.ImageError} />
+
+<Canvas of={AvatarStories.Sizes} />
+
+<Canvas of={AvatarStories.Group} />
+
+## Props
+
+<Controls of={AvatarStories.Default} />
+
+## Accessibility
+
+Avatar renders a `<div>` with `role="img"` and a derived `aria-label` so the avatar is announced as a single image with a name — even when no `<img>` element is in the DOM (the fallback path renders text inside the role="img" container). The `aria-label` precedence is: explicit `aria-label` prop → `alt` prop → the literal "User avatar".
+
+When the avatar's only label-bearing context is its proximity to a name, set an explicit `aria-label` with the person's name so screen-reader users do not have to rely on visual co-location. When the avatar appears multiple times for the same person on one screen, vary the label slightly to clarify the context — for example, "Alice Smith, comment author" vs "Alice Smith, assignee" — so the announcement reflects role.
+
+Decorative avatars (avatars that repeat label text already on the line) can be marked `aria-hidden="true"` to avoid double-announcement, but only when the surrounding text is the canonical identification.

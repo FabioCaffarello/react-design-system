@@ -1,0 +1,46 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as BadgeStories from "./Badge.stories";
+
+<Meta of={BadgeStories} />
+
+# Badge
+
+Badge renders a small inline tag that carries a status, count, or category label. Reach for it when a row, card, or header needs a piece of metadata that survives at a glance — versions, environments, role markers, alert priority — without consuming a full line of body copy.
+
+## When to use
+
+- Use Badge to label a status (`success` = healthy, `warning` = action needed, `error` = blocked, `neutral` = informational) on rows, cards, or list items where the surface is dense.
+- Use Badge to attach a category or environment tag to an identifier — "Production", "Beta", role names, plan tier.
+- Use Badge to show a count next to an icon or label — unread messages, pending items, new arrivals — when the count is small enough to read at a glance.
+- Pair the `solid` style with high-emphasis surfaces (header strips, primary cards) and the `outline` style with low-emphasis surfaces (table rows, secondary metadata).
+
+## When not to use
+
+- Use `Chip` for selectable filters or removable tokens — Chip is a control, Badge is a label.
+- Use `Dot` for a single-glance status indicator that doesn't need any text — Dot is colored circle alone.
+- Use `Toast` or inline messages for full announcements; Badge only flags state, it does not narrate it.
+- Avoid Badge for clickable affordances. If a click triggers an action, render a `Button` (possibly `iconOnly` or `outline`) so the affordance is honest.
+
+## Examples
+
+<Canvas of={BadgeStories.Default} />
+
+The variant ladder covers the four feedback roles (`success`, `warning`, `error`, `info`) plus `neutral` for "no specific status" and brand pair (`primary`, `secondary`).
+
+<Canvas of={BadgeStories.Variants} />
+
+`solid` fills the background with the variant color; `outline` keeps the surface transparent and borders the variant color. Pick by surface density.
+
+<Canvas of={BadgeStories.Styles} />
+
+## Props
+
+<Controls of={BadgeStories.Default} />
+
+## Accessibility
+
+Badge renders as a `<span>` with no implicit role — text content is announced inline alongside whatever precedes it. When the badge is the only signal of an important status (the row is otherwise unstyled), pair the visible label with `aria-label` so the meaning survives without the color cue: `<Badge variant="error" aria-label="Build failed">FAIL</Badge>`.
+
+The variant colors are tuned for WCAG 2.1 AA contrast on the canonical canvas. When a Badge is placed over a colored surface (a colored header, a dark card), verify contrast manually before shipping — the tokens are surface-relative, not absolute.
+
+Counts inside Badge should be limited to small integers — large numbers can be truncated (`99+`) so the visible text stays readable at the badge's typography scale.
