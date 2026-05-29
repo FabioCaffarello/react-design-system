@@ -1,3 +1,42 @@
+## [1.14.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.13.1...v1.14.0) (2026-05-29)
+
+
+### ✨ Features
+
+* **storybook:** add Design System Introduction landing page ([5cfb265](https://github.com/FabioCaffarello/react-design-system/commit/5cfb2652b80a116bc907468db8fa8964a0b41109))
+* **storybook:** add manager theming with RDS wordmark ([ebc2558](https://github.com/FabioCaffarello/react-design-system/commit/ebc2558314d05c26b2152cff20a780a5734613f8))
+* **storybook:** opinionated sidebar order via storySort ([7402c6e](https://github.com/FabioCaffarello/react-design-system/commit/7402c6e2e2e1f42d26556ddddee86e6cd08197c2))
+
+
+### 📝 Documentation
+
+* **claude:** add trailing-section exception rule for SKILL.md ([63d72ff](https://github.com/FabioCaffarello/react-design-system/commit/63d72ff8554e366a6e5ee6ff1db56ac4b84ed95a))
+* **claude:** calibrate component-doc skill for Phase 13b3 — anatomy scaling + cross-reference rule ([68b00df](https://github.com/FabioCaffarello/react-design-system/commit/68b00df819f3e1550db8daa26f394845263a9dcb))
+* **components:** document Card, Pagination, Breadcrumb (3 components) ([dec28d3](https://github.com/FabioCaffarello/react-design-system/commit/dec28d3dac7bffcee4e04af17f3d27b37064bd49))
+* **components:** document DashboardLayout, LoginBox, Autocomplete (3 components) + BACKLOG finding ([6b65dda](https://github.com/FabioCaffarello/react-design-system/commit/6b65dda027e150b5e3a4d9c77a4a13621fb9ffee)), closes [#20](https://github.com/FabioCaffarello/react-design-system/issues/20) [checkpoint-#10](https://github.com/FabioCaffarello/checkpoint-/issues/10) [#20](https://github.com/FabioCaffarello/react-design-system/issues/20)
+* **components:** document DataTablePattern, Timeline, Rating, SearchAndFilterPattern (4 components) ([778ef3f](https://github.com/FabioCaffarello/react-design-system/commit/778ef3f686f8376f108460d0ede56b6b2ed02810)), closes [#30](https://github.com/FabioCaffarello/react-design-system/issues/30) [checkpoint-#10](https://github.com/FabioCaffarello/checkpoint-/issues/10) [#30](https://github.com/FabioCaffarello/react-design-system/issues/30)
+* **components:** document Drawer, Popover, Accordion (3 components) ([7761f6b](https://github.com/FabioCaffarello/react-design-system/commit/7761f6ba7afd1d324dfe8f8a0d467f8860cb6ead)), closes [checkpoint-#10](https://github.com/FabioCaffarello/checkpoint-/issues/10)
+* **components:** document Dropdown, Menu, EmptyState (3 components) ([f058924](https://github.com/FabioCaffarello/react-design-system/commit/f0589246b2817f35861ae1142c9a7cb22143a137)), closes [#10](https://github.com/FabioCaffarello/react-design-system/issues/10) [#10](https://github.com/FabioCaffarello/react-design-system/issues/10)
+* **components:** document FileUpload, DataGrid, TimePicker (3 components) ([067311f](https://github.com/FabioCaffarello/react-design-system/commit/067311fff41045532f9a735c560475ebc56b1714))
+* **components:** document FormWizardPattern, SideNavbar (2 components — checkpoint [#32](https://github.com/FabioCaffarello/react-design-system/issues/32)) ([ffdd0e6](https://github.com/FabioCaffarello/react-design-system/commit/ffdd0e6a38768e1adacebef2e9771efe4cf972a1))
+* **components:** document MultiSelect, ColorPicker, CommandPalette (3 components) ([43e6ab7](https://github.com/FabioCaffarello/react-design-system/commit/43e6ab798ff69fabe0605bf488071fc76e335616))
+* **components:** document SearchInput, Header, Toast, Tabs (4 components) ([f107ed4](https://github.com/FabioCaffarello/react-design-system/commit/f107ed400d62598cc5984128eb12bb1e89616fb1))
+* **components:** document Stepper, PageHeader, Navigation, ButtonGroup (4 components) ([a331b78](https://github.com/FabioCaffarello/react-design-system/commit/a331b78ca8a241d22e43664f3e6e59eb19a7b503)), closes [checkpoint-#10](https://github.com/FabioCaffarello/checkpoint-/issues/10) [checkpoint-#20](https://github.com/FabioCaffarello/checkpoint-/issues/20)
+* **layouts:** document Container, Stack (2 layouts) ([909721a](https://github.com/FabioCaffarello/react-design-system/commit/909721a8fc6d444fd3ffa3c8e1b309e19f33a15a))
+* **legacy:** remove TableProvider.mdx (folded into Table > Architecture) ([ecb3ed2](https://github.com/FabioCaffarello/react-design-system/commit/ecb3ed2c3220a207fc4ef7200477734c6591eb9c)), closes [#5](https://github.com/FabioCaffarello/react-design-system/issues/5)
+* **legacy:** rewrite DatePicker.mdx to attached MDX standard ([4f1ae87](https://github.com/FabioCaffarello/react-design-system/commit/4f1ae870ddc1b8047733377cbeb3a2cb9dad9183)), closes [#2](https://github.com/FabioCaffarello/react-design-system/issues/2)
+* **legacy:** rewrite Dialog.mdx to attached MDX standard ([c9e5ba2](https://github.com/FabioCaffarello/react-design-system/commit/c9e5ba206041164f141d73d368543706867a47d5)), closes [#3](https://github.com/FabioCaffarello/react-design-system/issues/3)
+* **legacy:** rewrite Form.mdx to attached MDX standard ([56dbbe2](https://github.com/FabioCaffarello/react-design-system/commit/56dbbe241bab5eabbce4bff4869249454c9d8468)), closes [#1](https://github.com/FabioCaffarello/react-design-system/issues/1)
+* **legacy:** rewrite Table.mdx + fold TableProvider architecture as trailing section ([7d7dd04](https://github.com/FabioCaffarello/react-design-system/commit/7d7dd04e075c0f41dc36bb698c9f7670aea41d47)), closes [#4](https://github.com/FabioCaffarello/react-design-system/issues/4)
+* **primitives:** document Badge, Avatar, Dot (3 components) ([4384807](https://github.com/FabioCaffarello/react-design-system/commit/43848070350886e2ce906855755d7e007d1db83d))
+* **primitives:** document Info, NavLink (2 components) + BACKLOG finding ([f91123a](https://github.com/FabioCaffarello/react-design-system/commit/f91123a13551fa97d0a79075e659324efc9d7b79))
+* **primitives:** document Input, Checkbox, Radio (3 components) ([907a693](https://github.com/FabioCaffarello/react-design-system/commit/907a6930b2dd5715c002d68dd50c88a215941dbf))
+* **primitives:** document Select, Textarea (2 components) ([61533bc](https://github.com/FabioCaffarello/react-design-system/commit/61533bca4cc840de9d1ba1048318a1e234cff277))
+* **primitives:** document Slider, Collapsible (2 components) ([73c1519](https://github.com/FabioCaffarello/react-design-system/commit/73c15195871f9712e527985385b16373c8e8b99f))
+* **primitives:** document Spinner, Progress, Skeleton, Separator (4 components) ([9ba955f](https://github.com/FabioCaffarello/react-design-system/commit/9ba955f708ebabb697405ceb32c9a8871b5aee3d))
+* **primitives:** document Switch, Tooltip, Chip (3 components) ([7a84a36](https://github.com/FabioCaffarello/react-design-system/commit/7a84a361bb0c69820cce67ea943170049866cc45))
+* **primitives:** document Text, Label, ErrorMessage (3 components) ([5af2433](https://github.com/FabioCaffarello/react-design-system/commit/5af2433b9e000649501743c24ffa3c09b22d5232))
+
 ## [1.13.1](https://github.com/FabioCaffarello/react-design-system/compare/v1.13.0...v1.13.1) (2026-05-29)
 
 
