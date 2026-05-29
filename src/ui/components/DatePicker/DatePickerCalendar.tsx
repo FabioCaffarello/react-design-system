@@ -264,7 +264,7 @@ export function DatePickerCalendar({
         {WEEKDAYS.map((day) => (
           <div
             key={day}
-            className="text-center text-xs font-medium text-gray-500 py-1"
+            className="text-center text-xs font-medium text-fg-tertiary py-1"
           >
             {day}
           </div>
@@ -315,16 +315,16 @@ export function DatePickerCalendar({
                 focus:ring-offset-1
                 ${
                   isDisabled
-                    ? "text-gray-300 cursor-not-allowed"
+                    ? "text-fg-disabled cursor-not-allowed"
                     : isSelected
-                      ? `${"bg-surface-brand"} text-white font-semibold`
+                      ? "bg-surface-brand text-fg-inverse font-semibold"
                       : isInRange
-                        ? `${"bg-indigo-400"} ${"text-fg-brand"}`
+                        ? "bg-surface-brand-muted text-fg-brand-emphasis"
                         : isToday
-                          ? "border-2 border-indigo-500 font-semibold"
+                          ? "border-2 border-line-brand font-semibold"
                           : isFocused
-                            ? `${"bg-indigo-400"}`
-                            : "hover:bg-gray-100"
+                            ? "bg-surface-brand-muted"
+                            : "hover:bg-surface-active"
                 }
               `}
               aria-label={date.toDateString()}
