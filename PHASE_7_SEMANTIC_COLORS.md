@@ -224,6 +224,54 @@ Casos NÃO se aplicam:
   — mantém literal por motivo diferente (falta de papel no sistema
   pra scrim, não shade isolada). Tracked no BACKLOG.
 
+**PRINCÍPIO — Estado de hierarquia vs estado de interatividade.**
+
+Quando um elemento tem variação visual relacionada à **posição numa
+sequência ou ordem** (não relacionada a sua interatividade), use
+tokens de **HIERARQUIA** (`fg-primary` / `fg-secondary` / `fg-
+tertiary` / `fg-quaternary`) em vez de tokens de **ESTADO** (`fg-
+disabled`, `surface-disabled`).
+
+Critério prático: **o elemento permanece interativo no estado dito
+"menor"?**
+
+- **Sim → hierarquia.** Estado é de posição/ordem.
+- **Não (é genuinamente inativo) → estado.**
+
+Casos de aplicação:
+
+- Stepper step pending (ainda não alcançado mas clicável quando
+  `allowNavigation=true`) → `fg-quaternary`, NÃO `fg-disabled`.
+
+Casos opostos (estado real de interatividade):
+
+- Input disabled (genuinamente não-interativo) → `fg-disabled`,
+  `surface-disabled`.
+
+Razão: confundir hierarquia com estado mascara a função do
+componente. Um stepper pending clicável renderizado com `fg-disabled`
+engana o usuário sobre interatividade.
+
+**PRINCÍPIO — Token semântico reflete conceito visual, não mecanismo
+CSS.**
+
+Linhas visuais (connectors, dividers, separators) usam tokens
+`line-*`, independente do mecanismo de implementação (`border-*`,
+`bg-*` em div fino, `height: 1px`, etc.).
+
+Casos de aplicação:
+
+- Stepper vertical connector (div com bg) → `bg-line-emphasis`.
+- Stepper horizontal Separator (border) → `border-line-emphasis`.
+- NavbarSeparator (div com bg) → `bg-line-default` (precedente
+  piloto-A).
+- MenuSeparator (div com bg) → `bg-line-default` (precedente Batch
+  Menu).
+
+Razão: token semântico expressa o **papel visual** (linha conectora,
+divisor), não a tecnologia de implementação. Manter coerência permite
+mudar implementação (div→hr, border→bg) sem precisar repensar a cor.
+
 ## Mesma família da Phase 8
 
 Tokens semânticos existem mas não são consumidos. Mesma patologia,
