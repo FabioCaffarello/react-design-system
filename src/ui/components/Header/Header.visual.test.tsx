@@ -29,7 +29,7 @@ describe("Header Visual Validation (TASK-039)", () => {
       const header = container.querySelector("header");
       expect(header).toBeInTheDocument();
       // Visual consistency: should have base classes
-      expect(header).toHaveClass("bg-white");
+      expect(header).toHaveClass("bg-surface-base");
     });
 
     it("should render elevated variant with shadow", () => {
@@ -121,7 +121,7 @@ describe("Header Visual Validation (TASK-039)", () => {
       );
 
       const header = container.querySelector("header");
-      expect(header).toHaveClass("backdrop-blur-sm", "bg-white/95");
+      expect(header).toHaveClass("backdrop-blur-sm", "bg-surface-base/95");
     });
   });
 
