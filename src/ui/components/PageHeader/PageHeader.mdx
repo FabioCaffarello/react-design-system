@@ -1,0 +1,50 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as PageHeaderStories from "./PageHeader.stories";
+
+<Meta of={PageHeaderStories} />
+
+# PageHeader
+
+PageHeader renders the in-page identity row — an optional breadcrumb above a page title, an optional description below the title, and an optional actions area on the right. Reach for it as the first block of every content page; it gives the user a sense of where they are and what they can do here in one glance.
+
+## When to use
+
+- Use PageHeader as the first block of every primary content page — dashboards, list views, detail views, settings pages, anything with a "this page is about X" identity.
+- Use `breadcrumb` when the page lives two or more levels deep so the user can navigate back to ancestors without using the browser back button.
+- Use `description` for one short sentence framing the page when the title alone is not specific enough — "Issues" vs "Issues assigned to you that are open this week".
+- Use `actions` for primary affordances tied to the page — "Create issue" on an issues list, "Invite member" on a team settings page.
+- Use `variant="compact"` in dense surfaces (modals, drawers, side panels) where the default vertical rhythm would crowd.
+
+## When not to use
+
+- Use `Header` for the application's top chrome — the brand and primary nav. PageHeader sits inside the page, below Header.
+- Use a plain heading element (`<h1>`) when no breadcrumb, description, or actions are needed; PageHeader's value is the composed identity, not the title alone.
+- Avoid PageHeader on landing or marketing pages where the visual hierarchy is different — bespoke layouts read better there.
+
+## Anatomy
+
+PageHeader stacks vertically: an optional `breadcrumb` (rendered via the `Breadcrumb` primitive when items are passed) sits at the top; below it a `title row` runs horizontally with the `title` (rendered as `<h1>` via `Text`) and an optional `description` on the left, and the optional `actions` slot (typically a `Button` or button group) on the right. When `description` is absent, the title sits alone in that row; when `actions` are absent, the title spans full width.
+
+<Canvas of={PageHeaderStories.Default} />
+
+## Examples
+
+<Canvas of={PageHeaderStories.WithBreadcrumb} />
+
+<Canvas of={PageHeaderStories.WithActions} />
+
+<Canvas of={PageHeaderStories.Complete} />
+
+## Props
+
+<Controls of={PageHeaderStories.Default} />
+
+## Accessibility
+
+The title renders as a native `<h1>` so the document outline has a clear page heading; verify the heading level matches the surrounding context if PageHeader sits inside a nested region (a card containing a section's identity should probably use `<h2>` instead, which the current API does not expose — the consumer would need a custom wrapper).
+
+The `breadcrumb` block carries the `Breadcrumb` primitive's accessibility wiring — `<nav aria-label="Breadcrumb">` landmark and `aria-current="page"` on the terminal item. The `actions` block is a plain region with no implicit landmark; the buttons inside provide their own semantics.
+
+When the page identity changes via client-side navigation (a route change inside an SPA), screen-reader users do not always hear the new page title automatically. If the application does not handle this in routing, move focus to the new `<h1>` on route change, or set `aria-live="polite"` on the page region so the title is announced.
+
+For pages where the `description` carries time-sensitive context ("Showing snapshot from 5 minutes ago"), update it as state changes rather than reloading the whole header — the text update is announced politely by assistive tech without disturbing focus.
