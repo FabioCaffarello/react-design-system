@@ -93,12 +93,7 @@ export default function Modal({
     "overflow-y-auto",
   ];
 
-  const overlayClasses = [
-    "fixed",
-    "inset-0",
-    "bg-black/50",
-    "transition-opacity",
-  ];
+  const overlayClasses = ["fixed", "inset-0", "bg-scrim", "transition-opacity"];
 
   const modalSizeClasses: Record<NonNullable<Props["variant"]>, string> = {
     default: "max-w-md",

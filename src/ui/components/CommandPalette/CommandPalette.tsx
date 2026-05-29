@@ -194,7 +194,7 @@ export default function CommandPalette({
         fixed
         inset-0
         ${getZIndexClass("modal-backdrop")}
-        bg-black/50
+        bg-scrim
         flex
         items-start
         justify-center

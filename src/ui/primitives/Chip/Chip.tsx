@@ -217,7 +217,7 @@ const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(
           }}
           className={cn(
             getSpacingClass("xs", "ml"),
-            "hover:bg-black/10",
+            "hover:bg-tint-hover",
             getRadiusClass("full"),
             getSpacingClass("xs", "p"),
             "transition-colors",

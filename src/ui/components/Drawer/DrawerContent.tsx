@@ -83,7 +83,7 @@ export default function DrawerContent({
         className={`
           fixed
           inset-0
-          bg-black/50
+          bg-scrim
           ${getZIndexClass("modal")}
           ${getAnimationClass("base")}
           ${isOpen ? "opacity-100" : "opacity-0"}

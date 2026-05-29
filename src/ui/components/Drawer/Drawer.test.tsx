@@ -63,7 +63,7 @@ describe("Drawer", () => {
       );
 
       await waitFor(() => {
-        const overlay = document.querySelector(".bg-black\\/50");
+        const overlay = document.querySelector(".bg-scrim");
         expect(overlay).toBeInTheDocument();
         fireEvent.click(overlay!);
         expect(handleOpenChange).toHaveBeenCalledWith(false);
@@ -85,7 +85,7 @@ describe("Drawer", () => {
       );
 
       await waitFor(() => {
-        const overlay = document.querySelector(".bg-black\\/50");
+        const overlay = document.querySelector(".bg-scrim");
         expect(overlay).toBeInTheDocument();
         fireEvent.click(overlay!);
         expect(handleOpenChange).not.toHaveBeenCalled();
