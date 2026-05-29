@@ -135,7 +135,7 @@ export default function ColorPicker({
           ${getShadowClass("sm")}
           mb-4
           border
-          border-gray-200
+          border-line-default
         `}
         style={{ backgroundColor: currentValue }}
       />
@@ -143,7 +143,7 @@ export default function ColorPicker({
       {/* RGB Sliders */}
       <div className="space-y-3 mb-4">
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">
+          <label className="block text-xs font-medium text-fg-secondary mb-1">
             Red: {rgb.r}
           </label>
           <input
@@ -157,7 +157,7 @@ export default function ColorPicker({
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">
+          <label className="block text-xs font-medium text-fg-secondary mb-1">
             Green: {rgb.g}
           </label>
           <input
@@ -171,7 +171,7 @@ export default function ColorPicker({
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-1">
+          <label className="block text-xs font-medium text-fg-secondary mb-1">
             Blue: {rgb.b}
           </label>
           <input
@@ -203,7 +203,7 @@ export default function ColorPicker({
       {/* Color Presets */}
       {colorPresets.length > 0 && (
         <div>
-          <label className="block text-xs font-medium text-gray-700 mb-2">
+          <label className="block text-xs font-medium text-fg-secondary mb-2">
             Presets
           </label>
           <div className="grid grid-cols-10 gap-1">
@@ -226,10 +226,10 @@ export default function ColorPicker({
                   h-6
                   ${getRadiusClass("sm")}
                   border
-                  border-gray-300
+                  border-line-emphasis
                   hover:scale-110
                   ${getShadowClass("sm")}
-                  ${currentValue.toLowerCase() === color.toLowerCase() ? "ring-2 ring-offset-1 ring-indigo-500" : ""}
+                  ${currentValue.toLowerCase() === color.toLowerCase() ? "ring-2 ring-offset-1 ring-line-brand" : ""}
                 `}
                 style={{ backgroundColor: color }}
                 aria-label={`Select color ${color}`}
@@ -247,7 +247,7 @@ export default function ColorPicker({
         trigger={
           <div className="flex items-center gap-2">
             {label && (
-              <label className="text-sm font-medium text-gray-700">
+              <label className="text-sm font-medium text-fg-secondary">
                 {label}
               </label>
             )}
@@ -257,7 +257,7 @@ export default function ColorPicker({
                 h-10
                 ${getRadiusClass("md")}
                 border
-                border-gray-300
+                border-line-emphasis
                 ${getShadowClass("sm")}
                 cursor-pointer
                 ${disabled ? "opacity-50 cursor-not-allowed" : ""}
