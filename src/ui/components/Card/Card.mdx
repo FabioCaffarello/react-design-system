@@ -1,0 +1,49 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as CardStories from "./Card.stories";
+
+<Meta of={CardStories} />
+
+# Card
+
+Card renders a bounded surface that groups related content — a unit of layout the eye can land on without scanning around. Reach for it whenever a section of the page needs its own container — content blocks, list items at the row level, summary tiles, settings groups. The component extends all native `<div>` HTML attributes.
+
+## When to use
+
+- Use Card to group a related block of content into a discrete surface — a single article preview, a settings group, a status tile, a feature on a marketing page.
+- Use `variant="hover"` for cards that are clickable as a whole — the hover affordance signals the entire surface is interactive.
+- Use `variant="selected"` when the card represents one option in a collection and the user has chosen it (filter card, plan picker, document selector).
+- Use `padding` to match the content density — `small` for compact lists, `medium` (default) for general content, `large` for hero or feature surfaces. `none` for cards that contain their own padded sub-regions.
+- Pair Card with an `onClick` handler when the whole surface is the click target, not a button inside the card.
+
+## When not to use
+
+- Use a plain `<div>` (or layout primitive) when the content does not need a bounded surface — paragraphs of body copy, full-width sections, page headers.
+- Use `Modal` or `Drawer` when the content is overlay-style and must dismiss back to the page; Card is part of the page, not over it.
+- Avoid Card-inside-Card nesting; the visual nesting reads as noise. Use spacing and headings to group within a single card.
+- Avoid Card for purely decorative grouping — if the surface adds no clarity, the layout reads cleaner without it.
+
+## Examples
+
+<Canvas of={CardStories.Default} />
+
+<Canvas of={CardStories.Hover} />
+
+<Canvas of={CardStories.Selected} />
+
+`onClick` makes the entire card a single click target — wire the handler at the Card level so the whole surface participates, not a button inside.
+
+<Canvas of={CardStories.WithActions} />
+
+## Props
+
+<Controls of={CardStories.Default} />
+
+## Accessibility
+
+Card renders a `<div>` with no implicit role — by default it is decorative grouping and not announced as anything by assistive tech. The content inside provides the semantics.
+
+When Card is clickable (`onClick` set, or `variant="hover"` / `"selected"`), set `aria-label` or `aria-labelledby` so the surface has an accessible name and assistive tech can identify it as an interactive region. The component does not auto-promote to `role="button"` because the right role depends on the intent — link, button, listbox option — and the consumer knows it.
+
+For collections of selectable cards (a list of plan tiles, a row of filter cards), wrap the group in a container with `role="listbox"` or `role="radiogroup"` and treat each Card as the option element with `role="option"` or `role="radio"`. Without the group role, assistive tech sees a row of independent surfaces and the "pick one" relationship is invisible.
+
+Cards that contain interactive elements (buttons, links inside the card) should not themselves be clickable — pick the surface or the contained controls, not both, so the focus and click semantics stay unambiguous.

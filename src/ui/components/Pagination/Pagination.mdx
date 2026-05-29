@@ -1,0 +1,47 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as PaginationStories from "./Pagination.stories";
+
+<Meta of={PaginationStories} />
+
+# Pagination
+
+Pagination renders the prev / page-numbers / next controls below a paginated list, with optional page-info text ("Showing 11-20 of 200"). Reach for it whenever a result set is too large to render on a single page and the user benefits from jumping to a specific page rather than scrolling endlessly.
+
+## When to use
+
+- Use Pagination below any list, table, or grid that has more results than fit on a single screen — search results, table rows, gallery items, log entries.
+- Use it when the user benefits from random-access navigation ("jump to page 5") — pagination's value is precisely this; an infinite-scroll surface would lose it.
+- Use `showPageInfo` (default `true`) when the total count and the current window matter — "Showing 11-20 of 200" anchors the user's sense of where they are.
+- Use `totalItems` + `itemsPerPage` together so the info text is calculated correctly; omit when the surface does not need to surface absolute counts.
+
+## When not to use
+
+- Use infinite scroll when the user's mental model is "more of the same" and absolute position does not matter — social feeds, image galleries.
+- Use a "load more" button when the result set is small (under ~50 items) and the user just needs one or two extra batches.
+- Use a virtualized list when the total fits in memory but rendering it all hurts performance; virtualization removes the need for pagination entirely.
+
+## Examples
+
+<Canvas of={PaginationStories.Default} />
+
+<Canvas of={PaginationStories.FirstPage} />
+
+<Canvas of={PaginationStories.MiddlePage} />
+
+For long pagination, the component condenses the middle with ellipses so the first, last, and a window around the current page stay visible.
+
+<Canvas of={PaginationStories.WithManyPages} />
+
+## Props
+
+<Controls of={PaginationStories.Default} />
+
+## Accessibility
+
+Pagination renders a `<nav>` landmark with `aria-label="Pagination"` so screen readers announce the region as a navigation block and the user can jump to it directly via the rotor. Each page number is a `<button>` with the page label as its accessible name; the current page additionally carries `aria-current="page"` so assistive tech announces "current page, 3" instead of just "3".
+
+Prev and next buttons have explicit `aria-label="Previous page"` and `aria-label="Next page"` so the action is announced even when the visible label is just an icon. When the user is on the first or last page, the prev or next button has `disabled` set, which assistive tech announces and which removes it from the tab order.
+
+For the ellipsis placeholders shown in long pagination, the component renders them with `aria-hidden="true"` because they are visual layout, not navigable targets. Keyboard focus skips them entirely; only real page buttons receive focus.
+
+Page-info text ("Showing 11-20 of 200") is plain `<span>` content inside the nav; assistive tech reads it as part of the region. Keep the wording stable across pages so the announcement does not feel like the surface is rearranging.
