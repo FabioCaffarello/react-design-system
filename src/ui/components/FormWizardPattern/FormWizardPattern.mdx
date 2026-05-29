@@ -1,0 +1,46 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as FormWizardPatternStories from "./FormWizardPattern.stories";
+
+<Meta of={FormWizardPatternStories} />
+
+# FormWizardPattern
+
+FormWizardPattern composes `Stepper` (for progression indicators and navigation) with a per-step form panel (the consumer renders into `fields`) and the Next / Back / Complete button row. Reach for it when a form spans more than one logical screen — onboarding flows, account setup, multi-page submission — and you want the pre-built shell instead of wiring Stepper plus your own validation plumbing yourself.
+
+## When to use
+
+- Use FormWizardPattern for multi-step forms with a real linear order — onboarding, account verification, checkout flows, configuration wizards.
+- Use per-step `validate` to return `boolean | Promise<boolean>` — the wizard blocks Next until validation passes and surfaces the failure on the step indicator.
+- Use per-step `onSubmit` for side effects that happen as the user advances past a step (saving intermediate state, triggering a sub-API call).
+- Use `onComplete` for the terminal action when the user advances past the final step — submit the assembled `formData`, navigate to the success view.
+- Use `allowBackNavigation={false}` for irreversible flows where revisiting earlier steps would be wrong (purchase confirmations, irreversible commits).
+
+## When not to use
+
+- Use a single long `Form` when the steps are not genuinely separable — splitting a flat form into a fake wizard adds clicks without value.
+- Use `Stepper` directly when the consumer wants more control over per-step content layout or non-form sequence steps (a multi-step tutorial, a guided onboarding without form fields).
+- Use `Dialog` or `Drawer` with a custom Stepper when the wizard belongs over the page (a settings flow inside an open modal); FormWizardPattern is a page-level shell.
+
+## Anatomy
+
+FormWizardPattern stacks vertically inside a `Container`: the `Stepper indicator row` at the top shows step progression and lets the user jump to completed steps when `allowBackNavigation`; below it, the `form panel` renders the current step's `fields` (any consumer JSX — form controls, layouts, custom UI); the `navigation row` at the bottom carries the Back button (left, hidden on step 1) and the Next / Complete button (right, "Complete" replaces "Next" on the final step). When a step fails validation, the indicator gains the error state and the form panel surfaces the failure inline.
+
+<Canvas of={FormWizardPatternStories.Default} />
+
+## Examples
+
+<Canvas of={FormWizardPatternStories.WithoutBackNavigation} />
+
+## Props
+
+<Controls of={FormWizardPatternStories.Default} />
+
+## Accessibility
+
+FormWizardPattern inherits Stepper's WAI-ARIA wiring — each step indicator is a focusable `<button>` (when navigation is allowed) carrying `aria-current="step"` on the active step. The form panel below is a `role="region"` with `aria-labelledby` pointing at the active step's title, so assistive tech announces the new region when the user advances.
+
+The Next button is `type="button"` with an internal handler — it does not submit a wrapping form, because the wizard typically owns its own `<form>` per step. Each step's `<form>` should set `onSubmit` so Enter submits the step (advancing if validation passes); the visible Next button is a redundant affordance for users who prefer the button.
+
+Per-step `validate` runs before advancement; if it returns false (or rejects), the indicator gains an error glyph and the consumer's `fields` should surface the failure via `ErrorMessage` next to the failing control. Screen-reader users hear the error via the `role="alert"` on the field-level message.
+
+On step switch, the previous step unmounts and focus moves to the first focusable element of the new step's panel. For async validation in flight, `disabled` the Next button so the user cannot double-click duplicate work.
