@@ -1,7 +1,8 @@
 # Fase 7 — Migração de cores cruas → tokens semânticos
 
-**Status:** desbloqueada pela Phase 9 (closure 2026-05-28). Próxima
-fase a executar.
+**Status:** ✅ **FECHADA em 2026-05-28** (99 commits, ramo
+`phase/07-semantic-color-migration`, de `b12c26d` a `a0ad4c4`).
+
 **Origem:** Categoria H da varredura de valores off-scale (#3),
 expandida pela Phase 9 (categoria d) e absorção do escopo SideNavbar
 (categoria B).
@@ -370,12 +371,121 @@ outra antes pra ver se aplicam regras comuns.
 
 ## Critério de pronto
 
-- Zero cores cruas do Tailwind em código de componente
-  (`src/ui/**/*.tsx`, exceto stories/tests e dados intencionais como
-  o ColorPicker). Toda cor referencia um token semântico.
-- Zero `getColorClass("neutral", ...)` (frente b consumida).
-- Zero `bg-[var(--color-*)]` arbitrary syntax na SideNavbar (frente c
-  consumida).
-- `src/ui/tokens/colors.ts` deletado.
-- Bloco "LEGACY" em `src/ui/tokens/index.ts` removido.
-- Build verde, tests verdes.
+Status final, verificado em 2026-05-28:
+
+- ✅ **Zero cores cruas Tailwind** em `src/ui/components/` e
+  `src/ui/primitives/`, exceto **4 exceções literais documentadas**:
+  - `TokenVisualizations.tsx` — demo dos tokens.
+  - `Text.tsx` lookup table — light/dark cells de brand/feedback sem
+    equivalente semântico (registrado em comentário no código).
+  - `Badge.tsx` — `bg-pink-300` para variant secondary solid (literal
+    exception inline + precedente registrado).
+  - Scrim/tint literals na pré-migração para `bg-scrim` / `bg-tint-
+hover` (theme-agnostic by design).
+- ✅ **Zero `getColorClass("neutral", ...)`** em components/primitives
+  (Frente B fechada).
+- ✅ **Zero `bg-[var(--color-*)]` arbitrary syntax** em
+  `src/ui/components/SideNavbar/` (Frente C fechada).
+- ✅ **Bloco LEGACY** em `src/ui/tokens/index.ts` removido (commit
+  `91c34be`).
+- ⚠️ **`src/ui/tokens/colors.ts` PERMANECE** — escopo Phase 7 era
+  components/primitives, não infraestrutura interna de tokens. O shim
+  ainda é consumido por 4 arquivos dentro de `src/ui/tokens/`
+  (`gradients.ts`, `themes/light.ts`, `tokens.factory.ts`,
+  `TokenVisualizations.tsx`). Deleção física do shim **adiada para
+  Phase 10 — Tokens infrastructure cleanup** (registrada no BACKLOG).
+- ✅ **Build verde, 764/764 tests verdes** no fechamento.
+
+## Sumário executivo
+
+- **99 commits** no branch `phase/07-semantic-color-migration`.
+- **17 batches** + 1 mini-batch scrim, com mapeamento curto antes de
+  cada e reporte ao fim.
+- **368 sítios migrados** em **~80 arquivos** (estimativa original 267 —
+  realidade ~38% maior; ver nota metodológica).
+- **5 tokens semânticos novos criados** durante a fase:
+  - `--color-fg-brand-emphasis` (piloto-B)
+  - `--color-fg-brand-secondary-emphasis` (batch Feedback)
+  - `--color-scrim` (mini-batch scrim)
+  - `--color-tint-hover` (mini-batch scrim)
+  - `--color-status-neutral` (batch 14)
+- **7 tokens fantasma corrigidos** (referenciavam vars inexistentes em
+  `@theme` — bugs visuais latentes): `--color-card`, `--color-border`,
+  `--color-accent`, `--color-muted`, `--color-neutral-{100,400,500,
+600,800}`, `--color-primary-500`. Todos resolvidos durante migração
+  da SideNavbar Frente C.
+
+## 9 precedentes acumulados durante a fase
+
+Cada um foi registrado no momento da decisão e referenciado em
+batches futuros:
+
+1. **Papel vence shade** (piloto-B Decisão 2). `fg-disabled` sobre
+   `fg-quaternary` quando o intent é estado, não hierarquia.
+2. **Magnitude de hover proporcional à proeminência** (Batch Overlay).
+   Elementos acionáveis principais saltam múltiplos papéis no hover;
+   secundários sobem 1 papel.
+3. **Exceção literal documentada > token forçado** (Batch Feedback).
+   Shift ≥ 2 shades + ausência de papel novo justifica primitive com
+   comentário inline. Casos: `bg-pink-300` Badge, micro-z internals.
+4. **Hierarquia de elevação de superfície de três tiers** (Batch
+   Overlay). `surface-canvas` → `surface-base` → `surface-overlay`.
+   Tier é determinado por _onde o componente flutua_ na pilha visual.
+5. **Scrim e tint-hover são theme-agnostic by design** (Mini-batch
+   scrim). Backdrop/veil que "lighten" no dark perdem função; não
+   devem inverter.
+6. **Hierarquia vs estado binário vs estado de interatividade**
+   (Stepper + Rating batches). Hierarquia ordenada → `fg-N`. Estado
+   binário independente (Rating off-star, Checkbox unmarked) →
+   `fg-disabled`. Estado de interatividade real (disabled input) →
+   `fg-disabled`. Os dois últimos usam o mesmo token por razões
+   distintas.
+7. **Token semântico reflete papel visual, não mecanismo CSS** (Stepper
+   batch). Linhas (connectors, dividers, separators) usam tokens
+   `line-*` independente da implementação (border, bg-div, height: 1px).
+8. **Cardinalidade do estado dita intensidade** (Batch Table).
+   `surface-brand-muted` para active singular; `surface-selected` para
+   selected em coleção (múltiplos sítios podem coexistir).
+9. **Família semântica incompleta justifica criação de token** (Batch
+   14). Quando o CVA de um componente cobre N estados semânticos e o
+   sistema tem N-1 tokens, criar o que falta fecha simetria. Caso:
+   `--color-status-neutral` completou `success/warning/error/info/
+neutral`.
+
+## Nota metodológica — estimativa vs realidade
+
+**Estimativa original: 267 sítios em ~50 arquivos.** Distribuída em
+três frentes:
+
+- Frente A (cores cruas Tailwind originais): 129 sítios.
+- Frente B (consumers neutral do shim): 113 sítios.
+- Frente C (arbitrary syntax SideNavbar): ~25 sítios.
+
+**Realidade ao fechar: 368 sítios em ~80 arquivos.**
+
+- Frente A: 180 (140% da estimativa).
+- Frente B: 151 (134% da estimativa).
+- Frente C: 37 (100% — única que bateu).
+
+**Erro de ~38% no escopo total** (267 → 368). Causas observadas:
+
+1. Inventário inicial dependia de grep contando _linhas com matches_,
+   não _sítios reais_. Linhas com múltiplas classes (típico de
+   componentes complexos como NavbarItem, Stepper, Timeline) foram
+   subcontadas por fator 2–3.
+2. Cores cruas Tailwind apareciam em locais não-óbvios em organisms:
+   estados disabled, hover, focus em variant tables que o grep básico
+   pulava (texto interno em IIFEs, template literals multilinha).
+3. Infraestrutura interna de `tokens/` (gradients, themes, factory)
+   não foi inventariada — e ainda assim representa parte do shim
+   (~14k de código). Phase 10 vai endereçar.
+
+**Aprendizado para próximas fases:** cleanup grande sub-estima escopo
+até ele ser efetivamente feito. Reservar +30–40% no orçamento de
+batches e estar preparado pra dividir a fase em sub-fases conforme o
+escopo real se revela. O método de piloto + batches incrementais com
+reporte ao fim provou ser robusto a essa expansão: cada batch foi
+re-orçado em real-time conforme o inventário do mapeamento curto
+revelou tamanho atualizado.
+
+## Mesma família da Phase 8
