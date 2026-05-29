@@ -252,6 +252,39 @@ Razão: confundir hierarquia com estado mascara a função do
 componente. Um stepper pending clicável renderizado com `fg-disabled`
 engana o usuário sobre interatividade.
 
+**REFINAMENTO — Hierarquia vs Estado Binário Independente vs Estado
+de Interatividade.**
+
+Quando um elemento tem visual reduzido, identifique a **estrutura do
+conjunto** antes de escolher token. Três categorias distintas:
+
+1. **HIERARQUIA ORDENADA** (1º/2º/3º/4º posição relativa entre
+   elementos): → `fg-primary` / `secondary` / `tertiary` / `quaternary`.
+   - Caso: Stepper step pending (4 estados ordenados ao longo da
+     sequência).
+
+2. **ESTADO BINÁRIO INDEPENDENTE** (on/off por elemento, replicado):
+   → `fg-disabled` / `surface-disabled` (representa o "off" do estado
+   binário).
+   - Caso: Rating empty star (cada estrela on/off independente).
+   - Caso: Checkbox unmarked (binário marcado/não-marcado).
+
+3. **ESTADO DE INTERATIVIDADE GENUÍNA** (elemento não-interativo no
+   momento): → `fg-disabled` / `surface-disabled` (representa não-
+   interatividade).
+   - Caso: Disabled input, disabled button.
+
+Categorias 2 e 3 usam o **MESMO token** (`fg-disabled`) mas por
+razões distintas. A interatividade do componente pai é independente
+do token visual aplicado ao seu conteúdo — uma empty star é
+visualmente "off" mesmo que o `<button>` pai seja clicável.
+
+**Diferença estrutural Stepper vs Rating:**
+
+- Stepper: hierarquia ordenada (1º/2º/3º/4º) — usa `fg-quaternary`.
+- Rating: switches binários replicados (cada estrela on/off
+  independente) — usa `fg-disabled`.
+
 **PRINCÍPIO — Token semântico reflete conceito visual, não mecanismo
 CSS.**
 
