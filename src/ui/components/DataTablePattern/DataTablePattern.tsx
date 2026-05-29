@@ -208,7 +208,7 @@ export function DataTablePattern<
 
         {/* Results count */}
         {enableSearch && (
-          <div className="text-sm text-gray-600 text-center">
+          <div className="text-sm text-fg-secondary text-center">
             Showing {paginatedData.length} of {filteredData.length} results
           </div>
         )}
