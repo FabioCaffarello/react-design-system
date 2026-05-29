@@ -1,10 +1,5 @@
 import { forwardRef, memo, useMemo } from "react";
 import type { ButtonHTMLAttributes, ReactNode, ElementType } from "react";
-import {
-  getColorClass,
-  getHoverColorClass,
-  getFocusRingClass,
-} from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import {
@@ -80,23 +75,23 @@ const buttonVariants = cva(
         ),
         outline: cn(
           "border-2",
-          getColorClass("neutral", "DEFAULT", "border"),
+          "border-line-default",
           "bg-transparent",
-          getColorClass("neutral", "dark", "text"),
-          getHoverColorClass("neutral", "light", "bg"),
-          getFocusRingClass("neutral", "DEFAULT"),
+          "text-fg-primary",
+          "hover:bg-surface-hover",
+          "focus:ring-line-focus",
         ),
         ghost: cn(
           "bg-transparent",
-          getColorClass("neutral", "dark", "text"),
-          getHoverColorClass("neutral", "light", "bg"),
-          getFocusRingClass("neutral", "DEFAULT"),
+          "text-fg-primary",
+          "hover:bg-surface-hover",
+          "focus:ring-line-focus",
         ),
         iconOnly: cn(
           "bg-transparent",
-          getColorClass("neutral", "dark", "text"),
-          getHoverColorClass("neutral", "light", "bg"),
-          getFocusRingClass("neutral", "DEFAULT"),
+          "text-fg-primary",
+          "hover:bg-surface-hover",
+          "focus:ring-line-focus",
           "p-0",
         ),
       },
