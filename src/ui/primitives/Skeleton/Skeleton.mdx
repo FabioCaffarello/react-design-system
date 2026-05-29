@@ -1,0 +1,41 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as SkeletonStories from "./Skeleton.stories";
+
+<Meta of={SkeletonStories} />
+
+# Skeleton
+
+Skeleton renders a shimmering placeholder block in the shape of the content that is about to arrive — a line of text, a card, a list row, a circular avatar. Reach for it when the layout shape is known before the data is ready and you want the user to perceive structure during the wait instead of seeing a blank surface.
+
+## When to use
+
+- Use Skeleton in any slot where data is loading and the final layout is predictable — content cards on initial render, list rows mid-fetch, profile headers before the user data arrives.
+- Use `variant="text"` for lines of paragraph content (set `lines` to match the expected line count), `variant="card"` for full card surfaces, `variant="list"` for list-row placeholders, `variant="circle"` for avatars and round icon slots.
+- Use custom `width` and `height` when the predefined variants do not match the target shape — table cells, badges, custom layouts.
+- Use Skeleton on the first paint that does not have data yet; swap to the real content as soon as the data is in.
+
+## When not to use
+
+- Use `Spinner` when the activity has no measurable shape — submitting a form, processing a background job — and you only need to signal that something is happening.
+- Use `Progress` when the operation has a measurable percentage; Skeleton is about layout perception, not completion progress.
+- Avoid Skeleton for content that loads in under ~200 ms — the flash adds noise without serving its purpose. Render the real content directly.
+
+## Examples
+
+<Canvas of={SkeletonStories.Text} />
+
+<Canvas of={SkeletonStories.Card} />
+
+<Canvas of={SkeletonStories.Circle} />
+
+## Props
+
+<Controls of={SkeletonStories.Text} />
+
+## Accessibility
+
+Skeleton is decorative — it has no role, no announcement, and screen readers should not read it. Pass `aria-label` only when the skeleton represents a labelled region that the user can perceive otherwise; in the common case, the skeleton is invisible to assistive tech and the announced state comes from a parent region that should set `aria-busy="true"` while content is loading.
+
+The shimmer uses `motion-safe:animate-pulse` so users who request reduced motion get a static placeholder. Do not override with an unconditional animation class.
+
+When the skeleton wraps a region that previously held interactive elements, the focus should not land on the skeleton itself — keep the skeleton non-focusable and restore focus to the equivalent live element once content arrives.

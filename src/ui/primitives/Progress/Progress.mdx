@@ -1,0 +1,47 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as ProgressStories from "./Progress.stories";
+
+<Meta of={ProgressStories} />
+
+# Progress
+
+Progress renders a horizontal bar that shows how far along a measurable operation has gone — file uploads, multi-step migrations, account onboarding, form completion. Pass `value` (0 to `max`, default 100) for a determinate bar; omit it for an indeterminate looping animation when progress is unknown but ongoing.
+
+## When to use
+
+- Use Progress when the operation has a measurable percentage and the user benefits from seeing how much remains — uploads, downloads, generation jobs, multi-step setups.
+- Use Progress in indeterminate mode (omit `value`) for activities with no known duration when the looping animation reads better than a silent spinner — initial app boot, long network sync, background indexing.
+- Use `showLabel` together with `label` when the percentage alone is not enough — "Uploading photo.jpg (45 %)" is clearer than "45 %".
+- Use `variant` to communicate the role of the progress — `success` once complete, `error` if the operation failed mid-way, `warning` when approaching a threshold.
+
+## When not to use
+
+- Use `Spinner` when the activity has no measurable progress and a small inline indicator is enough — Progress is heavier visually.
+- Use `Skeleton` when you want to communicate the shape of the content that is about to arrive, not the percentage of how it is arriving.
+- Avoid Progress for instant or near-instant operations — the bar flashes in and out and adds noise without information.
+
+## Examples
+
+<Canvas of={ProgressStories.Default} />
+
+<Canvas of={ProgressStories.WithLabel} />
+
+Indeterminate mode (omit `value`) loops continuously — use it when the operation is ongoing but the percentage is unknown.
+
+<Canvas of={ProgressStories.Indeterminate} />
+
+<Canvas of={ProgressStories.Variants} />
+
+## Props
+
+<Controls of={ProgressStories.Default} />
+
+## Accessibility
+
+Progress sets `role="progressbar"` with `aria-valuenow`, `aria-valuemin`, and `aria-valuemax` reflecting the current value, the start, and `max`. Screen readers announce the percentage on appearance and on subsequent updates — keep updates throttled to avoid noise (no more than once every 500 ms).
+
+In indeterminate mode, `aria-valuenow` is omitted so assistive tech announces "loading" or "busy" without claiming a percentage that does not exist. Provide a `label` or an explicit `aria-label` so the announcement carries meaning — bare progress bars are unhelpful.
+
+The animation respects `prefers-reduced-motion` automatically; users who request reduced motion get a static or simplified animation. Do not override.
+
+When Progress represents a long-running operation, pair it with the action that started it (the source button, the file row) so the relationship is clear to keyboard and screen-reader users navigating the page sequentially.
