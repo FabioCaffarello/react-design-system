@@ -1,3 +1,17 @@
+## [1.15.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.14.3...v1.15.0) (2026-05-29)
+
+
+### ✨ Features
+
+* **build:** emit bundled CSS via styles-entry library mode ([911d1d9](https://github.com/FabioCaffarello/react-design-system/commit/911d1d99b9e06bab2ad8dfd7e813c556b68c5461))
+
+
+### 📝 Documentation
+
+* **backlog:** close Phase 13e, register theme decision, 3rd FINAL occurrence ([cdcd3cd](https://github.com/FabioCaffarello/react-design-system/commit/cdcd3cd098735e18f2f4a41f97a54f4125fd659b))
+* **readme:** add Installation, Usage, and Theming sections ([e01d479](https://github.com/FabioCaffarello/react-design-system/commit/e01d479b937d2bdc3db76f1dbe066989c3ae5153)), closes [#36](https://github.com/FabioCaffarello/react-design-system/issues/36)
+* **testing:** document theme-aware test page pattern ([a6101fb](https://github.com/FabioCaffarello/react-design-system/commit/a6101fb4e82c2120630c0f6907e15715d4833b68))
+
 ## [1.14.3](https://github.com/FabioCaffarello/react-design-system/compare/v1.14.2...v1.14.3) (2026-05-29)
 
 
