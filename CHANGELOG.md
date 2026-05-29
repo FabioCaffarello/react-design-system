@@ -1,3 +1,24 @@
+## [1.13.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.12.0...v1.13.0) (2026-05-29)
+
+
+### ✨ Features
+
+* **avatar:** document expected console error in ImageError story ([0bee31d](https://github.com/FabioCaffarello/react-design-system/commit/0bee31da2c308f77d1b25bc8a54b341f712e4ecc))
+* **npm:** add storybook:smoke script ([d03a333](https://github.com/FabioCaffarello/react-design-system/commit/d03a33326867c60b9268f9cc123a33bcb4e7292d))
+* **scripts:** add storybook smoke test script ([dea0ea9](https://github.com/FabioCaffarello/react-design-system/commit/dea0ea9a64859af961bc8e48c0bd38e3e481d54d))
+* **scripts:** per-story allowlist via runtime story parameters ([15e3c87](https://github.com/FabioCaffarello/react-design-system/commit/15e3c8759b09b4732f67eb7f5e0f26abe4b3ee55))
+
+
+### 🐛 Bug Fixes
+
+* **scripts:** require [#storybook](https://github.com/FabioCaffarello/react-design-system/issues/storybook)-root children before declaring pass ([c44a129](https://github.com/FabioCaffarello/react-design-system/commit/c44a1296fa72cd69f84d44cc93c3b04fa46fca17))
+
+
+### 📝 Documentation
+
+* **backlog:** register Phase 13a follow-ups ([74a2d01](https://github.com/FabioCaffarello/react-design-system/commit/74a2d01cc80d4bdf4bbc4fbbfdc00fa828f17a2a))
+* **claude:** document smoke script and methodology ([1b6262a](https://github.com/FabioCaffarello/react-design-system/commit/1b6262ab898f1a7696c26b97578c0cf32deb8c0e))
+
 ## [1.12.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.11.1...v1.12.0) (2026-05-29)
 
 
