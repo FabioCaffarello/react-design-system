@@ -80,11 +80,3 @@ export { SIDEBAR_TOKENS, getNestedIndentClass } from "./sidebar";
 export * from "./switch";
 export { SWITCH_TOKENS, getSwitchClasses } from "./switch";
 export type { SwitchSizeToken } from "./switch";
-
-// Tokens Factory
-export * from "./tokens.factory";
-export {
-  TokensFactory,
-  defaultTokensFactory,
-  createTokenSet,
-} from "./tokens.factory";

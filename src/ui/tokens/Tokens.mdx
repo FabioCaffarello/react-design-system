@@ -448,22 +448,6 @@ const className = `
 const className = "bg-indigo-500 p-3 rounded-lg";
 ```
 
-## Token Factory
-
-The `TokensFactory` provides a unified interface for creating all types of tokens:
-
-```tsx
-import { TokensFactory } from "@fabio.caffarello/react-design-system";
-
-const factory = new TokensFactory("light");
-const tokenSet = factory.createTokenSet();
-
-// Access all tokens
-const spacing = tokenSet.spacing;
-const colors = tokenSet.colors;
-const shadows = tokenSet.shadows;
-```
-
 ## Migration Guide
 
 When refactoring components, replace hardcoded classes with tokens:

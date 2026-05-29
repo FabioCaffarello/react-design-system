@@ -14,7 +14,6 @@ export * from "./tokens/spacing";
 export * from "./tokens/typography";
 export * from "./tokens/colors/index";
 export * from "./tokens/breakpoints";
-export * from "./tokens/tokens.factory";
 export * from "./tokens/themes/light";
 export * from "./tokens/themes/dark";
 
