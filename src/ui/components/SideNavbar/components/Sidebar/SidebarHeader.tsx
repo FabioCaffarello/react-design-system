@@ -2,11 +2,7 @@
 
 import React, { useEffect } from "react";
 import { useSidebarRequired } from "../../contexts/SidebarContext";
-import {
-  getSpacingClass,
-  getColorClass,
-  getTypographyClasses,
-} from "../../../../tokens";
+import { getSpacingClass, getTypographyClasses } from "../../../../tokens";
 import type { SidebarHeaderProps } from "../../types";
 
 /**
@@ -47,8 +43,8 @@ export default function SidebarHeader({
         flex-shrink-0
         ${getSpacingClass("md", "px")}
         ${getSpacingClass("sm", "py")}
-        ${showBorder ? `border-b ${getColorClass("neutral", "DEFAULT", "border")}` : ""}
-        bg-gray-50
+        ${showBorder ? "border-b border-line-default" : ""}
+        bg-surface-subtle
         ${className}
       `}
       style={style}
@@ -60,7 +56,7 @@ export default function SidebarHeader({
             <h2
               className={`
                 ${getTypographyClasses("h4")}
-                ${getColorClass("neutral", "dark", "text")}
+                text-fg-primary
                 m-0
                 font-semibold
               `}
@@ -72,7 +68,7 @@ export default function SidebarHeader({
             <p
               className={`
                 ${getTypographyClasses("bodySmall")}
-                ${getColorClass("neutral", "DEFAULT", "text")}
+                text-fg-secondary
                 m-0
                 mt-1
               `}
