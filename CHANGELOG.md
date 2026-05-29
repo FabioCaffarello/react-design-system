@@ -1,3 +1,15 @@
+## [1.11.1](https://github.com/FabioCaffarello/react-design-system/compare/v1.11.0...v1.11.1) (2026-05-29)
+
+
+### 📝 Documentation
+
+* **phase-10:** mark Phase 10 as complete ([833d888](https://github.com/FabioCaffarello/react-design-system/commit/833d888cf5123058fa857944015c7fc9f9e21286))
+
+
+### ♻️ Code Refactoring
+
+* **tokens:** migrate TokenVisualizations to new color system (8 roles) ([f4df9e8](https://github.com/FabioCaffarello/react-design-system/commit/f4df9e810f8575eb4be07f6ff6f34c9ec832d6f5))
+
 ## [1.11.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.10.5...v1.11.0) (2026-05-29)
 
 
