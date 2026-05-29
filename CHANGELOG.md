@@ -1,3 +1,16 @@
+## [1.14.3](https://github.com/FabioCaffarello/react-design-system/compare/v1.14.2...v1.14.3) (2026-05-29)
+
+
+### 🐛 Bug Fixes
+
+* **build:** simplify library to single entry ([c62b4e3](https://github.com/FabioCaffarello/react-design-system/commit/c62b4e394f406b56dd6ec5728baf62fbfe12d36b))
+* **package:** remove broken sub-entries from exports ([f10a1b5](https://github.com/FabioCaffarello/react-design-system/commit/f10a1b544254747c16c57de7d42fb294363ab1cd))
+
+
+### 📝 Documentation
+
+* **testing:** document external consumer validation procedure ([72a450a](https://github.com/FabioCaffarello/react-design-system/commit/72a450a15a847a6ef22680f9f6e513611c31235e))
+
 ## [1.14.2](https://github.com/FabioCaffarello/react-design-system/compare/v1.14.1...v1.14.2) (2026-05-29)
 
 
