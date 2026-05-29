@@ -8,7 +8,6 @@ import {
   AnimationReference,
   ZIndexReference,
   OpacityReference,
-  GradientReference,
 } from "./TokenVisualizations";
 
 <Meta title="Design System/Tokens" />
@@ -357,38 +356,6 @@ import { getOpacityClass } from "@fabio.caffarello/react-design-system";
 const opacityClass = getOpacityClass(50); // 'opacity-50'
 ```
 
-## Gradient Tokens
-
-Gradient tokens provide semantic color gradients.
-
-### Gradient Roles
-
-- `primary` - Primary color gradient
-- `secondary` - Secondary color gradient
-- `success` - Success color gradient
-- `error` - Error color gradient
-- `info` - Info color gradient
-- `warning` - Warning color gradient
-
-### Gradient Directions
-
-- `to-r` - To right
-- `to-l` - To left
-- `to-t` - To top
-- `to-b` - To bottom
-- `to-tr` - To top right
-- `to-tl` - To top left
-- `to-br` - To bottom right
-- `to-bl` - To bottom left
-
-### Usage
-
-```tsx
-import { getGradientClass } from "@fabio.caffarello/react-design-system";
-
-const gradientClass = getGradientClass("primary", "to-r"); // 'bg-gradient-to-r from-[...] via-[...] to-[...]'
-```
-
 ## Component-Scoped Tokens
 
 Some dimensions are anatomical to a single component and would pollute the
@@ -446,22 +413,6 @@ const className = `
 ```tsx
 // ❌ Bad - Hardcoded classes
 const className = "bg-indigo-500 p-3 rounded-lg";
-```
-
-## Token Factory
-
-The `TokensFactory` provides a unified interface for creating all types of tokens:
-
-```tsx
-import { TokensFactory } from "@fabio.caffarello/react-design-system";
-
-const factory = new TokensFactory("light");
-const tokenSet = factory.createTokenSet();
-
-// Access all tokens
-const spacing = tokenSet.spacing;
-const colors = tokenSet.colors;
-const shadows = tokenSet.shadows;
 ```
 
 ## Migration Guide

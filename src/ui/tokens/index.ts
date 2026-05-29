@@ -68,10 +68,6 @@ export { Z_INDEX_TOKENS, getZIndex, getZIndexClass } from "./z-index";
 export * from "./opacity";
 export { OPACITY_TOKENS, getOpacity, getOpacityClass } from "./opacity";
 
-// Gradients
-export * from "./gradients";
-export { GRADIENT_TOKENS, getGradient, getGradientClass } from "./gradients";
-
 // Sidebar (specific tokens)
 export * from "./sidebar";
 export { SIDEBAR_TOKENS, getNestedIndentClass } from "./sidebar";
@@ -80,11 +76,3 @@ export { SIDEBAR_TOKENS, getNestedIndentClass } from "./sidebar";
 export * from "./switch";
 export { SWITCH_TOKENS, getSwitchClasses } from "./switch";
 export type { SwitchSizeToken } from "./switch";
-
-// Tokens Factory
-export * from "./tokens.factory";
-export {
-  TokensFactory,
-  defaultTokensFactory,
-  createTokenSet,
-} from "./tokens.factory";
