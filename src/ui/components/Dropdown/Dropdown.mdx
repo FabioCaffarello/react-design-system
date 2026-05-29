@@ -1,0 +1,51 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as DropdownStories from "./Dropdown.stories";
+
+<Meta of={DropdownStories} />
+
+# Dropdown
+
+Dropdown renders a `trigger` element that opens a menu of action items on click — typically used for row-level actions, secondary buttons, or kebab menus where exposing every action as its own button would clutter the surface. The items are passed as a flat array; the component handles open / close, positioning, keyboard navigation, and outside-click dismissal.
+
+## When to use
+
+- Use Dropdown to expose 2-7 row-level actions behind a single trigger — "Edit / Duplicate / Delete" on a table row, "Sort / Filter / Export" on a list header, "Account / Settings / Sign out" on a user avatar.
+- Use `variant="danger"` on destructive items so the color cue matches the consequence (red text on the item, hover reinforces it).
+- Use `align="right"` (default) when the trigger sits at the right edge of its row and the menu should extend leftward; `align="left"` when it sits at the left.
+
+## When not to use
+
+- Use `Menu` (the compound API: `Menu.Trigger` / `Menu.Content` / `Menu.Item`) when items need rich content — icons, submenus, separators, custom item layout. Dropdown takes flat strings; Menu takes JSX.
+- Use `Tabs` for switching between content views; Dropdown items execute actions, they do not navigate.
+- Use individual `Button`s when there are 2-3 actions and they fit in the row without crowding — surfacing the actions is more discoverable than hiding them.
+- Use `CommandPalette` when discovery is the goal and the user types to find — Dropdown is for a curated short list.
+
+## Anatomy
+
+Dropdown renders in source order: the `trigger` (any element passed as the prop — typically a `Button` or icon-only button, wired with `onClick` to open the menu), and the `menu` panel (a portaled container with `role="menu"` containing each `item` as a `<button role="menuitem">`). Items rendered with `variant="danger"` carry the destructive color cue.
+
+<Canvas of={DropdownStories.Default} />
+
+## Examples
+
+<Canvas of={DropdownStories.WithDisabledItem} />
+
+<Canvas of={DropdownStories.AlignedLeft} />
+
+<Canvas of={DropdownStories.KeyboardNavigation} />
+
+## Props
+
+<Controls of={DropdownStories.Default} />
+
+## Accessibility
+
+The trigger is a native interactive element (typically a `Button`) wired with `aria-haspopup="menu"` and `aria-expanded` reflecting the open / closed state. When opened, focus moves to the first non-disabled item; assistive tech announces "menu, item 1 of N" or similar depending on the reader.
+
+Keyboard navigation: Tab enters and leaves the trigger; arrow keys move focus between menu items (Down for next, Up for previous); Home and End jump to first / last; Enter or Space activates the focused item; ESC closes the menu and returns focus to the trigger.
+
+Disabled items are skipped during arrow-key navigation but stay in the DOM so assistive tech announces them as disabled when the user steps onto them via tab-like patterns. The `danger` variant changes color only; assistive tech still announces it as a normal menu item — pair the visual with a label that names the consequence ("Delete account", not "Delete").
+
+When the trigger has no visible label (a kebab `⋮` icon button), set `aria-label` describing the menu's purpose ("Row actions", "Account menu") so the trigger has an accessible name.
+
+Outside-click dismissal and ESC dismissal both restore focus to the trigger — keyboard users do not lose their place in the page.
