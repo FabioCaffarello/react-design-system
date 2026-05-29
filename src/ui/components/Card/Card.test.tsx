@@ -12,10 +12,10 @@ describe("Card", () => {
     const { container } = render(<Card>Content</Card>);
     const card = container.firstChild as HTMLElement;
     expect(card).toHaveClass(
-      "bg-white",
+      "bg-surface-base",
       "rounded-lg",
       "border",
-      "border-gray-500",
+      "border-line-default",
     );
   });
 
