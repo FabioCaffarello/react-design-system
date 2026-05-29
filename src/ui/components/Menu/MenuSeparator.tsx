@@ -2,7 +2,6 @@
 
 import { type HTMLAttributes } from "react";
 import { getSpacingClass } from "../../tokens/spacing";
-import { getColorClass } from "../../tokens/colors";
 
 export type MenuSeparatorProps = HTMLAttributes<HTMLDivElement>;
 
@@ -25,7 +24,7 @@ export default function MenuSeparator({
       role="separator"
       className={`
         h-px
-        ${getColorClass("neutral", "light", "bg")}
+        bg-line-default
         ${getSpacingClass("sm", "my")}
         ${className}
       `}
