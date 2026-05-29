@@ -3,9 +3,7 @@
 import { useTabsContext } from "./TabsContext";
 import type { HTMLAttributes, ReactNode, KeyboardEvent } from "react";
 import {
-  getColorClass,
   getRadiusClass,
-  getHoverColorClass,
   getSpacingClass,
   getTypographySize,
   getTypographyWeight,
@@ -107,15 +105,12 @@ export function TabsTrigger({
         "transition-colors",
         "focus:outline-none",
         "focus:ring-2",
-        "focus:border-line-focus".replace("focus:border-", "focus:ring-"),
+        "focus:ring-line-focus",
         "focus:ring-offset-2",
         getRadiusClass("sm"),
         isActive
           ? cn("bg-surface-brand", "text-fg-inverse")
-          : cn(
-              getColorClass("neutral", "light", "text"),
-              getHoverColorClass("neutral", "DEFAULT", "bg"),
-            ),
+          : cn("text-fg-tertiary", "hover:bg-surface-active"),
         disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
         className,
       )}
