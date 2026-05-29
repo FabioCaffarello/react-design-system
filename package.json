@@ -15,27 +15,7 @@
       "require": "./dist/index.cjs"
     },
     "./styles": "./dist/react-design-system.css",
-    "./styles.css": "./dist/react-design-system.css",
-    "./primitives": {
-      "types": "./dist/ui/primitives/index.d.ts",
-      "import": "./dist/primitives/index.js",
-      "require": "./dist/primitives/index.cjs"
-    },
-    "./components": {
-      "types": "./dist/ui/components/index.d.ts",
-      "import": "./dist/components/index.js",
-      "require": "./dist/components/index.cjs"
-    },
-    "./tokens": {
-      "types": "./dist/ui/tokens/index.d.ts",
-      "import": "./dist/tokens/index.js",
-      "require": "./dist/tokens/index.cjs"
-    },
-    "./providers": {
-      "types": "./dist/ui/providers/index.d.ts",
-      "import": "./dist/providers/index.js",
-      "require": "./dist/providers/index.cjs"
-    }
+    "./styles.css": "./dist/react-design-system.css"
   },
   "files": [
     "dist",
