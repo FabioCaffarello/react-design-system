@@ -25,7 +25,7 @@ export default function TableHeader({
 
   return (
     <thead
-      className={`bg-gray-50 sticky top-0 ${getZIndexClass("sticky")} ${className}`}
+      className={`bg-surface-subtle sticky top-0 ${getZIndexClass("sticky")} ${className}`}
       {...props}
     >
       <TableHeaderRow />
