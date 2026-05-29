@@ -530,3 +530,31 @@ Phases 7/12/13a/13b1: (a) BSD grep trap, (b) "varredura silenciosa
 suspeite do instrumento", (c) "calibra detector não componente",
 (d) "probe API/contrato antes", (e) "mapear caminhos concorrentes
 antes de ativar feature em sistema com N maneiras de fazer X".
+
+## Info primitive — API mínima vs intent declarado
+
+**Descoberto em:** Phase 13b2, ao escrever `Info.mdx`.
+**Estado:** o briefing original da Phase 13b2 marcou Info como
+`Anatomy = YES` com a justificativa "icon + content + dismiss são
+partes que consumidor distingue pra customizar". O código atual
+(`src/ui/primitives/Info/Info.tsx`) implementa Info como um
+**`<div role="alert">` puro** — sem ícone, sem dismiss, só
+`variant` (info/warning/error) trocando cor + classes. O componente
+é unitário na prática; "icon + dismiss" são intent, não API.
+**Por que importa:** se a expectativa for Info como banner
+composto (ícone leading + corpo + dismiss trailing), o componente
+precisa crescer slots ou children-named-parts. Stories existentes
+(InfoStories) também não exercitam ícone/dismiss — são apenas
+demos de variant. Doc Info.mdx atual reflete a realidade (sem
+seção Anatomy) e flagra a lacuna em prose, mas a decisão de
+crescer a API ou não é design, não doc.
+**Ação:** triagem de design — Info deveria ser:
+
+- (a) banner composto com slots para `leadingIcon` + `dismiss` +
+  `actions` (mais próximo de Polaris Banner / Carbon InlineNotification)?
+- (b) wrapper minimalista atual onde o consumidor compõe os
+  ornamentos via children?
+- (c) primitive duplicado em duas formas (Info minimalista atual
+  - Banner composto novo)?
+    Resposta orienta se Info.mdx ganha Anatomy futura ou se um novo
+    Banner primitive aparece em Phase 13bN.
