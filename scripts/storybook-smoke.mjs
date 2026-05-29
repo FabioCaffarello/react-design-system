@@ -2,6 +2,20 @@
 // Phase 13a smoke runner: render every Storybook story headlessly and
 // report which ones crash, time out, render empty, or log console errors.
 // Detector only — does not fix anything.
+//
+// Render-detection rationale:
+// Storybook 10's body classes (sb-show-main, sb-show-errordisplay,
+// sb-show-nopreview) signal which DOCUMENT MODE was selected, NOT
+// whether the story actually rendered. The pipeline is:
+//   1. body gets sb-show-main
+//   2. #storybook-root is cleared
+//   3. React mounts children
+// Polling between steps 1-2 and 3 gives ~67% false-positive
+// 'fail-empty' rate. We require BOTH state === 'main' AND
+// #storybook-root.children.length > 0 before declaring pass. If the
+// poll ever needs to be simplified back to "just check body class",
+// don't — this dual gate is what makes the verdict mean "rendered",
+// not "Storybook picked story mode".
 
 import { createServer } from "node:http";
 import { readFile, stat, mkdir, writeFile, rm } from "node:fs/promises";
@@ -162,10 +176,18 @@ function sanitizeId(id) {
   return id.replace(/[^a-zA-Z0-9._-]+/g, "_");
 }
 
-// Polls the page for terminal render state. Resolves with:
-//   { state: 'main' | 'errordisplay' | 'nopreview' | 'unknown', hasChildren }
-// or null if the deadline passes.
+// Polls the page for terminal render state.
+// Terminal states that short-circuit the poll:
+//   - errordisplay  → story threw; return immediately
+//   - nopreview     → story not found; return immediately
+//   - main + hasChildren → fully rendered; return immediately
+// Non-terminal: main + !hasChildren (the race window described in the
+// header). Keep polling until children appear OR deadline expires.
+// On deadline we return the last seen result so the caller can
+// distinguish "main but empty after timeout" (true fail-empty) from
+// "never reached any terminal state" (fail-timeout, returns null).
 async function waitForRenderState(page, deadline) {
+  let lastSeen = null;
   while (Date.now() < deadline) {
     const result = await page
       .evaluate(() => {
@@ -185,10 +207,19 @@ async function waitForRenderState(page, deadline) {
         return { state, hasChildren, errMsg, errStack };
       })
       .catch(() => null);
-    if (result && result.state !== "unknown") return result;
+    if (result) lastSeen = result;
+    if (
+      result &&
+      (result.state === "errordisplay" || result.state === "nopreview")
+    ) {
+      return result;
+    }
+    if (result && result.state === "main" && result.hasChildren) {
+      return result;
+    }
     await page.waitForTimeout(75);
   }
-  return null;
+  return lastSeen;
 }
 
 async function smokeStory(context, baseUrl, story, opts) {
@@ -220,7 +251,7 @@ async function smokeStory(context, baseUrl, story, opts) {
     });
     renderState = await waitForRenderState(page, t0 + opts.timeout);
 
-    if (!renderState) {
+    if (!renderState || renderState.state === "unknown") {
       status = "fail-timeout";
       detail = "no terminal sb-show-* class within timeout";
     } else if (renderState.state === "errordisplay") {
@@ -235,8 +266,10 @@ async function smokeStory(context, baseUrl, story, opts) {
       status = "fail-empty";
       detail = "storybook reports no preview for this id";
     } else if (renderState.state === "main" && !renderState.hasChildren) {
+      // Reached only when the deadline expired while body was main but
+      // #storybook-root never got children — a genuinely empty story.
       status = "fail-empty";
-      detail = "sb-show-main but #storybook-root has no children";
+      detail = "sb-show-main but #storybook-root remained empty until timeout";
     }
   } catch (e) {
     if (/Timeout|timeout/i.test(String(e))) {
