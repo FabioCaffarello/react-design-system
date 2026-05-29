@@ -169,6 +169,11 @@ export const ImageError: Story = {
           "Avatars automatically fall back to initials when image fails to load or is not provided.",
       },
     },
+    smoke: {
+      allowConsoleErrors: ["net::ERR_NAME_NOT_RESOLVED"],
+      reason:
+        "Story demonstrates the Avatar fallback when image URL fails to load. Network error is expected and validated visually via the initials fallback.",
+    },
   },
 };
 
