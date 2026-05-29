@@ -14,8 +14,6 @@ export * from "./tokens/spacing";
 export * from "./tokens/typography";
 export * from "./tokens/colors/index";
 export * from "./tokens/breakpoints";
-export * from "./tokens/themes/light";
-export * from "./tokens/themes/dark";
 
 // 2. UTILS (pure functions, no side effects)
 export { cn } from "./utils";
