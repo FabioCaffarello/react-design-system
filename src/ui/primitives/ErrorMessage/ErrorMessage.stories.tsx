@@ -5,7 +5,6 @@ import { Label, Input } from "../";
 const meta: Meta<typeof ErrorMessage> = {
   title: "Primitives/ErrorMessage",
   component: ErrorMessage,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

@@ -7,7 +7,6 @@ import Chip from "./Chip";
 const meta: Meta<typeof Chip> = {
   title: "Primitives/Chip",
   component: Chip,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

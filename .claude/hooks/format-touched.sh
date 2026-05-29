@@ -55,8 +55,17 @@ fi
 # Each Prettier call is best-effort: if the file vanished mid-flight or
 # Prettier rejects it, we move on. We never expand globs and never recurse
 # into a directory — the path must already point at an existing regular file.
+#
+# .mdx files are skipped entirely. Prettier 3.x has no MDX parser and the
+# markdown parser mangles top-level JSX (escapes `*` inside `{/* */}` as
+# markdown emphasis). .prettierignore also excludes *.mdx — this extension
+# guard is a belt-and-suspenders so the hook stays safe even if the
+# .prettierignore entry is moved or rewritten.
 while IFS= read -r file; do
   if [ -n "$file" ] && [ -f "$file" ]; then
+    case "$file" in
+      *.mdx) continue ;;
+    esac
     npx prettier --write -- "$file" >/dev/null 2>&1 || true
   fi
 done <<< "$paths"

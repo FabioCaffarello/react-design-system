@@ -10,7 +10,6 @@ import type { FilterConfig } from "./SearchAndFilterPattern";
 const meta: Meta<typeof SearchAndFilterPattern> = {
   title: "Components/SearchAndFilterPattern",
   component: SearchAndFilterPattern,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

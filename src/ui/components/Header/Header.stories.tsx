@@ -15,7 +15,6 @@ import { Home, Settings } from "lucide-react";
 const meta: Meta<typeof Header> = {
   title: "Components/Header",
   component: Header,
-  tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
     docs: {

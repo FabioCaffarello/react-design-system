@@ -38,7 +38,6 @@ A dropdown menu component with full keyboard navigation support. Supports Arrow 
       },
     },
   },
-  tags: ["autodocs"],
   argTypes: {
     trigger: {
       control: false,

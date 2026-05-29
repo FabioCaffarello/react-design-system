@@ -4,7 +4,6 @@ import Dot from "./Dot";
 const meta: Meta<typeof Dot> = {
   title: "Primitives/Dot",
   component: Dot,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

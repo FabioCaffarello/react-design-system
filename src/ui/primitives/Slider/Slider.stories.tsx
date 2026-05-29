@@ -7,7 +7,6 @@ import Slider from "./Slider";
 const meta: Meta<typeof Slider> = {
   title: "Primitives/Slider",
   component: Slider,
-  tags: ["autodocs"],
   parameters: {
     layout: "centered",
     docs: {

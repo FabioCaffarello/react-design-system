@@ -15,3 +15,4 @@ Storybook indexes both `.stories.@(js|jsx|mjs|ts|tsx)` AND `.mdx` (see `.storybo
   ```
   Commit only when the grep is clean.
 - **Top-level title segment matches the 3-layer model.** First segment is one of `Primitives/`, `Components/`, `Layouts/`, or `Design System/`. Anything else is the wrong taxonomy.
+- **Don't add `tags: ['autodocs']` to story files.** Doc pages come from MDX attached (`<Meta of={ComponentStories} />`). Autodocs was removed project-wide in Phase 13b1 because Storybook 10's indexer errors when a CSF file is tagged autodocs AND has an attached MDX, and there is no global off-switch — only per-story tag removal works. See `.claude/skills/component-doc/SKILL.md` for the canonical doc-authoring path.

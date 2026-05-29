@@ -34,7 +34,6 @@ A versatile avatar component for displaying user profile images or initials. Sup
       },
     },
   },
-  tags: ["autodocs"],
   argTypes: {
     src: {
       control: "text",

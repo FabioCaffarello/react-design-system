@@ -425,3 +425,108 @@ ocorrer, criar `.claude/rules/cleanup.md` (ou
   são mais perigosos que falsos negativos (Phase 13a).
 - A regra "probe antes de codar contra premissa de API/contrato"
   (Phase 13a allowlist).
+
+## Migrar 5 legacy MDX standalone → attached Meta
+
+**Descoberto em:** Phase 13b1 (investigação do estado atual MDX).
+**Estado:** 5 arquivos `.mdx` componentes legacy usam
+`<Meta title="Components/X" />` (standalone form, cria leaf separado
+no sidebar) em vez do `<Meta of={ComponentStories} />` recomendado
+em Storybook 10 (attached form, funde com a entry das stories):
+
+- `src/ui/components/Form/Form.mdx`
+- `src/ui/components/DatePicker/DatePicker.mdx`
+- `src/ui/components/Dialog/Dialog.mdx`
+- `src/ui/components/Table/Table.mdx`
+- `src/ui/components/Table/TableProvider.mdx`
+
+**Por que importa:** Phase 13b1 estabeleceu o padrão attached pra
+componentes novos (Modal, Button). Os 5 legacy ficam em forma
+divergente até serem migrados, gerando duas convenções coexistentes
+no repo. A migração é mecânica (trocar `title="…"` por
+`of={XStories}` + adicionar `import * as XStories from "./X.stories"`)
+mas exige cuidado com ordem (cada arquivo tem suas próprias seções
+que podem precisar ajuste pra não duplicar Title/Anatomy/Examples
+que o attached form gerencia).
+**Ação:** Phase 13b2 candidate. Sequência sugerida: migrar
+mecanicamente os 5 → validar storybook build verde → revisar se
+alguma seção do MDX legacy duplica algo que o attached form já
+expõe (description em meta.parameters.docs.description, story list
+auto) → cortar duplicação se houver. `.prettierignore` (Phase 13b1
+Commit 1) garante que prettier não destrói os arquivos durante
+edição.
+
+## Replicar component-doc skill aos ~65 componentes restantes
+
+**Descoberto em:** Phase 13b1 (escopo declarado: foundation + gold
+standards apenas).
+**Estado:** Phase 13b1 produziu 2 docs ouro (Modal e Button) +
+skill + template. Restam ~65 componentes em `src/ui/primitives/`,
+`src/ui/components/`, e `src/ui/layouts/` sem MDX próprio. Cada um
+precisa do skill component-doc aplicado: 30-60 word intro, when /
+when-not / a11y, Examples curado de stories existentes, Controls
+ligado.
+**Por que importa:** o investimento de cuidado em template e skill
+da Phase 13b1 paga 65 vezes adiante. Quanto mais tempo as 65
+unidades ficarem sem doc, mais drift entra entre o que o team
+decide e o que está documentado.
+**Ação:** Phases 13b2-13b4 conforme planejamento original. Sugestão
+de fatiamento por valor: 13b2 = primitives mais usados + os 5
+legacy migrados; 13b3 = components composites; 13b4 = layouts +
+remanescentes. Cada batch valida com smoke runner (Phase 13a) e
+storybook build. Calibrar com o threshold check do SKILL.md ("se
+mais de 1 em 10 precisa de exception-paragraph, template está
+errado") — se 13b2 já dispara o threshold, pausar e reabrir
+calibragem do template.
+
+## Filosofia docs registrada — autodocs OFF, MDX attached canônico
+
+**Descoberto em:** Phase 13b1 force-push fix (PR #30 CI breakage).
+**Estado:** Storybook 10 errors quando um CSF file tem
+`tags: ['autodocs']` E uma MDX attached
+(`<Meta of={Stories} />`) — `chooseDuplicate` em
+`node_modules/storybook/dist/core-server/index.js:9095` lança
+`"You created a component docs page for X, but also tagged the CSF
+file with autodocs. This is probably a mistake."`. A condição é
+asimétrica: dispara quando per-story tem o tag mas project-level
+não. Negação project-level (`tags: ['!autodocs']` em
+`.storybook/preview.tsx`) **não** propaga ao indexer — apenas remoção
+per-story silencia.
+**Por que importa:** Phase 13b1 escolheu MDX attached como única
+fonte de doc e removeu os 54 `tags: ['autodocs']` num batch
+(54 stories). Reativar autodocs requeriria migrar TODOS os
+componentes a MDX attached antes — caso contrário CI quebra na
+primeira colisão.
+**Ação:** **DO NOT** reintroduzir `tags: ['autodocs']` em nenhum
+`.stories.tsx`. Vale para refactors futuros, addon updates, ou
+scaffolds via plop. Defesas atuais: (a) `.claude/rules/stories.md`
+proíbe explicitamente; (b)
+`.claude/skills/component-doc/SKILL.md` documenta o caminho
+canônico. Se uma situação futura justificar reabertura, **migrar
+todos os componentes a MDX attached primeiro**, depois decidir.
+
+## Lição metodológica — mapear caminhos concorrentes antes de ativar feature
+
+**Descoberto em:** Phase 13b1 (CI breakage post-merge investigation).
+**Estado:** PASSO 1 da Phase 13b1 mapeou `addon-docs` presença e os
+11 MDX legacy, mas não mapeou todos os caminhos concorrentes de
+geração de docs no Storybook 10 (autodocs per-story tag, autodocs
+project tag, standalone MDX, attached MDX, custom DocsContainer).
+A ativação de MDX attached em Modal/Button colidiu com `tags:
+['autodocs']` em Button.stories no CI — local build não pegou (cache
+de storybook-static stale provavelmente). Storybook flagou; poderia
+ter sido silencioso se o caminho fosse outro.
+**Por que importa:** terceira ocorrência em Phases recentes do
+mesmo padrão. Phase 7 (BSD grep silencioso). Phase 12 (sweep miss
+em sidebar.ts). Phase 13a (race condition no detector). Phase 13b1
+(autodocs vs MDX coexistentes não mapeados). Cada uma reforça a
+mesma regra: **quando ativar feature nova em sistema com múltiplos
+caminhos pra fazer a mesma coisa, mapear TODOS os caminhos
+concorrentes E suas mecânicas de override antes de ativar**.
+**Ação:** quando a próxima Phase de cleanup ou large refactor
+ocorrer, criar `.claude/rules/cleanup.md` (ou
+`.claude/rules/large-refactors.md`) consolidando as regras das
+Phases 7/12/13a/13b1: (a) BSD grep trap, (b) "varredura silenciosa
+suspeite do instrumento", (c) "calibra detector não componente",
+(d) "probe API/contrato antes", (e) "mapear caminhos concorrentes
+antes de ativar feature em sistema com N maneiras de fazer X".

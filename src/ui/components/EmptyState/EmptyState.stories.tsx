@@ -34,7 +34,6 @@ A component for displaying empty states when there's no content. Includes proper
       },
     },
   },
-  tags: ["autodocs"],
   argTypes: {
     variant: {
       control: "select",

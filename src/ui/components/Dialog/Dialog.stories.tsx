@@ -224,7 +224,6 @@ const _alertDialogMeta: Meta<typeof AlertDialog> = {
       },
     },
   },
-  tags: ["autodocs"],
 };
 
 export const AlertDialogDefault: StoryObj<typeof AlertDialog> = {

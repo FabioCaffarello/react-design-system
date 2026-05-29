@@ -7,7 +7,6 @@ import TimePicker from "./TimePicker";
 const meta: Meta<typeof TimePicker> = {
   title: "Components/TimePicker",
   component: TimePicker,
-  tags: ["autodocs"],
   parameters: {
     layout: "centered",
     docs: {

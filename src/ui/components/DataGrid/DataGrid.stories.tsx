@@ -8,7 +8,6 @@ import Button from "../../primitives/Button/Button";
 const meta: Meta<typeof DataGrid> = {
   title: "Components/DataGrid",
   component: DataGrid,
-  tags: ["autodocs"],
   parameters: {
     layout: "padded",
     docs: {

@@ -1,0 +1,49 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as ComponentStories from "./Component.stories";
+
+<Meta of={ComponentStories} />
+
+# Component
+
+_TODO: intro paragraph(s). 30-60 words. Line 1 says what the component is; line 2 says when it earns its place over its alternatives. Indicative voice, no marketing prose._
+
+## When to use
+
+_TODO: 60-120 words, bulleted. Second person, imperative. Each bullet names a concrete situation — not "when you want flexibility" but "when the choice is between confirming and dismissing an irreversible action"._
+
+- TODO: situational bullet
+- TODO: situational bullet
+- TODO: situational bullet
+
+## When not to use
+
+_TODO: 40-80 words, bulleted. Each bullet names the alternative. Do not list bad usages without redirecting._
+
+- TODO: bullet that names the alternative
+- TODO: bullet that names the alternative
+
+## Anatomy
+
+_OPTIONAL — delete this whole section for unitary components (Button, Badge, Spinner, Icon, Switch). Keep only when a designer or developer needs to know which part is which to customize. 30-60 words naming the parts in source order, then one Canvas — usually Default, occasionally a dedicated `Anatomy` story export if a labelled diagram fits better._
+
+_TODO: paragraph naming the parts in source order._
+
+<Canvas of={ComponentStories.Default} />
+
+## Examples
+
+<Canvas of={ComponentStories.Default} />
+
+_TODO (optional): 10-20 words framing the next canvas. Include only when the variant name and the rendered story don't make the point on their own._
+
+<Canvas of={ComponentStories.Variant} />
+
+<Canvas of={ComponentStories.State} />
+
+## Props
+
+<Controls of={ComponentStories.Default} />
+
+## Accessibility
+
+_TODO: 100-200 words. Concrete. Cover four axes — keyboard (which keys do what), ARIA (role, state, labels), focus management (where focus goes on open/close, focus trap, focus return), screen reader (what gets announced, when). Generic "fully accessible" prose is rejected._

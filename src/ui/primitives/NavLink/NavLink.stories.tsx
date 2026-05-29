@@ -11,7 +11,6 @@ import { NavLink } from "./NavLink";
 const meta: Meta<typeof NavLink> = {
   title: "Primitives/NavLink",
   component: NavLink,
-  tags: ["autodocs"],
   parameters: {
     layout: "centered",
     docs: {

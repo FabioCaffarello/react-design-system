@@ -31,7 +31,6 @@ A skeleton loader component for displaying loading states. Includes proper ARIA 
       },
     },
   },
-  tags: ["autodocs"],
   argTypes: {
     variant: {
       control: "select",

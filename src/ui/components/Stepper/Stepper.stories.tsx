@@ -8,7 +8,6 @@ import Input from "../../primitives/Input/Input";
 const meta: Meta<typeof Stepper> = {
   title: "Components/Stepper",
   component: Stepper,
-  tags: ["autodocs"],
   parameters: {
     layout: "padded",
     docs: {

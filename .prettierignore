@@ -15,3 +15,11 @@ plop-templates
 *storybook.log
 package-lock.json
 CHANGELOG.md
+
+# MDX — prettier 3.x has no MDX parser and the markdown parser mangles
+# top-level JSX comments / expressions (escapes `*` as markdown emphasis).
+# No maintained community plugin exists in the npm registry as of Phase
+# 13b1, so we exempt .mdx instead of attempting to format it. The hook
+# format-touched.sh adds a belt-and-suspenders extension skip on top of
+# this entry so MDX stays safe even if this file is moved or rewritten.
+*.mdx

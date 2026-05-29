@@ -12,7 +12,6 @@ import { Plus, Edit, Trash2 } from "lucide-react";
 const meta: Meta<typeof PageHeader> = {
   title: "Components/PageHeader",
   component: PageHeader,
-  tags: ["autodocs"],
   parameters: {
     layout: "padded",
     docs: {

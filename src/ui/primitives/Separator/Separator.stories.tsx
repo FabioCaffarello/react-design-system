@@ -4,7 +4,6 @@ import Separator from "./Separator";
 const meta: Meta<typeof Separator> = {
   title: "Primitives/Separator",
   component: Separator,
-  tags: ["autodocs"],
   parameters: {
     layout: "centered",
     docs: {

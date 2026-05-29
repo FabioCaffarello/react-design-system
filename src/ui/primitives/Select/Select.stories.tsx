@@ -37,7 +37,6 @@ const optionGroups = [
 const meta: Meta<typeof Select> = {
   title: "Primitives/Select",
   component: Select,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

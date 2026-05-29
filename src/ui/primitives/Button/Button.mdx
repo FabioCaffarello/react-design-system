@@ -1,0 +1,60 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as ButtonStories from "./Button.stories";
+
+<Meta of={ButtonStories} />
+
+# Button
+
+Button triggers an immediate action — submit, confirm, dismiss, open, delete. Reach for it when the consequence happens on click; reach for an anchor or link when the consequence is navigation between pages. The component extends all native `<button>` HTML attributes and supports a polymorphic `as` prop for the link case.
+
+## When to use
+
+- Use Button for the primary action of a form or task — "Save", "Send", "Confirm".
+- Use Button to commit a destructive or irreversible decision, paired with a clear label that names the consequence ("Delete account", not "OK").
+- Use Button as the secondary action in a confirm / cancel ladder; pair the brand `primary` variant with `outline` or `ghost` for the dismissal.
+- Use Button to open a Modal, Drawer, or Popover when the trigger is the user choosing to enter that surface deliberately.
+- Use the `iconOnly` variant when space is scarce and the icon is unambiguous, but always set `aria-label`.
+
+## When not to use
+
+- Use an anchor (`<a>`) for navigation between pages or to an external URL. If the visual must match a Button, pass `as="a"` and set `href` — the polymorphic prop keeps the button styling on link semantics.
+- Use `Switch` or `Checkbox` for binary on/off state — Buttons commit an action; toggles represent state.
+- Use `Chip` or `Tag` for selectable filters or tokens; Buttons are not selection controls.
+
+## Examples
+
+<Canvas of={ButtonStories.Primary} />
+
+The variant ladder runs from `primary` (highest emphasis) through `secondary`, `outline`, `ghost`, to `iconOnly` and `error`.
+
+<Canvas of={ButtonStories.AllVariants} />
+
+`isLoading` swaps the label for a spinner and disables the button so a double-click cannot re-submit. Provide `loadingText` for the screen-reader announcement.
+
+<Canvas of={ButtonStories.Loading} />
+
+<Canvas of={ButtonStories.WithIcons} />
+
+## Props
+
+<Controls of={ButtonStories.Primary} />
+
+{/* exception: polymorphic as-prop framing — SKILL.md Props handling exception clause */}
+
+`as`, `href`, and `target` make Button polymorphic. Controls renders `as` as an opaque `ElementType` — the table below documents the link pattern explicitly.
+
+| Prop     | Type          | Notes                                                                                     |
+| -------- | ------------- | ----------------------------------------------------------------------------------------- |
+| `as`     | `ElementType` | Render as a different element. Most commonly `as="a"` for a styled link.                  |
+| `href`   | `string`      | Required when `as="a"`; ignored otherwise.                                                |
+| `target` | `string`      | Standard anchor target. Pair with `rel="noopener noreferrer"` for `target="_blank"` links. |
+
+## Accessibility
+
+The default rendering is a native `<button type="button">`, which inherits keyboard activation (Enter and Space), focus management, and assistive-tech semantics from the browser. The focus ring uses `focus:ring-2 focus:ring-offset-2` so the indicator is visible against any surface; do not strip it.
+
+`disabled` and `isLoading` both apply the native `disabled` attribute so screen readers announce the state and pointer events are ignored. When `isLoading` is true, the visible label is replaced by a spinner; supply `loadingText` so the screen-reader hears the in-flight status instead of silence.
+
+The `iconOnly` variant renders no text label. Always set `aria-label` so the action is announced; the icon alone is invisible to assistive tech.
+
+When using `as="a"`, the rendered element is a link, not a button — Enter activates the link but Space does not, and the role announced is "link". Use the polymorphic form only when the semantics match the intent.

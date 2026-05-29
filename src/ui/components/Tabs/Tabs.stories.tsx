@@ -35,7 +35,6 @@ A flexible tabs component with compound components pattern. Supports horizontal 
       },
     },
   },
-  tags: ["autodocs"],
   argTypes: {
     defaultValue: {
       control: "text",

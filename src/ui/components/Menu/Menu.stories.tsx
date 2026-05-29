@@ -23,7 +23,6 @@ import {
 const meta: Meta<typeof Menu> = {
   title: "Components/Menu",
   component: Menu,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

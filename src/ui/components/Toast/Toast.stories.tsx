@@ -120,7 +120,6 @@ A toast notification system with provider, hook, and container. Supports multipl
       },
     },
   },
-  tags: ["autodocs"],
   argTypes: {
     children: {
       description: "Child components that can use the toast context",

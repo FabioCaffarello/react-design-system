@@ -31,7 +31,6 @@ A progress bar component for displaying progress or loading states. Supports bot
       },
     },
   },
-  tags: ["autodocs"],
   argTypes: {
     value: {
       control: { type: "range", min: 0, max: 100, step: 1 },
