@@ -35,21 +35,21 @@ export const SIDEBAR_TOKENS = {
   // Colors (using Tailwind classes)
   colors: {
     active: {
-      bg: "bg-indigo-50",
-      text: "text-indigo-700",
-      border: "border-indigo-600",
+      bg: "bg-surface-brand-muted",
+      text: "text-fg-brand-emphasis",
+      border: "border-line-brand",
     },
     inactive: {
-      text: "text-gray-700",
-      hover: "hover:bg-gray-100 hover:text-gray-900",
+      text: "text-fg-secondary",
+      hover: "hover:bg-surface-hover hover:text-fg-primary",
     },
-    groupTitle: "text-gray-500",
+    groupTitle: "text-fg-tertiary",
   },
 
   // Chevron (for collapsible groups)
   chevron: {
     size: "h-3 w-3", // 12px (reduced from h-4 w-4)
-    color: "text-gray-400", // Subtle gray color
+    color: "text-fg-quaternary",
   },
 
   // Navigation column (for split sidebar)
