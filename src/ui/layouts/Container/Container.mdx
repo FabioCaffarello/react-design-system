@@ -1,0 +1,45 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as ContainerStories from "./Container.stories";
+
+<Meta of={ContainerStories} />
+
+# Container
+
+Container constrains its children's width to a `maxWidth` cap, applies horizontal and vertical padding, and centers the block on the page when `center` is true. Reach for it as the outer wrapper of any page-level content region — the layer between the application chrome (Header, SideNavbar) and the actual content the user reads.
+
+## When to use
+
+- Use Container as the outermost wrapper of a content region inside `<main>` so the content has a sensible reading width, consistent gutters, and survives wide-viewport screens without stretching into unreadable line lengths.
+- Use `maxWidth="lg"` (default) for general content — articles, settings pages, list views. Use `xl` / `2xl` for dashboards that benefit from wider columns. Use `sm` / `md` for prose-heavy content where short line lengths help reading. Use `full` to disable the cap inside surfaces that own their own width (DashboardLayout's main column).
+- Use `paddingX` and `paddingY` to set the gutter inside the cap — keep them consistent across sibling Containers on the same page so the rhythm reads as a system convention.
+- Use `center={false}` to disable the auto-centering when the parent already positions Container (a side panel, a grid cell).
+
+## When not to use
+
+- Use `Stack` for arranging children with consistent spacing and alignment — Container constrains width; Stack arranges flow.
+- Use a plain `<div>` or `<section>` when the parent already provides the width constraint and the gutter — adding a Container inside another Container nests the padding and the cap, which usually reads as a bug.
+- Avoid Container around full-bleed surfaces (hero images, edge-to-edge banners). The width cap defeats their purpose.
+
+## Examples
+
+<Canvas of={ContainerStories.Default} />
+
+<Canvas of={ContainerStories.MaxWidths} />
+
+<Canvas of={ContainerStories.PaddingVariations} />
+
+<Canvas of={ContainerStories.NotCentered} />
+
+## Props
+
+<Controls of={ContainerStories.Default} />
+
+## Accessibility
+
+Container renders a plain `<div>` with no implicit role; the wrapping does not introduce any landmark or semantic. The children inside provide the semantics — typically a `PageHeader` followed by content sections.
+
+For pages where Container is the outermost wrapper of the main content, pair it with a parent `<main>` element so assistive tech identifies the region via the landmarks rotor. Container does not auto-promote to `<main>` because the surrounding application shell (DashboardLayout, the consumer's own layout) usually owns that landmark.
+
+The width cap helps readability — line lengths above ~80 characters become harder to track. Pick `maxWidth` so the dominant text inside lands in the 50-80 character range; `lg` and `xl` are tuned for that comfort zone on common viewport widths.
+
+When Container nests inside another Container, the inner Container's padding stacks on top of the outer's; the visual result is double padding the consumer rarely wants. If a nested width constraint is the actual intent, lift it to the parent or use a `Stack` with constrained children.
