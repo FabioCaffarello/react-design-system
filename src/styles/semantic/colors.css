@@ -178,6 +178,10 @@
   --color-info-border: var(--color-sky-200);
   --color-info-border-emphasis: var(--color-sky-500);
 
+  /* Status neutral — completes the status family (success/warning/error/info/neutral)
+   * for components like Dot, status Badge, online presence indicators. */
+  --color-status-neutral: var(--color-slate-500);
+
   /* ============================================
    * SCRIM & TRANSLUCENT STATE LAYERS
    * Theme-agnostic — these must stay dark in all modes by design.

@@ -93,6 +93,23 @@ The secondary brand foreground mirrors this structure:
 Same shade relationship as primary: `pink-500/600` (light, default/
 emphasis) and `pink-400/300` (dark, default/emphasis).
 
+### Status Neutral
+
+`bg-status-neutral` completes the status indicator family
+(`bg-success` / `bg-warning` / `bg-error` / `bg-info` / `bg-status-
+neutral`) used by `Dot`, status `Badge`, online presence indicators,
+and similar components. Use it for the "offline / inactive / no
+specific status" variant when a component's CVA already covers the
+four feedback states with semantic tokens.
+
+Light theme: `slate-500`. Dark theme: `slate-400` (one shade lighter,
+mirroring the `success/warning/error/info` flip pattern).
+
+Distinct from `text-fg-*` (which is for foreground text/icons) and
+`bg-line-*` (which is for visual lines like dividers/marks). Status
+indicators are filled dots/badges representing a state — their own
+semantic family.
+
 ### Scrim and Tint-hover (theme-agnostic)
 
 Two translucent black tokens that do **not** flip between light and
