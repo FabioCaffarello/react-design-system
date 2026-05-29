@@ -626,15 +626,15 @@ grep -rIn --include='*.stories.tsx' --include='*.mdx' \
 
 ## Phase C PR2 — a11y backlog real (post-noise silencing)
 
-**Descoberto em:** Phase C PR2, Passo 1 (baseline run de 852 stories) + Passo 2 (re-medição com noise rules silenciadas).
-**Estado:** `a11y.test` segue em `"todo"` em `.storybook/preview.tsx`. Três regras page-level (`region`, `landmark-one-main`, `page-has-heading-one`) silenciadas globalmente — instrumento aplica regra de página em iframe de componente, gerando 78% de ruído (2.806 nodes / ~492 stories were noise-only). Reativadas só em `DashboardLayout` (única que monta `<header>` + `<main>` + `<footer>`). Política documentada em `docs/ACCESSIBILITY.md` seção "Story-iframe exceptions".
+**Descoberto em:** Phase C PR2, Passo 1 (baseline paralelo de 852 stories) + Passo 2 (re-medição com noise rules silenciadas) + Passo 3 (full serial de fechamento, workers=1, BrowserContext por story).
+**Estado:** `a11y.test` segue em `"todo"` em `.storybook/preview.tsx`. Três regras page-level (`region`, `landmark-one-main`, `page-has-heading-one`) silenciadas globalmente — instrumento aplica regra de página em iframe de componente, gerando ~78% de ruído (2.802 nodes / ~492 stories were noise-only). Reativadas só em `DashboardLayout` (única que monta `<header>` + `<main>` + `<footer>`). Política documentada em `docs/ACCESSIBILITY.md` seção "Story-iframe exceptions".
 
-**Baseline real após silenciamento:** 802 nodes em 353 stories. Distribuição por impact:
+**Baseline de record (full serial, 0 errored):** 806 nodes em 354 stories. Distribuição por impact:
 
 | Impact   | Nodes |
 | -------- | ----: |
-| critical |   221 |
-| serious  |   546 |
+| critical |   222 |
+| serious  |   549 |
 | moderate |    29 |
 | minor    |     6 |
 
@@ -642,9 +642,9 @@ grep -rIn --include='*.stories.tsx' --include='*.mdx' \
 
 **Backlog agrupado por causa-raiz, não por regra:**
 
-### Family A — "Controle sem nome acessível" (146 nodes, ~57 stories)
+### Family A — "Controle sem nome acessível" (152 nodes, ~57 stories)
 
-- `button-name` 92n/24s — **38n concentrados em SideNavbar** (icon-only menu buttons sem `aria-label`). Single anchor fix em SideNavbar pode derrubar 40%+ da família. Top: `components/sidenavbar/{variants,with-bottom-navigation,with-header,with-footer,with-header-and-footer}`.
+- `button-name` 94n/24s — **38n concentrados em SideNavbar** (icon-only menu buttons sem `aria-label`). Single anchor fix em SideNavbar pode derrubar 40%+ da família. Top: `components/sidenavbar/{variants,with-bottom-navigation,with-header,with-footer,with-header-and-footer}`.
 - `select-name` 25n/22s — espalhado: SearchAndFilterPattern (2), DataGrid pagination (2). Pequenos `<select>` sem label associado.
 - `aria-input-field-name` 18n/10s — **12n em Slider** (range handles dos sliders).
 - `label` 11n/10s — espalhado (SideNavbar 2, Textarea 2, MultiSelect 2).
@@ -663,10 +663,10 @@ grep -rIn --include='*.stories.tsx' --include='*.mdx' \
 
 **Anchor sugerido:** DatePicker primeiro (62 nodes / 1 fix) → Rating read-only (15 / 1 fix) → Switch (10 / 1 fix). Esses 3 anchors fecham 87 dos 124 nodes da família.
 
-### Family C — "Contraste de cor abaixo de WCAG 2.1 AA 4.5:1" (464 nodes, 274 stories)
+### Family C — "Contraste de cor abaixo de WCAG 2.1 AA 4.5:1" (467 nodes, 275 stories)
 
-- `color-contrast` (serious) — cross-cuta o catálogo inteiro. Top concentração: Table full-featured (17), Table declarative-api (17), Timeline many-items (11), Badge accessibility (8), Badge variants (6).
-- **Cruza com `.claude/rules/colors.md` e `PHASE_7_SEMANTIC_COLORS.md`.** Provável raiz: punhado de combinações token-on-token abaixo de 4.5:1. Candidatos a investigar (inspecionar `sampleTargets` em `/tmp/a11y-baseline-report.json`):
+- `color-contrast` (serious) — cross-cuta o catálogo inteiro. Top concentração: Table full-featured (17), Table declarative-api (17), Timeline many-items (11), Badge accessibility (8), Badge variants (6). +3 nodes vieram de `Toast/clear-all` no full serial (não medidos no paralelo).
+- **Cruza com `.claude/rules/colors.md` e `PHASE_7_SEMANTIC_COLORS.md`.** Provável raiz: punhado de combinações token-on-token abaixo de 4.5:1. Candidatos a investigar (extrair `sampleTargets` do report serial):
   - `text-fg-tertiary` ou `text-fg-quaternary` sobre `bg-surface-base` / `bg-surface-subtle`.
   - `text-fg-secondary` sobre `bg-surface-muted`.
   - Foreground brand sobre surface brand-subtle.
@@ -678,10 +678,12 @@ grep -rIn --include='*.stories.tsx' --include='*.mdx' \
 - `nested-interactive` 25n/18s — `components/menu` (4 nodes em placements) e `primitives/chip` (3 em clickable-and-removable) lideram. Chip com clickable + removable tem `<button>` dentro de `<button>` — fix arquitetural na anatomia do Chip.
 - `landmark-unique` 5n/4s; `landmark-no-duplicate-banner` 1n/1s — outliers.
 
-### Family E — "Outliers minor/serious isolados" (8 nodes)
+### Family E — "Outliers minor/serious/moderate isolados" (10 nodes)
 
 - `empty-heading` 6n/6s (minor) — cleanup.
 - `listitem` 2n/2s (serious) — `<li>` fora de `<ul>`/`<ol>`; check stories que renderizam `<li>` solto para layout.
+- `heading-order` 1n/1s (moderate) — pulo de nível de heading (h1 → h3 sem h2 etc.).
+- `scrollable-region-focusable` 1n/1s (serious) — região com scroll que não recebe foco por teclado.
 
 **Política de fechamento:**
 
@@ -690,4 +692,23 @@ grep -rIn --include='*.stories.tsx' --include='*.mdx' \
 3. Cada anchor vira uma sub-phase própria. Re-rodar baseline após cada fix para confirmar que a aritmética bate (e que o fix não regrediu outra família).
 4. Quando critical+serious = 0, virar `a11y.test: "error"` em `.storybook/preview.tsx`. Não antes.
 
-**Caveat de medição:** 2 stories (`components/form--with-events`, `components/toast--clear-all`) ainda batem em race condition do axe-core no baseline paralelo (instrumento, não código). Rerun em serial bateu 0 nodes em Form e ~3 color-contrast em Toast (subset dos 464 acima). Para refresh futuro, rodar baseline com workers=1 OU criar `BrowserContext` por story.
+**Caveat de medição — resolvido no full serial (Passo 3):** o paralelo (workers=6, BrowserContext compartilhada) deixou 2 stories com axe-race no Passo 2 — `components/form--with-events` e `components/toast--clear-all`, exatamente componentes interativos onde a11y mais importa. Full serial (workers=1, fresh BrowserContext por story, ~48min wall clock) fechou 0 errored em 852/852: Form clean (0 nodes), Toast 3 nodes color-contrast (incluídos em Family C). Delta vs paralelo: +4 nodes (+3 serious Toast + 1 critical button-name de timing-variance) + 2 outliers novos (heading-order, scrollable-region-focusable). Para refresh futuro: serial é a forma íntegra (~48min); paralelo é OK para diff incremental após anchor fix, sabendo que pode ter race em 1-2 stories interativas.
+
+## Phase C PR2 — calibragem metodológica: equivalence axe-direct vs addon-a11y
+
+**Descoberto em:** Phase C PR2 Passo 2 (preocupação levantada após o re-baseline) + Passo 3 (teste empírico).
+**Estado:** O baseline mede via `axe.run()` direto injetado por Playwright após `sb-show-main + #storybook-root children + 150ms settle`. O addon-a11y em CI/CC rodaria axe após o `play` function completar. Risco hipotético: se script medisse estado pré-play (modal fechado) e addon medisse pós-play (modal aberto), seriam instrumentos diferentes — baseline e juiz desalinhados, anchor fix poderia mostrar discrepância contra UI.
+**Teste empírico (5 stories, 2 padrões cada):** rodada A "baseline as-shipped" (settle 150ms) vs rodada B "addon-equivalent" (espera `currentRender.phase === "played"` ou equivalente + settle 200ms). Targets escolhidos para forçar o caso-limite:
+
+| Story                                           | A nodes | B nodes | A phase   | B phase  | Match        |
+| ----------------------------------------------- | ------: | ------: | --------- | -------- | ------------ |
+| `components/datepicker--open-state`             |      32 |      32 | finished  | finished | rule-by-rule |
+| `components/datepicker--with-events`            |      32 |      32 | finished  | finished | rule-by-rule |
+| `components/modal--default`                     |       1 |       1 | finished  | finished | rule-by-rule |
+| `components/commandpalette--default`            |       1 |       1 | afterEach | finished | rule-by-rule |
+| `primitives/button--primary` (controle no-play) |       1 |       1 | finished  | finished | rule-by-rule |
+
+5/5 identical rule-by-rule. Caso mais informativo: CommandPalette com `phase=afterEach` no padrão A (lifecycle ainda rodando) mas mesmo assim os nodes bateram com B — o DOM estabilizou ANTES do lifecycle terminar. Para essas 5 stories, "axe é axe".
+
+**Limite da inferência (registrar explícito para não virar folclore):** 5 stories confirmam, não generalizam para as 47 com play function. A medição forte é "nas stories testadas — incluindo o caso-limite CommandPalette — o DOM estabiliza antes da medição A"; a forte INválida seria "está provado para toda story com play". Se um anchor fix futuro (Family B: DatePicker; Family C: stories de Modal/Drawer com conteúdo via play) mostrar discrepância entre o número do BACKLOG e o número que o addon-a11y reporta na UI do Storybook, o lugar de investigar é exatamente esse: uma story com play onde estado-script ≠ estado-addon. Esta é a única folga conhecida do baseline; o método é fiel nos 5/5 medidos, não há prova universal.
+**Ação:** nenhuma agora. Caveat metodológico registrado para consulta se número não bater depois.
