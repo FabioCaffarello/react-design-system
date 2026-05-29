@@ -1,0 +1,49 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as SearchInputStories from "./SearchInput.stories";
+
+<Meta of={SearchInputStories} />
+
+# SearchInput
+
+SearchInput is `Input` specialized for query strings — it wraps the primitive with a search icon, a clear button, an optional loading spinner, and debounced `onSearch`. Reach for it whenever the page has a freeform query field that drives filtering, autocomplete triggers, or live search.
+
+## When to use
+
+- Use SearchInput for any "type to filter" surface — list searches, tag filters, command bars, table searches.
+- Use `debounceMs` (default 300 ms) to wait for the user to stop typing before firing `onSearch` — fewer requests, no flickering during typing.
+- Use `loading` to show the inline spinner while the search request is in flight; the user keeps seeing progress without the layout reflowing.
+- Use `showClearButton` (default `true`) so the user can reset the query in one tap, which they expect at this kind of surface.
+
+## When not to use
+
+- Use plain `Input` when the field accepts text but the search semantics (icon, debounce, clear) are wrong — names, slugs, message bodies.
+- Use `Autocomplete` when the user picks one of a known set, not an arbitrary query.
+- Use `CommandPalette` for keyboard-driven action discovery — the surface and the interaction model differ.
+
+## Examples
+
+<Canvas of={SearchInputStories.Default} />
+
+`loading` shows a spinner inside the input while the search request is in flight; layout stays stable.
+
+<Canvas of={SearchInputStories.WithLoading} />
+
+<Canvas of={SearchInputStories.WithClear} />
+
+<Canvas of={SearchInputStories.WithDebounce} />
+
+## Props
+
+<Controls of={SearchInputStories.Default} />
+
+## Accessibility
+
+SearchInput renders a native `<input type="search">` — assistive tech announces it as a search field rather than a generic text input, and platform-specific affordances (search history on iOS, the cancel button on macOS) are surfaced where the OS provides them.
+
+The search icon is decorative (`aria-hidden="true"`) — the input's accessible name comes from a bound `Label` or an explicit `aria-label`. Always wire one of them; an unlabelled search input is a common a11y gap.
+
+The clear button is a native `<button type="button">` with an explicit `aria-label="Clear search"` so screen readers identify the destructive affordance distinctly from the input itself. It is removed from the tab order when the field is empty so the user does not encounter a no-op tab stop.
+
+When `loading` is true, the spinner replaces the clear button slot and the input remains focusable and typable; the spinner is announced via the wrapping region's `aria-busy="true"` so assistive tech can convey the in-flight state if needed.
+
+`onSearch` fires after `debounceMs` of idle typing. Avoid debounce values above ~500 ms — slower than that and the user perceives the field as unresponsive.

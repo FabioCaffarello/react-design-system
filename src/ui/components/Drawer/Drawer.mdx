@@ -1,0 +1,50 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as DrawerStories from "./Drawer.stories";
+
+<Meta of={DrawerStories} />
+
+# Drawer
+
+Drawer slides a side panel in from one edge of the screen — settings, filters, navigation, secondary forms — while keeping the underlying page visible. Reach for it when the user enters a focused side-task that they will return from to the page they were on, not when the action is interrupting (use `Modal` for that).
+
+## When to use
+
+- Use Drawer for a focused side task that the user enters and leaves while the underlying page remains relevant — filters that adjust the visible list, settings panels that touch the current view, a contact form opened from a row.
+- Use `position="right"` (default) for action-side affordances; `position="left"` for nav-side; `position="top"` / `position="bottom"` for sheets opened from the edges (typically mobile).
+- Use `size` to match the surface density — `sm` for compact forms, `md` for general use, `lg` / `xl` for complex multi-section panels, `full` for mobile takeover.
+- Use `closeOnOverlayClick={false}` when the user might lose work by accidental dismissal — destructive confirmations belong in `Modal`, but partially-filled forms benefit from explicit close.
+
+## When not to use
+
+- Use `Modal` for interactions that must interrupt the page until acknowledged — destructive confirmation, critical errors, multi-step blocking flows.
+- Use `Popover` for a small piece of content anchored to a trigger element; Drawer dominates an edge of the viewport.
+- Use a routed panel (a side route that owns the URL) when the side-task deserves shareable URLs and deep linking — Drawer is page-local state.
+- Avoid Drawer for content the user almost always needs — surfacing it inline saves the click and the slide animation.
+
+## Anatomy
+
+Drawer is composed via a compound API: the root `Drawer` mounts a `DrawerProvider` carrying open state, position, size, and dismissal settings; the `overlay` is the dark backdrop rendered behind the panel (dismisses on click when `closeOnOverlayClick`); `DrawerContent` is the sliding panel surface itself; `DrawerHeader` is the optional top region with title + close button; the body is the `children` of `DrawerContent` between header and footer; `DrawerFooter` is the optional bottom region for action rows. Overlay + container + header + body + footer make five visible parts.
+
+<Canvas of={DrawerStories.Default} />
+
+## Examples
+
+<Canvas of={DrawerStories.Positions} />
+
+<Canvas of={DrawerStories.Sizes} />
+
+<Canvas of={DrawerStories.ComplexContent} />
+
+## Props
+
+<Controls of={DrawerStories.Default} />
+
+## Accessibility
+
+The drawer panel carries `role="dialog"` with `aria-modal="true"` so assistive tech treats it as a focused interaction region — focus is trapped inside, the underlying page is inert until close. The `aria-labelledby` attribute points at the `DrawerHeader`'s title node when present; otherwise wire an explicit `aria-label` to the `DrawerContent` so the panel has an accessible name.
+
+Focus moves to the first focusable element inside the drawer on open (typically the close button or the first interactive control) and returns to the element that triggered the open on close. ESC closes the drawer when `closeOnEscape` is true (default); the focus restoration is the same whether the user closes via overlay click, ESC, or an in-panel close button.
+
+The overlay is rendered with `aria-hidden="true"` — it is a visual veil, not a control. Clicking it triggers `onOpenChange(false)` when `closeOnOverlayClick`; keyboard users dismiss via ESC, since the overlay is not focusable.
+
+Body scroll locks while the drawer is open so the underlying page does not move; the lock is automatic. For positions `top` and `bottom`, the slide direction is visual only — assistive tech announces the dialog identically regardless of edge.

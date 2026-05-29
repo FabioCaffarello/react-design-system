@@ -1,150 +1,71 @@
-import { Meta } from "@storybook/addon-docs/blocks";
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as TableStories from "./Table.stories";
 
-<Meta title="Components/Table" />
+<Meta of={TableStories} />
 
 # Table
 
-A powerful and flexible table component with sorting, filtering, pagination, and responsive design capabilities.
+Table renders tabular data with optional sorting, pagination, filters, row selection, per-row actions, and an empty state. Reach for it for any list view where the rows have a regular structure and the user benefits from columns the eye can scan, or use `DataGrid` when the surface needs the richer feature set on top of Table.
 
-## Features
+## When to use
 
-- **Sorting**: Click column headers to sort data
-- **Loading States**: Built-in loading skeleton
-- **Custom Rendering**: Customize cell rendering with render functions
-- **Responsive**: Adapts to different screen sizes
-- **Accessible**: Full ARIA support and keyboard navigation
-- **Pagination**: Built-in pagination support
-- **Actions**: Row-level actions support
+- Use Table for any tabular list of items with regular columns — invoices, users, issues, products, audit log rows.
+- Use `pagination` for surfaces with more rows than fit on a single screen; pass the page state from the parent so the consumer drives navigation.
+- Use `filters` to render filter controls above the table that the user composes; the filter values reach the parent via `onFilter` to drive the data set.
+- Use `selectable` + `selectedRows` + `onSelectionChange` for bulk-action surfaces; the header checkbox toggles the visible page selection and announces "indeterminate" when partial.
+- Use per-row `actions` to expose row-level affordances (Edit / Delete / Duplicate) inline; the actions render as a `Dropdown` or button group depending on the consumer's configuration.
 
-## Basic Usage
+## When not to use
 
-```tsx
-import { Table } from "@fabio.caffarello/react-design-system";
+- Use `DataGrid` for surfaces that need column resize / reorder, grouping, export menus, virtual scrolling, or multi-column sort. DataGrid extends Table with that machinery.
+- Use `DataTablePattern` when the surface fits the pre-built "search + table + pagination" shell exactly — that pattern wraps Table.
+- Use a plain `<ul>` or card grid when the data is not tabular — Table's grid mechanics add cost without value for non-table data.
 
-const data = [
-  { id: "1", name: "Item 1", status: "Active" },
-  { id: "2", name: "Item 2", status: "Inactive" },
-];
+## Anatomy
 
-const columns = [
-  { key: "name", label: "Name" },
-  { key: "status", label: "Status" },
-];
+Table stacks vertically: an optional `filters region` at the top (rendered when `filters` is configured); the `table` element itself with a `<thead>` containing the `column header row` (each cell sortable when the column is sortable, with the visible sort indicator) and a `<tbody>` containing the `data rows` (each `<tr>` with the configured cells, optional leading selection checkbox, and trailing actions); the `pagination region` below the table when `pagination` is configured; the `empty state region` replaces the body when there is no data, using the consumer's `emptyStateTitle` / `emptyStateMessage` / `emptyStateIllustration` / `emptyStateAction`.
 
-<Table columns={columns} data={data} />;
-```
+<Canvas of={TableStories.Default} />
 
-## Sorting
+## Examples
 
-Enable sorting by providing a `sortable` property on columns:
+<Canvas of={TableStories.WithSorting} />
 
-```tsx
-const columns = [
-  { key: "name", label: "Name", sortable: true },
-  { key: "status", label: "Status", sortable: true },
-];
+<Canvas of={TableStories.WithFilters} />
 
-<Table
-  columns={columns}
-  data={data}
-  onSort={(key, direction) => {
-    // Handle sorting
-  }}
-/>;
-```
+<Canvas of={TableStories.WithSelection} />
 
-## Custom Cell Rendering
+<Canvas of={TableStories.WithPagination} />
 
-Customize how cells are rendered using the `render` function:
+## Props
 
-```tsx
-const columns = [
-  {
-    key: "status",
-    label: "Status",
-    render: (value, row) => (
-      <Badge variant={value === "Active" ? "success" : "default"}>
-        {value}
-      </Badge>
-    ),
-  },
-];
-```
-
-## Loading State
-
-Show a loading skeleton while data is being fetched:
-
-```tsx
-<Table columns={columns} data={data} loading={true} />
-```
-
-## Pagination
-
-Integrate with pagination components:
-
-```tsx
-import { Table, TablePagination } from "@fabio.caffarello/react-design-system";
-
-<>
-  <Table columns={columns} data={currentPageData} />
-  <TablePagination
-    currentPage={page}
-    totalPages={totalPages}
-    onPageChange={setPage}
-  />
-</>;
-```
-
-## Actions
-
-Add row-level actions:
-
-```tsx
-import { Table, TableActions } from "@fabio.caffarello/react-design-system";
-
-<Table
-  columns={columns}
-  data={data}
-  actions={(row) => (
-    <TableActions
-      items={[
-        { label: "Edit", onClick: () => handleEdit(row) },
-        { label: "Delete", onClick: () => handleDelete(row) },
-      ]}
-    />
-  )}
-/>;
-```
+<Controls of={TableStories.Default} />
 
 ## Accessibility
 
-The Table component follows ARIA best practices:
+Table renders native `<table>`, `<thead>`, `<tbody>`, `<th>`, `<tr>`, `<td>` so assistive tech navigates using the platform's table mode (Ctrl + arrows on macOS VoiceOver; similar on JAWS / NVDA). The semantic markup is what makes the grid navigable without extra wiring.
 
-- Uses `role="table"` for the table element
-- Uses `role="columnheader"` for sortable headers
-- Provides `aria-sort` attributes for sort state
-- Supports keyboard navigation
-- Associates headers with cells via `aria-labelledby`
+Sortable column headers carry `aria-sort="ascending" | "descending" | "none"` reflecting the current sort; activating the header (Enter / Space on a focused `<th>` containing a button) toggles sort and announces the new state.
 
-### Keyboard Navigation
+Selection checkboxes are native `<input type="checkbox">` with explicit `aria-label="Select row <id>"` and `aria-label="Select all rows on this page"` on the header checkbox. The header checkbox shows the indeterminate state when some rows are selected; assistive tech announces "mixed" instead of "checked" / "unchecked".
 
-- **Tab**: Navigate between interactive elements
-- **Enter/Space**: Activate sortable column headers
-- **Arrow Keys**: Navigate between cells (when implemented)
+The filters region is wrapped in `<form role="search">` (or a plain region with `aria-label="Filters"`) so assistive tech identifies it as a control cluster. Applying a filter announces the new row count via `aria-live="polite"` on the table body region.
 
-## Responsive Design
+For the empty state, the region carries `role="status"` so the absence is announced when the table resolves to zero rows.
 
-The table automatically adapts to smaller screens:
+The `actions` per row render as a `Dropdown` trigger when there are more than two actions, exposing the `Dropdown`'s WAI-ARIA Menu semantics — the consumer does not wire menu roles directly.
 
-- On mobile, consider using a card-based layout
-- Horizontal scrolling is available for wide tables
-- Use responsive column visibility
+{/* trailing-section exception: TableProvider architecture lives here because Provider is internal infrastructure, not a separate consumer API */}
 
-## Best Practices
+## Architecture
 
-1. **Column Keys**: Always use unique, stable keys for columns
-2. **Data Structure**: Keep data structure consistent across rows
-3. **Performance**: For large datasets, implement virtual scrolling
-4. **Accessibility**: Always provide accessible labels and descriptions
-5. **Loading States**: Always show loading states for async data
+Table's state — pagination, sorting, filters, selection — is owned by an internal `TableProvider` mounted by the root `Table` component. The provider exposes state through a `TableContext` consumed by the subcomponents (header cells reading the sort state, body rows reading selection, pagination controls reading page state). Most consumers do not interact with `TableProvider` directly; the simplified Table props cover the common case.
+
+Two modes drive the data path:
+
+- **Client-side mode** (default): the provider applies filtering, sorting, and pagination to the `data` array on every state change. Suitable for small to medium datasets where the entire list fits in memory.
+- **Server-side mode**: the consumer passes `pagination.total` from outside and wires `pagination.onPageChange`, `sortColumn` / `sortDirection` + `onSort`, and `filters.onFilter` to fetch fresh data from an API. The provider manages UI state only; data processing happens externally.
+
+Each state domain supports controlled and uncontrolled modes — pass the state prop + handler for controlled, omit them for uncontrolled internal state.
+
+When the consumer needs to read state from outside Table (a status bar showing "3 selected" outside the table chrome), wrap the surface in `TableProvider` directly with the same configuration and consume `useTableContext()` — the alternative composition path that powers the simplified Table inside.

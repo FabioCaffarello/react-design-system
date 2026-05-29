@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as FileUploadStories from "./FileUpload.stories";
+
+<Meta of={FileUploadStories} />
+
+# FileUpload
+
+FileUpload renders a drop zone the user can drag files onto (or click to open the native file picker), a list of files chosen so far with size + optional preview + progress, and per-file remove buttons. Reach for it whenever the consumer's surface needs to accept user-supplied files — avatar uploads, attachment fields, document submissions, bulk imports.
+
+## When to use
+
+- Use FileUpload for any file-accepting field — avatars, attachments, bulk imports, image galleries, profile photos.
+- Use `accept` to filter the picker to allowed types (`"image/*"`, `".pdf,.docx"`); the field rejects mismatched drops via validation.
+- Use `multiple={true}` + optional `maxFiles` for multi-file selection.
+- Use `maxSize` (bytes) so the field rejects oversize files inline before the upload pipeline.
+- Use `showPreview` for image thumbnails; `showProgress` when the consumer drives a pipeline exposing per-file percentage.
+
+## When not to use
+
+- Use a plain `<input type="file">` when the surface needs the bare browser affordance with no drop zone or preview list — toolbar icons, hidden inputs paired with a styled `Button`.
+- Use a dedicated import-wizard pattern when the upload is part of a multi-step flow with field mapping or transformation — `FormWizardPattern` or `Stepper` carries the flow, FileUpload owns one of its steps.
+- Avoid FileUpload as the only error surface for upload pipeline failures — surface those errors via `Toast` or page-level `Info` so failures are not lost when the user scrolls past the field.
+
+## Anatomy
+
+FileUpload renders in source order: an optional `label` + `description` row above the drop zone; the `drop zone` itself (a bordered region with the upload glyph, instructions, and a hidden file input — the entire region is the click target); the `file list` below the drop zone showing each chosen file as a row containing an optional `preview` (image thumbnail when `showPreview` and the file is an image), the `filename + size` text, an optional `progress` bar (when `showProgress`), and a `remove button` to drop the file from the selection.
+
+<Canvas of={FileUploadStories.Default} />
+
+## Examples
+
+<Canvas of={FileUploadStories.ImageUpload} />
+
+<Canvas of={FileUploadStories.MultipleFiles} />
+
+<Canvas of={FileUploadStories.WithProgress} />
+
+## Props
+
+<Controls of={FileUploadStories.Default} />
+
+## Accessibility
+
+The drop zone is a native interactive region wrapping a hidden `<input type="file">`; the visible region carries `role="button"` and `aria-label` describing the action ("Drop files here or click to select"). Keyboard activation (Enter / Space on the focused drop zone) opens the native file picker, the same as a click.
+
+Drag-and-drop is a mouse / touch affordance that assistive tech does not announce; keyboard-only users rely on the click path. Always pair the visual drag instructions with the equivalent click instruction so users without drag affordances are not stranded.
+
+Each file row in the list is announced individually — the filename, the size, and the validation state ("error: file too large") so screen-reader users hear what failed without scanning. The remove button on each row carries `aria-label="Remove <filename>"` so its purpose is announced.
+
+Validation errors (oversize, wrong type, count exceeded) surface inline below the offending file with `role="alert"` and `aria-live="polite"` — the error is announced when it appears, without stealing focus. Pair the inline error with a page-level `Toast` for catastrophic failures (server rejected the upload) so the message survives a scroll past the field.
+
+The `Progress` primitive inside each row carries `role="progressbar"` + `aria-valuenow` for upload percentage; throttle updates to ~one every 500 ms to avoid noisy announcements.

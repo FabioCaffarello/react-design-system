@@ -558,3 +558,24 @@ crescer a API ou não é design, não doc.
   - Banner composto novo)?
     Resposta orienta se Info.mdx ganha Anatomy futura ou se um novo
     Banner primitive aparece em Phase 13bN.
+
+## LoginBox stories sparse — escopo provavelmente muito específico
+
+**Descoberto em:** Phase 13b3 batch 6, ao escrever `LoginBox.mdx`.
+**Estado:** LoginBox tem apenas 3 stories totais (`Primary`,
+`WithEvents`, `DefaultState`) — comparado a Input (21), Button (24),
+Modal (12). Os 3 stories são todos demos básicos do mesmo formato
+sem variação significativa. O componente em si é um wrapper fixo de
+email + password + forgot link + sign-in button; não tem variants,
+sizes, modos polymorphic. A doc landed em 411 palavras (close to
+floor) e usou 2 canvases (Primary + WithEvents) conforme decidido
+no inventário 13b3.
+**Por que importa:** sparse stories sugerem componente com escopo
+limited — provavelmente foi criado pra uma tela específica e nunca
+generalizou. Em produção, fluxos auth comumente requerem variantes
+que LoginBox não cobre (passwordless, magic link, SSO, MFA). Se o
+projeto consumidor pivotar pra um desses, LoginBox não escala.
+**Ação:** Phase 14 (BACKLOG sprint) — revisitar se LoginBox deveria
+crescer pra cobrir mais auth patterns ou se deveria ser
+deprecated em favor de `Form` + composição custom. Sem urgência;
+componente atual funciona pro escopo que cobre.

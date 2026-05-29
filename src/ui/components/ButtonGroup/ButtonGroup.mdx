@@ -1,0 +1,46 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as ButtonGroupStories from "./ButtonGroup.stories";
+
+<Meta of={ButtonGroupStories} />
+
+# ButtonGroup
+
+ButtonGroup arranges a row (or column) of `Button` instances with consistent spacing and an optional `attached` mode that fuses adjacent buttons into a single visual surface. Reach for it when 2-5 related buttons belong together — segmented toggles, action clusters, paired confirm / cancel rows.
+
+## When to use
+
+- Use ButtonGroup for clusters of related actions that should read as one unit — primary / secondary action pairs, segmented mode toggles, filter row buttons.
+- Use `attached={true}` for segmented controls — a single visual surface with internal dividers, where the buttons together represent one selection. Pair with `selected` styling on the active button.
+- Use `orientation="vertical"` when the buttons stack in a narrow column (sidebar menus, mobile rows); `horizontal` is default.
+- Use `size` consistently across the group; mixing sizes inside a single ButtonGroup breaks the unified rhythm.
+
+## When not to use
+
+- Use a `Toolbar` for a wider, more permanent action bar with mixed control types (buttons, separators, dropdowns) — ButtonGroup is purely buttons.
+- Use `Dropdown` or `Menu` when the actions are numerous enough that surfacing them all inline crowds the surface; group them behind a single trigger.
+- Use individual `Button` instances with explicit spacing when the buttons are not visually or semantically related — ButtonGroup implies a relationship.
+- Use `Tabs` or segmented `Radio` controls when the buttons represent mutually exclusive selection rather than discrete actions.
+
+## Examples
+
+<Canvas of={ButtonGroupStories.Default} />
+
+`attached` fuses adjacent buttons into a single surface — used for segmented toggles where the cluster reads as one selection.
+
+<Canvas of={ButtonGroupStories.Attached} />
+
+<Canvas of={ButtonGroupStories.Vertical} />
+
+## Props
+
+<Controls of={ButtonGroupStories.Default} />
+
+## Accessibility
+
+ButtonGroup renders a `<div role="group">` so assistive tech recognizes the cluster as a related set. Set `aria-label` on the group describing the relationship — "Text formatting", "Filter mode", "Confirm or cancel" — so screen readers announce the purpose before reading each button's individual label.
+
+The contained `Button` instances inherit their own accessibility semantics — focus on Tab, Enter / Space to activate, `disabled` announced. Tab moves through the buttons in source order; arrow keys are not bound by default because ButtonGroup is an action cluster, not a single-select control.
+
+When using `attached` as a segmented toggle (each button is one option in a mutually exclusive selection), the consumer is responsible for wiring `aria-pressed` on the active button and managing keyboard interaction; for a richer single-select pattern with arrow-key navigation, use a `RadioGroup` or `Tabs` instead.
+
+For destructive actions inside a group ("Delete" alongside "Save" and "Cancel"), pair the visible label with words that name the consequence — "Delete account" instead of "Delete" — so assistive tech announces the impact, not just the verb.

@@ -68,16 +68,16 @@ The full structure is captured in `template.mdx`. The matrix below is
 what `SKILL.md` uses to decide section presence and length when
 adapting the skeleton to a specific component.
 
-| Section          | Status       | Target words¹    | Notes                                                                                            |
-| ---------------- | ------------ | ---------------- | ------------------------------------------------------------------------------------------------ |
-| Frontmatter+Meta | mandatory    | n/a              | `<Meta of={Stories} />` attached form. Title comes from the meta export.                         |
-| Intro            | mandatory    | 30-60            | One line "what" + one line "when it earns its place".                                            |
-| When to use      | mandatory    | 60-120           | Bulleted, situational, second-person imperative.                                                 |
-| When not to use  | mandatory    | 40-80            | Each bullet names the alternative.                                                               |
-| Anatomy          | **optional** | 30-60 + 1 canvas | Present iff component has distinguishable named parts (see below).                               |
-| Examples         | mandatory    | 10-20 per canvas | `Default` always; 2-4 curated additions. Each canvas earns its space.                            |
-| Props            | mandatory    | 0 prose          | `<Controls of={ComponentStories.Default} />` plus manual table only for props Controls degrades. |
-| Accessibility    | mandatory    | 100-200          | Keyboard, ARIA, focus management, screen reader. Concrete, not generic.                          |
+| Section          | Status       | Target words¹                              | Notes                                                                                            |
+| ---------------- | ------------ | ------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| Frontmatter+Meta | mandatory    | n/a                                        | `<Meta of={Stories} />` attached form. Title comes from the meta export.                         |
+| Intro            | mandatory    | 30-60                                      | One line "what" + one line "when it earns its place".                                            |
+| When to use      | mandatory    | 60-120                                     | Bulleted, situational, second-person imperative.                                                 |
+| When not to use  | mandatory    | 40-80                                      | Each bullet names the alternative.                                                               |
+| Anatomy          | **optional** | scales by part count, see below + 1 canvas | Present iff component has distinguishable named parts (see below).                               |
+| Examples         | mandatory    | 10-20 per canvas                           | `Default` always; 2-4 curated additions. Each canvas earns its space.                            |
+| Props            | mandatory    | 0 prose                                    | `<Controls of={ComponentStories.Default} />` plus manual table only for props Controls degrades. |
+| Accessibility    | mandatory    | 100-200                                    | Keyboard, ARIA, focus management, screen reader. Concrete, not generic.                          |
 
 ¹ Targets, not ceilings. Calibrate per component during writing. Total
 prose (excluding rendered canvases and auto-generated controls):
@@ -99,6 +99,31 @@ When present, the Anatomy section is one short paragraph plus a
 single `<Canvas of={ComponentStories.Default} />` (or a dedicated
 `Anatomy` story export if a labelled diagram fits better than the
 default).
+
+### Anatomy word count scales by part count
+
+Phase 13b3 introduced this calibration when compound components
+(Drawer, Header, Menu, SideNavbar — typically marked `YES (compound)`
+in the inventory) made the original 30-60 word band too tight to
+name 5+ parts with real explanation.
+
+- **Simple anatomy** (1-3 named parts): 30-60 words. Examples — Input
+  (label / field / helper), Switch (track / thumb / label / description).
+- **Standard anatomy** (4-5 named parts): 50-100 words. Example —
+  Modal (overlay / container / header / body / footer) at 49 words.
+- **Compound anatomy** (6+ named parts, often `YES (compound)`):
+  80-150 words. Example — SideNavbar with Navbar / Sidebar / Toggle /
+  ResizeHandle / Backdrop + interaction notes.
+
+Calibrate by part count, not by component complexity. A compound
+component with sparse part-by-part explanation reads thin and forces
+re-learning when the consumer composes the component for the first
+time. A simple anatomy padded to the compound band reads as filler.
+
+The 11 docs that landed in Phase 13b1+13b2 with Anatomy (Modal,
+Input, Checkbox, Radio, Switch, Tooltip, Chip, Select, Textarea,
+Slider, Collapsible) all sit in the simple-to-standard bands and
+remain in spec under this rule.
 
 ### Examples selection criterion
 
@@ -135,6 +160,95 @@ default).
 - **Inherited HTML attributes** are not documented individually. The
   Intro mentions when the component extends a native element (e.g.
   "extends all `button` HTML attributes").
+
+## Cross-reference rule (Phase 13b3 onward)
+
+Inline-code mentions in prose (`` `Toast` ``, `` `Modal` ``, …) are
+**not** cross-references — use them freely; they cost nothing. The
+24 docs landed in Phase 13b1+13b2 establish the convention by example:
+named components appear as inline-code wherever they help redirect or
+distinguish.
+
+A cross-reference is a clickable markdown link to another doc page.
+Maximum 2-3 links per doc, only when:
+
+- The component composes the linked one as a public part (Form uses
+  Input → the first Input mention in Form.mdx can link to Input docs).
+- A consumer decision genuinely depends on the linked doc beyond what
+  your prose explains.
+
+Don't link when:
+
+- The mention is one of many alternatives in a When-not-to-use bullet
+  — alternatives stay inline-code so the comparison reads cleanly.
+- The referenced component is an implementation detail invisible to
+  the consumer.
+
+**URL format** (verified empirically against `storybook-static/index.json`
+in Phase 13b3 PASSO 2): `?path=/docs/<lowercase-kebab-title>--docs`.
+Examples: `?path=/docs/primitives-input--docs`,
+`?path=/docs/components-modal--docs`.
+
+### Examples
+
+When **to** link:
+
+> "Form composes [Input](?path=/docs/primitives-input--docs) and
+> [Label](?path=/docs/primitives-label--docs) — pass the same `id`
+> to both so the label binds to the field and screen readers
+> announce them as one accessible name."
+
+Two links because the consumer cannot wire IDs correctly without
+visiting both linked docs.
+
+When **not** to link:
+
+> "Don't use Modal for non-critical messages — prefer `Toast`."
+
+`Toast` stays inline-code: it is one alternative in a When-not-to-use
+bullet, and the redirect is the value, not the navigation.
+
+If more than 2-3 links are needed, the doc is re-explaining instead
+of pointing — rewrite.
+
+## Trailing sections (exception)
+
+Sections after Accessibility are **not** template features. The
+template ends at Accessibility; anything below is an exception
+following the same Principle 3 pattern as the Props prose exception
+clause and the `.claude/rules/colors.md` "documented literal
+exception > forced token" rule.
+
+A trailing section is allowed only when **all three** of:
+
+- The component has a significant external integration concern that
+  carries consumer value (Form ↔ React Hook Form, Table ↔
+  TableProvider architecture, a component ↔ an established
+  third-party integration the consumer needs to understand).
+- The content does not fit naturally inside When to use, Examples, or
+  Accessibility — those sections are tried first, and folding wins
+  by default.
+- The trailing section is marked with an inline JSX comment naming
+  the reason, mirroring the Props exception marker. Format:
+
+```mdx
+{/* trailing-section exception: <reason> */}
+
+## <Section title>
+
+<content>
+```
+
+**Threshold check.** If more than one component in ten needs a
+trailing section, the template is missing something — pause and
+reopen calibration. Three or four in 32 (Phase 13b3 components batch)
+is already approaching the threshold.
+
+Trailing sections do not count toward the 270-540 prose total
+calibration — they are budgeted separately and should stay tight
+(80-200 words is the comfort zone). A trailing section that grows
+past 200 words is probably a separate doc trying to be born; split
+it instead of bloating the parent.
 
 ## Tone & voice
 

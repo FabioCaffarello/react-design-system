@@ -1,0 +1,47 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as BreadcrumbStories from "./Breadcrumb.stories";
+
+<Meta of={BreadcrumbStories} />
+
+# Breadcrumb
+
+Breadcrumb renders the hierarchical path the user has descended into — a trail of named ancestors leading to the current page. Reach for it whenever the application has more than one level of nesting and the user benefits from seeing where they are and being able to jump back to any ancestor in one click.
+
+## When to use
+
+- Use Breadcrumb on any page that lives two or more levels deep in the navigation — section / subsection / page, organization / project / issue, parent / child / grandchild.
+- Use it as the topmost element in a `PageHeader` when the page identity depends on its parents (a settings page that lives inside a workspace, a doc page inside a folder).
+- Use `separator` to match the visual language — `/` (default), `>`, `›`, or a custom string. Keep the separator consistent across pages so it reads as a system convention.
+- Pass each `BreadcrumbItem` with `label` and an `href` for ancestors that should be linkable; omit `href` on the last item so the current page reads as the terminal step.
+
+## When not to use
+
+- Use a back button when the user came from one specific page and there is no real hierarchy to trace — Breadcrumb is for structural depth, not session history.
+- Use `Tabs` when the user is navigating between sibling views of the same parent — siblings are not ancestors.
+- Avoid Breadcrumb on top-level landing pages where there is no ancestor to show; an empty or single-item breadcrumb adds noise without information.
+
+## Anatomy
+
+Breadcrumb renders in source order: a sequence of `items`, each rendered as a linkable label when `href` is present and as plain text when not; between adjacent items, the `separator` glyph (default `/`); the last item is treated as the `current page` — never linked, marked with `aria-current="page"` so assistive tech announces "current page" when focus arrives.
+
+<Canvas of={BreadcrumbStories.Default} />
+
+## Examples
+
+<Canvas of={BreadcrumbStories.TwoLevels} />
+
+<Canvas of={BreadcrumbStories.ThreeLevels} />
+
+<Canvas of={BreadcrumbStories.CustomSeparator} />
+
+## Props
+
+<Controls of={BreadcrumbStories.Default} />
+
+## Accessibility
+
+Breadcrumb renders a `<nav>` landmark with `aria-label="Breadcrumb"` so screen readers announce the region as a navigation block; users can jump to it directly via the rotor and skip past it as a known landmark. Inside the nav, the items are wrapped in an ordered list (`<ol>`) so the hierarchy is structural, not just visual — assistive tech announces "list, 3 items" before reading the trail.
+
+Each linked item is a native `<a href>` and is announced as a link. The current page (the last item, with no `href`) is rendered as plain text inside its list item and carries `aria-current="page"` so the announcement names it as the current page rather than just another link. Keyboard navigation through the breadcrumb follows the standard Tab order — the current page is not focusable because it does not navigate anywhere.
+
+The separator glyph (`/`, `>`, custom string) is decorative and rendered with `aria-hidden="true"` so it does not get announced between every item. Without the hide, the user would hear "Home, slash, Epics, slash, Epic details" — noise that adds nothing.

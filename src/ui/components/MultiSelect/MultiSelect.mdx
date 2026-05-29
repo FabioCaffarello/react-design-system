@@ -1,0 +1,51 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as MultiSelectStories from "./MultiSelect.stories";
+
+<Meta of={MultiSelectStories} />
+
+# MultiSelect
+
+MultiSelect pairs a search-as-you-type input with a dropdown of suggestions, displaying each selected value as a removable `Chip` inside the field. Reach for it when the user picks any subset of values from a known set — tag selection, filter assembly, attendee pickers, category multi-tagging.
+
+## When to use
+
+- Use MultiSelect for "pick any subset" selection over a set large enough that a row of checkboxes would crowd — tag pickers, attendee selection, multi-category filters, label assignment.
+- Use `maxSelected` to cap the selection count when the consumer's domain has a real limit ("up to 5 categories"); the dropdown disables further additions when the cap is reached.
+- Use `showSelectAll={true}` to add a "Select all" affordance at the top of the dropdown when the user might want to bulk-add everything before refining.
+- Use `loading` while suggestions come from a remote endpoint; the dropdown stays open so the user sees the in-flight indicator and any cached options.
+
+## When not to use
+
+- Use `Autocomplete` for single-value selection — MultiSelect is multi-value by construction.
+- Use a row of `Checkbox`es when the option set is small and the user benefits from seeing every option inline.
+- Use `Chip` directly when the values are already chosen and need only the removable affordance — MultiSelect's value-add is the picker.
+- Use a tag-input pattern when the user types arbitrary new strings (free-form tagging) — MultiSelect's options are bounded.
+
+## Anatomy
+
+MultiSelect renders an `input field` (the typing surface with a leading set of selected-value `Chip`s, each carrying its own remove button); the `dropdown panel` (portaled below the field, visible when the input is focused and has matches) shows the filtered `option rows` with a check glyph on already-selected options; an optional `Select all` row sits at the top when `showSelectAll`. The panel collapses on outside-click, ESC, or when the user blurs the field.
+
+<Canvas of={MultiSelectStories.Default} />
+
+## Examples
+
+<Canvas of={MultiSelectStories.WithInitialValues} />
+
+<Canvas of={MultiSelectStories.WithMaxSelected} />
+
+<Canvas of={MultiSelectStories.WithSearch} />
+
+## Props
+
+<Controls of={MultiSelectStories.Default} />
+
+## Accessibility
+
+MultiSelect implements the WAI-ARIA Combobox pattern in `aria-multiselectable="true"` mode. The input carries `role="combobox"` with `aria-expanded` reflecting the dropdown visibility, `aria-controls` pointing at the list's `id`, and `aria-activedescendant` pointing at the currently-highlighted option as the user moves with arrow keys. The list carries `role="listbox"` with `aria-multiselectable="true"`; each option is `role="option"` with `aria-selected` mirroring its checked state.
+
+Keyboard navigation: typing filters; Down / Up arrows move the highlight; Enter or Space toggles the highlighted option's selection (input retains focus); ESC closes the list; Tab moves out and dismisses. Selected `Chip`s in the field each have an inner remove button reachable via Tab; pressing Backspace when the input is empty removes the last selected chip.
+
+Each Chip carries `aria-label="Remove <option label>"` on its remove button so screen readers announce the destructive affordance distinctly from the chip itself; the chip's label text alone is not enough on its own.
+
+The `emptyMessage` is announced via the list's `aria-live="polite"` when the filter resolves to zero matches. When `maxSelected` is reached, further options are rendered as disabled and announced as such; pair the cap with a visible note explaining the limit so the user understands why options grayed out.
+

@@ -1,0 +1,44 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as LoginBoxStories from "./LoginBox.stories";
+
+<Meta of={LoginBoxStories} />
+
+# LoginBox
+
+LoginBox renders a compact email + password sign-in form with a forgot-password affordance and a sign-in submit button. Reach for it on dedicated sign-in pages or inside auth modals where the form fits in a single bounded surface.
+
+## When to use
+
+- Use LoginBox for sign-in flows on dedicated auth pages, sign-in modals, or auth-required redirect screens.
+- Wire `onSubmit` for the sign-in action and `onForgotPasswordClick` for the recovery affordance; both are required props the consumer owns.
+- Pair LoginBox with a surrounding `Card` or page-level wrapper when the auth surface needs branding (logo, marketing copy) alongside the form.
+
+## When not to use
+
+- Use a custom `Form` composition when the auth flow needs more than email + password (passwordless, magic link, SSO, MFA) — LoginBox is fixed in shape.
+- Use a `Modal` containing your own assembled form when the sign-in needs to mount inline without dedicating a page to it.
+- Avoid LoginBox for sign-up — the field set, the legal disclaimers, and the submit semantics differ.
+
+## Anatomy
+
+LoginBox lays out vertically: an email field (a required `Label` paired with an `Input type="email"`), a password field (the same Label + `Input type="password"` pair), and a button row at the bottom with a left-aligned "Forgot password?" secondary `Button` and a right-aligned "Sign in" primary `Button` that submits the form.
+
+<Canvas of={LoginBoxStories.Primary} />
+
+## Examples
+
+<Canvas of={LoginBoxStories.WithEvents} />
+
+## Props
+
+<Controls of={LoginBoxStories.Primary} />
+
+## Accessibility
+
+The component renders a native `<form>` element so Enter inside either input submits the form, the browser handles autofill for stored credentials, and password managers detect the email + password pair correctly. Both inputs have `id` attributes wired to their `Label`s via `htmlFor`, so clicking either label moves focus to the corresponding field and screen readers announce the field name on focus.
+
+Both `Label`s carry `variant="required"` which appends a visible asterisk; mirror the required-ness to assistive tech by setting `aria-required="true"` on each `Input` if the consumer composes a custom variant of this form — the current LoginBox does not auto-wire it.
+
+The "Forgot password?" affordance is a `Button` with `type="button"` so it does not submit the form when clicked; the "Sign in" button is `type="submit"` so it triggers the form's `onSubmit`. The two button types are critical — assistive tech and keyboard users rely on the distinction to know what each one will do.
+
+Auth errors after submit belong outside LoginBox — surface them via `ErrorMessage` next to the failing field (wrong password) or a page-level `Info` banner above the form (account locked, server down).
