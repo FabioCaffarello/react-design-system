@@ -87,9 +87,14 @@ default).
 
 ### Examples selection criterion
 
-- **Always:** `<Canvas of={ComponentStories.Default} />`.
+- **Always:** `<Canvas of={ComponentStories.Default} />`. When a
+  component names its canonical lead export differently — `Button`
+  uses `Primary`, some components use `Basic` or the first variant
+  in the family — substitute that export instead. The template
+  skeleton keeps the literal name `Default` for the common case;
+  rename on copy when the lead is something else.
 - **Then:** 2-4 additional canvases, each demonstrating something
-  the Default does not — a critical variant, a critical state
+  the lead does not — a critical variant, a critical state
   (`loading`, `disabled`), or a common composition.
 - **Hard cap:** if you reach 5+ canvases, you are slipping into
   MUI-style example dump. Cut the ones that repeat aesthetic without
@@ -137,6 +142,19 @@ default).
   `<Canvas of={Stories.X} />`.
 - **Manual props tables** that mirror `<Controls />`. Only when
   Controls genuinely fails on a prop.
+- **Writing prose in the Props section to "complement" Controls.**
+  The section is `<Controls of={...} />` and nothing else by default.
+  _Exception:_ a single short paragraph (≤30 words) is acceptable
+  ONLY when a polymorphic prop (`as`), callback signature, or generic
+  type significantly degrades in Controls display. Document the
+  reason in the prose itself so the exception is visible — "Polymorphic
+  via `as`: when…". The exception must be marked in the MDX with an
+  inline `{/* exception: <reason> */}` comment immediately above the
+  paragraph, mirroring the `// exception:` pattern in component code
+  (Principle 3 of `.claude/rules/colors.md`). Threshold check: if
+  more than one component in ten needs an exception-paragraph, the
+  template is wrong, not the components — reopen template
+  calibration.
 - **`<Meta title="..." />` standalone form.** Use attached
   `<Meta of={Stories} />`. The standalone form creates a duplicate
   sidebar leaf and disconnects the doc from autodocs.
