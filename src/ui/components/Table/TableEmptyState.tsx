@@ -42,7 +42,7 @@ export default function TableEmptyState({
   }
 
   return (
-    <div className={`text-center text-gray-500 ${className}`} {...props}>
+    <div className={`text-center text-fg-secondary ${className}`} {...props}>
       {emptyMessage || "No data available"}
     </div>
   );
