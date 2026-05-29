@@ -138,12 +138,12 @@ export default function Stepper({
                       ${getAnimationClass("base")}
                       ${
                         status === "completed"
-                          ? `${"bg-success"} ${"border-success"} text-white`
+                          ? `${"bg-success"} ${"border-success"} text-fg-inverse`
                           : status === "active"
-                            ? `${"bg-surface-brand"} ${"border-line-brand"} text-white`
+                            ? `${"bg-surface-brand"} ${"border-line-brand"} text-fg-inverse`
                             : status === "error"
-                              ? `${"bg-error"} ${"border-error"} text-white`
-                              : "bg-white border-gray-300 text-gray-400"
+                              ? `${"bg-error"} ${"border-error"} text-fg-inverse`
+                              : "bg-surface-base border-line-emphasis text-fg-quaternary"
                       }
                       ${!allowNavigation || step.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
                     `}
@@ -160,7 +160,7 @@ export default function Stepper({
                         w-0.5
                         h-12
                         mt-2
-                        ${status === "completed" ? "bg-success" : "bg-gray-300"}
+                        ${status === "completed" ? "bg-success" : "bg-line-emphasis"}
                       `}
                     />
                   )}
@@ -175,14 +175,14 @@ export default function Stepper({
                     className={`
                       text-left
                       ${isActive ? "font-semibold" : "font-medium"}
-                      ${status === "active" ? "text-fg-brand" : "text-gray-700"}
+                      ${status === "active" ? "text-fg-brand-emphasis" : "text-fg-secondary"}
                       ${!allowNavigation || step.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
                     `}
                   >
                     {step.title}
                   </button>
                   {step.description && (
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-sm text-fg-tertiary mt-1">
                       {step.description}
                     </p>
                   )}
@@ -198,9 +198,9 @@ export default function Stepper({
             className={`
             ${getSpacingClass("lg", "p")}
             border
-            border-gray-200
+            border-line-default
             ${getRadiusClass("lg")}
-            bg-white
+            bg-surface-base
           `}
           >
             {currentStep.content}
@@ -253,12 +253,12 @@ export default function Stepper({
                     ${getAnimationClass("base")}
                     ${
                       status === "completed"
-                        ? `${"bg-success"} ${"border-success"} text-white`
+                        ? `${"bg-success"} ${"border-success"} text-fg-inverse`
                         : status === "active"
-                          ? `${"bg-surface-brand"} ${"border-line-brand"} text-white`
+                          ? `${"bg-surface-brand"} ${"border-line-brand"} text-fg-inverse`
                           : status === "error"
-                            ? `${"bg-error"} ${"border-error"} text-white`
-                            : "bg-white border-gray-300 text-gray-400"
+                            ? `${"bg-error"} ${"border-error"} text-fg-inverse`
+                            : "bg-surface-base border-line-emphasis text-fg-quaternary"
                     }
                     ${!allowNavigation || step.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
                   `}
@@ -276,13 +276,13 @@ export default function Stepper({
                     className={`
                       text-sm
                       font-medium
-                      ${isActive ? "text-fg-brand" : "text-gray-600"}
+                      ${isActive ? "text-fg-brand-emphasis" : "text-fg-secondary"}
                     `}
                   >
                     {step.title}
                   </p>
                   {step.description && (
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-fg-tertiary mt-1">
                       {step.description}
                     </p>
                   )}
@@ -292,7 +292,7 @@ export default function Stepper({
                 <div className={`flex-1 mx-2 ${getSpacingClass("base", "mx")}`}>
                   <Separator
                     className={`
-                      ${status === "completed" ? "border-success" : "border-gray-300"}
+                      ${status === "completed" ? "border-success" : "border-line-emphasis"}
                     `}
                   />
                 </div>
@@ -307,9 +307,9 @@ export default function Stepper({
         className={`
         ${getSpacingClass("lg", "p")}
         border
-        border-gray-200
+        border-line-default
         ${getRadiusClass("lg")}
-        bg-white
+        bg-surface-base
       `}
       >
         {currentStep.content}
