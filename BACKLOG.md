@@ -579,3 +579,23 @@ projeto consumidor pivotar pra um desses, LoginBox não escala.
 crescer pra cobrir mais auth patterns ou se deveria ser
 deprecated em favor de `Form` + composição custom. Sem urgência;
 componente atual funciona pro escopo que cobre.
+
+## Phase 13e — Retomar batteries-included CSS distribution
+
+**Descoberto em:** Phase B (interrompida) + Phase 13d.
+**Estado:** infraestrutura de exports CSS (`package.json "./styles"` + `assetFileNames` em vite.config.ts + `dist/react-design-system.css` como nome canônico) já está pronta. A Phase B implementou e validou empiricamente que `src/ui/styles-entry.ts` + entry novo em `build.lib` faz o Vite emitir o bundle CSS completo (~97 KB com tokens + dark + variants). Foi revertido porque o JS quebrava em consumer externo — bug pré-existente desde v1.0.0 que Phase 13d acabou de resolver.
+**Por que importa:** com JS funcionando pós-Phase 13d, Phase 13e é mecânico: re-aplicar o styles-entry, validar via `scripts/test-consumer.md` agora SEM erro JS, atualizar README com seção Installation & Usage.
+**Plano detalhado em commit message da Fase B (reverted)** — pode ser recuperado via `git log --all -S "styles-entry"` se necessário.
+
+## CI automation of external consumer validation
+
+**Descoberto em:** Phase 13d.
+**Estado:** procedure manual estabelecida em `scripts/test-consumer.md`. Roda quando alguém lembra; sem garantia automática contra regressão.
+**Por que importa:** o bug que `scripts/test-consumer.md` cobre passou despercebido por 14 releases e ~10 meses porque nada na CI exercitava o dist como consumer externo. Repetir não é se proteger — automatizar é.
+**Plano provável:** workflow GitHub Actions que (1) builda a library, (2) cria projeto Vite temp, (3) instala via tarball, (4) Playwright headless faz boot + render assertion + console.error counter, (5) falha o job se TypeError aparecer. Custo: ~2 min de CI por PR.
+
+## Princípio "FINAL não é final até consumer externo validar"
+
+**Descoberto em:** Phase 13d, ao encontrar `.context/docs/SOLUCAO_ESTRUTURAL_FINAL.md` (deletado, lido via git history) que declarou "solução estrutural final" pro bug Next.js TDZ — solução que efetivamente resolveu Next.js SSR mas introduziu o bug cross-chunk que persistiu silenciosamente desde v1.0.0.
+**Estado:** lição não tem casa formal hoje. `.claude/rules/` cobre vocabulário, componentes, testes, stories, tokens — não cobre validação arquitetural de distribuição.
+**Proposta:** quando houver outra ocorrência similar (próxima decisão arquitetural ampla), criar `.claude/rules/architectural-decisions.md` (ou similar) registrando: nenhuma decisão arquitetural marcada "FINAL" sem validação contra consumer externo real. Não criar a rule antecipadamente — esperar a segunda ocorrência pra validar que o princípio é generalizável.
