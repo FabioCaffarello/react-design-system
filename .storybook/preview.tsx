@@ -404,11 +404,9 @@ const preview: Preview = {
           [
             "Introduction",
             "Tokens",
-            "Guides",
-            ["Component Composition", "Performance"],
             "Component Status",
-            "State Catalog",
-            "Event Catalog",
+            "Guides",
+            ["Component Composition"],
           ],
           "Primitives",
           "Components",

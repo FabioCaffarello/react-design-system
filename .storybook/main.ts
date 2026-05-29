@@ -1,9 +1,22 @@
 import type { StorybookConfig } from "@storybook/react-vite";
+import remarkGfm from "remark-gfm";
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
-    "@storybook/addon-docs", // Documentation support (includes Controls, Actions, Viewport, and Interactions in Storybook 10)
+    {
+      // GFM enabled so pipe tables (| col | col |) render as <table>.
+      // Without remark-gfm the MDX2/3 pipeline falls back to CommonMark
+      // and tables drop to <p> as inline pipe-delimited text.
+      name: "@storybook/addon-docs",
+      options: {
+        mdxPluginOptions: {
+          mdxCompileOptions: {
+            remarkPlugins: [remarkGfm],
+          },
+        },
+      },
+    },
     "@storybook/addon-a11y", // Accessibility testing
     "@storybook/addon-vitest", // Vitest integration
     // Note: @storybook/addon-interactions is now part of @storybook/addon-docs in Storybook 10
