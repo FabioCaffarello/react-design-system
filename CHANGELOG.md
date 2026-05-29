@@ -1,3 +1,16 @@
+## [1.15.1](https://github.com/FabioCaffarello/react-design-system/compare/v1.15.0...v1.15.1) (2026-05-29)
+
+
+### 🐛 Bug Fixes
+
+* **storybook:** file Providers/AppProvider under Design System ([37bb3a9](https://github.com/FabioCaffarello/react-design-system/commit/37bb3a97f674fc4945c2c9f69d51eb0bcaa44834))
+* **storybook:** move Providers between Tokens and Component Status ([ef42927](https://github.com/FabioCaffarello/react-design-system/commit/ef429277ae2ad82fd6f82b70a17244f8848b3330))
+
+
+### 📝 Documentation
+
+* **rules:** add docs-sync rule; realign STORYBOOK_GUIDE ([9b01b41](https://github.com/FabioCaffarello/react-design-system/commit/9b01b418f60220c0a90aed93eca41ea1f2ba8771))
+
 ## [1.15.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.14.3...v1.15.0) (2026-05-29)
 
 
