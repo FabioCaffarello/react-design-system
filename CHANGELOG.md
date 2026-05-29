@@ -1,3 +1,10 @@
+## [1.14.2](https://github.com/FabioCaffarello/react-design-system/compare/v1.14.1...v1.14.2) (2026-05-29)
+
+
+### 🐛 Bug Fixes
+
+* **css:** replace PostCSS Tailwind pipeline with @tailwindcss/vite ([ac4bbbf](https://github.com/FabioCaffarello/react-design-system/commit/ac4bbbf00c59fce75e0abcdd9a37dd780612fdb4)), closes [#0f172](https://github.com/FabioCaffarello/react-design-system/issues/0f172) [#6366f1](https://github.com/FabioCaffarello/react-design-system/issues/6366f1) [#6366f1](https://github.com/FabioCaffarello/react-design-system/issues/6366f1) [#e2e8f0](https://github.com/FabioCaffarello/react-design-system/issues/e2e8f0)
+
 ## [1.14.1](https://github.com/FabioCaffarello/react-design-system/compare/v1.14.0...v1.14.1) (2026-05-29)
 
 
