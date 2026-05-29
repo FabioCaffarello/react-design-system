@@ -51,6 +51,7 @@
     "lint": "eslint .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
+    "storybook:smoke": "npm run build-storybook && node scripts/storybook-smoke.mjs",
     "plop": "plop",
     "postplop": "prettier -w './src/ui/**/*.{ts,tsx}'",
     "test": "node scripts/run-tests.mjs",
