@@ -17,7 +17,7 @@ describe("Dot", () => {
     expect(dot).toBeInTheDocument();
     expect(dot).toHaveClass("inline-block", "rounded-full");
     // Default variant is offline (neutral/gray) - uses DEFAULT shade (500)
-    expect(dot).toHaveClass("bg-gray-500");
+    expect(dot).toHaveClass("bg-status-neutral");
     // Default size is md
     expect(dot).toHaveClass("w-2", "h-2");
   });
@@ -33,7 +33,7 @@ describe("Dot", () => {
     it("renders offline variant with neutral/gray color", () => {
       const { container } = render(<Dot variant="offline" />);
       const dot = container.querySelector("span");
-      expect(dot).toHaveClass("bg-gray-500");
+      expect(dot).toHaveClass("bg-status-neutral");
     });
 
     it("renders pending variant with warning/yellow color", () => {
