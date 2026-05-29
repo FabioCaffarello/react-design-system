@@ -2,11 +2,12 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tsConfigPaths from "vite-tsconfig-paths";
+import tailwindcss from "@tailwindcss/vite";
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig(() => {
   return {
-    plugins: [tsConfigPaths(), react()],
+    plugins: [tsConfigPaths(), react(), tailwindcss()],
     optimizeDeps: {
       include: [
         "lucide-react",
