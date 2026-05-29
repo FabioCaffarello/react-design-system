@@ -272,6 +272,31 @@ Razão: token semântico expressa o **papel visual** (linha conectora,
 divisor), não a tecnologia de implementação. Manter coerência permite
 mudar implementação (div→hr, border→bg) sem precisar repensar a cor.
 
+**PRINCÍPIO — Cardinalidade do estado determina intensidade do realce.**
+
+- `bg-surface-brand-muted` (indigo-100) — **ACTIVE state em elemento
+  singular** (nav item atual, primary button ativo, current tab). Um
+  sítio destacado por vez na tela, pode ser intenso.
+- `bg-surface-selected` (indigo-50) — **SELECTED state em coleção**
+  (row selecionada, multiselect option marcada, checkbox row picker,
+  lista de items com seleção múltipla). Múltiplos sítios podem
+  coexistir; menor intensidade evita que a tela vire mar de brand
+  quando o usuário marca vários.
+
+Razão: cardinalidade do estado dita o equilíbrio visual. Material e
+Carbon seguem padrão idêntico.
+
+Casos de aplicação:
+
+- TableRow:62 (`isSelected` true) → `bg-surface-selected`.
+- NavbarItem default variant active → `bg-surface-brand-muted`
+  (singular, current item).
+- CommandPalette selected item → `bg-surface-brand-muted` (singular,
+  cursor highlight em qualquer momento).
+
+Aplicar em batches futuros para MultiSelect option marcada,
+Checkbox-as-row-selector, lista de items com seleção múltipla.
+
 ## Mesma família da Phase 8
 
 Tokens semânticos existem mas não são consumidos. Mesma patologia,
