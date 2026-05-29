@@ -199,10 +199,10 @@ function DatePickerPopup({
       ref={popupRef}
       className={`
         fixed ${getZIndexClass("popover")}
-        bg-white
+        bg-surface-overlay
         ${getRadiusClass("lg")}
         ${getShadowClass("xl")}
-        border border-gray-200
+        border border-line-default
       `}
       role="dialog"
       aria-modal="false"
