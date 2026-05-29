@@ -61,7 +61,7 @@ export default function TableHeaderRow({
         <th
           scope="col"
           role="columnheader"
-          className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-12"
+          className="px-6 py-3 text-right text-xs font-medium text-fg-tertiary uppercase tracking-wider w-12"
           aria-label="Actions"
         >
           <span className="sr-only">Actions</span>
