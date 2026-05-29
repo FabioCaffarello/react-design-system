@@ -74,7 +74,7 @@ export default function TablePagination({
 
   return (
     <div
-      className={`flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6 ${className}`}
+      className={`flex items-center justify-between px-4 py-3 bg-surface-base border-t border-line-default sm:px-6 ${className}`}
       {...props}
     >
       <div className="flex flex-1 justify-between sm:hidden">
@@ -99,7 +99,7 @@ export default function TablePagination({
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         {showPageInfo && (
           <div>
-            <Text as="p" className="text-sm text-gray-700">
+            <Text as="p" className="text-sm text-fg-secondary">
               Showing <span className="font-medium">{startItem}</span> to{" "}
               <span className="font-medium">{endItem}</span> of{" "}
               <span className="font-medium">{total}</span> results
@@ -110,7 +110,7 @@ export default function TablePagination({
         <div className="flex items-center gap-4">
           {showPageSizeSelector && (
             <div className="flex items-center gap-2">
-              <Text as="span" className="text-sm text-gray-700">
+              <Text as="span" className="text-sm text-fg-secondary">
                 Show:
               </Text>
               <Select

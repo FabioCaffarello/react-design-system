@@ -3,11 +3,7 @@
 import type { HTMLAttributes } from "react";
 import { Button } from "../../primitives";
 import { cn } from "../../utils";
-import {
-  getColorClass,
-  getSpacingClass,
-  getTypographySizeFromFontSize,
-} from "../../tokens";
+import { getSpacingClass, getTypographySizeFromFontSize } from "../../tokens";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   currentPage: number;
@@ -137,7 +133,7 @@ export default function Pagination({
                   key={`ellipsis-${index}`}
                   className={cn(
                     getSpacingClass("sm", "px"),
-                    getColorClass("neutral", "DEFAULT", "text"),
+                    "text-fg-tertiary",
                   )}
                 >
                   ...
@@ -173,10 +169,7 @@ export default function Pagination({
       </div>
       {showPageInfo && totalItems && itemsPerPage && (
         <div
-          className={cn(
-            getTypographySizeFromFontSize("sm"),
-            getColorClass("neutral", "dark", "text"),
-          )}
+          className={cn(getTypographySizeFromFontSize("sm"), "text-fg-primary")}
         >
           Showing {startItem} to {endItem} of {totalItems} results
         </div>

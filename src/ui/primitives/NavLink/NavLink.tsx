@@ -15,7 +15,6 @@ import React, { useMemo, useCallback } from "react";
 import type { NavLinkProps } from "./types";
 import { useNavLink } from "./hooks/useNavLink";
 import { cn, cva } from "../../utils";
-import { getColorClass, getHoverColorClass } from "../../tokens/colors";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getTypographySize } from "../../tokens/typography";
 import { getRadiusClass } from "../../tokens/radius";
@@ -42,13 +41,13 @@ const navLinkVariants = cva(
     variants: {
       variant: {
         default: cn(
-          getColorClass("neutral", "dark", "text"),
+          "text-fg-primary",
           "hover:opacity-80",
           "focus-visible:opacity-100",
           "focus:ring-line-brand",
         ),
         underline: cn(
-          getColorClass("neutral", "dark", "text"),
+          "text-fg-primary",
           "hover:opacity-80",
           "focus-visible:opacity-100",
           "border-b-2",
@@ -57,8 +56,8 @@ const navLinkVariants = cva(
           "focus:ring-line-brand",
         ),
         background: cn(
-          getColorClass("neutral", "dark", "text"),
-          getHoverColorClass("neutral", "light", "bg"),
+          "text-fg-primary",
+          "hover:bg-surface-hover",
           "rounded-md",
           getRadiusClass("md"),
           "focus:ring-line-brand",
@@ -179,12 +178,12 @@ export function NavLink({
 
     switch (variant) {
       case "underline":
-        return cn("border-b-2", "border-line-brand", "text-fg-brand");
+        return cn("border-b-2", "border-line-brand", "text-fg-brand-emphasis");
       case "background":
-        return cn("bg-indigo-400", "text-fg-brand");
+        return cn("bg-surface-brand-muted", "text-fg-brand-emphasis");
       case "default":
       default:
-        return cn("text-fg-brand", "font-semibold");
+        return cn("text-fg-brand-emphasis", "font-semibold");
     }
   }, [calculatedActive, variant]);
 

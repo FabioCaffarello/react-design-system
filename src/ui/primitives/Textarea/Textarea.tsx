@@ -1,6 +1,5 @@
 import { forwardRef, memo, useMemo } from "react";
 import type { TextareaHTMLAttributes } from "react";
-import { getColorClass } from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getTypographySize } from "../../tokens/typography";
@@ -71,7 +70,7 @@ const Textarea = memo(
           resizeClasses[resize],
           error
             ? cn("border-error", focusRingColor)
-            : cn(getColorClass("neutral", "DEFAULT", "border"), focusRingColor),
+            : cn("border-line-default", focusRingColor),
           className,
         ),
       [resize, resizeClasses, error, focusRingColor, className],

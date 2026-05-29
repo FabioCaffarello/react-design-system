@@ -52,7 +52,9 @@
 
   /* Brand text */
   --color-fg-brand: var(--color-brand-primary);
+  --color-fg-brand-emphasis: var(--color-indigo-600);
   --color-fg-brand-secondary: var(--color-brand-secondary);
+  --color-fg-brand-secondary-emphasis: var(--color-pink-600);
 
   /* Feedback text */
   --color-fg-success: var(--color-emerald-700);
@@ -175,6 +177,24 @@
   --color-info-bg-emphasis: var(--color-sky-100);
   --color-info-border: var(--color-sky-200);
   --color-info-border-emphasis: var(--color-sky-500);
+
+  /* Status neutral — completes the status family (success/warning/error/info/neutral)
+   * for components like Dot, status Badge, online presence indicators. */
+  --color-status-neutral: var(--color-slate-500);
+
+  /* ============================================
+   * SCRIM & TRANSLUCENT STATE LAYERS
+   * Theme-agnostic — these must stay dark in all modes by design.
+   * Scrim is a backdrop veil that focuses attention on an overlay.
+   * Tint is a translucent state layer for hover/interaction feedback
+   * on elements whose surface color is not fixed.
+   * ============================================ */
+
+  /* Scrim color (theme-agnostic — backdrop should be dark in all modes by design) */
+  --color-scrim: rgb(0 0 0 / 0.5);
+
+  /* Tint-hover color (theme-agnostic — translucent layer works over any surface) */
+  --color-tint-hover: rgb(0 0 0 / 0.1);
 
   /* ============================================
    * ICON COLORS

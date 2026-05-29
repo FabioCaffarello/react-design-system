@@ -1,5 +1,4 @@
 import type { HTMLAttributes } from "react";
-import { getColorClass } from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import { cn } from "../../utils";
@@ -34,7 +33,7 @@ export default function Skeleton({
 }: SkeletonProps) {
   const baseClasses = [
     "motion-safe:animate-pulse",
-    getColorClass("neutral", "light", "bg"),
+    "bg-surface-muted",
     getRadiusClass("sm"),
   ];
 

@@ -9,12 +9,7 @@ import {
   Info,
 } from "lucide-react";
 import { type Toast as ToastType } from "../../providers/ToastContext";
-import {
-  getColorClass,
-  getRadiusClass,
-  getShadowClass,
-  getZIndexClass,
-} from "../../tokens";
+import { getRadiusClass, getShadowClass, getZIndexClass } from "../../tokens";
 import Button from "../../primitives/Button/Button";
 
 export interface ToastProps
@@ -121,7 +116,7 @@ export function Toast({
         className={`
           flex items-start gap-3
           p-4
-          bg-white
+          bg-surface-overlay
           ${getRadiusClass("lg")}
           ${getShadowClass("lg")}
           border
@@ -135,15 +130,9 @@ export function Toast({
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <div
-            className={`font-medium ${getColorClass("neutral", "dark", "text")}`}
-          >
-            {toast.title}
-          </div>
+          <div className="font-medium text-fg-primary">{toast.title}</div>
           {toast.description && (
-            <div
-              className={`mt-1 text-sm ${getColorClass("neutral", "DEFAULT", "text")}`}
-            >
+            <div className="mt-1 text-sm text-fg-secondary">
               {toast.description}
             </div>
           )}

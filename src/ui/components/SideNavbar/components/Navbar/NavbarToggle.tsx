@@ -60,9 +60,10 @@ export default function NavbarToggle({
   };
 
   const variantClasses = {
-    default: "bg-white border border-gray-200 shadow-sm hover:bg-gray-50",
-    ghost: "hover:bg-gray-100",
-    outline: "border border-gray-300 hover:bg-gray-50",
+    default:
+      "bg-surface-base border border-line-default shadow-sm hover:bg-surface-hover",
+    ghost: "hover:bg-surface-active",
+    outline: "border border-line-emphasis hover:bg-surface-hover",
   };
 
   return (
@@ -78,11 +79,11 @@ export default function NavbarToggle({
           items-center
           justify-center
           rounded-md
-          text-gray-600
-          hover:text-gray-900
+          text-fg-secondary
+          hover:text-fg-primary
           focus:outline-none
           focus:ring-2
-          focus:ring-indigo-500
+          focus:ring-line-focus
           focus:ring-offset-1
           ${sizeClasses[size]}
           ${variantClasses[variant]}

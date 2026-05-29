@@ -134,7 +134,7 @@ function TableComponent<T = unknown>(props: TableProps<T>) {
   if (hasChildren) {
     return (
       <div
-        className={`bg-white shadow rounded-lg overflow-hidden ${className}`}
+        className={`bg-surface-base shadow rounded-lg overflow-hidden ${className}`}
       >
         <TableProvider {...providerProps}>{props.children}</TableProvider>
       </div>
@@ -143,14 +143,16 @@ function TableComponent<T = unknown>(props: TableProps<T>) {
 
   // Otherwise, use simplified API with default structure
   return (
-    <div className={`bg-white shadow rounded-lg overflow-hidden ${className}`}>
+    <div
+      className={`bg-surface-base shadow rounded-lg overflow-hidden ${className}`}
+    >
       <TableProvider {...providerProps}>
         {providerProps.filters && providerProps.filters.length > 0 && (
           <TableFilters />
         )}
         <div className="overflow-x-auto">
           <table
-            className="min-w-full divide-y divide-gray-200"
+            className="min-w-full divide-y divide-line-default"
             role="table"
             aria-label={props["aria-label"]}
             aria-labelledby={props["aria-labelledby"]}

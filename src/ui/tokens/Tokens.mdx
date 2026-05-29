@@ -63,6 +63,80 @@ const borderClass = getColorClass("neutral", "DEFAULT", "border"); // 'border-gr
 
 <ColorPalette />
 
+### Semantic Brand Foreground
+
+The brand foreground vocabulary exposes two roles:
+
+- `text-fg-brand` — Default brand foreground. Use for brand-colored
+  text/icons in their idle/neutral presentation (e.g., a brand-colored
+  link in body copy, the brand logotype).
+- `text-fg-brand-emphasis` — Emphasis variant of brand foreground.
+  Used for selected/active states where the brand color is intensified
+  relative to its default (e.g., the icon/label of the currently
+  active item in a navbar).
+
+Light theme uses `indigo-500` for `fg-brand` and `indigo-600` for
+`fg-brand-emphasis` (darker). Dark theme uses `indigo-400` for
+`fg-brand` and `indigo-300` for `fg-brand-emphasis` (lighter), preserving
+the "emphasis is more contrasted against the surface" relationship in
+both modes.
+
+The secondary brand foreground mirrors this structure:
+
+- `text-fg-brand-secondary` — Default secondary brand foreground (pink
+  scale). Use for secondary-branded text/icons in their idle/neutral
+  presentation.
+- `text-fg-brand-secondary-emphasis` — Emphasis variant of secondary
+  brand foreground. Intensified shade for selected/active states in
+  secondary brand contexts.
+
+Same shade relationship as primary: `pink-500/600` (light, default/
+emphasis) and `pink-400/300` (dark, default/emphasis).
+
+### Status Neutral
+
+`bg-status-neutral` completes the status indicator family
+(`bg-success` / `bg-warning` / `bg-error` / `bg-info` / `bg-status-
+neutral`) used by `Dot`, status `Badge`, online presence indicators,
+and similar components. Use it for the "offline / inactive / no
+specific status" variant when a component's CVA already covers the
+four feedback states with semantic tokens.
+
+Light theme: `slate-500`. Dark theme: `slate-400` (one shade lighter,
+mirroring the `success/warning/error/info` flip pattern).
+
+Distinct from `text-fg-*` (which is for foreground text/icons) and
+`bg-line-*` (which is for visual lines like dividers/marks). Status
+indicators are filled dots/badges representing a state — their own
+semantic family.
+
+### Scrim and Tint-hover (theme-agnostic)
+
+Two translucent black tokens that do **not** flip between light and
+dark themes. They exist to preserve a darkening function that must
+stay dark regardless of theme.
+
+- `bg-scrim` — Backdrop veil at 50% black opacity. Use behind a
+  modal, drawer, command palette, or any overlay that needs to focus
+  attention by darkening the page beneath it. Scrim is _theme-
+  agnostic by design_: a "lightening" backdrop in dark mode would not
+  serve the same focusing function. Distinct from `bg-surface-
+overlay`, which is the _container_ of the overlay (white in light,
+  slate-800 in dark — flips with theme); scrim is the _veil between
+  the page and the overlay container_.
+- `bg-tint-hover` — Translucent state layer at 10% black opacity for
+  hover feedback on buttons embedded in elements whose background
+  color is variable (e.g., a remove button inside a brand-filled
+  chip vs the same button inside a neutral chip). Theme-agnostic
+  because the translucency works over any underlying surface in any
+  theme. Distinct from `bg-surface-hover`, which is a _solid neutral
+  color_ (slate-50 in light, slate-800 in dark) used for hover on
+  flat backgrounds; tint-hover preserves the surface color showing
+  through, just darkened.
+
+If a future state needs a similar translucent layer (pressed, focus,
+selected), use the same naming family: `--color-tint-pressed`, etc.
+
 ## Spacing Tokens
 
 Spacing tokens are based on a 4px base unit, providing consistent spacing throughout the design system.

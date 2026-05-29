@@ -2,7 +2,6 @@
 
 import { useRef, useState, forwardRef } from "react";
 import type { HTMLAttributes } from "react";
-import { getColorClass } from "../../tokens/colors";
 import { getAnimationClass } from "../../tokens/animations";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
@@ -240,17 +239,14 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
             "block",
             getTypographySize("bodySmall"),
             getTypographyWeight("label"),
-            getColorClass("neutral", "dark", "text"),
+            "text-fg-primary",
             getSpacingClass("sm", "mb"),
           )}
         >
           {label}
           {showValue && (
             <span
-              className={cn(
-                getSpacingClass("sm", "ml"),
-                getColorClass("neutral", "DEFAULT", "text"),
-              )}
+              className={cn(getSpacingClass("sm", "ml"), "text-fg-secondary")}
             >
               {variant === "range" ? `${minValue} - ${maxValue}` : singleValue}
             </span>
@@ -261,7 +257,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
         ref={sliderRef}
         className={cn(
           sliderTrackVariants({ size, disabled }),
-          getColorClass("neutral", "light", "bg"),
+          "bg-surface-muted",
           getRadiusClass("full"),
         )}
         onClick={handleTrackClick}
@@ -297,7 +293,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
                 "absolute",
                 "w-1",
                 "h-1",
-                getColorClass("neutral", "DEFAULT", "bg"),
+                "bg-line-strong",
                 getRadiusClass("full"),
                 "-translate-x-1/2",
               )}
@@ -349,8 +345,8 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
             <span
               className={cn(
                 getTypographySize("caption"),
-                getColorClass("neutral", "DEFAULT", "text"),
-                "bg-white",
+                "text-fg-secondary",
+                "bg-surface-overlay",
                 getSpacingClass("sm", "px"),
                 getSpacingClass("xs", "py"),
                 getRadiusClass("md"),

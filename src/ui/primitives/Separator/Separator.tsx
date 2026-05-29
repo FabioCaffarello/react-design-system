@@ -2,7 +2,6 @@
 
 import { memo, useMemo } from "react";
 import type { HTMLAttributes } from "react";
-import { getColorClass } from "../../tokens/colors";
 import { cn } from "../../utils";
 
 export type SeparatorOrientation = "horizontal" | "vertical";
@@ -34,10 +33,7 @@ const Separator = memo(function Separator({
   ...props
 }: SeparatorProps) {
   const classes = useMemo(() => {
-    const baseClasses = [
-      "border-0",
-      getColorClass("neutral", "DEFAULT", "border"),
-    ];
+    const baseClasses = ["border-0", "border-line-default"];
 
     const orientationClasses = {
       horizontal: "w-full border-t",

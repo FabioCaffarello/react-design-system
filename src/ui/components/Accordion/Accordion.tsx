@@ -2,7 +2,6 @@
 
 import { useState, type ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
-import { getColorClass, getHoverColorClass } from "../../tokens/colors";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getAnimationClass } from "../../tokens/animations";
 import { getTypographyClasses } from "../../tokens/typography";
@@ -83,7 +82,7 @@ export default function Accordion({
         return (
           <div
             key={item.id}
-            className={`border ${getColorClass("neutral", "DEFAULT", "border")} ${getRadiusClass("md")} overflow-hidden`}
+            className={`border border-line-default ${getRadiusClass("md")} overflow-hidden`}
           >
             <button
               type="button"
@@ -98,19 +97,13 @@ export default function Accordion({
                 ${getSpacingClass("md", "py")}
                 ${getTypographyClasses("label")}
                 text-left
-                ${getColorClass("neutral", "dark", "text")}
-                bg-white
-                ${getHoverColorClass("neutral", "light", "bg")}
+                text-fg-primary
+                bg-surface-base
+                hover:bg-surface-hover
                 focus:outline-none
                 focus:ring-2
                 focus:ring-offset-2
-                ${(() => {
-                  const primaryBg = "bg-surface-brand";
-                  const parts = primaryBg.split("-");
-                  return parts.length >= 3
-                    ? `focus:ring-${parts[1]}-${parts[2]}`
-                    : "focus:ring-indigo-500";
-                })()}
+                focus:ring-line-focus
                 ${getAnimationClass("base")}
                 ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
               `}
@@ -142,7 +135,7 @@ export default function Accordion({
                 className={`
                 ${getSpacingClass("base", "px")}
                 ${getSpacingClass("md", "py")}
-                ${getColorClass("neutral", "DEFAULT", "text")}
+                text-fg-secondary
               `}
               >
                 {item.content}

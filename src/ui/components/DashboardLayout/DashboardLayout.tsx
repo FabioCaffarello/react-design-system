@@ -76,7 +76,7 @@ export function DashboardLayout({
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
         {header && (
-          <header className="border-b bg-white">
+          <header className="border-b bg-surface-base">
             <Container maxWidth="full" paddingX="base" paddingY="sm">
               {header}
             </Container>
@@ -92,7 +92,7 @@ export function DashboardLayout({
 
         {/* Footer */}
         {footer && (
-          <footer className="border-t bg-white">
+          <footer className="border-t bg-surface-base">
             <Container maxWidth="full" paddingX="base" paddingY="sm">
               {footer}
             </Container>

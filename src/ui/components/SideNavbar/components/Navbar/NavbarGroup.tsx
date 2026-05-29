@@ -39,8 +39,8 @@ export function NavbarGroup({
           className={cn(
             getSpacingClass("sm", "px"),
             getSpacingClass("1.5", "py"),
-            "text-xs text-gray-500 uppercase tracking-wider",
-            collapsible && "cursor-pointer hover:text-gray-700",
+            "text-xs text-fg-tertiary uppercase tracking-wider",
+            collapsible && "cursor-pointer hover:text-fg-secondary",
           )}
           onClick={collapsible ? () => setIsCollapsed(!isCollapsed) : undefined}
         >

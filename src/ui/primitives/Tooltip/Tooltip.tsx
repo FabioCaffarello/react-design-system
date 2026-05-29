@@ -15,7 +15,6 @@ import {
   isValidElement,
 } from "react";
 import { getBorderWidthClass } from "../../tokens/borders";
-import { getColorClass } from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getTypographySize } from "../../tokens/typography";
@@ -133,13 +132,13 @@ export default function Tooltip({
   const getArrowBorderColor = (
     position: "top" | "bottom" | "left" | "right",
   ): string => {
-    // Return complete border classes for neutral dark color
-    // These classes must be in safelist or used elsewhere for Tailwind to detect
+    // Arrow follows the tooltip body's surface-inverse color so the
+    // triangle's point visually merges into the body.
     const borderMap: Record<"top" | "bottom" | "left" | "right", string> = {
-      top: "border-t-gray-700",
-      bottom: "border-b-gray-700",
-      left: "border-l-gray-700",
-      right: "border-r-gray-700",
+      top: "border-t-surface-inverse",
+      bottom: "border-b-surface-inverse",
+      left: "border-l-surface-inverse",
+      right: "border-r-surface-inverse",
     };
     return borderMap[position];
   };
@@ -152,8 +151,8 @@ export default function Tooltip({
       getSpacingClass("sm", "px"),
       getSpacingClass("xs", "py"),
       getTypographySize("caption"),
-      getColorClass("neutral", "contrast", "text"),
-      getColorClass("neutral", "dark", "bg"),
+      "text-fg-inverse",
+      "bg-surface-inverse",
       getRadiusClass("md"),
       "shadow-lg",
       "whitespace-nowrap",

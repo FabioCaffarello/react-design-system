@@ -2,7 +2,6 @@
 
 import { memo, forwardRef, useMemo } from "react";
 import type { HTMLAttributes } from "react";
-import { getColorClass } from "../../tokens/colors";
 import { cn, cva } from "../../utils";
 
 export type DotVariant =
@@ -57,7 +56,7 @@ const dotVariants = cva(
     compoundVariants: [
       // Map semantic variants to color tokens
       { variant: "online", class: "bg-success" },
-      { variant: "offline", class: getColorClass("neutral", "DEFAULT", "bg") },
+      { variant: "offline", class: "bg-status-neutral" },
       { variant: "pending", class: "bg-warning" },
       { variant: "warning", class: "bg-warning" },
       { variant: "error", class: "bg-error" },

@@ -4,10 +4,7 @@ import type { HTMLAttributes, ReactNode, KeyboardEvent } from "react";
 import React, { useState, useRef, useEffect } from "react";
 import { cn } from "../../utils";
 import {
-  getColorClass,
   getRadiusClass,
-  getFocusColorClass,
-  getHoverColorClass,
   getSpacingClass,
   getTypographySize,
   getShadowClass,
@@ -276,9 +273,9 @@ export default function Dropdown({
               "w-48", // Fixed width for dropdown menu - justified as layout constraint
               getRadiusClass("md"),
               getShadowClass("lg"),
-              getColorClass("neutral", "light", "bg"),
+              "bg-surface-overlay",
               "ring-1",
-              getColorClass("neutral", "dark", "border"),
+              "ring-line-strong",
               "ring-opacity-5",
               alignClasses,
             )}
@@ -300,11 +297,7 @@ export default function Dropdown({
                   "text-left",
                   "focus:outline-none",
                   item.disabled
-                    ? cn(
-                        getColorClass("neutral", "DEFAULT", "text"),
-                        "cursor-not-allowed",
-                        "opacity-50",
-                      )
+                    ? cn("text-fg-disabled", "cursor-not-allowed", "opacity-50")
                     : item.variant === "danger"
                       ? cn(
                           "text-error-dark",
@@ -312,12 +305,9 @@ export default function Dropdown({
                           "focus:bg-error-bg-emphasis",
                         )
                       : cn(
-                          getColorClass("neutral", "dark", "text"),
-                          getHoverColorClass("neutral", "light", "bg"),
-                          getFocusColorClass("neutral", "light", "bg").replace(
-                            "focus:border-",
-                            "focus:bg-",
-                          ),
+                          "text-fg-primary",
+                          "hover:bg-surface-hover",
+                          "focus:bg-surface-hover",
                         ),
                 );
 

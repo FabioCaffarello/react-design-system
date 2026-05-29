@@ -6,7 +6,6 @@ import {
   getTypographyClasses,
   getTypographySize,
 } from "../../tokens/typography";
-import { getColorClass } from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import { cn, cva } from "../../utils";
@@ -35,7 +34,7 @@ const HelperText = memo(function HelperText({
         getTypographyClasses("caption"),
         error && "text-fg-error",
         success && "text-fg-success",
-        !error && !success && getColorClass("neutral", "DEFAULT", "text"),
+        !error && !success && "text-fg-secondary",
       ),
     [error, success],
   );
@@ -163,7 +162,7 @@ const Select = memo(
         "w-full",
         getRadiusClass("md"),
         "border",
-        "bg-white",
+        "bg-surface-base",
         "transition-colors",
         "focus:outline-none",
         "focus:ring-2",
@@ -191,10 +190,7 @@ const Select = memo(
             ),
           },
           state: {
-            default: cn(
-              getColorClass("neutral", "DEFAULT", "border"),
-              getFocusRingColor(),
-            ),
+            default: cn("border-line-default", getFocusRingColor()),
             error: cn("border-error", getFocusRingColor("error")),
             success: cn("border-success", getFocusRingColor("success")),
           },

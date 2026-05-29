@@ -44,15 +44,15 @@ export default function SideNavbarResizeHandle({
         w-1
         h-full
         cursor-col-resize
-        hover:bg-indigo-500/50
-        active:bg-indigo-600
+        hover:bg-surface-brand/50
+        active:bg-surface-brand-emphasis
         transition-colors
         duration-150
         z-10
         flex
         items-center
         justify-center
-        ${isResizing ? "bg-indigo-600" : ""}
+        ${isResizing ? "bg-surface-brand-emphasis" : ""}
         ${className}
       `}
       onMouseDown={startResize}
@@ -74,7 +74,7 @@ export default function SideNavbarResizeHandle({
         className={`
           w-0.5
           h-8
-          bg-gray-400
+          bg-line-strong
           rounded-full
           opacity-0
           group-hover:opacity-100
@@ -86,7 +86,7 @@ export default function SideNavbarResizeHandle({
         className={`
           h-4
           w-4
-          text-gray-400
+          text-fg-tertiary
           opacity-0
           group-hover:opacity-100
           transition-opacity

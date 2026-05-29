@@ -59,7 +59,7 @@ export default function TableRow<
       role="row"
       aria-selected={selectable ? isSelected : undefined}
       aria-rowindex={rowIndex + 1}
-      className={`hover:bg-gray-50 ${isSelected ? "bg-indigo-50" : ""} ${className}`}
+      className={`hover:bg-surface-hover ${isSelected ? "bg-surface-selected" : ""} ${className}`}
       onClick={handleClick}
       style={style}
       {...props}

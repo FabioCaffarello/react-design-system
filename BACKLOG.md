@@ -195,3 +195,119 @@ mais baixa que o número de bugs detectados sugere. Decisão entre
 **baixar threshold pra 65-70%** vs. **subir coverage real pra 80%**
 é parte do trabalho desses três itens, não pré-requisito — atacar
 um ou outro ajuda a aproximar o número.
+
+## Vocabulário de feedback não cobre "notification/attention"
+
+**Descoberto em:** Phase 7 piloto-B (NavbarItem badges).
+**Estado:** O badge default do `NavbarItem` (`bg-red-500`) foi mapeado
+para `bg-error` (rose-500) por ser a melhor aproximação no vocabulário
+semântico atual — mas o intent original do badge é "há algo novo
+aqui" (notificação/atenção), não "algo deu errado" (erro). A paleta de
+feedback (`success`/`warning`/`error`/`info`) cobre estados, não
+chamadas-de-atenção neutras.
+**Por que importa:** dois usos colidem no mesmo token. Badge de
+notificação numa UI saudável vai parecer "estado de erro" semântico
+para quem lê o código, mesmo que o pixel renderizado seja o que o
+design quer.
+**Opções:**
+
+- (a) Adicionar `--color-notification` (ex.: amber/orange) como
+  token semântico de "atenção neutra". Cria papel distinto de
+  warning (que carrega conotação de "atenção a algo problemático").
+- (b) Aceitar que notification coexiste com warning (mesmo
+  vocabulário; documentar que `bg-warning` cobre notificação
+  passiva).
+- (c) Aceitar que notification coexiste com error (status quo da
+  migração Phase 7); documentar.
+
+**Decidir:** decisão tem efeito retroativo nos badges já migrados em
+Phase 7 (NavbarItem e todos os componentes futuros com badge
+genérico). Adia até alguém precisar de notification semântica
+explícita em outro componente.
+
+## ~~Token de scrim/overlay backdrop ausente~~ ✅ RESOLVIDO
+
+**Resolvido em:** Phase 7 mini-batch scrim (commits 38–39).
+**Tokens criados (commit 38):**
+
+- `--color-scrim` (rgb(0 0 0 / 0.5)) — backdrop veil de Modal/Drawer/
+  CommandPalette/SideNavbarBackdrop.
+- `--color-tint-hover` (rgb(0 0 0 / 0.1)) — state layer translúcido
+  para hover em botões dentro de elementos coloridos (Chip remove).
+
+Ambos são **theme-agnostic** (sem override em `themes/dark.css`) por
+design — backdrop e veil translúcido têm que se comportar igual em
+todos os modos, senão perdem a função.
+
+**Nomenclatura final** (divergiu da sugestão inicial deste item):
+
+- Confirmado `--color-scrim` (termo técnico canônico de Material/iOS).
+- Para o veil de hover, NÃO foi usado `--color-scrim-subtle` (a
+  proposta inicial deste BACKLOG): tratá-lo como variante de scrim
+  esconderia que são papéis distintos — scrim cobre página, tint-hover
+  é state layer de elemento. Também rejeitado `--color-state-hover`
+  porque a Phase 9 descontinuou o namespace `state-` (fundido em
+  `surface-`). Escolha final: `--color-tint-hover` — palavra nova ao
+  léxico, escalável para `tint-pressed`, `tint-focus`, etc. se outros
+  state layers translúcidos aparecerem.
+
+**Consumidores migrados (commit 39):** Modal:99, DrawerContent:86,
+CommandPalette:197, SideNavbarBackdrop:69 (descoberto durante a
+migração — não estava no inventário original deste item) e Chip:220.
+
+## Phase 10 — Tokens infrastructure cleanup
+
+**Descoberto em:** Phase 7 closure (commit 100). Sanity check pré-
+deleção do shim revelou 4 consumidores internos não inventariados.
+**Estado:** o shim `src/ui/tokens/colors.ts` (~14k) **permanece** após
+Phase 7 porque 4 arquivos dentro de `src/ui/tokens/` ainda dependem
+dele. Phase 7 cumpriu seu escopo declarado (zero consumo em
+`components/` e `primitives/`), mas a deleção física do shim foi
+adiada porque os 4 consumidores são infraestrutura interna do
+diretório de tokens, não vocabulário de componente.
+
+**Os 4 consumidores e o trabalho previsto:**
+
+1. **`tokens/gradients.ts`** — `GRADIENT_TOKENS` lê valores hex do
+   shim (`COLOR_TOKENS_LIGHT.primary.light.hex`, etc.) para definir
+   gradientes. **Decisão arquitetural pendente:** ou ler hex via
+   `getComputedStyle` do CSS `@theme` em runtime (frágil — depende do
+   DOM existir), ou redefinir gradientes diretamente via CSS custom
+   properties em `@theme` (canônico, mas precisa repensar a API que
+   `getGradientClass` expõe). Talvez gradientes virem CSS-first como
+   o resto.
+2. **`tokens/themes/light.ts`** (e provavelmente `dark.ts`) — definição
+   programática de tema (`colors: COLOR_TOKENS_LIGHT`). Provavelmente
+   legacy do sistema pré-Phase 9 (quando temas viviam em JS).
+   **Investigar antes de refatorar:** pode estar literalmente morto
+   (nenhum consumidor real) ou ainda em uso por API público de
+   provider/factory. Se morto, deletar.
+3. **`tokens/tokens.factory.ts`** — `TokensFactory` Pattern atrelado ao
+   `ColorRole` antigo. Provavelmente desatualizado pós-Phase 9 (quando
+   o vocabulário virou semântico via `@theme`). **Investigar se ainda
+   é usado**, e por quem (Storybook? testes? código público?). Se
+   morto, deletar; se vivo, repensar a API.
+4. **`tokens/TokenVisualizations.tsx`** — demo da Color Palette no
+   Storybook. **Trabalho mais isolado dos 4:** reescrever o componente
+   pra ler do sistema novo (`getSemanticColor` + `getPrimitiveColor`
+   em `tokens/colors/utils.ts`, e/ou enumerar diretamente os tokens
+   semânticos do `@theme` para auto-doc). Provavelmente o mais
+   simples — não tem ramificações externas.
+
+**Critério de pronto da Phase 10:**
+
+- 4 arquivos repointed para o sistema novo OU removidos se obsoletos.
+- Shim `tokens/colors.ts` deletado fisicamente.
+- Build verde + tests verdes.
+- Storybook Color Palette renderiza com vocabulário novo.
+
+**Estrutura sugerida:** pode ser quebrada em sub-fases por arquivo
+(start pelo `TokenVisualizations.tsx` que é isolado, deixar
+`gradients.ts` por último porque carrega decisão arquitetural), ou
+tratada como batch único — decidir quando o trabalho começar.
+
+**Razão de não fazer agora:** refatorar 4 arquivos não-triviais sob
+deadline de closure da Phase 7 introduziria risco em infraestrutura
+sensível (themes, factory) sem ganho proporcional. Phase 7 cumpriu o
+que se propôs (vocabulário de componente 100% migrado); Phase 10 é a
+limpeza honesta do que ficou.

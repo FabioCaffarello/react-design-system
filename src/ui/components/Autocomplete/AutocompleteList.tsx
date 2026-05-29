@@ -65,11 +65,11 @@ const AutocompleteList = forwardRef<HTMLDivElement, AutocompleteListProps>(
         className={`
           absolute
           ${getZIndexClass("popover")}
-          bg-white
+          bg-surface-overlay
           ${getRadiusClass("md")}
           ${getShadowClass("lg")}
           border
-          border-gray-200
+          border-line-default
           max-h-60
           overflow-y-auto
           ${getSpacingClass("xs", "py")}
@@ -85,7 +85,7 @@ const AutocompleteList = forwardRef<HTMLDivElement, AutocompleteListProps>(
             className={`
               ${getSpacingClass("md", "p")}
               text-sm
-              text-gray-500
+              text-fg-tertiary
               text-center
             `}
           >
@@ -96,7 +96,7 @@ const AutocompleteList = forwardRef<HTMLDivElement, AutocompleteListProps>(
             className={`
               ${getSpacingClass("md", "p")}
               text-sm
-              text-gray-500
+              text-fg-tertiary
               text-center
             `}
           >
@@ -112,9 +112,9 @@ const AutocompleteList = forwardRef<HTMLDivElement, AutocompleteListProps>(
                   text-sm
                   font-medium
                   cursor-pointer
-                  hover:bg-gray-50
+                  hover:bg-surface-hover
                   border-b
-                  border-gray-200
+                  border-line-default
                 `}
                 onClick={allSelected ? onDeselectAll : onSelectAll}
               >

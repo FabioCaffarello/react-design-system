@@ -6,7 +6,6 @@ import { getShadowClass } from "../../tokens/shadows";
 import { getZIndexClass } from "../../tokens/z-index";
 import { getAnimationClass } from "../../tokens/animations";
 import { getSpacingClass } from "../../tokens/spacing";
-import { getColorClass } from "../../tokens/colors";
 import { useDrawerContext } from "./DrawerContext";
 import { X } from "lucide-react";
 import { Button } from "../../primitives";
@@ -84,7 +83,7 @@ export default function DrawerContent({
         className={`
           fixed
           inset-0
-          bg-black/50
+          bg-scrim
           ${getZIndexClass("modal")}
           ${getAnimationClass("base")}
           ${isOpen ? "opacity-100" : "opacity-0"}
@@ -100,7 +99,7 @@ export default function DrawerContent({
           ${positionClasses[position]}
           ${sizeClasses[size]}
           ${position === "left" || position === "right" ? "max-w-[90vw]" : "max-h-[90vh]"}
-          bg-white
+          bg-surface-overlay
           ${getShadowClass("xl")}
           ${getZIndexClass("modal")}
           ${getAnimationClass("base")}
@@ -119,7 +118,7 @@ export default function DrawerContent({
             justify-end
             ${getSpacingClass("sm", "p")}
             border-b
-            ${getColorClass("neutral", "DEFAULT", "border")}
+            border-line-default
           `}
           >
             <Button

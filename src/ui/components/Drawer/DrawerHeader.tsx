@@ -2,7 +2,6 @@
 
 import { type ReactNode, type HTMLAttributes } from "react";
 import { getSpacingClass } from "../../tokens/spacing";
-import { getColorClass } from "../../tokens/colors";
 
 export interface DrawerHeaderProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
@@ -30,7 +29,7 @@ export default function DrawerHeader({
       className={`
         ${getSpacingClass("lg", "p")}
         border-b
-        ${getColorClass("neutral", "DEFAULT", "border")}
+        border-line-default
         ${className}
       `}
       {...props}

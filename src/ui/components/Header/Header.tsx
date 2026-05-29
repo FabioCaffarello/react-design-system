@@ -22,7 +22,6 @@ import { getZIndexClass } from "../../tokens/z-index";
 import type { HeaderProps } from "./types";
 import { cn, cva } from "../../utils";
 import { Container } from "../../layouts";
-import { getColorClass } from "../../tokens/colors";
 
 /**
  * Header Variants using CVA
@@ -30,13 +29,13 @@ import { getColorClass } from "../../tokens/colors";
  */
 const headerVariants = cva(
   // Base classes
-  cn("w-full", "bg-white", "transition-shadow", "transition-colors"),
+  cn("w-full", "bg-surface-base", "transition-shadow", "transition-colors"),
   {
     variants: {
       variant: {
         default: "",
         elevated: "shadow-sm",
-        bordered: cn("border-b", getColorClass("neutral", "light", "border")),
+        bordered: cn("border-b", "border-line-muted"),
       },
     },
     defaultVariants: {
@@ -99,7 +98,7 @@ export function Header({
         className={cn(
           headerVariants({ variant }),
           sticky && `sticky top-0 ${getZIndexClass("sticky")}`,
-          sticky && "backdrop-blur-sm bg-white/95",
+          sticky && "backdrop-blur-sm bg-surface-base/95",
           className,
         )}
         {...props}

@@ -112,7 +112,7 @@ export function DialogContent({
       {/* Overlay */}
       <div
         ref={overlayRef}
-        className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+        className="fixed inset-0 bg-scrim transition-opacity"
         aria-hidden="true"
       />
 
@@ -127,7 +127,7 @@ export function DialogContent({
           className={`
             relative ${getZIndexClass("modal")} w-full
             ${sizeClasses[size]}
-            bg-white
+            bg-surface-overlay
             ${getRadiusClass("lg")}
             ${getShadowClass("xl")}
             ${className}

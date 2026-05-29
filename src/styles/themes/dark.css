@@ -54,7 +54,9 @@
 
   /* Brand text */
   --color-fg-brand: var(--color-indigo-400);
+  --color-fg-brand-emphasis: var(--color-indigo-300);
   --color-fg-brand-secondary: var(--color-pink-400);
+  --color-fg-brand-secondary-emphasis: var(--color-pink-300);
 
   /* Feedback text */
   --color-fg-success: var(--color-emerald-400);
@@ -169,6 +171,9 @@
   --color-info: var(--color-sky-400);
   --color-info-light: var(--color-sky-300);
   --color-info-dark: var(--color-sky-500);
+
+  /* Status neutral — completes status family in dark mode */
+  --color-status-neutral: var(--color-slate-400);
   --color-info-bg: var(--color-sky-950);
   --color-info-bg-emphasis: var(--color-sky-900);
   --color-info-border: var(--color-sky-800);

@@ -3,8 +3,6 @@
 import type { HTMLAttributes } from "react";
 import { cn } from "../../utils";
 import {
-  getColorClass,
-  getHoverColorClass,
   getSpacingClass,
   getTypographySize,
   getTypographyWeight,
@@ -66,7 +64,7 @@ export default function Breadcrumb({
                 <span
                   className={cn(
                     getSpacingClass("sm", "mx"),
-                    getColorClass("neutral", "DEFAULT", "text"),
+                    "text-fg-tertiary",
                   )}
                   aria-hidden="true"
                 >
@@ -76,7 +74,7 @@ export default function Breadcrumb({
               {isLast ? (
                 <span
                   className={cn(
-                    getColorClass("neutral", "dark", "text"),
+                    "text-fg-primary",
                     getTypographyWeight("label"),
                   )}
                   aria-current="page"
@@ -96,17 +94,15 @@ export default function Breadcrumb({
                     getTypographySize("bodySmall"),
                     getTypographyWeight("label"),
                     "transition-colors",
-                    getColorClass("neutral", "DEFAULT", "text"),
-                    getHoverColorClass("neutral", "DEFAULT", "border"),
-                    getHoverColorClass("neutral", "dark", "text"),
+                    "text-fg-secondary",
+                    "hover:border-line-emphasis",
+                    "hover:text-fg-primary",
                   )}
                 >
                   {item.label}
                 </a>
               ) : (
-                <span className={getColorClass("neutral", "DEFAULT", "text")}>
-                  {item.label}
-                </span>
+                <span className="text-fg-secondary">{item.label}</span>
               )}
             </li>
           );

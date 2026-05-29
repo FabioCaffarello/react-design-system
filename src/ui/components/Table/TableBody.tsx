@@ -63,7 +63,7 @@ export default function TableBody({
   if (loading) {
     return (
       <tbody
-        className={`bg-white divide-y divide-gray-200 ${className}`}
+        className={`bg-surface-base divide-y divide-line-default ${className}`}
         {...props}
       >
         {Array.from({ length: 5 }).map((_, index) => (
@@ -82,7 +82,7 @@ export default function TableBody({
   if (paginatedData.length === 0) {
     return (
       <tbody
-        className={`bg-white divide-y divide-gray-200 ${className}`}
+        className={`bg-surface-base divide-y divide-line-default ${className}`}
         {...props}
       >
         <tr>
@@ -98,7 +98,7 @@ export default function TableBody({
   if (typeof children === "function") {
     return (
       <tbody
-        className={`bg-white divide-y divide-gray-200 ${className}`}
+        className={`bg-surface-base divide-y divide-line-default ${className}`}
         {...props}
       >
         {paginatedData.map((row, index) => children(row, index))}
@@ -109,7 +109,7 @@ export default function TableBody({
   // Default: render TableRow for each data item
   return (
     <tbody
-      className={`bg-white divide-y divide-gray-200 ${className}`}
+      className={`bg-surface-base divide-y divide-line-default ${className}`}
       role="rowgroup"
       {...props}
     >

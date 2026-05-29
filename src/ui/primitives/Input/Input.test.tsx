@@ -76,7 +76,7 @@ describe("Input", () => {
   it("applies variant classes", () => {
     const { container } = render(<Input variant="filled" />);
     const input = container.querySelector("input");
-    expect(input).toHaveClass("bg-gray-100");
+    expect(input).toHaveClass("bg-surface-muted");
   });
 
   describe("Keyboard Navigation", () => {

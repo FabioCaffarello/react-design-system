@@ -14,7 +14,6 @@ import { getRadiusClass } from "../../tokens/radius";
 import { getShadowClass } from "../../tokens/shadows";
 import { getZIndexClass } from "../../tokens/z-index";
 import { getAnimationClass } from "../../tokens/animations";
-import { getColorClass } from "../../tokens/colors";
 import {
   getTypographySize,
   getTypographyWeight,
@@ -233,11 +232,11 @@ export default function Popover({
       className={`
         absolute
         ${getZIndexClass("popover")}
-        bg-white
+        bg-surface-overlay
         ${getRadiusClass("lg")}
         ${getShadowClass("lg")}
         border
-        ${getColorClass("neutral", "DEFAULT", "border")}
+        border-line-default
         min-w-48
         max-w-96
         ${getAnimationClass("base")}
@@ -259,12 +258,12 @@ export default function Popover({
           ${getSpacingClass("base", "px")}
           ${getSpacingClass("md", "py")}
           border-b
-          ${getColorClass("neutral", "DEFAULT", "border")}
+          border-line-default
         `}
         >
           {title && (
             <h3
-              className={`${getTypographySize("bodySmall")} ${getTypographyWeight("h5")} ${getColorClass("neutral", "dark", "text")}`}
+              className={`${getTypographySize("bodySmall")} ${getTypographyWeight("h5")} text-fg-primary`}
             >
               {title}
             </h3>

@@ -43,10 +43,9 @@ const positionClasses: Record<SideNavbarTogglePosition, string> = {
 
 const variantClasses: Record<SideNavbarToggleVariant, string> = {
   default:
-    "bg-[var(--color-card)] border border-[var(--color-border)] shadow-sm hover:bg-[var(--color-accent)] hover:shadow",
-  ghost: "bg-transparent hover:bg-[var(--color-accent)] border-0",
-  outline:
-    "bg-transparent border border-[var(--color-border)] hover:bg-[var(--color-accent)]",
+    "bg-surface-raised border border-line-default shadow-sm hover:bg-surface-hover hover:shadow",
+  ghost: "bg-transparent hover:bg-surface-hover border-0",
+  outline: "bg-transparent border border-line-default hover:bg-surface-hover",
 };
 
 const tooltipPositionMap: Record<
@@ -211,8 +210,8 @@ export default function SideNavbarToggle({
         ${variantClasses[variant]}
         rounded-full
         flex items-center justify-center
-        text-[var(--color-neutral-600)] hover:text-[var(--color-neutral-800)]
-        focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-500)] focus:ring-offset-1
+        text-fg-secondary hover:text-fg-primary
+        focus:outline-none focus:ring-2 focus:ring-line-focus focus:ring-offset-1
         ${position === "floating" ? "" : positionClasses[position]}
         ${className}
       `}

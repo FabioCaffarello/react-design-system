@@ -75,7 +75,7 @@ export function PageHeader({
             {title}
           </Text>
           {description && (
-            <Text variant="body" className="text-gray-600">
+            <Text variant="body" className="text-fg-secondary">
               {description}
             </Text>
           )}

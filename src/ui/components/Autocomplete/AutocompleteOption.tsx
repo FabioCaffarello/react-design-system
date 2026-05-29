@@ -46,8 +46,8 @@ const AutocompleteOption = forwardRef<HTMLDivElement, AutocompleteOptionProps>(
           text-sm
           cursor-pointer
           transition-colors
-          ${isHighlighted ? "bg-gray-100" : ""}
-          ${option.disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-50"}
+          ${isHighlighted ? "bg-surface-active" : ""}
+          ${option.disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-surface-hover"}
         `}
       >
         {option.icon && <span className="flex-shrink-0">{option.icon}</span>}

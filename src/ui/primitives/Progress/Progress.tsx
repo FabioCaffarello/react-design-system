@@ -2,7 +2,7 @@
 
 import type { HTMLAttributes } from "react";
 import { forwardRef } from "react";
-import { getColorClass, getRadiusClass } from "../../tokens";
+import { getRadiusClass } from "../../tokens";
 import { getSpacingClass } from "../../tokens/spacing";
 import {
   getTypographySize,
@@ -58,12 +58,12 @@ const progressTrackVariants = cva("w-full", {
       lg: "h-3",
     },
     variant: {
-      primary: getColorClass("neutral", "light", "bg"),
-      secondary: getColorClass("neutral", "light", "bg"),
-      success: "bg-green-300",
-      error: "bg-red-300",
-      warning: "bg-yellow-300",
-      info: "bg-blue-300",
+      primary: "bg-surface-muted",
+      secondary: "bg-surface-muted",
+      success: "bg-success-bg-emphasis",
+      error: "bg-error-bg-emphasis",
+      warning: "bg-warning-bg-emphasis",
+      info: "bg-info-bg-emphasis",
     },
   },
   defaultVariants: {
@@ -129,7 +129,7 @@ const Progress = forwardRef<HTMLDivElement, ProgressProps>(function Progress(
               className={cn(
                 getTypographySize("bodySmall"),
                 getTypographyWeight("label"),
-                getColorClass("neutral", "dark", "text"),
+                "text-fg-primary",
               )}
             >
               {label}
@@ -139,7 +139,7 @@ const Progress = forwardRef<HTMLDivElement, ProgressProps>(function Progress(
             <span
               className={cn(
                 getTypographySize("bodySmall"),
-                getColorClass("neutral", "DEFAULT", "text"),
+                "text-fg-secondary",
               )}
             >
               {percentage.toFixed(0)}%

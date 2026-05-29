@@ -3,7 +3,6 @@
 import { memo } from "react";
 import type { HTMLAttributes } from "react";
 import { Loader2 } from "lucide-react";
-import { getColorClass } from "../../tokens/colors";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getTypographySize } from "../../tokens/typography";
 import { cn, cva } from "../../utils";
@@ -40,7 +39,7 @@ const spinnerVariants = cva("motion-safe:animate-spin", {
     variant: {
       primary: "text-fg-brand",
       secondary: "text-fg-brand-secondary",
-      neutral: getColorClass("neutral", "DEFAULT", "text"),
+      neutral: "text-fg-secondary",
     },
   },
   defaultVariants: {
@@ -73,7 +72,7 @@ const Spinner = memo(function Spinner({
           className={cn(
             getSpacingClass("sm", "ml"),
             getTypographySize("bodySmall"),
-            getColorClass("neutral", "DEFAULT", "text"),
+            "text-fg-secondary",
             "sr-only",
           )}
         >

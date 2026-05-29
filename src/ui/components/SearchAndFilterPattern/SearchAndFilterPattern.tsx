@@ -138,7 +138,7 @@ export function SearchAndFilterPattern<T = unknown>({
               <div className="flex flex-wrap gap-2">
                 {filters.map((filter) => (
                   <div key={filter.id} className="flex items-center gap-2">
-                    <Text className="text-gray-600 text-sm">
+                    <Text className="text-fg-secondary text-sm">
                       {filter.label}:
                     </Text>
                     <select
@@ -179,7 +179,7 @@ export function SearchAndFilterPattern<T = unknown>({
 
         {/* Results Count */}
         {showResultsCount && (
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-fg-secondary">
             Showing {filteredItems.length} of {items.length} results
             {hasActiveFilters && " (filtered)"}
           </div>
@@ -188,7 +188,7 @@ export function SearchAndFilterPattern<T = unknown>({
         {/* Results */}
         {filteredItems.length === 0 ? (
           <Card padding="large">
-            <div className="text-center text-gray-500">
+            <div className="text-center text-fg-secondary">
               <Text>{emptyMessage}</Text>
             </div>
           </Card>

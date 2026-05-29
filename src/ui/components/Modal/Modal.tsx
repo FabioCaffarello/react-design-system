@@ -93,13 +93,7 @@ export default function Modal({
     "overflow-y-auto",
   ];
 
-  const overlayClasses = [
-    "fixed",
-    "inset-0",
-    "bg-black",
-    "bg-opacity-50",
-    "transition-opacity",
-  ];
+  const overlayClasses = ["fixed", "inset-0", "bg-scrim", "transition-opacity"];
 
   const modalSizeClasses: Record<NonNullable<Props["variant"]>, string> = {
     default: "max-w-md",
@@ -109,7 +103,7 @@ export default function Modal({
 
   const modalClasses = [
     "relative",
-    "bg-white",
+    "bg-surface-overlay",
     "rounded-lg",
     "shadow-xl",
     "my-8",
@@ -146,14 +140,14 @@ export default function Modal({
             <div className="flex justify-between items-center mb-4">
               <h2
                 id="modal-title"
-                className="text-xl font-semibold text-gray-900"
+                className="text-xl font-semibold text-fg-primary"
               >
                 {title}
               </h2>
               {showCloseButton && (
                 <button
                   onClick={onClose}
-                  className="text-gray-400 hover:text-gray-500 focus:outline-none"
+                  className="text-fg-tertiary hover:text-fg-secondary focus:outline-none"
                   aria-label="Close modal"
                 >
                   <X className="h-6 w-6" />
@@ -165,7 +159,7 @@ export default function Modal({
             <div className="flex justify-end mb-4">
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-gray-500 focus:outline-none"
+                className="text-fg-tertiary hover:text-fg-secondary focus:outline-none"
                 aria-label="Close modal"
               >
                 <X className="h-6 w-6" />

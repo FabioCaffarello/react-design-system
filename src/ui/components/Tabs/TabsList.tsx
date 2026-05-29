@@ -3,7 +3,7 @@
 import { useTabsContext } from "./TabsContext";
 import { useRef, useEffect, type HTMLAttributes, ReactNode } from "react";
 import { cn } from "../../utils";
-import { getRadiusClass, getColorClass, getSpacingClass } from "../../tokens";
+import { getRadiusClass, getSpacingClass } from "../../tokens";
 
 export interface TabsListProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
@@ -101,7 +101,7 @@ export function TabsList({
         displayClass,
         orientationClasses,
         getSpacingClass("xs", "p"),
-        getColorClass("neutral", "light", "bg"),
+        "bg-surface-muted",
         getRadiusClass("md"),
         className,
       )}
