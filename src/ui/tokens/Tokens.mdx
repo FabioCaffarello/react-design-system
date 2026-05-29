@@ -93,6 +93,33 @@ The secondary brand foreground mirrors this structure:
 Same shade relationship as primary: `pink-500/600` (light, default/
 emphasis) and `pink-400/300` (dark, default/emphasis).
 
+### Scrim and Tint-hover (theme-agnostic)
+
+Two translucent black tokens that do **not** flip between light and
+dark themes. They exist to preserve a darkening function that must
+stay dark regardless of theme.
+
+- `bg-scrim` — Backdrop veil at 50% black opacity. Use behind a
+  modal, drawer, command palette, or any overlay that needs to focus
+  attention by darkening the page beneath it. Scrim is _theme-
+  agnostic by design_: a "lightening" backdrop in dark mode would not
+  serve the same focusing function. Distinct from `bg-surface-
+overlay`, which is the _container_ of the overlay (white in light,
+  slate-800 in dark — flips with theme); scrim is the _veil between
+  the page and the overlay container_.
+- `bg-tint-hover` — Translucent state layer at 10% black opacity for
+  hover feedback on buttons embedded in elements whose background
+  color is variable (e.g., a remove button inside a brand-filled
+  chip vs the same button inside a neutral chip). Theme-agnostic
+  because the translucency works over any underlying surface in any
+  theme. Distinct from `bg-surface-hover`, which is a _solid neutral
+  color_ (slate-50 in light, slate-800 in dark) used for hover on
+  flat backgrounds; tint-hover preserves the surface color showing
+  through, just darkened.
+
+If a future state needs a similar translucent layer (pressed, focus,
+selected), use the same naming family: `--color-tint-pressed`, etc.
+
 ## Spacing Tokens
 
 Spacing tokens are based on a 4px base unit, providing consistent spacing throughout the design system.
