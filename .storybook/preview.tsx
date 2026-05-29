@@ -407,6 +407,8 @@ const preview: Preview = {
             "Component Status",
             "Guides",
             ["Component Composition"],
+            "Providers",
+            ["AppProvider"],
           ],
           "Primitives",
           "Components",

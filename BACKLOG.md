@@ -608,3 +608,18 @@ componente atual funciona pro escopo que cobre.
 3. Phase 13e — auto-theme via `@media (prefers-color-scheme: dark)` foi decisão arquitetural feita em código sem documentação pública; só apareceu como "bug visual" no test consumer porque test page hardcoded `background: #fff`. DS estava correto, decisão estava implícita.
    **Padrão observado:** decisões arquiteturais marcadas "FINAL" ou tomadas em commits grandes ("feat: components evolution") sem documentação pública e sem validação externa silenciosamente compõem débito que aparece de forma surpreendente meses depois.
    **Proposta:** com 3 ocorrências, princípio agora está validado o suficiente pra virar rule. Criar `.claude/rules/architectural-decisions.md` em phase próxima registrando: (a) nenhuma decisão arquitetural marcada "FINAL" sem validação contra consumer externo real; (b) decisões arquiteturais consumer-visible (theme strategy, distribution layout, exports map) devem ter documentação pública (README ou similar) sincronizada com o código.
+
+## Inverter grep de verificação em `stories.md` (denylist → allowlist)
+
+**Descoberto em:** Phase B (taxonomy fix de `Providers/AppProvider`).
+**Estado:** o grep de verificação em `.claude/rules/stories.md` (linhas ~13-15) enumera segmentos banidos explicitamente — `(Atoms|Molecules|Organisms|Patterns|Templates)/`. É falso-negativo por construção: não pegou `Providers/AppProvider` quando essa story foi introduzida, e não vai pegar a próxima taxonomia inválida inventada (qualquer string que não esteja na lista hardcoded). A regra positiva da própria `stories.md` ("primeiro segmento ∈ {Primitives, Components, Layouts, Design System}") já é uma allowlist — o grep deveria ser a aplicação executável dela, não uma denylist paralela e divergente.
+**Por que importa:** mesma família dos achados das Phases 7/12/13a — "se a varredura está silenciosa demais, suspeite do instrumento". A regra existe pra impedir taxonomia errada; um detector enumerativo só pega o que já foi proibido nominalmente. Allowlist invertida pega _qualquer_ desvio dos 4 segmentos válidos no momento em que aparece.
+**Análogo no repo:** `scripts/storybook-smoke.mjs` opera em default-deny — `allowConsoleErrors` é a única forma de uma story passar com erro, e exige reason. Mesma filosofia: enumerar o aceitável, falhar no resto.
+**Ação:** PR pequeno separado. Substituir o regex denylist por um que casa titles cujo primeiro segmento NÃO seja `Primitives|Components|Layouts|Design System`. Esboço:
+
+```
+grep -rIn --include='*.stories.tsx' --include='*.mdx' \
+  -EH "(title:\s*['\"]|<Meta\s+title=['\"])(?!(Primitives|Components|Layouts|Design System)/)" src
+```
+
+(checar suporte a negative lookahead no grep alvo — BSD grep não suporta PCRE; usar `grep -P` em GNU ou `rg` se disponível, ou inverter via dois passos `grep | grep -v`.) Atualizar o exemplo na própria `stories.md` no mesmo commit.

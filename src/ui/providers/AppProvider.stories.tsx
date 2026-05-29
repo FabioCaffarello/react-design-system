@@ -3,7 +3,7 @@ import { AppProvider } from "./AppProvider";
 import { Button } from "../primitives";
 
 const meta: Meta<typeof AppProvider> = {
-  title: "Providers/AppProvider",
+  title: "Design System/Providers/AppProvider",
   component: AppProvider,
   parameters: {
     docs: {

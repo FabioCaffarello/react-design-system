@@ -20,6 +20,7 @@ src/ui/
   layouts/      # Stack, Container, Grid — structure only
   tokens/       # colors, spacing, typography, radius, shadow
   hooks/        # shared behavior hooks
+  providers/    # global context providers (theme/config/toast/dialog) — infra, not a UI layer
 ```
 
 Do NOT reintroduce atoms/molecules/organisms/templates/patterns. Three layers only.
