@@ -85,7 +85,7 @@ export default function TableFilters({
 
   return (
     <div
-      className={`bg-white border-b border-gray-200 ${className}`}
+      className={`bg-surface-base border-b border-line-default ${className}`}
       {...props}
     >
       <div className="px-4 py-3 sm:px-6">
@@ -93,13 +93,13 @@ export default function TableFilters({
           <button
             type="button"
             onClick={() => setIsExpanded(!isExpanded)}
-            className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-gray-900"
+            className="flex items-center gap-2 text-sm font-medium text-fg-secondary hover:text-fg-primary"
           >
             <Filter className="h-4 w-4" />
             <span>Filters</span>
             {activeFilterCount > 0 && (
               <span
-                className={`inline-flex items-center ${getSpacingClass("sm", "px")} ${getSpacingClass("0.5", "py")} rounded text-xs font-medium bg-indigo-100 text-indigo-800`}
+                className={`inline-flex items-center ${getSpacingClass("sm", "px")} ${getSpacingClass("0.5", "py")} rounded text-xs font-medium bg-surface-brand-muted text-fg-brand-emphasis`}
               >
                 {activeFilterCount}
               </span>
@@ -163,7 +163,7 @@ export default function TableFilters({
                           <button
                             type="button"
                             onClick={() => handleClearFilter(filter.key)}
-                            className="absolute right-8 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                            className="absolute right-8 top-1/2 -translate-y-1/2 text-fg-tertiary hover:text-fg-secondary"
                             aria-label={`Clear ${filter.label} filter`}
                           >
                             <X className="h-4 w-4" />
@@ -189,7 +189,7 @@ export default function TableFilters({
                       <button
                         type="button"
                         onClick={() => handleClearFilter(filter.key)}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-fg-tertiary hover:text-fg-secondary"
                         aria-label={`Clear ${filter.label} filter`}
                       >
                         <X className="h-4 w-4" />
