@@ -23,7 +23,7 @@ export default function TableCell<
 
   return (
     <td
-      className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${
+      className={`px-6 py-4 whitespace-nowrap text-sm text-fg-primary ${
         column.hiddenOnMobile ? "hidden md:table-cell" : ""
       } ${className}`}
       {...props}
