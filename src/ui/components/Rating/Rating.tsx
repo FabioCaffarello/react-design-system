@@ -4,7 +4,6 @@ import { useState, type ReactNode } from "react";
 import { Star } from "lucide-react";
 import { cn } from "../../utils";
 import {
-  getColorClass,
   getSpacingClass,
   getAnimationClass,
   getTypographySizeFromFontSize,
@@ -101,9 +100,7 @@ export default function Rating({
       sizeConfig[size],
       getAnimationClass("base"),
       !readOnly && "cursor-pointer",
-      isFilled || isHalf
-        ? "text-fg-warning"
-        : getColorClass("neutral", "light", "text"),
+      isFilled || isHalf ? "text-fg-warning" : "text-fg-disabled",
     );
 
     const CustomIcon = icon || (
@@ -186,7 +183,7 @@ export default function Rating({
           className={cn(
             getSpacingClass("sm", "ml"),
             getTypographySizeFromFontSize("sm"),
-            getColorClass("neutral", "DEFAULT", "text"),
+            "text-fg-secondary",
           )}
         >
           {displayValue.toFixed(allowHalf ? 1 : 0)}/{max}
