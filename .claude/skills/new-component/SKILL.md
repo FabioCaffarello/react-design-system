@@ -20,7 +20,7 @@ Build a complete, production-grade component for this mono-brand design system.
 3. **Implement** following `.claude/rules/components.md`:
    - Exported `NameProps` interface, no `any`.
    - `variant` unions over boolean soup.
-   - Tailwind + semantic tokens only.
+   - Tailwind + semantic tokens only. **Read `.claude/rules/colors.md` before applying ANY color — choose role, not shade. Zero raw Tailwind color classes.**
    - `forwardRef` + `...rest` for interactive primitives.
    - ARIA + keyboard + focus ring.
 
@@ -28,7 +28,7 @@ Build a complete, production-grade component for this mono-brand design system.
 
 5. **Story**: one `Default`, one per variant, one `Playground` with controls. Include a11y-relevant args.
 
-6. **Verify**: `npm run lint` clean. Report what was created and any token additions.
+6. **Verify**: `npm run lint` clean. Run the validation greps from `.claude/rules/colors.md` (Quick validation section) against the new files — both must return zero hits. Report what was created and any token additions.
 
 ## Guardrails
 
