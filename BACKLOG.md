@@ -225,42 +225,32 @@ Phase 7 (NavbarItem e todos os componentes futuros com badge
 genérico). Adia até alguém precisar de notification semântica
 explícita em outro componente.
 
-## Token de scrim/overlay backdrop ausente
+## ~~Token de scrim/overlay backdrop ausente~~ ✅ RESOLVIDO
 
-**Descoberto em:** Phase 7 batch Overlay (Modal, DrawerContent),
-ampliado no batch Feedback (Chip remove button hover).
-**Estado:** o backdrop preto+opacity do Modal e do Drawer foi mantido
-literal (`bg-black/50`) porque o vocabulário semântico atual não tem
-token de scrim. Os candidatos invertem no dark mode (`surface-inverse`,
-`fg-primary` etc. ficam claros no dark), o que é errado para um
-backdrop — scrim deve permanecer escuro nos dois temas pra cumprir a
-função de focar atenção no overlay.
+**Resolvido em:** Phase 7 mini-batch scrim (commits 38–39).
+**Tokens criados (commit 38):**
 
-Mesma família mas em escala menor: o botão de remover do Chip usa
-`hover:bg-black/10` para escurecer translucidamente o elemento sobre
-qualquer fundo de chip (default/filled/selected). Mesma natureza de
-"darken overlay theme-agnostic" — vai compartilhar o futuro token (com
-variante de intensidade) quando for criado.
+- `--color-scrim` (rgb(0 0 0 / 0.5)) — backdrop veil de Modal/Drawer/
+  CommandPalette/SideNavbarBackdrop.
+- `--color-tint-hover` (rgb(0 0 0 / 0.1)) — state layer translúcido
+  para hover em botões dentro de elementos coloridos (Chip remove).
 
-**Por que importa:** assim que mais 1–2 overlays surgirem (Popover,
-Dropdown, CommandPalette), vamos repetir `bg-black/{50,10,...}`
-literal em vários sítios. Hora de promover pra token.
-**Nomenclatura definida:** quando criar, **use `--color-scrim`**
-(termo técnico canônico — Material, iOS, accessibility specs), NÃO
-`--color-overlay`. "Overlay" já está sobrecarregado no projeto
-(`surface-overlay` existe pra modal/popover container, não pra
-backdrop).
+Ambos são **theme-agnostic** (sem override em `themes/dark.css`) por
+design — backdrop e veil translúcido têm que se comportar igual em
+todos os modos, senão perdem a função.
 
-**Consumidores atuais e potenciais:**
+**Nomenclatura final** (divergiu da sugestão inicial deste item):
 
-- Atuais: Modal:99, DrawerContent:87 (backdrop, opacity 50), Chip:221
-  (remove btn hover, opacity 10) — 3 sítios em 3 componentes.
-- Potenciais (vão surgir em batches futuros): Popover, Dropdown,
-  CommandPalette (backdrops); MultiSelect remove chip, Toast close,
-  outros remove/dismiss buttons (hover sutil sobre cor variável).
+- Confirmado `--color-scrim` (termo técnico canônico de Material/iOS).
+- Para o veil de hover, NÃO foi usado `--color-scrim-subtle` (a
+  proposta inicial deste BACKLOG): tratá-lo como variante de scrim
+  esconderia que são papéis distintos — scrim cobre página, tint-hover
+  é state layer de elemento. Também rejeitado `--color-state-hover`
+  porque a Phase 9 descontinuou o namespace `state-` (fundido em
+  `surface-`). Escolha final: `--color-tint-hover` — palavra nova ao
+  léxico, escalável para `tint-pressed`, `tint-focus`, etc. se outros
+  state layers translúcidos aparecerem.
 
-**Critério de criação:** avaliar quando aparecer o 4º+ consumidor.
-**Forma sugerida:** par de tokens com variantes de intensidade —
-`--color-scrim` (default 50%, opacity de backdrop modal/drawer) e
-`--color-scrim-subtle` (10%, hover translúcido) — decisão na hora de
-criar.
+**Consumidores migrados (commit 39):** Modal:99, DrawerContent:86,
+CommandPalette:197, SideNavbarBackdrop:69 (descoberto durante a
+migração — não estava no inventário original deste item) e Chip:220.
