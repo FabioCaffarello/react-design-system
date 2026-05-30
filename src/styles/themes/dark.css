@@ -132,10 +132,6 @@
   /* state-disabled fused into surface-disabled (identical values) */
   --color-surface-focus: var(--color-indigo-900);
 
-  /* Brand state colors */
-  --color-surface-hover-brand: var(--color-indigo-500);
-  --color-surface-active-brand: var(--color-indigo-600);
-
   /* ============================================
    * FEEDBACK COLORS
    * Brighter for dark backgrounds
