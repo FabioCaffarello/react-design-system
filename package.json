@@ -1,7 +1,7 @@
 {
   "name": "@fabio.caffarello/react-design-system",
   "private": false,
-  "version": "1.19.0",
+  "version": "1.20.0",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",

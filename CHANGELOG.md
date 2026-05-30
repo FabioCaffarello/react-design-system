@@ -1,3 +1,15 @@
+## [1.20.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.19.0...v1.20.0) (2026-05-30)
+
+
+### ✨ Features
+
+* **tokens:** add surface-brand-strong; remap 9 with-text sites (Family C bucket A) ([b589fc0](https://github.com/FabioCaffarello/react-design-system/commit/b589fc0136823cdceb78c2335d869a1a4d89b0d0)), closes [#6366f1](https://github.com/FabioCaffarello/react-design-system/issues/6366f1) [#4f46e5](https://github.com/FabioCaffarello/react-design-system/issues/4f46e5)
+
+
+### 📝 Documentation
+
+* **rules:** colors.md fg-quaternary exception — scope precision ([fb163fa](https://github.com/FabioCaffarello/react-design-system/commit/fb163faee811449859c91318a037b52b68fe014a))
+
 ## [1.19.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.18.0...v1.19.0) (2026-05-30)
 
 
