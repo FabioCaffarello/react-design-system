@@ -300,14 +300,14 @@ exist in the scale. **Therefore `fg-quaternary` cannot pass AA over a
 light background without ceasing to be `fg-quaternary`.** This is a
 structural property of the 4-level ordered hierarchy, not a token bug.
 
-**Authorized consumers.** This exception covers the following sites,
-all using `fg-quaternary` for the same role — the pending state of an
-ordered-sequence marker (Stepper step bubble, Timeline event dot):
+**Sites that carry this exception.** Four sites use `fg-quaternary` in the _pending-sequence-marker_ role on a light background where the contrast fails AA — these are the sites that carry the exception (and the `data-marker="pending"` attribute that anchors the directed suppression):
 
 - `src/ui/components/Stepper/Stepper.tsx:140` (horizontal pending bubble)
 - `src/ui/components/Stepper/Stepper.tsx:255` (vertical pending bubble)
 - `src/ui/components/Timeline/Timeline.tsx:65` (horizontal pending dot)
 - `src/ui/components/Timeline/Timeline.tsx:154` (vertical pending dot)
+
+**Other uses of `fg-quaternary` that do not fail AA in their context do not need this exception nor the `data-marker` attribute.** Example: the SideNavbar collapsible-group chevron at `src/ui/tokens/sidebar.ts:52` (consumed by `SidebarContent.tsx`) uses `fg-quaternary` over a tinted sidebar surface where the contrast passes empirically — no current baseline story flags it. The list above is "sites that carry the failing case", not "every occurrence of the token". Before adopting this exception, a new consumer should first check whether its actual rendering context fails AA — if not, the exception (and the suppression scaffolding) is unnecessary.
 
 **Design evidence — consumers treat the marker as decorative.** Both
 components are constructed so the glyph inside the bubble is never the
@@ -342,11 +342,19 @@ These uses have genuine insufficient contrast — fix by supplying
 architectural exception covers redundant use; it does not legitimize
 critical use.**
 
-**Enforcement.** The four authorized bubble/dot elements carry a
-`data-marker="pending"` attribute (set only when `status === "default"`)
-that anchors the directed `parameters.a11y` suppression in the affected
-stories to the **role** (pending sequence marker), not to the bubble's
-style classes. The suppression selector is:
+**Enforcement.** The four sites listed above carry a
+`data-marker="pending"` attribute that anchors the directed
+`parameters.a11y` suppression in the affected stories to the **role**
+(pending sequence marker), not to the bubble's style classes. The
+attribute is conditional on the consuming component's pending status
+value — note that Stepper and Timeline use different enums for the
+same role: Stepper's `StepperStatus` is `"pending" | "active" |
+"completed" | "error"`, while Timeline's `status` field is
+`"default" | "active" | "completed" | "error"`. The data-marker
+condition is the component-specific pending value
+(`status === "pending"` in Stepper, `status === "default"` in
+Timeline) — verify by reading the source enum, not by visual analogy.
+The suppression selector is:
 
 ```ts
 { id: "color-contrast", selector: ":not([data-marker='pending'])" }
@@ -357,10 +365,13 @@ semantic role attribute, not to `bg-surface-base` / `border-line-emphasis`
 / `text-fg-quaternary` class compounds. When the bubble's appearance
 changes, `data-marker="pending"` persists and the exception still
 applies. When the bubble stops being a pending marker, the attribute
-disappears and the exception expires automatically. New consumers using
-`fg-quaternary` in the same hierarchy-decorative role should set the
-same `data-marker="pending"` attribute (status-conditional) and
-reference this section in their suppression comment.
+disappears and the exception expires automatically. A new consumer
+using `fg-quaternary` in the same hierarchy-decorative role **only
+needs** to set `data-marker="pending"` (status-conditional on its own
+pending enum value) and reference this section **if** its context
+actually fails AA — chevron-style consumers like
+`src/ui/tokens/sidebar.ts:52` over a tinted bg do not need the
+scaffolding.
 
 ## When NOT to create a new token
 
