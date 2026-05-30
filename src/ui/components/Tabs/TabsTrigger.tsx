@@ -110,7 +110,7 @@ export function TabsTrigger({
         getRadiusClass("sm"),
         isActive
           ? cn("bg-surface-brand", "text-fg-inverse")
-          : cn("text-fg-tertiary", "hover:bg-surface-active"),
+          : cn("text-fg-secondary", "hover:bg-surface-active"),
         disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
         className,
       )}
