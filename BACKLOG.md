@@ -622,10 +622,12 @@ grep -rIn --include='*.stories.tsx' --include='*.mdx' \
 
 ## Phase C PR2 — a11y backlog real (post-noise silencing)
 
+> **⚠ Escopo de instrumento:** todos os números desta seção são **light mode**. Dark mode não é medido pelo baseline (Playwright headless boota em light; nada seta `data-theme="dark"` ou `emulateMedia colorScheme:'dark'`). Item de primeira ordem **"Baseline a11y é light-mode-only — dark mode não auditado"** mais abaixo neste BACKLOG cobre o gap. Citar "806 nodes" sem qualificar é incorreto — usar "806 nodes (light)".
+
 **Descoberto em:** Phase C PR2, Passo 1 (baseline paralelo de 852 stories) + Passo 2 (re-medição com noise rules silenciadas) + Passo 3 (full serial de fechamento, workers=1, BrowserContext por story).
 **Estado:** `a11y.test` segue em `"todo"` em `.storybook/preview.tsx`. Três regras page-level (`region`, `landmark-one-main`, `page-has-heading-one`) silenciadas globalmente — instrumento aplica regra de página em iframe de componente, gerando ~78% de ruído (2.802 nodes / ~492 stories were noise-only). Reativadas só em `DashboardLayout` (única que monta `<header>` + `<main>` + `<footer>`). Política documentada em `docs/ACCESSIBILITY.md` seção "Story-iframe exceptions".
 
-**Baseline de record (full serial, 0 errored):** 806 nodes em 354 stories. Distribuição por impact:
+**Baseline de record (full serial, 0 errored, light mode):** 806 nodes em 354 stories. Distribuição por impact:
 
 | Impact   | Nodes |
 | -------- | ----: |
@@ -708,3 +710,35 @@ grep -rIn --include='*.stories.tsx' --include='*.mdx' \
 
 **Limite da inferência (registrar explícito para não virar folclore):** 5 stories confirmam, não generalizam para as 47 com play function. A medição forte é "nas stories testadas — incluindo o caso-limite CommandPalette — o DOM estabiliza antes da medição A"; a forte INválida seria "está provado para toda story com play". Se um anchor fix futuro (Family B: DatePicker; Family C: stories de Modal/Drawer com conteúdo via play) mostrar discrepância entre o número do BACKLOG e o número que o addon-a11y reporta na UI do Storybook, o lugar de investigar é exatamente esse: uma story com play onde estado-script ≠ estado-addon. Esta é a única folga conhecida do baseline; o método é fiel nos 5/5 medidos, não há prova universal.
 **Ação:** nenhuma agora. Caveat metodológico registrado para consulta se número não bater depois.
+
+## Baseline a11y é light-mode-only — dark mode não auditado
+
+**Descoberto em:** Family C anchor fix (status tokens darken), ao calcular o ratio de `--color-error-dark` em dark mode: rose-500 sobre rose-950 = 4.26 (FAIL AA), invisível ao baseline porque o instrumento nunca renderiza em dark.
+**Estado:** o smoke runner (`scripts/storybook-smoke.mjs`), `.storybook/preview.tsx`, e todos os scripts de baseline ad-hoc deste repo rodam stories sob `chromium.launch({ headless: true })` em estado default. Nenhum:
+
+- seta `data-theme="dark"` no `<html>`,
+- ativa `.dark` class,
+- chama Playwright `context.emulateMedia({ colorScheme: 'dark' })`,
+- ou itera sobre `globals.theme` de história em história.
+
+Resultado: **todos os 806 nodes do "Phase C PR2 — a11y backlog real" são light-mode**. Dark mode é completamente não-auditado. Um fix conhecido (`--color-error-dark` rose-500 → rose-400 em `themes/dark.css`, ratio 4.26 → 5.81) entrou junto com a Family C light anchor por ser mesma-família; não foi descoberto pelo baseline, foi descoberto por cálculo manual durante a investigação dos shifts. Podem existir N outros pares dark-mode em estado análogo.
+
+**Por que importa:** o critério de fechamento documentado em `docs/ACCESSIBILITY.md` é "zero critical + zero serious para virar `a11y.test: 'error'`". Esse critério está implicitamente escopado a light. Virar `error` enquanto dark é não-auditado significa enforçar regressão em metade do sistema de renderização — o oposto do que o gate deveria fazer. **Dark-mode precisa de baseline equivalente ANTES da virada de chave**, ou o gate é falso.
+
+**Por que aconteceu:** Phase 13e (commit `e01d479`) registrou que o design system aplica dark mode automaticamente via `@media (prefers-color-scheme: dark)` E via `[data-theme="dark"]` opt-in. Phase C PR2 escreveu o baseline sem reverificar essa premissa contra Playwright headless (que ignora `prefers-color-scheme` por default). Falta de teste que cruza Phase 13e (renderização) com Phase C (audit).
+
+**Plumbing — três opções dimensionadas:**
+
+1. **Playwright `emulateMedia` por run.** Rodar o baseline duas vezes — uma em light, uma com `context.emulateMedia({ colorScheme: 'dark' })`. Dobra o wall clock (~96min serial / ~3min paralelo color-contrast filtered). Mínimo de plumbing: 1 flag no script. Cobre dark-via-OS-preference. Não cobre opt-in `data-theme="dark"`.
+2. **Per-story `data-theme` toggle via globals.** `.storybook/preview.tsx` já tem suporte a globals — adicionar um `globals.theme` toggle iterado pelo smoke/baseline. Roda 1× para `light`, 1× para `dark`. Custo: ~2× wall clock + plumbing do toggle no preview. Cobre opt-in canonicamente.
+3. **Híbrido.** `emulateMedia` para sweep rápido; `globals.theme` quando virarmos `a11y.test: "error"`. Razoável compromisso esforço/cobertura.
+
+**Ação:** Phase própria após Family A anchor (button-name SideNavbar) ou Family B anchor (DatePicker ARIA), dependendo da fila. NÃO é blocker pra cada Family individual de light, mas É blocker pra virar `a11y.test: "error"`. Sequência recomendada:
+
+1. Implementar opção 1 (emulateMedia) no `scripts/storybook-smoke.mjs` E no `/tmp` color-pair extractor — workspace de teste mínimo.
+2. Rodar baseline dark equivalente (esperar ~48min serial ou ~5min paralelo color-contrast filtered).
+3. Decompor por família como Phase C PR2 fez para light.
+4. Aplicar anchors dark.
+5. Quando light AND dark zerarem critical+serious, virar `a11y.test: "error"`.
+
+**Doc-sync:** registrado em `docs/ACCESSIBILITY.md` seção "Baseline is light-mode-only" (item adjacente a "Story-iframe exceptions"). Citações de "806 nodes" sem o qualificador "light" devem ser corrigidas in-place se aparecerem em outro doc.

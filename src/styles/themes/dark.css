@@ -161,7 +161,7 @@
   /* Error */
   --color-error: var(--color-rose-400);
   --color-error-light: var(--color-rose-300);
-  --color-error-dark: var(--color-rose-500);
+  --color-error-dark: var(--color-rose-400);
   --color-error-bg: var(--color-rose-950);
   --color-error-bg-emphasis: var(--color-rose-900);
   --color-error-border: var(--color-rose-800);

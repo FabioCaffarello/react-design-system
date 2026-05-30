@@ -145,7 +145,7 @@
   /* Success */
   --color-success: var(--color-emerald-500);
   --color-success-light: var(--color-emerald-400);
-  --color-success-dark: var(--color-emerald-600);
+  --color-success-dark: var(--color-emerald-700);
   --color-success-bg: var(--color-emerald-50);
   --color-success-bg-emphasis: var(--color-emerald-100);
   --color-success-border: var(--color-emerald-200);
@@ -154,7 +154,7 @@
   /* Warning */
   --color-warning: var(--color-amber-500);
   --color-warning-light: var(--color-amber-400);
-  --color-warning-dark: var(--color-amber-600);
+  --color-warning-dark: var(--color-amber-700);
   --color-warning-bg: var(--color-amber-50);
   --color-warning-bg-emphasis: var(--color-amber-100);
   --color-warning-border: var(--color-amber-200);
@@ -163,7 +163,7 @@
   /* Error */
   --color-error: var(--color-rose-500);
   --color-error-light: var(--color-rose-400);
-  --color-error-dark: var(--color-rose-600);
+  --color-error-dark: var(--color-rose-700);
   --color-error-bg: var(--color-rose-50);
   --color-error-bg-emphasis: var(--color-rose-100);
   --color-error-border: var(--color-rose-200);
@@ -172,7 +172,7 @@
   /* Info */
   --color-info: var(--color-sky-500);
   --color-info-light: var(--color-sky-400);
-  --color-info-dark: var(--color-sky-600);
+  --color-info-dark: var(--color-sky-700);
   --color-info-bg: var(--color-sky-50);
   --color-info-bg-emphasis: var(--color-sky-100);
   --color-info-border: var(--color-sky-200);

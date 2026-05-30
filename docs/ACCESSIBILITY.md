@@ -388,7 +388,11 @@ The Storybook a11y addon automatically tests components for:
 - Keyboard navigation
 - Semantic HTML
 
-The addon runs in `test: "todo"` mode in `.storybook/preview.tsx` — violations surface in the test UI but do not fail CI. The plan is to move to `test: "error"` once the real backlog (tracked in `BACKLOG.md`) is closed. The bar to flip the switch is: zero `critical` and zero `serious` violations across all stories under the configured rule set.
+The addon runs in `test: "todo"` mode in `.storybook/preview.tsx` — violations surface in the test UI but do not fail CI. The plan is to move to `test: "error"` once the real backlog (tracked in `BACKLOG.md`) is closed. The bar to flip the switch is: zero `critical` and zero `serious` violations across all stories under the configured rule set **in both light and dark themes**.
+
+#### Baseline is light-mode-only (today)
+
+The Storybook smoke runner and every a11y measurement script in this repo render stories under Playwright's default `chromium.launch({ headless: true })`, which boots in light mode. Neither `.storybook/preview.tsx`, nor `scripts/storybook-smoke.mjs`, nor the ad-hoc baseline scripts ever set `data-theme="dark"`, toggle `.dark` on `<html>`, or pass `emulateMedia({ colorScheme: 'dark' })`. **Every node counted in BACKLOG (Family A–E, 806 nodes) is a light-mode violation; dark-mode contracts are unaudited.** Examples already known by hand calculation: `--color-error-dark` (rose-500) over `--color-error-bg` (rose-950) is 4.26:1 — a contrast failure invisible to the current instrument. The bar to flip `test: "error"` is therefore not satisfied until dark-mode is auditable on equal footing; tracked in `BACKLOG.md` as a first-order item (not a footnote). Plumbing options (Playwright `emulateMedia`, or a per-story `globals.theme` toggle that the smoke runner iterates) are scoped in that BACKLOG entry.
 
 #### Story-iframe exceptions
 
