@@ -1,3 +1,10 @@
+## [1.17.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.16.0...v1.17.0) (2026-05-30)
+
+
+### ✨ Features
+
+* **badge:** use brand-subtle for primary solid (Family C bucket G) ([bdc0546](https://github.com/FabioCaffarello/react-design-system/commit/bdc0546db70b2aa5ce7b10a15c9af01eea63a96d)), closes [#eef2](https://github.com/FabioCaffarello/react-design-system/issues/eef2) [#4f46e5](https://github.com/FabioCaffarello/react-design-system/issues/4f46e5) [#1e1b4](https://github.com/FabioCaffarello/react-design-system/issues/1e1b4) [#a5b4](https://github.com/FabioCaffarello/react-design-system/issues/a5b4) [#4f46e5](https://github.com/FabioCaffarello/react-design-system/issues/4f46e5) [#6366f1](https://github.com/FabioCaffarello/react-design-system/issues/6366f1) [#eef2](https://github.com/FabioCaffarello/react-design-system/issues/eef2)
+
 ## [1.16.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.15.1...v1.16.0) (2026-05-30)
 
 
