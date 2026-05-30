@@ -1,3 +1,10 @@
+## [1.18.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.17.0...v1.18.0) (2026-05-30)
+
+
+### ✨ Features
+
+* **tokens:** darken surface-secondary + error to cross AA (Family C B+D) ([d06b9c9](https://github.com/FabioCaffarello/react-design-system/commit/d06b9c98e43abf5691dbce45684b2501575c1edb)), closes [#0f172](https://github.com/FabioCaffarello/react-design-system/issues/0f172) [#ec4899](https://github.com/FabioCaffarello/react-design-system/issues/ec4899) [#f43f5](https://github.com/FabioCaffarello/react-design-system/issues/f43f5) [#be185](https://github.com/FabioCaffarello/react-design-system/issues/be185) [#be123](https://github.com/FabioCaffarello/react-design-system/issues/be123) [#6366f1](https://github.com/FabioCaffarello/react-design-system/issues/6366f1)
+
 ## [1.17.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.16.0...v1.17.0) (2026-05-30)
 
 
