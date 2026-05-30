@@ -1,3 +1,21 @@
+## [1.22.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.21.0...v1.22.0) (2026-05-30)
+
+
+### ✨ Features
+
+* **a11y:** fix SideNavbar button-name 38n (story defect) + Family A sweep ([8885ea2](https://github.com/FabioCaffarello/react-design-system/commit/8885ea21e66e83c2b1774dccbd6fc09e6257de25)), closes [#51](https://github.com/FabioCaffarello/react-design-system/issues/51)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** Switch tabIndex + Rating aria-label gate (Family C bucket B partial) ([bfbaf86](https://github.com/FabioCaffarello/react-design-system/commit/bfbaf86157a3ac2a2aef79457527ba8ddd8dd69f))
+
+
+### 📝 Documentation
+
+* **backlog:** mark DatePicker bucket resolved alongside PR49 fix ([8a682b4](https://github.com/FabioCaffarello/react-design-system/commit/8a682b4b17f1df931c4b47dfe1d3762348cc1ef8)), closes [#49](https://github.com/FabioCaffarello/react-design-system/issues/49)
+* **backlog:** retroactive sync Family B — mark Switch + Rating resolved (PR [#48](https://github.com/FabioCaffarello/react-design-system/issues/48)) ([5242fa5](https://github.com/FabioCaffarello/react-design-system/commit/5242fa50a389bb89167e137e80fe8b55ff933d72)), closes [#49](https://github.com/FabioCaffarello/react-design-system/issues/49) [#49](https://github.com/FabioCaffarello/react-design-system/issues/49) [#50](https://github.com/FabioCaffarello/react-design-system/issues/50) [#49](https://github.com/FabioCaffarello/react-design-system/issues/49)
+
 ## [1.21.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.20.0...v1.21.0) (2026-05-30)
 
 
