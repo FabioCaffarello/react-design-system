@@ -340,8 +340,10 @@ export default function CommandPalette({
                           {item.label}
                         </div>
                         {item.description && (
+                          // fg-secondary on selected: brand-muted bg drops fg-tertiary below AA;
+                          // caption role preserved, intensity raised for contrast.
                           <div
-                            className={`text-xs text-fg-tertiary ${getSpacingClass("0.5", "mt")}`}
+                            className={`text-xs ${isSelected ? "text-fg-secondary" : "text-fg-tertiary"} ${getSpacingClass("0.5", "mt")}`}
                           >
                             {item.description}
                           </div>
