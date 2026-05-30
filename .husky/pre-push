@@ -5,3 +5,8 @@ npm run test
 # Run full lint check
 echo "Running lint check..."
 npm run lint
+
+# Validate dark-theme coverage (both blocks in dark.css must stay in
+# lockstep — see scripts/validate-dark-coverage.mjs header for context).
+echo "Validating dark-theme coverage..."
+node scripts/validate-dark-coverage.mjs
