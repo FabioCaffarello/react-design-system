@@ -642,14 +642,44 @@ grep -rIn --include='*.stories.tsx' --include='*.mdx' \
 
 ### Family A — "Controle sem nome acessível" (152 nodes, ~57 stories)
 
-- `button-name` 94n/24s — **38n concentrados em SideNavbar** (icon-only menu buttons sem `aria-label`). Single anchor fix em SideNavbar pode derrubar 40%+ da família. Top: `components/sidenavbar/{variants,with-bottom-navigation,with-header,with-footer,with-header-and-footer}`.
+- `button-name` 94n/24s — **38n concentrados em SideNavbar** (icon-only menu buttons sem `aria-label`). Single anchor fix em SideNavbar pode derrubar 40%+ da família. Top: `components/sidenavbar/{variants,with-bottom-navigation,with-header,with-footer,with-header-and-footer}`. ✅ **SideNavbar portion resolvida em PR #52** — era **defeito de STORY, não de componente**: `NavigationTabs` inline em `SideNavbar.stories.tsx:87-132` renderia 5 `Tabs.Trigger` icon-only sem `aria-label`, replicado 3–4× por story (3 SideNavbars na `variants`, 1 nas demais) + 3 raw `<button>` icon-only inline em `WithBottomNavigation` (Bell/HelpCircle/LogOut). O `Tabs.Trigger` primitivo spread `{...props}` na `<button>` (`TabsTrigger.tsx:117`), portanto suporta `aria-label` propagation; a story simplesmente não passou. Fix de raiz: refatorado `NavigationTabs` para iterar sobre array `tabs` (single source of truth de `{value, label, Icon}`) — `tabLabels` map vestigial agora derivado por `Object.fromEntries`. Nomes ARIA escolhidos por **ação/destino, não tipo**: `"Home"` / `"Analytics"` / `"Users"` / `"Documents"` / `"Settings"` — screen reader compõe `"Home, tab, selected"` (role+state vêm do primitive Tabs). Bottom-nav raw buttons recebem `aria-label="Notifications"` / `"Help"` / `"Log out"`. Anti-padrões evitados: `aria-label="button"`, `aria-label="Home tab"`, `aria-label="Navigate to home"`. Theme-independence confirmada (regra estrutural ARIA, sem dimensão de contraste). Re-baseline post-fix confirma 38n → 0n no SideNavbar.
 - `select-name` 25n/22s — espalhado: SearchAndFilterPattern (2), DataGrid pagination (2). Pequenos `<select>` sem label associado.
 - `aria-input-field-name` 18n/10s — **12n em Slider** (range handles dos sliders).
 - `label` 11n/10s — espalhado (SideNavbar 2, Textarea 2, MultiSelect 2).
 - `aria-command-name` 1n/1s — outlier.
 - `aria-dialog-name` 3n/3s — Dialog sem accessible name.
 
-**Anchor sugerido:** atacar SideNavbar primeiro (densidade mais alta + cluster claro). Validar se o padrão é `<button>` com só ícone Lucide — fix é `aria-label` no botão ou conversão para `<button aria-label="X"><Icon aria-hidden /></button>`.
+**Anchor sugerido:** ~~atacar SideNavbar primeiro~~ — ✅ feito (PR52).
+
+**Sweep classificação componente vs story (button-name, post-PR52):**
+
+Total `button-name` residual: 15n.
+
+| Componente | Nodes | Tipo          | Detalhe                                                                                                                                                                                                                                                                                                         |
+| ---------- | ----: | ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Stepper    |    13 | **COMPONENT** | Bubble `<button>` em `Stepper.tsx:126` renderiza só `{CheckIcon\|index+1\|null}` como filho; identidade carregada pelo `step.title` adjacente, mas o button em si não tem accessible name. Fix de raiz: adicionar `aria-label={step.title}` no `<button>` bubble (Stepper.tsx:126 horizontal + ~:240 vertical). |
+| Switch     |     1 | **STORY**     | `Switch.stories.tsx:100 Default` renderiza `<Switch>` sem `label` prop; Switch usa `aria-labelledby={labelId}` que aponta pra id-inexistente. Fix: passar `label="..."` (ex: `"Notifications"`) na story default.                                                                                               |
+| Menu       |     1 | **STORY**     | `Menu.stories.tsx:197 TableActions` usa `<Button variant="ghost"><MoreVertical /></Button>` como MenuTrigger icon-only sem `aria-label`. Fix: `<Button variant="ghost" aria-label="Row actions">`.                                                                                                              |
+
+**Classificação Family A button-name pré + pós:**
+
+- Pré-fix observado historicamente: 53n (38 SideNavbar STORY + 13 Stepper COMPONENT + 1 Switch STORY + 1 Menu STORY).
+- COMPONENT defect: **13n (25%)** — apenas Stepper. DS produz UI sem nome acessível.
+- STORY defect: **40n (75%)** — SideNavbar (38) + Switch.Default (1) + Menu.TableActions (1). Fixture mal-escrita; componente primitivo está OK e suporta o nome.
+- Discrepância vs BACKLOG `94n` original: PRs intermediários (#48, #49) fecharam violations incidentalmente; o baseline registrado em "Phase C PR2" estava defasado em ~41n de button-name antes do fix do SideNavbar.
+
+A reclassificação importa: dos 15n residuais, só **Stepper precisa de fix de componente** (12n em 8 stories de Stepper, defeito real do DS). Os outros 2 são cleanup-de-story estilo Family C buckets H/I/J/K.
+
+**Veredito sobre regra de prevenção (proposta: extensão de `ds/story-discipline` que pegue "elemento interativo icon-only sem aria-label em story"):**
+
+**Não justifica criar a regra agora.** Volume real:
+
+- 40n STORY-defect concentrados em **3 arquivos** (`SideNavbar.stories.tsx`, `Switch.stories.tsx`, `Menu.stories.tsx`), não 40 stories independentes.
+- 38n dos 40 são **uma única definição** (`NavigationTabs` inline) replicada por loop de story — não 38 sítios distintos a serem detectados.
+- Custo da regra: AST inspection de elementos interativos (button, Tabs.Trigger, MenuTrigger filho de `<Button>`) com filho único SVG/Icon e ausência de `aria-label`/`aria-labelledby`, restrito a `*.stories.tsx`. Não trivial — false positives prováveis (componente icon-only legítimo onde o aria-label vem do parent via `aria-labelledby`, button-name satisfeito por `aria-describedby`-equivalent).
+- Benefício marginal: o `component-reviewer` agent (já existente) cobre o caso com leitura — adicionar à checklist dele ("toda story com Tabs.Trigger/Button/button icon-only declara `aria-label`?") é zero infra, zero false-positives, custo proporcional ao risco.
+
+**Recomendação:** registrar a heurística como item da checklist do `component-reviewer`, não como regra ESLint. Reavaliar SE um PR futuro reintroduzir esse padrão em 3+ stories distintas — aí o volume justifica.
 
 ### Family B — "ARIA inválido" (124 nodes originais; 87 resolvidos; ~37 remaining em outliers)
 
