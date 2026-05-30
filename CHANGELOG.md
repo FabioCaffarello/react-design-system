@@ -1,3 +1,15 @@
+## [1.23.2](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.1...v1.23.2) (2026-05-30)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** Timeline + Stepper stories raw-color → semantic tokens (Phase 7 hygiene) ([94a8518](https://github.com/FabioCaffarello/react-design-system/commit/94a85184a19b250e2a7be33bfa144a77dcbc6e01))
+
+
+### 📝 Documentation
+
+* **backlog:** re-sweep post-PR55 + component-vs-story classification ([41966ae](https://github.com/FabioCaffarello/react-design-system/commit/41966aecf7b3501a1b6e198cffb20af2717cac9a))
+
 ## [1.23.1](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.0...v1.23.1) (2026-05-30)
 
 
