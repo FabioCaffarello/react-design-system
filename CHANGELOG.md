@@ -1,3 +1,10 @@
+## [1.23.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.22.0...v1.23.0) (2026-05-30)
+
+
+### ✨ Features
+
+* **a11y:** Stepper button-name 13n — aria-label on bubble buttons ([c15789b](https://github.com/FabioCaffarello/react-design-system/commit/c15789b565b9114c4a564d06f71fd9ddd701e3e6)), closes [#52](https://github.com/FabioCaffarello/react-design-system/issues/52)
+
 ## [1.22.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.21.0...v1.22.0) (2026-05-30)
 
 
