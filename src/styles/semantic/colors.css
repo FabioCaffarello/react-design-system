@@ -134,10 +134,6 @@
   --color-surface-disabled-subtle: var(--color-slate-50);
   --color-surface-focus: var(--color-indigo-100);
 
-  /* Brand state colors */
-  --color-surface-hover-brand: var(--color-indigo-600);
-  --color-surface-active-brand: var(--color-indigo-700);
-
   /* ============================================
    * FEEDBACK COLORS
    * For success, warning, error, info states

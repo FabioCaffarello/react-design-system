@@ -58,7 +58,6 @@ list, read "Principle 9 — Incomplete semantic family" before inventing.
 | `bg-surface-brand-subtle` / `-brand-muted`               | Soft brand washes                             | Brand-tinted callout; **brand-muted = active singular** (Principle 8)                             |
 | `bg-surface-secondary` / `-secondary-subtle`             | Secondary brand pair                          | Secondary-themed surface                                                                          |
 | `bg-surface-accent` / `-accent-subtle`                   | Accent (cyan) pair                            | Accent callout                                                                                    |
-| `bg-surface-hover-brand` / `-active-brand`               | Brand button state ladder                     | Primary button hover/active                                                                       |
 
 ### Lines (borders, dividers, separators)
 
