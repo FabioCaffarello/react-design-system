@@ -151,7 +151,7 @@ const basicSteps = [
     content: (
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">Review Your Information</h3>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Please review all the information you've entered and click Complete to
           finish.
         </p>
@@ -356,13 +356,13 @@ export const ComplexWorkflow: Story = {
             <h3 className="text-lg font-semibold">Review Your Information</h3>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-600">Email:</span>
+                <span className="text-fg-secondary">Email:</span>
                 <span className="font-medium">
                   {formData.email || "Not provided"}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Name:</span>
+                <span className="text-fg-secondary">Name:</span>
                 <span className="font-medium">
                   {formData.firstName} {formData.lastName || "Not provided"}
                 </span>
@@ -488,7 +488,7 @@ export const WithValidation: Story = {
         content: (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Email Verified</h3>
-            <p className="text-sm text-gray-600">Your email: {email}</p>
+            <p className="text-sm text-fg-secondary">Your email: {email}</p>
           </div>
         ),
       },
@@ -521,14 +521,14 @@ export const WithValidation: Story = {
           {currentStep < stepsWithValidation.length - 1 ? (
             <button
               onClick={handleNext}
-              className="px-4 py-2 text-sm bg-blue-600 text-white rounded"
+              className="px-4 py-2 text-sm bg-surface-brand-strong text-fg-inverse rounded"
             >
               Next
             </button>
           ) : (
             <button
               onClick={() => alert("Completed!")}
-              className="px-4 py-2 text-sm bg-green-600 text-white rounded"
+              className="px-4 py-2 text-sm bg-surface-brand-strong text-fg-inverse rounded"
             >
               Complete
             </button>
@@ -552,7 +552,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Navigate through steps or complete the stepper. Check the Actions
           panel to see events being fired.
         </p>
@@ -562,7 +562,9 @@ export const WithEvents: Story = {
           onStepChange={handleStepChange}
           onComplete={handleComplete}
         />
-        <p className="text-sm text-gray-500">Current step: {currentStep + 1}</p>
+        <p className="text-sm text-fg-tertiary">
+          Current step: {currentStep + 1}
+        </p>
       </div>
     );
   },
