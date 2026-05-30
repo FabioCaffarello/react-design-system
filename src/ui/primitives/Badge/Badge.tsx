@@ -119,7 +119,7 @@ const badgeVariants = cva(
         variant: "primary",
         style: "solid",
         class: cn(
-          "bg-surface-brand",
+          "bg-surface-brand-subtle",
           "text-fg-brand-emphasis",
           "border-line-brand",
         ),
