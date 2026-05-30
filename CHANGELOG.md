@@ -1,3 +1,10 @@
+## [1.19.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.18.0...v1.19.0) (2026-05-30)
+
+
+### ✨ Features
+
+* **a11y:** remap tertiary→secondary on tinted-bg contexts (Family C bucket E) ([df42f39](https://github.com/FabioCaffarello/react-design-system/commit/df42f3928cd73804c8f0e8866abc9016b16ae034)), closes [#64748](https://github.com/FabioCaffarello/react-design-system/issues/64748) [#f1f5f9](https://github.com/FabioCaffarello/react-design-system/issues/f1f5f9) [#64748](https://github.com/FabioCaffarello/react-design-system/issues/64748) [#e0e7](https://github.com/FabioCaffarello/react-design-system/issues/e0e7) [#64748](https://github.com/FabioCaffarello/react-design-system/issues/64748) [#475569](https://github.com/FabioCaffarello/react-design-system/issues/475569) [#e0e7](https://github.com/FabioCaffarello/react-design-system/issues/e0e7)
+
 ## [1.18.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.17.0...v1.18.0) (2026-05-30)
 
 
