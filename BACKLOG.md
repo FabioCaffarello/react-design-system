@@ -834,3 +834,62 @@ Cada item desta lista é prova de que o gap não é hipotético — descobertas 
 5. Serial light+dark 96min — apenas na virada `a11y.test:"error"`, com cadência reconciliada (variance=0 confirmado nesta phase).
 
 **Cadência reconciliada nesta phase (registro para futuro):** sweep paralelo determinístico (variance=0 em re-run light), método consistent com Phase C PR2 (Timeline match exato 11→11; Tables/Badges shift atribuível a PR41-45 fechando indiretamente). Gap 806→186 light é (i) trabalho fechado, não (ii) race nem (iii) divergência de método. Implicação: paralelo é instrumento honesto para trabalho iterativo; serial só pago na virada de record.
+
+### Re-sweep pós-PR55 — finding meta (consertar bug pode SUBIR contagem honesta)
+
+**Resultado:** Re-sweep paralelo pós-PR55 mediu **dark total 1313** (era 1150) e **EXCLUSIVO_DARK 761** (era 746). Light idêntico (186). Dark **subiu +163** contra a expectativa de queda massiva.
+
+**A direção do delta importa mais que o valor.** Decompondo por componente:
+
+- **Evaporaram (~200 nodes — bug-induced violations corrigidas):** Table 52→10, Chip 50→14, Avatar 22→0, AvatarGroup substories -34 cumulativo, Modal 11→0, DataGrid 17→2, LoginBox 15→0, CommandPalette 8→1, SideNavbar 108→101. Padrão consistente: surfaces que eram WHITE em OS-dark (broken @media) e agora são slate-800 → text-fg-primary sobre elas não falha mais o ratio 1.05.
+- **Desmascarados (~360 nodes — raw colors que o bug escondia):** Timeline 57→215 (+158), Stepper 6→95 (+89), Fileupload 27→47, Progress 19→38, Rating 1→18, Slider 34→50, Breadcrumb 10→25, ColorPicker 0→13, PageHeader 16→28, Navigation 30→40, outros menores. Padrão consistente: stories usam `text-gray-600/700` raw em fixtures; pré-fix renderizava sobre fundo-branco-quebrado → gray-600 / white = 5.74:1 = passava AA → axe não flagava. Pós-fix renderiza sobre slate-800-correto → gray-600 / slate-800 = 2.36:1 = falha AA → axe flagga.
+
+**O bug do @media não inflava só a contagem — ele MASCARAVA raw colors simultaneamente.** Era falso em duas direções: marcava nodes que não deveriam ser nodes (text-fg em surface-light = ratio 1.05) E deixava passar raw colors que deveriam ser nodes (text-gray sobre surface-light = ratio confortável). Pós-fix os dois lados são honestos.
+
+**Lição metodológica:** ao consertar um bug de instrumentação, o número honesto pode subir, descer, ou ambos. Avaliar pelo VALOR é insuficiente; avaliar pelo DELTA por componente revela se a mudança é a esperada (evaporações) + a inesperada-mas-correta (desmáscaras). Se só evapora, o fix consertou mas pode estar mascarando outros bugs. Se só sobe, suspeitar regressão. Se ambos em direções coerentes (como aqui), o instrumento ficou honesto. **A dívida dark real é ~761 (subiu), não ~200 (queda esperada). O número anterior era ficção bidirecional do bug.**
+
+### Sweep classificação componente-vs-story dos 761 EXCLUSIVO_DARK
+
+Grep da dívida em raw colors:
+
+| Source                                                                                                                     |                  Hits | Tipo                                                                                      |
+| -------------------------------------------------------------------------------------------------------------------------- | --------------------: | ----------------------------------------------------------------------------------------- |
+| `Text.tsx`                                                                                                                 | 6 código + 2 comments | **EXCEÇÃO Princípio 3 documentada** (light/dark variant shades sem equivalente semântico) |
+| `Badge.tsx`                                                                                                                |     1 (`bg-pink-300`) | **EXCEÇÃO Princípio 3 documentada** (secondary solid badge)                               |
+| `TokenVisualizations.tsx`                                                                                                  |                    33 | **ALLOWLISTED em eslint rule** (meta-context page que renderiza tokens como swatches)     |
+| `tokens/{README.md,Tokens.mdx,COLOR_USAGE_GUIDE.md}` + `cva.ts` + `cn.ts`                                                  |                   ~23 | Documentação / JSDoc — não código rendered                                                |
+| `*.stories.tsx` (top: SideNavbar 38, Stack 30, Radio 29, FileUpload 27, Tabs 26, DatePicker 26, Chip 22, Card 21, +outros) |           ~400+ sites | **STORY/fixture (regra A)**                                                               |
+
+**Total raw colors em produção FORA das exceções documentadas: ZERO.** A regra ESLint `ds/no-raw-color-classes` (pre-commit + pre-push + CI) segurou o sistema; Phase 7 está honesto.
+
+Decomposição estimada dos 761 EXCLUSIVO_DARK:
+
+| Bucket                                                                                               |      Estimativa | Tipo                                 |
+| ---------------------------------------------------------------------------------------------------- | --------------: | ------------------------------------ |
+| Story raw colors (Timeline 158 + Stepper 89 + SideNavbar/Stack/Radio/FileUpload/Tabs/Chip/Card/etc.) | **~700 (~92%)** | STORY                                |
+| Princípio 3 exceptions exercidas em stories (Text colorShade, Badge pink-300)                        |           ~5-10 | COMPONENT (allowlisted exception)    |
+| TokenVisualizations sample rendering                                                                 |           ~5-10 | COMPONENT (allowlisted meta-context) |
+| Possíveis semantic-on-semantic dark token-pairs genuínos                                             |          ~20-50 | COMPONENT (real defect, mas pequeno) |
+| `select-name` + `label` + `aria-required-attr` residuais                                             |              22 | majoritariamente STORY               |
+
+**Anchors confirmados Timeline 158 + Stepper 89 = 247 nodes (~32% da dívida) em 2 arquivos:** Timeline.tsx e Stepper.tsx ambos **ZERO** raw colors em produção; 100% dos +nodes vêm de `Timeline.stories.tsx` (8 raw-color sites) + `Stepper.stories.tsx` (8 raw-color sites). Estes não são "Phase 7 deixou buraco em produção"; são fixture pollution.
+
+**Veredito da classificação: o DS produção está clean.** Phase 7 vigora. A dívida dark é **faxina sistemática sob regra (A)** — substituição semântica `text-gray-600 → text-fg-secondary`, `text-blue-700 → text-fg-link`, etc., respeitando triagem por papel (não por valor). Anchor próximo: Timeline + Stepper (32% / 2 arquivos). NÃO atacar até o user aprovar a substituição papel-a-papel proposta.
+
+### Overlap com Family C-light residual 19n (Buckets H/I/J/K)
+
+BACKLOG line 690 descreve os 19n como "raw colors em stories, brand fg outliers, pink-300 Principle 3". Esses são raw colors que falham AA EM LIGHT (rara: text-blue-300 sobre white ≈ 1.94:1 é o tipo de caso). A vasta maioria dos ~400 raw colors em stories PASSA em light por causa do fundo-branco (gray-600/white = 5.74 ✓). Portanto:
+
+- **A interseção é parcial, não total.** Story files que aparecem nas duas listas (light residual + dark debt) renderizam DIFERENTES pares falhando: light flag um conjunto (cores muito claras sobre white), dark flag outro (cores médias sobre slate-800).
+- **Fixar raw colors via substituição semântica fecha LIGHT 19n + DARK ~700 SIMULTANEAMENTE.** Mesma faxina, dois lados do gate. Confirmação operacional da decisão (A): trabalho de fixture conta pros dois lados.
+- **Componentes com nodes em GÊMEO (138 atuais) são onde a sobreposição acontece de fato** — fixtures que falham em ambos os temas. Esses são o subset que a faxina elimina com 1 substituição.
+
+### Próximos passos atualizados pós-classificação
+
+1. ✅ PR55 merged.
+2. ✅ Gate v2 re-validado com sample disciplinado (24/24 cells, 4 vars × 3 stories × 2 schemes).
+3. ✅ Re-sweep paralelo dark (190s) — 1313 dark / 761 EXCLUSIVO_DARK / 138 GÊMEO / 25 EXCLUSIVO_LIGHT.
+4. ✅ Classificação componente-vs-story dos 761 — ~95% STORY, ~5% COMPONENT (allowlisted exceptions + ~20-50 semantic-on-semantic possíveis).
+5. **Bucket B-dark anchor (Timeline + Stepper stories — 247 nodes / 32%):** substituição semântica raw→token por papel. Aguardando OK do usuário sobre a tabela de tradução.
+6. **Após anchor:** re-sweep, refazer extrator preciso (agora restrito ao residual ~500 — viable), depois faxina sistemática dos restantes story files.
+7. Serial light+dark 96min — só na virada `a11y.test:"error"`, cadência reconciliada.
