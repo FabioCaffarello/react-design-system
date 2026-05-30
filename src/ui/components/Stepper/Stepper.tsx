@@ -127,6 +127,11 @@ export default function Stepper({
                     type="button"
                     onClick={() => handleStepClick(index)}
                     disabled={!allowNavigation || step.disabled}
+                    aria-label={
+                      step.title
+                        ? `Step ${index + 1}: ${step.title}`
+                        : `Step ${index + 1}`
+                    }
                     // data-marker="pending" — see .claude/rules/colors.md
                     // "fg-quaternary: AA-by-construction exception". Anchors
                     // the directed a11y suppression to the pending-marker
@@ -250,6 +255,11 @@ export default function Stepper({
                   type="button"
                   onClick={() => handleStepClick(index)}
                   disabled={!allowNavigation || step.disabled}
+                  aria-label={
+                    step.title
+                      ? `Step ${index + 1}: ${step.title}`
+                      : `Step ${index + 1}`
+                  }
                   // data-marker="pending" — see .claude/rules/colors.md
                   // "fg-quaternary: AA-by-construction exception".
                   {...(status === "pending"
