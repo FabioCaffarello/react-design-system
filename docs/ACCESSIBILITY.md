@@ -418,6 +418,12 @@ parameters: {
 
 Currently only `DashboardLayout` meets that bar (renders `<header>` + `<main>` + `<footer>`). `Header` / `Navigation` / `SideNavbar` emit a single landmark each — keep these rules off there.
 
+#### Hierarchy-decorative exception: `text-fg-quaternary`
+
+`text-fg-quaternary` (slate-400) is the 4th tier of the foreground hierarchy. By construction (`fg-tertiary` already at +0.26 over AA, and `fg-quaternary` must be more muted to occupy a lower tier), this token cannot pass AA over a light background without ceasing to be `fg-quaternary`. Four sites use it in the architecturally-correct role of "pending sequence marker" (Stepper bubble and Timeline dot, horizontal and vertical orientations) — see [`.claude/rules/colors.md` → "`fg-quaternary`: AA-by-construction exception"](../.claude/rules/colors.md) for the mathematical argument, the design evidence (consumer fallback patterns that confirm the marker is decorative), and the boundary condition (a consumer making the marker the sole identity anchor falls outside the exception).
+
+The four bubble/dot elements carry `data-marker="pending"` (set only when `status === "default"`) so the directed `parameters.a11y` suppression in affected stories anchors to the **role**, not to style classes. Selector: `:not([data-marker='pending'])`. Nodes carrying `text-fg-quaternary` in this role are **WONT-FIX-by-design** for color contrast and do not block the criterion to flip `a11y.test` to `"error"`.
+
 ### Manual Testing
 
 1. **Keyboard Navigation**

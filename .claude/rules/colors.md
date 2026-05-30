@@ -285,6 +285,83 @@ contrasted against the surface" relationship is preserved across themes.
 Same pattern for `text-fg-brand-secondary` / `-secondary-emphasis`. Don't
 flatten the pair to a single token "to simplify."
 
+### `fg-quaternary`: AA-by-construction exception
+
+`text-fg-quaternary` (slate-400) is the 4th tier of an ordered four-level
+hierarchy: `fg-primary` (slate-900) → `fg-secondary` (slate-600) →
+`fg-tertiary` (slate-500) → `fg-quaternary` (slate-400). Each tier is
+deliberately more muted than the one above.
+
+**Mathematical constraint.** `fg-tertiary` over `surface-base` (white)
+is 4.76, just +0.26 above WCAG 2.1 AA. By construction, `fg-quaternary`
+must be more muted than `fg-tertiary` to occupy the 4th tier. A neutral
+shade lighter than slate-500 and still passing AA over white does not
+exist in the scale. **Therefore `fg-quaternary` cannot pass AA over a
+light background without ceasing to be `fg-quaternary`.** This is a
+structural property of the 4-level ordered hierarchy, not a token bug.
+
+**Authorized consumers.** This exception covers the following sites,
+all using `fg-quaternary` for the same role — the pending state of an
+ordered-sequence marker (Stepper step bubble, Timeline event dot):
+
+- `src/ui/components/Stepper/Stepper.tsx:140` (horizontal pending bubble)
+- `src/ui/components/Stepper/Stepper.tsx:255` (vertical pending bubble)
+- `src/ui/components/Timeline/Timeline.tsx:65` (horizontal pending dot)
+- `src/ui/components/Timeline/Timeline.tsx:154` (vertical pending dot)
+
+**Design evidence — consumers treat the marker as decorative.** Both
+components are constructed so the glyph inside the bubble is never the
+only carrier of identity:
+
+- Stepper renders the step number only when `showStepNumbers` prop is
+  true: `showStepNumbers ? index + 1 : null`. The number is opt-out by
+  prop.
+- Timeline renders the index as the third fallback in
+  `item.icon || (status === "completed" ? <CheckCircle2 /> : index + 1)`.
+  Consumer may supply `item.icon` at any time; the number never renders
+  for completed items.
+
+Identity is carried by the always-rendered required adjacent title
+(Stepper `step.title`, Timeline `item.title` — `fg-primary` or
+`fg-secondary`, well above AA), reinforced by visual position in the
+sequence and by state color (completed = green-filled bubble,
+pending = white-with-light-border, active = brand-filled bubble).
+
+**Boundary condition — when the exception does NOT apply.** This
+exception covers the marker as a **decorative-hierarchical hint**
+redundant with title + position + state-color. A consumer that makes
+the marker the **only** anchor of identity falls outside:
+
+- Timelines with identical titles, no timestamps, no custom `item.icon`,
+  where the user must rely on the bubble number to tell items apart.
+- Steppers with empty `step.title` and `showStepNumbers={true}` where
+  the number is the only label.
+
+These uses have genuine insufficient contrast — fix by supplying
+`item.icon` (Timeline) or non-empty `step.title` (Stepper). **The
+architectural exception covers redundant use; it does not legitimize
+critical use.**
+
+**Enforcement.** The four authorized bubble/dot elements carry a
+`data-marker="pending"` attribute (set only when `status === "default"`)
+that anchors the directed `parameters.a11y` suppression in the affected
+stories to the **role** (pending sequence marker), not to the bubble's
+style classes. The suppression selector is:
+
+```ts
+{ id: "color-contrast", selector: ":not([data-marker='pending'])" }
+```
+
+This survives a future restyle of the bubble — selector ties to the
+semantic role attribute, not to `bg-surface-base` / `border-line-emphasis`
+/ `text-fg-quaternary` class compounds. When the bubble's appearance
+changes, `data-marker="pending"` persists and the exception still
+applies. When the bubble stops being a pending marker, the attribute
+disappears and the exception expires automatically. New consumers using
+`fg-quaternary` in the same hierarchy-decorative role should set the
+same `data-marker="pending"` attribute (status-conditional) and
+reference this section in their suppression comment.
+
 ## When NOT to create a new token
 
 - The component has a single color that doesn't repeat anywhere else in

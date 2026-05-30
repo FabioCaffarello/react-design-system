@@ -355,6 +355,25 @@ export const ManyItems: Story = {
             : ("default" as const),
     })),
   },
+  parameters: {
+    // Directed a11y suppression — see `.claude/rules/colors.md` section
+    // "`fg-quaternary`: AA-by-construction exception". Pending Timeline
+    // bubbles carry text-fg-quaternary (slate-400) over surface-base
+    // (white), ratio 2.56 — structurally below AA because the 4-level
+    // ordered hierarchy requires quaternary to be more muted than tertiary
+    // (already at +0.26 over AA). The bubble div carries
+    // `data-marker="pending"` only when status === "default" (Stepper and
+    // Timeline both). Selector anchors to that ROLE attribute, not to
+    // style classes — survives a future restyle of the bubble. Any other
+    // color-contrast issue in this story remains visible.
+    a11y: {
+      config: {
+        rules: [
+          { id: "color-contrast", selector: ":not([data-marker='pending'])" },
+        ],
+      },
+    },
+  },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
