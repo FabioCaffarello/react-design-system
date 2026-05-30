@@ -175,6 +175,7 @@ const Switch = memo(
             disabled={disabled}
             className="sr-only"
             aria-hidden="true"
+            tabIndex={-1}
             {...props}
           />
         </div>

@@ -1,3 +1,10 @@
+## [1.21.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.20.0...v1.21.0) (2026-05-30)
+
+
+### ✨ Features
+
+* **a11y:** DatePicker WAI-ARIA grid + roving tabindex (Family B anchor) ([a77388a](https://github.com/FabioCaffarello/react-design-system/commit/a77388adb961b35137d4e82a12de4a8554f3ba72)), closes [#48](https://github.com/FabioCaffarello/react-design-system/issues/48)
+
 ## [1.20.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.19.0...v1.20.0) (2026-05-30)
 
 
