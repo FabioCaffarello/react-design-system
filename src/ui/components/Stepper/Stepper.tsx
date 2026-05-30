@@ -127,6 +127,14 @@ export default function Stepper({
                     type="button"
                     onClick={() => handleStepClick(index)}
                     disabled={!allowNavigation || step.disabled}
+                    // data-marker="pending" — see .claude/rules/colors.md
+                    // "fg-quaternary: AA-by-construction exception". Anchors
+                    // the directed a11y suppression to the pending-marker
+                    // ROLE, not to style classes; survives a future restyle
+                    // of the bubble.
+                    {...(status === "pending"
+                      ? { "data-marker": "pending" }
+                      : {})}
                     className={`
                       flex
                       items-center
@@ -242,6 +250,11 @@ export default function Stepper({
                   type="button"
                   onClick={() => handleStepClick(index)}
                   disabled={!allowNavigation || step.disabled}
+                  // data-marker="pending" — see .claude/rules/colors.md
+                  // "fg-quaternary: AA-by-construction exception".
+                  {...(status === "pending"
+                    ? { "data-marker": "pending" }
+                    : {})}
                   className={`
                     flex
                     items-center

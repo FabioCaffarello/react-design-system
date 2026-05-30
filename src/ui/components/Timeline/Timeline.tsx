@@ -63,6 +63,11 @@ export default function Timeline({
               <div className="flex flex-col items-center flex-1">
                 {/* Icon/Indicator */}
                 <div
+                  // data-marker="pending" — see .claude/rules/colors.md
+                  // "fg-quaternary: AA-by-construction exception".
+                  {...(status === "default"
+                    ? { "data-marker": "pending" }
+                    : {})}
                   className={`
                   flex
                   items-center
@@ -147,6 +152,9 @@ export default function Timeline({
             {/* Timeline Line & Icon */}
             <div className="flex flex-col items-center">
               <div
+                // data-marker="pending" — see .claude/rules/colors.md
+                // "fg-quaternary: AA-by-construction exception".
+                {...(status === "default" ? { "data-marker": "pending" } : {})}
                 className={`
                 flex
                 items-center
