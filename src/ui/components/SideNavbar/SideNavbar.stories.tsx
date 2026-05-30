@@ -83,6 +83,27 @@ A collapsible sidebar with navigation icons column (always visible) and expandab
 export default meta;
 type Story = StoryObj<typeof SideNavbar>;
 
+// Tab metadata for navigation. Driving the rendered triggers from this
+// single source of truth keeps icon+label paired — the previous version
+// declared an unused `tabLabels` map next to a JSX block that hardcoded
+// 5 icon-only triggers without aria-label, producing 38 button-name
+// axe violations across the SideNavbar stories.
+type TabKey = "home" | "analytics" | "users" | "documents" | "settings";
+const tabs: ReadonlyArray<{
+  value: TabKey;
+  label: string;
+  Icon: React.ComponentType<{ className?: string }>;
+}> = [
+  { value: "home", label: "Home", Icon: Home },
+  { value: "analytics", label: "Analytics", Icon: BarChart3 },
+  { value: "users", label: "Users", Icon: Users },
+  { value: "documents", label: "Documents", Icon: FileText },
+  { value: "settings", label: "Settings", Icon: Settings },
+];
+const tabLabels: Record<string, string> = Object.fromEntries(
+  tabs.map((t) => [t.value, t.label]),
+);
+
 // Shared navigation tabs component
 const NavigationTabs = ({
   activeTab,
@@ -97,47 +118,19 @@ const NavigationTabs = ({
       variant="compact"
       className="w-full p-2 gap-1"
     >
-      <Tabs.Trigger
-        value="home"
-        className="w-full aspect-square flex items-center justify-center p-2 rounded-md"
-      >
-        <Home className="h-5 w-5" />
-      </Tabs.Trigger>
-      <Tabs.Trigger
-        value="analytics"
-        className="w-full aspect-square flex items-center justify-center p-2 rounded-md"
-      >
-        <BarChart3 className="h-5 w-5" />
-      </Tabs.Trigger>
-      <Tabs.Trigger
-        value="users"
-        className="w-full aspect-square flex items-center justify-center p-2 rounded-md"
-      >
-        <Users className="h-5 w-5" />
-      </Tabs.Trigger>
-      <Tabs.Trigger
-        value="documents"
-        className="w-full aspect-square flex items-center justify-center p-2 rounded-md"
-      >
-        <FileText className="h-5 w-5" />
-      </Tabs.Trigger>
-      <Tabs.Trigger
-        value="settings"
-        className="w-full aspect-square flex items-center justify-center p-2 rounded-md"
-      >
-        <Settings className="h-5 w-5" />
-      </Tabs.Trigger>
+      {tabs.map(({ value, label, Icon }) => (
+        <Tabs.Trigger
+          key={value}
+          value={value}
+          aria-label={label}
+          className="w-full aspect-square flex items-center justify-center p-2 rounded-md"
+        >
+          <Icon className="h-5 w-5" />
+        </Tabs.Trigger>
+      ))}
     </Tabs.List>
   </Tabs>
 );
-
-const tabLabels: Record<string, string> = {
-  home: "Home",
-  analytics: "Analytics",
-  users: "Users",
-  documents: "Documents",
-  settings: "Settings",
-};
 
 // Layout wrapper for stories
 const LayoutWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -683,13 +676,25 @@ export const WithBottomNavigation: Story = {
                 onTabChange={setActiveTab}
               />
               <div className="mt-auto p-2 space-y-1">
-                <button className="w-full aspect-square flex items-center justify-center p-2 rounded-md text-gray-500 hover:bg-gray-100">
+                <button
+                  type="button"
+                  aria-label="Notifications"
+                  className="w-full aspect-square flex items-center justify-center p-2 rounded-md text-gray-500 hover:bg-gray-100"
+                >
                   <Bell className="h-5 w-5" />
                 </button>
-                <button className="w-full aspect-square flex items-center justify-center p-2 rounded-md text-gray-500 hover:bg-gray-100">
+                <button
+                  type="button"
+                  aria-label="Help"
+                  className="w-full aspect-square flex items-center justify-center p-2 rounded-md text-gray-500 hover:bg-gray-100"
+                >
                   <HelpCircle className="h-5 w-5" />
                 </button>
-                <button className="w-full aspect-square flex items-center justify-center p-2 rounded-md text-red-500 hover:bg-red-50">
+                <button
+                  type="button"
+                  aria-label="Log out"
+                  className="w-full aspect-square flex items-center justify-center p-2 rounded-md text-red-500 hover:bg-red-50"
+                >
                   <LogOut className="h-5 w-5" />
                 </button>
               </div>
