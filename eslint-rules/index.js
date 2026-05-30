@@ -1,4 +1,5 @@
 import noRawColorClasses from "./no-raw-color-classes/rule.js";
+import storyDiscipline from "./story-discipline/rule.js";
 
 export default {
   meta: {
@@ -7,5 +8,6 @@ export default {
   },
   rules: {
     "no-raw-color-classes": noRawColorClasses,
+    "story-discipline": storyDiscipline,
   },
 };

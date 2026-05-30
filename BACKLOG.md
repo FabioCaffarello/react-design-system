@@ -426,35 +426,24 @@ ocorrer, criar `.claude/rules/cleanup.md` (ou
 - A regra "probe antes de codar contra premissa de API/contrato"
   (Phase 13a allowlist).
 
-## Migrar 5 legacy MDX standalone → attached Meta
+## ~~Migrar 5 legacy MDX standalone → attached Meta~~ ✅ RESOLVIDO
 
-**Descoberto em:** Phase 13b1 (investigação do estado atual MDX).
-**Estado:** 5 arquivos `.mdx` componentes legacy usam
-`<Meta title="Components/X" />` (standalone form, cria leaf separado
-no sidebar) em vez do `<Meta of={ComponentStories} />` recomendado
-em Storybook 10 (attached form, funde com a entry das stories):
+**Resolvido em:** verificado por evidência de estado em 2026-05-29 (Phase C PR3 — descoberto ao validar a deferral chain do item `denylist→allowlist`). Migração executada em commits anteriores:
 
-- `src/ui/components/Form/Form.mdx`
-- `src/ui/components/DatePicker/DatePicker.mdx`
-- `src/ui/components/Dialog/Dialog.mdx`
-- `src/ui/components/Table/Table.mdx`
-- `src/ui/components/Table/TableProvider.mdx`
+- `56dbbe2 docs(legacy): rewrite Form.mdx to attached MDX standard`
+- `4f1ae87 docs(legacy): rewrite DatePicker.mdx to attached MDX standard`
+- `c9e5ba2 docs(legacy): rewrite Dialog.mdx to attached MDX standard`
+- `7d7dd04 docs(legacy): rewrite Table.mdx + fold TableProvider architecture as trailing section`
 
-**Por que importa:** Phase 13b1 estabeleceu o padrão attached pra
-componentes novos (Modal, Button). Os 5 legacy ficam em forma
-divergente até serem migrados, gerando duas convenções coexistentes
-no repo. A migração é mecânica (trocar `title="…"` por
-`of={XStories}` + adicionar `import * as XStories from "./X.stories"`)
-mas exige cuidado com ordem (cada arquivo tem suas próprias seções
-que podem precisar ajuste pra não duplicar Title/Anatomy/Examples
-que o attached form gerencia).
-**Ação:** Phase 13b2 candidate. Sequência sugerida: migrar
-mecanicamente os 5 → validar storybook build verde → revisar se
-alguma seção do MDX legacy duplica algo que o attached form já
-expõe (description em meta.parameters.docs.description, story list
-auto) → cortar duplicação se houver. `.prettierignore` (Phase 13b1
-Commit 1) garante que prettier não destrói os arquivos durante
-edição.
+**Verificação de estado** (`rg "<Meta " <arquivo>`):
+
+- `src/ui/components/Form/Form.mdx` → `<Meta of={FormStories} />` ✓ attached
+- `src/ui/components/DatePicker/DatePicker.mdx` → `<Meta of={DatePickerStories} />` ✓ attached
+- `src/ui/components/Dialog/Dialog.mdx` → `<Meta of={DialogStories} />` ✓ attached
+- `src/ui/components/Table/Table.mdx` → `<Meta of={TableStories} />` ✓ attached (TableProvider arquitetura absorvida como seção trailing — ver commit 7d7dd04)
+- `src/ui/components/Table/TableProvider.mdx` → ausente ✓ (deletado por absorção)
+
+`rg "<Meta\s+title=" src/ui` retornou apenas `src/ui/tokens/Tokens.mdx` (`Design System/Tokens` — página de documentação infra, não componente, escopo estável). Zero `.mdx` de componente em `src/ui` mantém `title=` literal hoje.
 
 ## Replicar component-doc skill aos ~65 componentes restantes
 
@@ -609,7 +598,14 @@ componente atual funciona pro escopo que cobre.
    **Padrão observado:** decisões arquiteturais marcadas "FINAL" ou tomadas em commits grandes ("feat: components evolution") sem documentação pública e sem validação externa silenciosamente compõem débito que aparece de forma surpreendente meses depois.
    **Proposta:** com 3 ocorrências, princípio agora está validado o suficiente pra virar rule. Criar `.claude/rules/architectural-decisions.md` em phase próxima registrando: (a) nenhuma decisão arquitetural marcada "FINAL" sem validação contra consumer externo real; (b) decisões arquiteturais consumer-visible (theme strategy, distribution layout, exports map) devem ter documentação pública (README ou similar) sincronizada com o código.
 
-## Inverter grep de verificação em `stories.md` (denylist → allowlist)
+## ~~Inverter grep de verificação em `stories.md` (denylist → allowlist)~~ ✅ RESOLVIDO
+
+**Resolução (Phase C PR3):**
+
+- **`.stories.tsx` (67 arquivos, dominante):** ESLint rule `ds/story-discipline/valid-title-segment` (allowlist AST contra os 4 segmentos válidos — `Primitives | Components | Layouts | Design System`). Implementação em `eslint-rules/story-discipline/`. Roda em pre-commit, pre-push e CI. A inversão denylist→allowlist que este item pediu está em código, não em prosa: qualquer segmento fora dos 4 falha lint com file:line, incluindo invented future taxonomy (`Widgets/`, `Patterns/`, etc.) que o denylist enumerativo deixava passar.
+- **`.mdx` (4 páginas infra estáveis):** grep PCRE residual em `.claude/rules/stories.md` cobrindo `src/ui/**/*.mdx` E `src/docs/**/*.mdx` (path `src` recursivo). Lista atual: `src/docs/Introduction.mdx`, `src/docs/ComponentStatus.mdx`, `src/docs/guides/ComponentComposition.mdx`, `src/ui/tokens/Tokens.mdx` — todas com `<Meta title="Design System/...">` válido. Escopo **estável**, não decrescente: são páginas de documentação do design system sem `.stories.tsx` correspondente; não vão migrar para attached form porque não há nada para anexar. O grep é small + estável + executável pelo dev antes de commit; adicionar `eslint-plugin-mdx` para cobrir 4 arquivos estáveis foi rejeitado por ROI ruim (Phase C PR3 decisão de escopo).
+
+A inversão está em código (.stories.tsx via AST) E em regex PCRE (.mdx via grep allowlist) — a mesma lista categórica dos 4 segmentos, dois mecanismos.
 
 **Descoberto em:** Phase B (taxonomy fix de `Providers/AppProvider`).
 **Estado:** o grep de verificação em `.claude/rules/stories.md` (linhas ~13-15) enumera segmentos banidos explicitamente — `(Atoms|Molecules|Organisms|Patterns|Templates)/`. É falso-negativo por construção: não pegou `Providers/AppProvider` quando essa story foi introduzida, e não vai pegar a próxima taxonomia inválida inventada (qualquer string que não esteja na lista hardcoded). A regra positiva da própria `stories.md` ("primeiro segmento ∈ {Primitives, Components, Layouts, Design System}") já é uma allowlist — o grep deveria ser a aplicação executável dela, não uma denylist paralela e divergente.
