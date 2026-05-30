@@ -4,7 +4,7 @@
  * Storybook stories for the PageHeader component.
  */
 
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { PageHeader } from "./PageHeader";
 import { Button } from "../../primitives/Button/Button";
 import { Plus, Edit, Trash2 } from "lucide-react";

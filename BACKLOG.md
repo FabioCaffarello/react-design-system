@@ -426,35 +426,24 @@ ocorrer, criar `.claude/rules/cleanup.md` (ou
 - A regra "probe antes de codar contra premissa de API/contrato"
   (Phase 13a allowlist).
 
-## Migrar 5 legacy MDX standalone → attached Meta
+## ~~Migrar 5 legacy MDX standalone → attached Meta~~ ✅ RESOLVIDO
 
-**Descoberto em:** Phase 13b1 (investigação do estado atual MDX).
-**Estado:** 5 arquivos `.mdx` componentes legacy usam
-`<Meta title="Components/X" />` (standalone form, cria leaf separado
-no sidebar) em vez do `<Meta of={ComponentStories} />` recomendado
-em Storybook 10 (attached form, funde com a entry das stories):
+**Resolvido em:** verificado por evidência de estado em 2026-05-29 (Phase C PR3 — descoberto ao validar a deferral chain do item `denylist→allowlist`). Migração executada em commits anteriores:
 
-- `src/ui/components/Form/Form.mdx`
-- `src/ui/components/DatePicker/DatePicker.mdx`
-- `src/ui/components/Dialog/Dialog.mdx`
-- `src/ui/components/Table/Table.mdx`
-- `src/ui/components/Table/TableProvider.mdx`
+- `56dbbe2 docs(legacy): rewrite Form.mdx to attached MDX standard`
+- `4f1ae87 docs(legacy): rewrite DatePicker.mdx to attached MDX standard`
+- `c9e5ba2 docs(legacy): rewrite Dialog.mdx to attached MDX standard`
+- `7d7dd04 docs(legacy): rewrite Table.mdx + fold TableProvider architecture as trailing section`
 
-**Por que importa:** Phase 13b1 estabeleceu o padrão attached pra
-componentes novos (Modal, Button). Os 5 legacy ficam em forma
-divergente até serem migrados, gerando duas convenções coexistentes
-no repo. A migração é mecânica (trocar `title="…"` por
-`of={XStories}` + adicionar `import * as XStories from "./X.stories"`)
-mas exige cuidado com ordem (cada arquivo tem suas próprias seções
-que podem precisar ajuste pra não duplicar Title/Anatomy/Examples
-que o attached form gerencia).
-**Ação:** Phase 13b2 candidate. Sequência sugerida: migrar
-mecanicamente os 5 → validar storybook build verde → revisar se
-alguma seção do MDX legacy duplica algo que o attached form já
-expõe (description em meta.parameters.docs.description, story list
-auto) → cortar duplicação se houver. `.prettierignore` (Phase 13b1
-Commit 1) garante que prettier não destrói os arquivos durante
-edição.
+**Verificação de estado** (`rg "<Meta " <arquivo>`):
+
+- `src/ui/components/Form/Form.mdx` → `<Meta of={FormStories} />` ✓ attached
+- `src/ui/components/DatePicker/DatePicker.mdx` → `<Meta of={DatePickerStories} />` ✓ attached
+- `src/ui/components/Dialog/Dialog.mdx` → `<Meta of={DialogStories} />` ✓ attached
+- `src/ui/components/Table/Table.mdx` → `<Meta of={TableStories} />` ✓ attached (TableProvider arquitetura absorvida como seção trailing — ver commit 7d7dd04)
+- `src/ui/components/Table/TableProvider.mdx` → ausente ✓ (deletado por absorção)
+
+`rg "<Meta\s+title=" src/ui` retornou apenas `src/ui/tokens/Tokens.mdx` (`Design System/Tokens` — página de documentação infra, não componente, escopo estável). Zero `.mdx` de componente em `src/ui` mantém `title=` literal hoje.
 
 ## Replicar component-doc skill aos ~65 componentes restantes
 
@@ -609,7 +598,14 @@ componente atual funciona pro escopo que cobre.
    **Padrão observado:** decisões arquiteturais marcadas "FINAL" ou tomadas em commits grandes ("feat: components evolution") sem documentação pública e sem validação externa silenciosamente compõem débito que aparece de forma surpreendente meses depois.
    **Proposta:** com 3 ocorrências, princípio agora está validado o suficiente pra virar rule. Criar `.claude/rules/architectural-decisions.md` em phase próxima registrando: (a) nenhuma decisão arquitetural marcada "FINAL" sem validação contra consumer externo real; (b) decisões arquiteturais consumer-visible (theme strategy, distribution layout, exports map) devem ter documentação pública (README ou similar) sincronizada com o código.
 
-## Inverter grep de verificação em `stories.md` (denylist → allowlist)
+## ~~Inverter grep de verificação em `stories.md` (denylist → allowlist)~~ ✅ RESOLVIDO
+
+**Resolução (Phase C PR3):**
+
+- **`.stories.tsx` (67 arquivos, dominante):** ESLint rule `ds/story-discipline/valid-title-segment` (allowlist AST contra os 4 segmentos válidos — `Primitives | Components | Layouts | Design System`). Implementação em `eslint-rules/story-discipline/`. Roda em pre-commit, pre-push e CI. A inversão denylist→allowlist que este item pediu está em código, não em prosa: qualquer segmento fora dos 4 falha lint com file:line, incluindo invented future taxonomy (`Widgets/`, `Patterns/`, etc.) que o denylist enumerativo deixava passar.
+- **`.mdx` (4 páginas infra estáveis):** grep PCRE residual em `.claude/rules/stories.md` cobrindo `src/ui/**/*.mdx` E `src/docs/**/*.mdx` (path `src` recursivo). Lista atual: `src/docs/Introduction.mdx`, `src/docs/ComponentStatus.mdx`, `src/docs/guides/ComponentComposition.mdx`, `src/ui/tokens/Tokens.mdx` — todas com `<Meta title="Design System/...">` válido. Escopo **estável**, não decrescente: são páginas de documentação do design system sem `.stories.tsx` correspondente; não vão migrar para attached form porque não há nada para anexar. O grep é small + estável + executável pelo dev antes de commit; adicionar `eslint-plugin-mdx` para cobrir 4 arquivos estáveis foi rejeitado por ROI ruim (Phase C PR3 decisão de escopo).
+
+A inversão está em código (.stories.tsx via AST) E em regex PCRE (.mdx via grep allowlist) — a mesma lista categórica dos 4 segmentos, dois mecanismos.
 
 **Descoberto em:** Phase B (taxonomy fix de `Providers/AppProvider`).
 **Estado:** o grep de verificação em `.claude/rules/stories.md` (linhas ~13-15) enumera segmentos banidos explicitamente — `(Atoms|Molecules|Organisms|Patterns|Templates)/`. É falso-negativo por construção: não pegou `Providers/AppProvider` quando essa story foi introduzida, e não vai pegar a próxima taxonomia inválida inventada (qualquer string que não esteja na lista hardcoded). A regra positiva da própria `stories.md` ("primeiro segmento ∈ {Primitives, Components, Layouts, Design System}") já é uma allowlist — o grep deveria ser a aplicação executável dela, não uma denylist paralela e divergente.
@@ -623,3 +619,92 @@ grep -rIn --include='*.stories.tsx' --include='*.mdx' \
 ```
 
 (checar suporte a negative lookahead no grep alvo — BSD grep não suporta PCRE; usar `grep -P` em GNU ou `rg` se disponível, ou inverter via dois passos `grep | grep -v`.) Atualizar o exemplo na própria `stories.md` no mesmo commit.
+
+## Phase C PR2 — a11y backlog real (post-noise silencing)
+
+**Descoberto em:** Phase C PR2, Passo 1 (baseline paralelo de 852 stories) + Passo 2 (re-medição com noise rules silenciadas) + Passo 3 (full serial de fechamento, workers=1, BrowserContext por story).
+**Estado:** `a11y.test` segue em `"todo"` em `.storybook/preview.tsx`. Três regras page-level (`region`, `landmark-one-main`, `page-has-heading-one`) silenciadas globalmente — instrumento aplica regra de página em iframe de componente, gerando ~78% de ruído (2.802 nodes / ~492 stories were noise-only). Reativadas só em `DashboardLayout` (única que monta `<header>` + `<main>` + `<footer>`). Política documentada em `docs/ACCESSIBILITY.md` seção "Story-iframe exceptions".
+
+**Baseline de record (full serial, 0 errored):** 806 nodes em 354 stories. Distribuição por impact:
+
+| Impact   | Nodes |
+| -------- | ----: |
+| critical |   222 |
+| serious  |   549 |
+| moderate |    29 |
+| minor    |     6 |
+
+**Por que importa:** virar `a11y.test: "error"` (meta no fim do funil) só é seguro depois de zerar critical e serious. Sem o silenciamento das 3 page-level rules, "error" bloqueava CI em 842/852 stories no primeiro push por falso-positivo de instrumento — viraria allowlist de exceção em massa (dívida carimbada de "resolvido", anti-padrão explícito da rule Phase 7).
+
+**Backlog agrupado por causa-raiz, não por regra:**
+
+### Family A — "Controle sem nome acessível" (152 nodes, ~57 stories)
+
+- `button-name` 94n/24s — **38n concentrados em SideNavbar** (icon-only menu buttons sem `aria-label`). Single anchor fix em SideNavbar pode derrubar 40%+ da família. Top: `components/sidenavbar/{variants,with-bottom-navigation,with-header,with-footer,with-header-and-footer}`.
+- `select-name` 25n/22s — espalhado: SearchAndFilterPattern (2), DataGrid pagination (2). Pequenos `<select>` sem label associado.
+- `aria-input-field-name` 18n/10s — **12n em Slider** (range handles dos sliders).
+- `label` 11n/10s — espalhado (SideNavbar 2, Textarea 2, MultiSelect 2).
+- `aria-command-name` 1n/1s — outlier.
+- `aria-dialog-name` 3n/3s — Dialog sem accessible name.
+
+**Anchor sugerido:** atacar SideNavbar primeiro (densidade mais alta + cluster claro). Validar se o padrão é `<button>` com só ícone Lucide — fix é `aria-label` no botão ou conversão para `<button aria-label="X"><Icon aria-hidden /></button>`.
+
+### Family B — "ARIA inválido" (124 nodes, ~24 stories)
+
+- `aria-allowed-attr` 62n em **APENAS 2 stories** — `components/datepicker/{open-state,with-events}` com 31 nodes cada (mesmo code path). Single fix em DatePicker fecha 62 nodes (28% da família crítica).
+- `aria-valid-attr-value` 21n/19s — top: SideNavbar (3), DashboardLayout (1 cada em ~5 stories).
+- `aria-hidden-focus` 17n/12s — **10n em Switch** (input `aria-hidden` mas focável; provável padrão de checkbox custom).
+- `aria-prohibited-attr` 15n em **APENAS 2 stories** — `components/rating/{read-only,read-only-state}`. Rating em read-only mode está usando atributo não permitido para o role.
+- `aria-required-parent` 4n/4s; `aria-required-children` 3n/3s; `aria-required-attr` 2n/1s — outliers individuais.
+
+**Anchor sugerido:** DatePicker primeiro (62 nodes / 1 fix) → Rating read-only (15 / 1 fix) → Switch (10 / 1 fix). Esses 3 anchors fecham 87 dos 124 nodes da família.
+
+### Family C — "Contraste de cor abaixo de WCAG 2.1 AA 4.5:1" (467 nodes, 275 stories)
+
+- `color-contrast` (serious) — cross-cuta o catálogo inteiro. Top concentração: Table full-featured (17), Table declarative-api (17), Timeline many-items (11), Badge accessibility (8), Badge variants (6). +3 nodes vieram de `Toast/clear-all` no full serial (não medidos no paralelo).
+- **Cruza com `.claude/rules/colors.md` e `PHASE_7_SEMANTIC_COLORS.md`.** Provável raiz: punhado de combinações token-on-token abaixo de 4.5:1. Candidatos a investigar (extrair `sampleTargets` do report serial):
+  - `text-fg-tertiary` ou `text-fg-quaternary` sobre `bg-surface-base` / `bg-surface-subtle`.
+  - `text-fg-secondary` sobre `bg-surface-muted`.
+  - Foreground brand sobre surface brand-subtle.
+- **Anchor sugerido:** abrir 3 stories de hotspot (`components/table/full-featured`, `primitives/badge/accessibility`, `components/timeline/many-items`), extrair os 30+ `sampleTargets` de cor, identificar 3-5 pares (text token, bg token) que falham, decidir caso-a-caso: subir contraste do token semântico (afeta todo o sistema), ou re-mapear o consumo desses componentes para tokens existentes que passam. Um fix de token pode fechar centenas de nodes — escala invertida do esforço.
+
+### Family D — "Landmark estrutural mal posicionado" (52 nodes, ~37 stories)
+
+- `landmark-complementary-is-top-level` 22n/20s — **SideNavbar** lidera: `<aside>` nested em outro landmark. Provável: stories de SideNavbar embrulham em outro `<aside>` ou em `<main>` para demo. Pode ser fix de story, não de componente.
+- `nested-interactive` 25n/18s — `components/menu` (4 nodes em placements) e `primitives/chip` (3 em clickable-and-removable) lideram. Chip com clickable + removable tem `<button>` dentro de `<button>` — fix arquitetural na anatomia do Chip.
+- `landmark-unique` 5n/4s; `landmark-no-duplicate-banner` 1n/1s — outliers.
+
+### Family E — "Outliers minor/serious/moderate isolados" (10 nodes)
+
+- `empty-heading` 6n/6s (minor) — cleanup.
+- `listitem` 2n/2s (serious) — `<li>` fora de `<ul>`/`<ol>`; check stories que renderizam `<li>` solto para layout.
+- `heading-order` 1n/1s (moderate) — pulo de nível de heading (h1 → h3 sem h2 etc.).
+- `scrollable-region-focusable` 1n/1s (serious) — região com scroll que não recebe foco por teclado.
+
+**Política de fechamento:**
+
+1. NÃO criar `parameters.a11y.allowConsoleErrors`-like allowlist temporária — vira dívida carimbada de "resolvido" (anti-padrão explícito).
+2. Atacar por anchor: o fix de 1 componente fecha N stories. Ordem sugerida por relação esforço/impacto: DatePicker (62/1 fix) → SideNavbar buttons (38+/1 cluster fix) → Rating read-only (15/1 fix) → color-contrast tokens (centenas/3-5 token fixes) → Switch (10/1 fix) → Slider (12/1 cluster fix).
+3. Cada anchor vira uma sub-phase própria. Re-rodar baseline após cada fix para confirmar que a aritmética bate (e que o fix não regrediu outra família).
+4. Quando critical+serious = 0, virar `a11y.test: "error"` em `.storybook/preview.tsx`. Não antes.
+
+**Caveat de medição — resolvido no full serial (Passo 3):** o paralelo (workers=6, BrowserContext compartilhada) deixou 2 stories com axe-race no Passo 2 — `components/form--with-events` e `components/toast--clear-all`, exatamente componentes interativos onde a11y mais importa. Full serial (workers=1, fresh BrowserContext por story, ~48min wall clock) fechou 0 errored em 852/852: Form clean (0 nodes), Toast 3 nodes color-contrast (incluídos em Family C). Delta vs paralelo: +4 nodes (+3 serious Toast + 1 critical button-name de timing-variance) + 2 outliers novos (heading-order, scrollable-region-focusable). Para refresh futuro: serial é a forma íntegra (~48min); paralelo é OK para diff incremental após anchor fix, sabendo que pode ter race em 1-2 stories interativas.
+
+## Phase C PR2 — calibragem metodológica: equivalence axe-direct vs addon-a11y
+
+**Descoberto em:** Phase C PR2 Passo 2 (preocupação levantada após o re-baseline) + Passo 3 (teste empírico).
+**Estado:** O baseline mede via `axe.run()` direto injetado por Playwright após `sb-show-main + #storybook-root children + 150ms settle`. O addon-a11y em CI/CC rodaria axe após o `play` function completar. Risco hipotético: se script medisse estado pré-play (modal fechado) e addon medisse pós-play (modal aberto), seriam instrumentos diferentes — baseline e juiz desalinhados, anchor fix poderia mostrar discrepância contra UI.
+**Teste empírico (5 stories, 2 padrões cada):** rodada A "baseline as-shipped" (settle 150ms) vs rodada B "addon-equivalent" (espera `currentRender.phase === "played"` ou equivalente + settle 200ms). Targets escolhidos para forçar o caso-limite:
+
+| Story                                           | A nodes | B nodes | A phase   | B phase  | Match        |
+| ----------------------------------------------- | ------: | ------: | --------- | -------- | ------------ |
+| `components/datepicker--open-state`             |      32 |      32 | finished  | finished | rule-by-rule |
+| `components/datepicker--with-events`            |      32 |      32 | finished  | finished | rule-by-rule |
+| `components/modal--default`                     |       1 |       1 | finished  | finished | rule-by-rule |
+| `components/commandpalette--default`            |       1 |       1 | afterEach | finished | rule-by-rule |
+| `primitives/button--primary` (controle no-play) |       1 |       1 | finished  | finished | rule-by-rule |
+
+5/5 identical rule-by-rule. Caso mais informativo: CommandPalette com `phase=afterEach` no padrão A (lifecycle ainda rodando) mas mesmo assim os nodes bateram com B — o DOM estabilizou ANTES do lifecycle terminar. Para essas 5 stories, "axe é axe".
+
+**Limite da inferência (registrar explícito para não virar folclore):** 5 stories confirmam, não generalizam para as 47 com play function. A medição forte é "nas stories testadas — incluindo o caso-limite CommandPalette — o DOM estabiliza antes da medição A"; a forte INválida seria "está provado para toda story com play". Se um anchor fix futuro (Family B: DatePicker; Family C: stories de Modal/Drawer com conteúdo via play) mostrar discrepância entre o número do BACKLOG e o número que o addon-a11y reporta na UI do Storybook, o lugar de investigar é exatamente esse: uma story com play onde estado-script ≠ estado-addon. Esta é a única folga conhecida do baseline; o método é fiel nos 5/5 medidos, não há prova universal.
+**Ação:** nenhuma agora. Caveat metodológico registrado para consulta se número não bater depois.

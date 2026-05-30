@@ -4,8 +4,8 @@
  * Storybook stories for the NavLink component.
  */
 
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
 import { NavLink } from "./NavLink";
 
 const meta: Meta<typeof NavLink> = {

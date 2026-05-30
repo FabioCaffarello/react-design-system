@@ -146,6 +146,25 @@ export default defineConfig([
     },
   },
   {
+    // Story metadata discipline — enforces Storybook 10 import paths and
+    // the four-segment title allowlist from .claude/rules/stories.md.
+    // Scoped to `.stories.tsx` only; `.mdx` is NOT covered here. The
+    // .mdx surface today is four stable infrastructure pages (Introduction,
+    // ComponentStatus, Tokens, ComponentComposition) all with valid
+    // "Design System/..." titles — they document the design system itself,
+    // have no .stories.tsx counterpart, and won't migrate to attached
+    // <Meta of={...}>. Scope is stable, not shrinking. Adding
+    // eslint-plugin-mdx for four stable pages is bad ROI; the residual
+    // grep in .claude/rules/stories.md covers .mdx for sweeps.
+    files: ["**/*.stories.{ts,tsx}"],
+    plugins: {
+      ds: dsColor,
+    },
+    rules: {
+      "ds/story-discipline": "error",
+    },
+  },
+  {
     // TokenVisualizations renders primitive color tokens by design
     // (meta-documentation: the file IS the catalogue of the primitive
     // scale that everything else avoids). Exempt from the semantic

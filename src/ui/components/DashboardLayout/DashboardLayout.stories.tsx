@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { expect, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, within, waitFor } from "storybook/test";
 import { DashboardLayout } from "./DashboardLayout";
 import { Button, Text } from "../../primitives";
 import { SideNavbar } from "../../components";
@@ -10,6 +10,19 @@ const meta: Meta<typeof DashboardLayout> = {
   component: DashboardLayout,
   parameters: {
     layout: "fullscreen",
+    // DashboardLayout renders <header> + <main> + <footer> — a real page
+    // structure. Re-enable the three landmark/heading rules disabled
+    // globally in .storybook/preview.tsx so this component IS held to
+    // the page-level a11y contract its API promises.
+    a11y: {
+      config: {
+        rules: [
+          { id: "region", enabled: true },
+          { id: "landmark-one-main", enabled: true },
+          { id: "page-has-heading-one", enabled: true },
+        ],
+      },
+    },
     docs: {
       description: {
         component: `
