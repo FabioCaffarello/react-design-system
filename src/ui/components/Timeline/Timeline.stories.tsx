@@ -162,8 +162,8 @@ export const WithContent: Story = {
         timestamp: "2024-01-01",
         status: "completed",
         content: (
-          <div className="mt-2 p-3 bg-gray-50 rounded-md">
-            <p className="text-sm text-gray-700">
+          <div className="mt-2 p-3 bg-surface-subtle rounded-md">
+            <p className="text-sm text-fg-primary">
               Repository created, initial dependencies installed, and project
               structure established.
             </p>
@@ -177,8 +177,8 @@ export const WithContent: Story = {
         timestamp: "2024-01-15",
         status: "active",
         content: (
-          <div className="mt-2 p-3 bg-blue-50 rounded-md">
-            <p className="text-sm text-blue-700">
+          <div className="mt-2 p-3 bg-info-bg rounded-md">
+            <p className="text-sm text-fg-info">
               Design mockups approved, component library created, and style
               guide finalized.
             </p>
@@ -246,7 +246,7 @@ export const LongContent: Story = {
         status: "completed",
         content: (
           <div className="mt-3 space-y-2">
-            <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
+            <ul className="list-disc list-inside text-sm text-fg-secondary space-y-1">
               <li>Feature A implemented</li>
               <li>Feature B implemented</li>
               <li>Testing completed</li>
@@ -262,7 +262,7 @@ export const LongContent: Story = {
         status: "active",
         content: (
           <div className="mt-3 space-y-2">
-            <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
+            <ul className="list-disc list-inside text-sm text-fg-secondary space-y-1">
               <li>Feature C in development</li>
               <li>Feature D planned</li>
             </ul>
@@ -332,7 +332,7 @@ export const InteractiveTimeline: Story = {
     return (
       <div className="p-8">
         <Timeline items={items} />
-        <p className="mt-4 text-sm text-gray-600">
+        <p className="mt-4 text-sm text-fg-secondary">
           Click on timeline items to toggle their status (demo of interactivity)
         </p>
       </div>
@@ -417,7 +417,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Click on timeline items to toggle their status. Check the Actions
           panel to see events being fired.
         </p>

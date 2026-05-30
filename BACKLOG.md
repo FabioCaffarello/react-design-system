@@ -890,6 +890,18 @@ BACKLOG line 690 descreve os 19n como "raw colors em stories, brand fg outliers,
 2. ✅ Gate v2 re-validado com sample disciplinado (24/24 cells, 4 vars × 3 stories × 2 schemes).
 3. ✅ Re-sweep paralelo dark (190s) — 1313 dark / 761 EXCLUSIVO_DARK / 138 GÊMEO / 25 EXCLUSIVO_LIGHT.
 4. ✅ Classificação componente-vs-story dos 761 — ~95% STORY, ~5% COMPONENT (allowlisted exceptions + ~20-50 semantic-on-semantic possíveis).
-5. **Bucket B-dark anchor (Timeline + Stepper stories — 247 nodes / 32%):** substituição semântica raw→token por papel. Aguardando OK do usuário sobre a tabela de tradução.
-6. **Após anchor:** re-sweep, refazer extrator preciso (agora restrito ao residual ~500 — viable), depois faxina sistemática dos restantes story files.
-7. Serial light+dark 96min — só na virada `a11y.test:"error"`, cadência reconciliada.
+5. **Bucket B-dark anchor (Timeline + Stepper stories — TENTATIVA falhou na premissa, PR pequeno mesmo assim):** 16 substituições semânticas aplicadas (gray-600→fg-secondary, gray-500→fg-tertiary, blue-700→fg-info, etc.) em PR57. Phase 7 disciplina shipada em 2 stories (ambas agora raw-color zero). MAS o re-sweep pós-anchor mostrou impacto ínfimo: dark 1313→1320 (+7), Timeline 215→222, Stepper 95→96. **A hipótese "Timeline+Stepper +247 era raw-color unmasked" estava errada.** Drill-down em `Timeline/ManyItems` (71 dark nodes) revelou que os dOnly patterns são SEMANTIC tokens: `text-fg-tertiary` em timestamps, `text-fg-secondary` em descrições, `text-fg-brand-emphasis` em item ativo, `data-marker="pending"` GÊMEO (Bucket F). Não eram raw colors — são pares semânticos que falham (ou continuam falhando) em dark. **PR57 é Phase 7 hygiene legítima mas NÃO é o anchor da dívida dark.** A dívida real exige diagnóstico diferente.
+6. **Próximo: refrescar o extrator com seletor preciso AGORA** (estado correto, anchor 5 já não vai mais mudar o terreno em escala). Captura por nó: classe completa do texto, classe completa do ancestor com bg, computed RGB de cada um, ratio. Output: top {fg_class, bg_class} pares. Pode revelar:
+   - **(a)** Pares semantic-on-semantic genuínos em dark que falham AA por construção (e.g., text-fg-tertiary slate-400 sobre algum bg específico que apertou contraste). Fix: ajustar valor dark do fg ou do bg envolvido.
+   - **(b)** Pares envolvendo a Bucket F exception espalhada além de Timeline/Stepper bubbles documentadas.
+   - **(c)** Outros raw colors em stories que minha grep não capturou (formatos exóticos, classes dinâmicas).
+7. **Faxina sistemática dos demais story files com raw colors** (SideNavbar 38, Stack 30, Radio 29, FileUpload 27, Tabs 26, DatePicker 26, etc.) — vale fazer pela disciplina mesmo se impacto a11y for menor que o esperado, porque o ESLint rule cobre stories no futuro depende dessa limpeza (item de fim de fase).
+8. Serial light+dark 96min — só na virada `a11y.test:"error"`, cadência reconciliada.
+
+### Lição metodológica de PR57 (TENTATIVA de anchor com hipótese errada)
+
+O extrator anterior identificou clusters tipo "228× text-fg-primary on transparent ancestor" e "109× ? on bg-surface-muted" — eu inferi que stories usando `text-gray-*` raw eram a causa dos +247 Timeline+Stepper porque o grep mostrou que stories tinham essas classes. Esse encadeamento é **plausível mas não confirmado**: o extrator não conseguia atribuir o bg ancestor com precisão (`.font-normal` ambíguo), e eu pulei pra conclusão sem o teste.
+
+A premissa que faltava: "se o +247 vem de raw colors em stories, deveria haver correlação POSICIONAL — as 8 raw-color sites de Timeline deveriam aparecer em stories com counts proporcionais ao número de instâncias renderizadas". Conferi só DEPOIS de aplicar — most Timeline stories (default, horizontal, with-icons, with-status, etc.) reportam 12-14 dark nodes cada **sem usar nenhum dos sítios que eu mudei**. Many-items reporta 71 nodes sem ter content custom — só itens default do Timeline component.
+
+Lição: **diagnóstico-antes-de-fix vale também depois de uma classificação aparentemente sólida**. Verificar correlação posicional (which stories carregam which raw colors, qual delta por story) **antes** de aplicar fix evita esse tipo de waste motion. O custo desta tentativa foi pequeno (16 edits + 1 sweep), mas a lição cabe registrar pra próxima vez.
