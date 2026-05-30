@@ -148,7 +148,7 @@ export default function Stepper({
                         status === "completed"
                           ? `${"bg-success"} ${"border-success"} text-fg-inverse`
                           : status === "active"
-                            ? `${"bg-surface-brand"} ${"border-line-brand"} text-fg-inverse`
+                            ? `${"bg-surface-brand-strong"} ${"border-line-brand"} text-fg-inverse`
                             : status === "error"
                               ? `${"bg-error"} ${"border-error"} text-fg-inverse`
                               : "bg-surface-base border-line-emphasis text-fg-quaternary"
@@ -268,7 +268,7 @@ export default function Stepper({
                       status === "completed"
                         ? `${"bg-success"} ${"border-success"} text-fg-inverse`
                         : status === "active"
-                          ? `${"bg-surface-brand"} ${"border-line-brand"} text-fg-inverse`
+                          ? `${"bg-surface-brand-strong"} ${"border-line-brand"} text-fg-inverse`
                           : status === "error"
                             ? `${"bg-error"} ${"border-error"} text-fg-inverse`
                             : "bg-surface-base border-line-emphasis text-fg-quaternary"

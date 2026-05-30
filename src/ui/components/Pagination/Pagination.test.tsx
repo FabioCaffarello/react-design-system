@@ -106,7 +106,7 @@ describe("Pagination", () => {
     const currentPageButton = screen.getByLabelText("Go to page 3");
     expect(currentPageButton).toHaveAttribute("aria-current", "page");
     expect(currentPageButton).toHaveClass(
-      "bg-surface-brand",
+      "bg-surface-brand-strong",
       "text-fg-inverse",
     );
   });

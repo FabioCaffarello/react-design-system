@@ -57,7 +57,7 @@ describe("Button", () => {
   it("applies variant classes", () => {
     const { container } = render(<Button variant="primary">Primary</Button>);
     const button = container.querySelector("button");
-    expect(button).toHaveClass("bg-surface-brand");
+    expect(button).toHaveClass("bg-surface-brand-strong");
   });
 
   it("applies size classes", () => {
