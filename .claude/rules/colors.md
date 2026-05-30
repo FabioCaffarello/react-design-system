@@ -15,6 +15,33 @@ The source of truth for all class names is `src/styles/semantic/colors.css`.
 Dark-mode overrides live in `src/styles/themes/dark.css`. Adding a new color
 means editing those files, not inlining values.
 
+**Dark mode has two activation paths and BOTH must be maintained.**
+`themes/dark.css` declares the dark token set twice:
+
+1. `[data-theme="dark"], .dark { … }` — explicit consumer opt-in.
+2. `@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]):not(.light) { … } }` — auto-apply when the OS prefers dark and no explicit opt-out is set.
+
+CSS does **not** inherit custom-property declarations between selectors,
+so the two blocks must declare the same set of tokens verbatim (modulo
+selector header and `::selection` pseudo). A prior version of the file
+listed only 5 of ~117 vars in the `@media` block with a comment claiming
+"other variables would inherit from .dark" — that comment was wrong,
+and the result was Modal/Dialog/CommandPalette rendering with white
+backgrounds for every user on OS-dark without an explicit
+`data-theme="dark"`. The bug was invisible to the light a11y baseline
+and surfaced only when the dark baseline plumbing landed.
+
+`scripts/validate-dark-coverage.mjs` runs in `pre-push` and CI; it
+parses both blocks and fails on any divergence — duplication that
+cannot drift. Theme-agnostic tokens (`--color-scrim`, `--color-tint-hover`,
+per Principle 5 below) are allowlisted in the validator and stay out of
+the dark blocks by design.
+
+If you add a token to `semantic/colors.css`, add it to **both** dark
+blocks. If it is intentionally theme-agnostic, add it to the validator's
+allowlist with a Principle-5 rationale. There is no path where a
+semantic color token has only one of the two declarations.
+
 ## Canonical vocabulary
 
 The lists below are the public surface. If you need something not on the

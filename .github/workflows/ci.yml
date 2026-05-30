@@ -32,6 +32,9 @@ jobs:
       - name: Prettier check
         run: npx prettier --check .
 
+      - name: Validate dark-theme coverage
+        run: node scripts/validate-dark-coverage.mjs
+
   typecheck:
     name: Typecheck (tsc --noEmit)
     runs-on: ubuntu-latest
