@@ -113,7 +113,7 @@
   --color-warning-border: var(--color-amber-200);
 
   /* Error */
-  --color-error: var(--color-rose-500);
+  --color-error: var(--color-rose-700);
   --color-error-light: var(--color-rose-400);
   --color-error-dark: var(--color-rose-700);
   --color-error-bg: var(--color-rose-50);

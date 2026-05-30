@@ -82,7 +82,7 @@
   --color-surface-brand-emphasis: var(--color-indigo-600);
 
   --color-surface-secondary-subtle: var(--color-pink-50);
-  --color-surface-secondary: var(--color-pink-500);
+  --color-surface-secondary: var(--color-pink-700);
 
   --color-surface-accent-subtle: var(--color-cyan-50);
   --color-surface-accent: var(--color-cyan-500);
@@ -161,7 +161,7 @@
   --color-warning-border-emphasis: var(--color-amber-500);
 
   /* Error */
-  --color-error: var(--color-rose-500);
+  --color-error: var(--color-rose-700);
   --color-error-light: var(--color-rose-400);
   --color-error-dark: var(--color-rose-700);
   --color-error-bg: var(--color-rose-50);
