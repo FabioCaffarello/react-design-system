@@ -1,3 +1,10 @@
+## [1.23.1](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.0...v1.23.1) (2026-05-30)
+
+
+### 🐛 Bug Fixes
+
+* **theme:** complete dark [@media](https://github.com/media) block + 5 missing dark overrides ([6e05ad9](https://github.com/FabioCaffarello/react-design-system/commit/6e05ad92376a65c10905a48b70f520d4bddb8e55)), closes [#55](https://github.com/FabioCaffarello/react-design-system/issues/55)
+
 ## [1.23.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.22.0...v1.23.0) (2026-05-30)
 
 
