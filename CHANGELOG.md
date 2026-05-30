@@ -1,3 +1,15 @@
+## [1.16.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.15.1...v1.16.0) (2026-05-30)
+
+
+### ✨ Features
+
+* **tokens:** darken status -dark tokens to cross WCAG AA 4.5:1 ([602e0e9](https://github.com/FabioCaffarello/react-design-system/commit/602e0e9b6fdc9e6ef87800451d5ea6d17d59e92c))
+
+
+### 📝 Documentation
+
+* **backlog:** close a11y baseline with full serial + equivalence note ([24eee0c](https://github.com/FabioCaffarello/react-design-system/commit/24eee0c8a9a67334e4d635df2dd36ac918346ed1))
+
 ## [1.15.1](https://github.com/FabioCaffarello/react-design-system/compare/v1.15.0...v1.15.1) (2026-05-29)
 
 
