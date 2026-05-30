@@ -56,7 +56,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: cn(
-          "bg-surface-brand",
+          "bg-surface-brand-strong",
           "text-fg-inverse",
           "hover:opacity-90",
           "focus:ring-line-brand",

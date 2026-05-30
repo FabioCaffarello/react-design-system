@@ -317,7 +317,7 @@ export function DatePickerCalendar({
                   isDisabled
                     ? "text-fg-disabled cursor-not-allowed"
                     : isSelected
-                      ? "bg-surface-brand text-fg-inverse font-semibold"
+                      ? "bg-surface-brand-strong text-fg-inverse font-semibold"
                       : isInRange
                         ? "bg-surface-brand-muted text-fg-brand-emphasis"
                         : isToday

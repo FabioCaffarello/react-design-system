@@ -61,7 +61,7 @@ const chipVariants = cva(
           "border-line-default",
         ),
         filled: cn(
-          "bg-surface-brand",
+          "bg-surface-brand-strong",
           "text-fg-inverse",
           "border",
           "border-transparent",
@@ -86,7 +86,7 @@ const chipVariants = cva(
       },
       selected: {
         true: cn(
-          "bg-surface-brand",
+          "bg-surface-brand-strong",
           "text-fg-inverse",
           "border",
           "border-line-brand",

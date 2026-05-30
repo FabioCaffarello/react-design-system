@@ -80,6 +80,7 @@
   --color-surface-brand-subtle: var(--color-indigo-950);
   --color-surface-brand-muted: var(--color-indigo-900);
   --color-surface-brand: var(--color-indigo-500);
+  --color-surface-brand-strong: var(--color-indigo-400);
   --color-surface-brand-emphasis: var(--color-indigo-400);
 
   --color-surface-secondary-subtle: var(--color-pink-950);

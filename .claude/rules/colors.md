@@ -40,23 +40,25 @@ list, read "Principle 9 — Incomplete semantic family" before inventing.
 
 ### Surface (backgrounds)
 
-| Family                                                   | Purpose                                       | Notes                                                                 |
-| -------------------------------------------------------- | --------------------------------------------- | --------------------------------------------------------------------- |
-| `bg-surface-canvas`                                      | Page background                               | The lowest tier (Principle 4)                                         |
-| `bg-surface-subtle` / `-muted` / `-emphasis` / `-strong` | Neutral scale (subtle→strong)                 | Hierarchy within page                                                 |
-| `bg-surface-inverse` / `-inverse-subtle`                 | Dark surfaces in light mode (flip with theme) | Tooltip background                                                    |
-| `bg-surface-base` / `-raised` / `-overlay`               | Elevation ladder (Principle 4)                | Card on canvas / Modal above page                                     |
-| `bg-surface-sunken`                                      | Inset region                                  | Code blocks, inputs                                                   |
-| `bg-surface-disabled` / `-disabled-subtle`               | Disabled component surface                    | Disabled button background                                            |
-| `bg-surface-hover` / `-hover-subtle`                     | Hover state on neutral surface                | Row hover, ghost button hover                                         |
-| `bg-surface-active`                                      | Active (pressed)                              | Pressed button                                                        |
-| `bg-surface-selected` / `-selected-subtle`               | Selected in collection (Principle 8)          | Selected row, selected tab                                            |
-| `bg-surface-focus`                                       | Focus background tint                         | Focused input wrapper                                                 |
-| `bg-surface-brand` / `-brand-emphasis`                   | Filled brand surfaces                         | Primary button (default / hover)                                      |
-| `bg-surface-brand-subtle` / `-brand-muted`               | Soft brand washes                             | Brand-tinted callout; **brand-muted = active singular** (Principle 8) |
-| `bg-surface-secondary` / `-secondary-subtle`             | Secondary brand pair                          | Secondary-themed surface                                              |
-| `bg-surface-accent` / `-accent-subtle`                   | Accent (cyan) pair                            | Accent callout                                                        |
-| `bg-surface-hover-brand` / `-active-brand`               | Brand button state ladder                     | Primary button hover/active                                           |
+| Family                                                   | Purpose                                       | Notes                                                                                             |
+| -------------------------------------------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `bg-surface-canvas`                                      | Page background                               | The lowest tier (Principle 4)                                                                     |
+| `bg-surface-subtle` / `-muted` / `-emphasis` / `-strong` | Neutral scale (subtle→strong)                 | Hierarchy within page                                                                             |
+| `bg-surface-inverse` / `-inverse-subtle`                 | Dark surfaces in light mode (flip with theme) | Tooltip background                                                                                |
+| `bg-surface-base` / `-raised` / `-overlay`               | Elevation ladder (Principle 4)                | Card on canvas / Modal above page                                                                 |
+| `bg-surface-sunken`                                      | Inset region                                  | Code blocks, inputs                                                                               |
+| `bg-surface-disabled` / `-disabled-subtle`               | Disabled component surface                    | Disabled button background                                                                        |
+| `bg-surface-hover` / `-hover-subtle`                     | Hover state on neutral surface                | Row hover, ghost button hover                                                                     |
+| `bg-surface-active`                                      | Active (pressed)                              | Pressed button                                                                                    |
+| `bg-surface-selected` / `-selected-subtle`               | Selected in collection (Principle 8)          | Selected row, selected tab                                                                        |
+| `bg-surface-focus`                                       | Focus background tint                         | Focused input wrapper                                                                             |
+| `bg-surface-brand`                                       | Decorative brand surface (no foreground text) | Progress bar fill, Slider thumb/track, Switch checked bg                                          |
+| `bg-surface-brand-strong`                                | Brand surface that carries foreground text    | Primary Button, filled Chip, active Tabs, selected DatePicker day, active Stepper/Timeline bubble |
+| `bg-surface-brand-emphasis`                              | Stronger brand surface for "pressed" states   | SideNavbarResizeHandle `active:` / `isResizing` (currently only consumer)                         |
+| `bg-surface-brand-subtle` / `-brand-muted`               | Soft brand washes                             | Brand-tinted callout; **brand-muted = active singular** (Principle 8)                             |
+| `bg-surface-secondary` / `-secondary-subtle`             | Secondary brand pair                          | Secondary-themed surface                                                                          |
+| `bg-surface-accent` / `-accent-subtle`                   | Accent (cyan) pair                            | Accent callout                                                                                    |
+| `bg-surface-hover-brand` / `-active-brand`               | Brand button state ladder                     | Primary button hover/active                                                                       |
 
 ### Lines (borders, dividers, separators)
 
@@ -133,9 +135,12 @@ differently in a future theme.
 ### 2. Hover magnitude proportional to prominence ("Magnitude de hover proporcional à proeminência")
 
 Hover transitions should jump farther for high-prominence interactive
-elements than for low-prominence ones. A primary button hover crosses
-multiple tiers (`bg-surface-brand` → `bg-surface-brand-emphasis`); a
-ghost button hover usually moves one (`transparent` → `bg-surface-hover`).
+elements than for low-prominence ones. A ghost button hover usually
+moves one tier (`transparent` → `bg-surface-hover`). The primary Button
+currently uses `hover:opacity-90` instead of a tier shift — a stylistic
+choice that achieves the affordance via opacity rather than crossing
+the brand-tier ladder. The principle below (NavbarItem) carries the
+concrete illustration.
 
 **Example:** `NavbarItem` has tiered hovers. The secondary-level item
 hovers to `bg-surface-active` and bumps text to `text-fg-primary` (a

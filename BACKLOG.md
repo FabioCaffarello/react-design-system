@@ -672,7 +672,7 @@ grep -rIn --include='*.stories.tsx' --include='*.mdx' \
 
 **Progresso (até PR44 mergeado):**
 
-- **Bucket A/A' (brand surface 260n):** não atacado nesta fase. Pista do Phase 7: pode ser gap-de-papel (token novo "brand surface com texto"), não fix de token global. Investigação separada.
+- **Bucket A (brand surface 260n):** ✅ resolvido via Princípio 9 (família incompleta) — token novo `--color-surface-brand-strong` (indigo-600 light / indigo-400 dark) criado pra papel "brand surface que carrega texto"; 9 sítios com texto sobre brand remapeados (Button primary, Chip filled/selected, Tabs active, DatePicker selected day, Stepper active bubbles x2, Timeline active dots x2). Os 6 sítios decorativos (Progress, Slider x2, Switch, TableHeaderCell hover, SideNavbarResizeHandle hover) permanecem em `bg-surface-brand` (indigo-500) — papel oficial passa a ser "decorative brand surface (no foreground text)". Sub-decisão "h1 hover sobe pra active-brand" **dissolveu na verificação**: 8 dos 9 sítios não têm hover state (são estados selected/active sem hover próprio); o 9º (Button) usa `hover:opacity-90` color-independent que aplica sobre qualquer bg. Sem hover-ladder a reorganizar. **Dark mode também resolvido no mesmo commit** — dark estava failing (slate-900 em indigo-500 = 4.00), o token novo passa em ambos os temas (6.29 light, 5.98 dark). Achado colateral durante a verificação registrado abaixo (active-brand dark) e correção docs-sync de `surface-brand-emphasis` table entry + Princípio 2 example aplicada no mesmo commit.
 - **Bucket B (surface-secondary 47n):** ✅ resolvido em PR43 (pink-500 → pink-700, +2 shades).
 - **Bucket C (status family info/error/warning/success 78n):** ✅ resolvido em PR41 (X-600 → X-700, +1 shade light + rose-400 dark).
 - **Bucket D (error solid 15n):** ✅ resolvido em PR43 (rose-500 → rose-700, +2 shades).
@@ -755,3 +755,11 @@ Resultado: **todos os 806 nodes do "Phase C PR2 — a11y backlog real" são ligh
 5. Quando light AND dark zerarem critical+serious, virar `a11y.test: "error"`.
 
 **Doc-sync:** registrado em `docs/ACCESSIBILITY.md` seção "Baseline is light-mode-only" (item adjacente a "Story-iframe exceptions"). Citações de "806 nodes" sem o qualificador "light" devem ser corrigidas in-place se aparecerem em outro doc.
+
+**Evidência adicional acumulada do dark-mode-cego (cada item descoberto ao acaso durante outros fixes, NÃO pelo baseline):**
+
+- PR41 Family C anchor — `--color-error-dark` em dark (rose-500 em rose-950) = 4.26 FAIL. Cálculo manual durante o fix do C-family light. Corrigido no mesmo commit (rose-500 → rose-400 em dark).
+- PR45 Bucket A investigation — `--color-surface-brand` em dark (slate-900 em indigo-500) = 4.00 FAIL. **Pior que light** (4.46). Cálculo manual durante diagnose do Bucket A. Resolvido no mesmo commit do Bucket A via `surface-brand-strong` que diverge em ambos os temas.
+- PR45 Bucket A investigation (achado colateral) — `--color-surface-active-brand` em dark (slate-900 em indigo-600) = **2.84 HARD FAIL**. Não tem consumer hoje em `src/ui` (token-fantasma, 0 sítios) — não é violação ativa, mas é **trap arquitetural**: se algum consumer futuro usar esse token com texto em cima em dark mode, fail silencioso AA. Análogo a `surface-hover-brand` que também é definido sem consumer. **Sugestão para quando o auditor dark for plumbing:** ambos os tokens-fantasma (`surface-hover-brand`, `surface-active-brand`) devem ser ou (i) deletados se confirmadamente sem uso planejado, ou (ii) ter seus valores dark revistos pra passar AA, antes que algum consumer apareça e herde a falha silenciosa.
+
+Cada item desta lista é prova de que o gap não é hipotético — descobertas reais ao acaso por cálculo manual durante outros fixes. Plumbing do auditor dark não pode ser indefinidamente adiado; cada anchor light atacado tem chance real de mascarar um fail dark equivalente.
