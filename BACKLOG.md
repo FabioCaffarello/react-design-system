@@ -651,15 +651,23 @@ grep -rIn --include='*.stories.tsx' --include='*.mdx' \
 
 **Anchor sugerido:** atacar SideNavbar primeiro (densidade mais alta + cluster claro). Validar se o padrão é `<button>` com só ícone Lucide — fix é `aria-label` no botão ou conversão para `<button aria-label="X"><Icon aria-hidden /></button>`.
 
-### Family B — "ARIA inválido" (124 nodes, ~24 stories)
+### Family B — "ARIA inválido" (124 nodes originais; 87 resolvidos; ~37 remaining em outliers)
 
 - `aria-allowed-attr` 62n em **APENAS 2 stories** — `components/datepicker/{open-state,with-events}` com 31 nodes cada (mesmo code path). ✅ **resolvido em PR #49** (WAI-ARIA grid pattern + roving tabindex + APG-disabled). Diagnosticado como defect-de-role (não defect-de-attribute): `<button>` carregava `aria-selected` direto, atributo prohibido em button mas permitido em gridcell. Aplicada opção 3 — `role="gridcell"` explícito no próprio button + `role="row"` containers + chunking dos dias em weeks-de-7. Coordenado com roving tabindex completo (tabIndex={isTabStop ? 0 : -1} + useEffect que move foco DOM via data-date attribute) porque a estrutura semântica isolada teria silenciado o axe mas piorado o teclado real (setas movem state visual, Tab percorria 35 cells). Tests atualizados (`getAllByRole("button")` → `gridcell`; `toBeDisabled()` → `aria-disabled` assertion) com comentário APG inline pra futuro contributor não reverter. Verificação manual de teclado: 5/5 PASS via Playwright simulation + APG-disabled em story dedicada. 62n → 0n confirmado nas 2 stories anchor.
-- `aria-valid-attr-value` 21n/19s — top: SideNavbar (3), DashboardLayout (1 cada em ~5 stories).
-- `aria-hidden-focus` 17n/12s — **10n em Switch** (input `aria-hidden` mas focável; provável padrão de checkbox custom).
-- `aria-prohibited-attr` 15n em **APENAS 2 stories** — `components/rating/{read-only,read-only-state}`. Rating em read-only mode está usando atributo não permitido para o role.
-- `aria-required-parent` 4n/4s; `aria-required-children` 3n/3s; `aria-required-attr` 2n/1s — outliers individuais.
+- `aria-valid-attr-value` 21n/19s — top: SideNavbar (3), DashboardLayout (1 cada em ~5 stories). **Pendente.**
+- `aria-hidden-focus` 17n/12s — **10n em Switch** (input `aria-hidden` mas focável). ✅ **Switch portion resolvida em PR #48** (`bfbaf86`): `tabIndex={-1}` adicionado ao `<input type="checkbox" className="sr-only" aria-hidden="true">` (form-integration shim), foco sai do elemento AT-hidden, form submission preservada. Diagnosticado como defect-de-focusabilidade (layer-1 HTML), não defect-de-role nem defect-de-attribute — o role="switch" no outer button e o aria-hidden no input estavam corretos; o que faltava era tabIndex. **7n residual em outros consumers fora do Switch — pendente.**
+- `aria-prohibited-attr` 15n em **APENAS 2 stories** — `components/rating/{read-only,read-only-state}`. ✅ **resolvido em PR #48** (`bfbaf86`): `aria-label` da estrela gated em `!readOnly` (mirroring o pattern já existente de `role` e `tabIndex`); parent já carrega `role="img" aria-label="Rating: X out of Y"` em read-only, child labels eram vestigial do interactive mode (válidas com `role="button"` mas prohibited sem role). Diagnosticado como defect-de-attribute (mode leak), não defect-de-role.
+- `aria-required-parent` 4n/4s; `aria-required-children` 3n/3s; `aria-required-attr` 2n/1s — outliers individuais. **Pendentes.**
 
-**Anchor sugerido:** DatePicker primeiro (62 nodes / 1 fix) → Rating read-only (15 / 1 fix) → Switch (10 / 1 fix). Esses 3 anchors fecham 87 dos 124 nodes da família.
+**Pendente na Family B (~37 nodes):**
+
+- `aria-valid-attr-value` 21n (SideNavbar / DashboardLayout)
+- `aria-hidden-focus` 7n residual fora do Switch (consumers a identificar — `aria-hidden=true` em elemento focusable que não é o Switch shim)
+- `aria-required-parent` 4n
+- `aria-required-children` 3n
+- `aria-required-attr` 2n
+
+Os 3 anchors (DatePicker 62 + Rating 15 + Switch portion 10 = 87 nodes) fecharam. O que resta são 5 buckets pequenos espalhados; não há "anchor com cluster grande" entre eles. Decisão se Family B remaining merece rodada própria (sweep de outliers) ou se cada um vira fix oportunista quando o componente afetado entrar em outra phase precisa ser tomada — provável (b) dado que 37n distribuídos em 5 regras não compensa setup de uma rodada dedicada.
 
 ### Family C — "Contraste de cor abaixo de WCAG 2.1 AA 4.5:1" (467 nodes, 275 stories)
 
