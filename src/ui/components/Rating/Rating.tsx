@@ -119,7 +119,7 @@ export default function Rating({
         onMouseLeave={handleMouseLeave}
         role={readOnly ? undefined : "button"}
         tabIndex={readOnly ? undefined : 0}
-        aria-label={`Rate ${starValue} out of ${max}`}
+        aria-label={readOnly ? undefined : `Rate ${starValue} out of ${max}`}
         onKeyDown={(e) => {
           if (!readOnly && (e.key === "Enter" || e.key === " ")) {
             e.preventDefault();
