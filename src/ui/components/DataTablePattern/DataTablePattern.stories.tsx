@@ -109,7 +109,7 @@ const columns: DataTableColumn<User>[] = [
       <span
         className={`px-2 py-1 rounded text-xs ${
           value === "active"
-            ? "bg-surface-muted text-fg-success"
+            ? "bg-success-bg text-fg-success"
             : "bg-surface-muted text-fg-primary"
         }`}
       >
