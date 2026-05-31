@@ -196,7 +196,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Click accordion items below. Check the Actions panel to see events
           being fired.
         </p>

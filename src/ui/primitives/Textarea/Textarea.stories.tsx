@@ -120,10 +120,10 @@ export const Default: Story = {
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Character count: <strong>{value.length}</strong>
         </p>
-        <p className="text-sm text-gray-600">Value: {value || "(empty)"}</p>
+        <p className="text-sm text-fg-secondary">Value: {value || "(empty)"}</p>
       </div>
     );
   },
@@ -148,10 +148,10 @@ export const WithDefaultValue: Story = {
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Character count: <strong>{value.length}</strong>
         </p>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-fg-tertiary">
           Starts with a default value. You can edit it.
         </p>
       </div>
@@ -196,19 +196,19 @@ export const WithError: Story = {
           error={submitted && value.length < minLength}
         />
         {submitted && value.length < minLength && (
-          <p className="text-sm text-red-600">
+          <p className="text-sm text-fg-error">
             ⚠ Description must be at least {minLength} characters (
             {value.length}/{minLength})
           </p>
         )}
         <button
           onClick={handleSubmit}
-          className="px-4 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 text-sm bg-surface-brand-strong text-fg-inverse rounded hover:opacity-90"
         >
           Submit
         </button>
         {value.length >= minLength && !submitted && (
-          <p className="text-sm text-green-600">
+          <p className="text-sm text-fg-success">
             ✓ Description is valid ({value.length} characters)
           </p>
         )}
@@ -312,8 +312,10 @@ export const Controlled: Story = {
           placeholder="Type something..."
           rows={4}
         />
-        <p className="text-sm text-gray-600">Character count: {value.length}</p>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
+          Character count: {value.length}
+        </p>
+        <p className="text-sm text-fg-secondary">
           Current value: {value || "(empty)"}
         </p>
       </div>
@@ -336,7 +338,7 @@ export const Uncontrolled: Story = {
         placeholder="Type something..."
         rows={4}
       />
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-secondary">
         Uses defaultValue for initial value without state management.
       </p>
     </div>
@@ -455,7 +457,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Interact with the textarea below. Check the Actions panel to see
           events being fired.
         </p>
@@ -468,7 +470,9 @@ export const WithEvents: Story = {
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
         />
-        <p className="text-sm text-gray-500">Character count: {value.length}</p>
+        <p className="text-sm text-fg-tertiary">
+          Character count: {value.length}
+        </p>
       </div>
     );
   },

@@ -74,7 +74,7 @@ export const Default: Story = {
           </Button>
         </ButtonGroup>
         {activeButton && (
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-fg-secondary">
             Active button: <strong>{activeButton}</strong>
           </p>
         )}
@@ -160,8 +160,8 @@ export const WithActions: Story = {
         </ButtonGroup>
         {actionHistory.length > 0 && (
           <div className="text-sm space-y-1">
-            <p className="font-medium text-gray-700">Action History:</p>
-            <ul className="list-disc list-inside text-gray-600">
+            <p className="font-medium text-fg-primary">Action History:</p>
+            <ul className="list-disc list-inside text-fg-secondary">
               {actionHistory.map((action, i) => (
                 <li key={i}>{action}</li>
               ))}

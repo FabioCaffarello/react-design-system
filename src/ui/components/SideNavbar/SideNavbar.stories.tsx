@@ -134,11 +134,11 @@ const NavigationTabs = ({
 
 // Layout wrapper for stories
 const LayoutWrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className="flex h-screen bg-gray-100">
+  <div className="flex h-screen bg-surface-muted">
     {children}
     <div className="flex-1 p-6">
       <h1 className="text-2xl font-bold mb-4">Main Content Area</h1>
-      <p className="text-gray-600">
+      <p className="text-fg-secondary">
         Click the toggle button on the sidebar edge to collapse/expand. The
         navigation icons remain visible when collapsed.
       </p>
@@ -216,7 +216,7 @@ export const Default: Story = {
                     Welcome to{" "}
                     {activeItem.charAt(0).toUpperCase() + activeItem.slice(1)}
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-fg-secondary">
                     This is the content area for the {activeItem} section. Click
                     the toggle button on the right edge of the navbar to
                     collapse/expand the sidebar. The navigation icons remain
@@ -302,7 +302,7 @@ export const Collapsed: Story = {
             />
             <SideNavbar.Sidebar.Content>
               <Card>
-                <p className="text-gray-600">
+                <p className="text-fg-secondary">
                   The collapsed state is persisted to localStorage. Refresh the
                   page and the sidebar will remember its state.
                 </p>
@@ -346,13 +346,17 @@ export const WithHeader: Story = {
               <div className="space-y-4">
                 <Card>
                   <h4 className="font-semibold mb-2">Monthly Revenue</h4>
-                  <p className="text-3xl font-bold text-indigo-600">$45,231</p>
-                  <p className="text-sm text-gray-500">+12% from last month</p>
+                  <p className="text-3xl font-bold text-fg-brand-emphasis">
+                    $45,231
+                  </p>
+                  <p className="text-sm text-fg-tertiary">
+                    +12% from last month
+                  </p>
                 </Card>
                 <Card>
                   <h4 className="font-semibold mb-2">Active Users</h4>
-                  <p className="text-3xl font-bold text-green-600">2,345</p>
-                  <p className="text-sm text-gray-500">+5% from last week</p>
+                  <p className="text-3xl font-bold text-fg-success">2,345</p>
+                  <p className="text-sm text-fg-tertiary">+5% from last week</p>
                 </Card>
               </div>
             </SideNavbar.Sidebar.Content>
@@ -445,14 +449,14 @@ export const WithHeaderAndFooter: Story = {
                 ].map((name) => (
                   <div
                     key={name}
-                    className="flex items-center gap-3 p-3 bg-white rounded-lg border"
+                    className="flex items-center gap-3 p-3 bg-surface-base rounded-lg border"
                   >
-                    <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center">
-                      <Users className="w-4 h-4 text-indigo-600" />
+                    <div className="w-8 h-8 rounded-full bg-surface-brand-subtle flex items-center justify-center">
+                      <Users className="w-4 h-4 text-fg-brand-emphasis" />
                     </div>
                     <div>
                       <p className="font-medium">{name}</p>
-                      <p className="text-sm text-gray-500">Team member</p>
+                      <p className="text-sm text-fg-tertiary">Team member</p>
                     </div>
                   </div>
                 ))}
@@ -527,7 +531,7 @@ export const WithPersistence: Story = {
             <SideNavbar.Sidebar.Header title={tabLabels[activeTab]} />
             <SideNavbar.Sidebar.Content>
               <Card>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-fg-secondary">
                   The collapsed state is persisted to localStorage. Refresh the
                   page and the sidebar will remember its state.
                 </p>
@@ -560,7 +564,7 @@ export const CustomWidth: Story = {
               subtitle="With wider dimensions"
             />
             <SideNavbar.Sidebar.Content>
-              <p className="text-gray-600">
+              <p className="text-fg-secondary">
                 This sidebar has a custom width of 400px and navigation width of
                 64px.
               </p>
@@ -580,7 +584,7 @@ export const Variants: Story = {
     const [activeTab, setActiveTab] = useState("home");
 
     return (
-      <div className="flex h-screen bg-gray-100 gap-4 p-4">
+      <div className="flex h-screen bg-surface-muted gap-4 p-4">
         {(["default", "compact", "elevated"] as const).map((variant) => (
           <div key={variant} className="flex flex-col">
             <span className="text-sm font-medium mb-2 capitalize">
@@ -634,14 +638,14 @@ export const LongContent: Story = {
                 {Array.from({ length: 20 }, (_, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-3 p-3 bg-white rounded-lg border hover:bg-gray-50 cursor-pointer"
+                    className="flex items-center gap-3 p-3 bg-surface-base rounded-lg border hover:bg-surface-hover cursor-pointer"
                   >
-                    <FileText className="w-5 h-5 text-gray-400" />
+                    <FileText className="w-5 h-5 text-fg-quaternary" />
                     <div className="flex-1 min-w-0">
                       <p className="font-medium truncate">
                         Document {i + 1}.pdf
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-fg-tertiary">
                         Modified 2 days ago
                       </p>
                     </div>
@@ -650,7 +654,9 @@ export const LongContent: Story = {
               </div>
             </SideNavbar.Sidebar.Content>
             <SideNavbar.Sidebar.Footer>
-              <p className="text-xs text-center text-gray-500">20 documents</p>
+              <p className="text-xs text-center text-fg-tertiary">
+                20 documents
+              </p>
             </SideNavbar.Sidebar.Footer>
           </SideNavbar.Sidebar>
         </SideNavbar>
@@ -679,21 +685,21 @@ export const WithBottomNavigation: Story = {
                 <button
                   type="button"
                   aria-label="Notifications"
-                  className="w-full aspect-square flex items-center justify-center p-2 rounded-md text-gray-500 hover:bg-gray-100"
+                  className="w-full aspect-square flex items-center justify-center p-2 rounded-md text-fg-tertiary hover:bg-surface-muted"
                 >
                   <Bell className="h-5 w-5" />
                 </button>
                 <button
                   type="button"
                   aria-label="Help"
-                  className="w-full aspect-square flex items-center justify-center p-2 rounded-md text-gray-500 hover:bg-gray-100"
+                  className="w-full aspect-square flex items-center justify-center p-2 rounded-md text-fg-tertiary hover:bg-surface-muted"
                 >
                   <HelpCircle className="h-5 w-5" />
                 </button>
                 <button
                   type="button"
                   aria-label="Log out"
-                  className="w-full aspect-square flex items-center justify-center p-2 rounded-md text-red-500 hover:bg-red-50"
+                  className="w-full aspect-square flex items-center justify-center p-2 rounded-md text-fg-error hover:bg-error-bg"
                 >
                   <LogOut className="h-5 w-5" />
                 </button>
@@ -704,7 +710,7 @@ export const WithBottomNavigation: Story = {
           <SideNavbar.Sidebar>
             <SideNavbar.Sidebar.Header title={tabLabels[activeTab]} />
             <SideNavbar.Sidebar.Content>
-              <p className="text-gray-600">
+              <p className="text-fg-secondary">
                 The navigation column has additional icons at the bottom for
                 notifications, help, and logout.
               </p>
@@ -798,11 +804,11 @@ export const WithNavbarItems: Story = {
             />
             <SideNavbar.Sidebar.Content>
               <Card>
-                <p className="text-gray-600">
+                <p className="text-fg-secondary">
                   This example uses <code>SideNavbar.Navbar.Item</code> compound
                   component which supports:
                 </p>
-                <ul className="list-disc list-inside mt-2 text-sm text-gray-600 space-y-1">
+                <ul className="list-disc list-inside mt-2 text-sm text-fg-secondary space-y-1">
                   <li>Active state management</li>
                   <li>
                     Badges with variants (default, success, warning, danger)
@@ -812,7 +818,7 @@ export const WithNavbarItems: Story = {
                   <li>Disabled state</li>
                   <li>Multiple sizes (sm, md, lg)</li>
                 </ul>
-                <p className="text-sm text-gray-500 mt-4">
+                <p className="text-sm text-fg-tertiary mt-4">
                   <strong>Note:</strong> Navigation items are automatically
                   arranged vertically. The toggle button is positioned on the
                   right edge of the navbar.
@@ -856,11 +862,11 @@ export const WithEvents: Story = {
             <SideNavbar.Sidebar.Header title={tabLabels[activeTab]} />
             <SideNavbar.Sidebar.Content>
               <Card>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-fg-secondary">
                   Toggle the sidebar. Check the Actions panel to see events
                   being fired.
                 </p>
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="text-sm text-fg-tertiary mt-2">
                   Collapsed: {collapsed ? "Yes" : "No"}
                 </p>
               </Card>
@@ -969,12 +975,12 @@ export const ToggleAtNavbarTop: Story = {
                 <h3 className="font-semibold mb-2">
                   Toggle at Navbar Top-Right
                 </h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-fg-secondary">
                   The toggle button is positioned at the top-right corner of the
                   navbar. It stays fixed at the navbar's right edge and smoothly
                   transitions as the sidebar expands and collapses.
                 </p>
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="text-sm text-fg-tertiary mt-2">
                   The toggle always remains at the navbar's edge, regardless of
                   the sidebar's state. This provides consistent access to the
                   collapse/expand functionality.
@@ -1035,7 +1041,7 @@ export const WithSlotSystem: Story = {
               <SideNavbar.Sidebar.Header title="Dynamic Content" />
               <SideNavbar.Sidebar.Content>
                 <Card className="mb-4">
-                  <p className="text-xs text-gray-500 mb-2">
+                  <p className="text-xs text-fg-tertiary mb-2">
                     <strong>Note:</strong> Slots are exclusive to the Sidebar
                     component. They cannot be used in the Navbar.
                   </p>
@@ -1043,7 +1049,7 @@ export const WithSlotSystem: Story = {
                 <SidebarSlot id="dashboard">
                   <Card>
                     <h3 className="font-semibold mb-2">Dashboard Content</h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-fg-secondary">
                       This content is shown when the dashboard item is active.
                       Use the useSideNavbarNavigation hook to switch slots
                       programmatically.
@@ -1053,7 +1059,7 @@ export const WithSlotSystem: Story = {
                 <SidebarSlot id="analytics">
                   <Card>
                     <h3 className="font-semibold mb-2">Analytics Content</h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-fg-secondary">
                       This content is shown when the analytics item is active.
                     </p>
                   </Card>
@@ -1061,7 +1067,7 @@ export const WithSlotSystem: Story = {
                 <SidebarSlot id="settings">
                   <Card>
                     <h3 className="font-semibold mb-2">Settings Content</h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-fg-secondary">
                       This content is shown when the settings item is active.
                     </p>
                   </Card>
@@ -1134,7 +1140,7 @@ export const NavbarWithInlineLabels: Story = {
             <SideNavbar.Sidebar.Header title="Inline Labels" />
             <SideNavbar.Sidebar.Content>
               <Card>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-fg-secondary">
                   The navbar expands to show labels inline with icons when not
                   collapsed.
                 </p>
@@ -1194,7 +1200,7 @@ export const NavbarWithLabelsBelow: Story = {
             <SideNavbar.Sidebar.Header title="Labels Below" />
             <SideNavbar.Sidebar.Content>
               <Card>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-fg-secondary">
                   Labels appear below icons in this mode.
                 </p>
               </Card>
@@ -1279,7 +1285,7 @@ export const NavbarWithGroups: Story = {
             <SideNavbar.Sidebar.Header title="Grouped Navigation" />
             <SideNavbar.Sidebar.Content>
               <Card>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-fg-secondary">
                   Navigation items are grouped with collapsible sections. All
                   items are arranged vertically in the navbar.
                 </p>
@@ -1383,12 +1389,12 @@ export const DashboardExample: Story = {
                     {activeItem === "notifications" && "Notifications"}
                     {activeItem === "settings" && "Settings"}
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-fg-secondary">
                     This is a realistic dashboard example showing how the
                     SideNavbar component is used in production applications.
                     Notice:
                   </p>
-                  <ul className="list-disc list-inside mt-2 text-sm text-gray-600 space-y-1">
+                  <ul className="list-disc list-inside mt-2 text-sm text-fg-secondary space-y-1">
                     <li>
                       Navigation items are arranged <strong>vertically</strong>{" "}
                       in the navbar

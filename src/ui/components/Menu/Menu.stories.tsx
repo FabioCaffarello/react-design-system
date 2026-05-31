@@ -276,7 +276,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Interact with the menu below. Check the Actions panel to see events
           being fired.
         </p>
@@ -293,7 +293,7 @@ export const WithEvents: Story = {
             <MenuItem onClick={() => handleSelect("logout")}>Logout</MenuItem>
           </MenuContent>
         </Menu>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-fg-tertiary">
           Menu is {open ? "open" : "closed"}
         </p>
       </div>

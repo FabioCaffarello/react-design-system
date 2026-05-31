@@ -53,7 +53,7 @@ export const Default: Story = {
     return (
       <div className="w-64">
         <TimePicker {...args} value={value} onChange={setValue} />
-        <p className="mt-2 text-sm text-gray-600">
+        <p className="mt-2 text-sm text-fg-secondary">
           Selected: {value || "None"}
         </p>
       </div>
@@ -67,7 +67,7 @@ export const Format24h: Story = {
     return (
       <div className="w-64">
         <TimePicker {...args} value={value} onChange={setValue} format="24h" />
-        <p className="mt-2 text-sm text-gray-600">Selected: {value}</p>
+        <p className="mt-2 text-sm text-fg-secondary">Selected: {value}</p>
       </div>
     );
   },
@@ -79,7 +79,7 @@ export const Format12h: Story = {
     return (
       <div className="w-64">
         <TimePicker {...args} value={value} onChange={setValue} format="12h" />
-        <p className="mt-2 text-sm text-gray-600">Selected: {value}</p>
+        <p className="mt-2 text-sm text-fg-secondary">Selected: {value}</p>
       </div>
     );
   },
@@ -127,7 +127,7 @@ export const InForm: Story = {
     const [endTime, setEndTime] = useState("");
 
     return (
-      <div className="w-96 space-y-4 p-4 border border-gray-200 rounded-lg">
+      <div className="w-96 space-y-4 p-4 border border-line-default rounded-lg">
         <h3 className="text-lg font-semibold">Schedule</h3>
         <TimePicker
           label="Start Time"
@@ -142,7 +142,7 @@ export const InForm: Story = {
           format="12h"
         />
         {startTime && endTime && (
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-fg-secondary">
             Duration: {startTime} - {endTime}
           </p>
         )}
@@ -161,11 +161,11 @@ export const WithEvents: Story = {
 
     return (
       <div className="w-64 space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Select a time. Check the Actions panel to see events being fired.
         </p>
         <TimePicker value={value} onChange={handleChange} label="Time" />
-        <p className="text-sm text-gray-500">Selected: {value || "None"}</p>
+        <p className="text-sm text-fg-tertiary">Selected: {value || "None"}</p>
       </div>
     );
   },

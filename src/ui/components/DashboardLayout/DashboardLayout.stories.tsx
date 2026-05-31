@@ -115,7 +115,7 @@ export const Default: Story = {
         </Text>
         <div className="grid grid-cols-3 gap-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-gray-100 p-4 rounded">
+            <div key={i} className="bg-surface-muted p-4 rounded">
               <Text variant="heading" className="text-base">
                 Card {i}
               </Text>
@@ -127,10 +127,10 @@ export const Default: Story = {
     ),
     footer: (
       <div className="flex items-center justify-between">
-        <Text variant="bodySmall" className="text-gray-600">
+        <Text variant="bodySmall" className="text-fg-secondary">
           © 2024 Company Name
         </Text>
-        <Text variant="bodySmall" className="text-gray-600">
+        <Text variant="bodySmall" className="text-fg-secondary">
           Version 1.0.0
         </Text>
       </div>
@@ -171,7 +171,7 @@ export const WithEvents: Story = {
   render: () => {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Toggle sidebar or click navigation items. Check the Actions panel to
           see events being fired.
         </p>
@@ -232,10 +232,10 @@ export const DefaultState: Story = {
     ),
     footer: (
       <div className="flex items-center justify-between">
-        <Text variant="bodySmall" className="text-gray-600">
+        <Text variant="bodySmall" className="text-fg-secondary">
           © 2024 Company Name
         </Text>
-        <Text variant="bodySmall" className="text-gray-600">
+        <Text variant="bodySmall" className="text-fg-secondary">
           Version 1.0.0
         </Text>
       </div>

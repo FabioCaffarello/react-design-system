@@ -129,17 +129,17 @@ export const InContext: Story = {
     <div className="w-96 space-y-4 p-4">
       <div>
         <h3 className="text-lg font-semibold">Section 1</h3>
-        <p className="text-sm text-gray-600">Content for section 1</p>
+        <p className="text-sm text-fg-secondary">Content for section 1</p>
       </div>
       <Separator />
       <div>
         <h3 className="text-lg font-semibold">Section 2</h3>
-        <p className="text-sm text-gray-600">Content for section 2</p>
+        <p className="text-sm text-fg-secondary">Content for section 2</p>
       </div>
       <Separator variant="dashed" />
       <div>
         <h3 className="text-lg font-semibold">Section 3</h3>
-        <p className="text-sm text-gray-600">Content for section 3</p>
+        <p className="text-sm text-fg-secondary">Content for section 3</p>
       </div>
     </div>
   ),

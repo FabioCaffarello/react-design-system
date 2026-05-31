@@ -128,18 +128,18 @@ export const Accessibility: Story = {
   render: () => (
     <div className="space-y-4">
       <div>
-        <p className="text-sm text-gray-600 mb-2">
+        <p className="text-sm text-fg-secondary mb-2">
           Spinner with accessible label:
         </p>
         <Spinner label="Loading user data..." />
       </div>
       <div>
-        <p className="text-sm text-gray-600 mb-2">
+        <p className="text-sm text-fg-secondary mb-2">
           Spinner without label (uses default):
         </p>
         <Spinner />
       </div>
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-fg-tertiary">
         Spinners have role="status" and aria-live="polite" for screen readers.
       </p>
     </div>

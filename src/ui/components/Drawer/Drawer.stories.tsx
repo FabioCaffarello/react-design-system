@@ -276,26 +276,26 @@ export const ComplexContent: Story = {
           <DrawerContent showCloseButton>
             <DrawerHeader>
               <h2 className="text-xl font-semibold">Settings</h2>
-              <p className="text-sm text-gray-600 mt-1">
+              <p className="text-sm text-fg-secondary mt-1">
                 Manage your preferences
               </p>
             </DrawerHeader>
             <div className="p-6 space-y-4 flex-1 overflow-y-auto">
               <div>
                 <h3 className="font-medium mb-2">General</h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-fg-secondary">
                   General settings content...
                 </p>
               </div>
               <div>
                 <h3 className="font-medium mb-2">Notifications</h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-fg-secondary">
                   Notification settings content...
                 </p>
               </div>
               <div>
                 <h3 className="font-medium mb-2">Privacy</h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-fg-secondary">
                   Privacy settings content...
                 </p>
               </div>

@@ -240,7 +240,7 @@ export const Animated: Story = {
     return (
       <div className="space-y-4 w-full max-w-md">
         <Progress value={progress} showLabel label="Animated Progress" />
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Progress automatically updates every 500ms
         </p>
       </div>
