@@ -142,19 +142,19 @@ export const Variants: Story = {
     <div className="space-y-8">
       <div>
         <h3 className="mb-2 text-sm font-medium">Default</h3>
-        <Header variant="default">
+        <Header variant="default" aria-label="Header — default variant">
           <Header.Logo href="/">MyApp</Header.Logo>
         </Header>
       </div>
       <div>
         <h3 className="mb-2 text-sm font-medium">Elevated</h3>
-        <Header variant="elevated">
+        <Header variant="elevated" aria-label="Header — elevated variant">
           <Header.Logo href="/">MyApp</Header.Logo>
         </Header>
       </div>
       <div>
         <h3 className="mb-2 text-sm font-medium">Bordered</h3>
-        <Header variant="bordered">
+        <Header variant="bordered" aria-label="Header — bordered variant">
           <Header.Logo href="/">MyApp</Header.Logo>
         </Header>
       </div>

@@ -616,7 +616,11 @@ export const Variants: Story = {
               {variant}
             </span>
             <div className="flex-1 border rounded-lg overflow-hidden">
-              <SideNavbar variant={variant} width="200px">
+              <SideNavbar
+                variant={variant}
+                width="200px"
+                aria-label={`Sidebar — ${variant} variant`}
+              >
                 <SideNavbar.Navbar>
                   <NavigationTabs
                     activeTab={activeTab}

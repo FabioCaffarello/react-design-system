@@ -114,6 +114,7 @@ export default function TablePagination({
                 Show:
               </Text>
               <Select
+                aria-label="Items per page"
                 options={pageSizeOptions.map((size) => ({
                   value: size.toString(),
                   label: size.toString(),

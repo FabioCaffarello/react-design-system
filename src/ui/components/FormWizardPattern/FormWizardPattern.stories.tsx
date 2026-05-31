@@ -104,7 +104,7 @@ const _createBasicSteps = (): FormWizardStep[] => {
 
   return [
     {
-      label: "Personal Information",
+      title: "Personal Information",
       description: "Enter your personal details",
       fields: (
         <div className="space-y-4">
@@ -144,7 +144,7 @@ const _createBasicSteps = (): FormWizardStep[] => {
       },
     },
     {
-      label: "Preferences",
+      title: "Preferences",
       description: "Choose your preferences",
       fields: (
         <div className="space-y-4">
@@ -166,7 +166,7 @@ const _createBasicSteps = (): FormWizardStep[] => {
       ),
     },
     {
-      label: "Review",
+      title: "Review",
       description: "Review your information",
       fields: (
         <div className="space-y-2">
@@ -194,7 +194,7 @@ export const Default: Story = {
 
     const steps: FormWizardStep[] = [
       {
-        label: "Personal Information",
+        title: "Personal Information",
         description: "Enter your personal details",
         fields: (
           <div className="space-y-4">
@@ -234,7 +234,7 @@ export const Default: Story = {
         },
       },
       {
-        label: "Preferences",
+        title: "Preferences",
         description: "Choose your preferences",
         fields: (
           <div className="space-y-4">
@@ -256,7 +256,7 @@ export const Default: Story = {
         ),
       },
       {
-        label: "Review",
+        title: "Review",
         description: "Review your information",
         fields: (
           <div className="space-y-2">
@@ -299,7 +299,7 @@ export const WithoutBackNavigation: Story = {
 
     const steps: FormWizardStep[] = [
       {
-        label: "Step 1",
+        title: "Step 1",
         description: "First step",
         fields: (
           <Input
@@ -310,7 +310,7 @@ export const WithoutBackNavigation: Story = {
         ),
       },
       {
-        label: "Step 2",
+        title: "Step 2",
         description: "Second step",
         fields: (
           <Input
@@ -344,7 +344,7 @@ export const WithEvents: Story = {
 
     const steps: FormWizardStep[] = [
       {
-        label: "Personal Information",
+        title: "Personal Information",
         description: "Enter your personal details",
         fields: (
           <div className="space-y-4">
@@ -368,7 +368,7 @@ export const WithEvents: Story = {
         ),
       },
       {
-        label: "Review",
+        title: "Review",
         description: "Review your information",
         fields: (
           <div className="space-y-2">
@@ -425,7 +425,7 @@ export const DefaultState: Story = {
 
     const steps: FormWizardStep[] = [
       {
-        label: "Personal Information",
+        title: "Personal Information",
         description: "Enter your personal details",
         fields: (
           <div className="space-y-4">
@@ -471,7 +471,7 @@ export const WithBackNavigationState: Story = {
 
     const steps: FormWizardStep[] = [
       {
-        label: "Step 1",
+        title: "Step 1",
         description: "First step",
         fields: (
           <Input
@@ -482,7 +482,7 @@ export const WithBackNavigationState: Story = {
         ),
       },
       {
-        label: "Step 2",
+        title: "Step 2",
         description: "Second step",
         fields: (
           <Input
@@ -516,7 +516,7 @@ export const WithoutBackNavigationState: Story = {
 
     const steps: FormWizardStep[] = [
       {
-        label: "Step 1",
+        title: "Step 1",
         description: "First step",
         fields: (
           <Input
@@ -527,7 +527,7 @@ export const WithoutBackNavigationState: Story = {
         ),
       },
       {
-        label: "Step 2",
+        title: "Step 2",
         description: "Second step",
         fields: (
           <Input
