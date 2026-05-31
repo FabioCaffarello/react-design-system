@@ -1,3 +1,10 @@
+## [1.23.7](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.6...v1.23.7) (2026-05-31)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** triviais 2/3/5 — FormWizard h2, landmark-unique, select-name ([7912ebf](https://github.com/FabioCaffarello/react-design-system/commit/7912ebfa538d6a3ca058316a493d15dc2be4802b)), closes [#2](https://github.com/FabioCaffarello/react-design-system/issues/2) [#3](https://github.com/FabioCaffarello/react-design-system/issues/3) [#5](https://github.com/FabioCaffarello/react-design-system/issues/5)
+
 ## [1.23.6](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.5...v1.23.6) (2026-05-31)
 
 
