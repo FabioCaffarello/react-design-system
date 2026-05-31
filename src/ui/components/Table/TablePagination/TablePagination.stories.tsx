@@ -122,7 +122,7 @@ export const WithEvents: StoryObj<typeof TablePagination> = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Navigate pages or change page size. Check the Actions panel to see
           events being fired.
         </p>
@@ -133,7 +133,7 @@ export const WithEvents: StoryObj<typeof TablePagination> = {
           onPageChange={handlePageChange}
           onPageSizeChange={handlePageSizeChange}
         />
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-fg-tertiary">
           Current page: {page}, Page size: {pageSize}
         </p>
       </div>

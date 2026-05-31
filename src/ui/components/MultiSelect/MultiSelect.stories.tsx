@@ -115,7 +115,7 @@ export const Default: Story = {
           placeholder="Select fruits..."
         />
         {selected.length > 0 && (
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-fg-secondary">
             <p>
               <strong>Selected ({selected.length}):</strong>
             </p>
@@ -163,18 +163,18 @@ export const WithMaxSelected: Story = {
           placeholder={`Select up to ${maxSelected} fruits...`}
         />
         <div className="text-sm space-y-2">
-          <p className="font-medium text-gray-700">
+          <p className="font-medium text-fg-primary">
             Selected: {selected.length}/{maxSelected}
           </p>
           {selected.length > 0 && (
-            <p className="text-gray-600">
+            <p className="text-fg-secondary">
               {selected
                 .map((v) => basicOptions.find((o) => o.value === v)?.label)
                 .join(", ")}
             </p>
           )}
           {!canSelectMore && (
-            <p className="text-yellow-600">
+            <p className="text-fg-warning">
               Maximum selection reached. Remove items to select more.
             </p>
           )}
@@ -207,14 +207,14 @@ export const WithSelectAll: Story = {
           placeholder="Select fruits..."
         />
         <div className="text-sm space-y-2">
-          <p className="font-medium text-gray-700">
+          <p className="font-medium text-fg-primary">
             Status:{" "}
             {allSelected
               ? "All selected"
               : `${selected.length}/${basicOptions.length} selected`}
           </p>
           {selected.length > 0 && (
-            <p className="text-gray-600">
+            <p className="text-fg-secondary">
               Selected:{" "}
               {selected
                 .map((v) => basicOptions.find((o) => o.value === v)?.label)
@@ -248,11 +248,11 @@ export const Controlled: Story = {
           placeholder="Controlled multi-select"
         />
         <div className="text-sm space-y-2">
-          <p className="font-medium text-gray-700">
+          <p className="font-medium text-fg-primary">
             Selected Values: {values.length > 0 ? values.join(", ") : "None"}
           </p>
           {values.length > 0 && (
-            <p className="text-gray-600">
+            <p className="text-fg-secondary">
               Selected Labels:{" "}
               {values
                 .map((v) => basicOptions.find((o) => o.value === v)?.label)
@@ -261,7 +261,7 @@ export const Controlled: Story = {
           )}
           <button
             onClick={() => setValues([])}
-            className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            className="px-3 py-1 text-sm bg-surface-emphasis rounded hover:bg-surface-strong"
           >
             Clear Selection
           </button>
@@ -291,7 +291,7 @@ export const WithSearch: Story = {
           onChange={setSelected}
           placeholder="Type to search fruits..."
         />
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-fg-secondary">
           <p>
             <strong>Tip:</strong> Type in the input to filter options. Selected:{" "}
             {selected.length}
@@ -328,7 +328,7 @@ export const ManyOptions: Story = {
           placeholder="Search from 50 options..."
           showSelectAll
         />
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-fg-secondary">
           <p>
             <strong>Selected:</strong> {selected.length} of {manyOptions.length}{" "}
             options
@@ -368,7 +368,7 @@ export const KeyboardNavigation: Story = {
           onChange={setSelected}
           placeholder="Try keyboard navigation..."
         />
-        <div className="text-sm text-gray-600 space-y-2 p-4 bg-gray-50 rounded">
+        <div className="text-sm text-fg-secondary space-y-2 p-4 bg-surface-subtle rounded">
           <p>
             <strong>Keyboard Navigation:</strong>
           </p>
@@ -432,7 +432,7 @@ export const RealTimeSearch: Story = {
           onChange={setSelected}
           placeholder="Type to search fruits..."
         />
-        <div className="text-sm text-gray-600 space-y-2">
+        <div className="text-sm text-fg-secondary space-y-2">
           <p>
             <strong>Search Results:</strong> {filteredOptions.length} of{" "}
             {allOptions.length} options match
@@ -542,18 +542,18 @@ export const SelectAllAndDeselectAll: Story = {
           <div className="flex gap-2">
             <button
               onClick={() => setSelected(basicOptions.map((o) => o.value))}
-              className="px-3 py-1 text-sm bg-indigo-500 text-white rounded hover:bg-indigo-600"
+              className="px-3 py-1 text-sm bg-surface-brand-strong text-fg-inverse rounded hover:opacity-90"
             >
               Select All (External)
             </button>
             <button
               onClick={() => setSelected([])}
-              className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+              className="px-3 py-1 text-sm bg-surface-emphasis rounded hover:bg-surface-strong"
             >
               Deselect All
             </button>
           </div>
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-fg-secondary">
             <p>
               <strong>Status:</strong>{" "}
               {allSelected
@@ -593,7 +593,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4 w-full max-w-md">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Select items. Check the Actions panel to see events being fired.
         </p>
         <MultiSelect
@@ -603,7 +603,7 @@ export const WithEvents: Story = {
           placeholder="Select fruits..."
         />
         {selected.length > 0 && (
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-fg-tertiary">
             Selected: {selected.length} item(s)
           </div>
         )}

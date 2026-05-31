@@ -70,9 +70,9 @@ export const Default: Story = {
   args: {
     children: (
       <>
-        <div className="bg-blue-100 p-4 rounded">Item 1</div>
-        <div className="bg-blue-100 p-4 rounded">Item 2</div>
-        <div className="bg-blue-100 p-4 rounded">Item 3</div>
+        <div className="bg-surface-muted p-4 rounded">Item 1</div>
+        <div className="bg-surface-muted p-4 rounded">Item 2</div>
+        <div className="bg-surface-muted p-4 rounded">Item 3</div>
       </>
     ),
   },
@@ -83,11 +83,11 @@ export const SpacingVariations: Story = {
     <div className="space-y-8">
       {(["xs", "sm", "md", "base", "lg", "xl"] as const).map((spacing) => (
         <div key={spacing}>
-          <p className="text-sm text-gray-600 mb-2">Spacing: {spacing}</p>
+          <p className="text-sm text-fg-secondary mb-2">Spacing: {spacing}</p>
           <Stack spacing={spacing}>
-            <div className="bg-blue-100 p-4 rounded">Item 1</div>
-            <div className="bg-blue-100 p-4 rounded">Item 2</div>
-            <div className="bg-blue-100 p-4 rounded">Item 3</div>
+            <div className="bg-surface-muted p-4 rounded">Item 1</div>
+            <div className="bg-surface-muted p-4 rounded">Item 2</div>
+            <div className="bg-surface-muted p-4 rounded">Item 3</div>
           </Stack>
         </div>
       ))}
@@ -100,9 +100,9 @@ export const Horizontal: Story = {
     direction: "row",
     children: (
       <>
-        <div className="bg-green-100 p-4 rounded">Item 1</div>
-        <div className="bg-green-100 p-4 rounded">Item 2</div>
-        <div className="bg-green-100 p-4 rounded">Item 3</div>
+        <div className="bg-surface-muted p-4 rounded">Item 1</div>
+        <div className="bg-surface-muted p-4 rounded">Item 2</div>
+        <div className="bg-surface-muted p-4 rounded">Item 3</div>
       </>
     ),
   },
@@ -113,10 +113,10 @@ export const Alignments: Story = {
     <div className="space-y-8">
       {(["start", "center", "end", "stretch"] as const).map((align) => (
         <div key={align}>
-          <p className="text-sm text-gray-600 mb-2">Align: {align}</p>
+          <p className="text-sm text-fg-secondary mb-2">Align: {align}</p>
           <Stack align={align} className="h-32">
-            <div className="bg-purple-100 p-4 rounded w-24">Item 1</div>
-            <div className="bg-purple-100 p-4 rounded w-24">Item 2</div>
+            <div className="bg-surface-muted p-4 rounded w-24">Item 1</div>
+            <div className="bg-surface-muted p-4 rounded w-24">Item 2</div>
           </Stack>
         </div>
       ))}
@@ -129,9 +129,9 @@ export const DefaultState: Story = {
   args: {
     children: (
       <>
-        <div className="bg-blue-100 p-4 rounded">Item 1</div>
-        <div className="bg-blue-100 p-4 rounded">Item 2</div>
-        <div className="bg-blue-100 p-4 rounded">Item 3</div>
+        <div className="bg-surface-muted p-4 rounded">Item 1</div>
+        <div className="bg-surface-muted p-4 rounded">Item 2</div>
+        <div className="bg-surface-muted p-4 rounded">Item 3</div>
       </>
     ),
   },
@@ -149,9 +149,9 @@ export const HorizontalState: Story = {
     direction: "row",
     children: (
       <>
-        <div className="bg-green-100 p-4 rounded">Item 1</div>
-        <div className="bg-green-100 p-4 rounded">Item 2</div>
-        <div className="bg-green-100 p-4 rounded">Item 3</div>
+        <div className="bg-surface-muted p-4 rounded">Item 1</div>
+        <div className="bg-surface-muted p-4 rounded">Item 2</div>
+        <div className="bg-surface-muted p-4 rounded">Item 3</div>
       </>
     ),
   },
@@ -169,9 +169,9 @@ export const VerticalState: Story = {
     direction: "column",
     children: (
       <>
-        <div className="bg-blue-100 p-4 rounded">Item 1</div>
-        <div className="bg-blue-100 p-4 rounded">Item 2</div>
-        <div className="bg-blue-100 p-4 rounded">Item 3</div>
+        <div className="bg-surface-muted p-4 rounded">Item 1</div>
+        <div className="bg-surface-muted p-4 rounded">Item 2</div>
+        <div className="bg-surface-muted p-4 rounded">Item 3</div>
       </>
     ),
   },
@@ -190,8 +190,8 @@ export const CenteredAlignmentState: Story = {
     className: "h-32",
     children: (
       <>
-        <div className="bg-purple-100 p-4 rounded w-24">Item 1</div>
-        <div className="bg-purple-100 p-4 rounded w-24">Item 2</div>
+        <div className="bg-surface-muted p-4 rounded w-24">Item 1</div>
+        <div className="bg-surface-muted p-4 rounded w-24">Item 2</div>
       </>
     ),
   },
@@ -209,9 +209,9 @@ export const SmallSpacingState: Story = {
     spacing: "sm",
     children: (
       <>
-        <div className="bg-blue-100 p-4 rounded">Item 1</div>
-        <div className="bg-blue-100 p-4 rounded">Item 2</div>
-        <div className="bg-blue-100 p-4 rounded">Item 3</div>
+        <div className="bg-surface-muted p-4 rounded">Item 1</div>
+        <div className="bg-surface-muted p-4 rounded">Item 2</div>
+        <div className="bg-surface-muted p-4 rounded">Item 3</div>
       </>
     ),
   },
@@ -229,9 +229,9 @@ export const LargeSpacingState: Story = {
     spacing: "lg",
     children: (
       <>
-        <div className="bg-blue-100 p-4 rounded">Item 1</div>
-        <div className="bg-blue-100 p-4 rounded">Item 2</div>
-        <div className="bg-blue-100 p-4 rounded">Item 3</div>
+        <div className="bg-surface-muted p-4 rounded">Item 1</div>
+        <div className="bg-surface-muted p-4 rounded">Item 2</div>
+        <div className="bg-surface-muted p-4 rounded">Item 3</div>
       </>
     ),
   },

@@ -969,3 +969,67 @@ A regra "qualquer shift visual = rejeita o fix" foi estabelecida como **proxy** 
 **Mas o timing importa:** **a prova direta tinha que ser EXIGIDA antes do fix, não oferecida depois.** Se o usuário não tivesse pedido os 3 proofs antes da aplicação, eu teria proposto e aplicado o fix com apenas o argumento "no-op visual" — que falharia em dark — e teríamos rolled back ou aceito o pixel-shift sem entender o que ele significava. **A ordem (verificação-precede-fix) é o que tornou seguro flexibilizar o critério.** Não é "ter as 3 provas"; é "ter as 3 provas ANTES de aplicar".
 
 Lição prática pra próximas fases: quando um critério estabelecido (no-op, atomicity, isolation, etc.) está bloqueando um fix que parece legítimo, **a saída não é argumentar contra o critério — é exigir prova direta da propriedade que o critério estava aproximando, ANTES de aplicar.** O critério vence por default; só prova direta substitui.
+
+### Faxina raw-color stories (PR #59)
+
+Aplicado: substituição semântica raw→token nos ~400+ sites em 56 story files de uma vez, usando mapa Phase 7 ("triagem semântica não tradução") por papel. Padrões aplicados:
+
+| Raw                                      | Token                                         | Papel                                                             |
+| ---------------------------------------- | --------------------------------------------- | ----------------------------------------------------------------- |
+| `text-gray-{500,600,700}`                | `text-fg-{tertiary,secondary,primary}`        | Hierarquia de texto                                               |
+| `text-gray-400`                          | `text-fg-quaternary`                          | Texto/ícone muito subtle                                          |
+| `bg-gray-{50,100,200}`                   | `bg-surface-{subtle,muted,emphasis}`          | Hierarquia neutra de surface                                      |
+| `bg-white rounded-lg border`             | `bg-surface-base rounded-lg border`           | Card surface                                                      |
+| `hover:bg-gray-{50,100,300}`             | `hover:bg-surface-{hover,hover,strong}`       | Estados hover neutros                                             |
+| `border-gray-{200,300}`                  | `border-line-{default,emphasis}`              | Linhas/bordas neutras                                             |
+| `text-{blue,green,red,yellow}-{400-800}` | `text-fg-{info,success,error,warning}`        | Status text                                                       |
+| `bg-{blue,green,red,yellow}-50`          | `bg-{info,success,error,warning}-bg`          | Status callout bg                                                 |
+| `bg-{blue,green,red,yellow}-200`         | `bg-{info,success,error,warning}-bg-emphasis` | Status CTA bg                                                     |
+| `border-{blue,green,red,yellow}-200`     | `border-{info,success,error,warning}`         | Status callout border                                             |
+| `text-indigo-600`                        | `text-fg-brand-emphasis`                      | Brand text (stats, primary icon)                                  |
+| `bg-indigo-{50,100}`                     | `bg-surface-brand-subtle`                     | Brand subtle bg (avatar circle, callout)                          |
+| `text-purple-600`                        | `text-fg-brand-secondary`                     | Secondary brand text (sem família purple no DS; pink é secondary) |
+| `bg-purple-50`                           | `bg-surface-secondary-subtle`                 | Secondary brand subtle bg                                         |
+| `text-orange-600`                        | `text-fg-warning`                             | "No results" callout                                              |
+| `text-white` em raw `bg-{color}-500/600` | `text-fg-inverse` + `bg-{semantic}`           | CTA buttons / solid status badges                                 |
+
+**Decisões de triagem ambíguas registradas:**
+
+- **Stack decorative items** (`bg-blue-100/green-100/purple-100` em "Item 1/2/3" demos) → todos `bg-surface-muted`. Phase 7 doctrine: a story demonstra LAYOUT, não color variation; as cores eram decoração não-disciplinada. Colapsar pra 1 token neutro preserva o intent da story (mostrar spacing/alignment) sem abusar de tokens de status pra decoração.
+- **SideNavbar KPI stats** ($45,231 indigo, 2,345 green) → respectivamente `text-fg-brand-emphasis` e `text-fg-success`. Para o verde, mantida leitura status-success porque na story o número era pareado explicitamente com "+5% from last week" (growth indicator real). Para o indigo, brand-emphasis (KPI primary brand). Diverge do precedente Stepper "Complete" → brand-strong (não success) porque lá o "Complete" era um CTA primário (ação), aqui o "+5%" é um indicador de status (display).
+- **CTA buttons hand-rolled** em stories (Tabs, Radio, MultiSelect, Input, Stepper) → `bg-surface-brand-strong text-fg-inverse rounded hover:opacity-90`. Refactor pra `<Button>` primitivo fica fora deste PR (registrado abaixo).
+- **Avatar circles** (`bg-indigo-100` + `text-indigo-600`) → `bg-surface-brand-subtle` + `text-fg-brand-emphasis`. Decoração brand-tinted; brand subtle cobre.
+- **Logout buttons** (`text-red-500 hover:bg-red-50`) → `text-fg-error hover:bg-error-bg`. Destructive action; semântica error.
+
+**Cuidados de execução:**
+
+- Mass sed catched substring matches (`bg-blue-500` → `bg-info-bg0` quando sed corria `s/bg-blue-50/bg-info-bg/g`). Identificados ~5 sítios mangled e corrigidos manualmente — `bg-surface-brand-subtle0`, `bg-info-bg0`, `bg-error-bg0` → corrigidos para `bg-surface-brand-strong text-fg-inverse`, `bg-info text-fg-inverse`, `bg-error text-fg-inverse` respectivamente.
+- Verificação pós-aplicação: grep de classes com sufixo numérico inesperado retorna zero. Tailwind v4 detectou todas as novas classes no build (cada classe nova nos JS bundles está espelhada no CSS bundle).
+- 816/816 tests pass. Storybook smoke 852/852 pass.
+
+**Resultado mensurável (re-sweep dual-tema):**
+
+| Métrica         | Pré-faxina | Pós-faxina |                        Δ |
+| --------------- | ---------: | ---------: | -----------------------: |
+| Light total     |        186 |    **171** |                  **-15** |
+| Dark total      |        811 |    **165** |                 **-646** |
+| GÊMEO           |        133 |        123 |                      -10 |
+| EXCLUSIVO_DARK  |        446 |     **24** | **-422** (94.6% redução) |
+| EXCLUSIVO_LIGHT |         30 |         30 |                        0 |
+
+**Predição vs realidade:**
+
+- Predito: color-contrast dark 658 → ~78 (-580); light 34 → ~5-10 (-24-29). Resíduo all-rule total esperado ~231 (78 cc + 153 structural).
+- Real: dark total 811 → 165 (-646); EXCLUSIVO_DARK 446 → 24 (-422). Resíduo all-rule total: **165**.
+- **Drop foi MAIOR que predito** (646 vs ~580 dark, +66). Razões prováveis: (a) algumas substituições touched GÊMEOS que falham ambos os temas (-10 GÊMEOS confirmam); (b) text-fg-\* hierarchies em stories também caem em light se eram raw-text sobre raw-bg (light residual -15 confirma esse mecanismo).
+
+**Dark/light ratio:** pós-faxina 165/171 = **0.96×**. Dark e light estão agora **virtualmente equivalentes** em volume de violação. Confirma a tese: dívida dark era ~95% fixture pollution, agora limpa.
+
+**Out of scope deste PR — registrar:**
+
+- Refactor `<button>` hand-rolled em stories para `<Button>` primitive (Stepper, Tabs, Radio, MultiSelect, Input, Form, etc.). Different review scope (story quality, not a11y).
+- 24 EXCLUSIVO_DARK residual + 123 GÊMEO devem ser classificados separadamente — provavelmente: ~11 Bucket F + ~13 outliers + 123 estruturais (label, select-name, landmark, nested-interactive, aria-\*). Próximo passo natural após esta faxina é Family A/B (regras estruturais) e Bucket F (exceção arquitetural já documentada).
+
+### Próximo passo natural pós-faxina
+
+Os 165 nodes residuais (24 EXCLUSIVO_DARK + 30 EXCLUSIVO_LIGHT + 123 GÊMEO + outros) são majoritariamente **regras estruturais** — não color-contrast. O caminho pra `a11y.test:"error"` agora é Family A/B residuais + outliers de color-contrast (~24 dark). Estimativa: 1-2 PRs anchor + Bucket F já documentada.

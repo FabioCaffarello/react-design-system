@@ -64,7 +64,7 @@ type Story = StoryObj<typeof Container>;
 export const Default: Story = {
   args: {
     children: (
-      <div className="bg-gray-100 p-4 rounded">
+      <div className="bg-surface-muted p-4 rounded">
         <p>Default container with max-width lg and base padding</p>
       </div>
     ),
@@ -78,7 +78,7 @@ export const MaxWidths: Story = {
         <Container
           key={width}
           maxWidth={width}
-          className="bg-gray-100 p-4 rounded"
+          className="bg-surface-muted p-4 rounded"
         >
           <p>Max width: {width}</p>
         </Container>
@@ -95,7 +95,7 @@ export const PaddingVariations: Story = {
           key={padding}
           paddingX={padding}
           paddingY="base"
-          className="bg-gray-100 rounded"
+          className="bg-surface-muted rounded"
         >
           <p>Padding X: {padding}</p>
         </Container>
@@ -108,7 +108,7 @@ export const NotCentered: Story = {
   args: {
     center: false,
     children: (
-      <div className="bg-gray-100 p-4 rounded">
+      <div className="bg-surface-muted p-4 rounded">
         <p>Container not centered (aligned to left)</p>
       </div>
     ),
@@ -119,7 +119,7 @@ export const FullWidth: Story = {
   args: {
     maxWidth: "full",
     children: (
-      <div className="bg-gray-100 p-4 rounded">
+      <div className="bg-surface-muted p-4 rounded">
         <p>Full width container (no max-width constraint)</p>
       </div>
     ),
@@ -130,7 +130,7 @@ export const FullWidth: Story = {
 export const DefaultState: Story = {
   args: {
     children: (
-      <div className="bg-gray-100 p-4 rounded">
+      <div className="bg-surface-muted p-4 rounded">
         <p>Default container with max-width lg and base padding</p>
       </div>
     ),
@@ -148,7 +148,7 @@ export const FullWidthState: Story = {
   args: {
     maxWidth: "full",
     children: (
-      <div className="bg-gray-100 p-4 rounded">
+      <div className="bg-surface-muted p-4 rounded">
         <p>Full width container (no max-width constraint)</p>
       </div>
     ),
@@ -166,7 +166,7 @@ export const NotCenteredState: Story = {
   args: {
     center: false,
     children: (
-      <div className="bg-gray-100 p-4 rounded">
+      <div className="bg-surface-muted p-4 rounded">
         <p>Container not centered (aligned to left)</p>
       </div>
     ),
@@ -184,7 +184,7 @@ export const SmallMaxWidthState: Story = {
   args: {
     maxWidth: "sm",
     children: (
-      <div className="bg-gray-100 p-4 rounded">
+      <div className="bg-surface-muted p-4 rounded">
         <p>Small max width container</p>
       </div>
     ),
@@ -202,7 +202,7 @@ export const LargeMaxWidthState: Story = {
   args: {
     maxWidth: "lg",
     children: (
-      <div className="bg-gray-100 p-4 rounded">
+      <div className="bg-surface-muted p-4 rounded">
         <p>Large max width container</p>
       </div>
     ),

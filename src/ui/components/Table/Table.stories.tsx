@@ -715,11 +715,11 @@ export const KeyboardNavigation: StoryObj<typeof Table> = {
   },
   render: (args) => (
     <div className="space-y-4">
-      <div className="p-4 bg-blue-50 rounded-md">
-        <p className="text-sm text-blue-800 font-medium mb-2">
+      <div className="p-4 bg-info-bg rounded-md">
+        <p className="text-sm text-fg-info font-medium mb-2">
           Keyboard Navigation:
         </p>
-        <ul className="text-sm text-blue-700 space-y-1 list-disc list-inside">
+        <ul className="text-sm text-fg-info space-y-1 list-disc list-inside">
           <li>Tab to navigate to sortable column headers</li>
           <li>Enter or Space to sort columns</li>
           <li>Arrow keys to navigate cells (when implemented)</li>
@@ -753,20 +753,20 @@ export const DashboardComposition: StoryObj<typeof Table> = {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <div className="p-4">
-            <p className="text-sm text-gray-600">Total Items</p>
+            <p className="text-sm text-fg-secondary">Total Items</p>
             <p className="text-2xl font-bold">42</p>
           </div>
         </Card>
         <Card>
           <div className="p-4">
-            <p className="text-sm text-gray-600">Active</p>
-            <p className="text-2xl font-bold text-green-600">28</p>
+            <p className="text-sm text-fg-secondary">Active</p>
+            <p className="text-2xl font-bold text-fg-success">28</p>
           </div>
         </Card>
         <Card>
           <div className="p-4">
-            <p className="text-sm text-gray-600">Completed</p>
-            <p className="text-2xl font-bold text-blue-600">14</p>
+            <p className="text-sm text-fg-secondary">Completed</p>
+            <p className="text-2xl font-bold text-fg-info">14</p>
           </div>
         </Card>
       </div>
@@ -894,7 +894,7 @@ export const WithEvents: StoryObj<typeof Table> = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Sort columns, select rows, or apply filters. Check the Actions panel
           to see events being fired.
         </p>
@@ -929,7 +929,7 @@ export const WithEvents: StoryObj<typeof Table> = {
           }}
         />
         {selectedRows.length > 0 && (
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-fg-tertiary">
             {selectedRows.length} row(s) selected
           </p>
         )}

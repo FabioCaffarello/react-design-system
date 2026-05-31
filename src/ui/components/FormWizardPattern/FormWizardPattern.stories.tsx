@@ -170,7 +170,7 @@ const _createBasicSteps = (): FormWizardStep[] => {
       description: "Review your information",
       fields: (
         <div className="space-y-2">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-fg-secondary">
             Please review your information before submitting.
           </p>
         </div>
@@ -260,18 +260,18 @@ export const Default: Story = {
         description: "Review your information",
         fields: (
           <div className="space-y-2">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-fg-secondary">
               <strong>Name:</strong> {personalInfo.firstName}{" "}
               {personalInfo.lastName}
             </p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-fg-secondary">
               <strong>Email:</strong> {personalInfo.email}
             </p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-fg-secondary">
               <strong>Newsletter:</strong>{" "}
               {preferences.newsletter ? "Yes" : "No"}
             </p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-fg-secondary">
               <strong>Notifications:</strong>{" "}
               {preferences.notifications ? "Yes" : "No"}
             </p>
@@ -372,7 +372,7 @@ export const WithEvents: Story = {
         description: "Review your information",
         fields: (
           <div className="space-y-2">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-fg-secondary">
               Please review your information before submitting.
             </p>
           </div>
@@ -382,7 +382,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Navigate through steps or complete the wizard. Check the Actions panel
           to see events being fired.
         </p>

@@ -217,19 +217,19 @@ export const Controlled: Story = {
         <div className="flex gap-2">
           <button
             onClick={() => handleTabChange("tab1")}
-            className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            className="px-3 py-1 text-sm bg-surface-emphasis rounded hover:bg-surface-strong"
           >
             Set Tab 1
           </button>
           <button
             onClick={() => handleTabChange("tab2")}
-            className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            className="px-3 py-1 text-sm bg-surface-emphasis rounded hover:bg-surface-strong"
           >
             Set Tab 2
           </button>
           <button
             onClick={() => handleTabChange("tab3")}
-            className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            className="px-3 py-1 text-sm bg-surface-emphasis rounded hover:bg-surface-strong"
           >
             Set Tab 3
           </button>
@@ -265,7 +265,7 @@ export const Controlled: Story = {
             </Card>
           </Tabs.Content>
         </Tabs>
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-fg-secondary">
           <p>
             <strong>Tab History:</strong> {tabHistory.join(" → ")}
           </p>
@@ -311,21 +311,21 @@ export const WithRealContent: Story = {
             <Card className="p-6">
               <h3 className="text-lg font-semibold mb-4">Dashboard Overview</h3>
               <div className="grid grid-cols-3 gap-4">
-                <div className="p-4 bg-blue-50 rounded">
-                  <p className="text-sm text-gray-600">Total Users</p>
-                  <p className="text-2xl font-bold text-blue-600">
+                <div className="p-4 bg-info-bg rounded">
+                  <p className="text-sm text-fg-secondary">Total Users</p>
+                  <p className="text-2xl font-bold text-fg-info">
                     {stats.totalUsers}
                   </p>
                 </div>
-                <div className="p-4 bg-green-50 rounded">
-                  <p className="text-sm text-gray-600">Active Users</p>
-                  <p className="text-2xl font-bold text-green-600">
+                <div className="p-4 bg-success-bg rounded">
+                  <p className="text-sm text-fg-secondary">Active Users</p>
+                  <p className="text-2xl font-bold text-fg-success">
                     {stats.activeUsers}
                   </p>
                 </div>
-                <div className="p-4 bg-purple-50 rounded">
-                  <p className="text-sm text-gray-600">Revenue</p>
-                  <p className="text-2xl font-bold text-purple-600">
+                <div className="p-4 bg-surface-secondary-subtle rounded">
+                  <p className="text-sm text-fg-secondary">Revenue</p>
+                  <p className="text-2xl font-bold text-fg-brand-secondary">
                     {stats.revenue}
                   </p>
                 </div>
@@ -336,15 +336,15 @@ export const WithRealContent: Story = {
             <Card className="p-6">
               <h3 className="text-lg font-semibold mb-4">Analytics</h3>
               <div className="space-y-2">
-                <div className="flex justify-between p-2 bg-gray-50 rounded">
+                <div className="flex justify-between p-2 bg-surface-subtle rounded">
                   <span>Page Views</span>
                   <span className="font-semibold">12,345</span>
                 </div>
-                <div className="flex justify-between p-2 bg-gray-50 rounded">
+                <div className="flex justify-between p-2 bg-surface-subtle rounded">
                   <span>Unique Visitors</span>
                   <span className="font-semibold">8,901</span>
                 </div>
-                <div className="flex justify-between p-2 bg-gray-50 rounded">
+                <div className="flex justify-between p-2 bg-surface-subtle rounded">
                   <span>Bounce Rate</span>
                   <span className="font-semibold">32.5%</span>
                 </div>
@@ -360,8 +360,8 @@ export const WithRealContent: Story = {
                   <span
                     className={
                       settings.notifications
-                        ? "text-green-600"
-                        : "text-gray-400"
+                        ? "text-fg-success"
+                        : "text-fg-quaternary"
                     }
                   >
                     {settings.notifications ? "✓ Enabled" : "✗ Disabled"}
@@ -381,7 +381,7 @@ export const WithRealContent: Story = {
             </Card>
           </Tabs.Content>
         </Tabs>
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-fg-secondary">
           <p>
             Current tab: <strong>{activeTab}</strong>
           </p>
@@ -445,7 +445,7 @@ export const DynamicTabs: Story = {
           />
           <button
             onClick={addTab}
-            className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="px-3 py-1 text-sm bg-surface-brand-strong text-fg-inverse rounded hover:opacity-90"
           >
             Add Tab
           </button>
@@ -461,7 +461,7 @@ export const DynamicTabs: Story = {
                       e.stopPropagation();
                       removeTab(tab.id);
                     }}
-                    className="ml-1 text-gray-400 hover:text-red-600 text-xs"
+                    className="ml-1 text-fg-quaternary hover:text-fg-error text-xs"
                     aria-label={`Remove ${tab.label}`}
                   >
                     ×
@@ -478,7 +478,7 @@ export const DynamicTabs: Story = {
             </Tabs.Content>
           ))}
         </Tabs>
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-fg-secondary">
           <p>
             <strong>Total tabs:</strong> {tabs.length}
           </p>
@@ -536,11 +536,11 @@ export const KeyboardNavigation: Story = {
           </Tabs.Content>
         </Tabs>
         {lastAction && (
-          <div className="text-sm text-green-600 p-2 bg-green-50 rounded">
+          <div className="text-sm text-fg-success p-2 bg-success-bg rounded">
             ✓ {lastAction}
           </div>
         )}
-        <div className="text-sm text-gray-600 space-y-2 p-4 bg-gray-50 rounded">
+        <div className="text-sm text-fg-secondary space-y-2 p-4 bg-surface-subtle rounded">
           <p>
             <strong>Keyboard Navigation:</strong>
           </p>
@@ -575,7 +575,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Click tabs to switch. Check the Actions panel to see events being
           fired.
         </p>
@@ -601,7 +601,7 @@ export const WithEvents: Story = {
             </Card>
           </Tabs.Content>
         </Tabs>
-        <p className="text-sm text-gray-500">Active tab: {activeTab}</p>
+        <p className="text-sm text-fg-tertiary">Active tab: {activeTab}</p>
       </div>
     );
   },

@@ -107,7 +107,7 @@ export const Default: Story = {
           value={value}
           onChange={(val) => setValue(Array.isArray(val) ? val[0] : val)}
         />
-        <p className="mt-4 text-sm text-gray-600">Value: {value}</p>
+        <p className="mt-4 text-sm text-fg-secondary">Value: {value}</p>
       </div>
     );
   },
@@ -153,7 +153,7 @@ export const Range: Story = {
           value={value}
           onChange={(val) => setValue(Array.isArray(val) ? val : [val, val])}
         />
-        <p className="mt-4 text-sm text-gray-600">
+        <p className="mt-4 text-sm text-fg-secondary">
           Range: {value[0]} - {value[1]}
         </p>
       </div>
@@ -242,7 +242,7 @@ export const WithSteps: Story = {
           value={value}
           onChange={(val) => setValue(Array.isArray(val) ? val[0] : val)}
         />
-        <p className="mt-4 text-sm text-gray-600">Value: {value}</p>
+        <p className="mt-4 text-sm text-fg-secondary">Value: {value}</p>
       </div>
     );
   },
@@ -287,7 +287,7 @@ export const CustomRange: Story = {
           onChange={(val) => setValue(Array.isArray(val) ? val : [val, val])}
           showValue
         />
-        <p className="mt-4 text-sm text-gray-600">
+        <p className="mt-4 text-sm text-fg-secondary">
           ${value[0].toLocaleString()} - ${value[1].toLocaleString()}
         </p>
       </div>
@@ -317,7 +317,7 @@ export const Uncontrolled: Story = {
           showValue
         />
       </div>
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-secondary">
         Uses defaultValue for initial value without state management.
       </p>
     </div>
@@ -336,7 +336,7 @@ export const KeyboardNavigation: Story = {
     const [value, setValue] = useState(50);
     return (
       <div className="w-64 space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Try navigating with Tab key and Arrow keys to change value:
         </p>
         <Slider
@@ -345,7 +345,7 @@ export const KeyboardNavigation: Story = {
           onChange={(val) => setValue(Array.isArray(val) ? val[0] : val)}
           showValue
         />
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-fg-tertiary">
           Slider supports keyboard navigation: Tab to focus, Arrow keys to
           change value, Home/End for min/max.
         </p>
@@ -375,7 +375,7 @@ export const RangeMode: Story = {
             onChange={(val) => setValue(Array.isArray(val) ? val : [val, val])}
             showValue
           />
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-2 text-sm text-fg-secondary">
             Range: {value[0]} - {value[1]}
           </p>
         </div>
@@ -415,7 +415,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="w-64 space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Interact with the slider below. Check the Actions panel to see events
           being fired.
         </p>
@@ -425,7 +425,7 @@ export const WithEvents: Story = {
           onChange={handleChange}
           showValue
         />
-        <p className="text-sm text-gray-500">Value: {value}</p>
+        <p className="text-sm text-fg-tertiary">Value: {value}</p>
       </div>
     );
   },

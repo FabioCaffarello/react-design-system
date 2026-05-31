@@ -225,7 +225,7 @@ export const Uncontrolled: Story = {
     <div className="space-y-4">
       <Switch label="Uncontrolled switch" defaultChecked={false} />
       <Switch label="Uncontrolled checked" defaultChecked={true} />
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-secondary">
         Uses defaultChecked for initial state without state management.
       </p>
     </div>
@@ -246,7 +246,7 @@ export const Accessibility: Story = {
     return (
       <div className="space-y-4">
         <div>
-          <p className="text-sm text-gray-600 mb-2">
+          <p className="text-sm text-fg-secondary mb-2">
             Switch with proper ARIA attributes and keyboard navigation:
           </p>
           <Switch
@@ -256,7 +256,7 @@ export const Accessibility: Story = {
             onChange={(e) => setChecked(e.target.checked)}
           />
         </div>
-        <div className="text-xs text-gray-500">
+        <div className="text-xs text-fg-tertiary">
           <p>Keyboard shortcuts:</p>
           <ul className="list-disc list-inside mt-1">
             <li>Enter or Space: Toggle switch</li>
@@ -288,7 +288,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Interact with the switch below. Check the Actions panel to see events
           being fired.
         </p>
@@ -299,7 +299,9 @@ export const WithEvents: Story = {
           onFocus={handleFocus}
           onBlur={handleBlur}
         />
-        <p className="text-sm text-gray-500">State: {checked ? "ON" : "OFF"}</p>
+        <p className="text-sm text-fg-tertiary">
+          State: {checked ? "ON" : "OFF"}
+        </p>
       </div>
     );
   },

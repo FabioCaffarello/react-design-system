@@ -105,15 +105,15 @@ export const Default: Story = {
           placeholder="Search..."
         />
         <div className="text-sm space-y-2">
-          <p className="text-gray-600">
+          <p className="text-fg-secondary">
             <strong>Current value:</strong> {value || "(empty)"}
           </p>
           {lastSearch && (
-            <p className="text-gray-600">
+            <p className="text-fg-secondary">
               <strong>Last search:</strong> "{lastSearch}"
             </p>
           )}
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-fg-tertiary">
             Press Enter or wait for debounce to trigger search
           </p>
         </div>
@@ -157,7 +157,7 @@ export const WithLoading: Story = {
           loading={loading}
           placeholder="Search with loading..."
         />
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-fg-secondary">
           {loading ? (
             <p>Searching... (simulated 2s delay)</p>
           ) : searchCount > 0 ? (
@@ -252,13 +252,13 @@ export const WithDebounce: Story = {
           debounceMs={500}
           placeholder="Search fruits (500ms debounce)..."
         />
-        <div className="text-xs text-gray-500">
+        <div className="text-xs text-fg-tertiary">
           {value
             ? `Typing: "${value}" (wait 500ms after stopping)`
             : "Start typing..."}
         </div>
         {searchTerm && (
-          <div className="border border-gray-200 rounded-md p-3">
+          <div className="border border-line-default rounded-md p-3">
             <p className="text-sm font-medium mb-2">
               Results for "{searchTerm}": {isSearching && "(searching...)"}
             </p>
@@ -268,14 +268,14 @@ export const WithDebounce: Story = {
                   {searchResults.map((result, i) => (
                     <li
                       key={i}
-                      className="p-1 hover:bg-gray-50 rounded cursor-pointer"
+                      className="p-1 hover:bg-surface-hover rounded cursor-pointer"
                     >
                       {result}
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="text-sm text-gray-500">No results found</p>
+                <p className="text-sm text-fg-tertiary">No results found</p>
               ))}
           </div>
         )}
@@ -327,7 +327,7 @@ export const InForm: Story = {
     };
 
     return (
-      <div className="w-96 space-y-4 p-4 border border-gray-200 rounded-lg">
+      <div className="w-96 space-y-4 p-4 border border-line-default rounded-lg">
         <h3 className="text-lg font-semibold">Product Search</h3>
         <SearchInput
           placeholder="Search products..."
@@ -343,7 +343,7 @@ export const InForm: Story = {
               {results.map((product, i) => (
                 <li
                   key={i}
-                  className="p-2 hover:bg-gray-50 rounded cursor-pointer"
+                  className="p-2 hover:bg-surface-hover rounded cursor-pointer"
                 >
                   {product}
                 </li>
@@ -352,7 +352,7 @@ export const InForm: Story = {
           </div>
         )}
         {searchValue && results.length === 0 && !isSearching && (
-          <p className="text-sm text-gray-500">No products found</p>
+          <p className="text-sm text-fg-tertiary">No products found</p>
         )}
       </div>
     );
@@ -387,12 +387,12 @@ export const WithClear: Story = {
           onSearch={(val) => console.log("Search:", val)}
           placeholder="Search with clear..."
         />
-        <div className="text-sm text-gray-600">
-          {cleared && <p className="text-green-600">✓ Search cleared!</p>}
+        <div className="text-sm text-fg-secondary">
+          {cleared && <p className="text-fg-success">✓ Search cleared!</p>}
           <p>
             <strong>Value:</strong> {value || "(empty)"}
           </p>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-fg-tertiary mt-1">
             Click the X button to clear
           </p>
         </div>
@@ -425,7 +425,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="w-64 space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Type, search, or clear. Check the Actions panel to see events being
           fired.
         </p>
@@ -436,7 +436,7 @@ export const WithEvents: Story = {
           onClear={handleClear}
           placeholder="Search..."
         />
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-fg-tertiary">
           Current value: {value || "(empty)"}
         </p>
       </div>

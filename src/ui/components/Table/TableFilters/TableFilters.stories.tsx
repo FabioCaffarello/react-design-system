@@ -140,7 +140,7 @@ export const WithEvents: StoryObj<typeof TableFilters> = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Apply filters. Check the Actions panel to see events being fired.
         </p>
         <TableFilters

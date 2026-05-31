@@ -161,7 +161,7 @@ export const WithEvents: StoryObj<typeof Modal> = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Open the modal and close it. Check the Actions panel to see events
           being fired.
         </p>

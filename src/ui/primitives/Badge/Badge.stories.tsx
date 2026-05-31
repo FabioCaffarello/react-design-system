@@ -164,7 +164,9 @@ export const Accessibility: Story = {
   render: () => (
     <div className="space-y-4">
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">Badges with proper ARIA labels:</p>
+        <p className="text-sm text-fg-secondary">
+          Badges with proper ARIA labels:
+        </p>
         <div className="flex flex-wrap gap-2">
           <Badge variant="success" aria-label="Status: Active">
             Active
@@ -181,7 +183,7 @@ export const Accessibility: Story = {
         </div>
       </div>
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Badges with non-string children and explicit aria-label:
         </p>
         <div className="flex flex-wrap gap-2">
@@ -197,7 +199,7 @@ export const Accessibility: Story = {
         </div>
       </div>
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Badges with role="status" for screen readers:
         </p>
         <div className="flex flex-wrap gap-2">
@@ -205,7 +207,7 @@ export const Accessibility: Story = {
           <Badge variant="error">Task failed</Badge>
           <Badge variant="warning">Task in progress</Badge>
         </div>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-fg-tertiary">
           Screen readers will announce these badges as status updates.
         </p>
       </div>
@@ -225,7 +227,9 @@ export const WithNonStringChildren: Story = {
   render: () => (
     <div className="space-y-4">
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">Badges with ReactNode children:</p>
+        <p className="text-sm text-fg-secondary">
+          Badges with ReactNode children:
+        </p>
         <div className="flex flex-wrap gap-2">
           <Badge variant="success" aria-label="5 items">
             <span>5</span>
@@ -239,14 +243,16 @@ export const WithNonStringChildren: Story = {
         </div>
       </div>
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">Badges with number children:</p>
+        <p className="text-sm text-fg-secondary">
+          Badges with number children:
+        </p>
         <div className="flex flex-wrap gap-2">
           <Badge variant="primary">{42}</Badge>
           <Badge variant="secondary">{100}</Badge>
           <Badge variant="success">{0}</Badge>
         </div>
       </div>
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-fg-tertiary">
         When children is not a string, provide an explicit aria-label for
         accessibility.
       </p>

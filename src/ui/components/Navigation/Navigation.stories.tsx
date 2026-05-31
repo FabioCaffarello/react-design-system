@@ -242,7 +242,7 @@ export const WithBadges: Story = {
         label: "Notifications",
         icon: <Bell className="h-4 w-4" />,
         badge: (
-          <span className="ml-2 rounded-full bg-red-500 text-white text-xs px-2 py-0.5">
+          <span className="ml-2 rounded-full bg-error text-fg-inverse text-xs px-2 py-0.5">
             3
           </span>
         ),
@@ -252,7 +252,7 @@ export const WithBadges: Story = {
         label: "Messages",
         icon: <FileText className="h-4 w-4" />,
         badge: (
-          <span className="ml-2 rounded-full bg-blue-500 text-white text-xs px-2 py-0.5">
+          <span className="ml-2 rounded-full bg-info text-fg-inverse text-xs px-2 py-0.5">
             12
           </span>
         ),

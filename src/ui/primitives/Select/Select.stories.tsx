@@ -148,7 +148,7 @@ export const Default: Story = {
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Selected:{" "}
           <strong>
             {value ? options.find((o) => o.value === value)?.label : "(none)"}
@@ -199,12 +199,12 @@ export const WithError: Story = {
         />
         <button
           onClick={handleSubmit}
-          className="px-4 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 text-sm bg-surface-brand-strong text-fg-inverse rounded hover:opacity-90"
         >
           Submit
         </button>
         {value && !submitted && (
-          <p className="text-sm text-green-600">
+          <p className="text-sm text-fg-success">
             ✓ Option selected: {options.find((o) => o.value === value)?.label}
           </p>
         )}
@@ -235,7 +235,7 @@ export const WithSuccess: Story = {
           success={!!value}
           helperText={value ? "Selection is valid" : undefined}
         />
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Selected:{" "}
           <strong>{options.find((o) => o.value === value)?.label}</strong>
         </p>
@@ -284,7 +284,7 @@ export const Sizes: Story = {
           value={lgValue}
           onChange={(e) => setLgValue(e.target.value)}
         />
-        <div className="text-sm text-gray-600 space-y-1">
+        <div className="text-sm text-fg-secondary space-y-1">
           <p>Small: {smValue || "(none)"}</p>
           <p>Medium: {mdValue || "(none)"}</p>
           <p>Large: {lgValue || "(none)"}</p>
@@ -315,7 +315,7 @@ export const WithOptionGroups: Story = {
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Selected: <strong>{value || "(none)"}</strong>
         </p>
       </div>
@@ -343,10 +343,10 @@ export const WithManyOptions: Story = {
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Selected: <strong>{value ? `Option ${value}` : "(none)"}</strong>
         </p>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-fg-tertiary">
           This select has 20 options. Use keyboard navigation (Arrow keys) to
           quickly find options.
         </p>
@@ -372,7 +372,7 @@ export const Disabled: Story = {
         placeholder="This select is disabled"
         disabled
       />
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-secondary">
         Disabled selects cannot be interacted with. Try clicking or using
         keyboard - nothing happens.
       </p>
@@ -444,7 +444,9 @@ export const Controlled: Story = {
           options={options}
           placeholder="Select an option..."
         />
-        <p className="text-sm text-gray-600">Selected: {value || "(none)"}</p>
+        <p className="text-sm text-fg-secondary">
+          Selected: {value || "(none)"}
+        </p>
       </div>
     );
   },
@@ -466,7 +468,7 @@ export const Uncontrolled: Story = {
         options={options}
         placeholder="Select an option..."
       />
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-secondary">
         Uses defaultValue for initial value without state management.
       </p>
     </div>
@@ -521,7 +523,7 @@ export const KeyboardNavigation: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Try navigating with Tab key and Arrow keys to change selection:
         </p>
         <Select
@@ -532,11 +534,11 @@ export const KeyboardNavigation: Story = {
           onChange={handleChange}
         />
         {lastAction && (
-          <div className="text-sm text-green-600 p-2 bg-green-50 rounded">
+          <div className="text-sm text-fg-success p-2 bg-success-bg rounded">
             ✓ {lastAction}
           </div>
         )}
-        <div className="text-xs text-gray-500 space-y-1">
+        <div className="text-xs text-fg-tertiary space-y-1">
           <p>
             <strong>Keyboard shortcuts:</strong>
           </p>
@@ -591,7 +593,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Interact with the select below. Check the Actions panel to see events
           being fired.
         </p>
@@ -604,7 +606,9 @@ export const WithEvents: Story = {
           onBlur={handleBlur}
           placeholder="Select an option..."
         />
-        <p className="text-sm text-gray-500">Selected: {value || "(none)"}</p>
+        <p className="text-sm text-fg-tertiary">
+          Selected: {value || "(none)"}
+        </p>
       </div>
     );
   },

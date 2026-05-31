@@ -101,7 +101,7 @@ export const Default: Story = {
           ]}
         />
         {lastAction && (
-          <div className="text-sm text-gray-600 p-3 bg-gray-50 rounded">
+          <div className="text-sm text-fg-secondary p-3 bg-surface-subtle rounded">
             Last action: <strong>{lastAction}</strong>
           </div>
         )}
@@ -170,11 +170,11 @@ export const KeyboardNavigation: Story = {
           items={items}
         />
         {selectedItem && (
-          <div className="text-sm text-gray-600 p-3 bg-gray-50 rounded">
+          <div className="text-sm text-fg-secondary p-3 bg-surface-subtle rounded">
             Selected via keyboard: <strong>{selectedItem}</strong>
           </div>
         )}
-        <div className="text-sm text-gray-600 space-y-2 p-4 bg-gray-50 rounded">
+        <div className="text-sm text-fg-secondary space-y-2 p-4 bg-surface-subtle rounded">
           <p>
             <strong>Keyboard Shortcuts:</strong>
           </p>
@@ -212,11 +212,11 @@ export const WithManyItems: Story = {
       <div className="space-y-4">
         <Dropdown trigger={<Button>Many Options</Button>} items={manyItems} />
         {selectedItem && (
-          <div className="text-sm text-gray-600 p-3 bg-gray-50 rounded">
+          <div className="text-sm text-fg-secondary p-3 bg-surface-subtle rounded">
             Selected: <strong>{selectedItem}</strong>
           </div>
         )}
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-fg-secondary">
           <p>
             Dropdown with 20 items. Use keyboard navigation to quickly find
             items.
@@ -274,8 +274,8 @@ export const WithActionFeedback: Story = {
         />
         {actionHistory.length > 0 && (
           <div className="text-sm space-y-2">
-            <p className="font-medium text-gray-700">Action History:</p>
-            <ul className="list-disc list-inside text-gray-600 space-y-1">
+            <p className="font-medium text-fg-primary">Action History:</p>
+            <ul className="list-disc list-inside text-fg-secondary space-y-1">
               {actionHistory.map((action, idx) => (
                 <li key={idx}>{action}</li>
               ))}
@@ -328,7 +328,7 @@ export const AllVariants: Story = {
           />
         </div>
         {selected && (
-          <div className="text-sm text-gray-600 p-3 bg-gray-50 rounded">
+          <div className="text-sm text-fg-secondary p-3 bg-surface-subtle rounded">
             Last selected: <strong>{selected}</strong>
           </div>
         )}
@@ -406,7 +406,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Click the button to open the dropdown, then click an item. Check the
           Actions panel to see events being fired.
         </p>
@@ -429,7 +429,7 @@ export const WithEvents: Story = {
           ]}
         />
         {lastAction && (
-          <div className="text-sm text-gray-600 p-3 bg-gray-50 rounded">
+          <div className="text-sm text-fg-secondary p-3 bg-surface-subtle rounded">
             Last action: <strong>{lastAction}</strong>
           </div>
         )}
@@ -489,7 +489,7 @@ export const OpenState: Story = {
             { label: "Option 2", onClick: () => setOpen(false) },
           ]}
         />
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-fg-tertiary">
           Click the button to see the open state
         </p>
       </div>

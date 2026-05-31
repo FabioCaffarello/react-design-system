@@ -180,7 +180,9 @@ export const Group: Story = {
   render: () => (
     <div className="space-y-4">
       <div>
-        <p className="text-sm text-gray-600 mb-2">Small group (3 avatars)</p>
+        <p className="text-sm text-fg-secondary mb-2">
+          Small group (3 avatars)
+        </p>
         <AvatarGroup max={3} size="md">
           <Avatar
             src="https://i.pravatar.cc/150?img=1"
@@ -200,7 +202,7 @@ export const Group: Story = {
         </AvatarGroup>
       </div>
       <div>
-        <p className="text-sm text-gray-600 mb-2">
+        <p className="text-sm text-fg-secondary mb-2">
           Large group with overflow (max 3)
         </p>
         <AvatarGroup max={3} size="md">
@@ -232,7 +234,9 @@ export const Group: Story = {
         </AvatarGroup>
       </div>
       <div>
-        <p className="text-sm text-gray-600 mb-2">Group with fallbacks only</p>
+        <p className="text-sm text-fg-secondary mb-2">
+          Group with fallbacks only
+        </p>
         <AvatarGroup max={4} size="md">
           <Avatar fallback="JD" alt="John Doe" />
           <Avatar fallback="AB" alt="Alice Brown" />
@@ -257,7 +261,7 @@ export const GroupSpacing: Story = {
   render: () => (
     <div className="space-y-4">
       <div>
-        <p className="text-sm text-gray-600 mb-2">No spacing</p>
+        <p className="text-sm text-fg-secondary mb-2">No spacing</p>
         <AvatarGroup max={5} spacing="none">
           <Avatar fallback="1" />
           <Avatar fallback="2" />
@@ -265,7 +269,7 @@ export const GroupSpacing: Story = {
         </AvatarGroup>
       </div>
       <div>
-        <p className="text-sm text-gray-600 mb-2">Small spacing</p>
+        <p className="text-sm text-fg-secondary mb-2">Small spacing</p>
         <AvatarGroup max={5} spacing="sm">
           <Avatar fallback="1" />
           <Avatar fallback="2" />
@@ -273,7 +277,9 @@ export const GroupSpacing: Story = {
         </AvatarGroup>
       </div>
       <div>
-        <p className="text-sm text-gray-600 mb-2">Medium spacing (default)</p>
+        <p className="text-sm text-fg-secondary mb-2">
+          Medium spacing (default)
+        </p>
         <AvatarGroup max={5} spacing="md">
           <Avatar fallback="1" />
           <Avatar fallback="2" />
@@ -281,7 +287,7 @@ export const GroupSpacing: Story = {
         </AvatarGroup>
       </div>
       <div>
-        <p className="text-sm text-gray-600 mb-2">Large spacing</p>
+        <p className="text-sm text-fg-secondary mb-2">Large spacing</p>
         <AvatarGroup max={5} spacing="lg">
           <Avatar fallback="1" />
           <Avatar fallback="2" />
@@ -316,7 +322,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           The avatar below will try to load an image. Check the Actions panel to
           see events being fired.
         </p>
@@ -327,7 +333,7 @@ export const WithEvents: Story = {
           onError={handleError}
           onLoad={handleLoad}
         />
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-fg-tertiary">
           Try changing the src to an invalid URL to trigger onError.
         </p>
       </div>

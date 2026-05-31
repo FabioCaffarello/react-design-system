@@ -167,8 +167,8 @@ export const WithSelection: Story = {
           rowId={(row) => row.id as string}
         />
         {selectedRows.length > 0 && (
-          <div className="p-4 bg-blue-50 rounded-md">
-            <p className="text-sm text-blue-800">
+          <div className="p-4 bg-info-bg rounded-md">
+            <p className="text-sm text-fg-info">
               {selectedRows.length} row(s) selected
             </p>
           </div>
@@ -280,7 +280,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Sort columns, select rows, or export data. Check the Actions panel to
           see events being fired.
         </p>
@@ -298,7 +298,7 @@ export const WithEvents: Story = {
           onExport={handleExport}
         />
         {selectedRows.length > 0 && (
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-fg-tertiary">
             {selectedRows.length} row(s) selected
           </p>
         )}

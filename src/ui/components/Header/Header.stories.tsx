@@ -260,10 +260,10 @@ export const WithDashboardLayout: Story = {
       <div className="p-8">
         <h1 className="text-2xl font-bold mb-4">Dashboard Content</h1>
         <p>This is the main content area of the dashboard.</p>
-        <p className="mt-4 text-sm text-gray-600">
+        <p className="mt-4 text-sm text-fg-secondary">
           Note: Header uses{" "}
-          <code className="bg-gray-100 px-1 rounded">bare</code> prop to avoid
-          duplicate wrappers when used in DashboardLayout.
+          <code className="bg-surface-muted px-1 rounded">bare</code> prop to
+          avoid duplicate wrappers when used in DashboardLayout.
         </p>
       </div>
     </DashboardLayout>

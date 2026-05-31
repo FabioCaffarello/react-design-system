@@ -127,10 +127,10 @@ export const Default: Story = {
             onChange={(e) => setSelected(e.target.value)}
           />
         </div>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Selected: <strong>{selected || "None"}</strong>
         </p>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-fg-tertiary">
           Click on any option to select it. Only one option can be selected at a
           time.
         </p>
@@ -169,10 +169,10 @@ export const Checked: Story = {
             onChange={(e) => setSelected(e.target.value)}
           />
         </div>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Selected: <strong>{selected}</strong>
         </p>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-fg-tertiary">
           Note: Radio buttons cannot be unchecked by clicking them again. You
           must select another option in the group.
         </p>
@@ -230,16 +230,16 @@ export const WithError: Story = {
           />
         </div>
         {submitted && !selected && (
-          <p className="text-sm text-red-600">⚠ Please select an option</p>
+          <p className="text-sm text-fg-error">⚠ Please select an option</p>
         )}
         <button
           onClick={handleSubmit}
-          className="px-4 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 text-sm bg-surface-brand-strong text-fg-inverse rounded hover:opacity-90"
         >
           Submit
         </button>
         {selected && !submitted && (
-          <p className="text-sm text-green-600">
+          <p className="text-sm text-fg-success">
             ✓ Option selected: {selected}
           </p>
         )}
@@ -285,10 +285,10 @@ export const Disabled: Story = {
             onChange={(e) => setSelected(e.target.value)}
           />
         </div>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Selected: <strong>{selected}</strong>
         </p>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           The disabled option cannot be selected. Try clicking it - nothing
           happens. You can only select enabled options.
         </p>
@@ -334,7 +334,7 @@ export const RadioGroup: Story = {
             onChange={(e) => setSelected(e.target.value)}
           />
         </div>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Selected: <strong>{selected ? `Option ${selected}` : "None"}</strong>
         </p>
       </div>
@@ -389,7 +389,7 @@ export const Controlled: Story = {
             }}
           />
         </div>
-        <div className="text-sm text-gray-600 space-y-1">
+        <div className="text-sm text-fg-secondary space-y-1">
           <p>
             <strong>Selected:</strong> {selected}
           </p>
@@ -403,7 +403,7 @@ export const Controlled: Story = {
               setSelected("option1");
               setChangeCount((prev) => prev + 1);
             }}
-            className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            className="px-3 py-1 text-sm bg-surface-emphasis rounded hover:bg-surface-strong"
           >
             Select Option 1
           </button>
@@ -412,7 +412,7 @@ export const Controlled: Story = {
               setSelected("option2");
               setChangeCount((prev) => prev + 1);
             }}
-            className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            className="px-3 py-1 text-sm bg-surface-emphasis rounded hover:bg-surface-strong"
           >
             Select Option 2
           </button>
@@ -421,7 +421,7 @@ export const Controlled: Story = {
               setSelected("option3");
               setChangeCount((prev) => prev + 1);
             }}
-            className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            className="px-3 py-1 text-sm bg-surface-emphasis rounded hover:bg-surface-strong"
           >
             Select Option 3
           </button>
@@ -475,7 +475,7 @@ export const Uncontrolled: Story = {
             onChange={handleChange}
           />
         </div>
-        <div className="text-sm text-gray-600 space-y-1">
+        <div className="text-sm text-fg-secondary space-y-1">
           <p>
             <strong>Current selection:</strong> {selectedValue}
           </p>
@@ -483,7 +483,7 @@ export const Uncontrolled: Story = {
             <strong>Last change:</strong> {lastChange}
           </p>
         </div>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-fg-tertiary">
           This is an uncontrolled component using <code>defaultChecked</code>.
           The component manages its own state internally via the DOM. We track
           changes here only for demonstration purposes.
@@ -506,7 +506,7 @@ export const FunctionalGroup: Story = {
     const [selected, setSelected] = useState("option2");
     return (
       <div className="space-y-4">
-        <fieldset className="space-y-2 border border-gray-300 rounded p-4">
+        <fieldset className="space-y-2 border border-line-emphasis rounded p-4">
           <legend className="text-sm font-medium px-2">Choose an option</legend>
           <Radio
             name="functional"
@@ -530,10 +530,10 @@ export const FunctionalGroup: Story = {
             onChange={(e) => setSelected(e.target.value)}
           />
         </fieldset>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Selected: <strong>{selected}</strong>
         </p>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-fg-tertiary">
           This example uses <code>fieldset</code> and <code>legend</code> for
           better accessibility and semantic HTML structure.
         </p>
@@ -556,7 +556,7 @@ export const KeyboardNavigation: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Try navigating with Tab key and Arrow keys to change selection:
         </p>
         <div className="space-y-2">
@@ -596,10 +596,10 @@ export const KeyboardNavigation: Story = {
             onChange={(e) => setSelected(e.target.value)}
           />
         </div>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Selected: <strong>{selected ? `Option ${selected}` : "None"}</strong>
         </p>
-        <div className="text-xs text-gray-500 space-y-1">
+        <div className="text-xs text-fg-tertiary space-y-1">
           <p>
             <strong>Keyboard shortcuts:</strong>
           </p>
@@ -704,12 +704,12 @@ export const AllStates: Story = {
           />
         </div>
         <div className="space-y-2">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-fg-secondary">
             Selected:{" "}
             <strong>{selected ? `Option ${selected}` : "None"}</strong>
           </p>
           {shouldShowError && (
-            <p className="text-sm text-red-600">
+            <p className="text-sm text-fg-error">
               ⚠ Error: Option 5 is required but not selected
             </p>
           )}
@@ -724,7 +724,7 @@ export const AllStates: Story = {
                 }
                 setShowError(true);
               }}
-              className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200"
+              className="px-3 py-1 text-sm bg-error-bg text-fg-error rounded hover:bg-error-bg-emphasis"
             >
               Trigger Error on Option 5
             </button>
@@ -733,12 +733,12 @@ export const AllStates: Story = {
                 setShowError(false);
                 setSelected("2");
               }}
-              className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+              className="px-3 py-1 text-sm bg-surface-emphasis rounded hover:bg-surface-strong"
             >
               Reset
             </button>
           </div>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-fg-tertiary">
             Click "Trigger Error" to show validation error on Option 5. Select
             Option 5 to clear the error.
           </p>
@@ -776,7 +776,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Interact with the radio buttons below. Check the Actions panel to see
           events being fired.
         </p>
@@ -809,7 +809,7 @@ export const WithEvents: Story = {
             onBlur={handleBlur}
           />
         </div>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-fg-tertiary">
           Selected: {selected || "(none)"}
         </p>
       </div>

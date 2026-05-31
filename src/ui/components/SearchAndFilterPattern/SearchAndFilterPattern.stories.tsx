@@ -137,15 +137,17 @@ export const Default: Story = {
             <Text variant="heading" className="text-base">
               {product.name}
             </Text>
-            <Text className="text-gray-600 text-sm">{product.category}</Text>
+            <Text className="text-fg-secondary text-sm">
+              {product.category}
+            </Text>
             <Text variant="heading" className="text-lg">
               ${product.price}
             </Text>
             <Text
               className={
                 product.inStock
-                  ? "text-green-600 text-sm"
-                  : "text-red-600 text-sm"
+                  ? "text-fg-success text-sm"
+                  : "text-fg-error text-sm"
               }
             >
               {product.inStock ? "In Stock" : "Out of Stock"}
@@ -175,7 +177,7 @@ export const SearchOnly: Story = {
       return (
         <Card padding="medium">
           <Text variant="heading">{typedItem.name}</Text>
-          <Text className="text-gray-600 text-sm">
+          <Text className="text-fg-secondary text-sm">
             {typedItem.category} - ${typedItem.price}
           </Text>
         </Card>
@@ -200,7 +202,9 @@ export const FiltersOnly: Story = {
       return (
         <Card padding="medium">
           <Text variant="heading">{typedItem.name}</Text>
-          <Text className="text-gray-600 text-sm">{typedItem.category}</Text>
+          <Text className="text-fg-secondary text-sm">
+            {typedItem.category}
+          </Text>
         </Card>
       );
     },
@@ -223,7 +227,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Search or apply filters. Check the Actions panel to see events being
           fired.
         </p>
@@ -246,7 +250,9 @@ export const WithEvents: Story = {
                 <Text variant="heading" className="text-base">
                   {item.name}
                 </Text>
-                <Text className="text-gray-600 text-sm">{item.category}</Text>
+                <Text className="text-fg-secondary text-sm">
+                  {item.category}
+                </Text>
               </Stack>
             </Card>
           )}
@@ -301,7 +307,9 @@ export const DefaultState: Story = {
             <Text variant="heading" className="text-base">
               {typedItem.name}
             </Text>
-            <Text className="text-gray-600 text-sm">{typedItem.category}</Text>
+            <Text className="text-fg-secondary text-sm">
+              {typedItem.category}
+            </Text>
           </Stack>
         </Card>
       );
@@ -334,7 +342,7 @@ export const SearchOnlyState: Story = {
       return (
         <Card padding="medium">
           <Text variant="heading">{typedItem.name}</Text>
-          <Text className="text-gray-600 text-sm">
+          <Text className="text-fg-secondary text-sm">
             {typedItem.category} - ${typedItem.price}
           </Text>
         </Card>
@@ -366,7 +374,9 @@ export const FiltersOnlyState: Story = {
       return (
         <Card padding="medium">
           <Text variant="heading">{typedItem.name}</Text>
-          <Text className="text-gray-600 text-sm">{typedItem.category}</Text>
+          <Text className="text-fg-secondary text-sm">
+            {typedItem.category}
+          </Text>
         </Card>
       );
     },
