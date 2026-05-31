@@ -1,3 +1,10 @@
+## [1.23.3](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.2...v1.23.3) (2026-05-31)
+
+
+### 🐛 Bug Fixes
+
+* **theme:** consume --color-surface-canvas on body (axe canvas-token fix) ([4d6e5b4](https://github.com/FabioCaffarello/react-design-system/commit/4d6e5b44106d97aa9df83564b3ebd1ce31959361)), closes [#020617](https://github.com/FabioCaffarello/react-design-system/issues/020617)
+
 ## [1.23.2](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.1...v1.23.2) (2026-05-30)
 
 
