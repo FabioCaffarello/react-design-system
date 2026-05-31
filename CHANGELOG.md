@@ -1,3 +1,10 @@
+## [1.23.4](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.3...v1.23.4) (2026-05-31)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** faxina semântica raw-color em 56 story files (Phase 7 triagem) ([49bf249](https://github.com/FabioCaffarello/react-design-system/commit/49bf2496acf8f64b057bf1b7ed0843174a7f6ea7))
+
 ## [1.23.3](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.2...v1.23.3) (2026-05-31)
 
 
