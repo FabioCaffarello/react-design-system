@@ -1,3 +1,10 @@
+## [1.23.6](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.5...v1.23.6) (2026-05-31)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** sidenavbar inner-aside removed + navigationtabs role corrected ([692e437](https://github.com/FabioCaffarello/react-design-system/commit/692e4374bf03c597ec5cce96bb9d35dacabc0c57))
+
 ## [1.23.5](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.4...v1.23.5) (2026-05-31)
 
 
