@@ -1196,3 +1196,61 @@ Probe pré-fix mostrou: ArrowRight ciclava entre tabs (funcionava por acidente �
 - Light total: 135 signatures
 - Dark total: 130 signatures
 - Próximos anchors (ordem aprovada): #2 FormWizard empty h2 (6 sites, trivial), #3 landmark-unique variants (5 sites, trivial), #4 Slider primitive API, #5 Pagination select-name, #6 TimePicker/MultiSelect/Textarea API, #7 Menu/Chip nested-interactive (diagnóstico separado primeiro)
+
+### Anchors triviais #2 + #3 + #5 aplicados (PR #62)
+
+**Resultado:** -26 sites em ambos os temas (light 135→109, dark 130→104). EXCLUSIVO -17 cada lado, GÊMEO -9.
+
+**#2 FormWizardPattern empty h2 (6 sites — caso (b) "provide title"):**
+
+Diagnóstico revelou que NÃO era heading sometimes-empty — era **field name mismatch**. Stories passavam `label: "X"` em FormWizardStep, mas o tipo (`extends StepperStep`) requer `title: string`. TypeScript não pegou (strictness frouxa em stories). Component lê `step.title` = undefined → h2 renderiza vazio.
+
+Fix: rename `label: "..."` → `title: "..."` em 15 step entries across 6 stories. Conditional render seria errado — esconderia o sintoma sem corrigir os dados.
+
+Classificação: **STORY defect** (fixtures com field name wrong). Component está correto (espera title via type contract). TypeScript permissive em stories é issue separado out-of-scope.
+
+**#3 landmark-unique variants (5 sigs → 9 instâncias) — STORY defect:**
+
+Stories `Variants` renderizam 3 instâncias do componente lado-a-lado (default/elevated/bordered etc) pra demo de variantes. Cada instância tem mesmo landmark (header/nav/aside) com aria-label default igual → landmark-unique flag.
+
+Fix: aria-label distinto por instância, descritivo da variante (Phase 7 / button-name doctrine — nome é a função, não contador):
+
+- Header.Variants: `"Header — {default,elevated,bordered} variant"`
+- Navigation.Variants: `"Navigation — {default,pills,tabs} variant"`
+- SideNavbar.Variants: `"Sidebar — {default,compact,elevated} variant"`
+
+Header/Navigation/SideNavbar primitives todos JÁ aceitam aria-label como prop (verificado no código antes de aplicar).
+
+Classificação: **STORY defect** (variants demo renderiza múltiplas instâncias do mesmo landmark). Componentes corretos — fornecem aria-label default + permitem override.
+
+**Header.WithDashboardLayout 1 site separado** — causa diferente: DashboardLayout sempre wrappa o `sidebar` prop em `<SideNavbar>`, mas a story passa `sidebar={<SideNavbar>...</SideNavbar>}`. Result: SideNavbar dentro de SideNavbar = 2 asides aninhados com mesmo aria-label. **Bug arquitetural de DashboardLayout (double-wrap)** — out-of-scope deste anchor. Registrar:
+
+**Issue: DashboardLayout double-wrap do sidebar prop.** DashboardLayout.tsx:70-72 wrappa `{sidebar}` em `<SideNavbar>` sempre. Se consumer já passa SideNavbar como sidebar, resulta em nested. Fix proposto: detectar se sidebar JÁ é SideNavbar (children type check) e pular o wrapper, OU mudar API pra deixar claro que sidebar é "items dentro do SideNavbar", não SideNavbar completo. Outlier de 1 site, registrar pra reabrir quando tocar DashboardLayout.
+
+**#5 Pagination select-name (14 sites) — COMPONENT defect:**
+
+Todos os 14 sites são o MESMO Select — page-size selector em `TablePagination.tsx:116`. Confirmado por inspeção: TablePagination renderiza 1 Select; replicado por 7+ substories da story `TablePagination` + 4 em DataGrid + 2 em SearchAndFilterPattern... wait, SearchAndFilterPattern era raw `<select>`, contado em select-name geral mas não no Pagination cluster. Anyway, todos os 14 do Pagination cluster são page-size.
+
+Fix: `aria-label="Items per page"` no `<Select>` dentro de TablePagination component. Função (não tipo), Phase 7 doctrine (como Stepper "Step 3: Shipping", não "button").
+
+Classificação: **COMPONENT defect** — Pagination component renderiza Select sem accessible name. Single edit no component fecha todos os consumer sites.
+
+**Gates:**
+
+- vitest 816/816
+- smoke 852/852 (TBD — re-rodando)
+- typecheck clean
+- lint 0 errors
+- validate-dark-coverage OK
+
+**Estado pós-triviais #2+#3+#5:**
+
+- Light: 109 signatures
+- Dark: 104 signatures
+- Dark/light: 0.95×, convergindo
+- Próximos anchors: #4 Slider aria-input-field-name (13, API change), #6 TimePicker/MultiSelect/Textarea label (9, API change), #7 Menu/Chip nested-interactive (23, diagnostic separado obrigatório)
+
+**Outliers registrados pra reabrir:**
+
+- DashboardLayout double-wrap sidebar (1 site landmark-unique residual)
+- TypeScript strictness em stories permitiu field name errado em FormWizardPattern (não-bloqueante, mas revela gap de validação)

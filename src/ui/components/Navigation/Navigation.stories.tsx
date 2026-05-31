@@ -121,15 +121,27 @@ export const Variants: Story = {
     <div className="space-y-8">
       <div>
         <h3 className="mb-2 text-sm font-medium">Default</h3>
-        <Navigation items={basicItems} variant="default" />
+        <Navigation
+          items={basicItems}
+          variant="default"
+          aria-label="Navigation — default variant"
+        />
       </div>
       <div>
         <h3 className="mb-2 text-sm font-medium">Pills</h3>
-        <Navigation items={basicItems} variant="pills" />
+        <Navigation
+          items={basicItems}
+          variant="pills"
+          aria-label="Navigation — pills variant"
+        />
       </div>
       <div>
         <h3 className="mb-2 text-sm font-medium">Tabs</h3>
-        <Navigation items={basicItems} variant="tabs" />
+        <Navigation
+          items={basicItems}
+          variant="tabs"
+          aria-label="Navigation — tabs variant"
+        />
       </div>
     </div>
   ),
