@@ -276,15 +276,7 @@ export const InTable: StoryObj<typeof Pagination> = {
                   <td className="px-4 py-2 text-sm">{item.name}</td>
                   <td className="px-4 py-2 text-sm">{item.email}</td>
                   <td className="px-4 py-2 text-sm">
-                    <span
-                      className={`px-2 py-1 rounded text-xs ${
-                        item.role === "Admin"
-                          ? "bg-surface-muted text-fg-info"
-                          : item.role === "User"
-                            ? "bg-surface-muted text-fg-success"
-                            : "bg-surface-muted text-fg-primary"
-                      }`}
-                    >
+                    <span className="px-2 py-1 rounded text-xs bg-surface-muted text-fg-primary">
                       {item.role}
                     </span>
                   </td>

@@ -167,8 +167,8 @@ export const WithSelection: Story = {
           rowId={(row) => row.id as string}
         />
         {selectedRows.length > 0 && (
-          <div className="p-4 bg-info-bg rounded-md">
-            <p className="text-sm text-fg-info">
+          <div className="p-4 bg-surface-selected-subtle rounded-md">
+            <p className="text-sm text-fg-primary">
               {selectedRows.length} row(s) selected
             </p>
           </div>

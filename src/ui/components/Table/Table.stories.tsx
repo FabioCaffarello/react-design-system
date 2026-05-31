@@ -673,7 +673,7 @@ export const DeclarativeAPI: StoryObj<typeof Table> = {
       >
         <Table.Filters />
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
+          <table className="min-w-full divide-y divide-line-default">
             <Table.Header />
             <Table.Body />
           </table>
@@ -760,13 +760,13 @@ export const DashboardComposition: StoryObj<typeof Table> = {
         <Card>
           <div className="p-4">
             <p className="text-sm text-fg-secondary">Active</p>
-            <p className="text-2xl font-bold text-fg-success">28</p>
+            <p className="text-2xl font-bold text-fg-primary">28</p>
           </div>
         </Card>
         <Card>
           <div className="p-4">
             <p className="text-sm text-fg-secondary">Completed</p>
-            <p className="text-2xl font-bold text-fg-info">14</p>
+            <p className="text-2xl font-bold text-fg-primary">14</p>
           </div>
         </Card>
       </div>

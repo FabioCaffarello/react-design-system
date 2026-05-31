@@ -89,11 +89,10 @@ export default defineConfig([
   {
     // More lenient rules for stories and tests.
     //
-    // Note: ds/no-raw-color-classes is intentionally NOT applied here.
-    // *.stories.tsx files currently carry ~586 raw color uses, a mix of
-    // intentional palette demos and legacy lazy color. A dedicated triage
-    // phase (see BACKLOG) will decide per-story; until then the rule
-    // stays scoped to shipped component source (src/ui/**/*.tsx).
+    // ds/no-raw-color-classes IS applied to *.stories.tsx (cadeado on),
+    // wired in the story-discipline block below — see comments there.
+    // Tests remain exempt: raw color in *.test.tsx is acceptable for
+    // assertion fixtures and unlikely to leak into rendered UI.
     files: ["**/*.stories.{ts,tsx}", "**/*.test.{ts,tsx}"],
     extends: [
       js.configs.recommended,
@@ -162,6 +161,19 @@ export default defineConfig([
     },
     rules: {
       "ds/story-discipline": "error",
+      // Cadeado: stories now under the same semantic-vocabulary rule as
+      // shipped component source. Triagem por papel (Phase 7) was
+      // completed in PR ${??} — every raw Tailwind color across the 56
+      // story files was either kept (genuine status / brand / decoration
+      // -> documented via Principle 3 exception comment) or substituted
+      // semantically. Re-enabling the rule here cristaliza the discipline:
+      // future regressions back to raw color must either use the
+      // Principle-3 escape valve or be substituted by token role.
+      //
+      // The rule's exception-comment shapes (// exception: ...,
+      // // micro-z: ..., // <class>: ...) work identically in stories
+      // as they do in component source — see .claude/rules/colors.md.
+      "ds/no-raw-color-classes": "error",
     },
   },
   {

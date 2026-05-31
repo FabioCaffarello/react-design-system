@@ -145,16 +145,16 @@ export const WithIllustration: Story = {
     if (stories.length > 0) {
       return (
         <div className="space-y-4">
-          <div className="p-4 bg-info-bg border border-info rounded-lg">
-            <p className="text-fg-info font-medium mb-2">Stories created:</p>
-            <ul className="list-disc list-inside text-fg-info">
+          <div className="p-4 bg-surface-selected-subtle border border-line-default rounded-lg">
+            <p className="text-fg-primary font-medium mb-2">Stories created:</p>
+            <ul className="list-disc list-inside text-fg-primary">
               {stories.map((story, i) => (
                 <li key={i}>{story}</li>
               ))}
             </ul>
             <button
               onClick={() => setStories([])}
-              className="mt-3 px-3 py-1 text-sm bg-info-bg-emphasis rounded hover:bg-info"
+              className="mt-3 px-3 py-1 text-sm bg-surface-emphasis rounded hover:bg-surface-strong"
             >
               Clear Stories
             </button>

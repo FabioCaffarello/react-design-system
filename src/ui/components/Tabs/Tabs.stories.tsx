@@ -311,21 +311,21 @@ export const WithRealContent: Story = {
             <Card className="p-6">
               <h3 className="text-lg font-semibold mb-4">Dashboard Overview</h3>
               <div className="grid grid-cols-3 gap-4">
-                <div className="p-4 bg-info-bg rounded">
+                <div className="p-4 bg-surface-muted rounded">
                   <p className="text-sm text-fg-secondary">Total Users</p>
-                  <p className="text-2xl font-bold text-fg-info">
+                  <p className="text-2xl font-bold text-fg-primary">
                     {stats.totalUsers}
                   </p>
                 </div>
-                <div className="p-4 bg-success-bg rounded">
+                <div className="p-4 bg-surface-muted rounded">
                   <p className="text-sm text-fg-secondary">Active Users</p>
-                  <p className="text-2xl font-bold text-fg-success">
+                  <p className="text-2xl font-bold text-fg-primary">
                     {stats.activeUsers}
                   </p>
                 </div>
-                <div className="p-4 bg-surface-secondary-subtle rounded">
+                <div className="p-4 bg-surface-muted rounded">
                   <p className="text-sm text-fg-secondary">Revenue</p>
-                  <p className="text-2xl font-bold text-fg-brand-secondary">
+                  <p className="text-2xl font-bold text-fg-primary">
                     {stats.revenue}
                   </p>
                 </div>

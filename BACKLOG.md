@@ -1033,3 +1033,84 @@ Aplicado: substituição semântica raw→token nos ~400+ sites em 56 story file
 ### Próximo passo natural pós-faxina
 
 Os 165 nodes residuais (24 EXCLUSIVO_DARK + 30 EXCLUSIVO_LIGHT + 123 GÊMEO + outros) são majoritariamente **regras estruturais** — não color-contrast. O caminho pra `a11y.test:"error"` agora é Family A/B residuais + outliers de color-contrast (~24 dark). Estimativa: 1-2 PRs anchor + Bucket F já documentada.
+
+### Re-triagem semântica + cadeado (PR #60)
+
+A faxina anterior (PR #59) foi cumprida por sed global — find-and-replace de cores cruas pra tokens, axe-clean mas semanticamente desleixada. User pediu re-triagem per-papel (Phase 7 doctrine "triagem semântica não tradução") antes de ligar o cadeado, porque cadeado sobre código semanticamente errado cristaliza o erro.
+
+**Amostra inicial (5 sites BLUE) deu o sinal:** 2 errados (KPI azul, count badge), 3 debatíveis, 0 corretos. Tratada como amostra da população (~600 substituições), não como "os 5 a corrigir". Re-triagem completa por cluster.
+
+**Princípio que emergiu:** o sed foi inversamente proporcional a quão status-nativa a cor é no DS.
+
+- **BLUE 45**: ~80% errado. Azul não é família de status no DS (não há `--color-blue-bg`); o mapa `blue → info` aplicou status a KPIs categoricos, badges de contagem, callouts de selection. Re-triados por sub-grupo.
+- **GREEN 41**: ~12% errado (5 KPIs categóricos). Verde COM valência (success-status) acertou; verde decorativo (KPI Active Users) errou. State-mask de DataTablePattern "active" restaurado a `bg-success-bg`.
+- **PURPLE 6**: 33% errado (2 KPI Revenue). Purple não é família no DS; sed mapeou pra brand-secondary (pink), mas era categorical decoration. Neutralizados pra fg-primary.
+- **RED 17**: 0% errado. Vermelho É família de status (error). 17 sites verificados como error-state genuíno ou destructive-action. Procurado red decorativo (Stack vermelho, KPI vermelho, badge sem alerta) — ausência confirmada.
+- **INDIGO 5**: 20% errado (1 KPI Monthly Revenue mascarado de brand-emphasis, já neutralizado em GREEN D). Indigo É família brand do DS; 4 brand-genuine + 1 decorativo.
+- **text-fg-inverse 10 (12 incluindo Stepper pré-existente)**: 0% errado. Todos sobre brand-strong ou status-neutral. Zero text-white em fundo claro.
+- **Yellow/amber/orange 3**: 0% errado. Todos limit/empty warnings genuínos.
+
+**Validação dos 456 gray (80% da faxina):** sample estratificado ~45 sites — 100% corretos. State-mask escondido procurado em bg-gray-100/200 conditionals → 2 encontrados (DataTablePattern + Pagination role/status pills), ambos já triados via BLUE D / GREEN E. Zero state-mask adicional.
+
+**Decisão arquitetural de lacuna categórica registrada:**
+
+DS **não tem família categórica** (tokens pra distinguir séries/categorias sem valência de estado). Lacuna real, afetava ~12-15 sites color-coded em KPIs/roles. Duas saídas (Princípio 9):
+
+(i) Criar família categórica — ~15-20 linhas CSS + dark overrides + allowlist no validate-dark-coverage. Cobre dashboards / data-viz / role color-coding.
+(ii) Decidir que stories NÃO demonstram cor categórica — KPI/role pills → neutros (label distingue, cor não mente).
+
+**Aprovado (ii).** Razão DECISIVA (não as outras conveniências):
+
+> Princípio 9 exige CONSUMIDOR REAL pra criar token. KPI/role color-coded em stories NÃO é necessidade de design articulada — é artefato de fixtures que o autor pintou por hábito. Criar família categórica pra honrar isso seria "construir arquitetura permanente pra honrar um acidente" — exato anti-padrão do Princípio 9. Mesma lição que o botão "Complete" verde (PR #57): "preservar a intenção do autor" é armadilha quando o que você está consertando É a ausência de intenção.
+
+A distinção que os KPIs/roles supostamente "preservavam" não se perde de verdade: a label e a posição comunicam ("Total Users: 14"). A cor é REDUNDANTE com o texto — decoração no sentido estrito. Neutralizar não remove informação que o usuário usa.
+
+**Porta aberta pra (i) no futuro:** se um caso de uso real de data-viz categórico surgir, reabrir Princípio 9 ENTÃO, com o consumidor real na mão.
+
+**Princípio derivado pra triagem por papel (registro pra próxima vez):**
+
+| Distinção                         | Tratamento                    | Exemplo                                                          |
+| --------------------------------- | ----------------------------- | ---------------------------------------------------------------- |
+| CATEGORIAS paralelas sem valência | NEUTRALIZAR (label distingue) | Admin/User role pills, KPI Users/Revenue, Stack Item 1/2/3       |
+| ESTADO com valência               | FICA status                   | Active (positive operational), Error, Warning, Success-confirmed |
+| BRAND identity                    | FICA brand-\*                 | Primary CTA, brand-tinted avatar, brand emphasis                 |
+| STATUS message genuíno            | FICA status-bg + status-fg    | "✓ Form submitted", "⚠ Maximum reached", "✗ Error: ..."         |
+
+Aplicar o mesmo PRINCÍPIO a casos diferentes (categoria neutraliza, estado fica) é a consistência REAL — não tratar tudo igual por "coerência".
+
+**Cadeado ligado em PR #60:** `ds/no-raw-color-classes` agora aplicado em `*.stories.tsx` (era exempto via comentário datado de PR pré-faxina). Adição no `eslint.config.js` story-discipline block:
+
+```js
+rules: {
+  "ds/story-discipline": "error",
+  "ds/no-raw-color-classes": "error",  // cadeado on (PR #60)
+}
+```
+
+`npm run lint` pós-cadeado: **0 erros, 8 warnings pré-existentes** (react-hooks/exhaustive-deps em primitives, fora do escopo). Zero raw color escapou.
+
+**Re-sweep pós-re-triagem:**
+
+| Métrica        | Pré-re-triagem (PR #59) | Pós-re-triagem (PR #60) |   Δ |
+| -------------- | ----------------------: | ----------------------: | --: |
+| Light total    |                     171 |                     170 |  -1 |
+| Dark total     |                     165 |                     165 |   0 |
+| EXCLUSIVO_DARK |                      24 |                      24 |   0 |
+
+Re-triagem foi semântica, não de contraste. -1 light de carona (DataTablePattern "active" pill com bg-success-bg fica AA-correto contra fg-success).
+
+**Estado final da dívida color-contrast:**
+
+- Dark color-contrast: 165 nodes (era 658 pré-canvas-fix, 1320 pré-canvas-bug-discovery)
+- Light color-contrast: 170 nodes
+- Dark/light ratio: 0.97× — virtualmente equivalentes
+
+**Próximo passo natural:** Family A/B estrutural (165 dark + 170 light residuais são majoritariamente label / select-name / aria-required-attr / nested-interactive / landmark / aria-valid-attr-value / aria-input-field-name). Não color-contrast mais.
+
+### Meta-lição: cadeado sobre código correto protege, sobre torto aprisiona
+
+O instinto de ligar a regra IMEDIATAMENTE após "zero raw" estava errado. Zero raw axe-clean ≠ semântica honesta. O cadeado checa raw color (sintaxe), NÃO papel-no-token (semântica). Ligar sobre semântica torta cristaliza o erro DENTRO da proteção: próximo dev lê `bg-info-bg` num KPI, assume "isto é info-status (a regra confirma é semantic)", propaga.
+
+A ordem correta foi: faxina → amostra de verificação → REVELAÇÃO de que era find-replace → re-triagem por papel → zero-raw confirmado + semântica correta → cadeado. Cada gate antes do próximo. O instinto "achei zero, ligo agora" pulava a verificação da camada que o cadeado NÃO vê.
+
+Registrar pra próximas regras de enforcement: **a regra protege o código contra a propriedade que checa; código quebrado na propriedade que ela NÃO checa fica trancado por baixo.** Antes de ligar qualquer enforcement, validar que o que ela NÃO vê está também correto.

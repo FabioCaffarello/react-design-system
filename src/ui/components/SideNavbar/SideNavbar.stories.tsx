@@ -346,16 +346,14 @@ export const WithHeader: Story = {
               <div className="space-y-4">
                 <Card>
                   <h4 className="font-semibold mb-2">Monthly Revenue</h4>
-                  <p className="text-3xl font-bold text-fg-brand-emphasis">
-                    $45,231
-                  </p>
+                  <p className="text-3xl font-bold text-fg-primary">$45,231</p>
                   <p className="text-sm text-fg-tertiary">
                     +12% from last month
                   </p>
                 </Card>
                 <Card>
                   <h4 className="font-semibold mb-2">Active Users</h4>
-                  <p className="text-3xl font-bold text-fg-success">2,345</p>
+                  <p className="text-3xl font-bold text-fg-primary">2,345</p>
                   <p className="text-sm text-fg-tertiary">+5% from last week</p>
                 </Card>
               </div>

@@ -149,15 +149,15 @@ export const DateRange: Story = {
           placeholder="Select date range"
         />
         {range.start && range.end && (
-          <div className="text-sm space-y-2 p-4 bg-info-bg border border-info rounded-lg">
-            <p className="font-medium text-fg-info">Selected Range:</p>
-            <p className="text-fg-info">
+          <div className="text-sm space-y-2 p-4 bg-surface-selected-subtle border border-line-default rounded-lg">
+            <p className="font-medium text-fg-primary">Selected Range:</p>
+            <p className="text-fg-primary">
               <strong>Start:</strong> {range.start.toLocaleDateString()}
             </p>
-            <p className="text-fg-info">
+            <p className="text-fg-primary">
               <strong>End:</strong> {range.end.toLocaleDateString()}
             </p>
-            <p className="text-fg-info">
+            <p className="text-fg-primary">
               <strong>Duration:</strong> {calculateDays()} day(s)
             </p>
           </div>

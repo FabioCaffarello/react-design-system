@@ -230,7 +230,7 @@ export const SelectableCards: StoryObj<typeof Card> = {
           ))}
         </div>
         {selectedCard && (
-          <div className="text-sm text-fg-secondary p-3 bg-info-bg rounded">
+          <div className="text-sm text-fg-primary p-3 bg-surface-selected-subtle rounded">
             Selected:{" "}
             <strong>{cards.find((c) => c.id === selectedCard)?.title}</strong>
           </div>
