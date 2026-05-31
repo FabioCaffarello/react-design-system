@@ -905,3 +905,67 @@ O extrator anterior identificou clusters tipo "228× text-fg-primary on transpar
 A premissa que faltava: "se o +247 vem de raw colors em stories, deveria haver correlação POSICIONAL — as 8 raw-color sites de Timeline deveriam aparecer em stories com counts proporcionais ao número de instâncias renderizadas". Conferi só DEPOIS de aplicar — most Timeline stories (default, horizontal, with-icons, with-status, etc.) reportam 12-14 dark nodes cada **sem usar nenhum dos sítios que eu mudei**. Many-items reporta 71 nodes sem ter content custom — só itens default do Timeline component.
 
 Lição: **diagnóstico-antes-de-fix vale também depois de uma classificação aparentemente sólida**. Verificar correlação posicional (which stories carregam which raw colors, qual delta por story) **antes** de aplicar fix evita esse tipo de waste motion. O custo desta tentativa foi pequeno (16 edits + 1 sweep), mas a lição cabe registrar pra próxima vez.
+
+### Canvas-token-não-consumido — o achado real (PR #58)
+
+**67% da dívida dark medida era falso-positivo de axe.** Refazer o extrator com seletor preciso (post-PR57) sobre os 1320 nodes dark color-contrast revelou que **741 deles (top 3 buckets) eram `text-fg-{primary,secondary,tertiary}` sobre `(documentElement)`** — i.e., axe não encontrava ancestral opaco e fazia fallback pra canvas-assumida-branca, flagrando ratio 1.05 / 1.48 / 2.56. Smoking gun direto: probe em `primitives-button--ghost` dark mostrou `<html>`, `<body>`, `#storybook-root`, primeiro-filho **todos com `rgba(0,0,0,0)`** apesar de `--color-surface-canvas` estar corretamente definido como `#020617` (slate-950). **Nada no DOM consumia o token de canvas.** O browser pintava UA-default-dark (~rgb(18,18,18)) porque `color-scheme:dark` estava setado, e por sorte o resultado parecia próximo de slate-950 — mas axe não lê `color-scheme`, walks só na cadeia de `background-color`.
+
+**Fix (1 declaração CSS em `@layer base`):**
+
+```css
+@layer base {
+  body {
+    background-color: var(--color-surface-canvas);
+    color: var(--color-fg-primary);
+  }
+}
+```
+
+Isso faz a `<body>` materializar o canvas-token no DOM, dando a axe um ancestral opaco para resolver. O `color: fg-primary` também: elementos sem cor explícita herdam o foreground do DS em vez do default do UA.
+
+**Disciplina aplicada antes de aprovar o fix — 3 proofs exigidos pelo usuário:**
+
+1. **No-op visual estrito:** screenshots pre/post em 3 cenários piores-caso (button--ghost dark, button--primary light, modal--default dark com scrim). Light passou idêntico (canvas=white=UA-default). **Dark FALHOU o critério estrito:** o pixel canvas vai de UA-default ~rgb(18,18,18) para slate-950 rgb(2,6,23) — shift visível porém pequeno. **Avaliação:** o shift é "alinhamento com a spec do DS" (Phase 13e definiu canvas=slate-950 mas nenhum elemento consumia; o pre-fix era acidente UA). Aprovado pelo usuário porque Proof 2 deu prova direta de que não era silenciamento.
+2. **Contraste real era adequado:** sample em 3 nós dos top buckets. Para fg-primary slate-50: axe assumia branco → ratio 1.05 ❌; Chromium UA dark ~rgb(24,24,24) → ratio real **16.97** ✅; post-fix slate-950 → 19.28 ✅. Mesmo padrão para fg-secondary (11.96 real) e fg-tertiary (6.93 real). **O usuário sempre viu contraste 6.9-17.0** — axe era falso-positivo, não violação real.
+3. **Correlação posicional cirúrgica:** re-rodada axe com fix injetado mostrou drop concentrado nas stories canvas-fallback (Timeline-many-items 71→11; Timeline default/horizontal/with-icons/etc 12-14→0; Progress 12→0; DashboardLayout 10→0; primitives-text 11→0). Stories cujas violations vêm de OUTRAS causas (Collapsible com `bg-gray-100` raw, Slider keyboard-nav, Button keyboard-nav) ficam em 1→1 / 2→2. **Os 46 nodes `text-fg-primary` sobre `bg-gray-100` raw — fundo BRANCO REAL — NÃO sumiram** (continuam falhando pós-fix). Essa não-evaporação dos genuínos é a prova final de que o fix não silencia cego.
+
+**Re-sweep dual-tema com fix em CSS real:**
+
+| Métrica         | Pré-canvas-fix (post-PR57) | Pós-canvas-fix |        Δ |
+| --------------- | -------------------------: | -------------: | -------: |
+| Light total     |                        186 |            186 |        0 |
+| Dark total      |                       1320 |        **811** | **-509** |
+| GÊMEO           |                        138 |            133 |       -5 |
+| EXCLUSIVO_DARK  |                        765 |        **446** | **-319** |
+| EXCLUSIVO_LIGHT |                         25 |             30 |       +5 |
+
+**Dark/light ratio:** 7.1× → **4.4×** (total); EXCLUSIVO_DARK/light: 4.1× → **2.4×**. Dívida dark agora na **mesma ordem de grandeza** do light (não 6.2× como reportado pré-fix).
+
+**Resíduo classificado (precise extractor pós-fix, 636 dark color-contrast nodes, top 20 buckets cobrem 99.7%):**
+
+- **~580 nodes (~91%): Bucket B-dark — raw Tailwind em stories**
+  - `text-gray-600/500/700` em stories sobre canvas slate-950 (164+52+4=~220 nodes) ou sobre `bg-surface-base` slate-900 (99+7=~106) — substituição semântica por papel
+  - Raw bg em story LayoutWrappers (`bg-gray-100` 46+23+19=88, `bg-blue-100` 33, `bg-purple-100` 10, `bg-green-100` 6, `bg-white` 13, `bg-gray-200` 14) — texto-fg-primary inherited sobre fundo claro raw em dark = ratio 1.05/1.18 = FAIL real
+  - Sobreposição com Family C-light buckets H/I/J/K (faxina única fecha ambos)
+- **~11 nodes: Bucket F documented exception** — `text-fg-quaternary` (slate-500) sobre `bg-surface-base` (slate-900) = 3.75 em Timeline/Stepper bubbles. Já registrado em `.claude/rules/colors.md`; suppressão dirigida em Timeline/ManyItems; pode precisar estender para mais stories
+- **~30 nodes: outliers reais** — `text-white` sobre `bg-blue-500` (3.68, indigo border case), `text-red-600` (3.70 em SearchAndFilterPattern), `text-indigo-600` (2.84 em SideNavbar header) — caso-a-caso
+
+**Resumo do achado:**
+
+- Pré-PR58 a métrica de dívida dark estava **inflada em 67% por bug de instrumento**. O canvas-token existia mas não era consumido; axe assumia branco; flagrava high-contrast text como falso-positivo.
+- Pós-PR58 a dívida dark é **446 EXCLUSIVO_DARK** (signatures) ou **636 dark color-contrast nodes** (instances), majoritariamente raw colors em stories. Da **mesma ordem do light** (186) — não é problema arquitetural; é faxina sistemática estilo Family C-light buckets H/I/J/K.
+- A narrativa pré-fix "dívida dark é 6× maior que light" era ficção do instrumento. **O número honesto é ~2.4× light** — gerenciável.
+
+### Meta-lição sobre proxy vs prova direta
+
+A regra "qualquer shift visual = rejeita o fix" foi estabelecida como **proxy** para distinguir "corrige instrumento" de "silencia violação real". Era proxy porque, no momento de propor o fix, não tínhamos como verificar diretamente se as 783 violations que axe ia parar de gritar eram reais. No-op-visual é uma **prova suficiente** de não-silenciamento: se nada muda visualmente, axe parar de reclamar só pode ser correção.
+
+**Mas o proxy estava mal-calibrado para este caso.** O shift dark do canvas era "alinhamento com a spec do DS" — fazer slate-950 ser o que o DS sempre quis, em vez do acidente Chromium UA — não "design mudou". Rejeitar pra preservar `rgb(18,18,18)` UA-default seria preservar um bug.
+
+**A flexibilização foi segura porque PROOF 2 deu prova DIRETA:** sample do contraste real em 3 nós dos top buckets, computado contra a cor que o usuário JÁ vê (Chromium dark canvas), retornou 6.9-17.0 — bem acima de AA 4.5. **A prova direta de "contraste real sempre foi adequado" tornou o proxy desnecessário.**
+
+**Princípio:** proxy só pode ser flexibilizado quando há prova direta da propriedade que o proxy estava aproximando. O critério "no-op visual" estava aproximando a propriedade "não silencia violação real"; quando PROOF 2 deu prova direta da propriedade, o proxy estava livre pra ser relaxado.
+
+**Mas o timing importa:** **a prova direta tinha que ser EXIGIDA antes do fix, não oferecida depois.** Se o usuário não tivesse pedido os 3 proofs antes da aplicação, eu teria proposto e aplicado o fix com apenas o argumento "no-op visual" — que falharia em dark — e teríamos rolled back ou aceito o pixel-shift sem entender o que ele significava. **A ordem (verificação-precede-fix) é o que tornou seguro flexibilizar o critério.** Não é "ter as 3 provas"; é "ter as 3 provas ANTES de aplicar".
+
+Lição prática pra próximas fases: quando um critério estabelecido (no-op, atomicity, isolation, etc.) está bloqueando um fix que parece legítimo, **a saída não é argumentar contra o critério — é exigir prova direta da propriedade que o critério estava aproximando, ANTES de aplicar.** O critério vence por default; só prova direta substitui.

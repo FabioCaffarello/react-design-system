@@ -236,3 +236,36 @@
   --color-divider-subtle: var(--color-slate-100);
   --color-divider-emphasis: var(--color-slate-300);
 }
+
+/* ============================================
+ * CANVAS-TOKEN CONSUMPTION
+ *
+ * The body element materialises the design-system canvas color so it
+ * exists in the rendered DOM (axe-core walks the background-color
+ * ancestor chain to compute contrast and DOES NOT read color-scheme).
+ *
+ * Without this rule, --color-surface-canvas was defined but nothing
+ * consumed it: the browser painted an OS/UA dark default when
+ * color-scheme:dark was set, which happened to LOOK approximately
+ * correct, but axe walked the cascade, found rgba(0,0,0,0) everywhere,
+ * defaulted to assuming white-canvas, and flagged every text-fg-* over
+ * an "unbounded" area as ratio ~1.05 — even though the visible
+ * contrast was 6.9–17.0. 67% of the dark color-contrast baseline
+ * (783 of 1159 nodes in the parallel re-sweep) was this single
+ * false-positive class. PR ${??} verified the no-shift property in
+ * light, the spec-alignment shift in dark (UA accidental gray →
+ * DS-specified slate-950), and the surgical positional correlation of
+ * the drop (canvas-fallback stories evaporated; raw-color / Bucket-F /
+ * other-cause stories were untouched).
+ *
+ * `color: var(--color-fg-primary)` makes text without an explicit color
+ * inherit the DS foreground rather than the UA default. Same axe issue
+ * in the foreground direction.
+ * ============================================ */
+
+@layer base {
+  body {
+    background-color: var(--color-surface-canvas);
+    color: var(--color-fg-primary);
+  }
+}
