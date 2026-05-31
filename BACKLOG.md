@@ -1114,3 +1114,85 @@ O instinto de ligar a regra IMEDIATAMENTE após "zero raw" estava errado. Zero r
 A ordem correta foi: faxina → amostra de verificação → REVELAÇÃO de que era find-replace → re-triagem por papel → zero-raw confirmado + semântica correta → cadeado. Cada gate antes do próximo. O instinto "achei zero, ligo agora" pulava a verificação da camada que o cadeado NÃO vê.
 
 Registrar pra próximas regras de enforcement: **a regra protege o código contra a propriedade que checa; código quebrado na propriedade que ela NÃO checa fica trancado por baixo.** Antes de ligar qualquer enforcement, validar que o que ela NÃO vê está também correto.
+
+### Tabs primitive — orientation handling (descoberto via SideNavbar probe, anchor #1 PR60-followup)
+
+**Estado:** **bug latente em produção do componente Tabs**, registrado para rastrear separadamente do anchor #1 que o remove do radar. **Descoberto** ao probar o teclado do NavigationTabs do SideNavbar antes de migrá-lo pra `<button aria-current="page">`. SideNavbar tira o sintoma, mas o defeito persiste no primitive — próximo consumidor de Tabs vertical pode herdar sem aviso.
+
+**Comportamento atual:**
+
+- `Tabs` (root) aceita `orientation: "horizontal" | "vertical"` via `TabsProviderProps` → coloca em context.
+- `TabsList` lê `orientation` via `useTabsContext()` e seu keyboard handler condiciona corretamente:
+  - `horizontal` → ArrowLeft/Right cicla foco
+  - `vertical` → ArrowUp/Down cicla foco
+- `TabsListProps` NÃO inclui `orientation` na interface; `extends HTMLAttributes<HTMLDivElement>` permite spread silencioso.
+
+**Os 2 issues:**
+
+A. **API gotcha — prop misuse silencioso.**
+SideNavbar.stories.tsx:96 passa `<Tabs.List orientation="vertical" variant="compact">`. Lugar errado: orientation pertence a `<Tabs>`. Resultado: prop spread como HTML attribute decorativo (`<div orientation="vertical">`) no DOM, context permanece em `horizontal` default, keyboard handler segue Left/Right. Dev acredita ter setado vertical; nada acontece. **Nenhum warning/error.** Detectado só por probe de teclado.
+
+B. **Orientation prop controla keyboard, não visual.**
+Mesmo com API correta (`<Tabs orientation="vertical">`), o primitive **não** auto-estiliza `TabsList` como `flex-col`. Dev precisa adicionar `className="flex-col"` manualmente para o visual vertical. Resultado: visual stacked vertical com keyboard horizontal é configurável mas mal-comunicado — fácil de criar inconsistência (story SideNavbar era exatamente isso: flex-col visual + horizontal keyboard via context default).
+
+**Impacto:**
+
+- Consumidores de Tabs vertical em `src/**/*.tsx` (não-stories): **1** (SideNavbar.stories.tsx, migrado em anchor #1 PR60-followup).
+- Pós-migração: **0 production consumers.** Bug fica latente — qualquer adopter futuro de Tabs vertical herda os 2 issues sem aviso.
+- Severidade ativa: **baixa** (sem consumidor afetado). Severidade latente: **alta** (próximo consumidor não descobre até probe de teclado revelar).
+
+**Fix proposto (não agora, registrado para quando alguém propor um caso de Tabs vertical):**
+
+Issue A — duas opções:
+
+- (i) Adicionar `orientation` a `TabsListProps` aceitando o valor mas **emitindo dev-time warning** ("orientation no Tabs.List é ignorado; defina em <Tabs orientation>"). Custo: 5 linhas, melhora DX.
+- (ii) Estritamente impedir via TypeScript (Omit `orientation` de HTMLAttributes em TabsListProps), o que falha o build na hora. Mais agressivo, evita o erro completamente.
+
+Issue B — uma opção:
+
+- TabsList aplica `flex-col` automaticamente quando context.orientation === "vertical". Custo: 1 linha na className. Auto-pareia visual com keyboard. Mas: pode quebrar consumidores que esperam controlar layout via className (improvável).
+
+**Recomendação quando reabrir:** começar por (i) warning + (B) auto-flex-col. Dois fixes pequenos que fecham os dois issues sem mudar API publicly. Documentar no Tabs.stories.tsx o padrão correto.
+
+**Por que registrar agora:**
+
+Anchor #1 migra SideNavbar pra `<button aria-current="page">`, removendo o ÚNICO consumidor em produção. O defeito não é mais visível no baseline a11y, mas persiste no primitive — sem registro, evapora do radar coletivo. **Padrão Phase 7:** defeito de produção descoberto não some quando o sintoma visível é tratado. Rastrear até o primitive ser consertado ou conscientemente descontinuado.
+
+### Anchor #1 aplicado (PR #61): SideNavbar inner-aside + NavigationTabs role
+
+**Resultado:** -35 sites em ambos os temas (light 170→135, dark 165→130), -33 signatures GÊMEO. Cobre **~22% da dívida estrutural** em 1 PR.
+
+**Mudanças:**
+
+1. `Sidebar/Sidebar.tsx`: inner `<aside id="side-navbar-sidebar">` → `<div>` (mesmo id, mesmo className, mesmo behavior). O outer `<aside role="complementary" aria-label="Sidebar navigation">` em `SideNavbarRoot.tsx` já provê o landmark. Fix de COMPONENT, 1 linha + comment.
+
+2. `SideNavbar.stories.tsx` NavigationTabs:
+   - **Antes:** `<Tabs.List orientation="vertical">` + `<Tabs.Trigger value="X" aria-label="X">` (role="tab", aria-controls="tabpanel-X" apontando pra IDs inexistentes)
+   - **Depois:** `<nav aria-label="Sidebar sections">` + `<button aria-label="X" aria-current={isActive ? "page" : undefined}>` (sem role="tab", sem aria-controls)
+   - aria-labels do PR52 PRESERVADOS (Home/Analytics/Users/Documents/Settings — eram a função correta, não mudam)
+   - Active state styling preservado via condicional `bg-surface-brand-muted text-fg-brand-emphasis` (mesmo padrão do Tabs ativo, agora aplicado direto)
+   - Comment histórico inline explicando o **porquê semântico** (não "limpeza" — é correção de role que mentia)
+
+**Retroativo PR52 — registro correto:**
+
+PR52 deu aria-labels corretos (Home/Analytics — a função do item). O role="tab" sob o qual os labels foram dados estava errado (tabs sem tabpanel + visual vertical com keyboard horizontal = role mentiroso). **PR52 não falhou; estava parcialmente certo** — o nome era certo, o role tab era herança da escolha de primitive (Tabs) que se revelou inadequada pro caso de uso (nav, não tabs).
+
+PR60-followup (este) corrige o role mantendo os nomes. Pra alguém revisando: vai PARECER regressão de markup (tabs→buttons), mas semanticamente é o avanço — role="tab" mentia, button+aria-current diz o que é.
+
+**Keyboard trade-off conscient:**
+
+Probe pré-fix mostrou: ArrowRight ciclava entre tabs (funcionava por acidente — modelo horizontal num layout vertical), ArrowDown NÃO funcionava (o que usuários tentariam num menu vertical). Pós-fix: 5 buttons em Tab order, ArrowKeys não fazem nada (default de button). **Removemos um comportamento semanticamente errado (ArrowRight horizontal em pilha vertical) e ganhamos o padrão correto pra nav menu** (Tab-by-Tab). APG: tablist = setas; navigation menu = Tab. Sidebar é menu, não tablist.
+
+**Gates:**
+
+- vitest: 816/816 (incluindo SideNavbar 29/29)
+- smoke: 852/852
+- typecheck clean
+- lint clean (0 errors)
+- validate-dark-coverage OK
+
+**Estado pós-anchor#1:**
+
+- Light total: 135 signatures
+- Dark total: 130 signatures
+- Próximos anchors (ordem aprovada): #2 FormWizard empty h2 (6 sites, trivial), #3 landmark-unique variants (5 sites, trivial), #4 Slider primitive API, #5 Pagination select-name, #6 TimePicker/MultiSelect/Textarea API, #7 Menu/Chip nested-interactive (diagnóstico separado primeiro)

@@ -90,7 +90,14 @@ function Sidebar({ children, className = "", style, ...props }: SidebarProps) {
 
   return (
     <SidebarContext.Provider value={contextValue}>
-      <aside
+      {/* This inner container was previously an `<aside>` — a second
+       * landmark nested inside SideNavbarRoot's outer `<aside
+       * role="complementary" aria-label="Sidebar navigation">`. axe
+       * `landmark-complementary-is-top-level` flagged it across all 20+
+       * SideNavbar stories. The outer aside already provides the
+       * landmark; this inner div is purely a layout container for the
+       * collapsible content area. */}
+      <div
         ref={sidebarRef}
         id="side-navbar-sidebar"
         className={cn(
@@ -116,7 +123,7 @@ function Sidebar({ children, className = "", style, ...props }: SidebarProps) {
         {...props}
       >
         {children}
-      </aside>
+      </div>
     </SidebarContext.Provider>
   );
 }
