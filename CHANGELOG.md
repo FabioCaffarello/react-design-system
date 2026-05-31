@@ -1,3 +1,10 @@
+## [1.23.5](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.4...v1.23.5) (2026-05-31)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** re-triagem semântica + cadeado ds/no-raw-color-classes nas stories ([dc6792f](https://github.com/FabioCaffarello/react-design-system/commit/dc6792fda949e71ea2a630936ebefa55309b291a)), closes [#59](https://github.com/FabioCaffarello/react-design-system/issues/59) [#57](https://github.com/FabioCaffarello/react-design-system/issues/57)
+
 ## [1.23.4](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.3...v1.23.4) (2026-05-31)
 
 
