@@ -104,7 +104,31 @@ const tabLabels: Record<string, string> = Object.fromEntries(
   tabs.map((t) => [t.value, t.label]),
 );
 
-// Shared navigation tabs component
+// Shared navigation tabs component.
+//
+// HISTORICAL NOTE (PR52 → PR60 followup): These icon-only navigation
+// items WERE built on the Tabs primitive with `role="tab"`. The role
+// lied in two dimensions:
+//
+//   (1) tabs require tabpanels — there are none rendered here; the
+//       items don't switch panels, they swap state for an adjacent
+//       Sidebar.Content area. axe `aria-valid-attr-value` flagged the
+//       dangling `aria-controls="tabpanel-X"` references on every story.
+//   (2) the visual is a vertical stack, but the Tabs.List orientation
+//       prop was being passed on the wrong sub-component (Tabs.List
+//       silently spreads it as an HTML attribute; orientation must go
+//       on the Tabs root). Result: visual vertical + keyboard horizontal
+//       (ArrowRight cycled, ArrowDown — what users actually try in a
+//       vertical menu — did nothing). See BACKLOG "Tabs primitive —
+//       orientation handling" for the underlying primitive gotcha.
+//
+// WAI-ARIA pattern: a sidebar navigation menu is `<nav>` containing
+// `<button>` (or `<a>`) items, with `aria-current="page"` on the
+// active item. Keyboard is plain Tab-by-Tab (standard navigation
+// list); not setas (that would be a tablist or menu pattern). The
+// aria-labels from PR52 are preserved — they were always the right
+// names (the destination of each item); only the role and keyboard
+// model are corrected.
 const NavigationTabs = ({
   activeTab,
   onTabChange,
@@ -112,24 +136,27 @@ const NavigationTabs = ({
   activeTab: string;
   onTabChange: (tab: string) => void;
 }) => (
-  <Tabs value={activeTab} onValueChange={onTabChange}>
-    <Tabs.List
-      orientation="vertical"
-      variant="compact"
-      className="w-full p-2 gap-1"
-    >
-      {tabs.map(({ value, label, Icon }) => (
-        <Tabs.Trigger
+  <nav aria-label="Sidebar sections" className="w-full p-2 flex flex-col gap-1">
+    {tabs.map(({ value, label, Icon }) => {
+      const isActive = activeTab === value;
+      return (
+        <button
           key={value}
-          value={value}
+          type="button"
           aria-label={label}
-          className="w-full aspect-square flex items-center justify-center p-2 rounded-md"
+          aria-current={isActive ? "page" : undefined}
+          onClick={() => onTabChange(value)}
+          className={`w-full aspect-square flex items-center justify-center p-2 rounded-md transition-colors ${
+            isActive
+              ? "bg-surface-brand-muted text-fg-brand-emphasis"
+              : "text-fg-secondary hover:bg-surface-hover"
+          }`}
         >
           <Icon className="h-5 w-5" />
-        </Tabs.Trigger>
-      ))}
-    </Tabs.List>
-  </Tabs>
+        </button>
+      );
+    })}
+  </nav>
 );
 
 // Layout wrapper for stories
