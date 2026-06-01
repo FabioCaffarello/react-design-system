@@ -14,13 +14,20 @@ const meta: Meta<typeof DashboardLayout> = {
     // structure. Re-enable the three landmark/heading rules disabled
     // globally in .storybook/preview.tsx so this component IS held to
     // the page-level a11y contract its API promises.
+    //
+    // The re-enable is expressed via `options.rules` (run-time) rather
+    // than `config.rules` (configure-time). axe-core 4.11.4 ignores
+    // configure-time enabled flags when runOnly is tag-based, so the
+    // global disable AND any per-story override must both flow through
+    // axe.run options. See `.storybook/a11y-config.mjs` for the
+    // full rationale.
     a11y: {
-      config: {
-        rules: [
-          { id: "region", enabled: true },
-          { id: "landmark-one-main", enabled: true },
-          { id: "page-has-heading-one", enabled: true },
-        ],
+      options: {
+        rules: {
+          region: { enabled: true },
+          "landmark-one-main": { enabled: true },
+          "page-has-heading-one": { enabled: true },
+        },
       },
     },
     docs: {

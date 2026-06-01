@@ -99,7 +99,6 @@ function Sidebar({ children, className = "", style, ...props }: SidebarProps) {
        * collapsible content area. */}
       <div
         ref={sidebarRef}
-        id="side-navbar-sidebar"
         className={cn(
           "flex",
           "flex-col",
