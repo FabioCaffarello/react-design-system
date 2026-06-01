@@ -352,13 +352,23 @@ export const Accessibility: Story = {
       </div>
       <div className="space-y-2">
         <p className="text-sm text-fg-secondary">
-          Selected state with aria-selected:
+          Selected state announced via aria-pressed (toggle button pattern):
         </p>
         <div className="flex gap-2">
-          <Chip selected aria-label="Selected filter: Active">
+          {/* The pair below demonstrates `selected={true}` AND
+              `selected={false}` with `onClick` — the label-button gets
+              `aria-pressed={selected}` so AT announces the toggle state
+              honestly. Labels carry the FUNCTION ("Active filter",
+              "Inactive filter"); the state lives in aria-pressed, not
+              duplicated in the label. */}
+          <Chip selected onClick={() => {}} aria-label="Active filter">
             Active
           </Chip>
-          <Chip selected={false} aria-label="Unselected filter: Inactive">
+          <Chip
+            selected={false}
+            onClick={() => {}}
+            aria-label="Inactive filter"
+          >
             Inactive
           </Chip>
         </div>
