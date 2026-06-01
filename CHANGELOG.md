@@ -1,3 +1,10 @@
+## [1.23.12](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.11...v1.23.12) (2026-06-01)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** chip click+remove desaninhado lado-a-lado ([4265b79](https://github.com/FabioCaffarello/react-design-system/commit/4265b79b67c80e3bc43d3a2559f5e2f11a17201e))
+
 ## [1.23.11](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.10...v1.23.11) (2026-06-01)
 
 
