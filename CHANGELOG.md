@@ -1,3 +1,11 @@
+## [1.23.15](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.14...v1.23.15) (2026-06-01)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** popover wires title via aria-labelledby on role=dialog ([ae6efee](https://github.com/FabioCaffarello/react-design-system/commit/ae6efee6158717c652f2e47740a1c03f2cf33529)), closes [#72](https://github.com/FabioCaffarello/react-design-system/issues/72)
+* **a11y:** sidenavbar/withfooter migrates raw <input> to Input primitive ([aec3622](https://github.com/FabioCaffarello/react-design-system/commit/aec3622583665e97c0521a1a1995cef11e88193c)), closes [#70-74](https://github.com/FabioCaffarello/react-design-system/issues/70-74)
+
 ## [1.23.14](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.13...v1.23.14) (2026-06-01)
 
 
