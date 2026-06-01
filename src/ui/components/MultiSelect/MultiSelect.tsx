@@ -323,6 +323,12 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
         {shouldShowList && (
           <AutocompleteList
             ref={listRef}
+            // Cascade the input's accessible-name source to the
+            // listbox portal — axe `aria-input-field-name` flags a
+            // role="listbox" without aria-label / aria-labelledby.
+            // MultiSelect's `label` is TS-required, so the listbox
+            // always inherits a name.
+            aria-label={label}
             options={filteredOptions.map((opt) => ({
               ...opt,
               icon: selectedValues.includes(opt.value) ? (
