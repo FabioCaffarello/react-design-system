@@ -1,3 +1,12 @@
+## [1.23.16](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.15...v1.23.16) (2026-06-01)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** decouple card ARIA interactivity from variant=hover ([714ec61](https://github.com/FabioCaffarello/react-design-system/commit/714ec616da9afdb1daa2af1b2caaa0c630a95471)), closes [#70-75](https://github.com/FabioCaffarello/react-design-system/issues/70-75)
+* **a11y:** sidebar.content tabIndex=0 on scrollable container ([38013df](https://github.com/FabioCaffarello/react-design-system/commit/38013df185173980b95cacef7d37081b53394a4b)), closes [#77](https://github.com/FabioCaffarello/react-design-system/issues/77)
+* **a11y:** switch implements controlled/uncontrolled (aria-checked always set) ([8a46b93](https://github.com/FabioCaffarello/react-design-system/commit/8a46b93bcf225d85d2ee0248135deb7f6dbd2936)), closes [#67](https://github.com/FabioCaffarello/react-design-system/issues/67) [#69](https://github.com/FabioCaffarello/react-design-system/issues/69) [#76](https://github.com/FabioCaffarello/react-design-system/issues/76)
+
 ## [1.23.15](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.14...v1.23.15) (2026-06-01)
 
 
