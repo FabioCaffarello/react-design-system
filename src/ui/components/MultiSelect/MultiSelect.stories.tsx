@@ -142,6 +142,7 @@ export const Default: Story = {
 
 export const WithInitialValues: Story = {
   args: {
+    label: "Fruits",
     options: basicOptions,
     defaultValue: ["1", "2"],
     placeholder: "Select fruits...",
@@ -685,6 +686,7 @@ export const WithSelectionState: Story = {
 
 export const DisabledState: Story = {
   args: {
+    label: "Fruits",
     options: basicOptions,
     value: ["1"],
     disabled: true,

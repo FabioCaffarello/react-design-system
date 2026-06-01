@@ -20,6 +20,16 @@ export interface AutocompleteListProps {
   allSelected?: boolean;
   onSelectAll?: () => void;
   onDeselectAll?: () => void;
+  /**
+   * Accessible name for the listbox. axe `aria-input-field-name`
+   * (serious) flags a `role="listbox"` portal without `aria-label` /
+   * `aria-labelledby` / `title`. The Autocomplete / MultiSelect parent
+   * cascades whatever accessible-name source the consumer provided
+   * (label string, aria-label, or external id) so the listbox inherits
+   * the same name as the input it dropdowns from.
+   */
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
 }
 
 /**
@@ -41,6 +51,8 @@ const AutocompleteList = forwardRef<HTMLDivElement, AutocompleteListProps>(
       allSelected = false,
       onSelectAll,
       onDeselectAll,
+      "aria-label": ariaLabel,
+      "aria-labelledby": ariaLabelledBy,
     },
     ref,
   ) {
@@ -62,6 +74,8 @@ const AutocompleteList = forwardRef<HTMLDivElement, AutocompleteListProps>(
       <div
         ref={ref}
         role="listbox"
+        aria-label={ariaLabelledBy ? undefined : ariaLabel}
+        aria-labelledby={ariaLabelledBy}
         className={`
           absolute
           ${getZIndexClass("popover")}
