@@ -68,10 +68,16 @@ const Card = memo(function Card({
     },
   );
 
-  const isInteractive = useMemo(
-    () => onClick !== undefined || variant === "hover",
-    [onClick, variant],
-  );
+  // ARIA interactivity is driven by `onClick` ONLY. `variant="hover"` is
+  // a visual style (hover shadow + cursor hint via cardVariants) — not a
+  // declaration that the card is clickable. The previous coupling made
+  // any `variant="hover"` Card a `role="button" tabindex=0` outer, which
+  // triggered axe `nested-interactive` whenever the consumer composed
+  // Buttons inside (the WithActions story shape — `<Card variant="hover">`
+  // with action buttons inside). Decoupling fixes that without changing
+  // the visual behavior. Stories that want a clickable card already pass
+  // `onClick` (see the InteractiveCard sites at lines 281 and 352).
+  const isInteractive = useMemo(() => onClick !== undefined, [onClick]);
   const role = isInteractive ? "button" : undefined;
   const tabIndex = isInteractive ? 0 : undefined;
 
