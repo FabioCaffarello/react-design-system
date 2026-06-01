@@ -1,3 +1,11 @@
+## [1.23.14](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.13...v1.23.14) (2026-06-01)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** autocomplete + multiselect listbox cascade + label dev warning ([066af3b](https://github.com/FabioCaffarello/react-design-system/commit/066af3bccc0546189d4a6230eac6502b06ba318e)), closes [#6](https://github.com/FabioCaffarello/react-design-system/issues/6) [#65](https://github.com/FabioCaffarello/react-design-system/issues/65) [#69](https://github.com/FabioCaffarello/react-design-system/issues/69)
+* **a11y:** drawer accessible name via title + aria-* + dev warning guard ([c1926c5](https://github.com/FabioCaffarello/react-design-system/commit/c1926c5649ef6814f7098ff4d5112ed01162ab3b)), closes [#70](https://github.com/FabioCaffarello/react-design-system/issues/70) [#71](https://github.com/FabioCaffarello/react-design-system/issues/71)
+
 ## [1.23.13](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.12...v1.23.13) (2026-06-01)
 
 
