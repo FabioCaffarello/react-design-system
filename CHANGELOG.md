@@ -1,3 +1,10 @@
+## [1.23.8](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.7...v1.23.8) (2026-06-01)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** slider label required + range handles named via aria-labelledby ([a644b7d](https://github.com/FabioCaffarello/react-design-system/commit/a644b7dc6167a6dddfecba8aab0d21dc3ac3d75e)), closes [#6](https://github.com/FabioCaffarello/react-design-system/issues/6)
+
 ## [1.23.7](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.6...v1.23.7) (2026-05-31)
 
 
