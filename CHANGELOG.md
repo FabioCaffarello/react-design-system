@@ -1,3 +1,12 @@
+## [1.23.13](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.12...v1.23.13) (2026-06-01)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** chip role=option drained — unified label-button architecture ([423999e](https://github.com/FabioCaffarello/react-design-system/commit/423999ee7fe8205629115fc553f2439c6367f284))
+* **a11y:** searchandfilter raw select gets aria-label={filter.label} ([3f78e51](https://github.com/FabioCaffarello/react-design-system/commit/3f78e512045bb8d9af09d2b0f0421203d93551a3)), closes [#5](https://github.com/FabioCaffarello/react-design-system/issues/5) [#70](https://github.com/FabioCaffarello/react-design-system/issues/70) [#5](https://github.com/FabioCaffarello/react-design-system/issues/5)
+* **a11y:** serial baseline of record + honest disable + sidebar id anchor ([b5cd12b](https://github.com/FabioCaffarello/react-design-system/commit/b5cd12b61cd717db13a0ff44123b7a5648ceca73)), closes [#1](https://github.com/FabioCaffarello/react-design-system/issues/1) [#2](https://github.com/FabioCaffarello/react-design-system/issues/2) [#3](https://github.com/FabioCaffarello/react-design-system/issues/3)
+
 ## [1.23.12](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.11...v1.23.12) (2026-06-01)
 
 
