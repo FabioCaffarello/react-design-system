@@ -59,6 +59,9 @@ export const Default: Story = {
       </div>
     );
   },
+  args: {
+    label: "Start time",
+  },
 };
 
 export const Format24h: Story = {
@@ -71,6 +74,9 @@ export const Format24h: Story = {
       </div>
     );
   },
+  args: {
+    label: "Start time",
+  },
 };
 
 export const Format12h: Story = {
@@ -82,6 +88,9 @@ export const Format12h: Story = {
         <p className="mt-2 text-sm text-fg-secondary">Selected: {value}</p>
       </div>
     );
+  },
+  args: {
+    label: "Start time",
   },
 };
 
