@@ -1254,3 +1254,49 @@ Classificação: **COMPONENT defect** — Pagination component renderiza Select 
 
 - DashboardLayout double-wrap sidebar (1 site landmark-unique residual)
 - TypeScript strictness em stories permitiu field name errado em FormWizardPattern (não-bloqueante, mas revela gap de validação)
+
+### Anchor #4 aplicado (PR #63): Slider — label required + range bug B fix
+
+**Resultado:** -15 sites em ambos os temas (light 109→94, dark 104→89). aria-input-field-name 16→3 (closed 13 of 13 Slider sites; 3 restantes = Autocomplete 2 + MultiSelect 1, fora deste anchor).
+
+**Classificação CORRIGIDA pela análise:** 12 sites COMPONENT (primitive bug), 1 STORY (Default story sem label). Era 92% bug de produção, não "stories sem label".
+
+**Bug B (PRODUCTION DEFECT):** `Slider.tsx:269` tinha `aria-label={variant === "range" ? undefined : label}`. Range variant DESCARTAVA o label mesmo quando consumer passava corretamente. **Todo range slider no DS estava sem accessible name pra AT**, independente do que o consumer fazia.
+
+Descoberto via mapa de consumers do Slider que mostrou: 12 dos 13 axe violations vinham de 6 stories de range × 2 handles cada, NÃO de stories desleixadas. Era o primitive comendo o label corretamente passado pelo consumer.
+
+**Fix (3 mudanças coordenadas no primitive + 2 stories + 6 testes):**
+
+1. **API change — TS-required label** (`label: string` sem `?`):
+   - Zero production consumers de Slider em outros componentes (`grep '<Slider' src/ui/**/*.tsx`: só Slider.test.tsx + Slider.stories.tsx)
+   - Blast radius mínimo: 1 story (Default) + 6 tests (sem label) precisam atualizar no mesmo PR
+   - Garante zero-Slider-sem-nome forward
+   - Compile-time check, sem runtime throw (over-engineering pra mono-brand solo)
+
+2. **Single variant — aria-labelledby (não aria-label):**
+   - Visible `<label id={labelId}>` renderiza sempre (label required)
+   - Slider div: `aria-labelledby={labelId}` (era aria-label={label})
+   - Fonte-única: label visível serve sighted + AT users
+   - Sincroniza: mudar `label` propaga pra accessible name automaticamente
+
+3. **Range variant — aria-labelledby com TWO ids (fonte-única + qualificador):**
+   - Decisão tomada conscientemente: composite aria-label estava simples mas DESsincroniza (string solta duplicando o label). Para um PRIMITIVE que TODO consumer vai usar, fonte-única importa: alguém muda o label → nome acessível propaga.
+   - Implementação: 2 sr-only spans (`id={minQualifierId}`/`id={maxQualifierId}` com text "minimum"/"maximum")
+   - Min handle: `aria-labelledby="${labelId} ${minQualifierId}"` → AT lê "Price range minimum"
+   - Max handle: `aria-labelledby="${labelId} ${maxQualifierId}"` → AT lê "Price range maximum"
+   - User de AT no range slider sabe qual handle está ajustando
+
+4. **Stories Default + Range:** adicionado label="Volume" e label="Price range" (canonical exemplos de domínio real, não "Slider" / "Basic"). Outras 3 stories que pareciam sem label (WithLabel/WithMarks/WithSteps) já tinham via `args.label`.
+
+5. **Tests:** 6 sites sem label receberam label="Test slider" (genérico OK pra tests — testam comportamento, não semântica).
+
+**Gates:**
+
+- vitest: 816/816 (Slider 7/7 incluso)
+- typecheck: clean (TS-required validou)
+- lint: 0 errors
+- build: clean
+
+**Lição registrada:** O mapa de consumers ANTES do fix mudou a análise. Inicial: "5 stories desleixadas precisam label". Real: "1 story sem label + 12 nodes vêm de bug primitive descartando label correto". Sem o mapa eu teria proposto faxina de stories enquanto o primitive continuaria comendo labels silenciosamente. **Mapa de consumers precede mudança de API; classificação honesta precede fix.**
+
+**Próximo anchor:** #6 TimePicker/MultiSelect/Textarea label (9 sites, API change). Mesmo padrão de levantamento prévio — mapa de consumers antes de propor required.

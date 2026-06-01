@@ -4,20 +4,20 @@ import Slider from "./Slider";
 
 describe("Slider", () => {
   it("renders correctly", () => {
-    render(<Slider defaultValue={50} />);
+    render(<Slider label="Test slider" defaultValue={50} />);
     const slider = screen.getByRole("slider");
     expect(slider).toBeInTheDocument();
   });
 
   it("handles single value", () => {
     const handleChange = vi.fn();
-    render(<Slider value={50} onChange={handleChange} />);
+    render(<Slider label="Test slider" value={50} onChange={handleChange} />);
     const slider = screen.getByRole("slider");
     expect(slider).toHaveAttribute("aria-valuenow", "50");
   });
 
   it("handles range value", () => {
-    render(<Slider variant="range" value={[20, 80]} />);
+    render(<Slider label="Test slider" variant="range" value={[20, 80]} />);
     const sliders = screen.getAllByRole("slider");
     expect(sliders).toHaveLength(2);
     expect(sliders[0]).toHaveAttribute("aria-valuenow", "20");
@@ -30,19 +30,21 @@ describe("Slider", () => {
   });
 
   it("handles disabled state", () => {
-    render(<Slider defaultValue={50} disabled />);
+    render(<Slider label="Test slider" defaultValue={50} disabled />);
     const slider = screen.getByRole("slider");
     expect(slider).toHaveAttribute("aria-disabled", "true");
   });
 
   it("handles different sizes", () => {
-    const { rerender } = render(<Slider size="sm" defaultValue={50} />);
+    const { rerender } = render(
+      <Slider label="Test slider" size="sm" defaultValue={50} />,
+    );
     expect(screen.getByRole("slider")).toBeInTheDocument();
 
-    rerender(<Slider size="md" defaultValue={50} />);
+    rerender(<Slider label="Test slider" size="md" defaultValue={50} />);
     expect(screen.getByRole("slider")).toBeInTheDocument();
 
-    rerender(<Slider size="lg" defaultValue={50} />);
+    rerender(<Slider label="Test slider" size="lg" defaultValue={50} />);
     expect(screen.getByRole("slider")).toBeInTheDocument();
   });
 

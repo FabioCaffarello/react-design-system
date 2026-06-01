@@ -112,6 +112,7 @@ export const Default: Story = {
     );
   },
   args: {
+    label: "Volume",
     min: 0,
     max: 100,
     step: 1,
@@ -160,6 +161,7 @@ export const Range: Story = {
     );
   },
   args: {
+    label: "Price range",
     variant: "range",
     min: 0,
     max: 100,
