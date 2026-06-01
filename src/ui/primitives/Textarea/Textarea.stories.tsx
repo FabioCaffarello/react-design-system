@@ -143,6 +143,7 @@ export const WithDefaultValue: Story = {
     return (
       <div className="space-y-4">
         <Textarea
+          label="Description"
           defaultValue="This is a default value"
           rows={4}
           value={value}
@@ -359,35 +360,33 @@ export const AllStates: Story = {
 
     return (
       <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Default</label>
-          <Textarea
-            placeholder="Default state"
-            rows={4}
-            value={defaultValue}
-            onChange={(e) => setDefaultValue(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Error</label>
-          <Textarea
-            placeholder="Error state"
-            rows={4}
-            error
-            value={errorValue}
-            onChange={(e) => setErrorValue(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Disabled</label>
-          <Textarea placeholder="Disabled state" rows={4} disabled />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">
-            Disabled with value
-          </label>
-          <Textarea defaultValue="Disabled with value" rows={4} disabled />
-        </div>
+        <Textarea
+          label="Default"
+          placeholder="Default state"
+          rows={4}
+          value={defaultValue}
+          onChange={(e) => setDefaultValue(e.target.value)}
+        />
+        <Textarea
+          label="Error"
+          placeholder="Error state"
+          rows={4}
+          error
+          value={errorValue}
+          onChange={(e) => setErrorValue(e.target.value)}
+        />
+        <Textarea
+          label="Disabled"
+          placeholder="Disabled state"
+          rows={4}
+          disabled
+        />
+        <Textarea
+          label="Disabled with value"
+          defaultValue="Disabled with value"
+          rows={4}
+          disabled
+        />
       </div>
     );
   },
