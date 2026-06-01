@@ -54,6 +54,7 @@ npm run plop              # scaffold component
 npm run build             # library build
 npm run build-storybook   # static storybook
 npm run storybook:smoke   # runtime smoke-test all stories (Phase 13a)
+npm run test:a11y:baseline # serial axe baseline of record (light + dark, ~96min, workers=1)
 ```
 
 ## What NOT to do
