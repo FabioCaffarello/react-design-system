@@ -140,11 +140,6 @@ const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(
   },
   ref,
 ) {
-  // Determine if chip is interactive (has onClick or is explicitly selectable)
-  const isInteractive =
-    onClick !== undefined || (selected !== false && selected !== undefined);
-  const role = selected ? "option" : isInteractive ? "button" : undefined;
-
   // Generate accessible label
   const getAccessibleLabel = (): string | undefined => {
     if (ariaLabel) return ariaLabel;
@@ -164,6 +159,21 @@ const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(
   };
 
   const accessibleLabel = getAccessibleLabel();
+
+  // Architecture path:
+  //   useLabelButton = onClick + onRemove + not selected + not disabled
+  //   The label and the X are two sibling <button>s inside a non-interactive
+  //   outer <div>. This avoids nested-interactive (axe) when the consumer
+  //   asks the chip to BOTH toggle and remove — APG anti-pattern otherwise.
+  //   Cases NOT covered by this path (single behavior, or selected-as-option)
+  //   keep the historical outer-is-interactive structure.
+  const useLabelButton =
+    onClick !== undefined && onRemove !== undefined && !selected && !disabled;
+
+  const isInteractive =
+    !useLabelButton &&
+    (onClick !== undefined || (selected !== false && selected !== undefined));
+  const role = selected ? "option" : isInteractive ? "button" : undefined;
   const shouldHaveAriaLabel = role === "button" && !accessibleLabel;
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -192,22 +202,50 @@ const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(
       aria-selected={selected ? true : undefined}
       aria-disabled={disabled}
       aria-label={
-        shouldHaveAriaLabel
-          ? "Chip"
-          : ariaLabel || (role === "button" ? accessibleLabel : undefined)
+        useLabelButton
+          ? undefined
+          : shouldHaveAriaLabel
+            ? "Chip"
+            : ariaLabel || (role === "button" ? accessibleLabel : undefined)
       }
       tabIndex={
-        tabIndex !== undefined
-          ? tabIndex
-          : isInteractive && !disabled
-            ? 0
-            : undefined
+        useLabelButton
+          ? undefined
+          : tabIndex !== undefined
+            ? tabIndex
+            : isInteractive && !disabled
+              ? 0
+              : undefined
       }
-      onClick={disabled ? undefined : onClick}
-      onKeyDown={handleKeyDown}
+      onClick={useLabelButton || disabled ? undefined : onClick}
+      onKeyDown={useLabelButton ? undefined : handleKeyDown}
       {...props}
     >
-      <span>{children}</span>
+      {useLabelButton ? (
+        <button
+          type="button"
+          onClick={onClick}
+          aria-label={ariaLabel}
+          className={cn(
+            "flex-1",
+            "bg-transparent",
+            "border-0",
+            "p-0",
+            "text-inherit",
+            "text-left",
+            "cursor-pointer",
+            "focus:outline-none",
+            "focus:ring-2",
+            "focus:ring-line-focus",
+            "focus:ring-offset-2",
+            getRadiusClass("full"),
+          )}
+        >
+          {children}
+        </button>
+      ) : (
+        <span>{children}</span>
+      )}
       {onRemove && !disabled && (
         <button
           type="button"

@@ -190,4 +190,49 @@ describe("Chip", () => {
       expect(stopPropagationSpy).toHaveBeenCalled();
     });
   });
+
+  describe("Clickable + removable architecture (no nested-interactive)", () => {
+    // When BOTH onClick and onRemove are provided (and not selected/disabled),
+    // the chip splits into two sibling <button>s — the label-button (carries
+    // onClick) and the X-button (carries onRemove) — inside a non-interactive
+    // outer <div>. This avoids the APG anti-pattern of an interactive role
+    // containing a native <button>. The tests below guard the new structure;
+    // re-introducing a role on the outer would reintroduce nested-interactive.
+
+    it("outer div has no interactive role when onClick + onRemove are both provided", () => {
+      const { container } = render(
+        <Chip onClick={vi.fn()} onRemove={vi.fn()}>
+          Filter
+        </Chip>,
+      );
+      const outer = container.firstChild as HTMLElement;
+      expect(outer.tagName).toBe("DIV");
+      expect(outer).not.toHaveAttribute("role");
+      expect(outer).not.toHaveAttribute("tabIndex");
+    });
+
+    it("renders label as a real <button> with the children as accessible name", () => {
+      render(
+        <Chip onClick={vi.fn()} onRemove={vi.fn()}>
+          Filter 1
+        </Chip>,
+      );
+      const labelButton = screen.getByRole("button", { name: "Filter 1" });
+      expect(labelButton.tagName).toBe("BUTTON");
+    });
+
+    it("renders both label-button and X-button as siblings (not nested)", () => {
+      render(
+        <Chip onClick={vi.fn()} onRemove={vi.fn()}>
+          Filter 1
+        </Chip>,
+      );
+      const labelButton = screen.getByRole("button", { name: "Filter 1" });
+      const xButton = screen.getByRole("button", { name: "Remove Filter 1" });
+      // Neither button is an ancestor of the other — they share a parent.
+      expect(labelButton.contains(xButton)).toBe(false);
+      expect(xButton.contains(labelButton)).toBe(false);
+      expect(labelButton.parentElement).toBe(xButton.parentElement);
+    });
+  });
 });
