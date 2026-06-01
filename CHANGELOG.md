@@ -1,3 +1,11 @@
+## [1.23.9](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.8...v1.23.9) (2026-06-01)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** multiselect label prop (required, htmlFor association) ([d5f7243](https://github.com/FabioCaffarello/react-design-system/commit/d5f724300ece727310f6b6e3056ddf512a82b937))
+* **a11y:** timepicker stories — add label to default/format24h/format12h ([16fafb5](https://github.com/FabioCaffarello/react-design-system/commit/16fafb536db0af76953863df4e4d15dddf5be2c8))
+
 ## [1.23.8](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.7...v1.23.8) (2026-06-01)
 
 
