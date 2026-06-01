@@ -5,6 +5,7 @@ import {
   useRef,
   useEffect,
   useCallback,
+  useId,
   type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
@@ -86,6 +87,7 @@ export default function Popover({
   const triggerRef = useRef<HTMLDivElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ top: 0, left: 0 });
+  const titleId = useId();
 
   const isControlled = controlledOpen !== undefined;
   const isOpen = isControlled ? controlledOpen : internalOpen;
@@ -248,6 +250,7 @@ export default function Popover({
       }}
       role="dialog"
       aria-modal="false"
+      aria-labelledby={title ? titleId : undefined}
     >
       {(title || showCloseButton) && (
         <div
@@ -263,6 +266,7 @@ export default function Popover({
         >
           {title && (
             <h3
+              id={titleId}
               className={`${getTypographySize("bodySmall")} ${getTypographyWeight("h5")} text-fg-primary`}
             >
               {title}
