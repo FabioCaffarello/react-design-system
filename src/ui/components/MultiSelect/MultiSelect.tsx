@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, forwardRef } from "react";
+import { useState, useRef, useEffect, useId, forwardRef } from "react";
 import Chip from "../../primitives/Chip/Chip";
 import { Check } from "lucide-react";
 import AutocompleteList from "../Autocomplete/AutocompleteList";
@@ -24,6 +24,12 @@ export interface MultiSelectProps {
   className?: string;
   inputClassName?: string;
   size?: "sm" | "md" | "lg";
+  /**
+   * Required label for the multi-select input. Becomes the accessible
+   * name via <label htmlFor>. Make this a real domain term ("Tags",
+   * "Select fruits"), not the element type ("multi-select" / "input").
+   */
+  label: string;
 }
 
 /**
@@ -60,9 +66,11 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
       className = "",
       inputClassName = "",
       size = "md",
+      label,
     },
     ref,
   ) {
+    const inputId = useId();
     const [internalValue, setInternalValue] = useState<string[]>(defaultValue);
     const [isOpen, setIsOpen] = useState(false);
     const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -245,6 +253,18 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
 
     return (
       <div ref={containerRef} className={cn("relative", className)}>
+        <label
+          htmlFor={inputId}
+          className={cn(
+            "block",
+            getSpacingClass("sm", "mb"),
+            "text-sm",
+            "font-medium",
+            "text-fg-primary",
+          )}
+        >
+          {label}
+        </label>
         <div
           className={cn(
             "flex",
@@ -272,6 +292,7 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
             </Chip>
           ))}
           <input
+            id={inputId}
             ref={(node) => {
               if (typeof ref === "function") {
                 ref(node);
