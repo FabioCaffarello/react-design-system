@@ -109,6 +109,7 @@ export const Default: Story = {
     return (
       <div className="space-y-4 w-full max-w-md">
         <MultiSelect
+          label="Tags"
           options={basicOptions}
           value={selected}
           onChange={setSelected}
@@ -156,6 +157,7 @@ export const WithMaxSelected: Story = {
     return (
       <div className="space-y-4 w-full max-w-md">
         <MultiSelect
+          label="Tags"
           options={basicOptions}
           value={selected}
           onChange={setSelected}
@@ -200,6 +202,7 @@ export const WithSelectAll: Story = {
     return (
       <div className="space-y-4 w-full max-w-md">
         <MultiSelect
+          label="Tags"
           options={basicOptions}
           value={selected}
           onChange={setSelected}
@@ -242,6 +245,7 @@ export const Controlled: Story = {
     return (
       <div className="space-y-4 w-full max-w-md">
         <MultiSelect
+          label="Tags"
           options={basicOptions}
           value={values}
           onChange={setValues}
@@ -286,6 +290,7 @@ export const WithSearch: Story = {
     return (
       <div className="space-y-4 w-full max-w-md">
         <MultiSelect
+          label="Tags"
           options={basicOptions}
           value={selected}
           onChange={setSelected}
@@ -322,6 +327,7 @@ export const ManyOptions: Story = {
     return (
       <div className="space-y-4 w-full max-w-md">
         <MultiSelect
+          label="Tags"
           options={manyOptions}
           value={selected}
           onChange={setSelected}
@@ -363,6 +369,7 @@ export const KeyboardNavigation: Story = {
     return (
       <div className="space-y-4 w-full max-w-md">
         <MultiSelect
+          label="Tags"
           options={basicOptions}
           value={selected}
           onChange={setSelected}
@@ -427,6 +434,7 @@ export const RealTimeSearch: Story = {
     return (
       <div className="space-y-4 w-full max-w-md">
         <MultiSelect
+          label="Tags"
           options={filteredOptions}
           value={selected}
           onChange={setSelected}
@@ -472,6 +480,7 @@ export const EdgeCases: Story = {
         <div>
           <h3 className="text-sm font-medium mb-2">Empty Options</h3>
           <MultiSelect
+            label="Tags"
             options={[]}
             value={selected1}
             onChange={setSelected1}
@@ -483,6 +492,7 @@ export const EdgeCases: Story = {
         <div>
           <h3 className="text-sm font-medium mb-2">Single Option</h3>
           <MultiSelect
+            label="Tags"
             options={[{ value: "1", label: "Only Option" }]}
             value={selected2}
             onChange={setSelected2}
@@ -493,6 +503,7 @@ export const EdgeCases: Story = {
         <div>
           <h3 className="text-sm font-medium mb-2">Disabled State</h3>
           <MultiSelect
+            label="Tags"
             options={basicOptions}
             value={selected3}
             onChange={setSelected3}
@@ -504,6 +515,7 @@ export const EdgeCases: Story = {
         <div>
           <h3 className="text-sm font-medium mb-2">Loading State</h3>
           <MultiSelect
+            label="Tags"
             options={basicOptions}
             value={selected3}
             onChange={setSelected3}
@@ -532,6 +544,7 @@ export const SelectAllAndDeselectAll: Story = {
     return (
       <div className="space-y-4 w-full max-w-md">
         <MultiSelect
+          label="Tags"
           options={basicOptions}
           value={selected}
           onChange={setSelected}
@@ -597,6 +610,7 @@ export const WithEvents: Story = {
           Select items. Check the Actions panel to see events being fired.
         </p>
         <MultiSelect
+          label="Tags"
           options={basicOptions}
           value={selected}
           onChange={handleChange}
@@ -650,6 +664,7 @@ export const WithSelectionState: Story = {
     return (
       <div className="w-full max-w-md">
         <MultiSelect
+          label="Tags"
           options={basicOptions}
           value={selected}
           onChange={setSelected}

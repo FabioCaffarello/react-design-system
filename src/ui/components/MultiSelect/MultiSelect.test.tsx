@@ -10,14 +10,20 @@ const mockOptions = [
 
 describe("MultiSelect", () => {
   it("renders input", () => {
-    render(<MultiSelect options={mockOptions} />);
+    render(<MultiSelect label="Test multi-select" options={mockOptions} />);
     expect(
       screen.getByPlaceholderText("Select options..."),
     ).toBeInTheDocument();
   });
 
   it("shows selected options as chips", async () => {
-    render(<MultiSelect options={mockOptions} defaultValue={["1", "2"]} />);
+    render(
+      <MultiSelect
+        label="Test multi-select"
+        options={mockOptions}
+        defaultValue={["1", "2"]}
+      />,
+    );
     await waitFor(() => {
       expect(screen.getByText("Option 1")).toBeInTheDocument();
       expect(screen.getByText("Option 2")).toBeInTheDocument();
@@ -26,7 +32,13 @@ describe("MultiSelect", () => {
 
   it("adds option when clicked", async () => {
     const handleChange = vi.fn();
-    render(<MultiSelect options={mockOptions} onChange={handleChange} />);
+    render(
+      <MultiSelect
+        label="Test multi-select"
+        options={mockOptions}
+        onChange={handleChange}
+      />,
+    );
     const input = screen.getByPlaceholderText("Select options...");
 
     fireEvent.change(input, { target: { value: "Option" } });
@@ -42,6 +54,7 @@ describe("MultiSelect", () => {
     const handleChange = vi.fn();
     render(
       <MultiSelect
+        label="Test multi-select"
         options={mockOptions}
         defaultValue={["1"]}
         onChange={handleChange}
