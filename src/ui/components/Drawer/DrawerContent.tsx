@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useId, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { getShadowClass } from "../../tokens/shadows";
 import { getZIndexClass } from "../../tokens/z-index";
@@ -14,6 +14,28 @@ export interface DrawerContentProps {
   children: ReactNode;
   className?: string;
   showCloseButton?: boolean;
+  /**
+   * Visible title rendered as a heading at the top of the drawer AND
+   * wired as the dialog's accessible name via `aria-labelledby`. Use
+   * this for the canonical case ("the drawer has a title").
+   */
+  title?: string;
+  /**
+   * Invisible accessible name. Use when the drawer has no visible
+   * title (e.g. a content-only side panel). One of `title`,
+   * `aria-label`, or `aria-labelledby` MUST be present — without any,
+   * `role="dialog"` has no accessible name and axe `aria-dialog-name`
+   * (serious) flags it. A dev-only warning fires when all three are
+   * missing.
+   */
+  "aria-label"?: string;
+  /**
+   * Override path: point at an id the consumer manages externally
+   * (typically a heading inside a `<DrawerHeader>` they laid out
+   * themselves). Takes precedence over `title` (which would otherwise
+   * generate its own id).
+   */
+  "aria-labelledby"?: string;
 }
 
 /**
@@ -21,12 +43,29 @@ export interface DrawerContentProps {
  *
  * The main content container for the drawer.
  * Renders in a portal with overlay.
+ *
+ * Accessible name — one of three paths:
+ *   1. `title="..."` → auto-renders a heading at the top and wires
+ *      `aria-labelledby` to it.
+ *   2. `aria-label="..."` → invisible name on the dialog.
+ *   3. `aria-labelledby="external-id"` → consumer-managed id (typically
+ *      a heading they place inside `<DrawerHeader>`).
+ *
+ * If all three are absent, the dialog has no accessible name —
+ * a dev-only `console.warn` fires.
  */
 export default function DrawerContent({
   children,
   className = "",
   showCloseButton = false,
+  title,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledByProp,
 }: DrawerContentProps) {
+  const autoTitleId = useId();
+  // Precedence: explicit aria-labelledby > auto-generated from title.
+  const resolvedLabelledBy =
+    ariaLabelledByProp ?? (title ? autoTitleId : undefined);
   const {
     isOpen,
     closeDrawer,
@@ -58,6 +97,21 @@ export default function DrawerContent({
       };
     }
   }, [isOpen]);
+
+  // Dev-only accessible-name warning: a `role="dialog"` without
+  // aria-label/aria-labelledby fails axe `aria-dialog-name`. The fix is
+  // structural — supply one of the three paths documented on the props
+  // — and the warning fires when none of them are present. Same shape
+  // as the Textarea 6c guard; the Drawer is a public dialog surface,
+  // a silent nameless `role="dialog"` is the defect we close here.
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
+    if (!isOpen) return;
+    if (title || ariaLabel || resolvedLabelledBy) return;
+    console.warn(
+      '[DrawerContent] Missing accessible name. Provide `title`, `aria-label`, or `aria-labelledby` — `role="dialog"` without a name fails axe `aria-dialog-name`.',
+    );
+  }, [isOpen, title, ariaLabel, resolvedLabelledBy]);
 
   if (!isOpen) return null;
 
@@ -109,27 +163,43 @@ export default function DrawerContent({
         `}
         role="dialog"
         aria-modal="true"
+        aria-labelledby={resolvedLabelledBy}
+        aria-label={resolvedLabelledBy ? undefined : ariaLabel}
         onClick={(e) => e.stopPropagation()}
       >
-        {showCloseButton && (
+        {(title || showCloseButton) && (
           <div
             className={`
             flex
-            justify-end
-            ${getSpacingClass("sm", "p")}
+            items-center
+            justify-between
+            ${getSpacingClass("base", "px")}
+            ${getSpacingClass("md", "py")}
             border-b
             border-line-default
           `}
           >
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={closeDrawer}
-              className="h-auto p-1"
-              aria-label="Close drawer"
-            >
-              <X className="h-4 w-4" />
-            </Button>
+            {title ? (
+              <h2
+                id={autoTitleId}
+                className="text-lg font-semibold text-fg-primary"
+              >
+                {title}
+              </h2>
+            ) : (
+              <span />
+            )}
+            {showCloseButton && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={closeDrawer}
+                className="h-auto p-1"
+                aria-label="Close drawer"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            )}
           </div>
         )}
         {children}
