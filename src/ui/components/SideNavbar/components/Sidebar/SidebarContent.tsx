@@ -68,6 +68,16 @@ export default function SidebarContent({
         ...style,
       }}
       onScroll={handleScroll}
+      // Defensive `tabIndex={0}` on the scrollable container so keyboard
+      // users can enter the region and scroll with arrow keys. Required
+      // by axe `scrollable-region-focusable` (serious) whenever the
+      // content inside doesn't include focusable elements (the
+      // LongContent story rendered plain text with no actionable items;
+      // a keyboard user had no way to reach the scrollbar). When the
+      // content DOES include focusable elements axe is also satisfied,
+      // so the attribute is harmless then. Only set when scrollable
+      // (a non-scrollable container has no region to enter).
+      tabIndex={scrollable ? 0 : undefined}
       {...props}
     >
       {children}
