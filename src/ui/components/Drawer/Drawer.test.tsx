@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Drawer, { DrawerContent, DrawerHeader, DrawerFooter } from "./Drawer";
 import Button from "../../primitives/Button/Button";
@@ -281,6 +281,97 @@ describe("Drawer", () => {
       await waitFor(() => {
         expect(document.body.style.overflow).toBe("hidden");
       });
+    });
+  });
+
+  describe("Accessible name (aria-dialog-name)", () => {
+    let warnSpy: ReturnType<typeof vi.spyOn>;
+    beforeEach(() => {
+      warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    });
+    afterEach(() => {
+      warnSpy.mockRestore();
+    });
+
+    it("title prop renders a heading and wires aria-labelledby", async () => {
+      render(
+        <Drawer defaultOpen>
+          <DrawerContent title="Settings">
+            <p>body</p>
+          </DrawerContent>
+        </Drawer>,
+      );
+
+      const dialog = await screen.findByRole("dialog");
+      const heading = screen.getByRole("heading", { name: "Settings" });
+      expect(heading.tagName).toBe("H2");
+      expect(dialog).toHaveAttribute("aria-labelledby", heading.id);
+      expect(dialog).not.toHaveAttribute("aria-label");
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it("aria-label prop sets the dialog name without a visible heading", async () => {
+      render(
+        <Drawer defaultOpen>
+          <DrawerContent aria-label="Filters panel">
+            <p>body</p>
+          </DrawerContent>
+        </Drawer>,
+      );
+
+      const dialog = await screen.findByRole("dialog");
+      expect(dialog).toHaveAttribute("aria-label", "Filters panel");
+      expect(dialog).not.toHaveAttribute("aria-labelledby");
+      expect(screen.queryByRole("heading")).toBeNull();
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it("aria-labelledby prop overrides the auto title id and points to an external element", async () => {
+      render(
+        <Drawer defaultOpen>
+          <DrawerContent aria-labelledby="external-heading">
+            <DrawerHeader>
+              <h2 id="external-heading">Manual heading</h2>
+            </DrawerHeader>
+            <p>body</p>
+          </DrawerContent>
+        </Drawer>,
+      );
+
+      const dialog = await screen.findByRole("dialog");
+      expect(dialog).toHaveAttribute("aria-labelledby", "external-heading");
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it("warns in dev when none of title / aria-label / aria-labelledby is provided", async () => {
+      render(
+        <Drawer defaultOpen>
+          <DrawerContent>
+            <p>body</p>
+          </DrawerContent>
+        </Drawer>,
+      );
+
+      await screen.findByRole("dialog");
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining("[DrawerContent] Missing accessible name"),
+      );
+    });
+
+    it("aria-labelledby takes precedence over title (consumer-managed id wins)", async () => {
+      render(
+        <Drawer defaultOpen>
+          <DrawerContent title="Auto title" aria-labelledby="external-heading">
+            <DrawerHeader>
+              <h2 id="external-heading">External heading</h2>
+            </DrawerHeader>
+            <p>body</p>
+          </DrawerContent>
+        </Drawer>,
+      );
+
+      const dialog = await screen.findByRole("dialog");
+      expect(dialog).toHaveAttribute("aria-labelledby", "external-heading");
     });
   });
 });

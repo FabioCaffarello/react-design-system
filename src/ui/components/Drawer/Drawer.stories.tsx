@@ -327,10 +327,7 @@ export const WithEvents: Story = {
       <>
         <Button onClick={() => setOpen(true)}>Open Drawer</Button>
         <Drawer open={open} onOpenChange={handleOpenChange}>
-          <DrawerContent>
-            <DrawerHeader>
-              <h2 className="text-lg font-semibold">Interactive Drawer</h2>
-            </DrawerHeader>
+          <DrawerContent title="Interactive Drawer">
             <div className="p-6">
               <p>
                 Interact with the drawer. Check the Actions panel to see events
@@ -406,10 +403,7 @@ export const OpenState: Story = {
       <>
         <Button onClick={() => setOpen(false)}>Close Drawer</Button>
         <Drawer open={open} onOpenChange={setOpen}>
-          <DrawerContent>
-            <DrawerHeader>
-              <h2 className="text-lg font-semibold">Open Drawer</h2>
-            </DrawerHeader>
+          <DrawerContent title="Open Drawer">
             <div className="p-6">
               <p>This drawer is open.</p>
             </div>
