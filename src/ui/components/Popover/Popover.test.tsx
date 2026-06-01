@@ -65,6 +65,42 @@ describe("Popover", () => {
     });
   });
 
+  it("wires title via aria-labelledby on role=dialog (axe aria-dialog-name)", async () => {
+    render(
+      <Popover trigger={<Button>Open</Button>} title="Popover Title">
+        <p>Content</p>
+      </Popover>,
+    );
+
+    fireEvent.click(screen.getByText("Open"));
+
+    await waitFor(() => {
+      const dialog = screen.getByRole("dialog");
+      const heading = screen.getByRole("heading", { name: "Popover Title" });
+      // Title heading gets an auto-id; dialog points at it via
+      // aria-labelledby — closes axe `aria-dialog-name`. Re-removing the
+      // id or the labelledby reintroduces the violation, so this test
+      // guards both ends of the wire.
+      expect(heading.id).toBeTruthy();
+      expect(dialog).toHaveAttribute("aria-labelledby", heading.id);
+    });
+  });
+
+  it("omits aria-labelledby when no title is provided", async () => {
+    render(
+      <Popover trigger={<Button>Open</Button>}>
+        <p>Content</p>
+      </Popover>,
+    );
+
+    fireEvent.click(screen.getByText("Open"));
+
+    await waitFor(() => {
+      const dialog = screen.getByRole("dialog");
+      expect(dialog).not.toHaveAttribute("aria-labelledby");
+    });
+  });
+
   it("handles controlled open state", async () => {
     const handleOpenChange = vi.fn();
     render(

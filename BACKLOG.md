@@ -1300,3 +1300,11 @@ Descoberto via mapa de consumers do Slider que mostrou: 12 dos 13 axe violations
 **Lição registrada:** O mapa de consumers ANTES do fix mudou a análise. Inicial: "5 stories desleixadas precisam label". Real: "1 story sem label + 12 nodes vêm de bug primitive descartando label correto". Sem o mapa eu teria proposto faxina de stories enquanto o primitive continuaria comendo labels silenciosamente. **Mapa de consumers precede mudança de API; classificação honesta precede fix.**
 
 **Próximo anchor:** #6 TimePicker/MultiSelect/Textarea label (9 sites, API change). Mesmo padrão de levantamento prévio — mapa de consumers antes de propor required.
+
+## Popover h3 dentro de role="dialog" — observação heading-order
+
+**Descoberto em:** PR Popover aria-labelledby (drain do baseline a11y-de-record).
+**Estado:** Popover renderiza `<h3 id={titleId}>{title}</h3>` dentro do `role="dialog"` portal. Quando a página hospedeira tem `<h1>`/`<h2>` no fluxo principal, o h3 do popover pode aparentar pular ordem (h1 → h3 sem h2 intermediário). axe `heading-order` (moderate) potencialmente flagaria isso em uma página real, **embora os baselines atuais do storybook NÃO o flaguem** (iframe da story isola o contexto de headings).
+**Por que não foi consertado junto:** ordem de heading e nome do dialog são concerns ortogonais. O fix do nome (aria-labelledby) **não depende** de re-mapear o heading. Mudar o h3 pra h2 (ou usar role/level ARIA) é decisão separada que precisa medir contexto real do consumer.
+**Hipótese provável:** **não-issue real**. Dialogs e modais são tradicionalmente tratados como subtree de heading própria pelos AT — o usuário entra no contexto modal antes de "ouvir" o h3, então o pulo aparente é convenção esperada. WAI-ARIA Authoring Practices não mandata level específico pra título de dialog.
+**Como decidir:** observar se algum re-baseline futuro com cenário de página completa (DashboardLayout + Popover dentro, ex.) dispara `heading-order` na hierarquia da story. Se não disparar até o gate flip, fica como decisão arquitetural deferida com este registro como contexto. Se disparar, avaliar trocar h3 por h2 OU envelopar com a role correta.
