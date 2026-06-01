@@ -1,3 +1,10 @@
+## [1.23.10](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.9...v1.23.10) (2026-06-01)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** textarea label opcional + dev warning guard ([3570aab](https://github.com/FabioCaffarello/react-design-system/commit/3570aab50b42ac2b2ec5ce007bd11818b877312f))
+
 ## [1.23.9](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.8...v1.23.9) (2026-06-01)
 
 
