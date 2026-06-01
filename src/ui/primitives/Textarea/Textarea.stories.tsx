@@ -541,6 +541,7 @@ export const FocusState: Story = {
 
 export const ErrorState: Story = {
   args: {
+    label: "Description",
     placeholder: "Error state textarea",
     rows: 4,
     error: true,
