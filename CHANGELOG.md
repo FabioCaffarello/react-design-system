@@ -1,3 +1,10 @@
+## [1.23.11](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.10...v1.23.11) (2026-06-01)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** menutrigger asChild implemented + stale gate removed ([7a8e733](https://github.com/FabioCaffarello/react-design-system/commit/7a8e733fd45524b34fbb4322f25e365219270962))
+
 ## [1.23.10](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.9...v1.23.10) (2026-06-01)
 
 
