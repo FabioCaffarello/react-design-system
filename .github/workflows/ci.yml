@@ -142,6 +142,47 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+  storybook-smoke:
+    name: Storybook smoke (render every story)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [build-storybook]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Download Storybook artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: storybook-static
+          path: storybook-static
+
+      # The smoke script starts its own ephemeral HTTP server over
+      # storybook-static/, opens each story headlessly in chromium,
+      # and fails on any pageerror, unallowed console.error, render
+      # timeout, or empty-mount. See scripts/storybook-smoke.mjs
+      # header for the dual-gate rendering check and the
+      # parameters.smoke.allowConsoleErrors escape valve.
+      - name: Run smoke
+        run: node scripts/storybook-smoke.mjs
+
+      - name: Upload smoke report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-report
+          path: |
+            smoke-report.json
+            smoke-failures/
+          if-no-files-found: warn
+          retention-days: 14
+
   a11y-baseline:
     name: A11y baseline (serial light + dark)
     runs-on: ubuntu-latest
@@ -186,7 +227,16 @@ jobs:
     name: CI success
     runs-on: ubuntu-latest
     if: always()
-    needs: [lint, typecheck, test, build, build-storybook, a11y-baseline]
+    needs:
+      [
+        lint,
+        typecheck,
+        test,
+        build,
+        build-storybook,
+        storybook-smoke,
+        a11y-baseline,
+      ]
     steps:
       - name: Verify all required jobs succeeded
         env:
