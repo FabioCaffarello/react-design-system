@@ -12,7 +12,7 @@ npm install @fabio.caffarello/react-design-system
 
 ## Usage
 
-Import components and the bundled stylesheet. No Tailwind setup required in your project — the DS ships the full token cascade (tokens, dark mode, theme variants) in one CSS file.
+Import components and the bundled stylesheet. No Tailwind setup required in your project — the DS ships the full token cascade (tokens, light/dark theme overrides) in one CSS file.
 
 ```tsx
 import { Button, Card, Form } from "@fabio.caffarello/react-design-system";
@@ -54,16 +54,6 @@ Class-based opt-in works too:
   ...
 </html>
 <html class="dark">
-  ...
-</html>
-```
-
-### Theme variants
-
-Beyond light/dark, the DS ships three style variants — `creative`, `minimal`, `tech`. Apply via `data-variant` attribute or `variant-<name>` class. Variants compose with the light/dark mode, so a `creative` variant in dark mode is its own coherent surface.
-
-```html
-<html data-variant="creative">
   ...
 </html>
 ```
