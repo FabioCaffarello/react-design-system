@@ -15,6 +15,60 @@ permissions:
   contents: read
 
 jobs:
+  # Path filter — decides whether the expensive UI-coupled jobs
+  # (build-storybook, a11y-baseline) need to run for this PR.
+  # On push to main we always run the full pipeline; main is the
+  # source of truth and a flaky filter shouldn't ship to it.
+  #
+  # The cheap jobs (lint, typecheck, test, build) run unconditionally
+  # because (a) they cover non-UI code too, and (b) they finish in
+  # under 4 minutes each — filtering them isn't worth the complexity.
+  paths:
+    name: Compute changed paths
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      ui_changed: ${{ steps.filter.outputs.ui_changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Filter changed paths
+        id: filter
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+
+          if [[ "$EVENT_NAME" == "push" ]]; then
+            echo "Push event — running the full pipeline."
+            echo "ui_changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          CHANGED=$(git diff --name-only "$BASE_SHA...$HEAD_SHA")
+          echo "Changed files in this PR:"
+          echo "$CHANGED" | sed 's/^/  /'
+
+          # Anything that can move a story's pixels, its DOM, or its
+          # accessibility tree triggers the UI-coupled jobs.
+          # Anything OUTSIDE these paths (docs, .claude/ rules, husky
+          # hooks, lockfile-validating scripts, …) cannot move a story
+          # and is safe to skip.
+          UI_PATTERN='^(src/(ui|styles|docs)/|\.storybook/|eslint-rules/|package(-lock)?\.json|vite\.config\.ts|tsconfig.*\.json|scripts/(a11y-serial-baseline|validate-a11y-baseline|storybook-smoke)\.mjs|\.github/workflows/ci\.yml|\.github/actions/setup/)'
+
+          if echo "$CHANGED" | grep -qE "$UI_PATTERN"; then
+            echo "UI / story / style / build files changed — running storybook-build and a11y-baseline."
+            echo "ui_changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No UI files changed — skipping storybook-build and a11y-baseline."
+            echo "ui_changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
   lint:
     name: Lint (ESLint + Prettier)
     runs-on: ubuntu-latest
@@ -119,6 +173,8 @@ jobs:
 
   build-storybook:
     name: Build Storybook
+    needs: paths
+    if: needs.paths.outputs.ui_changed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -147,9 +203,10 @@ jobs:
 
   storybook-smoke:
     name: Storybook smoke (render every story)
+    needs: [paths, build-storybook]
+    if: needs.paths.outputs.ui_changed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    needs: [build-storybook]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -197,9 +254,14 @@ jobs:
   # validate-a11y-baseline.mjs derives the themes-to-check from
   # `report.themes` (the array the runner records), so a single-
   # theme report is validated against only its own data.
+  #
+  # Both jobs are gated by the `paths` job: a doc-only PR skips
+  # them entirely. build-storybook is also gated the same way, so
+  # if it skips, these two skip transitively via their `needs`.
   a11y-baseline-light:
     name: A11y baseline (light)
-    needs: build-storybook
+    needs: [paths, build-storybook]
+    if: needs.paths.outputs.ui_changed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -235,7 +297,8 @@ jobs:
 
   a11y-baseline-dark:
     name: A11y baseline (dark)
-    needs: build-storybook
+    needs: [paths, build-storybook]
+    if: needs.paths.outputs.ui_changed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -275,6 +338,7 @@ jobs:
     if: always()
     needs:
       [
+        paths,
         lint,
         typecheck,
         test,
@@ -293,9 +357,14 @@ jobs:
           echo "$NEEDS_JSON" | python3 -c '
           import json, sys
           needs = json.load(sys.stdin)
-          failed = [name for name, info in needs.items() if info.get("result") != "success"]
+          # "skipped" is intentional: the paths job decided that build-
+          # storybook and a11y-baseline did not need to run for this PR
+          # (no UI files changed). Skipped jobs whose `if:` evaluated
+          # false are healthy. A failure or cancellation of any
+          # required job — including the paths job itself — is not.
+          failed = [name for name, info in needs.items() if info.get("result") not in ("success", "skipped")]
           if failed:
-              print(f"::error::Required jobs failed or were skipped: {failed}")
+              print(f"::error::Required jobs failed: {failed}")
               sys.exit(1)
-          print("All required jobs succeeded.")
+          print("All required jobs succeeded or were intentionally skipped.")
           '
