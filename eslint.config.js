@@ -41,6 +41,18 @@ export default defineConfig([
       // offending literal.
       "ds/no-raw-color-classes": "error",
 
+      // Design system: radius and shadow scale enforcement.
+      // Mirrors the color rule's shape — disallows raw Tailwind
+      // `rounded-md` / `shadow-md` etc. in production component source.
+      // Use the getter helpers `getRadiusClass(scale)` /
+      // `getShadowClass(scale)` from src/ui/tokens/. The same
+      // `// exception: <reason>` escape valve as the color rule.
+      // Spacing (`p-4`, `m-2`, `gap-6`, …) follows the same pattern
+      // but has ~118 sites still to migrate and ships in a follow-up
+      // Phase-style PR; the rule infrastructure here is the template.
+      "ds/no-raw-radius-classes": "error",
+      "ds/no-raw-shadow-classes": "error",
+
       // TypeScript rules (non-type-aware for better performance)
       // `any` is locked at the error level across all scopes — see
       // CLAUDE.md "Hard rules" (Zero any). fixToUnknown rewrites
@@ -189,6 +201,21 @@ export default defineConfig([
     files: ["src/ui/tokens/TokenVisualizations.tsx"],
     rules: {
       "ds/no-raw-color-classes": "off",
+      "ds/no-raw-radius-classes": "off",
+      "ds/no-raw-shadow-classes": "off",
+    },
+  },
+  {
+    // src/ui/tokens/radius.ts and src/ui/tokens/shadows.ts are the
+    // FILES THAT DEFINE the radius / shadow scales. They obviously
+    // contain `rounded-md`, `shadow-md` etc. as the canonical token
+    // strings — the getter helpers consumed by every other file
+    // return them. Exempting these two paths from their own rules
+    // is the same shape as exempting TokenVisualizations above.
+    files: ["src/ui/tokens/radius.ts", "src/ui/tokens/shadows.ts"],
+    rules: {
+      "ds/no-raw-radius-classes": "off",
+      "ds/no-raw-shadow-classes": "off",
     },
   },
   {

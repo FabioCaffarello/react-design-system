@@ -13,7 +13,7 @@ describe("no-raw-color-classes — meta", () => {
 
   it("plugin index exposes the rule under its canonical name", () => {
     expect(plugin.rules["no-raw-color-classes"]).toBe(rule);
-    expect(plugin.meta?.name).toBe("eslint-plugin-ds-color");
+    expect(plugin.meta?.name).toBe("eslint-plugin-ds-tokens");
   });
 });
 
