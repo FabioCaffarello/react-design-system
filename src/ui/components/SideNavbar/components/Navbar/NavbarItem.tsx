@@ -126,7 +126,7 @@ export default function NavbarItem({
         className={cn(
           "text-xs",
           "flex-shrink-0", // Prevenir que label encolha
-          // micro-z: redundant with inline zIndex:10 below — see BACKLOG
+          // micro-z: label above icon within navbar item
           "relative z-10",
           effectiveLabelMode === "below" && "text-center",
           effectiveLabelMode === "inline" && "truncate",
@@ -135,9 +135,6 @@ export default function NavbarItem({
           // Garantir que label não seja afetada por transformações
           willChange: "auto",
           transform: "none",
-          // micro-z: label above icon within navbar item (wins CSS
-          // specificity over the className z-10 above)
-          zIndex: 10,
         }}
       >
         {label}
