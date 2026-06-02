@@ -5,9 +5,17 @@ import { useRef, useEffect, type HTMLAttributes, ReactNode } from "react";
 import { cn } from "../../utils";
 import { getRadiusClass, getSpacingClass } from "../../tokens";
 
-export interface TabsListProps extends HTMLAttributes<HTMLDivElement> {
+export interface TabsListProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, "orientation"> {
   children: ReactNode;
   variant?: "default" | "compact";
+  /**
+   * Override orientation set on the `Tabs` provider. When omitted,
+   * inherits from context (default "horizontal"). Controls keyboard
+   * navigation axis (ArrowLeft/Right vs ArrowUp/Down), flex direction,
+   * and `aria-orientation`.
+   */
+  orientation?: "horizontal" | "vertical";
 }
 
 /**
@@ -16,14 +24,18 @@ export interface TabsListProps extends HTMLAttributes<HTMLDivElement> {
  * Container for tab triggers.
  * Manages keyboard navigation between tabs.
  * Must be used within a Tabs component.
+ *
+ * Orientation precedence: local `orientation` prop > Tabs context > "horizontal".
  */
 export function TabsList({
   children,
   className = "",
   variant = "default",
+  orientation: orientationProp,
   ...props
 }: TabsListProps) {
-  const { orientation } = useTabsContext();
+  const { orientation: contextOrientation } = useTabsContext();
+  const orientation = orientationProp ?? contextOrientation ?? "horizontal";
   const listRef = useRef<HTMLDivElement>(null);
 
   // Handle keyboard navigation at list level
