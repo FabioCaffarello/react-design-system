@@ -39,11 +39,6 @@ const REQUIRED_EXTS = [".tsx", ".test.tsx", ".stories.tsx"];
 // missing file, delete the corresponding entry from this set in the same
 // commit — the gate then enforces the file's presence going forward.
 const ALLOWLIST = new Set([
-  "components/DashboardLayout:DashboardLayout.test.tsx",
-  "components/DataTablePattern:DataTablePattern.test.tsx",
-  "components/FormWizardPattern:FormWizardPattern.test.tsx",
-  "components/LoginBox:LoginBox.test.tsx",
-  "components/SearchAndFilterPattern:SearchAndFilterPattern.test.tsx",
   "layouts/Container:Container.test.tsx",
   "layouts/Stack:Stack.test.tsx",
 ]);
