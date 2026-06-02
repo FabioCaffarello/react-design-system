@@ -280,19 +280,24 @@ exception) instead.
 ### Micro-z (z-index inline + className)
 
 Phase 8 promoted z-index to semantic tokens (`z-modal`, `z-tooltip`,
-etc.). One remaining anti-pattern: `NavbarItem.tsx` uses **both**
-`className="relative z-10"` AND inline `style={{ zIndex: 10 }}` on the
-same element. Inline style wins CSS specificity — the className is a
-silent no-op. If you touch micro-z code, remove the redundancy. Both
-sites carry `// micro-z:` comments cross-referencing the trap.
+etc.). Single-purpose exceptions where a numeric `z-N` survives carry a
+`// micro-z: <reason>` comment naming why the semantic token doesn't
+fit (stacking-within-component, sibling ordering, etc.). Pitfall: if
+you set z-index in **both** `className` (e.g. `"relative z-10"`) AND
+inline `style={{ zIndex: 10 }}` on the same element, inline wins CSS
+specificity and the className is a silent no-op — pick one. The same
+applies to a parent that already provides the semantic z-index: a
+child redeclaring the same `z-modal` is inert (parent stacking context
+already covers it) and should be removed.
 
-### Stale CSS var references (e.g. `--color-slate-850`)
+### Stale CSS var references (e.g. references to non-existent primitives)
 
-`themes/dark.css:128` references `var(--color-slate-850)` which doesn't
-exist in the primitive scale (`50…900/950`, no `850`). The var resolves
-as `unset` — silent fallback. If you add a new token that depends on a
-primitive shade, **grep for the primitive var first** to confirm it
-exists. Open backlog item.
+Tailwind v4's slate scale is `50…900/950` — there is no `slate-850`,
+`slate-150`, etc. Referencing `var(--color-slate-850)` resolves as
+`unset` with a silent fallback, invisible to the dark-coverage
+validator (it checks token parity, not primitive resolution). If you
+add a new token that depends on a primitive shade, **grep for the
+primitive var first** to confirm it exists in the scale.
 
 ### Status-neutral vs `text-fg-*` vs `bg-line-*`
 

@@ -125,7 +125,7 @@ export function DialogContent({
           aria-labelledby={titleId}
           aria-describedby={descriptionId}
           className={`
-            relative ${getZIndexClass("modal")} w-full
+            relative w-full
             ${sizeClasses[size]}
             bg-surface-overlay
             ${getRadiusClass("lg")}
