@@ -38,13 +38,7 @@ const REQUIRED_EXTS = [".tsx", ".test.tsx", ".stories.tsx"];
 // "categorias restantes" plan in the team conversation). When a PR adds the
 // missing file, delete the corresponding entry from this set in the same
 // commit — the gate then enforces the file's presence going forward.
-const ALLOWLIST = new Set([
-  "components/DashboardLayout:DashboardLayout.test.tsx",
-  "components/DataTablePattern:DataTablePattern.test.tsx",
-  "components/FormWizardPattern:FormWizardPattern.test.tsx",
-  "components/LoginBox:LoginBox.test.tsx",
-  "components/SearchAndFilterPattern:SearchAndFilterPattern.test.tsx",
-]);
+const ALLOWLIST = new Set([]);
 
 function isDir(p) {
   try {
