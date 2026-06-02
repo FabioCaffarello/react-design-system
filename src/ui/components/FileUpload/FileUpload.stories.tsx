@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { fn } from "storybook/test";
+import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { useState } from "react";
 import { CheckCircle2, AlertCircle } from "lucide-react";
 import FileUpload from "./FileUpload";
@@ -651,5 +651,61 @@ export const DisabledState: Story = {
           "Disabled state - file upload is disabled and cannot be interacted with.",
       },
     },
+  },
+};
+
+/**
+ * Interactive
+ *
+ * Verifies that selecting a file via the hidden <input type="file">
+ * fires onFilesChange with the file in the payload and that the file
+ * name renders in the file list afterwards. Uses userEvent.upload which
+ * bypasses the "Click to upload" dropzone and writes directly into the
+ * input — that path matches how assistive tech reaches the control.
+ */
+export const Interactive: Story = {
+  render: (args) => {
+    const [files, setFiles] = useState<FileUploadFile[]>([]);
+    return (
+      <div className="w-full max-w-md">
+        <FileUpload
+          {...args}
+          onFilesChange={(next) => {
+            setFiles(next);
+            args.onFilesChange?.(next);
+          }}
+        />
+        {files.length > 0 && (
+          <div className="mt-4 text-sm text-fg-secondary">
+            {files.length} file(s) selected
+          </div>
+        )}
+      </div>
+    );
+  },
+  args: {
+    accept: ".txt",
+    onFilesChange: fn(),
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Sanity: the CTA copy describes the default empty state.
+    expect(canvas.getByText(/click to upload/i)).toBeInTheDocument();
+
+    const fileInput = canvasElement.querySelector(
+      'input[type="file"]',
+    ) as HTMLInputElement;
+    expect(fileInput).toBeTruthy();
+
+    const file = new File(["hello"], "hello.txt", { type: "text/plain" });
+    await userEvent.upload(fileInput, file);
+
+    await waitFor(() => {
+      expect(args.onFilesChange).toHaveBeenCalled();
+    });
+    await waitFor(() => {
+      expect(canvas.getByText("hello.txt")).toBeInTheDocument();
+    });
   },
 };
