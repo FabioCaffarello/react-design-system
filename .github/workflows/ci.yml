@@ -201,12 +201,27 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-  a11y-baseline:
-    name: A11y baseline (serial light + dark)
-    needs: paths
+  # The a11y baseline used to run light + dark serially in one job
+  # (~20min wall clock — 10min per theme). The two themes are
+  # independent measurements (separate BrowserContexts, separate
+  # output sections), so splitting them into two jobs that run in
+  # parallel halves the wall clock without losing any signal. Each
+  # job reuses the `storybook-static/` artifact produced by
+  # `build-storybook` so the build doesn't run twice.
+  #
+  # validate-a11y-baseline.mjs derives the themes-to-check from
+  # `report.themes` (the array the runner records), so a single-
+  # theme report is validated against only its own data.
+  #
+  # Both jobs are gated by the `paths` job: a doc-only PR skips
+  # them entirely. build-storybook is also gated the same way, so
+  # if it skips, these two skip transitively via their `needs`.
+  a11y-baseline-light:
+    name: A11y baseline (light)
+    needs: [paths, build-storybook]
     if: needs.paths.outputs.ui_changed == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -217,29 +232,61 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Clear Storybook and Vite cache
-        run: |
-          rm -rf node_modules/.cache/storybook
-          rm -rf node_modules/.vite
-          rm -rf storybook-static
+      - name: Download Storybook artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: storybook-static
+          path: storybook-static
 
-      # The script runs `npm run build-storybook` itself, then iterates
-      # all 852 stories with workers=1 (fresh BrowserContext per story)
-      # for light + dark. Wall clock ~11min in CI; runs in parallel with
-      # the other jobs so it does NOT extend the overall PR pipeline
-      # tail latency — the slowest job dominates.
-      - name: Run serial a11y baseline (light + dark)
-        run: npm run test:a11y:baseline
+      - name: Run a11y baseline (light theme only)
+        run: node scripts/a11y-serial-baseline.mjs --theme light --output a11y-baseline-light.json
 
-      - name: Validate baseline floor (critical+serious=0 per theme)
-        run: node scripts/validate-a11y-baseline.mjs
+      - name: Validate baseline floor (critical+serious=0)
+        run: node scripts/validate-a11y-baseline.mjs a11y-baseline-light.json
 
-      - name: Upload a11y baseline artifact
+      - name: Upload a11y baseline (light) artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: a11y-baseline
-          path: a11y-baseline.json
+          name: a11y-baseline-light
+          path: a11y-baseline-light.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  a11y-baseline-dark:
+    name: A11y baseline (dark)
+    needs: [paths, build-storybook]
+    if: needs.paths.outputs.ui_changed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Download Storybook artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: storybook-static
+          path: storybook-static
+
+      - name: Run a11y baseline (dark theme only)
+        run: node scripts/a11y-serial-baseline.mjs --theme dark --output a11y-baseline-dark.json
+
+      - name: Validate baseline floor (critical+serious=0)
+        run: node scripts/validate-a11y-baseline.mjs a11y-baseline-dark.json
+
+      - name: Upload a11y baseline (dark) artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-baseline-dark
+          path: a11y-baseline-dark.json
           if-no-files-found: warn
           retention-days: 14
 
@@ -247,7 +294,17 @@ jobs:
     name: CI success
     runs-on: ubuntu-latest
     if: always()
-    needs: [paths, lint, typecheck, test, build, build-storybook, a11y-baseline]
+    needs:
+      [
+        paths,
+        lint,
+        typecheck,
+        test,
+        build,
+        build-storybook,
+        a11y-baseline-light,
+        a11y-baseline-dark,
+      ]
     steps:
       - name: Verify all required jobs succeeded
         env:
