@@ -117,7 +117,8 @@ npm run lint              # eslint
 npm run build             # library build (tsc + vite)
 npm run build-storybook   # static storybook
 npm run storybook:smoke   # runtime smoke-test all stories
-npm run test:a11y:baseline # serial axe baseline (light + dark, ~96min)
+npm run test:a11y:baseline # serial axe baseline (light + dark, ~11min on local SSD)
+node scripts/validate-a11y-baseline.mjs # gate: exits 1 if critical+serious>0 on either theme
 npm run plop              # scaffold a new component
 ```
 

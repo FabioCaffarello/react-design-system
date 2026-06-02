@@ -29,11 +29,35 @@ const preview: Preview = {
     // Rule list, axe options, and color-contrast check options live in
     // `./a11y-config.mjs` so the serial baseline runner can import the
     // same source. Do not inline the rule array here — keep it imported.
+    //
+    // IMPORTANT — what enforces the gate, and what does NOT
+    //
+    //   `test: "error"` below is COSMETIC in this project's setup. It
+    //   only fires the addon's `afterEach` matcher when stories are
+    //   loaded as vitest tests via the `@storybook/addon-vitest`
+    //   plugin in a vitest workspace — which this project does NOT
+    //   wire (vite.config.ts test includes only `*.test.tsx`, the
+    //   addon-vitest plugin is in `package.json` for the dev panel
+    //   only). The setting still helps in the Storybook UI panel
+    //   (`npm run storybook`) where violations are marked as errors
+    //   to the developer.
+    //
+    //   The REAL CI enforcement is the `a11y-baseline` job in
+    //   `.github/workflows/ci.yml`. That job runs
+    //   `scripts/a11y-serial-baseline.mjs` (the same axe-core@4.11.4
+    //   the addon ships, the same `a11yRules`/`a11yOptions`/
+    //   `a11yChecks` config imported here) over all 852 stories,
+    //   writes `a11y-baseline.json`, then invokes
+    //   `scripts/validate-a11y-baseline.mjs` which exits non-zero if
+    //   critical+serious > 0 on EITHER theme. That validator is what
+    //   the `ci-success` aggregator depends on for branch protection.
+    //
+    //   If you change this line, do not assume CI behavior follows.
+    //   Re-read `scripts/validate-a11y-baseline.mjs` for the actual
+    //   contract: `critical+serious = 0` per theme, no errored
+    //   stories.
     a11y: {
-      // 'todo' - show a11y violations in the test UI only
-      // 'error' - fail CI on a11y violations
-      // 'off' - skip a11y checks entirely
-      test: "todo",
+      test: "error",
       config: {
         rules: a11yRules,
       },
@@ -46,6 +70,16 @@ const preview: Preview = {
         // rationale. Per-story re-enable (DashboardLayout) mirrors this
         // via parameters.a11y.options.rules with `enabled: true`.
         rules: a11yDisabledRules,
+        // Codifies the floor contract: the gate enforces `critical`
+        // and `serious` only. `moderate` and `minor` appear in the
+        // Storybook UI panel for developer awareness but do not block
+        // CI — matching `scripts/validate-a11y-baseline.mjs`. The 7
+        // moderate residuals at phase close (`landmark-unique` × 3,
+        // `region`, `landmark-no-duplicate-banner`,
+        // `landmark-complementary-is-top-level`, `heading-order`) are
+        // tracked architecturally in BACKLOG and are NOT part of the
+        // gate floor.
+        impactLevels: ["critical", "serious"],
       },
     },
 
