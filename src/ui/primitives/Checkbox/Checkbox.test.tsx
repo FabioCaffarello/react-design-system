@@ -157,4 +157,27 @@ describe("Checkbox", () => {
     expect(ref.current).toBeInstanceOf(HTMLInputElement);
     expect(ref.current?.type).toBe("checkbox");
   });
+
+  describe("success state", () => {
+    it("applies border-success on the input when success is set", () => {
+      render(<Checkbox label="Pick" success />);
+      expect(screen.getByRole("checkbox")).toHaveClass("border-success");
+    });
+
+    it("renders helperText in fg-success styling when success is set", () => {
+      render(<Checkbox label="Pick" success helperText="Looks good!" />);
+      const helper = screen.getByText("Looks good!");
+      expect(helper).toHaveClass("text-fg-success");
+      expect(helper).toHaveAttribute("role", "alert");
+    });
+
+    it("lets error win when both error and success are set", () => {
+      render(<Checkbox label="Pick" error success helperText="Conflict" />);
+      const input = screen.getByRole("checkbox");
+      expect(input).toHaveClass("border-error");
+      expect(input).not.toHaveClass("border-success");
+      const helper = screen.getByText("Conflict");
+      expect(helper).toHaveClass("text-fg-error");
+    });
+  });
 });

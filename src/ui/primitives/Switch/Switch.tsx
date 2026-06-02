@@ -25,6 +25,14 @@ export interface SwitchProps
    */
   helperText?: string;
   error?: boolean;
+  /**
+   * Validation success state — paints the (off-state) track border
+   * and (when `helperText` is also set) the helper-text color green.
+   * Matches the Input + Select + Checkbox + Radio + Textarea
+   * convention. Error takes precedence when both `error` and
+   * `success` are set.
+   */
+  success?: boolean;
 }
 
 /**
@@ -52,6 +60,7 @@ const Switch = memo(
       label,
       helperText,
       error = false,
+      success = false,
       className = "",
       disabled = false,
       checked,
@@ -129,7 +138,11 @@ const Switch = memo(
           "focus:ring-offset-2",
           config.track,
           currentChecked ? "bg-surface-brand" : "bg-surface-muted",
+          // Border feedback only shows in the off state — the on-state
+          // brand background already saturates the track and overrides
+          // any colored outline visually. Error wins over success.
           error && !currentChecked && "border-error",
+          !error && success && !currentChecked && "border-success",
           disabled && "opacity-50 cursor-not-allowed",
           className,
         ),
@@ -138,6 +151,7 @@ const Switch = memo(
         config.track,
         currentChecked,
         error,
+        success,
         disabled,
         className,
       ],
@@ -252,7 +266,11 @@ const Switch = memo(
                 className={cn(
                   getSpacingClass("xs", "mt"),
                   getTypographySize("bodySmall"),
-                  error ? "text-fg-error" : "text-fg-secondary",
+                  error
+                    ? "text-fg-error"
+                    : success
+                      ? "text-fg-success"
+                      : "text-fg-secondary",
                 )}
               >
                 {helperText}

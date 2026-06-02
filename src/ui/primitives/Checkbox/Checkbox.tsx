@@ -18,6 +18,15 @@ export interface CheckboxProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
   label?: ReactNode;
   error?: boolean;
+  /**
+   * Validation success state — paints the border and (when
+   * `helperText` is also set) the helper-text color green. Matches
+   * the Input + Select + Radio + Switch + Textarea convention; the
+   * three feedback flags (`error`, `success`, `helperText`) cover
+   * every form primitive in the DS. Error takes precedence when
+   * both `error` and `success` are set.
+   */
+  success?: boolean;
   helperText?: string;
   indeterminate?: boolean;
 }
@@ -45,6 +54,7 @@ const Checkbox = memo(
       id,
       label,
       error = false,
+      success = false,
       helperText,
       className = "",
       disabled = false,
@@ -82,7 +92,8 @@ const Checkbox = memo(
       [error, errorFocusRing, primaryFocusRing],
     );
 
-    // Memoize classes
+    // Memoize classes — error wins over success when both flags are
+    // set (a field cannot be valid AND invalid; treat it as invalid).
     const checkboxClasses = useMemo(
       () =>
         cn(
@@ -99,9 +110,10 @@ const Checkbox = memo(
           "disabled:cursor-not-allowed",
           "cursor-pointer",
           error && "border-error",
+          !error && success && "border-success",
           className,
         ),
-      [focusRingColor, error, className],
+      [focusRingColor, error, success, className],
     );
 
     const labelClasses = useMemo(
@@ -164,15 +176,19 @@ const Checkbox = memo(
             </label>
           )}
         </div>
-        {(error || helperText) && (
+        {(error || success || helperText) && (
           <div
             id={errorId || helperId}
             className={cn(
               getSpacingClass("xs", "mt"),
               getTypographyClasses("caption"),
-              error ? "text-fg-error" : "text-fg-secondary",
+              error
+                ? "text-fg-error"
+                : success
+                  ? "text-fg-success"
+                  : "text-fg-secondary",
             )}
-            role={error ? "alert" : undefined}
+            role={error || success ? "alert" : undefined}
           >
             {error ? helperText || "This field has an error" : helperText}
           </div>

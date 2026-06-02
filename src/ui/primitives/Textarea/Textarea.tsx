@@ -7,14 +7,24 @@ import { cn } from "../../utils";
 
 interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   error?: boolean;
+  /**
+   * Validation success state — paints the border and (when
+   * `helperText` is also set) the helper-text color green. Matches
+   * the Input + Select + Checkbox + Radio + Switch convention; the
+   * three feedback flags (`error`, `success`, `helperText`) cover
+   * every form primitive in the DS. Error takes precedence when
+   * both `error` and `success` are set.
+   */
+  success?: boolean;
   resize?: "none" | "both" | "horizontal" | "vertical";
   label?: string;
   /**
    * Secondary text rendered beneath the textarea, wired through
    * `aria-describedby`. Named `helperText` to match Input, Select,
    * Checkbox, Radio, and Switch — every form primitive in the DS
-   * uses the same prop name for this role. When `error` is also set,
-   * the same slot renders the helper text in error styling.
+   * uses the same prop name for this role. When `error` or
+   * `success` is also set, the helper text inherits the matching
+   * red / green color.
    */
   helperText?: string;
 }
@@ -41,6 +51,7 @@ const Textarea = memo(
   forwardRef<HTMLTextAreaElement, Props>(function Textarea(
     {
       error = false,
+      success = false,
       resize = "vertical",
       className = "",
       label,
@@ -76,7 +87,8 @@ const Textarea = memo(
       [],
     );
 
-    // Memoize classes
+    // Memoize classes — error wins over success when both flags are
+    // set (a field cannot be valid AND invalid; treat it as invalid).
     const classes = useMemo(
       () =>
         cn(
@@ -93,10 +105,12 @@ const Textarea = memo(
           resizeClasses[resize],
           error
             ? cn("border-error", focusRingColor)
-            : cn("border-line-default", focusRingColor),
+            : success
+              ? cn("border-success", focusRingColor)
+              : cn("border-line-default", focusRingColor),
           className,
         ),
-      [resize, resizeClasses, error, focusRingColor, className],
+      [resize, resizeClasses, error, success, focusRingColor, className],
     );
 
     // Memoize aria-describedby — points to the helper paragraph when
@@ -147,7 +161,11 @@ const Textarea = memo(
         className={cn(
           getSpacingClass("xs", "mt"),
           getTypographySize("bodySmall"),
-          error ? "text-fg-error" : "text-fg-secondary",
+          error
+            ? "text-fg-error"
+            : success
+              ? "text-fg-success"
+              : "text-fg-secondary",
         )}
       >
         {helperText}

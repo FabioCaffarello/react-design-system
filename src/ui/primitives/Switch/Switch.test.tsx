@@ -160,4 +160,43 @@ describe("Switch", () => {
       expect(sw).toHaveAttribute("aria-checked", "true");
     });
   });
+
+  describe("success state", () => {
+    it("applies border-success to the off-state track when success is set", () => {
+      render(
+        <Switch label="Pick" success checked={false} onChange={() => {}} />,
+      );
+      expect(screen.getByRole("switch")).toHaveClass("border-success");
+    });
+
+    it("renders helperText in fg-success styling when success is set", () => {
+      render(
+        <Switch
+          label="Pick"
+          helperText="Saved"
+          success
+          checked={false}
+          onChange={() => {}}
+        />,
+      );
+      expect(screen.getByText("Saved")).toHaveClass("text-fg-success");
+    });
+
+    it("lets error win when both error and success are set", () => {
+      render(
+        <Switch
+          label="Pick"
+          helperText="Conflict"
+          error
+          success
+          checked={false}
+          onChange={() => {}}
+        />,
+      );
+      const track = screen.getByRole("switch");
+      expect(track).toHaveClass("border-error");
+      expect(track).not.toHaveClass("border-success");
+      expect(screen.getByText("Conflict")).toHaveClass("text-fg-error");
+    });
+  });
 });
