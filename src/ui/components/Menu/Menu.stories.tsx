@@ -198,7 +198,7 @@ export const TableActions: Story = {
   render: () => (
     <Menu>
       <MenuTrigger>
-        <Button variant="ghost" size="sm" aria-label="Actions">
+        <Button variant="ghost" size="sm">
           <MoreVertical className="h-4 w-4" />
         </Button>
       </MenuTrigger>
