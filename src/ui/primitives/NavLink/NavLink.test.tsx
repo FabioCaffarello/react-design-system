@@ -5,6 +5,7 @@
  */
 
 import { describe, it, expect, vi } from "vitest";
+import { createRef } from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { NavLink } from "./NavLink";
 
@@ -283,6 +284,18 @@ describe("NavLink", () => {
       );
       const link = screen.getByText("Home");
       expect(link).toHaveAttribute("data-custom", "true");
+    });
+  });
+
+  describe("ref forwarding", () => {
+    it("forwards ref to the underlying anchor element", () => {
+      const ref = createRef<HTMLAnchorElement>();
+      render(
+        <NavLink ref={ref} href="/home">
+          Home
+        </NavLink>,
+      );
+      expect(ref.current).toBeInstanceOf(HTMLAnchorElement);
     });
   });
 });
