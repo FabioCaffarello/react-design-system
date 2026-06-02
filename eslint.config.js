@@ -42,8 +42,12 @@ export default defineConfig([
       "ds/no-raw-color-classes": "error",
 
       // TypeScript rules (non-type-aware for better performance)
+      // `any` is locked at the error level across all scopes — see
+      // CLAUDE.md "Hard rules" (Zero any). fixToUnknown rewrites
+      // autofix to `unknown` so the type narrows explicitly at the
+      // use site instead of widening silently.
       "@typescript-eslint/no-explicit-any": [
-        "warn",
+        "error",
         {
           ignoreRestArgs: false,
           fixToUnknown: true,
@@ -110,7 +114,7 @@ export default defineConfig([
     rules: {
       ...storybook.configs.recommended.rules,
       "no-console": "off",
-      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-unsafe-assignment": "off",
       "@typescript-eslint/no-unsafe-member-access": "off",
       "@typescript-eslint/no-unsafe-call": "off",
@@ -141,7 +145,7 @@ export default defineConfig([
       "@typescript-eslint/no-unsafe-call": "off",
       "@typescript-eslint/no-unsafe-return": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
-      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-explicit-any": "error",
     },
   },
   {
@@ -203,7 +207,7 @@ export default defineConfig([
       "@typescript-eslint/no-unsafe-call": "off",
       "@typescript-eslint/no-unsafe-return": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
-      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-unused-vars": [
         "warn",
         {

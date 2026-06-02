@@ -10,3 +10,10 @@ npm run lint
 # lockstep — see scripts/validate-dark-coverage.mjs header for context).
 echo "Validating dark-theme coverage..."
 node scripts/validate-dark-coverage.mjs
+
+# Validate component file-set discipline (every component dir under
+# src/ui/{primitives,components,layouts}/ ships .tsx, .test.tsx,
+# .stories.tsx, index.ts). Grandfathered exceptions are allowlisted
+# inside the script and shrink as Wave 2 fills the missing tests.
+echo "Validating component file-set..."
+node scripts/validate-file-set.mjs
