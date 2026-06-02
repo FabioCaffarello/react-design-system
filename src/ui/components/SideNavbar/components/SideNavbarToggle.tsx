@@ -5,6 +5,8 @@ import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { useSideNavbarStateRequired } from "../contexts/SideNavbarStateContext";
 import { useSideNavbarThemeRequired } from "../contexts/SideNavbarThemeContext";
 import { useSideNavbarConfigRequired } from "../contexts/SideNavbarConfigContext";
+import { getRadiusClass } from "../../../tokens/radius";
+import { getShadowClass } from "../../../tokens/shadows";
 import { getZIndexClass, Z_INDEX_TOKENS } from "../../../tokens/z-index";
 import Tooltip from "../../../primitives/Tooltip/Tooltip";
 import type {
@@ -42,8 +44,7 @@ const positionClasses: Record<SideNavbarTogglePosition, string> = {
 };
 
 const variantClasses: Record<SideNavbarToggleVariant, string> = {
-  default:
-    "bg-surface-raised border border-line-default shadow-sm hover:bg-surface-hover hover:shadow",
+  default: `bg-surface-raised border border-line-default ${getShadowClass("sm")} hover:bg-surface-hover hover:shadow`,
   ghost: "bg-transparent hover:bg-surface-hover border-0",
   outline: "bg-transparent border border-line-default hover:bg-surface-hover",
 };
@@ -208,7 +209,7 @@ export default function SideNavbarToggle({
       className={`
         ${sizeClasses[size]}
         ${variantClasses[variant]}
-        rounded-full
+        ${getRadiusClass("full")}
         flex items-center justify-center
         text-fg-secondary hover:text-fg-primary
         focus:outline-none focus:ring-2 focus:ring-line-focus focus:ring-offset-1

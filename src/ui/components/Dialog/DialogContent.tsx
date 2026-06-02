@@ -95,7 +95,7 @@ export function DialogContent({
     md: "max-w-md",
     lg: "max-w-lg",
     xl: "max-w-2xl",
-    fullscreen: "max-w-full h-full m-0 rounded-none",
+    fullscreen: `max-w-full h-full m-0 ${getRadiusClass("none")}`,
   };
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {

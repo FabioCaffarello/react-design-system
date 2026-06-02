@@ -3,6 +3,7 @@
 import { forwardRef, memo, useMemo, useCallback, useState } from "react";
 import type { InputHTMLAttributes } from "react";
 import { getAnimationClass } from "../../tokens/animations";
+import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getSwitchClasses } from "../../tokens/switch";
 import {
@@ -128,7 +129,7 @@ const Switch = memo(
           "inline-flex",
           "shrink-0",
           "cursor-pointer",
-          "rounded-full",
+          getRadiusClass("full"),
           "border-2",
           "border-transparent",
           getAnimationClass("base"),
@@ -162,7 +163,7 @@ const Switch = memo(
         cn(
           "pointer-events-none",
           "inline-block",
-          "rounded-full",
+          getRadiusClass("full"),
           "bg-surface-base",
           "shadow",
           "transform",
