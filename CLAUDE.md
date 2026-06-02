@@ -55,6 +55,7 @@ npm run build             # library build
 npm run build-storybook   # static storybook
 npm run storybook:smoke   # runtime smoke-test all stories (Phase 13a)
 npm run test:a11y:baseline # serial axe baseline of record (light + dark, ~96min, workers=1)
+node scripts/validate-no-localhost-in-lockfile.mjs # fails if any `resolved` URL points to localhost (Verdaccio contamination)
 ```
 
 ## What NOT to do
