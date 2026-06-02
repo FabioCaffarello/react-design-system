@@ -3,6 +3,7 @@ import { Stepper } from "../../components";
 import { Container } from "../../layouts/Container/Container";
 import { Stack } from "../../layouts/Stack/Stack";
 import { Button } from "../../primitives";
+import { getRadiusClass } from "../../tokens/radius";
 import type { StepperStep } from "../../components";
 
 export interface FormWizardStep extends StepperStep {
@@ -139,7 +140,7 @@ export function FormWizardPattern({
         />
 
         {/* Form Content */}
-        <div className="bg-surface-base rounded-lg border p-6">
+        <div className={`bg-surface-base ${getRadiusClass("lg")} border p-6`}>
           <Stack spacing="md">
             <div>
               <h2 className="text-2xl font-semibold">

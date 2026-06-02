@@ -41,7 +41,7 @@ This project has a canonical semantic color vocabulary established in Phase 7 (s
 
 Color discipline is enforced automatically by the `ds/no-raw-color-classes` ESLint rule (`eslint-rules/`) — it runs in pre-commit, pre-push, and CI, and blocks any raw Tailwind color class or `bg-[var(--color-*)]` arbitrary syntax in shipped component source. See `.claude/rules/colors.md` for the exception-comment escape valve (Principle 3).
 
-Same discipline for tokens generally: `.claude/rules/tokens.md`.
+The same enforcement shape now extends to **radius** (`ds/no-raw-radius-classes`) and **shadow** (`ds/no-raw-shadow-classes`): raw `rounded-md` / `shadow-md` etc. in production source are blocked; use `getRadiusClass(scale)` / `getShadowClass(scale)` from `src/ui/tokens/`. Same `// exception: <reason>` escape valve. Spacing is the next family scheduled for the same treatment (rule infrastructure ready; migration pending). See `.claude/rules/tokens.md` for the full enforcement table.
 
 ## Commands
 

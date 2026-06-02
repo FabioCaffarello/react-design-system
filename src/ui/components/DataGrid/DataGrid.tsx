@@ -5,6 +5,7 @@ import { Download, ArrowUpDown } from "lucide-react";
 import Table, { type TableColumn } from "../Table/Table";
 import Button from "../../primitives/Button/Button";
 import { getSpacingClass } from "../../tokens/spacing";
+import { getRadiusClass } from "../../tokens/radius";
 import type { TableAction } from "../Table/TableActions/TableActions";
 
 export type DataGridColumn<T = unknown> = TableColumn<T> & {
@@ -234,7 +235,7 @@ export default function DataGrid<
           bg-surface-base
           border
           border-line-default
-          rounded-lg
+          ${getRadiusClass("lg")}
         `}
         >
           <div className="flex items-center gap-2">

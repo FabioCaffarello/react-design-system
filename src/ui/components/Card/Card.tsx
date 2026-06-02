@@ -3,7 +3,7 @@
 import { memo, useMemo, useCallback } from "react";
 import type { HTMLAttributes } from "react";
 import { cn, cva } from "../../utils";
-import { getRadiusClass, getSpacingClass } from "../../tokens";
+import { getRadiusClass, getShadowClass, getSpacingClass } from "../../tokens";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   variant?: "default" | "hover" | "selected";
@@ -45,14 +45,18 @@ const Card = memo(function Card({
       getRadiusClass("lg"),
       "border",
       "border-line-default",
-      "shadow-sm",
+      getShadowClass("sm"),
     ),
     {
       variants: {
         variant: {
           default: "",
-          hover: cn("hover:shadow-md", "transition-shadow", "cursor-pointer"),
-          selected: cn("border-line-brand", "shadow-md"),
+          hover: cn(
+            `hover:${getShadowClass("md")}`,
+            "transition-shadow",
+            "cursor-pointer",
+          ),
+          selected: cn("border-line-brand", getShadowClass("md")),
         },
         padding: {
           none: "",

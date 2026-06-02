@@ -4,6 +4,8 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
+import { getRadiusClass } from "../../tokens/radius";
+import { getShadowClass } from "../../tokens/shadows";
 import { getZIndexClass } from "../../tokens/z-index";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -104,8 +106,8 @@ export default function Modal({
   const modalClasses = [
     "relative",
     "bg-surface-overlay",
-    "rounded-lg",
-    "shadow-xl",
+    getRadiusClass("lg"),
+    getShadowClass("xl"),
     "my-8",
     "mx-auto",
     modalSizeClasses[variant],

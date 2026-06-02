@@ -1,13 +1,17 @@
 import noRawColorClasses from "./no-raw-color-classes/rule.js";
+import noRawRadiusClasses from "./no-raw-radius-classes/rule.js";
+import noRawShadowClasses from "./no-raw-shadow-classes/rule.js";
 import storyDiscipline from "./story-discipline/rule.js";
 
 export default {
   meta: {
-    name: "eslint-plugin-ds-color",
-    version: "0.1.0",
+    name: "eslint-plugin-ds-tokens",
+    version: "0.2.0",
   },
   rules: {
     "no-raw-color-classes": noRawColorClasses,
+    "no-raw-radius-classes": noRawRadiusClasses,
+    "no-raw-shadow-classes": noRawShadowClasses,
     "story-discipline": storyDiscipline,
   },
 };
