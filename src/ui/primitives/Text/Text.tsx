@@ -92,7 +92,6 @@ interface Props<T extends ElementType>
   as?: T;
   bold?: boolean;
   italic?: boolean;
-  color?: string;
   colorRole?: TextColorRole;
   colorShade?: TextColorShade;
 }
@@ -107,7 +106,6 @@ function TextComponent<T extends ElementType = "p">(
     italic,
     className,
     as,
-    color,
     colorRole = "neutral",
     colorShade = "dark",
     ...rest
@@ -161,11 +159,9 @@ function TextComponent<T extends ElementType = "p">(
     classNames.push("italic");
   }
 
-  // Apply color via lookup table. `color` prop is accepted for API
-  // back-compat but Tailwind v4 can't generate dynamic `text-${color}`
-  // classes, so it has no visual effect — colorRole/colorShade are
-  // the supported channel.
-  void color;
+  // Apply color via lookup table. Tailwind v4 needs literal class names
+  // at build time, so role/shade resolve to a fixed entry in
+  // TEXT_COLOR_CLASSES rather than constructing `text-${...}` dynamically.
   classNames.push(TEXT_COLOR_CLASSES[colorRole][colorShade]);
 
   return <Tag ref={ref} className={cn(...classNames, className)} {...rest} />;
