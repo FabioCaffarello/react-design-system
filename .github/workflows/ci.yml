@@ -203,9 +203,10 @@ jobs:
 
   storybook-smoke:
     name: Storybook smoke (render every story)
+    needs: [paths, build-storybook]
+    if: needs.paths.outputs.ui_changed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    needs: [build-storybook]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
