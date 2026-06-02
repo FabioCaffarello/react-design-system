@@ -17,7 +17,13 @@ export interface SwitchProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
   size?: SwitchSize;
   label?: string;
-  description?: string;
+  /**
+   * Secondary text rendered beneath the label, wired through
+   * `aria-describedby`. Named `helperText` to match Input, Select,
+   * Checkbox, and Radio — every form primitive in the DS uses the
+   * same prop name for this role.
+   */
+  helperText?: string;
   error?: boolean;
 }
 
@@ -33,7 +39,7 @@ export interface SwitchProps
  *
  * <Switch
  *   label="Enable notifications"
- *   description="Receive email notifications"
+ *   helperText="Receive email notifications"
  *   checked={notifications}
  *   onChange={(e) => setNotifications(e.target.checked)}
  * />
@@ -44,7 +50,7 @@ const Switch = memo(
     {
       size = "md",
       label,
-      description,
+      helperText,
       error = false,
       className = "",
       disabled = false,
@@ -90,9 +96,9 @@ const Switch = memo(
       [label, switchId],
     );
 
-    const descriptionId = useMemo(
-      () => (description ? `${switchId}-description` : undefined),
-      [description, switchId],
+    const helperId = useMemo(
+      () => (helperText ? `${switchId}-helper` : undefined),
+      [helperText, switchId],
     );
 
     // Component-scoped tokens (SWITCH_TOKENS) drive track/thumb/translate.
@@ -162,7 +168,7 @@ const Switch = memo(
             role="switch"
             aria-checked={currentChecked}
             aria-labelledby={labelId}
-            aria-describedby={descriptionId}
+            aria-describedby={helperId}
             disabled={disabled}
             onClick={useCallback(
               (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -223,7 +229,7 @@ const Switch = memo(
             {...props}
           />
         </div>
-        {(label || description) && (
+        {(label || helperText) && (
           <div className="flex-1">
             {label && (
               <label
@@ -240,16 +246,16 @@ const Switch = memo(
                 {label}
               </label>
             )}
-            {description && (
+            {helperText && (
               <p
-                id={descriptionId}
+                id={helperId}
                 className={cn(
                   getSpacingClass("xs", "mt"),
                   getTypographySize("bodySmall"),
                   error ? "text-fg-error" : "text-fg-secondary",
                 )}
               >
-                {description}
+                {helperText}
               </p>
             )}
           </div>

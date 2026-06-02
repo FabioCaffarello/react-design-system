@@ -54,6 +54,15 @@ A textarea component for longer text input with support for validation states an
       control: "boolean",
       description: "Show error state",
     },
+    label: {
+      control: "text",
+      description: "Visible label rendered above the textarea",
+    },
+    helperText: {
+      control: "text",
+      description:
+        "Secondary text rendered beneath the textarea (wired via aria-describedby)",
+    },
     disabled: {
       control: "boolean",
       description: "Disable the textarea",
@@ -164,6 +173,15 @@ export const WithDefaultValue: Story = {
         story: "Textarea starting with a default value. You can edit it.",
       },
     },
+  },
+};
+
+export const WithHelperText: Story = {
+  args: {
+    label: "Bio",
+    helperText: "Up to 500 characters. Markdown is supported.",
+    placeholder: "Tell us about yourself…",
+    rows: 4,
   },
 };
 

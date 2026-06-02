@@ -113,4 +113,35 @@ describe("Textarea", () => {
       expect(warnSpy).not.toHaveBeenCalled();
     });
   });
+
+  describe("helperText", () => {
+    it("renders helperText below the textarea", () => {
+      render(<Textarea aria-label="Notes" helperText="Up to 500 characters" />);
+      expect(screen.getByText("Up to 500 characters")).toBeInTheDocument();
+    });
+
+    it("wires aria-describedby to the helperText id", () => {
+      render(
+        <Textarea
+          aria-label="Notes"
+          id="notes"
+          helperText="Up to 500 characters"
+        />,
+      );
+      const textarea = screen.getByRole("textbox");
+      expect(textarea).toHaveAttribute("aria-describedby", "notes-helper");
+      expect(screen.getByText("Up to 500 characters")).toHaveAttribute(
+        "id",
+        "notes-helper",
+      );
+    });
+
+    it("uses error styling on the helper when both error and helperText are set", () => {
+      render(
+        <Textarea aria-label="Notes" error helperText="Field is required" />,
+      );
+      const helper = screen.getByText("Field is required");
+      expect(helper).toHaveClass("text-fg-error");
+    });
+  });
 });

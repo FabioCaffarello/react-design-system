@@ -36,11 +36,11 @@ describe("Switch", () => {
     expect(screen.getByText("Enable feature")).toBeInTheDocument();
   });
 
-  it("displays description when provided", () => {
+  it("displays helperText when provided", () => {
     render(
       <Switch
         label="Enable feature"
-        description="This will enable the feature"
+        helperText="This will enable the feature"
         checked={false}
         onChange={() => {}}
       />,

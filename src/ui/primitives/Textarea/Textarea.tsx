@@ -9,6 +9,14 @@ interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   error?: boolean;
   resize?: "none" | "both" | "horizontal" | "vertical";
   label?: string;
+  /**
+   * Secondary text rendered beneath the textarea, wired through
+   * `aria-describedby`. Named `helperText` to match Input, Select,
+   * Checkbox, Radio, and Switch — every form primitive in the DS
+   * uses the same prop name for this role. When `error` is also set,
+   * the same slot renders the helper text in error styling.
+   */
+  helperText?: string;
 }
 
 /**
@@ -36,6 +44,7 @@ const Textarea = memo(
       resize = "vertical",
       className = "",
       label,
+      helperText,
       id: idProp,
       ...props
     },
@@ -90,10 +99,18 @@ const Textarea = memo(
       [resize, resizeClasses, error, focusRingColor, className],
     );
 
-    // Memoize aria-describedby
+    // Memoize aria-describedby — points to the helper paragraph when
+    // helperText is provided; falls back to an error id when only
+    // error is set (kept for back-compat with consumers that don't
+    // pass helperText).
+    const helperId = useMemo(
+      () => (helperText ? `${id}-helper` : undefined),
+      [helperText, id],
+    );
+
     const ariaDescribedBy = useMemo(
-      () => (error ? `${id}-error` : undefined),
-      [error, id],
+      () => helperId ?? (error ? `${id}-error` : undefined),
+      [helperId, error, id],
     );
 
     const ariaLabel = props["aria-label"];
@@ -124,23 +141,39 @@ const Textarea = memo(
       />
     );
 
-    if (!label) return textareaEl;
+    const helperEl = helperText ? (
+      <p
+        id={helperId}
+        className={cn(
+          getSpacingClass("xs", "mt"),
+          getTypographySize("bodySmall"),
+          error ? "text-fg-error" : "text-fg-secondary",
+        )}
+      >
+        {helperText}
+      </p>
+    ) : null;
+
+    if (!label && !helperEl) return textareaEl;
 
     return (
       <div className="block w-full">
-        <label
-          htmlFor={id}
-          className={cn(
-            "block",
-            "mb-1",
-            getTypographySize("label"),
-            "font-medium",
-            "text-fg-primary",
-          )}
-        >
-          {label}
-        </label>
+        {label && (
+          <label
+            htmlFor={id}
+            className={cn(
+              "block",
+              "mb-1",
+              getTypographySize("label"),
+              "font-medium",
+              "text-fg-primary",
+            )}
+          >
+            {label}
+          </label>
+        )}
         {textareaEl}
+        {helperEl}
       </div>
     );
   }),
