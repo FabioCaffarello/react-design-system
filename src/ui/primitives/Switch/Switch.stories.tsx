@@ -109,6 +109,7 @@ export const Default: Story = {
     );
   },
   args: {
+    label: "Notifications",
     checked: false,
   },
 };
