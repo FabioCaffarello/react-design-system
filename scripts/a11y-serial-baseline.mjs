@@ -226,7 +226,24 @@ async function runStory({
   });
   const page = await context.newPage();
   try {
-    const url = `${baseUrl}/iframe.html?id=${encodeURIComponent(storyId)}&viewMode=story`;
+    // `globals=a11y.manual:!true` (Storybook 10 URL-globals syntax:
+    // `!true` = boolean true) flips `globals.a11y.manual = true`,
+    // which short-circuits the addon-a11y `afterEach` handler (see
+    // chunk-W2OC36OK.js:154 — `shouldRunEnvironmentIndependent` is
+    // false when `a11yGlobals?.manual === true`). Without this, the
+    // addon kicks off its OWN axe.run after each story render. When
+    // this script's `page.evaluate(axe.run)` collides with the
+    // addon's still-in-flight run (CI is slower than local; the
+    // race window widens), axe throws "Axe is already running. Use
+    // `await axe.run()` to wait for the previous run to finish". The
+    // CI failure on PR #82 surfaced this — locally the 200ms settle
+    // was enough for the addon to finish before this script's run
+    // started, so it worked by accident. The URL globals fix is the
+    // deterministic version: the addon does not run here, only this
+    // script does.
+    const url =
+      `${baseUrl}/iframe.html?id=${encodeURIComponent(storyId)}` +
+      `&viewMode=story&globals=a11y.manual:!true`;
     await page.goto(url, { waitUntil: "domcontentloaded" });
     await waitForRender(page, settleMs, storyTimeout);
 
