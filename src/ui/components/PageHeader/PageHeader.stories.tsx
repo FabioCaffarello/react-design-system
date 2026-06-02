@@ -5,9 +5,12 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, fn, userEvent, within } from "storybook/test";
 import { PageHeader } from "./PageHeader";
 import { Button } from "../../primitives/Button/Button";
 import { Plus, Edit, Trash2 } from "lucide-react";
+
+const onSave = fn();
 
 const meta: Meta<typeof PageHeader> = {
   title: "Components/PageHeader",
@@ -186,5 +189,43 @@ export const WithMultipleActions: Story = {
         </Button>
       </>
     ),
+  },
+};
+
+/**
+ * Interactive
+ *
+ * Verifies the title renders as a heading, that an action button's
+ * callback fires when activated, and that a breadcrumb link reaches
+ * the rendered DOM with the correct href.
+ */
+export const Interactive: Story = {
+  args: {
+    title: "Edit Document",
+    description: "Update document content and metadata",
+    breadcrumb: [
+      { label: "Home", href: "/" },
+      { label: "Documents", href: "/documents" },
+      { label: "Edit" },
+    ],
+    actions: (
+      <Button variant="primary" onClick={onSave}>
+        Save
+      </Button>
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    onSave.mockClear();
+    const canvas = within(canvasElement);
+
+    expect(
+      canvas.getByRole("heading", { name: /edit document/i }),
+    ).toBeInTheDocument();
+
+    const docsLink = canvas.getByRole("link", { name: /documents/i });
+    expect(docsLink).toHaveAttribute("href", "/documents");
+
+    await userEvent.click(canvas.getByRole("button", { name: /save/i }));
+    expect(onSave).toHaveBeenCalledTimes(1);
   },
 };
