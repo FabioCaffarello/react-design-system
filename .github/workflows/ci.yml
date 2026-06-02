@@ -214,8 +214,8 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
 
       - name: Download Storybook artifact
         uses: actions/download-artifact@v4
@@ -271,8 +271,8 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
 
       - name: Download Storybook artifact
         uses: actions/download-artifact@v4
@@ -308,8 +308,8 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
 
       - name: Download Storybook artifact
         uses: actions/download-artifact@v4
