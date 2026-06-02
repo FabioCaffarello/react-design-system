@@ -35,6 +35,9 @@ jobs:
       - name: Validate dark-theme coverage
         run: node scripts/validate-dark-coverage.mjs
 
+      - name: Validate lockfile has no localhost URLs
+        run: node scripts/validate-no-localhost-in-lockfile.mjs
+
   typecheck:
     name: Typecheck (tsc --noEmit)
     runs-on: ubuntu-latest
