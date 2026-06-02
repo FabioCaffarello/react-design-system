@@ -38,6 +38,9 @@ jobs:
       - name: Validate lockfile has no localhost URLs
         run: node scripts/validate-no-localhost-in-lockfile.mjs
 
+      - name: Validate component file-set
+        run: node scripts/validate-file-set.mjs
+
   typecheck:
     name: Typecheck (tsc --noEmit)
     runs-on: ubuntu-latest
