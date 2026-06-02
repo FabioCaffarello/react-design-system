@@ -1,3 +1,11 @@
+## [1.23.17](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.16...v1.23.17) (2026-06-02)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** tabs/dynamictabs moves close buttons OUT of tablist ([251894e](https://github.com/FabioCaffarello/react-design-system/commit/251894e733e92f62610d1d125ae4a7b4dc2a7b34)), closes [#76-78](https://github.com/FabioCaffarello/react-design-system/issues/76-78)
+* **a11y:** trivial story labels/wrappers bundle — final 5 nodes drained ([cba4432](https://github.com/FabioCaffarello/react-design-system/commit/cba4432a86d72538e18f0192b3b3cffc14cd6230)), closes [#67](https://github.com/FabioCaffarello/react-design-system/issues/67) [#52](https://github.com/FabioCaffarello/react-design-system/issues/52) [#66](https://github.com/FabioCaffarello/react-design-system/issues/66) [#66](https://github.com/FabioCaffarello/react-design-system/issues/66) [#73](https://github.com/FabioCaffarello/react-design-system/issues/73) [#76-79](https://github.com/FabioCaffarello/react-design-system/issues/76-79) [#70-79](https://github.com/FabioCaffarello/react-design-system/issues/70-79) [#69](https://github.com/FabioCaffarello/react-design-system/issues/69) [#69](https://github.com/FabioCaffarello/react-design-system/issues/69) [#74](https://github.com/FabioCaffarello/react-design-system/issues/74) [#76](https://github.com/FabioCaffarello/react-design-system/issues/76)
+
 ## [1.23.16](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.15...v1.23.16) (2026-06-01)
 
 
