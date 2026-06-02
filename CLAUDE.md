@@ -50,14 +50,17 @@ npm run storybook         # local dev / docs
 npm run test              # vitest
 npm run test:coverage     # vitest with coverage
 npm run lint              # eslint
-npm run plop              # scaffold component
-npm run build             # library build
+npm run plop              # scaffold component (postplop auto-formats output)
+npm run build             # library build (build:validate auto-checks exports)
 npm run build-storybook   # static storybook
 npm run storybook:smoke   # runtime smoke-test all stories (Phase 13a)
 npm run test:a11y:baseline # serial axe baseline of record (light + dark, ~11min on local SSD, workers=1)
 node scripts/validate-a11y-baseline.mjs # gate: exits 1 if critical+serious>0 on either theme (reads a11y-baseline.json)
+node scripts/validate-dark-coverage.mjs # gate: fails if dark.css's two declaration blocks diverge in their token set
 node scripts/validate-no-localhost-in-lockfile.mjs # fails if any `resolved` URL points to localhost (Verdaccio contamination)
 ```
+
+Three scripts in `package.json` are not invoked directly: `build:validate` runs at the tail of `build` to verify the emitted dist exports compile (`tsx scripts/validate-build-exports.ts`); `postplop` runs after `plop` to prettier-format the generated component; `prepare` is husky's own lifecycle hook that installs git hooks during `npm install`. They count toward the script surface and should not be removed without updating this section.
 
 The `a11y-baseline` job in `.github/workflows/ci.yml` runs both in sequence (`test:a11y:baseline` then the validator) and is part of the `ci-success` aggregator's `needs` list, so it gates merges to `main` via branch protection. The validator is the actual enforcement mechanism — `parameters.a11y.test: "error"` in `.storybook/preview.tsx` is cosmetic (no `@storybook/addon-vitest` plugin wired into the vitest workspace), see the long comment there.
 
@@ -65,5 +68,5 @@ The `a11y-baseline` job in `.github/workflows/ci.yml` runs both in sequence (`te
 
 - Do not add features for external consumers (token versioning, component registry, migration tooling, Figma sync, MCP). This is mono-brand and solo.
 - Do not add dependencies without asking. Especially heavy ones.
-- Do not grow the npm script surface beyond what is listed above (plus `build:validate` and `prepare`).
+- Do not grow the npm script surface beyond what is listed above (Commands section, including the three auto-run lifecycle scripts).
 - Do not write barrel files that re-export everything; keep exports explicit.
