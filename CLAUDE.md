@@ -57,6 +57,7 @@ npm run storybook:smoke   # runtime smoke-test all stories (Phase 13a)
 npm run test:a11y:baseline # serial axe baseline of record (light + dark, ~11min on local SSD, workers=1)
 node scripts/validate-a11y-baseline.mjs # gate: exits 1 if critical+serious>0 on either theme (reads a11y-baseline.json)
 node scripts/validate-dark-coverage.mjs # gate: fails if dark.css's two declaration blocks diverge in their token set
+node scripts/validate-file-set.mjs # gate: every component dir under src/ui/{primitives,components,layouts}/ ships .tsx/.test.tsx/.stories.tsx/index.ts (grandfathered exceptions allowlisted inside the script)
 node scripts/validate-no-localhost-in-lockfile.mjs # fails if any `resolved` URL points to localhost (Verdaccio contamination)
 ```
 
