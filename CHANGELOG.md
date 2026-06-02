@@ -1,3 +1,15 @@
+## [1.24.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.17...v1.24.0) (2026-06-02)
+
+
+### ✨ Features
+
+* **a11y:** wire real CI gate — validator + workflow job + line flip ([3a69498](https://github.com/FabioCaffarello/react-design-system/commit/3a694988a6abb645c8643f8ba54f0ffbcc655a9e)), closes [#69](https://github.com/FabioCaffarello/react-design-system/issues/69) [#81](https://github.com/FabioCaffarello/react-design-system/issues/81) [#69](https://github.com/FabioCaffarello/react-design-system/issues/69) [#80](https://github.com/FabioCaffarello/react-design-system/issues/80) [#70-80](https://github.com/FabioCaffarello/react-design-system/issues/70-80) [#69](https://github.com/FabioCaffarello/react-design-system/issues/69) [#81](https://github.com/FabioCaffarello/react-design-system/issues/81)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** serial bypasses addon-a11y auto-run via &globals=a11y.manual ([308ea9e](https://github.com/FabioCaffarello/react-design-system/commit/308ea9e988918a6b2c1e623af32188c8bcc090bb)), closes [PR-#82](https://github.com/FabioCaffarello/PR-/issues/82) [#82](https://github.com/FabioCaffarello/react-design-system/issues/82)
+
 ## [1.23.17](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.16...v1.23.17) (2026-06-02)
 
 
