@@ -8,6 +8,7 @@ import type {
   ReactElement,
 } from "react";
 import {
+  forwardRef,
   useState,
   useRef,
   useEffect,
@@ -47,16 +48,19 @@ export interface TooltipProps extends HTMLAttributes<HTMLDivElement> {
  * </Tooltip>
  * ```
  */
-export default function Tooltip({
-  content,
-  children,
-  position = "top",
-  delay = 200,
-  className = "",
-  "aria-label": _ariaLabel,
-  preservePositioning = false,
-  ...props
-}: TooltipProps) {
+const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(
+  {
+    content,
+    children,
+    position = "top",
+    delay = 200,
+    className = "",
+    "aria-label": _ariaLabel,
+    preservePositioning = false,
+    ...props
+  },
+  ref,
+) {
   const [isVisible, setIsVisible] = useState(false);
   const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
@@ -303,7 +307,7 @@ export default function Tooltip({
     : cn("relative", "inline-block", className);
 
   return (
-    <div className={wrapperClassName} {...props}>
+    <div ref={ref} className={wrapperClassName} {...props}>
       {childrenWithProps}
       {isVisible && (
         <div
@@ -319,4 +323,8 @@ export default function Tooltip({
       )}
     </div>
   );
-}
+});
+
+Tooltip.displayName = "Tooltip";
+
+export default Tooltip;

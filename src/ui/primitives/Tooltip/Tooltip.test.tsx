@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
+import { createRef } from "react";
 import { render, screen, waitFor, act } from "@testing-library/react";
 import { fireEvent } from "@testing-library/react";
 import Tooltip from "./Tooltip";
@@ -241,6 +242,22 @@ describe("Tooltip", () => {
       fireEvent.mouseLeave(button);
       expect(onEnter).toHaveBeenCalledTimes(1);
       expect(onLeave).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("ref forwarding", () => {
+    it("forwards ref to the wrapper div (the root element)", () => {
+      const ref = createRef<HTMLDivElement>();
+      render(
+        <Tooltip ref={ref} content="x">
+          <Button>Button</Button>
+        </Tooltip>,
+      );
+      // The wrapper sits outside the trigger; it's where layout
+      // anchoring (relative / static) happens. Consumers reaching
+      // for the ref typically want to measure / position around it.
+      expect(ref.current).toBeInstanceOf(HTMLDivElement);
+      expect(ref.current?.classList.contains("inline-block")).toBe(true);
     });
   });
 });
