@@ -156,8 +156,8 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
 
       - name: Clear Storybook and Vite cache
         run: |
