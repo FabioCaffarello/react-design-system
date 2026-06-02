@@ -10,12 +10,12 @@
 
 /* ============================================
  * THEME DATA ATTRIBUTES
- * The design system uses data-theme and data-variant
- * attributes to control theming
+ * The design system uses the data-theme attribute (or .light / .dark
+ * class) on :root to control color mode.
  *
  * Usage:
- * <html data-theme="light" data-variant="tech">
- * <html data-theme="dark" data-variant="creative">
+ * <html data-theme="light">
+ * <html data-theme="dark">
  * ============================================ */
 
 :root {
@@ -29,9 +29,6 @@
 
   /* Default theme - light */
   --theme-mode: light;
-
-  /* Default variant - tech */
-  --theme-variant: tech;
 
   /* ============================================
    * Z-INDEX SCALE

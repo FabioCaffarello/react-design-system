@@ -13,8 +13,3 @@
 /* Color modes */
 @import "./light.css";
 @import "./dark.css";
-
-/* Visual style variants */
-@import "./variants/tech.css";
-@import "./variants/creative.css";
-@import "./variants/minimal.css";
