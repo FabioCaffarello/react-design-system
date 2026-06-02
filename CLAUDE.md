@@ -54,8 +54,11 @@ npm run plop              # scaffold component
 npm run build             # library build
 npm run build-storybook   # static storybook
 npm run storybook:smoke   # runtime smoke-test all stories (Phase 13a)
-npm run test:a11y:baseline # serial axe baseline of record (light + dark, ~96min, workers=1)
+npm run test:a11y:baseline # serial axe baseline of record (light + dark, ~11min on local SSD, workers=1)
+node scripts/validate-a11y-baseline.mjs # gate: exits 1 if critical+serious>0 on either theme (reads a11y-baseline.json)
 ```
+
+The `a11y-baseline` job in `.github/workflows/ci.yml` runs both in sequence (`test:a11y:baseline` then the validator) and is part of the `ci-success` aggregator's `needs` list, so it gates merges to `main` via branch protection. The validator is the actual enforcement mechanism — `parameters.a11y.test: "error"` in `.storybook/preview.tsx` is cosmetic (no `@storybook/addon-vitest` plugin wired into the vitest workspace), see the long comment there.
 
 ## What NOT to do
 
