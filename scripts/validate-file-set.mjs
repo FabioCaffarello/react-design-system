@@ -44,8 +44,6 @@ const ALLOWLIST = new Set([
   "components/FormWizardPattern:FormWizardPattern.test.tsx",
   "components/LoginBox:LoginBox.test.tsx",
   "components/SearchAndFilterPattern:SearchAndFilterPattern.test.tsx",
-  "layouts/Container:Container.test.tsx",
-  "layouts/Stack:Stack.test.tsx",
 ]);
 
 function isDir(p) {
