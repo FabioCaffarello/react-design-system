@@ -5,6 +5,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, userEvent, within } from "storybook/test";
 import { Header } from "./Header";
 import { NavLink } from "../../primitives/NavLink";
 import { Button } from "../../primitives/Button/Button";
@@ -268,4 +269,54 @@ export const WithDashboardLayout: Story = {
       </div>
     </DashboardLayout>
   ),
+};
+
+/**
+ * Interactive
+ *
+ * Verifies the Header compound assembles its three slots — Logo,
+ * Navigation items, Actions — into the rendered tree, exposes the
+ * `<header>` landmark for assistive tech, and that focus walks back
+ * from the action button through the nav links via Shift+Tab.
+ *
+ * Header.Hamburger is intentionally NOT exercised here: it carries
+ * `md:hidden`, so on Storybook's default 1280px viewport the button
+ * is `display:none` and absent from the accessibility tree. A
+ * dedicated hamburger interaction test belongs in a mobile-viewport
+ * story or a unit test that controls the breakpoint directly.
+ */
+export const Interactive: Story = {
+  render: () => (
+    <Header>
+      <Header.Logo href="#">MyApp</Header.Logo>
+      <Header.Navigation>
+        <NavLink href="#home">Home</NavLink>
+        <NavLink href="#about">About</NavLink>
+      </Header.Navigation>
+      <Header.Actions>
+        <Button variant="primary">Sign In</Button>
+      </Header.Actions>
+    </Header>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    expect(canvas.getByRole("banner")).toBeInTheDocument();
+    expect(canvas.getByRole("link", { name: /myapp/i })).toBeInTheDocument();
+    expect(canvas.getByRole("navigation")).toBeInTheDocument();
+
+    const about = canvas.getByRole("link", { name: /about/i });
+    expect(canvas.getByRole("link", { name: /^home$/i })).toHaveAttribute(
+      "href",
+      "#home",
+    );
+    expect(about).toHaveAttribute("href", "#about");
+
+    const signIn = canvas.getByRole("button", { name: /sign in/i });
+    signIn.focus();
+    expect(signIn).toHaveFocus();
+
+    await userEvent.tab({ shift: true });
+    expect(about).toHaveFocus();
+  },
 };
