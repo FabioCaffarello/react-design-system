@@ -144,4 +144,26 @@ describe("Textarea", () => {
       expect(helper).toHaveClass("text-fg-error");
     });
   });
+
+  describe("success state", () => {
+    it("applies border-success on the textarea when success is set", () => {
+      render(<Textarea aria-label="Notes" success />);
+      expect(screen.getByRole("textbox")).toHaveClass("border-success");
+    });
+
+    it("renders helperText in fg-success styling when success is set", () => {
+      render(<Textarea aria-label="Notes" success helperText="Looks good!" />);
+      expect(screen.getByText("Looks good!")).toHaveClass("text-fg-success");
+    });
+
+    it("lets error win when both error and success are set", () => {
+      render(
+        <Textarea aria-label="Notes" error success helperText="Conflict" />,
+      );
+      const textarea = screen.getByRole("textbox");
+      expect(textarea).toHaveClass("border-error");
+      expect(textarea).not.toHaveClass("border-success");
+      expect(screen.getByText("Conflict")).toHaveClass("text-fg-error");
+    });
+  });
 });

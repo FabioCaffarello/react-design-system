@@ -121,4 +121,43 @@ describe("Radio", () => {
       expect(screen.getByRole("radio")).not.toHaveAttribute("aria-label");
     });
   });
+
+  describe("success state", () => {
+    it("applies border-success on the input when success is set", () => {
+      render(<Radio name="t" label="Pick" value="x" success />);
+      expect(screen.getByRole("radio")).toHaveClass("border-success");
+    });
+
+    it("renders helperText in fg-success styling when success is set", () => {
+      render(
+        <Radio
+          name="t"
+          label="Pick"
+          value="x"
+          success
+          helperText="Looks good!"
+        />,
+      );
+      const helper = screen.getByText("Looks good!");
+      expect(helper).toHaveClass("text-fg-success");
+      expect(helper).toHaveAttribute("role", "alert");
+    });
+
+    it("lets error win when both error and success are set", () => {
+      render(
+        <Radio
+          name="t"
+          label="Pick"
+          value="x"
+          error
+          success
+          helperText="Conflict"
+        />,
+      );
+      const input = screen.getByRole("radio");
+      expect(input).toHaveClass("border-error");
+      expect(input).not.toHaveClass("border-success");
+      expect(screen.getByText("Conflict")).toHaveClass("text-fg-error");
+    });
+  });
 });
