@@ -38,12 +38,24 @@
  *   node scripts/validate-a11y-baseline.mjs            # reads ./a11y-baseline.json
  *   node scripts/validate-a11y-baseline.mjs <path>     # custom path
  *
+ * Themes checked
+ *
+ *   Derived from `report.themes` (the array the runner records when it
+ *   was invoked). The single-theme files produced by the parallel CI
+ *   jobs (`--theme light` or `--theme dark`) only carry their own
+ *   theme's data; the validator then only checks that one. The
+ *   committable local `a11y-baseline.json` (built by
+ *   `npm run test:a11y:baseline` with no flag) carries both, and the
+ *   validator checks both. Falling back to `["light", "dark"]` keeps
+ *   pre-existing baseline files (from before this change) validating
+ *   the same way.
+ *
  * Exit codes
  *
- *   0 — both themes have critical+serious = 0 AND no errored stories
+ *   0 — every measured theme has critical+serious = 0 AND no errored stories
  *   1 — gate breached. Detailed failure message lists which theme,
  *       which rules, and how many nodes for each.
- *   2 — input error (file missing, malformed JSON, missing themes).
+ *   2 — input error (file missing, malformed JSON, missing theme data).
  */
 
 import { readFile } from "node:fs/promises";
@@ -64,16 +76,26 @@ try {
   process.exit(2);
 }
 
-if (!report.light || !report.dark) {
-  console.error(
-    `[a11y-gate] ${absPath} is missing one of {light, dark}. Re-run \`npm run test:a11y:baseline\` to regenerate.`,
-  );
-  process.exit(2);
+// Derive the themes to check from the report itself — the runner
+// records which themes it measured in `report.themes`. Pre-existing
+// files without that field default to both themes (backward compat).
+const themesToCheck =
+  Array.isArray(report.themes) && report.themes.length > 0
+    ? report.themes
+    : ["light", "dark"];
+
+for (const theme of themesToCheck) {
+  if (!report[theme]) {
+    console.error(
+      `[a11y-gate] ${absPath} is missing data for theme "${theme}" (declared in report.themes). Re-run the baseline runner to regenerate.`,
+    );
+    process.exit(2);
+  }
 }
 
 const failures = [];
 
-for (const theme of ["light", "dark"]) {
+for (const theme of themesToCheck) {
   const r = report[theme];
 
   // (1) Errored stories — the runner couldn't render or measure them.
@@ -113,10 +135,18 @@ for (const theme of ["light", "dark"]) {
 }
 
 if (failures.length === 0) {
+  const summary = themesToCheck
+    .map(
+      (t) =>
+        `${t}: ${report[t].totalStories} stories, ${report[t].byImpact.moderate} moderate`,
+    )
+    .join(" / ");
+  const themePhrase =
+    themesToCheck.length === 1
+      ? `theme "${themesToCheck[0]}"`
+      : `${themesToCheck.length} themes`;
   console.log(
-    `[a11y-gate] PASS — critical+serious = 0 on both themes. ` +
-      `(light: ${report.light.totalStories} stories, ${report.light.byImpact.moderate} moderate / ` +
-      `dark: ${report.dark.totalStories} stories, ${report.dark.byImpact.moderate} moderate)`,
+    `[a11y-gate] PASS — critical+serious = 0 on ${themePhrase}. (${summary})`,
   );
   process.exit(0);
 }
