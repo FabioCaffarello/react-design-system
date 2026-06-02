@@ -93,10 +93,6 @@ A flexible text component that supports different semantic HTML elements and sty
       options: ["light", "DEFAULT", "dark", "contrast"],
       description: "Color shade variant",
     },
-    color: {
-      control: "text",
-      description: "Custom color (fallback, prefer colorRole/colorShade)",
-    },
   },
 };
 
