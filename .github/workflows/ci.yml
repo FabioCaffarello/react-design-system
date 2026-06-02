@@ -95,6 +95,9 @@ jobs:
       - name: Validate component file-set
         run: node scripts/validate-file-set.mjs
 
+      - name: Validate cross-layer imports
+        run: node scripts/validate-cross-layer-imports.mjs
+
   typecheck:
     name: Typecheck (tsc --noEmit)
     runs-on: ubuntu-latest

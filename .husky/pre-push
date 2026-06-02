@@ -17,3 +17,9 @@ node scripts/validate-dark-coverage.mjs
 # inside the script and shrink as Wave 2 fills the missing tests.
 echo "Validating component file-set..."
 node scripts/validate-file-set.mjs
+
+# Validate the three-layer import rule: primitives never import from
+# components or layouts; layouts import primitives only. Components
+# may import any primitive and each other.
+echo "Validating cross-layer imports..."
+node scripts/validate-cross-layer-imports.mjs
