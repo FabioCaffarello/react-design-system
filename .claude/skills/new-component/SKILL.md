@@ -14,8 +14,8 @@ Build a complete, production-grade component for this mono-brand design system.
    - composed of primitives → `src/ui/components/`
    - pure structure/spacing → `src/ui/layouts/`
 
-2. **Scaffold.** Run `npm run plop` if the template fits, otherwise create the four files manually:
-   `Name.tsx`, `Name.test.tsx`, `Name.stories.tsx`, `index.ts`.
+2. **Scaffold.** Run `npm run plop` if the template fits, otherwise create the five files manually:
+   `Name.tsx`, `Name.test.tsx`, `Name.accessibility.test.tsx`, `Name.stories.tsx`, `index.ts`. The `*.accessibility.test.tsx` is a dedicated a11y suite — mirror `src/ui/primitives/Header/Header.accessibility.test.tsx` for the four-section scaffold (ARIA Labels and Roles / Keyboard Navigation / Focus Management / Screen Reader Support). The file-set gate (`scripts/validate-file-set.mjs`) rejects any dir missing it.
 
 3. **Implement** following `.claude/rules/components.md`:
    - Exported `NameProps` interface, no `any`.

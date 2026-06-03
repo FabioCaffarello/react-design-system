@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, forwardRef } from "react";
+import { useState, useRef, useEffect, useId, forwardRef } from "react";
 import Input from "../../primitives/Input/Input";
 import { ChevronDown, Loader2 } from "lucide-react";
 import AutocompleteOption from "./AutocompleteOption";
@@ -27,6 +27,25 @@ export interface AutocompleteProps {
   className?: string;
   inputClassName?: string;
   size?: "sm" | "md" | "lg";
+  /**
+   * Visible label rendered above the input via the `Input` primitive's
+   * `label` API, which wires `<label htmlFor>` to the inner `<input>`.
+   * Provides the accessible name axe `aria-input-field-name` requires.
+   */
+  label?: string;
+  /**
+   * Invisible accessible name. Use when the input has no visible label
+   * (e.g. a tightly-packed toolbar combobox). One of `label`,
+   * `aria-label`, or `aria-labelledby` MUST be present — without any,
+   * the input has no programmatic name and axe `aria-input-field-name`
+   * (serious) flags it. A dev-only warning fires when all are missing.
+   */
+  "aria-label"?: string;
+  /**
+   * Override path: point at an id the consumer manages externally.
+   */
+  "aria-labelledby"?: string;
+  id?: string;
 }
 
 /**
@@ -63,9 +82,15 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
       className = "",
       inputClassName = "",
       size = "md",
+      label,
+      "aria-label": ariaLabel,
+      "aria-labelledby": ariaLabelledBy,
+      id: idProp,
     },
     ref,
   ) {
+    const autoId = useId();
+    const inputId = idProp ?? autoId;
     const [internalValue, setInternalValue] = useState<string>(
       typeof defaultValue === "string" ? defaultValue : "",
     );
@@ -225,12 +250,34 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
       }
     }, [currentValue, options]);
 
+    // Dev-only accessible-name warning. Same four-path shape as the
+    // Textarea 6c guard: label / aria-label / aria-labelledby / external
+    // `<label htmlFor={id}>`. Without any source, axe
+    // `aria-input-field-name` (serious) flags the input. Silent in
+    // production.
+    useEffect(() => {
+      if (process.env.NODE_ENV === "production") return;
+      if (label || ariaLabel || ariaLabelledBy) return;
+      const externalLabel =
+        typeof document !== "undefined"
+          ? document.querySelector(`label[for="${CSS.escape(inputId)}"]`)
+          : null;
+      if (externalLabel) return;
+      console.warn(
+        "[Autocomplete] Missing accessible name. Provide a `label` prop, `aria-label`, `aria-labelledby`, or pair an external `<label htmlFor={id}>` with the same `id`.",
+      );
+    }, [label, ariaLabel, ariaLabelledBy, inputId]);
+
     const shouldShowList = isOpen && (hasOptions || loading || emptyMessage);
 
     return (
       <div ref={containerRef} className={`relative ${className}`}>
         <Input
           ref={inputRef || ref}
+          id={inputId}
+          label={label}
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledBy}
           value={searchValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
@@ -261,6 +308,12 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
             loading={loading}
             emptyMessage={emptyMessage}
             containerRef={containerRef}
+            // Cascade the same accessible-name source the consumer
+            // provided for the input to the listbox portal — keeps
+            // axe `aria-input-field-name` satisfied on the listbox
+            // without making the consumer re-state the name.
+            aria-labelledby={ariaLabelledBy}
+            aria-label={ariaLabelledBy ? undefined : ariaLabel || label}
           />
         )}
       </div>

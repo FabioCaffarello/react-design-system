@@ -42,9 +42,9 @@ A toggle switch component for binary choices.
       control: "text",
       description: "Label text",
     },
-    description: {
+    helperText: {
       control: "text",
-      description: "Description text below label",
+      description: "Helper text rendered beneath the label",
     },
     size: {
       control: "select",
@@ -109,6 +109,7 @@ export const Default: Story = {
     );
   },
   args: {
+    label: "Notifications",
     checked: false,
   },
 };
@@ -251,7 +252,7 @@ export const Accessibility: Story = {
           </p>
           <Switch
             label="Accessible switch"
-            description="This switch supports keyboard navigation (Enter/Space)"
+            helperText="This switch supports keyboard navigation (Enter/Space)"
             checked={checked}
             onChange={(e) => setChecked(e.target.checked)}
           />

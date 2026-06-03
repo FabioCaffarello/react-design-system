@@ -23,7 +23,7 @@ Textarea renders a multi-line `<textarea>` styled to match the design system, wi
 
 ## Anatomy
 
-Textarea renders in source order: the native `<textarea>` (the field surface itself, sized by `rows` and `cols`) with its resize handle at the bottom-right corner when `resize` is anything other than `none`. The component does not wire its own label or helper text — pair it with `Label` above and `ErrorMessage` below when validation feedback is needed.
+Textarea renders in source order: an optional `label` rendered above and bound via `htmlFor`, the native `<textarea>` (the field surface itself, sized by `rows` and `cols`) with its resize handle at the bottom-right corner when `resize` is anything other than `none`, and an optional `helperText` rendered beneath. When validation feedback needs role="alert" semantics rather than passive helper copy, pair Textarea with `ErrorMessage` below instead of (or in addition to) `helperText`.
 
 <Canvas of={TextareaStories.Default} />
 
@@ -43,7 +43,7 @@ Textarea renders in source order: the native `<textarea>` (the field surface its
 
 The native `<textarea>` carries the role, the keyboard behavior (Tab focuses, Enter inserts a newline, Shift+Enter is the same — there is no native "submit on Enter" inside a textarea), and the screen-reader announcement of the field as a multi-line text input.
 
-Bind a `Label` to the textarea via `htmlFor` so clicking the label transfers focus and so screen readers announce the label as the field's accessible name on focus. Bind helper text and validation messages via `aria-describedby` referencing the IDs of an `ErrorMessage` (or plain helper-text div) below — the textarea itself takes the description from the wired region.
+When `label` is provided, Textarea wires it to the field via `htmlFor` so clicking the label transfers focus and so screen readers announce the label as the field's accessible name on focus. The `helperText` prop is wired through `aria-describedby` so the same screen-reader pass picks up the secondary explanation alongside the label. For dedicated validation feedback that needs `role="alert"`, pair Textarea with `ErrorMessage` below — its own ID can be added to `aria-describedby` via the standard React props passthrough.
 
 The browser-rendered resize handle is keyboard-accessible on some platforms and not on others. Do not rely on the user dragging the corner to fit their content; either pick a `rows` that fits typical input, or leave `resize="vertical"` so the user can grow the field with the mouse when they need to.
 

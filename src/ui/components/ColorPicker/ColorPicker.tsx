@@ -133,7 +133,7 @@ export default function ColorPicker({
           h-32
           ${getRadiusClass("md")}
           ${getShadowClass("sm")}
-          mb-4
+          ${getSpacingClass("base", "mb")}
           border
           border-line-default
         `}
@@ -141,9 +141,13 @@ export default function ColorPicker({
       />
 
       {/* RGB Sliders */}
-      <div className="space-y-3 mb-4">
+      <div
+        className={`${getSpacingClass("md", "space-y")} ${getSpacingClass("base", "mb")}`}
+      >
         <div>
-          <label className="block text-xs font-medium text-fg-secondary mb-1">
+          <label
+            className={`block text-xs font-medium text-fg-secondary ${getSpacingClass("xs", "mb")}`}
+          >
             Red: {rgb.r}
           </label>
           <input
@@ -157,7 +161,9 @@ export default function ColorPicker({
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-fg-secondary mb-1">
+          <label
+            className={`block text-xs font-medium text-fg-secondary ${getSpacingClass("xs", "mb")}`}
+          >
             Green: {rgb.g}
           </label>
           <input
@@ -171,7 +177,9 @@ export default function ColorPicker({
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-fg-secondary mb-1">
+          <label
+            className={`block text-xs font-medium text-fg-secondary ${getSpacingClass("xs", "mb")}`}
+          >
             Blue: {rgb.b}
           </label>
           <input
@@ -188,7 +196,7 @@ export default function ColorPicker({
 
       {/* Hex Input */}
       {showInput && (
-        <div className="mb-4">
+        <div className={getSpacingClass("base", "mb")}>
           <Input
             label="Hex"
             value={currentValue}
@@ -203,10 +211,12 @@ export default function ColorPicker({
       {/* Color Presets */}
       {colorPresets.length > 0 && (
         <div>
-          <label className="block text-xs font-medium text-fg-secondary mb-2">
+          <label
+            className={`block text-xs font-medium text-fg-secondary ${getSpacingClass("sm", "mb")}`}
+          >
             Presets
           </label>
-          <div className="grid grid-cols-10 gap-1">
+          <div className={`grid grid-cols-10 ${getSpacingClass("xs", "gap")}`}>
             {colorPresets.map((color, index) => (
               <button
                 key={index}
@@ -245,7 +255,7 @@ export default function ColorPicker({
     <div className={className}>
       <Popover
         trigger={
-          <div className="flex items-center gap-2">
+          <div className={`flex items-center ${getSpacingClass("sm", "gap")}`}>
             {label && (
               <label className="text-sm font-medium text-fg-secondary">
                 {label}

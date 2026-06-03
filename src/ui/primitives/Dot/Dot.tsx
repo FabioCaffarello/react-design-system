@@ -2,6 +2,7 @@
 
 import { memo, forwardRef, useMemo } from "react";
 import type { HTMLAttributes } from "react";
+import { getRadiusClass } from "../../tokens/radius";
 import { cn, cva } from "../../utils";
 
 export type DotVariant =
@@ -36,7 +37,7 @@ export interface DotProps extends HTMLAttributes<HTMLSpanElement> {
 // Dot variants using CVA
 const dotVariants = cva(
   // Base classes
-  cn("inline-block", "rounded-full"),
+  cn("inline-block", getRadiusClass("full")),
   {
     variants: {
       variant: {

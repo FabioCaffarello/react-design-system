@@ -1,3 +1,57 @@
+## [1.24.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.17...v1.24.0) (2026-06-02)
+
+
+### ✨ Features
+
+* **a11y:** wire real CI gate — validator + workflow job + line flip ([3a69498](https://github.com/FabioCaffarello/react-design-system/commit/3a694988a6abb645c8643f8ba54f0ffbcc655a9e)), closes [#69](https://github.com/FabioCaffarello/react-design-system/issues/69) [#81](https://github.com/FabioCaffarello/react-design-system/issues/81) [#69](https://github.com/FabioCaffarello/react-design-system/issues/69) [#80](https://github.com/FabioCaffarello/react-design-system/issues/80) [#70-80](https://github.com/FabioCaffarello/react-design-system/issues/70-80) [#69](https://github.com/FabioCaffarello/react-design-system/issues/69) [#81](https://github.com/FabioCaffarello/react-design-system/issues/81)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** serial bypasses addon-a11y auto-run via &globals=a11y.manual ([308ea9e](https://github.com/FabioCaffarello/react-design-system/commit/308ea9e988918a6b2c1e623af32188c8bcc090bb)), closes [PR-#82](https://github.com/FabioCaffarello/PR-/issues/82) [#82](https://github.com/FabioCaffarello/react-design-system/issues/82)
+
+## [1.23.17](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.16...v1.23.17) (2026-06-02)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** tabs/dynamictabs moves close buttons OUT of tablist ([251894e](https://github.com/FabioCaffarello/react-design-system/commit/251894e733e92f62610d1d125ae4a7b4dc2a7b34)), closes [#76-78](https://github.com/FabioCaffarello/react-design-system/issues/76-78)
+* **a11y:** trivial story labels/wrappers bundle — final 5 nodes drained ([cba4432](https://github.com/FabioCaffarello/react-design-system/commit/cba4432a86d72538e18f0192b3b3cffc14cd6230)), closes [#67](https://github.com/FabioCaffarello/react-design-system/issues/67) [#52](https://github.com/FabioCaffarello/react-design-system/issues/52) [#66](https://github.com/FabioCaffarello/react-design-system/issues/66) [#66](https://github.com/FabioCaffarello/react-design-system/issues/66) [#73](https://github.com/FabioCaffarello/react-design-system/issues/73) [#76-79](https://github.com/FabioCaffarello/react-design-system/issues/76-79) [#70-79](https://github.com/FabioCaffarello/react-design-system/issues/70-79) [#69](https://github.com/FabioCaffarello/react-design-system/issues/69) [#69](https://github.com/FabioCaffarello/react-design-system/issues/69) [#74](https://github.com/FabioCaffarello/react-design-system/issues/74) [#76](https://github.com/FabioCaffarello/react-design-system/issues/76)
+
+## [1.23.16](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.15...v1.23.16) (2026-06-01)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** decouple card ARIA interactivity from variant=hover ([714ec61](https://github.com/FabioCaffarello/react-design-system/commit/714ec616da9afdb1daa2af1b2caaa0c630a95471)), closes [#70-75](https://github.com/FabioCaffarello/react-design-system/issues/70-75)
+* **a11y:** sidebar.content tabIndex=0 on scrollable container ([38013df](https://github.com/FabioCaffarello/react-design-system/commit/38013df185173980b95cacef7d37081b53394a4b)), closes [#77](https://github.com/FabioCaffarello/react-design-system/issues/77)
+* **a11y:** switch implements controlled/uncontrolled (aria-checked always set) ([8a46b93](https://github.com/FabioCaffarello/react-design-system/commit/8a46b93bcf225d85d2ee0248135deb7f6dbd2936)), closes [#67](https://github.com/FabioCaffarello/react-design-system/issues/67) [#69](https://github.com/FabioCaffarello/react-design-system/issues/69) [#76](https://github.com/FabioCaffarello/react-design-system/issues/76)
+
+## [1.23.15](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.14...v1.23.15) (2026-06-01)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** popover wires title via aria-labelledby on role=dialog ([ae6efee](https://github.com/FabioCaffarello/react-design-system/commit/ae6efee6158717c652f2e47740a1c03f2cf33529)), closes [#72](https://github.com/FabioCaffarello/react-design-system/issues/72)
+* **a11y:** sidenavbar/withfooter migrates raw <input> to Input primitive ([aec3622](https://github.com/FabioCaffarello/react-design-system/commit/aec3622583665e97c0521a1a1995cef11e88193c)), closes [#70-74](https://github.com/FabioCaffarello/react-design-system/issues/70-74)
+
+## [1.23.14](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.13...v1.23.14) (2026-06-01)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** autocomplete + multiselect listbox cascade + label dev warning ([066af3b](https://github.com/FabioCaffarello/react-design-system/commit/066af3bccc0546189d4a6230eac6502b06ba318e)), closes [#6](https://github.com/FabioCaffarello/react-design-system/issues/6) [#65](https://github.com/FabioCaffarello/react-design-system/issues/65) [#69](https://github.com/FabioCaffarello/react-design-system/issues/69)
+* **a11y:** drawer accessible name via title + aria-* + dev warning guard ([c1926c5](https://github.com/FabioCaffarello/react-design-system/commit/c1926c5649ef6814f7098ff4d5112ed01162ab3b)), closes [#70](https://github.com/FabioCaffarello/react-design-system/issues/70) [#71](https://github.com/FabioCaffarello/react-design-system/issues/71)
+
+## [1.23.13](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.12...v1.23.13) (2026-06-01)
+
+
+### 🐛 Bug Fixes
+
+* **a11y:** chip role=option drained — unified label-button architecture ([423999e](https://github.com/FabioCaffarello/react-design-system/commit/423999ee7fe8205629115fc553f2439c6367f284))
+* **a11y:** searchandfilter raw select gets aria-label={filter.label} ([3f78e51](https://github.com/FabioCaffarello/react-design-system/commit/3f78e512045bb8d9af09d2b0f0421203d93551a3)), closes [#5](https://github.com/FabioCaffarello/react-design-system/issues/5) [#70](https://github.com/FabioCaffarello/react-design-system/issues/70) [#5](https://github.com/FabioCaffarello/react-design-system/issues/5)
+* **a11y:** serial baseline of record + honest disable + sidebar id anchor ([b5cd12b](https://github.com/FabioCaffarello/react-design-system/commit/b5cd12b61cd717db13a0ff44123b7a5648ceca73)), closes [#1](https://github.com/FabioCaffarello/react-design-system/issues/1) [#2](https://github.com/FabioCaffarello/react-design-system/issues/2) [#3](https://github.com/FabioCaffarello/react-design-system/issues/3)
+
 ## [1.23.12](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.11...v1.23.12) (2026-06-01)
 
 

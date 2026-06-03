@@ -4,8 +4,8 @@
  * Meaningful color tokens that reference primitive values.
  * Declared in @theme so Tailwind v4 generates native utility classes
  * (bg-surface-base, text-fg-primary, border-line-strong, etc.).
- * Theme overrides (light/dark/variants) remain in selectors —
- * see themes/{light,dark}.css and themes/variants/*.css.
+ * Theme overrides (light/dark) remain in selectors —
+ * see themes/{light,dark}.css.
  *
  * @brand AIppin
  * @version 1.0.0

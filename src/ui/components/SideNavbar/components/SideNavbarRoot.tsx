@@ -6,6 +6,7 @@ import { useSideNavbarThemeRequired } from "../contexts/SideNavbarThemeContext";
 import { useSideNavbarConfigRequired } from "../contexts/SideNavbarConfigContext";
 import { useSideNavbarToggleContextRequired } from "../contexts/SideNavbarToggleContext";
 import { cn } from "../../../utils";
+import { getShadowClass } from "../../../tokens/shadows";
 import { getZIndexClass } from "../../../tokens/z-index";
 import SideNavbarResizeHandle from "./SideNavbarResizeHandle";
 import SideNavbarBackdrop from "./SideNavbarBackdrop";
@@ -15,7 +16,7 @@ import type { SideNavbarRootProps } from "../types";
 const variantClasses = {
   default: "",
   compact: "text-sm",
-  elevated: "shadow-lg",
+  elevated: getShadowClass("lg"),
   minimal: "border-0",
   bordered: "border-2",
 };

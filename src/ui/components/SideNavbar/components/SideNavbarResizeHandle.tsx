@@ -4,6 +4,7 @@ import { type HTMLAttributes } from "react";
 import { GripVertical } from "lucide-react";
 import { useSideNavbarStateRequired } from "../contexts/SideNavbarStateContext";
 import { useSideNavbarConfigRequired } from "../contexts/SideNavbarConfigContext";
+import { getRadiusClass } from "../../../tokens/radius";
 
 export type SideNavbarResizeHandleProps = HTMLAttributes<HTMLDivElement>;
 
@@ -75,7 +76,7 @@ export default function SideNavbarResizeHandle({
           w-0.5
           h-8
           bg-line-strong
-          rounded-full
+          ${getRadiusClass("full")}
           opacity-0
           group-hover:opacity-100
           transition-opacity

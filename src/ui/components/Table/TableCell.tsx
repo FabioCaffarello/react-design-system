@@ -1,6 +1,7 @@
 "use client";
 
 import type { HTMLAttributes } from "react";
+import { getSpacingClass } from "../../tokens/spacing";
 import type { TableColumn } from "./TableTypes";
 
 export interface TableCellProps<T = unknown>
@@ -23,7 +24,7 @@ export default function TableCell<
 
   return (
     <td
-      className={`px-6 py-4 whitespace-nowrap text-sm text-fg-primary ${
+      className={`${getSpacingClass("lg", "px")} ${getSpacingClass("base", "py")} whitespace-nowrap text-sm text-fg-primary ${
         column.hiddenOnMobile ? "hidden md:table-cell" : ""
       } ${className}`}
       {...props}

@@ -445,6 +445,7 @@ export const WithEvents: Story = {
           to see events being fired.
         </p>
         <Autocomplete
+          label="Fruit"
           options={basicOptions}
           value={value}
           onChange={handleChange}
@@ -510,6 +511,7 @@ export const OpenState: Story = {
     return (
       <div className="w-full max-w-md">
         <Autocomplete
+          label="Fruit"
           options={basicOptions}
           value={value}
           onChange={setValue}

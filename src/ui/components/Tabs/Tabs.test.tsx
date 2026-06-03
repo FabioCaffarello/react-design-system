@@ -518,4 +518,63 @@ describe("Tabs", () => {
       expect(tab2).toHaveAttribute("tabIndex", "-1");
     });
   });
+
+  describe("TabsList orientation prop", () => {
+    it("overrides context orientation for aria-orientation", () => {
+      render(
+        <Tabs defaultValue="tab1" orientation="horizontal">
+          <Tabs.List orientation="vertical">
+            <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
+            <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>
+          </Tabs.List>
+          <Tabs.Content value="tab1">Content 1</Tabs.Content>
+          <Tabs.Content value="tab2">Content 2</Tabs.Content>
+        </Tabs>,
+      );
+
+      expect(screen.getByRole("tablist")).toHaveAttribute(
+        "aria-orientation",
+        "vertical",
+      );
+    });
+
+    it("overrides context orientation for keyboard navigation", async () => {
+      render(
+        <Tabs defaultValue="tab1">
+          <Tabs.List orientation="vertical">
+            <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
+            <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>
+          </Tabs.List>
+          <Tabs.Content value="tab1">Content 1</Tabs.Content>
+          <Tabs.Content value="tab2">Content 2</Tabs.Content>
+        </Tabs>,
+      );
+
+      const tab1 = screen.getByText("Tab 1");
+      tab1.focus();
+      fireEvent.keyDown(tab1, { key: "ArrowDown" });
+
+      await waitFor(() => {
+        expect(document.activeElement).toBe(screen.getByText("Tab 2"));
+      });
+    });
+
+    it("falls back to context orientation when prop is omitted", () => {
+      render(
+        <Tabs defaultValue="tab1" orientation="vertical">
+          <Tabs.List>
+            <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
+            <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>
+          </Tabs.List>
+          <Tabs.Content value="tab1">Content 1</Tabs.Content>
+          <Tabs.Content value="tab2">Content 2</Tabs.Content>
+        </Tabs>,
+      );
+
+      expect(screen.getByRole("tablist")).toHaveAttribute(
+        "aria-orientation",
+        "vertical",
+      );
+    });
+  });
 });

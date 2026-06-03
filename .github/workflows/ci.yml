@@ -15,13 +15,67 @@ permissions:
   contents: read
 
 jobs:
+  # Path filter — decides whether the expensive UI-coupled jobs
+  # (build-storybook, a11y-baseline) need to run for this PR.
+  # On push to main we always run the full pipeline; main is the
+  # source of truth and a flaky filter shouldn't ship to it.
+  #
+  # The cheap jobs (lint, typecheck, test, build) run unconditionally
+  # because (a) they cover non-UI code too, and (b) they finish in
+  # under 4 minutes each — filtering them isn't worth the complexity.
+  paths:
+    name: Compute changed paths
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      ui_changed: ${{ steps.filter.outputs.ui_changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Filter changed paths
+        id: filter
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+
+          if [[ "$EVENT_NAME" == "push" ]]; then
+            echo "Push event — running the full pipeline."
+            echo "ui_changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          CHANGED=$(git diff --name-only "$BASE_SHA...$HEAD_SHA")
+          echo "Changed files in this PR:"
+          echo "$CHANGED" | sed 's/^/  /'
+
+          # Anything that can move a story's pixels, its DOM, or its
+          # accessibility tree triggers the UI-coupled jobs.
+          # Anything OUTSIDE these paths (docs, .claude/ rules, husky
+          # hooks, lockfile-validating scripts, …) cannot move a story
+          # and is safe to skip.
+          UI_PATTERN='^(src/(ui|styles|docs)/|\.storybook/|eslint-rules/|package(-lock)?\.json|vite\.config\.ts|tsconfig.*\.json|scripts/(a11y-serial-baseline|validate-a11y-baseline|storybook-smoke)\.mjs|\.github/workflows/ci\.yml|\.github/actions/setup/)'
+
+          if echo "$CHANGED" | grep -qE "$UI_PATTERN"; then
+            echo "UI / story / style / build files changed — running storybook-build and a11y-baseline."
+            echo "ui_changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No UI files changed — skipping storybook-build and a11y-baseline."
+            echo "ui_changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
   lint:
     name: Lint (ESLint + Prettier)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup
         uses: ./.github/actions/setup
@@ -35,13 +89,22 @@ jobs:
       - name: Validate dark-theme coverage
         run: node scripts/validate-dark-coverage.mjs
 
+      - name: Validate lockfile has no localhost URLs
+        run: node scripts/validate-no-localhost-in-lockfile.mjs
+
+      - name: Validate component file-set
+        run: node scripts/validate-file-set.mjs
+
+      - name: Validate cross-layer imports
+        run: node scripts/validate-cross-layer-imports.mjs
+
   typecheck:
     name: Typecheck (tsc --noEmit)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup
         uses: ./.github/actions/setup
@@ -55,7 +118,7 @@ jobs:
     timeout-minutes: 25
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup
         uses: ./.github/actions/setup
@@ -82,7 +145,7 @@ jobs:
 
       - name: Upload coverage
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage
           path: coverage/
@@ -95,7 +158,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup
         uses: ./.github/actions/setup
@@ -104,7 +167,7 @@ jobs:
         run: npm run build
 
       - name: Upload dist
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dist
           path: dist/
@@ -113,11 +176,13 @@ jobs:
 
   build-storybook:
     name: Build Storybook
+    needs: paths
+    if: needs.paths.outputs.ui_changed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup
         uses: ./.github/actions/setup
@@ -132,18 +197,160 @@ jobs:
         run: npm run build-storybook
 
       - name: Upload Storybook
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: storybook-static
           path: storybook-static/
           if-no-files-found: error
           retention-days: 14
 
+  storybook-smoke:
+    name: Storybook smoke (render every story)
+    needs: [paths, build-storybook]
+    if: needs.paths.outputs.ui_changed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Download Storybook artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: storybook-static
+          path: storybook-static
+
+      # The smoke script starts its own ephemeral HTTP server over
+      # storybook-static/, opens each story headlessly in chromium,
+      # and fails on any pageerror, unallowed console.error, render
+      # timeout, or empty-mount. See scripts/storybook-smoke.mjs
+      # header for the dual-gate rendering check and the
+      # parameters.smoke.allowConsoleErrors escape valve.
+      - name: Run smoke
+        run: node scripts/storybook-smoke.mjs
+
+      - name: Upload smoke report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: smoke-report
+          path: |
+            smoke-report.json
+            smoke-failures/
+          if-no-files-found: warn
+          retention-days: 14
+
+  # The a11y baseline used to run light + dark serially in one job
+  # (~20min wall clock — 10min per theme). The two themes are
+  # independent measurements (separate BrowserContexts, separate
+  # output sections), so splitting them into two jobs that run in
+  # parallel halves the wall clock without losing any signal. Each
+  # job reuses the `storybook-static/` artifact produced by
+  # `build-storybook` so the build doesn't run twice.
+  #
+  # validate-a11y-baseline.mjs derives the themes-to-check from
+  # `report.themes` (the array the runner records), so a single-
+  # theme report is validated against only its own data.
+  #
+  # Both jobs are gated by the `paths` job: a doc-only PR skips
+  # them entirely. build-storybook is also gated the same way, so
+  # if it skips, these two skip transitively via their `needs`.
+  a11y-baseline-light:
+    name: A11y baseline (light)
+    needs: [paths, build-storybook]
+    if: needs.paths.outputs.ui_changed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Download Storybook artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: storybook-static
+          path: storybook-static
+
+      - name: Run a11y baseline (light theme only)
+        run: node scripts/a11y-serial-baseline.mjs --theme light --output a11y-baseline-light.json
+
+      - name: Validate baseline floor (critical+serious=0)
+        run: node scripts/validate-a11y-baseline.mjs a11y-baseline-light.json
+
+      - name: Upload a11y baseline (light) artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: a11y-baseline-light
+          path: a11y-baseline-light.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  a11y-baseline-dark:
+    name: A11y baseline (dark)
+    needs: [paths, build-storybook]
+    if: needs.paths.outputs.ui_changed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Download Storybook artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: storybook-static
+          path: storybook-static
+
+      - name: Run a11y baseline (dark theme only)
+        run: node scripts/a11y-serial-baseline.mjs --theme dark --output a11y-baseline-dark.json
+
+      - name: Validate baseline floor (critical+serious=0)
+        run: node scripts/validate-a11y-baseline.mjs a11y-baseline-dark.json
+
+      - name: Upload a11y baseline (dark) artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: a11y-baseline-dark
+          path: a11y-baseline-dark.json
+          if-no-files-found: warn
+          retention-days: 14
+
   ci-success:
     name: CI success
     runs-on: ubuntu-latest
     if: always()
-    needs: [lint, typecheck, test, build, build-storybook]
+    needs:
+      [
+        paths,
+        lint,
+        typecheck,
+        test,
+        build,
+        build-storybook,
+        storybook-smoke,
+        a11y-baseline-light,
+        a11y-baseline-dark,
+      ]
     steps:
       - name: Verify all required jobs succeeded
         env:
@@ -153,9 +360,14 @@ jobs:
           echo "$NEEDS_JSON" | python3 -c '
           import json, sys
           needs = json.load(sys.stdin)
-          failed = [name for name, info in needs.items() if info.get("result") != "success"]
+          # "skipped" is intentional: the paths job decided that build-
+          # storybook and a11y-baseline did not need to run for this PR
+          # (no UI files changed). Skipped jobs whose `if:` evaluated
+          # false are healthy. A failure or cancellation of any
+          # required job — including the paths job itself — is not.
+          failed = [name for name, info in needs.items() if info.get("result") not in ("success", "skipped")]
           if failed:
-              print(f"::error::Required jobs failed or were skipped: {failed}")
+              print(f"::error::Required jobs failed: {failed}")
               sys.exit(1)
-          print("All required jobs succeeded.")
+          print("All required jobs succeeded or were intentionally skipped.")
           '

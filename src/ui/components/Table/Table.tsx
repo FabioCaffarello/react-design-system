@@ -15,6 +15,7 @@ import TableFilters from "./TableFilters";
 import TablePagination from "./TablePagination";
 import TableEmptyState from "./TableEmptyState";
 import TableActions from "./TableActions";
+import { getRadiusClass } from "../../tokens/radius";
 
 export type { TableColumn } from "./TableTypes";
 
@@ -134,7 +135,7 @@ function TableComponent<T = unknown>(props: TableProps<T>) {
   if (hasChildren) {
     return (
       <div
-        className={`bg-surface-base shadow rounded-lg overflow-hidden ${className}`}
+        className={`bg-surface-base shadow ${getRadiusClass("lg")} overflow-hidden ${className}`}
       >
         <TableProvider {...providerProps}>{props.children}</TableProvider>
       </div>
@@ -144,7 +145,7 @@ function TableComponent<T = unknown>(props: TableProps<T>) {
   // Otherwise, use simplified API with default structure
   return (
     <div
-      className={`bg-surface-base shadow rounded-lg overflow-hidden ${className}`}
+      className={`bg-surface-base shadow ${getRadiusClass("lg")} overflow-hidden ${className}`}
     >
       <TableProvider {...providerProps}>
         {providerProps.filters && providerProps.filters.length > 0 && (

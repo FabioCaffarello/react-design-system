@@ -5,6 +5,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, userEvent, within } from "storybook/test";
 import { Navigation } from "./Navigation";
 import type { NavItem } from "./types";
 import { Home, Settings, User, FileText, Bell } from "lucide-react";
@@ -348,5 +349,45 @@ export const BareMode: Story = {
           "Use `bare` prop when Navigation is used inside Header.Navigation to avoid nested nav elements.",
       },
     },
+  },
+};
+
+/**
+ * Interactive
+ *
+ * Verifies the items array reaches the rendered DOM as anchor elements
+ * with the expected hrefs, that the active item carries the
+ * aria-current="page" attribute, and that keyboard navigation reaches
+ * each link via Tab.
+ */
+export const Interactive: Story = {
+  args: {
+    items: basicItems,
+    orientation: "horizontal",
+    variant: "default",
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const home = canvas.getByRole("link", { name: /home/i });
+    const about = canvas.getByRole("link", { name: /about/i });
+    const contact = canvas.getByRole("link", { name: /contact/i });
+
+    expect(home).toHaveAttribute("href", "/home");
+    expect(about).toHaveAttribute("href", "/about");
+    expect(contact).toHaveAttribute("href", "/contact");
+
+    // The basicItems fixture marks Home as active — Navigation must
+    // forward that into aria-current on the corresponding NavLink so
+    // assistive tech announces the current page.
+    expect(home).toHaveAttribute("aria-current", "page");
+    expect(about).not.toHaveAttribute("aria-current");
+
+    // Sanity: tab order reaches each link (visual hint that the
+    // markup is in document order, not just visually adjacent).
+    home.focus();
+    expect(home).toHaveFocus();
+    await userEvent.tab();
+    expect(about).toHaveFocus();
   },
 };

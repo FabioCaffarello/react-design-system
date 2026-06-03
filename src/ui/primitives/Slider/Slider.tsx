@@ -4,6 +4,7 @@ import { useRef, useState, useId, forwardRef } from "react";
 import type { HTMLAttributes } from "react";
 import { getAnimationClass } from "../../tokens/animations";
 import { getRadiusClass } from "../../tokens/radius";
+import { getShadowClass } from "../../tokens/shadows";
 import { getSpacingClass } from "../../tokens/spacing";
 import {
   getTypographySize,
@@ -205,10 +206,10 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
     cn(
       "absolute",
       "bg-surface-brand",
-      "rounded-full",
+      getRadiusClass("full"),
       "border-2",
       "border-white",
-      "shadow-md",
+      getShadowClass("md"),
       "cursor-grab",
       "active:cursor-grabbing",
       getAnimationClass("base"),

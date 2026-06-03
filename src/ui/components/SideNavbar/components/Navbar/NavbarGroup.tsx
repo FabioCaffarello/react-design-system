@@ -68,9 +68,7 @@ export function NavbarGroup({
         </div>
       )}
       {!isCollapsed && (
-        <div className="flex flex-col gap-2">
-          {" "}
-          {/* gap-2 para consistência com outros componentes */}
+        <div className={`flex flex-col ${getSpacingClass("sm", "gap")}`}>
           {children}
         </div>
       )}

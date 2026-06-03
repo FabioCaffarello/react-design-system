@@ -451,23 +451,18 @@ export const DynamicTabs: Story = {
           </button>
         </div>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
+          {/* The tablist contains ONLY `<Tabs.Trigger role="tab">`
+              children. axe `aria-required-children` forbids non-tab
+              children inside `role="tablist"` (the previous shape — a
+              wrapping `<div>` per tab containing both the trigger AND
+              a raw close `<button>` — failed that rule). The
+              add/remove controls now live OUTSIDE the tablist: input +
+              "Add Tab" above, "Manage open tabs" toolbar below. */}
           <Tabs.List>
             {tabs.map((tab) => (
-              <div key={tab.id} className="flex items-center gap-1">
-                <Tabs.Trigger value={tab.id}>{tab.label}</Tabs.Trigger>
-                {tabs.length > 1 && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      removeTab(tab.id);
-                    }}
-                    className="ml-1 text-fg-quaternary hover:text-fg-error text-xs"
-                    aria-label={`Remove ${tab.label}`}
-                  >
-                    ×
-                  </button>
-                )}
-              </div>
+              <Tabs.Trigger key={tab.id} value={tab.id}>
+                {tab.label}
+              </Tabs.Trigger>
             ))}
           </Tabs.List>
           {tabs.map((tab) => (
@@ -478,6 +473,25 @@ export const DynamicTabs: Story = {
             </Tabs.Content>
           ))}
         </Tabs>
+        {tabs.length > 1 && (
+          <div
+            className="flex flex-wrap items-center gap-2 text-sm"
+            role="toolbar"
+            aria-label="Manage open tabs"
+          >
+            <span className="text-fg-secondary">Close:</span>
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => removeTab(tab.id)}
+                className="px-2 py-0.5 border border-line-default rounded hover:bg-surface-hover text-fg-secondary hover:text-fg-error"
+                aria-label={`Remove ${tab.label}`}
+              >
+                {tab.label} ×
+              </button>
+            ))}
+          </div>
+        )}
         <div className="text-sm text-fg-secondary">
           <p>
             <strong>Total tabs:</strong> {tabs.length}

@@ -4,6 +4,8 @@ import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavbarRequired } from "../../contexts/NavbarContext";
 import Tooltip from "../../../../primitives/Tooltip/Tooltip";
+import { getRadiusClass } from "../../../../tokens/radius";
+import { getShadowClass } from "../../../../tokens/shadows";
 import type { NavbarToggleProps } from "../../types";
 
 /**
@@ -60,8 +62,7 @@ export default function NavbarToggle({
   };
 
   const variantClasses = {
-    default:
-      "bg-surface-base border border-line-default shadow-sm hover:bg-surface-hover",
+    default: `bg-surface-base border border-line-default ${getShadowClass("sm")} hover:bg-surface-hover`,
     ghost: "hover:bg-surface-active",
     outline: "border border-line-emphasis hover:bg-surface-hover",
   };
@@ -78,7 +79,7 @@ export default function NavbarToggle({
           flex
           items-center
           justify-center
-          rounded-md
+          ${getRadiusClass("md")}
           text-fg-secondary
           hover:text-fg-primary
           focus:outline-none

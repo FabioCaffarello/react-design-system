@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-01T21:54:28.056Z",
+  "generatedAt": "2026-06-02T00:17:02.539Z",
   "axeCoreVersion": "4.11.4",
   "workers": 1,
   "settleMs": 200,
@@ -7,84 +7,22 @@
   "filter": null,
   "themes": ["light", "dark"],
   "light": {
-    "durationMs": 330333,
+    "durationMs": 330045,
     "totalStories": 852,
-    "storiesWithViolations": 32,
-    "totalNodes": 40,
+    "storiesWithViolations": 5,
+    "totalNodes": 7,
     "byImpact": {
-      "critical": 21,
-      "serious": 12,
+      "critical": 0,
+      "serious": 0,
       "moderate": 7,
       "minor": 0
     },
     "storiesWithErrors": [],
     "rules": {
-      "aria-required-parent": {
-        "impact": "critical",
-        "nodes": 4,
-        "stories": [
-          "primitives-chip--accessibility",
-          "primitives-chip--disabled",
-          "primitives-chip--selected",
-          "primitives-chip--selected-state"
-        ]
-      },
-      "nested-interactive": {
-        "impact": "serious",
-        "nodes": 2,
-        "stories": [
-          "components-card--with-actions",
-          "primitives-chip--selected-state"
-        ]
-      },
-      "button-name": {
-        "impact": "critical",
-        "nodes": 2,
-        "stories": [
-          "components-menu--table-actions",
-          "primitives-switch--default"
-        ]
-      },
-      "aria-required-attr": {
-        "impact": "critical",
-        "nodes": 2,
-        "stories": ["primitives-switch--uncontrolled"]
-      },
-      "listitem": {
-        "impact": "serious",
-        "nodes": 2,
-        "stories": [
-          "primitives-text--semantic-elements",
-          "primitives-text--variants"
-        ]
-      },
-      "label-title-only": {
-        "impact": "serious",
-        "nodes": 1,
-        "stories": ["primitives-textarea--error-state"]
-      },
-      "aria-input-field-name": {
-        "impact": "serious",
-        "nodes": 3,
-        "stories": [
-          "components-autocomplete--open-state",
-          "components-autocomplete--with-events",
-          "components-multiselect--with-events"
-        ]
-      },
       "region": {
         "impact": "moderate",
         "nodes": 1,
         "stories": ["components-dashboardlayout--with-events"]
-      },
-      "aria-dialog-name": {
-        "impact": "serious",
-        "nodes": 3,
-        "stories": [
-          "components-drawer--open-state",
-          "components-drawer--with-events",
-          "components-popover--open-state"
-        ]
       },
       "landmark-no-duplicate-banner": {
         "impact": "moderate",
@@ -104,180 +42,13 @@
           "components-sidenavbar--variants"
         ]
       },
-      "label": {
-        "impact": "critical",
-        "nodes": 4,
-        "stories": [
-          "components-multiselect--disabled-state",
-          "components-multiselect--with-initial-values",
-          "components-sidenavbar--with-footer"
-        ]
-      },
-      "select-name": {
-        "impact": "critical",
-        "nodes": 8,
-        "stories": [
-          "components-searchandfilterpattern--default",
-          "components-searchandfilterpattern--default-state",
-          "components-searchandfilterpattern--filters-only",
-          "components-searchandfilterpattern--filters-only-state",
-          "components-searchandfilterpattern--with-events"
-        ]
-      },
       "heading-order": {
         "impact": "moderate",
         "nodes": 1,
         "stories": ["components-sidenavbar--with-header"]
-      },
-      "scrollable-region-focusable": {
-        "impact": "serious",
-        "nodes": 1,
-        "stories": ["components-sidenavbar--long-content"]
-      },
-      "aria-required-children": {
-        "impact": "critical",
-        "nodes": 1,
-        "stories": ["components-tabs--dynamic-tabs"]
       }
     },
     "stories": [
-      {
-        "storyId": "primitives-chip--selected",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-required-parent",
-            "impact": "critical",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "primitives-chip--disabled",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-required-parent",
-            "impact": "critical",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "primitives-chip--accessibility",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-required-parent",
-            "impact": "critical",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "primitives-chip--selected-state",
-        "nodes": 2,
-        "violations": [
-          {
-            "id": "aria-required-parent",
-            "impact": "critical",
-            "nodes": 1
-          },
-          {
-            "id": "nested-interactive",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "primitives-switch--default",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "button-name",
-            "impact": "critical",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "primitives-switch--uncontrolled",
-        "nodes": 2,
-        "violations": [
-          {
-            "id": "aria-required-attr",
-            "impact": "critical",
-            "nodes": 2
-          }
-        ]
-      },
-      {
-        "storyId": "primitives-text--variants",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "listitem",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "primitives-text--semantic-elements",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "listitem",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "primitives-textarea--error-state",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "label-title-only",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-autocomplete--with-events",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-input-field-name",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-autocomplete--open-state",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-input-field-name",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-card--with-actions",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "nested-interactive",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
       {
         "storyId": "components-dashboardlayout--with-events",
         "nodes": 1,
@@ -285,28 +56,6 @@
           {
             "id": "region",
             "impact": "moderate",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-drawer--with-events",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-dialog-name",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-drawer--open-state",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-dialog-name",
-            "impact": "serious",
             "nodes": 1
           }
         ]
@@ -339,116 +88,6 @@
         ]
       },
       {
-        "storyId": "components-menu--table-actions",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "button-name",
-            "impact": "critical",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-multiselect--with-initial-values",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "label",
-            "impact": "critical",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-multiselect--with-events",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-input-field-name",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-multiselect--disabled-state",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "label",
-            "impact": "critical",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-popover--open-state",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-dialog-name",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-searchandfilterpattern--default",
-        "nodes": 2,
-        "violations": [
-          {
-            "id": "select-name",
-            "impact": "critical",
-            "nodes": 2
-          }
-        ]
-      },
-      {
-        "storyId": "components-searchandfilterpattern--filters-only",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "select-name",
-            "impact": "critical",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-searchandfilterpattern--with-events",
-        "nodes": 2,
-        "violations": [
-          {
-            "id": "select-name",
-            "impact": "critical",
-            "nodes": 2
-          }
-        ]
-      },
-      {
-        "storyId": "components-searchandfilterpattern--default-state",
-        "nodes": 2,
-        "violations": [
-          {
-            "id": "select-name",
-            "impact": "critical",
-            "nodes": 2
-          }
-        ]
-      },
-      {
-        "storyId": "components-searchandfilterpattern--filters-only-state",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "select-name",
-            "impact": "critical",
-            "nodes": 1
-          }
-        ]
-      },
-      {
         "storyId": "components-sidenavbar--with-header",
         "nodes": 1,
         "violations": [
@@ -460,17 +99,6 @@
         ]
       },
       {
-        "storyId": "components-sidenavbar--with-footer",
-        "nodes": 2,
-        "violations": [
-          {
-            "id": "label",
-            "impact": "critical",
-            "nodes": 2
-          }
-        ]
-      },
-      {
         "storyId": "components-sidenavbar--variants",
         "nodes": 2,
         "violations": [
@@ -478,112 +106,28 @@
             "id": "landmark-unique",
             "impact": "moderate",
             "nodes": 2
-          }
-        ]
-      },
-      {
-        "storyId": "components-sidenavbar--long-content",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "scrollable-region-focusable",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-tabs--dynamic-tabs",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-required-children",
-            "impact": "critical",
-            "nodes": 1
           }
         ]
       }
     ]
   },
   "dark": {
-    "durationMs": 331108,
+    "durationMs": 331698,
     "totalStories": 852,
-    "storiesWithViolations": 32,
-    "totalNodes": 40,
+    "storiesWithViolations": 5,
+    "totalNodes": 7,
     "byImpact": {
-      "critical": 21,
-      "serious": 12,
+      "critical": 0,
+      "serious": 0,
       "moderate": 7,
       "minor": 0
     },
     "storiesWithErrors": [],
     "rules": {
-      "aria-required-parent": {
-        "impact": "critical",
-        "nodes": 4,
-        "stories": [
-          "primitives-chip--accessibility",
-          "primitives-chip--disabled",
-          "primitives-chip--selected",
-          "primitives-chip--selected-state"
-        ]
-      },
-      "nested-interactive": {
-        "impact": "serious",
-        "nodes": 2,
-        "stories": [
-          "components-card--with-actions",
-          "primitives-chip--selected-state"
-        ]
-      },
-      "button-name": {
-        "impact": "critical",
-        "nodes": 2,
-        "stories": [
-          "components-menu--table-actions",
-          "primitives-switch--default"
-        ]
-      },
-      "aria-required-attr": {
-        "impact": "critical",
-        "nodes": 2,
-        "stories": ["primitives-switch--uncontrolled"]
-      },
-      "listitem": {
-        "impact": "serious",
-        "nodes": 2,
-        "stories": [
-          "primitives-text--semantic-elements",
-          "primitives-text--variants"
-        ]
-      },
-      "label-title-only": {
-        "impact": "serious",
-        "nodes": 1,
-        "stories": ["primitives-textarea--error-state"]
-      },
-      "aria-input-field-name": {
-        "impact": "serious",
-        "nodes": 3,
-        "stories": [
-          "components-autocomplete--open-state",
-          "components-autocomplete--with-events",
-          "components-multiselect--with-events"
-        ]
-      },
       "region": {
         "impact": "moderate",
         "nodes": 1,
         "stories": ["components-dashboardlayout--with-events"]
-      },
-      "aria-dialog-name": {
-        "impact": "serious",
-        "nodes": 3,
-        "stories": [
-          "components-drawer--open-state",
-          "components-drawer--with-events",
-          "components-popover--open-state"
-        ]
       },
       "landmark-no-duplicate-banner": {
         "impact": "moderate",
@@ -603,180 +147,13 @@
           "components-sidenavbar--variants"
         ]
       },
-      "label": {
-        "impact": "critical",
-        "nodes": 4,
-        "stories": [
-          "components-multiselect--disabled-state",
-          "components-multiselect--with-initial-values",
-          "components-sidenavbar--with-footer"
-        ]
-      },
-      "select-name": {
-        "impact": "critical",
-        "nodes": 8,
-        "stories": [
-          "components-searchandfilterpattern--default",
-          "components-searchandfilterpattern--default-state",
-          "components-searchandfilterpattern--filters-only",
-          "components-searchandfilterpattern--filters-only-state",
-          "components-searchandfilterpattern--with-events"
-        ]
-      },
       "heading-order": {
         "impact": "moderate",
         "nodes": 1,
         "stories": ["components-sidenavbar--with-header"]
-      },
-      "scrollable-region-focusable": {
-        "impact": "serious",
-        "nodes": 1,
-        "stories": ["components-sidenavbar--long-content"]
-      },
-      "aria-required-children": {
-        "impact": "critical",
-        "nodes": 1,
-        "stories": ["components-tabs--dynamic-tabs"]
       }
     },
     "stories": [
-      {
-        "storyId": "primitives-chip--selected",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-required-parent",
-            "impact": "critical",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "primitives-chip--disabled",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-required-parent",
-            "impact": "critical",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "primitives-chip--accessibility",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-required-parent",
-            "impact": "critical",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "primitives-chip--selected-state",
-        "nodes": 2,
-        "violations": [
-          {
-            "id": "aria-required-parent",
-            "impact": "critical",
-            "nodes": 1
-          },
-          {
-            "id": "nested-interactive",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "primitives-switch--default",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "button-name",
-            "impact": "critical",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "primitives-switch--uncontrolled",
-        "nodes": 2,
-        "violations": [
-          {
-            "id": "aria-required-attr",
-            "impact": "critical",
-            "nodes": 2
-          }
-        ]
-      },
-      {
-        "storyId": "primitives-text--variants",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "listitem",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "primitives-text--semantic-elements",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "listitem",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "primitives-textarea--error-state",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "label-title-only",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-autocomplete--with-events",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-input-field-name",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-autocomplete--open-state",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-input-field-name",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-card--with-actions",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "nested-interactive",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
       {
         "storyId": "components-dashboardlayout--with-events",
         "nodes": 1,
@@ -784,28 +161,6 @@
           {
             "id": "region",
             "impact": "moderate",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-drawer--with-events",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-dialog-name",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-drawer--open-state",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-dialog-name",
-            "impact": "serious",
             "nodes": 1
           }
         ]
@@ -838,116 +193,6 @@
         ]
       },
       {
-        "storyId": "components-menu--table-actions",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "button-name",
-            "impact": "critical",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-multiselect--with-initial-values",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "label",
-            "impact": "critical",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-multiselect--with-events",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-input-field-name",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-multiselect--disabled-state",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "label",
-            "impact": "critical",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-popover--open-state",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-dialog-name",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-searchandfilterpattern--default",
-        "nodes": 2,
-        "violations": [
-          {
-            "id": "select-name",
-            "impact": "critical",
-            "nodes": 2
-          }
-        ]
-      },
-      {
-        "storyId": "components-searchandfilterpattern--filters-only",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "select-name",
-            "impact": "critical",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-searchandfilterpattern--with-events",
-        "nodes": 2,
-        "violations": [
-          {
-            "id": "select-name",
-            "impact": "critical",
-            "nodes": 2
-          }
-        ]
-      },
-      {
-        "storyId": "components-searchandfilterpattern--default-state",
-        "nodes": 2,
-        "violations": [
-          {
-            "id": "select-name",
-            "impact": "critical",
-            "nodes": 2
-          }
-        ]
-      },
-      {
-        "storyId": "components-searchandfilterpattern--filters-only-state",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "select-name",
-            "impact": "critical",
-            "nodes": 1
-          }
-        ]
-      },
-      {
         "storyId": "components-sidenavbar--with-header",
         "nodes": 1,
         "violations": [
@@ -959,17 +204,6 @@
         ]
       },
       {
-        "storyId": "components-sidenavbar--with-footer",
-        "nodes": 2,
-        "violations": [
-          {
-            "id": "label",
-            "impact": "critical",
-            "nodes": 2
-          }
-        ]
-      },
-      {
         "storyId": "components-sidenavbar--variants",
         "nodes": 2,
         "violations": [
@@ -977,28 +211,6 @@
             "id": "landmark-unique",
             "impact": "moderate",
             "nodes": 2
-          }
-        ]
-      },
-      {
-        "storyId": "components-sidenavbar--long-content",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "scrollable-region-focusable",
-            "impact": "serious",
-            "nodes": 1
-          }
-        ]
-      },
-      {
-        "storyId": "components-tabs--dynamic-tabs",
-        "nodes": 1,
-        "violations": [
-          {
-            "id": "aria-required-children",
-            "impact": "critical",
-            "nodes": 1
           }
         ]
       }

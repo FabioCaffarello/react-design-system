@@ -93,10 +93,6 @@ A flexible text component that supports different semantic HTML elements and sty
       options: ["light", "DEFAULT", "dark", "contrast"],
       description: "Color shade variant",
     },
-    color: {
-      control: "text",
-      description: "Custom color (fallback, prefer colorRole/colorShade)",
-    },
   },
 };
 
@@ -119,7 +115,11 @@ export const Variants: Story = {
       <Text variant="bodySmall">Body Small</Text>
       <Text variant="caption">Caption</Text>
       <Text variant="label">Label</Text>
-      <Text variant="list">List Item</Text>
+      {/* `variant="list"` renders as `<li>`, which axe `listitem`
+          requires to live inside a `<ul>`/`<ol>` parent. */}
+      <ul>
+        <Text variant="list">List Item</Text>
+      </ul>
     </div>
   ),
 };
@@ -137,7 +137,12 @@ export const SemanticElements: Story = {
       <Text as="em">Emphasized text</Text>
       <Text as="small">Small text</Text>
       <Text as="label">Label text</Text>
-      <Text as="li">List item</Text>
+      {/* `<li>` outside a `<ul>`/`<ol>` violates axe `listitem`. Wrap in
+          a minimal `<ul>` to satisfy the rule while still demonstrating
+          the polymorphic `as="li"` prop. */}
+      <ul>
+        <Text as="li">List item</Text>
+      </ul>
     </div>
   ),
   parameters: {

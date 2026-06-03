@@ -1,0 +1,43 @@
+name: Setup Playwright
+description: >-
+  Install Playwright chromium with an aggressive cache on
+  ~/.cache/ms-playwright. The cache key is the OS plus the
+  package-lock.json hash, so a Playwright version bump (which always
+  rewrites the lockfile) invalidates the cache and forces a fresh
+  download. Otherwise the browser binary (~140MB chromium) is
+  restored from cache, saving ~60s of download per job.
+
+  Why two install steps: `--with-deps` downloads BOTH the browser
+  binaries AND the system apt packages chromium needs to run. The
+  binaries cache. The apt packages don't (they install system-wide,
+  outside the cached path), and a cached browser won't run without
+  them. So:
+    - cache miss: `install --with-deps chromium` does everything.
+    - cache hit:  `install-deps chromium` re-installs only the apt
+                  side. The browser is restored from cache. ~10s.
+
+  All jobs that need Playwright (a11y-baseline-*, storybook-smoke)
+  use this action instead of inlining the install step, so the cache
+  pattern stays consistent across them.
+
+runs:
+  using: composite
+  steps:
+    - name: Cache Playwright browsers
+      id: playwright-cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-playwright-
+
+    - name: Install Playwright (cache miss — full download)
+      if: steps.playwright-cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: npx playwright install --with-deps chromium
+
+    - name: Install Playwright system deps (cache hit — browser restored)
+      if: steps.playwright-cache.outputs.cache-hit == 'true'
+      shell: bash
+      run: npx playwright install-deps chromium

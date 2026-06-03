@@ -3,6 +3,7 @@
 import React from "react";
 import { useNavbarRequired } from "../../contexts/NavbarContext";
 import { cn } from "../../../../utils";
+import { getRadiusClass } from "../../../../tokens/radius";
 import { getSpacingClass } from "../../../../tokens/spacing";
 import { getZIndexClass } from "../../../../tokens/z-index";
 import Tooltip from "../../../../primitives/Tooltip/Tooltip";
@@ -126,7 +127,7 @@ export default function NavbarItem({
         className={cn(
           "text-xs",
           "flex-shrink-0", // Prevenir que label encolha
-          // micro-z: redundant with inline zIndex:10 below — see BACKLOG
+          // micro-z: label above icon within navbar item
           "relative z-10",
           effectiveLabelMode === "below" && "text-center",
           effectiveLabelMode === "inline" && "truncate",
@@ -135,9 +136,6 @@ export default function NavbarItem({
           // Garantir que label não seja afetada por transformações
           willChange: "auto",
           transform: "none",
-          // micro-z: label above icon within navbar item (wins CSS
-          // specificity over the className z-10 above)
-          zIndex: 10,
         }}
       >
         {label}
@@ -153,7 +151,7 @@ export default function NavbarItem({
     "items-center",
     effectiveLabelMode === "inline" ? "justify-start" : "justify-center",
     effectiveLabelMode === "below" && "flex-col",
-    "rounded-lg",
+    getRadiusClass("lg"),
     "box-border", // Garantir box-sizing consistente
     "focus:outline-none",
     "focus:ring-2",
@@ -248,10 +246,10 @@ export default function NavbarItem({
             "flex",
             "items-center",
             "justify-center",
-            "px-1",
+            getSpacingClass("xs", "px"),
             "font-medium",
             "text-fg-inverse",
-            "rounded-full",
+            getRadiusClass("full"),
             sizeConfig.badge,
             BADGE_VARIANTS[badgeVariant],
           )}

@@ -222,7 +222,7 @@ export default function CommandPalette({
           className={`
           flex
           items-center
-          gap-3
+          ${getSpacingClass("md", "gap")}
           ${getSpacingClass("base", "p")}
           border-b
           border-line-default
@@ -242,7 +242,7 @@ export default function CommandPalette({
             className={`
             flex
             items-center
-            gap-1
+            ${getSpacingClass("xs", "gap")}
             ${getSpacingClass("sm", "px")}
             ${getSpacingClass("xs", "py")}
             ${getRadiusClass("sm")}
@@ -308,7 +308,7 @@ export default function CommandPalette({
                         w-full
                         flex
                         items-center
-                        gap-3
+                        ${getSpacingClass("md", "gap")}
                         ${getSpacingClass("base", "px")}
                         ${getSpacingClass("md", "py")}
                         text-left

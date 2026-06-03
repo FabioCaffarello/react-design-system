@@ -7,7 +7,7 @@ import { SidebarSlot, SidebarSlotContent } from "./components/Sidebar";
 import { SidebarSlotProvider } from "./providers/SidebarSlotProvider";
 import Tabs from "../../components/Tabs/Tabs";
 import Card from "../../components/Card/Card";
-import { Button } from "../../primitives";
+import { Button, Input } from "../../primitives";
 import {
   Home,
   BarChart3,
@@ -410,22 +410,22 @@ export const WithFooter: Story = {
             <SideNavbar.Sidebar.Header title={tabLabels[activeTab]} />
             <SideNavbar.Sidebar.Content>
               <div className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Display Name</label>
-                  <input
-                    type="text"
-                    className="w-full px-3 py-2 border rounded-md"
-                    defaultValue="John Doe"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Email</label>
-                  <input
-                    type="email"
-                    className="w-full px-3 py-2 border rounded-md"
-                    defaultValue="john@example.com"
-                  />
-                </div>
+                {/* Migrated from raw `<input>` + `<label>` prose pair to
+                    the `Input` primitive, which wires `<label htmlFor>`
+                    to the input via useId. The raw form failed axe
+                    `label` (critical) because the `<label>` was a
+                    sibling without `htmlFor` — 2 nodes at the
+                    baseline-of-record. */}
+                <Input
+                  type="text"
+                  label="Display Name"
+                  defaultValue="John Doe"
+                />
+                <Input
+                  type="email"
+                  label="Email"
+                  defaultValue="john@example.com"
+                />
               </div>
             </SideNavbar.Sidebar.Content>
             <SideNavbar.Sidebar.Footer>

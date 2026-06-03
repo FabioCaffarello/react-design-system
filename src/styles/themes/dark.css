@@ -134,7 +134,7 @@
    * ============================================ */
 
   --color-surface-hover: var(--color-slate-800);
-  --color-surface-hover-subtle: var(--color-slate-850);
+  --color-surface-hover-subtle: var(--color-slate-900);
   --color-surface-active: var(--color-slate-700);
   --color-surface-selected: var(--color-indigo-950);
   --color-surface-selected-subtle: var(--color-indigo-900);
@@ -422,7 +422,7 @@
      * ============================================ */
 
     --color-surface-hover: var(--color-slate-800);
-    --color-surface-hover-subtle: var(--color-slate-850);
+    --color-surface-hover-subtle: var(--color-slate-900);
     --color-surface-active: var(--color-slate-700);
     --color-surface-selected: var(--color-indigo-950);
     --color-surface-selected-subtle: var(--color-indigo-900);

@@ -13,6 +13,7 @@ import React from "react";
 import { Drawer, DrawerContent } from "../../Drawer";
 import { useHeaderContext } from "../contexts/HeaderContext";
 import { cn } from "../../../utils";
+import { getSpacingClass } from "../../../tokens/spacing";
 
 export interface HeaderMobileMenuProps {
   /**
@@ -61,8 +62,11 @@ export function HeaderMobileMenu({
       closeOnOverlayClick
       closeOnEscape
     >
-      <DrawerContent className={cn("p-4", className)}>
-        <nav className="flex flex-col gap-2" aria-label="Mobile navigation">
+      <DrawerContent className={cn(getSpacingClass("base", "p"), className)}>
+        <nav
+          className={`flex flex-col ${getSpacingClass("sm", "gap")}`}
+          aria-label="Mobile navigation"
+        >
           {children}
         </nav>
       </DrawerContent>
