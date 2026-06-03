@@ -2,6 +2,7 @@
 
 import React from "react";
 import { cn } from "../../../../utils";
+import { getSpacingClass } from "../../../../tokens/spacing";
 import type { NavbarSeparatorProps } from "../../types";
 
 /**
