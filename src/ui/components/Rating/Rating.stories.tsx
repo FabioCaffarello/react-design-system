@@ -1,13 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, within, waitFor } from "storybook/test";
 import { useState } from "react";
 import Rating from "./Rating";
 
 const meta: Meta<typeof Rating> = {
   title: "Components/Rating",
   component: Rating,
-  tags: ["autodocs"],
   parameters: {
     layout: "centered",
     docs: {
@@ -72,7 +71,7 @@ export const Default: Story = {
           }}
           onHover={setHoverValue}
         />
-        <div className="text-sm text-gray-600 space-y-1">
+        <div className="text-sm text-fg-secondary space-y-1">
           <p>
             <strong>Current rating:</strong> {value} / {args.max || 5}
           </p>
@@ -114,11 +113,13 @@ export const ReadOnly: Story = {
   render: () => (
     <div className="space-y-4">
       <div>
-        <p className="text-sm text-gray-600 mb-2">Read-only rating (3 stars)</p>
+        <p className="text-sm text-fg-secondary mb-2">
+          Read-only rating (3 stars)
+        </p>
         <Rating value={3} readOnly showValue />
       </div>
       <div>
-        <p className="text-sm text-gray-600 mb-2">
+        <p className="text-sm text-fg-secondary mb-2">
           Read-only rating (4.5 stars)
         </p>
         <Rating value={4.5} readOnly showValue allowHalf />
@@ -139,7 +140,7 @@ export const HalfRatings: Story = {
           allowHalf
           showValue
         />
-        <p className="text-sm text-gray-600">Current value: {value}</p>
+        <p className="text-sm text-fg-secondary">Current value: {value}</p>
       </div>
     );
   },
@@ -158,15 +159,15 @@ export const Sizes: Story = {
     return (
       <div className="space-y-6">
         <div>
-          <p className="text-sm text-gray-600 mb-2">Small</p>
+          <p className="text-sm text-fg-secondary mb-2">Small</p>
           <Rating size="sm" value={smValue} onChange={setSmValue} showValue />
         </div>
         <div>
-          <p className="text-sm text-gray-600 mb-2">Medium</p>
+          <p className="text-sm text-fg-secondary mb-2">Medium</p>
           <Rating size="md" value={mdValue} onChange={setMdValue} showValue />
         </div>
         <div>
-          <p className="text-sm text-gray-600 mb-2">Large</p>
+          <p className="text-sm text-fg-secondary mb-2">Large</p>
           <Rating size="lg" value={lgValue} onChange={setLgValue} showValue />
         </div>
       </div>
@@ -180,7 +181,7 @@ export const CustomMax: Story = {
     return (
       <div className="space-y-4">
         <Rating max={10} value={value} onChange={setValue} showValue />
-        <p className="text-sm text-gray-600">Rating out of 10</p>
+        <p className="text-sm text-fg-secondary">Rating out of 10</p>
       </div>
     );
   },
@@ -194,7 +195,7 @@ export const Variants: Story = {
     return (
       <div className="space-y-6">
         <div>
-          <p className="text-sm text-gray-600 mb-2">Filled</p>
+          <p className="text-sm text-fg-secondary mb-2">Filled</p>
           <Rating
             variant="filled"
             value={filledValue}
@@ -203,7 +204,7 @@ export const Variants: Story = {
           />
         </div>
         <div>
-          <p className="text-sm text-gray-600 mb-2">Outlined</p>
+          <p className="text-sm text-fg-secondary mb-2">Outlined</p>
           <Rating
             variant="outlined"
             value={outlinedValue}
@@ -230,7 +231,7 @@ export const InContext: Story = {
     };
 
     return (
-      <div className="w-96 space-y-6 p-4 border border-gray-200 rounded-lg">
+      <div className="w-96 space-y-6 p-4 border border-line-default rounded-lg">
         <h3 className="text-lg font-semibold">Rate Your Experience</h3>
 
         <div className="space-y-4">
@@ -260,18 +261,18 @@ export const InContext: Story = {
           </div>
         </div>
 
-        <div className="pt-4 border-t border-gray-200 space-y-2">
-          <p className="text-sm font-medium text-gray-700">
+        <div className="pt-4 border-t border-line-default space-y-2">
+          <p className="text-sm font-medium text-fg-primary">
             Average Rating: <strong>{average}/5</strong>
           </p>
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="px-4 py-2 text-sm bg-surface-brand-strong text-fg-inverse rounded hover:opacity-90"
           >
             {submitted ? "Submitted!" : "Submit Rating"}
           </button>
           {submitted && (
-            <p className="text-sm text-green-600">
+            <p className="text-sm text-fg-success">
               ✓ Thank you for your feedback!
             </p>
           )}
@@ -302,7 +303,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Click stars to rate or hover over them. Check the Actions panel to see
           events being fired.
         </p>
@@ -312,7 +313,7 @@ export const WithEvents: Story = {
           onHover={handleHover}
           max={5}
         />
-        <p className="text-sm text-gray-500">Current rating: {value} / 5</p>
+        <p className="text-sm text-fg-tertiary">Current rating: {value} / 5</p>
       </div>
     );
   },

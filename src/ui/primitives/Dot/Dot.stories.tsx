@@ -1,10 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import Dot from "./Dot";
 
 const meta: Meta<typeof Dot> = {
   title: "Primitives/Dot",
   component: Dot,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -206,7 +205,9 @@ export const Accessibility: Story = {
   render: () => (
     <div className="space-y-4">
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">Dots with proper ARIA labels:</p>
+        <p className="text-sm text-fg-secondary">
+          Dots with proper ARIA labels:
+        </p>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <Dot variant="online" aria-label="User is online" />
@@ -227,7 +228,7 @@ export const Accessibility: Story = {
         </div>
       </div>
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Dots with role="status" for screen readers:
         </p>
         <div className="flex items-center gap-4">
@@ -244,15 +245,17 @@ export const Accessibility: Story = {
             <span className="text-sm">Limited connectivity</span>
           </div>
         </div>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-fg-tertiary">
           Screen readers will announce these dots as status updates. The
           component automatically provides default ARIA labels based on the
           variant.
         </p>
       </div>
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">Default ARIA labels by variant:</p>
-        <div className="space-y-1 text-xs text-gray-500">
+        <p className="text-sm text-fg-secondary">
+          Default ARIA labels by variant:
+        </p>
+        <div className="space-y-1 text-xs text-fg-tertiary">
           <p>• online → "Online"</p>
           <p>• offline → "Offline"</p>
           <p>• pending → "Pending"</p>
@@ -277,53 +280,55 @@ export const WithLabels: Story = {
   render: () => (
     <div className="space-y-4">
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">User status indicators:</p>
+        <p className="text-sm text-fg-secondary">User status indicators:</p>
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <Dot variant="online" />
             <span className="text-sm font-medium">John Doe</span>
-            <span className="text-xs text-gray-500">Active now</span>
+            <span className="text-xs text-fg-tertiary">Active now</span>
           </div>
           <div className="flex items-center gap-2">
             <Dot variant="offline" />
             <span className="text-sm font-medium">Jane Smith</span>
-            <span className="text-xs text-gray-500">Last seen 2h ago</span>
+            <span className="text-xs text-fg-tertiary">Last seen 2h ago</span>
           </div>
           <div className="flex items-center gap-2">
             <Dot variant="pending" />
             <span className="text-sm font-medium">Bob Johnson</span>
-            <span className="text-xs text-gray-500">Away</span>
+            <span className="text-xs text-fg-tertiary">Away</span>
           </div>
         </div>
       </div>
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">System status indicators:</p>
+        <p className="text-sm text-fg-secondary">System status indicators:</p>
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <Dot variant="online" size="lg" />
             <div>
               <p className="text-sm font-medium">API Server</p>
-              <p className="text-xs text-gray-500">All systems operational</p>
+              <p className="text-xs text-fg-tertiary">
+                All systems operational
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Dot variant="warning" size="lg" />
             <div>
               <p className="text-sm font-medium">Database</p>
-              <p className="text-xs text-gray-500">Degraded performance</p>
+              <p className="text-xs text-fg-tertiary">Degraded performance</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Dot variant="error" size="lg" />
             <div>
               <p className="text-sm font-medium">Email Service</p>
-              <p className="text-xs text-gray-500">Service unavailable</p>
+              <p className="text-xs text-fg-tertiary">Service unavailable</p>
             </div>
           </div>
         </div>
       </div>
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">Notification indicators:</p>
+        <p className="text-sm text-fg-secondary">Notification indicators:</p>
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <Dot variant="info" size="sm" />

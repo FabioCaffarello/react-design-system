@@ -2,11 +2,12 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tsConfigPaths from "vite-tsconfig-paths";
+import tailwindcss from "@tailwindcss/vite";
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig(() => {
   return {
-    plugins: [tsConfigPaths(), react()],
+    plugins: [tsConfigPaths(), react(), tailwindcss()],
     optimizeDeps: {
       include: [
         "lucide-react",
@@ -20,94 +21,57 @@ export default defineConfig(() => {
       mainFields: ["module", "main"],
       extensions: [".mjs", ".js", ".mts", ".ts", ".jsx", ".tsx", ".json"],
     },
-    // Build configuration for library mode
+    // Build configuration for library mode.
+    //
+    // Two entries:
+    //   - index: the linear JS bundle (Phase 13d collapsed the previous
+    //     multi-entry layout — providers + primitives + components + tokens
+    //     — because cross-chunk references to cva silently broke external
+    //     distribution since v1.0.0). All component code, providers, hooks,
+    //     and tokens live in this single bundle. No cross-chunk references
+    //     possible. SSR / TDZ initialization order preserved trivially.
+    //   - styles: a build-time scaffolding entry whose only job is to
+    //     side-effect import src/style.css so Vite extracts the token
+    //     cascade to dist/react-design-system.css. Consumers reach the CSS
+    //     via the package.json "./styles" export, not this JS shell.
+    //     The shell itself is ~30 bytes of dead code in dist/styles/ —
+    //     trivial overhead for the architectural clarity it provides.
     build: {
       lib: {
         entry: {
           index: "src/ui/index.ts",
-          providers: "src/ui/providers/index.ts", // Separate entry point for providers
-          primitives: "src/ui/primitives/index.ts",
-          components: "src/ui/components/index.ts",
-          tokens: "src/ui/tokens/index.ts",
+          styles: "src/ui/styles-entry.ts",
         },
         name: "ReactDesignSystem",
         fileName: (format, entryName) => {
-          if (format === "es") {
-            return entryName === "index" ? "index.js" : `${entryName}/index.js`;
-          }
-          if (format === "cjs") {
-            return entryName === "index"
-              ? "index.cjs"
-              : `${entryName}/index.cjs`;
-          }
-          return entryName === "index" ? "index.cjs" : `${entryName}/index.cjs`;
+          const ext = format === "es" ? "js" : "cjs";
+          return entryName === "index"
+            ? `index.${ext}`
+            : `${entryName}/index.${ext}`;
         },
         formats: ["es", "cjs"],
       },
-      // Minification configuration (using esbuild - faster and already included)
       minify: "esbuild",
-      // esbuild minification options
       target: "es2015",
-      // Additional optimization
       cssMinify: true,
-      // CSS code splitting - false to generate single CSS bundle
+      // Single CSS bundle pinned to dist/react-design-system.css via
+      // assetFileNames below — matches the path the package.json "./styles"
+      // export resolves to.
       cssCodeSplit: false,
-      // Source maps configuration
       sourcemap: true,
-      // Chunk size warnings
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
         external: ["react", "react-dom"],
         output: {
-          // Preserve all named exports - critical for library mode
+          // Preserve named exports — required for library mode consumers.
           exports: "named",
           globals: {
             react: "React",
             "react-dom": "ReactDOM",
           },
-          // Code splitting configuration
-          // CRITICAL: All providers MUST be in the same chunk to preserve initialization order
-          // This is essential for Next.js SSR/prerendering compatibility
-          manualChunks: (id) => {
-            // CRITICAL: Force all providers into the same chunk (main bundle)
-            // This prevents Next.js from code-splitting providers, which breaks initialization order
-            // Include all provider-related files to ensure they're in the same module boundary
-            if (
-              id.includes("/providers/") ||
-              id.includes("ThemeProvider") ||
-              id.includes("ConfigProvider") ||
-              id.includes("AppProvider") ||
-              id.includes("ToastProvider") ||
-              id.includes("DialogProvider") ||
-              id.includes("ToastContext") ||
-              id.includes("DialogContext")
-            ) {
-              return null; // Keep in main bundle - CRITICAL for initialization order
-            }
-            // Only split sub-entry points, not the main index
-            if (id.includes("/primitives/") && !id.includes("src/ui/index")) {
-              return "primitives";
-            }
-            // Split components, but keep provider-adjacent ones in main bundle
-            if (
-              id.includes("/components/") &&
-              !id.includes("src/ui/index") &&
-              !id.includes("/Toast/ToastProvider") &&
-              !id.includes("/Dialog/DialogProvider") &&
-              !id.includes("/Toast/ToastContext") &&
-              !id.includes("/Dialog/DialogContext")
-            ) {
-              return "components";
-            }
-            if (id.includes("/tokens/") && !id.includes("src/ui/index")) {
-              return "tokens";
-            }
-            // Keep all other exports in main bundle
-            return null;
-          },
-          // Source maps for production
           sourcemapExcludeSources: false,
-          // CSS file naming
+          // Pin the emitted CSS asset name to the path "./styles" resolves
+          // to in package.json exports.
           assetFileNames: (assetInfo) => {
             if (assetInfo.name && assetInfo.name.endsWith(".css")) {
               return "react-design-system.css";
@@ -115,42 +79,23 @@ export default defineConfig(() => {
             return assetInfo.name || "assets/[name]-[hash][extname]";
           },
         },
-        // Prevent aggressive tree-shaking of exports
-        // CRITICAL: Preserve all side effects for providers to maintain initialization order
+        // Keep provider modules side-effectful so tree-shaking cannot drop
+        // their initialization. With single entry this is belt-and-braces
+        // protection — initialization order is already enforced by module
+        // order in the linear bundle — but matches the discipline that
+        // resolved the original Next.js TDZ regression.
         treeshake: {
-          moduleSideEffects: (id) => {
-            // Preserve all side effects from our source files
-            if (id.includes("src/ui/")) {
-              return true;
-            }
-            // CRITICAL: Preserve side effects for ALL provider-related files
-            // This prevents tree-shaking from breaking the initialization chain
-            if (
-              id.includes("providers") ||
-              id.includes("ThemeProvider") ||
-              id.includes("ConfigProvider") ||
-              id.includes("AppProvider") ||
-              id.includes("ToastProvider") ||
-              id.includes("DialogProvider") ||
-              id.includes("ToastContext") ||
-              id.includes("DialogContext")
-            ) {
-              return true;
-            }
-            return false;
-          },
-          // CRITICAL: Preserve property reads to ensure provider references are not removed
+          moduleSideEffects: (id) =>
+            id.includes("src/ui/") || id.includes("providers"),
           propertyReadSideEffects: true,
-          // CRITICAL: Disable try-catch deoptimization to preserve initialization order
           tryCatchDeoptimization: false,
-          // CRITICAL: Preserve all exports from provider modules
           preserveEntrySignatures: "strict",
         },
       },
       emptyOutDir: false,
     },
     test: {
-      include: ["src/**/*.test.{ts,tsx}"],
+      include: ["src/**/*.test.{ts,tsx}", "eslint-rules/**/*.test.js"],
       environment: "jsdom",
       setupFiles: ["src/setupTests.ts"],
       globals: true,
@@ -167,6 +112,7 @@ export default defineConfig(() => {
           "storybook-static/",
           "src/setupTests.ts",
           "src/vitest.shims.d.ts",
+          "eslint-rules/",
         ],
         thresholds: {
           lines: 80,

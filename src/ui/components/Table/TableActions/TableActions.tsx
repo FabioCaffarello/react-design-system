@@ -4,6 +4,7 @@ import type { HTMLAttributes } from "react";
 import Dropdown from "../../../components/Dropdown/Dropdown";
 import { Button } from "../../../primitives";
 import { MoreVertical } from "lucide-react";
+import { getSpacingClass } from "../../../tokens/spacing";
 
 export interface TableAction<
   T extends Record<string, unknown> = Record<string, unknown>,
@@ -64,7 +65,7 @@ export default function TableActions<
             variant="ghost"
             size="sm"
             aria-label="Row actions"
-            className="h-8 w-8 p-0"
+            className={`h-8 w-8 ${getSpacingClass("none", "p")}`}
           >
             <MoreVertical className="h-4 w-4" />
           </Button>

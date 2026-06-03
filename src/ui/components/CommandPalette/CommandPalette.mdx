@@ -1,0 +1,51 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as CommandPaletteStories from "./CommandPalette.stories";
+
+<Meta of={CommandPaletteStories} />
+
+# CommandPalette
+
+CommandPalette renders an overlay search field paired with a filtered list of actions the user types to find — the keyboard-first navigation pattern made famous by editor command bars (VS Code ⌘P / Spotlight / Linear's K-menu). Reach for it whenever the application has more actions than a top toolbar can surface and the user benefits from typing to discover and execute.
+
+## When to use
+
+- Use CommandPalette in surfaces with a long action inventory — admin tools, IDEs, internal dashboards, anywhere users routinely jump between pages or execute named operations.
+- Use `keywords` on items to surface them under multiple terms (`["theme", "appearance", "dark"]` all find "Toggle dark mode").
+- Use `group` to cluster related items into labelled sections ("Navigation", "Actions", "Recent"); groups read in the order their first item appears.
+- Use `description` on items with non-obvious effects — a one-line description sits below the label.
+- Bind the palette to a global shortcut (⌘K or ⌘P) so power users open it without the mouse.
+
+## When not to use
+
+- Use a `Dropdown` or `Menu` when the items are tied to a specific trigger and discovery by keyword does not apply.
+- Use `Autocomplete` when the user picks a value (a string the consumer keeps) rather than executing an action.
+- Use a `SearchInput` for filtering visible content — CommandPalette executes actions, SearchInput filters lists.
+- Avoid CommandPalette in surfaces where the action set is small enough that a visible toolbar covers everything; the cost of the overlay outweighs the saving.
+
+## Anatomy
+
+CommandPalette is shown via an optional `trigger` element (a button the user clicks to open the palette, or a global shortcut binding); when open, the `overlay backdrop` covers the page and the `command panel` is portaled near the top center; inside the panel, the `search input` carries a leading search icon and the user's query, and below it the `command list` renders filtered `command items` — each with an optional `icon` glyph, the `label`, and an optional `description` line — organized into `group sections` when items carry the `group` field.
+
+<Canvas of={CommandPaletteStories.Default} />
+
+## Examples
+
+<Canvas of={CommandPaletteStories.WithIcons} />
+
+<Canvas of={CommandPaletteStories.WithGroups} />
+
+## Props
+
+<Controls of={CommandPaletteStories.Default} />
+
+## Accessibility
+
+CommandPalette follows the WAI-ARIA Combobox pattern with the panel as a `role="dialog"` and the inner list as a `role="listbox"`. The search input carries `role="combobox"`, `aria-expanded="true"` while the dialog is open, `aria-controls` pointing at the list's `id`, and `aria-activedescendant` pointing at the currently-highlighted item.
+
+Keyboard navigation: when the palette opens, focus moves to the input automatically; Down / Up arrows move the highlight through filtered items (the input retains focus, the highlight is announced via `aria-activedescendant`); Enter activates the highlighted item's action and closes the palette; ESC closes without activating.
+
+The overlay backdrop is rendered with `aria-hidden="true"` — it is visual focus only. Clicking it closes the palette and returns focus to the previously focused element (the trigger button if `trigger` is wired, or the body otherwise).
+
+Group section labels are rendered with `role="presentation"` so they read as visual structure without breaking the listbox's option counting; assistive tech announces "10 of 24" relative to the filtered options, not the groups.
+
+The `emptyMessage` is announced via the list's `aria-live="polite"` when the filter resolves to zero matches. Keep the empty message short and actionable ("No commands match. Try a different keyword.") so screen-reader users know how to recover.

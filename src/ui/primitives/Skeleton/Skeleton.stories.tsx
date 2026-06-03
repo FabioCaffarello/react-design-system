@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import Skeleton from "./Skeleton";
 
 const meta = {
@@ -31,7 +31,6 @@ A skeleton loader component for displaying loading states. Includes proper ARIA 
       },
     },
   },
-  tags: ["autodocs"],
   argTypes: {
     variant: {
       control: "select",

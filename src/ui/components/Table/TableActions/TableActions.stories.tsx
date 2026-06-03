@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import TableActions from "./TableActions";
 
 interface SampleRow {
@@ -122,7 +122,7 @@ export const WithEvents: StoryObj<typeof TableActions> = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Click on the actions menu and select an action. Check the Actions
           panel to see events being fired.
         </p>

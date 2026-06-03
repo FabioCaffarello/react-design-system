@@ -1,0 +1,49 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as TimePickerStories from "./TimePicker.stories";
+
+<Meta of={TimePickerStories} />
+
+# TimePicker
+
+TimePicker renders a clickable input that opens a popover with hour and minute selectors (and an AM / PM toggle in 12-hour mode). Reach for it whenever the user picks a specific time of day — meeting starts, business hours, reminder schedules, time-of-day filters.
+
+## When to use
+
+- Use TimePicker for any field that accepts a time-of-day value — meeting start / end, business hours, alarm or reminder times, time-of-day filters on calendar surfaces.
+- Use `format="24h"` (default) when the consumer's domain speaks 24-hour time; `format="12h"` when the user-facing convention is AM / PM.
+- Use `label` for the field name so the picker has a visible accessible name; combine with `error` + `helperText` for validation feedback ("End must be after start").
+- Pair TimePicker with a `DatePicker` when the field needs both a date and a time; the two render as separate inputs.
+
+## When not to use
+
+- Use a plain text input with a regex / pattern when the user types times faster than they would pick them — engineers, schedulers entering many values.
+- Use `DatePicker` when the field accepts a date with no time component.
+- Use a custom timezone-aware picker when the consumer's surface is timezone-sensitive — TimePicker is timezone-naive and stores the raw "HH:mm" string.
+
+## Anatomy
+
+TimePicker renders a `field trigger` (an `Input` primitive showing the current value and a leading clock glyph, clickable to open the popover); the `popover panel` (anchored below the trigger) contains the `hour stepper` (a number input or arrow-incrementable column for 1-12 or 0-23), the `minute stepper` (the same shape for 0-59), and — in `format="12h"` only — the `AM / PM toggle` (a two-button segmented control). Selecting any control updates the value; outside-click or ESC closes the popover.
+
+<Canvas of={TimePickerStories.Default} />
+
+## Examples
+
+<Canvas of={TimePickerStories.Format24h} />
+
+<Canvas of={TimePickerStories.WithError} />
+
+## Props
+
+<Controls of={TimePickerStories.Default} />
+
+## Accessibility
+
+The field trigger is a native `<input>` with `role="combobox"`, `aria-haspopup="dialog"`, and `aria-expanded` reflecting the popover state. Typing in the input parses the value directly (the user does not have to open the popover to enter a time); arrow keys inside the input increment / decrement the focused hour or minute segment.
+
+The popover panel carries `role="dialog"` with `aria-label="Select time"`. Hour and minute steppers are native `<input type="number">` with `min` / `max` / `step` constraints; arrow keys increment, Tab moves between hour → minute → AM/PM. The AM / PM toggle is a pair of `<button role="radio">` inside `<div role="radiogroup">` — Tab into the group then arrow keys to switch.
+
+When `error` is true, the `helperText` region carries `role="alert"` and is announced when the validation state appears. The visible color change is paired with the announcement; do not rely on color alone.
+
+For accessible field naming, pass `label` to TimePicker — without a label, the field's accessible name falls back to the placeholder, which assistive tech may not announce reliably.
+
+TimePicker stores values as "HH:mm" strings without timezone context. Consumers wiring TimePicker into timezone-sensitive flows are responsible for combining the time string with a date and a timezone before persisting.

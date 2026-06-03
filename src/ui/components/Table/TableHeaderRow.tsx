@@ -3,6 +3,7 @@
 import type { HTMLAttributes } from "react";
 import { useTableContext } from "./TableContext";
 import { Checkbox } from "../../primitives";
+import { getSpacingClass } from "../../tokens/spacing";
 import TableHeaderCell from "./TableHeaderCell";
 
 export type TableHeaderRowProps = HTMLAttributes<HTMLTableRowElement>;
@@ -34,14 +35,14 @@ export default function TableHeaderRow({
         <th
           scope="col"
           role="columnheader"
-          className="px-6 py-3 w-12"
+          className={`${getSpacingClass("lg", "px")} ${getSpacingClass("md", "py")} w-12`}
           aria-label="Select all"
         >
           <Checkbox
             checked={selectionState.isAllSelected}
             onChange={toggleSelectAll}
             aria-label="Select all rows"
-            className="my-0"
+            className={getSpacingClass("none", "my")}
             indeterminate={selectionState.isIndeterminate}
           />
         </th>
@@ -61,7 +62,7 @@ export default function TableHeaderRow({
         <th
           scope="col"
           role="columnheader"
-          className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-12"
+          className={`${getSpacingClass("lg", "px")} ${getSpacingClass("md", "py")} text-right text-xs font-medium text-fg-tertiary uppercase tracking-wider w-12`}
           aria-label="Actions"
         >
           <span className="sr-only">Actions</span>

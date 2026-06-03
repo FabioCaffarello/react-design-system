@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as MenuStories from "./Menu.stories";
+
+<Meta of={MenuStories} />
+
+# Menu
+
+Menu renders a contextual menu via a compound API — the consumer composes `Menu.Trigger`, `Menu.Content`, `Menu.Item`, and `Menu.Separator` to assemble menus with rich item content (icons, descriptions, submenus, separators). Reach for it when `Dropdown`'s flat string items are not enough.
+
+## When to use
+
+- Use Menu when items need JSX content — icons next to labels, two-line items with descriptions, custom rendering per item.
+- Use Menu with separators (`Menu.Separator`) to group related items into clusters — a "Cut / Copy / Paste" cluster separated from a "Select all" item, an account menu with "Sign out" separated from the rest.
+- Use Menu's submenu pattern (a `Menu.Content` nested inside an item) for action sets large enough to warrant a second level — file menus, format menus.
+- Use `placement` to control where the panel opens relative to the trigger — `bottom` (default) for top-bar triggers, `top` for footer triggers, `left` / `right` for inline icon buttons.
+
+## When not to use
+
+- Use `Dropdown` when items are simple strings with a single onClick — Menu's compound API is overhead for the flat case.
+- Use `Tabs` for switching between content views — Menu items execute actions.
+- Use `CommandPalette` for keyboard-discoverable actions across the whole app — Menu is for actions tied to a specific trigger.
+- Use `Toolbar` when actions need to be persistently visible — Menu is opened on demand.
+
+## Anatomy
+
+Menu renders via a compound API: the root `Menu` mounts a `MenuProvider` carrying open state and placement, `Menu.Trigger` wraps the element that opens the menu (typically a `Button`) and wires `aria-haspopup` / `aria-expanded`, `Menu.Content` is the portaled panel with `role="menu"` containing items, each `Menu.Item` is a `<button role="menuitem">` with optional `disabled` and `onClick`, and `Menu.Separator` is a non-focusable `<hr role="separator">` dividing item clusters.
+
+<Canvas of={MenuStories.Default} />
+
+## Examples
+
+<Canvas of={MenuStories.WithIcons} />
+
+<Canvas of={MenuStories.WithSeparators} />
+
+<Canvas of={MenuStories.WithSubmenu} />
+
+## Props
+
+<Controls of={MenuStories.Default} />
+
+## Accessibility
+
+Menu implements the WAI-ARIA Menu pattern. The trigger carries `aria-haspopup="menu"` and `aria-expanded`; the panel carries `role="menu"`; each item is `role="menuitem"`; separators are `role="separator"` and not focusable.
+
+Keyboard navigation: arrow keys move between items (Down/Up cycle within the panel; Right opens a submenu; Left closes it and returns focus to the parent item); Enter or Space activates the focused item and closes the menu; ESC closes without activating; Home and End jump to first / last item.
+
+On open, focus moves to the first non-disabled item. On close (via activation, ESC, or outside-click), focus returns to the trigger. Submenus follow the same pattern recursively — opening a submenu moves focus to its first item; closing returns focus to the parent menu item.
+
+When the trigger has no visible label (a kebab icon, a settings cog), set `aria-label` describing the menu's purpose. The placement (`bottom`, `top`, `left`, `right`) is purely visual; assistive tech announces the menu structure regardless of which side it opens on.
+
+For destructive items, pair the visible label with words that name the consequence ("Sign out of all sessions", not "Sign out") — assistive tech does not announce visual cues like color.

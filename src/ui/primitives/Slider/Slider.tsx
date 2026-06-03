@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef, useState, forwardRef } from "react";
+import { useRef, useState, useId, forwardRef } from "react";
 import type { HTMLAttributes } from "react";
-import { getColorClass } from "../../tokens/colors";
 import { getAnimationClass } from "../../tokens/animations";
 import { getRadiusClass } from "../../tokens/radius";
+import { getShadowClass } from "../../tokens/shadows";
 import { getSpacingClass } from "../../tokens/spacing";
 import {
   getTypographySize,
@@ -29,7 +29,15 @@ export interface SliderProps
   marks?: number[];
   onChange?: (value: number | [number, number]) => void;
   onValueChange?: (value: number | [number, number]) => void;
-  label?: string;
+  /**
+   * Required label for the slider. Becomes the accessible name via
+   * aria-labelledby — single variant references the rendered <label>
+   * element directly; range variant references the same label plus a
+   * sr-only qualifier ("minimum" / "maximum") so AT users can tell
+   * which handle has focus. Make this a real domain term ("Volume",
+   * "Price range"), not the element type ("slider").
+   */
+  label: string;
 }
 
 /**
@@ -78,6 +86,15 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
   ref,
 ) {
   const sliderRef = useRef<HTMLDivElement>(null);
+  // Stable IDs for the visible <label> and (for range) the sr-only
+  // qualifier spans that distinguish min vs max handles. Range
+  // accessible name = label + qualifier via aria-labelledby with two
+  // ids ("Price range minimum" / "Price range maximum"), so the
+  // visible label remains the single source of truth — changing
+  // `label` propagates to both handles automatically.
+  const labelId = useId();
+  const minQualifierId = useId();
+  const maxQualifierId = useId();
   const [internalValue, setInternalValue] = useState<number | [number, number]>(
     defaultValue || (variant === "range" ? [min, max] : min),
   );
@@ -189,10 +206,10 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
     cn(
       "absolute",
       "bg-surface-brand",
-      "rounded-full",
+      getRadiusClass("full"),
       "border-2",
       "border-white",
-      "shadow-md",
+      getShadowClass("md"),
       "cursor-grab",
       "active:cursor-grabbing",
       getAnimationClass("base"),
@@ -234,34 +251,40 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
 
   return (
     <div ref={ref} className={cn("w-full", className)} {...props}>
-      {label && (
-        <label
-          className={cn(
-            "block",
-            getTypographySize("bodySmall"),
-            getTypographyWeight("label"),
-            getColorClass("neutral", "dark", "text"),
-            getSpacingClass("sm", "mb"),
-          )}
-        >
-          {label}
-          {showValue && (
-            <span
-              className={cn(
-                getSpacingClass("sm", "ml"),
-                getColorClass("neutral", "DEFAULT", "text"),
-              )}
-            >
-              {variant === "range" ? `${minValue} - ${maxValue}` : singleValue}
-            </span>
-          )}
-        </label>
+      <label
+        id={labelId}
+        className={cn(
+          "block",
+          getTypographySize("bodySmall"),
+          getTypographyWeight("label"),
+          "text-fg-primary",
+          getSpacingClass("sm", "mb"),
+        )}
+      >
+        {label}
+        {showValue && (
+          <span
+            className={cn(getSpacingClass("sm", "ml"), "text-fg-secondary")}
+          >
+            {variant === "range" ? `${minValue} - ${maxValue}` : singleValue}
+          </span>
+        )}
+      </label>
+      {variant === "range" && (
+        <>
+          <span id={minQualifierId} className="sr-only">
+            minimum
+          </span>
+          <span id={maxQualifierId} className="sr-only">
+            maximum
+          </span>
+        </>
       )}
       <div
         ref={sliderRef}
         className={cn(
           sliderTrackVariants({ size, disabled }),
-          getColorClass("neutral", "light", "bg"),
+          "bg-surface-muted",
           getRadiusClass("full"),
         )}
         onClick={handleTrackClick}
@@ -270,7 +293,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
         aria-valuemax={variant === "range" ? undefined : max}
         aria-valuenow={variant === "range" ? undefined : singleValue}
         aria-disabled={variant === "range" ? undefined : disabled}
-        aria-label={variant === "range" ? undefined : label}
+        aria-labelledby={variant === "range" ? undefined : labelId}
       >
         {/* Active track */}
         <div
@@ -297,7 +320,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
                 "absolute",
                 "w-1",
                 "h-1",
-                getColorClass("neutral", "DEFAULT", "bg"),
+                "bg-line-strong",
                 getRadiusClass("full"),
                 "-translate-x-1/2",
               )}
@@ -323,6 +346,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
               aria-valuemin={min}
               aria-valuemax={maxValue}
               aria-valuenow={minValue}
+              aria-labelledby={`${labelId} ${minQualifierId}`}
             />
             <div
               className={cn(
@@ -334,6 +358,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
               aria-valuemin={minValue}
               aria-valuemax={max}
               aria-valuenow={maxValue}
+              aria-labelledby={`${labelId} ${maxQualifierId}`}
             />
           </>
         ) : (
@@ -349,8 +374,8 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
             <span
               className={cn(
                 getTypographySize("caption"),
-                getColorClass("neutral", "DEFAULT", "text"),
-                "bg-white",
+                "text-fg-secondary",
+                "bg-surface-overlay",
                 getSpacingClass("sm", "px"),
                 getSpacingClass("xs", "py"),
                 getRadiusClass("md"),

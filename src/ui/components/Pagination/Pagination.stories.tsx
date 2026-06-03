@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { userEvent, within, waitFor } from "storybook/test";
 import { useState } from "react";
 import Pagination from "./Pagination";
 
@@ -83,9 +83,9 @@ export const Default: StoryObj<typeof Pagination> = {
 
     return (
       <div className="space-y-4">
-        <div className="border border-gray-200 rounded-lg overflow-hidden">
+        <div className="border border-line-default rounded-lg overflow-hidden">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-surface-subtle">
               <tr>
                 <th className="px-4 py-2 text-left text-sm font-medium">ID</th>
                 <th className="px-4 py-2 text-left text-sm font-medium">
@@ -95,7 +95,7 @@ export const Default: StoryObj<typeof Pagination> = {
             </thead>
             <tbody>
               {currentItems.map((item) => (
-                <tr key={item.id} className="border-t border-gray-200">
+                <tr key={item.id} className="border-t border-line-default">
                   <td className="px-4 py-2 text-sm">{item.id}</td>
                   <td className="px-4 py-2 text-sm">{item.name}</td>
                 </tr>
@@ -110,7 +110,7 @@ export const Default: StoryObj<typeof Pagination> = {
           totalItems={totalItems}
           itemsPerPage={itemsPerPage}
         />
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-fg-secondary">
           Showing items {startIndex + 1} to {endIndex} of {totalItems}
         </div>
       </div>
@@ -212,7 +212,7 @@ export const WithManyPages: StoryObj<typeof Pagination> = {
           totalItems={totalItems}
           itemsPerPage={itemsPerPage}
         />
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-fg-secondary">
           <p>
             Current page: <strong>{page}</strong> of {totalPages}
           </p>
@@ -250,9 +250,9 @@ export const InTable: StoryObj<typeof Pagination> = {
 
     return (
       <div className="space-y-4">
-        <div className="border border-gray-200 rounded-lg overflow-hidden">
+        <div className="border border-line-default rounded-lg overflow-hidden">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-surface-subtle">
               <tr>
                 <th className="px-4 py-2 text-left text-sm font-medium">ID</th>
                 <th className="px-4 py-2 text-left text-sm font-medium">
@@ -270,21 +270,13 @@ export const InTable: StoryObj<typeof Pagination> = {
               {currentItems.map((item) => (
                 <tr
                   key={item.id}
-                  className="border-t border-gray-200 hover:bg-gray-50"
+                  className="border-t border-line-default hover:bg-surface-hover"
                 >
                   <td className="px-4 py-2 text-sm">{item.id}</td>
                   <td className="px-4 py-2 text-sm">{item.name}</td>
                   <td className="px-4 py-2 text-sm">{item.email}</td>
                   <td className="px-4 py-2 text-sm">
-                    <span
-                      className={`px-2 py-1 rounded text-xs ${
-                        item.role === "Admin"
-                          ? "bg-blue-100 text-blue-800"
-                          : item.role === "User"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-gray-100 text-gray-800"
-                      }`}
-                    >
+                    <span className="px-2 py-1 rounded text-xs bg-surface-muted text-fg-primary">
                       {item.role}
                     </span>
                   </td>
@@ -323,7 +315,7 @@ export const WithEvents: StoryObj<typeof Pagination> = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Navigate through pages. Check the Actions panel to see events being
           fired.
         </p>
@@ -332,7 +324,7 @@ export const WithEvents: StoryObj<typeof Pagination> = {
           totalPages={10}
           onPageChange={handlePageChange}
         />
-        <p className="text-sm text-gray-500">Current page: {page}</p>
+        <p className="text-sm text-fg-tertiary">Current page: {page}</p>
       </div>
     );
   },

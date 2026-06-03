@@ -1,13 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import Label from "./Label";
 import { Input } from "../../primitives";
 
 const meta: Meta<typeof Label> = {
   title: "Primitives/Label",
   component: Label,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -188,7 +187,7 @@ export const WithDifferentInputs: StoryObj<typeof Label> = {
         </Label>
         <textarea
           id="textarea-input"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          className="w-full px-3 py-2 border border-line-emphasis rounded-md"
           placeholder="Textarea..."
           rows={3}
         />
@@ -199,7 +198,7 @@ export const WithDifferentInputs: StoryObj<typeof Label> = {
         </Label>
         <select
           id="select-input"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          className="w-full px-3 py-2 border border-line-emphasis rounded-md"
         >
           <option>Option 1</option>
           <option>Option 2</option>
@@ -226,7 +225,7 @@ export const WithEvents: StoryObj<typeof Label> = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Click the label below. It will focus the associated input and fire the
           onClick event.
         </p>

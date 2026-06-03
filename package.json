@@ -1,7 +1,7 @@
 {
   "name": "@fabio.caffarello/react-design-system",
   "private": false,
-  "version": "1.10.4",
+  "version": "1.24.0",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -15,27 +15,7 @@
       "require": "./dist/index.cjs"
     },
     "./styles": "./dist/react-design-system.css",
-    "./styles.css": "./dist/react-design-system.css",
-    "./primitives": {
-      "types": "./dist/ui/primitives/index.d.ts",
-      "import": "./dist/primitives/index.js",
-      "require": "./dist/primitives/index.cjs"
-    },
-    "./components": {
-      "types": "./dist/ui/components/index.d.ts",
-      "import": "./dist/components/index.js",
-      "require": "./dist/components/index.cjs"
-    },
-    "./tokens": {
-      "types": "./dist/ui/tokens/index.d.ts",
-      "import": "./dist/tokens/index.js",
-      "require": "./dist/tokens/index.cjs"
-    },
-    "./providers": {
-      "types": "./dist/ui/providers/index.d.ts",
-      "import": "./dist/providers/index.js",
-      "require": "./dist/providers/index.cjs"
-    }
+    "./styles.css": "./dist/react-design-system.css"
   },
   "files": [
     "dist",
@@ -51,6 +31,8 @@
     "lint": "eslint .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
+    "storybook:smoke": "npm run build-storybook && node scripts/storybook-smoke.mjs",
+    "test:a11y:baseline": "npm run build-storybook && node scripts/a11y-serial-baseline.mjs",
     "plop": "plop",
     "postplop": "prettier -w './src/ui/**/*.{ts,tsx}'",
     "test": "node scripts/run-tests.mjs",
@@ -78,6 +60,7 @@
     "@commitlint/config-conventional": "^20.3.1",
     "@eslint/js": "^9.36.0",
     "@hookform/resolvers": "^3.0.0",
+    "@playwright/test": "^1.60.0",
     "@storybook/addon-a11y": "^10.0.3",
     "@storybook/addon-coverage": "^3.0.0",
     "@storybook/addon-designs": "^11.1.1",
@@ -87,6 +70,7 @@
     "@storybook/addon-vitest": "^10.0.3",
     "@storybook/react-vite": "^10.0.3",
     "@storybook/test": "^8.6.15",
+    "@tailwindcss/vite": "^4.1.16",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
@@ -114,10 +98,11 @@
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
     "react-hook-form": "^7.71.0",
+    "remark-gfm": "^4.0.1",
     "storybook": "^10.0.3",
     "storybook-addon-performance": "^0.17.3",
     "tailwindcss": "^4.1.16",
-    "tsx": "^4.19.2",
+    "tsx": "^4.22.4",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.45.0",
     "vite": "^7.1.7",
@@ -129,5 +114,8 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
+  },
+  "volta": {
+    "node": "23.11.1"
   }
 }

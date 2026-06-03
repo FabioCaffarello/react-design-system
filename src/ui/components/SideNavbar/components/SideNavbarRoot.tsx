@@ -6,6 +6,7 @@ import { useSideNavbarThemeRequired } from "../contexts/SideNavbarThemeContext";
 import { useSideNavbarConfigRequired } from "../contexts/SideNavbarConfigContext";
 import { useSideNavbarToggleContextRequired } from "../contexts/SideNavbarToggleContext";
 import { cn } from "../../../utils";
+import { getShadowClass } from "../../../tokens/shadows";
 import { getZIndexClass } from "../../../tokens/z-index";
 import SideNavbarResizeHandle from "./SideNavbarResizeHandle";
 import SideNavbarBackdrop from "./SideNavbarBackdrop";
@@ -15,7 +16,7 @@ import type { SideNavbarRootProps } from "../types";
 const variantClasses = {
   default: "",
   compact: "text-sm",
-  elevated: "shadow-lg",
+  elevated: getShadowClass("lg"),
   minimal: "border-0",
   bordered: "border-2",
 };
@@ -135,6 +136,18 @@ export default function SideNavbarRoot({
 
       <aside
         ref={sidebarRef as React.RefObject<HTMLElement>}
+        // SideNavbarToggle's `aria-controls="side-navbar-sidebar"` must
+        // resolve to an element that is ALWAYS in the DOM whenever the
+        // toggle is rendered — independent of whether the consumer
+        // composes in `<SideNavbar.Sidebar>` (the collapsible content
+        // area) or only `<SideNavbar.Navbar>` (the icon strip, the
+        // pattern DashboardLayout uses). The outer `<aside>` is that
+        // anchor: it always renders, and structurally the toggle DOES
+        // control this region's collapsed state. Previously the id
+        // lived on Sidebar.tsx's inner `<div>`, which is conditional —
+        // when Sidebar wasn't composed, the toggle's aria-controls was
+        // a dangling reference (axe `aria-valid-attr-value`, critical).
+        id="side-navbar-sidebar"
         className={cn(
           positionClass,
           "flex",
@@ -149,8 +162,8 @@ export default function SideNavbarRoot({
             // Em desktop: sempre 'relative' para ficar no mesmo plano do conteúdo
             // Em mobile overlay: 'fixed' para sobrepor o conteúdo
             position: shouldUseFixed ? "fixed" : "relative",
-            backgroundColor: "var(--color-muted)",
-            borderRight: "1px solid var(--color-border)",
+            backgroundColor: "var(--color-surface-subtle)",
+            borderRight: "1px solid var(--color-line-default)",
             width: displayedWidth,
             minWidth: displayedWidth,
             transitionProperty: isResizing

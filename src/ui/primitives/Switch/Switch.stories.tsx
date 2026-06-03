@@ -1,13 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import { useState } from "react";
 import Switch from "./Switch";
 
 const meta: Meta<typeof Switch> = {
   title: "Primitives/Switch",
   component: Switch,
-  tags: ["autodocs"],
   parameters: {
     layout: "centered",
     docs: {
@@ -43,9 +42,9 @@ A toggle switch component for binary choices.
       control: "text",
       description: "Label text",
     },
-    description: {
+    helperText: {
       control: "text",
-      description: "Description text below label",
+      description: "Helper text rendered beneath the label",
     },
     size: {
       control: "select",
@@ -110,6 +109,7 @@ export const Default: Story = {
     );
   },
   args: {
+    label: "Notifications",
     checked: false,
   },
 };
@@ -226,7 +226,7 @@ export const Uncontrolled: Story = {
     <div className="space-y-4">
       <Switch label="Uncontrolled switch" defaultChecked={false} />
       <Switch label="Uncontrolled checked" defaultChecked={true} />
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-secondary">
         Uses defaultChecked for initial state without state management.
       </p>
     </div>
@@ -247,17 +247,17 @@ export const Accessibility: Story = {
     return (
       <div className="space-y-4">
         <div>
-          <p className="text-sm text-gray-600 mb-2">
+          <p className="text-sm text-fg-secondary mb-2">
             Switch with proper ARIA attributes and keyboard navigation:
           </p>
           <Switch
             label="Accessible switch"
-            description="This switch supports keyboard navigation (Enter/Space)"
+            helperText="This switch supports keyboard navigation (Enter/Space)"
             checked={checked}
             onChange={(e) => setChecked(e.target.checked)}
           />
         </div>
-        <div className="text-xs text-gray-500">
+        <div className="text-xs text-fg-tertiary">
           <p>Keyboard shortcuts:</p>
           <ul className="list-disc list-inside mt-1">
             <li>Enter or Space: Toggle switch</li>
@@ -289,7 +289,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Interact with the switch below. Check the Actions panel to see events
           being fired.
         </p>
@@ -300,7 +300,9 @@ export const WithEvents: Story = {
           onFocus={handleFocus}
           onBlur={handleBlur}
         />
-        <p className="text-sm text-gray-500">State: {checked ? "ON" : "OFF"}</p>
+        <p className="text-sm text-fg-tertiary">
+          State: {checked ? "ON" : "OFF"}
+        </p>
       </div>
     );
   },

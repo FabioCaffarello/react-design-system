@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import { useState } from "react";
 import { FileText, Inbox, FolderOpen } from "lucide-react";
 import EmptyState from "./EmptyState";
@@ -34,7 +34,6 @@ A component for displaying empty states when there's no content. Includes proper
       },
     },
   },
-  tags: ["autodocs"],
   argTypes: {
     variant: {
       control: "select",
@@ -88,13 +87,13 @@ export const WithAction: Story = {
     if (items.length > 0) {
       return (
         <div className="space-y-4">
-          <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-            <p className="text-green-800">
+          <div className="p-4 bg-success-bg border border-success rounded-lg">
+            <p className="text-fg-success">
               Epic created! Items: {items.join(", ")}
             </p>
             <button
               onClick={() => setItems([])}
-              className="mt-2 px-3 py-1 text-sm bg-green-200 rounded hover:bg-green-300"
+              className="mt-2 px-3 py-1 text-sm bg-success-bg-emphasis rounded hover:bg-success"
             >
               Reset
             </button>
@@ -113,7 +112,9 @@ export const WithAction: Story = {
           variant="withAction"
         />
         {actionClicked && (
-          <p className="text-sm text-gray-600 text-center">Creating epic...</p>
+          <p className="text-sm text-fg-secondary text-center">
+            Creating epic...
+          </p>
         )}
       </div>
     );
@@ -144,16 +145,16 @@ export const WithIllustration: Story = {
     if (stories.length > 0) {
       return (
         <div className="space-y-4">
-          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-blue-800 font-medium mb-2">Stories created:</p>
-            <ul className="list-disc list-inside text-blue-700">
+          <div className="p-4 bg-surface-selected-subtle border border-line-default rounded-lg">
+            <p className="text-fg-primary font-medium mb-2">Stories created:</p>
+            <ul className="list-disc list-inside text-fg-primary">
               {stories.map((story, i) => (
                 <li key={i}>{story}</li>
               ))}
             </ul>
             <button
               onClick={() => setStories([])}
-              className="mt-3 px-3 py-1 text-sm bg-blue-200 rounded hover:bg-blue-300"
+              className="mt-3 px-3 py-1 text-sm bg-surface-emphasis rounded hover:bg-surface-strong"
             >
               Clear Stories
             </button>
@@ -171,7 +172,7 @@ export const WithIllustration: Story = {
         variant="withIllustration"
         illustration={
           <FileText
-            className="mx-auto h-12 w-12 text-gray-400"
+            className="mx-auto h-12 w-12 text-fg-quaternary"
             aria-hidden="true"
           />
         }
@@ -194,17 +195,20 @@ export const DifferentIllustrations: Story = {
 
     const illustrations = {
       inbox: (
-        <Inbox className="mx-auto h-12 w-12 text-gray-400" aria-hidden="true" />
+        <Inbox
+          className="mx-auto h-12 w-12 text-fg-quaternary"
+          aria-hidden="true"
+        />
       ),
       folder: (
         <FolderOpen
-          className="mx-auto h-12 w-12 text-gray-400"
+          className="mx-auto h-12 w-12 text-fg-quaternary"
           aria-hidden="true"
         />
       ),
       file: (
         <FileText
-          className="mx-auto h-12 w-12 text-gray-400"
+          className="mx-auto h-12 w-12 text-fg-quaternary"
           aria-hidden="true"
         />
       ),
@@ -234,19 +238,19 @@ export const DifferentIllustrations: Story = {
         <div className="flex gap-2 justify-center">
           <button
             onClick={() => setType("inbox")}
-            className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            className="px-3 py-1 text-sm bg-surface-emphasis rounded hover:bg-surface-strong"
           >
             Inbox
           </button>
           <button
             onClick={() => setType("folder")}
-            className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            className="px-3 py-1 text-sm bg-surface-emphasis rounded hover:bg-surface-strong"
           >
             Folder
           </button>
           <button
             onClick={() => setType("file")}
-            className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            className="px-3 py-1 text-sm bg-surface-emphasis rounded hover:bg-surface-strong"
           >
             File
           </button>
@@ -281,7 +285,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Click the action button. Check the Actions panel to see events being
           fired.
         </p>
@@ -353,7 +357,7 @@ export const WithIllustrationState: Story = {
     variant: "withIllustration",
     illustration: (
       <FileText
-        className="mx-auto h-12 w-12 text-gray-400"
+        className="mx-auto h-12 w-12 text-fg-quaternary"
         aria-hidden="true"
       />
     ),

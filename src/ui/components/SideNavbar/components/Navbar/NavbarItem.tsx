@@ -3,6 +3,7 @@
 import React from "react";
 import { useNavbarRequired } from "../../contexts/NavbarContext";
 import { cn } from "../../../../utils";
+import { getRadiusClass } from "../../../../tokens/radius";
 import { getSpacingClass } from "../../../../tokens/spacing";
 import { getZIndexClass } from "../../../../tokens/z-index";
 import Tooltip from "../../../../primitives/Tooltip/Tooltip";
@@ -33,10 +34,10 @@ const SIZE_CLASSES = {
  * Badge variant colors
  */
 const BADGE_VARIANTS = {
-  default: "bg-red-500",
-  success: "bg-green-500",
-  warning: "bg-amber-500",
-  danger: "bg-red-600",
+  default: "bg-error",
+  success: "bg-success",
+  warning: "bg-warning",
+  danger: "bg-error-dark",
 } as const;
 
 /**
@@ -126,7 +127,7 @@ export default function NavbarItem({
         className={cn(
           "text-xs",
           "flex-shrink-0", // Prevenir que label encolha
-          // micro-z: redundant with inline zIndex:10 below — see BACKLOG
+          // micro-z: label above icon within navbar item
           "relative z-10",
           effectiveLabelMode === "below" && "text-center",
           effectiveLabelMode === "inline" && "truncate",
@@ -135,9 +136,6 @@ export default function NavbarItem({
           // Garantir que label não seja afetada por transformações
           willChange: "auto",
           transform: "none",
-          // micro-z: label above icon within navbar item (wins CSS
-          // specificity over the className z-10 above)
-          zIndex: 10,
         }}
       >
         {label}
@@ -153,11 +151,11 @@ export default function NavbarItem({
     "items-center",
     effectiveLabelMode === "inline" ? "justify-start" : "justify-center",
     effectiveLabelMode === "below" && "flex-col",
-    "rounded-lg",
+    getRadiusClass("lg"),
     "box-border", // Garantir box-sizing consistente
     "focus:outline-none",
     "focus:ring-2",
-    "focus:ring-[var(--color-primary-500)]",
+    "focus:ring-line-focus",
     "focus:ring-offset-1",
     "w-full", // Ensure full width for vertical layout
     "flex-shrink-0", // Prevent items from shrinking
@@ -177,20 +175,20 @@ export default function NavbarItem({
   // Estados hover/active sem transições para evitar movimento
   const variantClasses = {
     default: isActive
-      ? "bg-[var(--color-primary-100)] text-[var(--color-primary-600)]"
+      ? "bg-surface-brand-muted text-fg-brand-emphasis"
       : disabled
-        ? "text-[var(--color-neutral-400)]"
-        : "text-[var(--color-neutral-600)] hover:bg-[var(--color-neutral-100)] hover:text-[var(--color-neutral-900)] [&:hover]:!transform-none",
+        ? "text-fg-disabled"
+        : "text-fg-secondary hover:bg-surface-active hover:text-fg-primary [&:hover]:!transform-none",
     ghost: isActive
-      ? "text-[var(--color-primary-600)]"
+      ? "text-fg-brand-emphasis"
       : disabled
-        ? "text-[var(--color-neutral-400)]"
-        : "text-[var(--color-neutral-600)] hover:text-[var(--color-neutral-900)] [&:hover]:!transform-none",
+        ? "text-fg-disabled"
+        : "text-fg-secondary hover:text-fg-primary [&:hover]:!transform-none",
     subtle: isActive
-      ? "bg-[var(--color-neutral-100)] text-[var(--color-neutral-900)]"
+      ? "bg-surface-active text-fg-primary"
       : disabled
-        ? "text-[var(--color-neutral-400)]"
-        : "text-[var(--color-neutral-500)] hover:bg-[var(--color-neutral-50)] hover:text-[var(--color-neutral-700)] [&:hover]:!transform-none",
+        ? "text-fg-disabled"
+        : "text-fg-tertiary hover:bg-surface-hover hover:text-fg-primary [&:hover]:!transform-none",
   };
 
   const content = (
@@ -248,10 +246,10 @@ export default function NavbarItem({
             "flex",
             "items-center",
             "justify-center",
-            "px-1",
+            getSpacingClass("xs", "px"),
             "font-medium",
-            "text-white",
-            "rounded-full",
+            "text-fg-inverse",
+            getRadiusClass("full"),
             sizeConfig.badge,
             BADGE_VARIANTS[badgeVariant],
           )}

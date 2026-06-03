@@ -81,7 +81,7 @@ export default function SidebarGroup({
     <div
       className={`
         border-b
-        border-gray-200
+        border-line-default
         last:border-b-0
         ${className}
       `}
@@ -101,24 +101,26 @@ export default function SidebarGroup({
             text-left
             transition-colors
             duration-150
-            ${isActive ? "bg-gray-100" : "hover:bg-gray-100"}
+            ${isActive ? "bg-surface-active" : "hover:bg-surface-active"}
             ${!collapsible ? "cursor-default" : "cursor-pointer"}
           `}
           aria-expanded={collapsible ? !isCollapsed : undefined}
           aria-controls={collapsible ? `sidebar-group-${id}` : undefined}
         >
-          <div className="flex items-center gap-2">
-            {icon && <span className="w-4 h-4 text-gray-500">{icon}</span>}
-            <span className="text-sm font-medium text-gray-700">{title}</span>
+          <div className={`flex items-center ${getSpacingClass("sm", "gap")}`}>
+            {icon && <span className="w-4 h-4 text-fg-tertiary">{icon}</span>}
+            <span className="text-sm font-medium text-fg-secondary">
+              {title}
+            </span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className={`flex items-center ${getSpacingClass("sm", "gap")}`}>
             {actions}
             {collapsible && (
               <ChevronDown
                 className={`
                   w-4
                   h-4
-                  text-gray-400
+                  text-fg-tertiary
                   transition-transform
                   ${isCollapsed ? "-rotate-90" : "rotate-0"}
                 `}
@@ -132,12 +134,19 @@ export default function SidebarGroup({
 
       {collapsible ? (
         <Collapsible open={!isCollapsed} duration={animationDuration}>
-          <div id={`sidebar-group-${id}`} className="px-3 py-2">
+          <div
+            id={`sidebar-group-${id}`}
+            className={`${getSpacingClass("md", "px")} ${getSpacingClass("sm", "py")}`}
+          >
             {children}
           </div>
         </Collapsible>
       ) : (
-        <div className="px-3 py-2">{children}</div>
+        <div
+          className={`${getSpacingClass("md", "px")} ${getSpacingClass("sm", "py")}`}
+        >
+          {children}
+        </div>
       )}
     </div>
   );

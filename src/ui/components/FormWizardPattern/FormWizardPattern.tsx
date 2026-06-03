@@ -3,6 +3,8 @@ import { Stepper } from "../../components";
 import { Container } from "../../layouts/Container/Container";
 import { Stack } from "../../layouts/Stack/Stack";
 import { Button } from "../../primitives";
+import { getRadiusClass } from "../../tokens/radius";
+import { getSpacingClass } from "../../tokens/spacing";
 import type { StepperStep } from "../../components";
 
 export interface FormWizardStep extends StepperStep {
@@ -139,22 +141,28 @@ export function FormWizardPattern({
         />
 
         {/* Form Content */}
-        <div className="bg-white rounded-lg border p-6">
+        <div
+          className={`bg-surface-base ${getRadiusClass("lg")} border ${getSpacingClass("lg", "p")}`}
+        >
           <Stack spacing="md">
             <div>
               <h2 className="text-2xl font-semibold">
                 {currentStepData.title}
               </h2>
               {currentStepData.description && (
-                <p className="text-gray-600 mt-1">
+                <p
+                  className={`text-fg-secondary ${getSpacingClass("xs", "mt")}`}
+                >
                   {currentStepData.description}
                 </p>
               )}
             </div>
 
             {hasError && (
-              <div className="bg-red-50 border border-red-200 rounded p-3">
-                <p className="text-sm text-red-800">
+              <div
+                className={`bg-error-bg border border-error-border rounded ${getSpacingClass("md", "p")}`}
+              >
+                <p className="text-sm text-fg-error">
                   Please fix the errors before proceeding.
                 </p>
               </div>
@@ -163,7 +171,9 @@ export function FormWizardPattern({
             <div className="min-h-48">{currentStepData.fields}</div>
 
             {/* Navigation Buttons */}
-            <div className="flex justify-between pt-4 border-t">
+            <div
+              className={`flex justify-between ${getSpacingClass("base", "pt")} border-t`}
+            >
               <Button
                 variant="outline"
                 onClick={handleBack}

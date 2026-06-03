@@ -1,151 +1,80 @@
-import { Meta } from "@storybook/addon-docs/blocks";
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as FormStories from "./Form.stories";
 
-<Meta title="Components/Form" />
+<Meta of={FormStories} />
 
 # Form
 
-A comprehensive form wrapper component that provides validation states, error handling, success messages, and consistent layout.
+Form is a flexible wrapper around the native `<form>` element with built-in slots for loading, error, and success states, plus optional first-class integration with React Hook Form for controlled validation. Reach for it as the root of any data-collection surface — sign-up, settings, multi-field configuration, anywhere the user submits a structured set of fields.
 
-## Features
+## When to use
 
-- **Validation States**: Visual feedback for error, success, and loading states
-- **Error Handling**: Global and field-level error messages
-- **Accessibility**: Full ARIA support and keyboard navigation
-- **Layout**: Consistent spacing and structure
-- **Loading States**: Built-in loading indicator support
+- Use Form as the root for any data-collection surface — settings panels, sign-up flows, multi-field configuration, contact requests, account verification.
+- Use the simple shape (no `form` prop) for short forms with one or two fields where managing state through hooks is overhead.
+- Use the React Hook Form shape (pass `form={useForm()}`) for any form with validation, dynamic fields, or controlled state — the integration handles registration, error wiring, and submission without re-implementing.
+- Use `error`, `success`, and `loading` to surface form-level status without touching field-level wiring; the slots render at the top of the form, above the fields.
 
-## Basic Usage
+## When not to use
 
-```tsx
-import {
-  Form,
-  Input,
-  Label,
-  Button,
-} from "@fabio.caffarello/react-design-system";
+- Use `FormWizardPattern` when the form spans multiple steps and needs progression indicators — Form is single-step.
+- Use a plain `<form>` element when the surface needs no error / success / loading state and the consumer wants to keep all wiring custom.
+- Use `LoginBox` for the fixed email + password sign-in shape — Form is the general-purpose wrapper, LoginBox is the specific auth shell.
 
-<Form onSubmit={handleSubmit}>
-  <div className="space-y-2">
-    <Label htmlFor="email" variant="required">
-      Email
-    </Label>
-    <Input id="email" name="email" type="email" required />
-  </div>
-  <Button type="submit">Submit</Button>
-</Form>;
-```
+## Anatomy
 
-## Validation States
+Form renders a native `<form>` with vertical spacing: an optional `status banner` at the top (showing `error` text in alert tone, `success` text in confirmation tone, or a `loading` indicator — mutually exclusive, the banner takes whichever state is set); the `fields region` (the `children`, typically composed of `Label` + `Input` / `Textarea` / `Select` / `Checkbox` / `Radio` clusters and an optional `ErrorMessage` per field); the `submit row` at the bottom (consumer-rendered, typically a `Button type="submit"` possibly with a secondary affordance to its left).
 
-### Error State
+<Canvas of={FormStories.Default} />
 
-Display global or field-level errors:
+## Examples
 
-```tsx
-<Form error="Please fix the errors below">{/* Form fields */}</Form>
-```
+<Canvas of={FormStories.WithError} />
 
-### Success State
+<Canvas of={FormStories.WithSuccess} />
 
-Show success messages:
+<Canvas of={FormStories.Loading} />
 
-```tsx
-<Form success="Form submitted successfully!">{/* Form fields */}</Form>
-```
+## Props
 
-### Loading State
+<Controls of={FormStories.Default} />
 
-Indicate form submission in progress:
+## Accessibility
 
-```tsx
-<Form loading={isSubmitting}>
-  <Button type="submit" disabled={isSubmitting}>
-    {isSubmitting ? "Submitting..." : "Submit"}
-  </Button>
-</Form>
-```
+Form renders a native `<form>` element so the browser handles submit semantics — Enter inside any field submits the form, autofill works, password managers detect the submit affordance. The `<form>` carries `role="form"` (implicit) and an `aria-label` from the consumer's surrounding context (a `PageHeader` title or an explicit prop).
 
-## Field-Level Validation
+The status banner renders with `role="alert"` for `error`, `role="status"` for `success`, and `aria-live="polite"` for `loading` — assistive tech announces each state when it appears without interrupting current utterances. The banner replaces previous banner content rather than stacking; if multiple states need to coexist (loading + error from a previous submit), the consumer is responsible for staged messaging.
 
-Use individual field components with error states:
+Field-level error wiring goes through each field's `aria-describedby` pointing at an `ErrorMessage`'s `id`. The Form wrapper does not auto-wire this — each field is the consumer's composition. See `ErrorMessage` for the per-field announcement pattern.
 
-```tsx
-import { Input, ErrorMessage } from "@fabio.caffarello/react-design-system";
+The Form's submit handler runs after the browser's native validation (HTML5 `required`, `pattern`, etc.); use the HTML5 attributes for simple constraints and the React Hook Form integration for everything else. The submit button should have `disabled` set while `loading` is true so users cannot double-submit; the visible label can stay the same or swap to a "Submitting…" variant.
 
-<div className="space-y-2">
-  <Label htmlFor="email">Email</Label>
-  <Input id="email" error={!!errors.email} helperText={errors.email} />
-  {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
-</div>;
-```
+{/* trailing-section exception: React Hook Form integration is a major external concern that doesn't fit existing sections */}
 
-## Form Layout
+## React Hook Form integration
 
-The Form component provides consistent spacing:
-
-```tsx
-<Form className="max-w-md space-y-4">
-  <div className="space-y-2">
-    <Label htmlFor="name">Name</Label>
-    <Input id="name" />
-  </div>
-  <div className="space-y-2">
-    <Label htmlFor="email">Email</Label>
-    <Input id="email" type="email" />
-  </div>
-  <Button type="submit">Submit</Button>
-</Form>
-```
-
-## Integration with React Hook Form
+Pass `form={useForm()}` to switch Form into controlled mode — the wrapper drives registration, validation, error wiring, and submission for you. The `onSubmit` handler receives typed values from your schema instead of a raw event:
 
 ```tsx
 import { useForm } from "react-hook-form";
-import {
-  Form,
-  Input,
-  Label,
-  Button,
-} from "@fabio.caffarello/react-design-system";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
-function MyForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+const schema = z.object({
+  email: z.string().email(),
+  message: z.string().min(10),
+});
+
+function Contact() {
+  const form = useForm({ resolver: zodResolver(schema) });
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          {...register("email", { required: "Email is required" })}
-          error={!!errors.email}
-          helperText={errors.email?.message}
-        />
-      </div>
-      <Button type="submit">Submit</Button>
+    <Form form={form} onSubmit={(data) => save(data)}>
+      <Input {...form.register("email")} error={!!form.formState.errors.email} />
+      <Textarea {...form.register("message")} />
+      <Button type="submit">Send</Button>
     </Form>
   );
 }
 ```
 
-## Accessibility
-
-The Form component ensures accessibility:
-
-- Proper form structure with `role="form"`
-- ARIA labels and descriptions
-- Error messages associated with fields via `aria-describedby`
-- Keyboard navigation support
-- Focus management
-
-### Best Practices
-
-1. **Labels**: Always provide labels for form fields
-2. **Error Messages**: Associate error messages with fields
-3. **Required Fields**: Clearly indicate required fields
-4. **Loading States**: Provide feedback during submission
-5. **Validation**: Validate on both client and server side
+Form's `error`, `success`, and `loading` props still apply in this mode; field-level error rendering is the consumer's responsibility (via `form.formState.errors` and `ErrorMessage`). The integration covers the controller-level concern, not the per-field UI.

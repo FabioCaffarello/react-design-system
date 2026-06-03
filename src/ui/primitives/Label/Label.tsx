@@ -4,7 +4,6 @@ import {
   getTypographySize,
   getTypographyWeight,
 } from "../../tokens/typography";
-import { getColorClass } from "../../tokens/colors";
 import { getSpacingClass } from "../../tokens/spacing";
 import { cn } from "../../utils";
 
@@ -38,7 +37,7 @@ const Label = memo(
           "block",
           getTypographySize("label"),
           getTypographyWeight("label"),
-          getColorClass("neutral", "dark", "text"),
+          "text-fg-primary",
         ),
       [],
     );
@@ -52,12 +51,12 @@ const Label = memo(
         required: cn(
           "after:content-['*']",
           `after:${getSpacingClass("0.5", "ml")}`,
-          "after:text-red-500", // error DEFAULT color
+          "after:text-fg-error",
         ),
         optional: cn(
           "after:content-['(optional)']",
-          "after:ml-1", // xs spacing = 1 (4px) - note: test expects ml-1, not ml-0.5
-          "after:text-gray-400", // neutral DEFAULT color
+          `after:${getSpacingClass("xs", "ml")}`,
+          "after:text-fg-tertiary",
           "after:font-normal",
         ),
       }),

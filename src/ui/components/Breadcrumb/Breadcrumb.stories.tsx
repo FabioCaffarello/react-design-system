@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import { useState } from "react";
 import Breadcrumb from "./Breadcrumb";
 
@@ -76,11 +76,11 @@ export const Default: StoryObj<typeof Breadcrumb> = {
     return (
       <div className="space-y-4">
         <Breadcrumb items={items} />
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-fg-secondary">
           <p>
             <strong>Current path:</strong> {currentPath.join(" > ")}
           </p>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-fg-tertiary mt-1">
             Click breadcrumb links to navigate
           </p>
         </div>
@@ -138,8 +138,8 @@ export const ThreeLevels: StoryObj<typeof Breadcrumb> = {
     return (
       <div className="space-y-4">
         <Breadcrumb items={items} />
-        <div className="p-4 bg-gray-50 rounded-lg">
-          <p className="text-sm text-gray-600">
+        <div className="p-4 bg-surface-subtle rounded-lg">
+          <p className="text-sm text-fg-secondary">
             <strong>Current page:</strong> {currentPage}
           </p>
         </div>
@@ -209,12 +209,12 @@ export const WithEvents: StoryObj<typeof Breadcrumb> = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Click breadcrumb items below. Check the Actions panel to see events
           being fired.
         </p>
         <Breadcrumb items={items} />
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-fg-tertiary">
           Current path: {currentPath.join(" > ")}
         </p>
       </div>

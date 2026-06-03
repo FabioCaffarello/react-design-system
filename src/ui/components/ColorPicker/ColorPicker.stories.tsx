@@ -1,13 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, within, waitFor } from "storybook/test";
 import { useState } from "react";
 import ColorPicker from "./ColorPicker";
 
 const meta: Meta<typeof ColorPicker> = {
   title: "Components/ColorPicker",
   component: ColorPicker,
-  tags: ["autodocs"],
   parameters: {
     layout: "centered",
     docs: {
@@ -84,7 +83,7 @@ export const Default: Story = {
     return (
       <div>
         <ColorPicker {...args} value={value} onChange={setValue} />
-        <p className="mt-4 text-sm text-gray-600">Selected: {value}</p>
+        <p className="mt-4 text-sm text-fg-secondary">Selected: {value}</p>
       </div>
     );
   },
@@ -100,7 +99,7 @@ export const WithLabel: Story = {
           value={value}
           onChange={setValue}
         />
-        <p className="mt-4 text-sm text-gray-600">Selected: {value}</p>
+        <p className="mt-4 text-sm text-fg-secondary">Selected: {value}</p>
       </div>
     );
   },
@@ -117,7 +116,7 @@ export const WithInput: Story = {
           onChange={setValue}
           showInput
         />
-        <p className="mt-4 text-sm text-gray-600">Selected: {value}</p>
+        <p className="mt-4 text-sm text-fg-secondary">Selected: {value}</p>
       </div>
     );
   },
@@ -147,7 +146,7 @@ export const CustomPresets: Story = {
           onChange={setValue}
           presets={customPresets}
         />
-        <p className="mt-4 text-sm text-gray-600">Selected: {value}</p>
+        <p className="mt-4 text-sm text-fg-secondary">Selected: {value}</p>
       </div>
     );
   },
@@ -164,7 +163,7 @@ export const WithoutInput: Story = {
           onChange={setValue}
           showInput={false}
         />
-        <p className="mt-4 text-sm text-gray-600">Selected: {value}</p>
+        <p className="mt-4 text-sm text-fg-secondary">Selected: {value}</p>
       </div>
     );
   },
@@ -184,7 +183,7 @@ export const InForm: Story = {
     const [secondaryColor, setSecondaryColor] = useState("#8b5cf6");
 
     return (
-      <div className="w-96 space-y-4 p-4 border border-gray-200 rounded-lg">
+      <div className="w-96 space-y-4 p-4 border border-line-default rounded-lg">
         <h3 className="text-lg font-semibold">Theme Colors</h3>
         <ColorPicker
           label="Primary Color"
@@ -196,14 +195,14 @@ export const InForm: Story = {
           value={secondaryColor}
           onChange={setSecondaryColor}
         />
-        <div className="pt-4 border-t border-gray-200">
+        <div className="pt-4 border-t border-line-default">
           <div className="flex gap-2">
             <div
-              className="w-16 h-16 rounded-md border border-gray-200"
+              className="w-16 h-16 rounded-md border border-line-default"
               style={{ backgroundColor: primaryColor }}
             />
             <div
-              className="w-16 h-16 rounded-md border border-gray-200"
+              className="w-16 h-16 rounded-md border border-line-default"
               style={{ backgroundColor: secondaryColor }}
             />
           </div>
@@ -223,7 +222,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Select a color. Check the Actions panel to see events being fired.
         </p>
         <ColorPicker
@@ -232,7 +231,7 @@ export const WithEvents: Story = {
           onChange={handleChange}
           showInput
         />
-        <p className="text-sm text-gray-500">Selected: {value}</p>
+        <p className="text-sm text-fg-tertiary">Selected: {value}</p>
       </div>
     );
   },

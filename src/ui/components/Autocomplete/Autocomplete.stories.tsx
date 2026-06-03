@@ -1,14 +1,13 @@
 import React from "react";
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import Autocomplete from "./Autocomplete";
 import { Mail, User, Settings } from "lucide-react";
 
 const meta: Meta<typeof Autocomplete> = {
   title: "Components/Autocomplete",
   component: Autocomplete,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -113,7 +112,7 @@ export const Default: Story = {
           }}
           placeholder="Search fruits..."
         />
-        <div className="text-sm text-gray-600 space-y-1">
+        <div className="text-sm text-fg-secondary space-y-1">
           {selected && (
             <p>
               <strong>Selected:</strong>{" "}
@@ -182,7 +181,7 @@ export const Loading: Story = {
           loading={loading}
           placeholder="Search with loading..."
         />
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-fg-secondary">
           {loading ? (
             <p>⏳ Searching...</p>
           ) : (
@@ -226,9 +225,9 @@ export const EmptyState: Story = {
           emptyMessage="No fruits found. Try searching for Apple, Banana, Cherry, Date, or Elderberry."
           placeholder="Search fruits..."
         />
-        <div className="text-sm text-gray-600 space-y-1">
+        <div className="text-sm text-fg-secondary space-y-1">
           {options.length === 0 && value && (
-            <p className="text-orange-600">⚠ No results found for "{value}"</p>
+            <p className="text-fg-warning">⚠ No results found for "{value}"</p>
           )}
           {options.length > 0 && <p>Found {options.length} result(s)</p>}
           {!value && <p>Type to search. Try "Apple" or "Banana"</p>}
@@ -276,7 +275,7 @@ export const Controlled: Story = {
           }}
           placeholder="Controlled autocomplete"
         />
-        <div className="text-sm text-gray-600 space-y-1">
+        <div className="text-sm text-fg-secondary space-y-1">
           <p>
             <strong>Input value:</strong> {value || "(empty)"}
           </p>
@@ -291,7 +290,7 @@ export const Controlled: Story = {
               setValue("");
               setSelectedOption(null);
             }}
-            className="mt-2 px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            className="mt-2 px-3 py-1 text-sm bg-surface-emphasis rounded hover:bg-surface-strong"
           >
             Clear Selection
           </button>
@@ -350,7 +349,7 @@ export const LargeDataset: Story = {
           }}
           placeholder="Search from 100 options..."
         />
-        <div className="text-sm text-gray-600 space-y-1">
+        <div className="text-sm text-fg-secondary space-y-1">
           <p>
             <strong>Total options:</strong> 100
           </p>
@@ -362,7 +361,7 @@ export const LargeDataset: Story = {
               <strong>Selected:</strong> Option {selected}
             </p>
           )}
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-fg-tertiary mt-2">
             Demonstrates performance with large datasets. Type to filter
             options.
           </p>
@@ -397,7 +396,7 @@ export const KeyboardNavigation: Story = {
           }}
           placeholder="Try keyboard navigation..."
         />
-        <div className="text-sm text-gray-600 space-y-2 p-4 bg-gray-50 rounded">
+        <div className="text-sm text-fg-secondary space-y-2 p-4 bg-surface-subtle rounded">
           <p>
             <strong>Keyboard Navigation:</strong>
           </p>
@@ -441,18 +440,19 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4 w-full max-w-md">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Type in the autocomplete and select an option. Check the Actions panel
           to see events being fired.
         </p>
         <Autocomplete
+          label="Fruit"
           options={basicOptions}
           value={value}
           onChange={handleChange}
           onSelect={handleSelect}
           placeholder="Search fruits..."
         />
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-fg-tertiary">
           Current value: {value || "(empty)"}
         </p>
       </div>
@@ -511,12 +511,13 @@ export const OpenState: Story = {
     return (
       <div className="w-full max-w-md">
         <Autocomplete
+          label="Fruit"
           options={basicOptions}
           value={value}
           onChange={setValue}
           placeholder="Type to open dropdown..."
         />
-        <p className="text-xs text-gray-500 mt-2">
+        <p className="text-xs text-fg-tertiary mt-2">
           Focus the input to see the open state
         </p>
       </div>

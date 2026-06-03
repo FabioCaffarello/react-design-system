@@ -4,7 +4,8 @@
  * Storybook stories for the Header component.
  */
 
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, userEvent, within } from "storybook/test";
 import { Header } from "./Header";
 import { NavLink } from "../../primitives/NavLink";
 import { Button } from "../../primitives/Button/Button";
@@ -15,7 +16,6 @@ import { Home, Settings } from "lucide-react";
 const meta: Meta<typeof Header> = {
   title: "Components/Header",
   component: Header,
-  tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
     docs: {
@@ -143,19 +143,19 @@ export const Variants: Story = {
     <div className="space-y-8">
       <div>
         <h3 className="mb-2 text-sm font-medium">Default</h3>
-        <Header variant="default">
+        <Header variant="default" aria-label="Header — default variant">
           <Header.Logo href="/">MyApp</Header.Logo>
         </Header>
       </div>
       <div>
         <h3 className="mb-2 text-sm font-medium">Elevated</h3>
-        <Header variant="elevated">
+        <Header variant="elevated" aria-label="Header — elevated variant">
           <Header.Logo href="/">MyApp</Header.Logo>
         </Header>
       </div>
       <div>
         <h3 className="mb-2 text-sm font-medium">Bordered</h3>
-        <Header variant="bordered">
+        <Header variant="bordered" aria-label="Header — bordered variant">
           <Header.Logo href="/">MyApp</Header.Logo>
         </Header>
       </div>
@@ -261,12 +261,62 @@ export const WithDashboardLayout: Story = {
       <div className="p-8">
         <h1 className="text-2xl font-bold mb-4">Dashboard Content</h1>
         <p>This is the main content area of the dashboard.</p>
-        <p className="mt-4 text-sm text-gray-600">
+        <p className="mt-4 text-sm text-fg-secondary">
           Note: Header uses{" "}
-          <code className="bg-gray-100 px-1 rounded">bare</code> prop to avoid
-          duplicate wrappers when used in DashboardLayout.
+          <code className="bg-surface-muted px-1 rounded">bare</code> prop to
+          avoid duplicate wrappers when used in DashboardLayout.
         </p>
       </div>
     </DashboardLayout>
   ),
+};
+
+/**
+ * Interactive
+ *
+ * Verifies the Header compound assembles its three slots — Logo,
+ * Navigation items, Actions — into the rendered tree, exposes the
+ * `<header>` landmark for assistive tech, and that focus walks back
+ * from the action button through the nav links via Shift+Tab.
+ *
+ * Header.Hamburger is intentionally NOT exercised here: it carries
+ * `md:hidden`, so on Storybook's default 1280px viewport the button
+ * is `display:none` and absent from the accessibility tree. A
+ * dedicated hamburger interaction test belongs in a mobile-viewport
+ * story or a unit test that controls the breakpoint directly.
+ */
+export const Interactive: Story = {
+  render: () => (
+    <Header>
+      <Header.Logo href="#">MyApp</Header.Logo>
+      <Header.Navigation>
+        <NavLink href="#home">Home</NavLink>
+        <NavLink href="#about">About</NavLink>
+      </Header.Navigation>
+      <Header.Actions>
+        <Button variant="primary">Sign In</Button>
+      </Header.Actions>
+    </Header>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    expect(canvas.getByRole("banner")).toBeInTheDocument();
+    expect(canvas.getByRole("link", { name: /myapp/i })).toBeInTheDocument();
+    expect(canvas.getByRole("navigation")).toBeInTheDocument();
+
+    const about = canvas.getByRole("link", { name: /about/i });
+    expect(canvas.getByRole("link", { name: /^home$/i })).toHaveAttribute(
+      "href",
+      "#home",
+    );
+    expect(about).toHaveAttribute("href", "#about");
+
+    const signIn = canvas.getByRole("button", { name: /sign in/i });
+    signIn.focus();
+    expect(signIn).toHaveFocus();
+
+    await userEvent.tab({ shift: true });
+    expect(about).toHaveFocus();
+  },
 };

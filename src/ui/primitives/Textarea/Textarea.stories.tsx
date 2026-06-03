@@ -1,13 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import { useState } from "react";
 import Textarea from "./Textarea";
 
 const meta: Meta<typeof Textarea> = {
   title: "Primitives/Textarea",
   component: Textarea,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -54,6 +53,15 @@ A textarea component for longer text input with support for validation states an
     error: {
       control: "boolean",
       description: "Show error state",
+    },
+    label: {
+      control: "text",
+      description: "Visible label rendered above the textarea",
+    },
+    helperText: {
+      control: "text",
+      description:
+        "Secondary text rendered beneath the textarea (wired via aria-describedby)",
     },
     disabled: {
       control: "boolean",
@@ -121,10 +129,10 @@ export const Default: Story = {
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Character count: <strong>{value.length}</strong>
         </p>
-        <p className="text-sm text-gray-600">Value: {value || "(empty)"}</p>
+        <p className="text-sm text-fg-secondary">Value: {value || "(empty)"}</p>
       </div>
     );
   },
@@ -144,15 +152,16 @@ export const WithDefaultValue: Story = {
     return (
       <div className="space-y-4">
         <Textarea
+          label="Description"
           defaultValue="This is a default value"
           rows={4}
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Character count: <strong>{value.length}</strong>
         </p>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-fg-tertiary">
           Starts with a default value. You can edit it.
         </p>
       </div>
@@ -164,6 +173,15 @@ export const WithDefaultValue: Story = {
         story: "Textarea starting with a default value. You can edit it.",
       },
     },
+  },
+};
+
+export const WithHelperText: Story = {
+  args: {
+    label: "Bio",
+    helperText: "Up to 500 characters. Markdown is supported.",
+    placeholder: "Tell us about yourself…",
+    rows: 4,
   },
 };
 
@@ -197,19 +215,19 @@ export const WithError: Story = {
           error={submitted && value.length < minLength}
         />
         {submitted && value.length < minLength && (
-          <p className="text-sm text-red-600">
+          <p className="text-sm text-fg-error">
             ⚠ Description must be at least {minLength} characters (
             {value.length}/{minLength})
           </p>
         )}
         <button
           onClick={handleSubmit}
-          className="px-4 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 text-sm bg-surface-brand-strong text-fg-inverse rounded hover:opacity-90"
         >
           Submit
         </button>
         {value.length >= minLength && !submitted && (
-          <p className="text-sm text-green-600">
+          <p className="text-sm text-fg-success">
             ✓ Description is valid ({value.length} characters)
           </p>
         )}
@@ -313,8 +331,10 @@ export const Controlled: Story = {
           placeholder="Type something..."
           rows={4}
         />
-        <p className="text-sm text-gray-600">Character count: {value.length}</p>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
+          Character count: {value.length}
+        </p>
+        <p className="text-sm text-fg-secondary">
           Current value: {value || "(empty)"}
         </p>
       </div>
@@ -337,7 +357,7 @@ export const Uncontrolled: Story = {
         placeholder="Type something..."
         rows={4}
       />
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-secondary">
         Uses defaultValue for initial value without state management.
       </p>
     </div>
@@ -358,35 +378,33 @@ export const AllStates: Story = {
 
     return (
       <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Default</label>
-          <Textarea
-            placeholder="Default state"
-            rows={4}
-            value={defaultValue}
-            onChange={(e) => setDefaultValue(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Error</label>
-          <Textarea
-            placeholder="Error state"
-            rows={4}
-            error
-            value={errorValue}
-            onChange={(e) => setErrorValue(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Disabled</label>
-          <Textarea placeholder="Disabled state" rows={4} disabled />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">
-            Disabled with value
-          </label>
-          <Textarea defaultValue="Disabled with value" rows={4} disabled />
-        </div>
+        <Textarea
+          label="Default"
+          placeholder="Default state"
+          rows={4}
+          value={defaultValue}
+          onChange={(e) => setDefaultValue(e.target.value)}
+        />
+        <Textarea
+          label="Error"
+          placeholder="Error state"
+          rows={4}
+          error
+          value={errorValue}
+          onChange={(e) => setErrorValue(e.target.value)}
+        />
+        <Textarea
+          label="Disabled"
+          placeholder="Disabled state"
+          rows={4}
+          disabled
+        />
+        <Textarea
+          label="Disabled with value"
+          defaultValue="Disabled with value"
+          rows={4}
+          disabled
+        />
       </div>
     );
   },
@@ -456,7 +474,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Interact with the textarea below. Check the Actions panel to see
           events being fired.
         </p>
@@ -469,7 +487,9 @@ export const WithEvents: Story = {
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
         />
-        <p className="text-sm text-gray-500">Character count: {value.length}</p>
+        <p className="text-sm text-fg-tertiary">
+          Character count: {value.length}
+        </p>
       </div>
     );
   },
@@ -539,6 +559,7 @@ export const FocusState: Story = {
 
 export const ErrorState: Story = {
   args: {
+    label: "Description",
     placeholder: "Error state textarea",
     rows: 4,
     error: true,

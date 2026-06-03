@@ -6,7 +6,6 @@ import {
   getTypographyClasses,
   getTypographySize,
 } from "../../tokens/typography";
-import { getColorClass } from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import { cn, cva } from "../../utils";
@@ -37,7 +36,7 @@ const HelperText = memo(function HelperText({
         getTypographyClasses("caption"),
         error && "text-fg-error",
         success && "text-fg-success",
-        !error && !success && getColorClass("neutral", "DEFAULT", "text"),
+        !error && !success && "text-fg-secondary",
       ),
     [error, success],
   );
@@ -203,18 +202,18 @@ const Input = memo(
             default: cn(
               "border-0",
               "border-b-2",
-              getColorClass("neutral", "DEFAULT", "border"),
+              "border-line-default",
               "focus:border-line-focus",
             ),
             outlined: cn(
               "border",
-              getColorClass("neutral", "DEFAULT", "border"),
+              "border-line-default",
               "focus:border-line-focus",
             ),
             filled: cn(
-              getColorClass("neutral", "light", "bg"),
+              "bg-surface-muted",
               "border-0",
-              "focus:bg-white",
+              "focus:bg-surface-base",
               "focus:ring-2",
               getFocusRingColor,
             ),
@@ -263,11 +262,22 @@ const Input = memo(
       () =>
         cn(
           inputVariants({ variant, size, state }),
-          // Icon padding - specific values for icon positioning
+          // Icon padding - specific values for icon positioning.
+          // `pl-9` / `pr-9` aren't on the spacing scale (no semantic
+          // key for 36px); they stay raw until a future PR either
+          // extends the scale or refactors the icon-padding contract.
           leftIcon &&
-            (size === "sm" ? "pl-9" : size === "lg" ? "pl-12" : "pl-10"),
+            (size === "sm"
+              ? "pl-9"
+              : size === "lg"
+                ? getSpacingClass("3xl", "pl")
+                : getSpacingClass("2xl", "pl")),
           (rightIcon || shouldShowClear || isPassword) &&
-            (size === "sm" ? "pr-9" : size === "lg" ? "pr-12" : "pr-10"),
+            (size === "sm"
+              ? "pr-9"
+              : size === "lg"
+                ? getSpacingClass("3xl", "pr")
+                : getSpacingClass("2xl", "pr")),
           className,
         ),
       [
@@ -361,7 +371,7 @@ const Input = memo(
         <div className="relative">
           {leftIcon && (
             <div
-              className={`absolute left-3 ${iconPosition} ${getColorClass("neutral", "DEFAULT", "text")} opacity-60 pointer-events-none`}
+              className={`absolute left-3 ${iconPosition} text-fg-secondary opacity-60 pointer-events-none`}
             >
               <div className={iconSize}>{leftIcon}</div>
             </div>
@@ -380,13 +390,15 @@ const Input = memo(
             suppressHydrationWarning
             {...props}
           />
-          <div className="absolute right-3 top-0 bottom-0 flex items-center gap-1">
+          <div
+            className={`absolute right-3 top-0 bottom-0 flex items-center ${getSpacingClass("xs", "gap")}`}
+          >
             {shouldShowClear && (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleClear}
-                className="h-auto p-1"
+                className={`h-auto ${getSpacingClass("xs", "p")}`}
                 aria-label="Clear input"
               >
                 <X className={iconSize} />
@@ -397,7 +409,7 @@ const Input = memo(
                 variant="ghost"
                 size="sm"
                 onClick={handleTogglePassword}
-                className="h-auto p-1"
+                className={`h-auto ${getSpacingClass("xs", "p")}`}
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? (
@@ -409,7 +421,7 @@ const Input = memo(
             )}
             {rightIcon && !shouldShowClear && !isPassword && (
               <div
-                className={`${getColorClass("neutral", "DEFAULT", "text")} opacity-60 pointer-events-none ${iconSize}`}
+                className={`text-fg-secondary opacity-60 pointer-events-none ${iconSize}`}
               >
                 {rightIcon}
               </div>

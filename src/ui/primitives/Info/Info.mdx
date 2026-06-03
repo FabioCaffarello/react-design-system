@@ -1,0 +1,42 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as InfoStories from "./Info.stories";
+
+<Meta of={InfoStories} />
+
+# Info
+
+Info renders an inline notice banner that draws the user's attention to a message tied to the surrounding content — a tip, a warning, an error explanation. Reach for it when the message must sit beside the content it relates to (above a form, next to a setting), unlike `Toast` which floats and dismisses, or `Modal` which interrupts.
+
+## When to use
+
+- Use `variant="info"` for neutral guidance or context — an explanation of what the section does, a tip about a setting.
+- Use `variant="warning"` for non-blocking caution that the user should read before proceeding — "this will email all subscribers", "this action affects billing".
+- Use `variant="error"` for inline failures that explain a previously attempted action — "we couldn't reach the upstream service", "your last save failed".
+- Use Info above the relevant content so the user reads it before interacting with what follows; below works only when the notice explains what just happened.
+
+## When not to use
+
+- Use `Toast` for transient messages that the user does not need to keep on screen — operation success, save confirmation, copy-to-clipboard acknowledgement.
+- Use `ErrorMessage` for validation feedback tied to a specific form field — that primitive wires `role="alert"` and `aria-describedby` correctly.
+- Use a `Modal` for messages the user must acknowledge before continuing — Info is non-blocking by design.
+- Avoid Info as a substitute for layout — a long page of stacked notices reads as noise; pick the one or two messages that genuinely belong inline.
+
+## Examples
+
+<Canvas of={InfoStories.Default} />
+
+<Canvas of={InfoStories.AllVariants} />
+
+<Canvas of={InfoStories.InContext} />
+
+## Props
+
+<Controls of={InfoStories.Default} />
+
+## Accessibility
+
+Info renders a `<div role="alert">` so screen readers announce the message text politely when the element mounts — the announcement happens automatically without any wiring on the consumer's side. Pair the visible variant color with the message text rather than relying on color alone; warning and error are conveyed by both the tone and the words inside.
+
+The component does not currently render its own icon or dismiss control — the variant communicates role through color and text content. When the surface needs a visible icon (a leading warning glyph, a leading info circle) or a dismiss affordance, compose those inside the `children` slot.
+
+Place Info close to the content it explains in the DOM so screen-reader sequential navigation reads the notice in the right context. A notice describing a form should appear in the DOM before the form's first field, not after the submit button.

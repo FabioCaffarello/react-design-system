@@ -1,0 +1,48 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as RatingStories from "./Rating.stories";
+
+<Meta of={RatingStories} />
+
+# Rating
+
+Rating renders a row of star (or custom) icons the user clicks to express a rating from 1 to `max` — five-star reviews, satisfaction scores, quality ratings. Optional `allowHalf` lets the user pick half-star values; optional `readOnly` shows a value without the input affordance for display contexts.
+
+## When to use
+
+- Use Rating for any field where the user expresses a numeric rating on a small ordinal scale — reviews, satisfaction surveys, quality ratings, importance markers.
+- Use `max={5}` (default) for the standard five-star pattern; raise to 10 or lower to 3 only when the consumer's domain has a real reason.
+- Use `allowHalf={true}` for reviews where the half-step granularity matters (movie ratings, product reviews); avoid for surveys where the half-step adds noise.
+- Use `readOnly={true}` for display contexts — showing the average rating on a product card, the user's own past rating on a review row.
+- Use `icon` and `emptyIcon` for custom glyphs (hearts, thumbs, custom badges) when the surface needs a stronger affordance than stars.
+
+## When not to use
+
+- Use a `Slider` for continuous numeric input on a wide range — Rating is for small ordinal scales.
+- Use `Radio` for "pick one" categorical choices that are not on an ordered scale — quality levels (low / medium / high) work better as Radios when the scale is not numeric.
+- Use a `Select` or numeric `Input` when the user types the value; Rating is the visual ordinal affordance.
+
+## Examples
+
+<Canvas of={RatingStories.Default} />
+
+<Canvas of={RatingStories.WithValue} />
+
+<Canvas of={RatingStories.ReadOnly} />
+
+<Canvas of={RatingStories.HalfRatings} />
+
+## Props
+
+<Controls of={RatingStories.Default} />
+
+## Accessibility
+
+Rating implements the WAI-ARIA Slider pattern with discrete steps. The outer container is `role="slider"` with `aria-valuenow`, `aria-valuemin=0`, `aria-valuemax={max}` (or doubled when `allowHalf`), and `aria-valuetext` carrying the human-readable value ("3 of 5 stars"). Each star is decorative (`aria-hidden="true"`); the value is read once at the container level rather than star by star.
+
+Keyboard navigation: arrow keys increment / decrement by one step (half a step when `allowHalf`); Home and End jump to 0 and `max`; the value is announced as the user moves through it.
+
+In `readOnly` mode, the slider role is replaced by a plain region announcing the current value ("3 of 5 stars") — assistive tech does not offer interaction, focus skips the component during Tab.
+
+For accessible context, pair Rating with a visible label or `aria-label` describing what is being rated ("Movie rating", "Service quality"); without the label, assistive tech announces "3 of 5" with no context for what is being measured.
+
+When the visible star count is high (10-star scale), assistive tech can struggle with the per-step granularity announcement — keep the scale small (5 stars) unless the consumer's domain has a real reason for finer granularity.

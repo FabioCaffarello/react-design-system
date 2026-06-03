@@ -54,7 +54,9 @@
 
   /* Brand text */
   --color-fg-brand: var(--color-indigo-400);
+  --color-fg-brand-emphasis: var(--color-indigo-300);
   --color-fg-brand-secondary: var(--color-pink-400);
+  --color-fg-brand-secondary-emphasis: var(--color-pink-300);
 
   /* Feedback text */
   --color-fg-success: var(--color-emerald-400);
@@ -78,6 +80,7 @@
   --color-surface-brand-subtle: var(--color-indigo-950);
   --color-surface-brand-muted: var(--color-indigo-900);
   --color-surface-brand: var(--color-indigo-500);
+  --color-surface-brand-strong: var(--color-indigo-400);
   --color-surface-brand-emphasis: var(--color-indigo-400);
 
   --color-surface-secondary-subtle: var(--color-pink-950);
@@ -116,22 +119,32 @@
   --color-line-strong: var(--color-slate-500);
   --color-line-inverse: var(--color-slate-200);
   --color-line-focus: var(--color-indigo-400);
+  --color-line-focus-ring: var(--color-indigo-400);
+
+  /* Brand-colored borders — mirror the brand foreground/border ladder
+   * (light shade -500 → dark shade -400) so a Tabs underline or branded
+   * outline reads against a slate-900 surface at ~5:1 (indigo-400),
+   * ~6:1 (pink-400), ~9:1 (cyan-400). */
+  --color-line-brand: var(--color-indigo-400);
+  --color-line-secondary: var(--color-pink-400);
+  --color-line-accent: var(--color-cyan-400);
 
   /* ============================================
    * SURFACE COLORS — Interactive states (dark)
    * ============================================ */
 
   --color-surface-hover: var(--color-slate-800);
-  --color-surface-hover-subtle: var(--color-slate-850);
+  --color-surface-hover-subtle: var(--color-slate-900);
   --color-surface-active: var(--color-slate-700);
   --color-surface-selected: var(--color-indigo-950);
   --color-surface-selected-subtle: var(--color-indigo-900);
-  /* state-disabled fused into surface-disabled (identical values) */
+  /* state-disabled fused into surface-disabled (identical values).
+   * disabled-subtle is intentionally close to canvas — slate-900 over
+   * canvas slate-950 is ~1.16:1, mirroring the light pattern where
+   * slate-50 over white is also barely perceptible. The role is
+   * "barely-perceptible disabled wash", not "visible disabled tint". */
+  --color-surface-disabled-subtle: var(--color-slate-900);
   --color-surface-focus: var(--color-indigo-900);
-
-  /* Brand state colors */
-  --color-surface-hover-brand: var(--color-indigo-500);
-  --color-surface-active-brand: var(--color-indigo-600);
 
   /* ============================================
    * FEEDBACK COLORS
@@ -159,7 +172,7 @@
   /* Error */
   --color-error: var(--color-rose-400);
   --color-error-light: var(--color-rose-300);
-  --color-error-dark: var(--color-rose-500);
+  --color-error-dark: var(--color-rose-400);
   --color-error-bg: var(--color-rose-950);
   --color-error-bg-emphasis: var(--color-rose-900);
   --color-error-border: var(--color-rose-800);
@@ -169,6 +182,9 @@
   --color-info: var(--color-sky-400);
   --color-info-light: var(--color-sky-300);
   --color-info-dark: var(--color-sky-500);
+
+  /* Status neutral — completes status family in dark mode */
+  --color-status-neutral: var(--color-slate-400);
   --color-info-bg: var(--color-sky-950);
   --color-info-bg-emphasis: var(--color-sky-900);
   --color-info-border: var(--color-sky-800);
@@ -273,20 +289,272 @@
 
 /* ============================================
  * SYSTEM PREFERENCE: DARK
- * Automatically apply dark theme if user prefers
+ * Automatically apply dark theme if user prefers.
+ *
+ * IMPORTANT — this block is INTENTIONALLY a verbatim duplicate of the
+ * `[data-theme="dark"], .dark` block above. CSS does not inherit
+ * variables between selectors: a previous version listed only 5 vars
+ * here with a comment "other variables would inherit from .dark", and
+ * that comment was wrong — users on prefers-color-scheme: dark without
+ * an explicit data-theme="dark" received 5 dark vars + ~110 light vars,
+ * which produced Modal/Dialog/CommandPalette with white backgrounds in
+ * OS dark mode (rg 1.05 contrast catastrophe — found by the dark a11y
+ * baseline plumbing).
+ *
+ * Both blocks MUST stay byte-identical except for selector and
+ * `--theme-mode`/`color-scheme` headers. `scripts/validate-dark-coverage.mjs`
+ * runs in pre-push + CI and fails on any divergence — duplication that
+ * cannot drift. If you change a value here, change it in the
+ * `[data-theme="dark"]` block above (and vice versa).
  * ============================================ */
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]):not(.light) {
+    /* Theme indicator */
     --theme-mode: dark;
     color-scheme: dark;
 
-    /* Apply all dark theme variables */
+    /* ============================================
+     * BRAND COLORS
+     * ============================================ */
+
     --color-brand-primary: var(--color-indigo-400);
+    --color-brand-primary-light: var(--color-indigo-300);
+    --color-brand-primary-dark: var(--color-indigo-500);
+    --color-brand-primary-darker: var(--color-indigo-600);
+
+    --color-brand-secondary: var(--color-pink-400);
+    --color-brand-secondary-light: var(--color-pink-300);
+    --color-brand-secondary-dark: var(--color-pink-500);
+
+    --color-brand-accent: var(--color-cyan-400);
+    --color-brand-accent-light: var(--color-cyan-300);
+    --color-brand-accent-dark: var(--color-cyan-500);
+
+    /* ============================================
+     * FOREGROUND COLORS
+     * ============================================ */
+
     --color-fg-primary: var(--color-slate-50);
+    --color-fg-secondary: var(--color-slate-300);
+    --color-fg-tertiary: var(--color-slate-400);
+    --color-fg-quaternary: var(--color-slate-500);
+    --color-fg-placeholder: var(--color-slate-500);
+    --color-fg-disabled: var(--color-slate-600);
+    --color-fg-inverse: var(--color-slate-900);
+    --color-fg-inverse-secondary: var(--color-slate-700);
+
+    --color-fg-link: var(--color-indigo-400);
+    --color-fg-link-hover: var(--color-indigo-300);
+    --color-fg-link-active: var(--color-indigo-200);
+    --color-fg-link-visited: var(--color-violet-400);
+
+    --color-fg-brand: var(--color-indigo-400);
+    --color-fg-brand-emphasis: var(--color-indigo-300);
+    --color-fg-brand-secondary: var(--color-pink-400);
+    --color-fg-brand-secondary-emphasis: var(--color-pink-300);
+
+    --color-fg-success: var(--color-emerald-400);
+    --color-fg-warning: var(--color-amber-400);
+    --color-fg-error: var(--color-rose-400);
+    --color-fg-info: var(--color-sky-400);
+
+    /* ============================================
+     * SURFACE COLORS — Backgrounds
+     * ============================================ */
+
     --color-surface-canvas: var(--color-slate-950);
+    --color-surface-subtle: var(--color-slate-900);
+    --color-surface-muted: var(--color-slate-800);
+    --color-surface-emphasis: var(--color-slate-700);
+    --color-surface-strong: var(--color-slate-600);
+    --color-surface-inverse: var(--color-slate-50);
+    --color-surface-inverse-subtle: var(--color-slate-100);
+
+    --color-surface-brand-subtle: var(--color-indigo-950);
+    --color-surface-brand-muted: var(--color-indigo-900);
+    --color-surface-brand: var(--color-indigo-500);
+    --color-surface-brand-strong: var(--color-indigo-400);
+    --color-surface-brand-emphasis: var(--color-indigo-400);
+
+    --color-surface-secondary-subtle: var(--color-pink-950);
+    --color-surface-secondary: var(--color-pink-500);
+
+    --color-surface-accent-subtle: var(--color-cyan-950);
+    --color-surface-accent: var(--color-cyan-500);
+
+    /* ============================================
+     * SURFACE COLORS — Elevation layers
+     * ============================================ */
+
     --color-surface-base: var(--color-slate-900);
+    --color-surface-raised: var(--color-slate-800);
+    --color-surface-overlay: var(--color-slate-800);
+    --color-surface-sunken: var(--color-slate-950);
+    --color-surface-disabled: var(--color-slate-800);
+
+    --surface-0-bg: var(--color-slate-950);
+    --surface-1-bg: var(--color-slate-900);
+    --surface-2-bg: var(--color-slate-800);
+    --surface-3-bg: var(--color-slate-700);
+    --surface-4-bg: var(--color-slate-800);
+    --surface-5-bg: var(--color-slate-800);
+
+    /* ============================================
+     * LINE COLORS
+     * ============================================ */
+
     --color-line-default: var(--color-slate-700);
-    /* ... other variables would inherit from .dark */
+    --color-line-muted: var(--color-slate-800);
+    --color-line-subtle: var(--color-slate-800);
+    --color-line-emphasis: var(--color-slate-600);
+    --color-line-strong: var(--color-slate-500);
+    --color-line-inverse: var(--color-slate-200);
+    --color-line-focus: var(--color-indigo-400);
+    --color-line-focus-ring: var(--color-indigo-400);
+
+    --color-line-brand: var(--color-indigo-400);
+    --color-line-secondary: var(--color-pink-400);
+    --color-line-accent: var(--color-cyan-400);
+
+    /* ============================================
+     * SURFACE COLORS — Interactive states
+     * ============================================ */
+
+    --color-surface-hover: var(--color-slate-800);
+    --color-surface-hover-subtle: var(--color-slate-900);
+    --color-surface-active: var(--color-slate-700);
+    --color-surface-selected: var(--color-indigo-950);
+    --color-surface-selected-subtle: var(--color-indigo-900);
+    --color-surface-disabled-subtle: var(--color-slate-900);
+    --color-surface-focus: var(--color-indigo-900);
+
+    /* ============================================
+     * FEEDBACK COLORS
+     * ============================================ */
+
+    --color-success: var(--color-emerald-400);
+    --color-success-light: var(--color-emerald-300);
+    --color-success-dark: var(--color-emerald-500);
+    --color-success-bg: var(--color-emerald-950);
+    --color-success-bg-emphasis: var(--color-emerald-900);
+    --color-success-border: var(--color-emerald-800);
+    --color-success-border-emphasis: var(--color-emerald-400);
+
+    --color-warning: var(--color-amber-400);
+    --color-warning-light: var(--color-amber-300);
+    --color-warning-dark: var(--color-amber-500);
+    --color-warning-bg: var(--color-amber-950);
+    --color-warning-bg-emphasis: var(--color-amber-900);
+    --color-warning-border: var(--color-amber-800);
+    --color-warning-border-emphasis: var(--color-amber-400);
+
+    --color-error: var(--color-rose-400);
+    --color-error-light: var(--color-rose-300);
+    --color-error-dark: var(--color-rose-400);
+    --color-error-bg: var(--color-rose-950);
+    --color-error-bg-emphasis: var(--color-rose-900);
+    --color-error-border: var(--color-rose-800);
+    --color-error-border-emphasis: var(--color-rose-400);
+
+    --color-info: var(--color-sky-400);
+    --color-info-light: var(--color-sky-300);
+    --color-info-dark: var(--color-sky-500);
+    --color-info-bg: var(--color-sky-950);
+    --color-info-bg-emphasis: var(--color-sky-900);
+    --color-info-border: var(--color-sky-800);
+    --color-info-border-emphasis: var(--color-sky-400);
+
+    --color-status-neutral: var(--color-slate-400);
+
+    /* ============================================
+     * ICON COLORS
+     * ============================================ */
+
+    --color-icon-default: var(--color-slate-400);
+    --color-icon-muted: var(--color-slate-500);
+    --color-icon-subtle: var(--color-slate-600);
+    --color-icon-emphasis: var(--color-slate-200);
+    --color-icon-inverse: var(--color-slate-900);
+    --color-icon-brand: var(--color-indigo-400);
+    --color-icon-success: var(--color-emerald-400);
+    --color-icon-warning: var(--color-amber-400);
+    --color-icon-error: var(--color-rose-400);
+    --color-icon-info: var(--color-sky-400);
+
+    /* ============================================
+     * OVERLAY COLORS
+     * ============================================ */
+
+    --color-overlay-light: rgb(255 255 255 / 0.1);
+    --color-overlay-dark: rgb(0 0 0 / 0.6);
+    --color-overlay-darker: rgb(0 0 0 / 0.8);
+    --color-overlay-backdrop: rgb(0 0 0 / 0.7);
+
+    /* ============================================
+     * SHADOWS
+     * ============================================ */
+
+    --shadow-card: var(--shadow-dark-sm);
+    --shadow-card-hover: var(--shadow-dark-md);
+    --shadow-dropdown: var(--shadow-dark-lg);
+    --shadow-modal: var(--shadow-dark-xl);
+    --shadow-tooltip: var(--shadow-dark-md);
+
+    /* ============================================
+     * SCROLLBAR
+     * ============================================ */
+
+    --scrollbar-track-bg: var(--color-slate-900);
+    --scrollbar-thumb-bg: var(--color-slate-600);
+    --scrollbar-thumb-hover-bg: var(--color-slate-500);
+
+    /* ============================================
+     * SKELETON
+     * ============================================ */
+
+    --color-skeleton-base: var(--color-slate-700);
+    --color-skeleton-shine: var(--color-slate-600);
+
+    /* ============================================
+     * DIVIDER
+     * ============================================ */
+
+    --color-divider: var(--color-slate-700);
+    --color-divider-subtle: var(--color-slate-800);
+    --color-divider-emphasis: var(--color-slate-600);
+
+    /* ============================================
+     * CODE
+     * ============================================ */
+
+    --surface-code-bg: var(--color-slate-950);
+    --surface-code-border: var(--color-slate-800);
+    --surface-code-color: var(--color-slate-100);
+
+    --surface-code-inline-bg: var(--color-slate-800);
+    --surface-code-inline-border: var(--color-slate-700);
+    --surface-code-inline-color: var(--color-pink-400);
+
+    /* ============================================
+     * TOOLTIP
+     * ============================================ */
+
+    --surface-tooltip-bg: var(--color-slate-100);
+    --surface-tooltip-color: var(--color-slate-900);
+
+    /* ============================================
+     * FOCUS RING
+     * ============================================ */
+
+    --ring-color: var(--color-indigo-400);
+    --ring-default: 0 0 0 var(--ring-width) rgb(129 140 248 / 0.3);
+  }
+
+  /* ::selection inside @media — sibling to the :root rule above so
+   * older browsers without CSS nesting still parse cleanly. */
+  :root:not([data-theme="light"]):not(.light) ::selection {
+    background-color: var(--color-indigo-700);
+    color: var(--color-white);
   }
 }

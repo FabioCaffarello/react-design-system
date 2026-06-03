@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, within, waitFor } from "storybook/test";
 import { useState } from "react";
 import Timeline, { type TimelineItem } from "./Timeline";
 import {
@@ -14,7 +14,6 @@ import {
 const meta: Meta<typeof Timeline> = {
   title: "Components/Timeline",
   component: Timeline,
-  tags: ["autodocs"],
   parameters: {
     layout: "padded",
     docs: {
@@ -163,8 +162,8 @@ export const WithContent: Story = {
         timestamp: "2024-01-01",
         status: "completed",
         content: (
-          <div className="mt-2 p-3 bg-gray-50 rounded-md">
-            <p className="text-sm text-gray-700">
+          <div className="mt-2 p-3 bg-surface-subtle rounded-md">
+            <p className="text-sm text-fg-primary">
               Repository created, initial dependencies installed, and project
               structure established.
             </p>
@@ -178,8 +177,8 @@ export const WithContent: Story = {
         timestamp: "2024-01-15",
         status: "active",
         content: (
-          <div className="mt-2 p-3 bg-blue-50 rounded-md">
-            <p className="text-sm text-blue-700">
+          <div className="mt-2 p-3 bg-info-bg rounded-md">
+            <p className="text-sm text-fg-info">
               Design mockups approved, component library created, and style
               guide finalized.
             </p>
@@ -247,7 +246,7 @@ export const LongContent: Story = {
         status: "completed",
         content: (
           <div className="mt-3 space-y-2">
-            <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
+            <ul className="list-disc list-inside text-sm text-fg-secondary space-y-1">
               <li>Feature A implemented</li>
               <li>Feature B implemented</li>
               <li>Testing completed</li>
@@ -263,7 +262,7 @@ export const LongContent: Story = {
         status: "active",
         content: (
           <div className="mt-3 space-y-2">
-            <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
+            <ul className="list-disc list-inside text-sm text-fg-secondary space-y-1">
               <li>Feature C in development</li>
               <li>Feature D planned</li>
             </ul>
@@ -333,7 +332,7 @@ export const InteractiveTimeline: Story = {
     return (
       <div className="p-8">
         <Timeline items={items} />
-        <p className="mt-4 text-sm text-gray-600">
+        <p className="mt-4 text-sm text-fg-secondary">
           Click on timeline items to toggle their status (demo of interactivity)
         </p>
       </div>
@@ -355,6 +354,25 @@ export const ManyItems: Story = {
             ? ("completed" as const)
             : ("default" as const),
     })),
+  },
+  parameters: {
+    // Directed a11y suppression — see `.claude/rules/colors.md` section
+    // "`fg-quaternary`: AA-by-construction exception". Pending Timeline
+    // bubbles carry text-fg-quaternary (slate-400) over surface-base
+    // (white), ratio 2.56 — structurally below AA because the 4-level
+    // ordered hierarchy requires quaternary to be more muted than tertiary
+    // (already at +0.26 over AA). The bubble div carries
+    // `data-marker="pending"` only when status === "default" (Stepper and
+    // Timeline both). Selector anchors to that ROLE attribute, not to
+    // style classes — survives a future restyle of the bubble. Any other
+    // color-contrast issue in this story remains visible.
+    a11y: {
+      config: {
+        rules: [
+          { id: "color-contrast", selector: ":not([data-marker='pending'])" },
+        ],
+      },
+    },
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -399,7 +417,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Click on timeline items to toggle their status. Check the Actions
           panel to see events being fired.
         </p>

@@ -1,0 +1,53 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as DataGridStories from "./DataGrid.stories";
+
+<Meta of={DataGridStories} />
+
+# DataGrid
+
+DataGrid extends `Table` with the features dense back-office surfaces typically need — sortable columns, grouping, row selection, export, integrated pagination, filters, custom toolbars, optional column resize / reorder, and optional virtual scrolling. Reach for it when a flat `Table` cannot hold the user's interactions on its own.
+
+## When to use
+
+- Use DataGrid for data-dense list views with at least one heavy feature — multi-column sort, grouping, bulk selection, server-driven pagination, faceted filters, export-as-CSV.
+- Use DataGrid when the user routinely manipulates the table itself (resize columns, reorder columns, group by a column, jump to a page, export the current view), not when the user only reads the rows.
+- Use `virtualScrolling` for tens of thousands of rows; default rendering handles up to ~1,000 comfortably without virtualization overhead.
+- Use the per-column flags (`groupable`, `exportable`, `defaultWidth`, `minWidth`, `maxWidth`) to encode column-level constraints — DataGrid respects them as the user manipulates the grid.
+
+## When not to use
+
+- Use `Table` for plain read-only or lightly interactive lists — DataGrid's machinery is overhead for a flat row list.
+- Use `DataTablePattern` when the surface is "search + filter + table" and the consumer wants the pattern composed; DataTablePattern wraps a DataGrid (or Table) inside a pre-built search-and-filter shell.
+- Use a custom grid (AG Grid, TanStack Table) when the consumer's needs exceed this DataGrid — pivot tables, frozen columns, complex cell renderers with their own state.
+
+## Anatomy
+
+DataGrid stacks vertically: an optional `toolbar row` at the top contains the export menu, the column-management trigger, and the consumer's `toolbarActions`; the `filters region` below the toolbar renders the configured filter inputs; the `column header row` carries sortable headers, drag handles for reorder, resize handles, and the multi-select checkbox; the `body` is the row list (virtualized when `virtualScrolling`); the `pagination row` at the bottom holds the page controls when `pagination` is configured; the `empty state region` replaces the body when there is no data, using `emptyStateTitle` / `emptyStateMessage` / `emptyStateIllustration` / `emptyStateAction`.
+
+<Canvas of={DataGridStories.Default} />
+
+## Examples
+
+<Canvas of={DataGridStories.WithFilters} />
+
+<Canvas of={DataGridStories.WithGrouping} />
+
+<Canvas of={DataGridStories.WithPagination} />
+
+## Props
+
+<Controls of={DataGridStories.Default} />
+
+## Accessibility
+
+DataGrid inherits the underlying `Table`'s semantics — the rendered HTML uses `<table>`, `<thead>`, `<tbody>`, `<th>`, `<tr>`, `<td>` so assistive tech navigates the grid using the platform's table mode (Ctrl + arrows on macOS VoiceOver, similar on JAWS / NVDA).
+
+Sortable columns carry `aria-sort="ascending" | "descending" | "none"` on the header `<th>` reflecting current sort; activating the header toggles sort and announces the new state. Multi-sort holds across header activations with the Shift modifier.
+
+The selection checkboxes are native `<input type="checkbox">` with explicit `aria-label="Select row <id>"`; the header checkbox toggles the visible page's selection and is announced as "indeterminate" when some rows are selected.
+
+Filters live in a `role="region"` with `aria-label="Filters"` above the table so screen-reader users can jump to them via the rotor; applying a filter announces the new row count via `aria-live="polite"` on the body region.
+
+Virtual scrolling can hide rows from assistive tech if not implemented carefully — DataGrid renders a measured proxy DOM that keeps the row count announceable; the consumer should set `aria-rowcount` on the table when the visible window is smaller than the total dataset, so screen readers announce "row N of M" correctly.
+
+The export menu and toolbar actions inherit `Dropdown` / `Button` semantics — focus, keyboard, ARIA — without DataGrid adding anything extra.

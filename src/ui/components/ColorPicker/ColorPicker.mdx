@@ -1,0 +1,51 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as ColorPickerStories from "./ColorPicker.stories";
+
+<Meta of={ColorPickerStories} />
+
+# ColorPicker
+
+ColorPicker renders a clickable color swatch that opens a popover with a saturation / lightness picker, a hex input, and optional preset palette. Reach for it whenever the user picks a specific color value — brand customization, theme overrides, label colors, custom highlight settings.
+
+## When to use
+
+- Use ColorPicker for any field that accepts a specific color value — brand colors, accent customization, calendar event colors, label tags, theme tokens in admin surfaces.
+- Use `presets` to surface a curated palette the user can pick from in one click; combine with the free picker so power users still get arbitrary values.
+- Use `format="hex"` (default) for most cases; `rgb` or `hsl` when the consumer's API speaks those formats natively and the round-trip conversion would lose precision.
+- Use `showInput={false}` for compact pickers where the swatch alone is enough — the popover still offers the hex input internally.
+
+## When not to use
+
+- Use a `Select` with named color options when the user picks a category (red / green / blue / gray) rather than a specific value.
+- Use a fixed swatch grid (a custom layout) when only the presets matter and arbitrary colors are not allowed.
+- Avoid ColorPicker for surfaces where color carries no semantic — a "secondary" or "primary" label communicates intent better than an arbitrary hex.
+
+## Anatomy
+
+ColorPicker renders a `swatch trigger` (a small filled square showing the current value, clickable to open the popover); the `popover panel` (anchored below the trigger, mounted in a portal) contains the `picker surface` (a 2D saturation/lightness grid + hue slider for free selection), the `hex input` row (visible when `showInput`), and an optional `preset palette` (the `presets` array rendered as a grid of small swatches). Selecting any element inside the popover updates the value; outside-click or ESC dismisses.
+
+<Canvas of={ColorPickerStories.Default} />
+
+## Examples
+
+<Canvas of={ColorPickerStories.WithLabel} />
+
+<Canvas of={ColorPickerStories.CustomPresets} />
+
+<Canvas of={ColorPickerStories.WithoutInput} />
+
+## Props
+
+<Controls of={ColorPickerStories.Default} />
+
+## Accessibility
+
+The swatch trigger is a native `<button>` carrying `aria-haspopup="dialog"` and `aria-expanded` reflecting the popover state; set `aria-label` on the trigger naming the field's purpose ("Brand color picker") so the button has an accessible name when no visible label is wired.
+
+When `label` is passed, the component renders a `Label` primitive above the trigger and binds them via `htmlFor`, so clicking the label opens the picker.
+
+The popover panel carries `role="dialog"` with `aria-label="Color picker"` (or a derived label from the trigger). Inside the panel, the saturation/lightness picker is a 2D `role="application"` region — arrow keys move the cursor within it, and the current value is announced as the cursor moves. The hue slider is a `role="slider"` with `aria-valuenow`, `aria-valuemin=0`, `aria-valuemax=360` and `aria-valuetext` carrying the current hue value.
+
+The hex input is a native `<input>` with input validation — entering an invalid hex returns the field to the previous valid value rather than clearing it. Preset swatches are `<button>`s with `aria-label="Select <hex>"` so the value is announced before activation.
+
+The picker's value is communicated by color alone — invisible to users who cannot perceive certain color differences. Always show the hex or RGB value as text alongside the swatch so the choice reads in monochrome too.

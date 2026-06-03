@@ -3,6 +3,7 @@ import { SearchInput, Card } from "../../components";
 import { Button, Text } from "../../primitives";
 import { Container } from "../../layouts/Container/Container";
 import { Stack } from "../../layouts/Stack/Stack";
+import { getSpacingClass } from "../../tokens/spacing";
 
 export interface FilterOption {
   id: string;
@@ -135,14 +136,40 @@ export function SearchAndFilterPattern<T = unknown>({
 
             {/* Filters */}
             {filters.length > 0 && (
-              <div className="flex flex-wrap gap-2">
+              <div className={`flex flex-wrap ${getSpacingClass("sm", "gap")}`}>
                 {filters.map((filter) => (
-                  <div key={filter.id} className="flex items-center gap-2">
-                    <Text className="text-gray-600 text-sm">
+                  <div
+                    key={filter.id}
+                    className={`flex items-center ${getSpacingClass("sm", "gap")}`}
+                  >
+                    <Text className="text-fg-secondary text-sm">
                       {filter.label}:
                     </Text>
                     <select
-                      className="px-3 py-1 border rounded text-sm"
+                      className={`${getSpacingClass("md", "px")} ${getSpacingClass("xs", "py")} border rounded text-sm`}
+                      // Accessible name comes from the `filter.label` prop
+                      // (the same string the adjacent `<Text>` displays as
+                      // a visible legend). Without aria-label the raw
+                      // `<select>` has no programmatic name and axe
+                      // `select-name` (critical) flags every filter
+                      // instance — 8 nodes across 5 stories at the
+                      // a11y-baseline-of-record measurement.
+                      //
+                      // The adjacent `<Text>` is prose, not a `<label>`
+                      // with `htmlFor`; pairing them properly would
+                      // require an id round-trip and a refactor. The
+                      // aria-label here closes the rule without changing
+                      // the markup shape — Phase 7 doctrine: name by
+                      // function ("Status, combobox"), not by tag type.
+                      //
+                      // Architecturally the raw `<select>` here is a
+                      // code-smell — the DS owns a `Select` primitive
+                      // that exposes a typed label API used by
+                      // `TablePagination`. Migrating this pattern to
+                      // the primitive is a separate uniformization PR
+                      // (registered in BACKLOG); the a11y fix doesn't
+                      // wait on that refactor.
+                      aria-label={filter.label}
                       value={String(activeFilters[filter.id] || "")}
                       onChange={(e) =>
                         handleFilterChange(
@@ -179,7 +206,7 @@ export function SearchAndFilterPattern<T = unknown>({
 
         {/* Results Count */}
         {showResultsCount && (
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-fg-secondary">
             Showing {filteredItems.length} of {items.length} results
             {hasActiveFilters && " (filtered)"}
           </div>
@@ -188,12 +215,14 @@ export function SearchAndFilterPattern<T = unknown>({
         {/* Results */}
         {filteredItems.length === 0 ? (
           <Card padding="large">
-            <div className="text-center text-gray-500">
+            <div className="text-center text-fg-secondary">
               <Text>{emptyMessage}</Text>
             </div>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div
+            className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${getSpacingClass("base", "gap")}`}
+          >
             {filteredItems.map((item, index) => (
               <div key={index}>{renderItem(item, index)}</div>
             ))}

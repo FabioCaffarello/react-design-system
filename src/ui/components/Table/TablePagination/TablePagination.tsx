@@ -3,6 +3,7 @@
 import type { HTMLAttributes } from "react";
 import { Button, Select, Text } from "../../../primitives";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { getSpacingClass } from "../../../tokens/spacing";
 
 export interface TablePaginationProps extends HTMLAttributes<HTMLDivElement> {
   page: number;
@@ -74,7 +75,7 @@ export default function TablePagination({
 
   return (
     <div
-      className={`flex items-center justify-between px-4 py-3 bg-white border-t border-gray-200 sm:px-6 ${className}`}
+      className={`flex items-center justify-between ${getSpacingClass("base", "px")} ${getSpacingClass("md", "py")} bg-surface-base border-t border-line-default sm:${getSpacingClass("lg", "px")} ${className}`}
       {...props}
     >
       <div className="flex flex-1 justify-between sm:hidden">
@@ -99,7 +100,7 @@ export default function TablePagination({
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         {showPageInfo && (
           <div>
-            <Text as="p" className="text-sm text-gray-700">
+            <Text as="p" className="text-sm text-fg-secondary">
               Showing <span className="font-medium">{startItem}</span> to{" "}
               <span className="font-medium">{endItem}</span> of{" "}
               <span className="font-medium">{total}</span> results
@@ -107,13 +108,16 @@ export default function TablePagination({
           </div>
         )}
 
-        <div className="flex items-center gap-4">
+        <div className={`flex items-center ${getSpacingClass("base", "gap")}`}>
           {showPageSizeSelector && (
-            <div className="flex items-center gap-2">
-              <Text as="span" className="text-sm text-gray-700">
+            <div
+              className={`flex items-center ${getSpacingClass("sm", "gap")}`}
+            >
+              <Text as="span" className="text-sm text-fg-secondary">
                 Show:
               </Text>
               <Select
+                aria-label="Items per page"
                 options={pageSizeOptions.map((size) => ({
                   value: size.toString(),
                   label: size.toString(),
@@ -130,7 +134,10 @@ export default function TablePagination({
             </div>
           )}
 
-          <nav className="flex items-center gap-1" aria-label="Pagination">
+          <nav
+            className={`flex items-center ${getSpacingClass("xs", "gap")}`}
+            aria-label="Pagination"
+          >
             <Button
               variant="ghost"
               size="sm"
@@ -151,7 +158,9 @@ export default function TablePagination({
               <ChevronLeft className="h-4 w-4" />
             </Button>
 
-            <div className="flex items-center gap-1">
+            <div
+              className={`flex items-center ${getSpacingClass("xs", "gap")}`}
+            >
               {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                 let pageNum: number;
                 if (totalPages <= 5) {

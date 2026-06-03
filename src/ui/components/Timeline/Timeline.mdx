@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as TimelineStories from "./Timeline.stories";
+
+<Meta of={TimelineStories} />
+
+# Timeline
+
+Timeline arranges a list of events along a connected line — vertical (top to bottom) or horizontal (left to right) — with each event showing a status indicator, title, optional timestamp, and optional rich content. Reach for it when the consumer's surface presents a chronological sequence the user reads through to understand a progression.
+
+## When to use
+
+- Use Timeline for chronological event lists — activity feeds for a single entity, change history, progress through a multi-step async pipeline, audit trails.
+- Use `orientation="vertical"` (default) for most surfaces — the dense top-to-bottom layout reads naturally and accommodates rich content per item.
+- Use `orientation="horizontal"` for compact progress indicators where the timeline shows progression without rich content (similar to `Stepper`'s indicator row).
+- Use per-item `status` (`default` / `active` / `completed` / `error`) to color the indicator dot — error items get the alert glyph; completed items get the check glyph.
+- Use `content` for items that need rich expanded detail (a code diff, a quoted comment, an image attachment); use `description` alone for short text.
+
+## When not to use
+
+- Use `Stepper` when the sequence is interactive and the user navigates between steps — Timeline is read-only display.
+- Use a plain `<ul>` list when the connecting line and per-item status indicator add no value — the timeline's distinctive visual costs space.
+- Use `Accordion` when the items are independently expandable sections of content rather than ordered events.
+
+## Anatomy
+
+Timeline lays out its `items` along the chosen orientation: each item has an `indicator` (a colored dot, check, or alert glyph anchored to the item's status) connected to adjacent items by a `connector` (the segment of line running between indicators — color-shifted when the item is `completed`); the `content region` next to (vertical) or beneath (horizontal) the indicator shows the `title`, optional `timestamp`, optional `description`, and optional `content` block in source order.
+
+<Canvas of={TimelineStories.Default} />
+
+## Examples
+
+<Canvas of={TimelineStories.Horizontal} />
+
+<Canvas of={TimelineStories.WithIcons} />
+
+<Canvas of={TimelineStories.WithContent} />
+
+## Props
+
+<Controls of={TimelineStories.Default} />
+
+## Accessibility
+
+Timeline renders a `<ol>` list semantics so assistive tech announces "list, N items" before the user starts reading; each item is a `<li>` with the title as the natural reading start. The status indicator dots are decorative (`aria-hidden="true"`); the meaning lives in the title and the optional `description` text — assistive tech does not announce color or glyph alone.
+
+For `error` status items, prepend the title with a textual marker ("Failed:" or "Error:") so screen-reader users hear the failure as part of the title; the colored indicator alone is invisible to them.
+
+When timestamps matter, render them inside a `<time>` element with `datetime` attribute carrying the machine-readable form so assistive tech and browser extensions read the timestamp consistently across timezones; the visible string can be a humanized version ("2 hours ago", "Jan 15, 2024 at 3:42 PM").
+
+For interactive Timeline items (clickable, opening details, navigating to a route), the indicator + content region becomes a `<button>` or `<a>` so the activation affordance is correct; Timeline does not auto-promote items to interactive — the consumer wires it through the `content` slot.
+
+When Timeline displays many items (audit trails with hundreds of entries), pair it with `Pagination` or windowed rendering so initial focus does not land at the end of a long list.

@@ -8,6 +8,7 @@ import type {
   ReactElement,
 } from "react";
 import {
+  forwardRef,
   useState,
   useRef,
   useEffect,
@@ -15,8 +16,8 @@ import {
   isValidElement,
 } from "react";
 import { getBorderWidthClass } from "../../tokens/borders";
-import { getColorClass } from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
+import { getShadowClass } from "../../tokens/shadows";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getTypographySize } from "../../tokens/typography";
 import { getZIndexClass } from "../../tokens/z-index";
@@ -48,16 +49,19 @@ export interface TooltipProps extends HTMLAttributes<HTMLDivElement> {
  * </Tooltip>
  * ```
  */
-export default function Tooltip({
-  content,
-  children,
-  position = "top",
-  delay = 200,
-  className = "",
-  "aria-label": _ariaLabel,
-  preservePositioning = false,
-  ...props
-}: TooltipProps) {
+const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(
+  {
+    content,
+    children,
+    position = "top",
+    delay = 200,
+    className = "",
+    "aria-label": _ariaLabel,
+    preservePositioning = false,
+    ...props
+  },
+  ref,
+) {
   const [isVisible, setIsVisible] = useState(false);
   const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
@@ -133,13 +137,13 @@ export default function Tooltip({
   const getArrowBorderColor = (
     position: "top" | "bottom" | "left" | "right",
   ): string => {
-    // Return complete border classes for neutral dark color
-    // These classes must be in safelist or used elsewhere for Tailwind to detect
+    // Arrow follows the tooltip body's surface-inverse color so the
+    // triangle's point visually merges into the body.
     const borderMap: Record<"top" | "bottom" | "left" | "right", string> = {
-      top: "border-t-gray-700",
-      bottom: "border-b-gray-700",
-      left: "border-l-gray-700",
-      right: "border-r-gray-700",
+      top: "border-t-surface-inverse",
+      bottom: "border-b-surface-inverse",
+      left: "border-l-surface-inverse",
+      right: "border-r-surface-inverse",
     };
     return borderMap[position];
   };
@@ -152,10 +156,10 @@ export default function Tooltip({
       getSpacingClass("sm", "px"),
       getSpacingClass("xs", "py"),
       getTypographySize("caption"),
-      getColorClass("neutral", "contrast", "text"),
-      getColorClass("neutral", "dark", "bg"),
+      "text-fg-inverse",
+      "bg-surface-inverse",
       getRadiusClass("md"),
-      "shadow-lg",
+      getShadowClass("lg"),
       "whitespace-nowrap",
     ),
     {
@@ -304,7 +308,7 @@ export default function Tooltip({
     : cn("relative", "inline-block", className);
 
   return (
-    <div className={wrapperClassName} {...props}>
+    <div ref={ref} className={wrapperClassName} {...props}>
       {childrenWithProps}
       {isVisible && (
         <div
@@ -320,4 +324,8 @@ export default function Tooltip({
       )}
     </div>
   );
-}
+});
+
+Tooltip.displayName = "Tooltip";
+
+export default Tooltip;

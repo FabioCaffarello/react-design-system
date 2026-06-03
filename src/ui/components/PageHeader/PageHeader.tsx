@@ -21,7 +21,7 @@ import { getSpacingClass } from "../../tokens/spacing";
  */
 const pageHeaderVariants = cva(
   // Base classes
-  cn("w-full", "flex", "flex-col", "gap-2"),
+  cn("w-full", "flex", "flex-col", getSpacingClass("sm", "gap")),
   {
     variants: {
       variant: {
@@ -68,14 +68,20 @@ export function PageHeader({
       {breadcrumb && breadcrumb.length > 0 && <Breadcrumb items={breadcrumb} />}
 
       {/* Title and Actions Row */}
-      <div className="flex items-start justify-between gap-4">
+      <div
+        className={`flex items-start justify-between ${getSpacingClass("base", "gap")}`}
+      >
         {/* Title and Description */}
         <div className="flex-1 min-w-0">
-          <Text variant="heading" as="h1" className="mb-2 text-2xl font-bold">
+          <Text
+            variant="heading"
+            as="h1"
+            className={`${getSpacingClass("sm", "mb")} text-2xl font-bold`}
+          >
             {title}
           </Text>
           {description && (
-            <Text variant="body" className="text-gray-600">
+            <Text variant="body" className="text-fg-secondary">
               {description}
             </Text>
           )}
@@ -83,7 +89,11 @@ export function PageHeader({
 
         {/* Actions */}
         {actions && (
-          <div className="flex items-center gap-2 flex-shrink-0">{actions}</div>
+          <div
+            className={`flex items-center ${getSpacingClass("sm", "gap")} flex-shrink-0`}
+          >
+            {actions}
+          </div>
         )}
       </div>
     </div>

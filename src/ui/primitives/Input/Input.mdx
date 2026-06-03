@@ -1,0 +1,57 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as InputStories from "./Input.stories";
+
+<Meta of={InputStories} />
+
+# Input
+
+Input renders a single-line text field with optional label, helper text, error / success state, leading and trailing icons, and a clear button. Reach for it for short freeform text — names, emails, search terms, single-line notes. The component extends all native `<input>` HTML attributes.
+
+## When to use
+
+- Use Input for any single-line text entry — email, name, search, slug, short notes, password fields.
+- Use `error` + `helperText` to surface validation feedback inline; the helper region carries `role="alert"` automatically when `error` is true.
+- Use `success` for positive confirmation (a valid email, a slug that is available) when the moment of validation matters and the user benefits from the reassurance.
+- Use `leftIcon` for type-of-content cues (search glass, currency symbol) and `rightIcon` for affordances tied to the field (clear, reveal password, calendar trigger).
+- Use `showClearButton` for search and filter inputs where "start over" is a common action.
+
+## When not to use
+
+- Use `Textarea` for multi-line freeform text — notes, descriptions, messages.
+- Use `Select` or `MultiSelect` for a fixed set of choices — Input has no autocomplete or validation against options.
+- Use `Checkbox`, `Radio`, or `Switch` for boolean or single-choice state — Input is freeform.
+- Use a dedicated component (`DatePicker`, `TimePicker`, file picker) when the type of value has a richer affordance than a string.
+
+## Anatomy
+
+Input renders in source order: an optional `label` (rendered as a separate `Label` primitive above), a `field` row containing optional `leftIcon`, the native `<input>`, an optional clear button or `rightIcon`, and an optional `helperText` row below carrying validation feedback with `role="alert"` when `error` is set.
+
+<Canvas of={InputStories.Default} />
+
+## Examples
+
+<Canvas of={InputStories.Default} />
+
+`variant` swaps the field surface — `default` is the most common; `outlined` adds an outline ring; `filled` carries a tinted background for high-emphasis forms.
+
+<Canvas of={InputStories.Variants} />
+
+<Canvas of={InputStories.WithError} />
+
+`leftIcon` lives inside the field; `rightIcon` shares the slot with the clear button when both are present.
+
+<Canvas of={InputStories.WithIcons} />
+
+## Props
+
+<Controls of={InputStories.Default} />
+
+## Accessibility
+
+The native `<input>` carries all the built-in keyboard and assistive-tech behavior — focus on tab, type to fill, Enter submits the enclosing form. The component wires three pieces on top: the `label` is bound via `htmlFor` so clicking the label moves focus to the input; the `helperText` and `error` regions get IDs that the input references through `aria-describedby` so screen readers announce them when the field receives focus; the helper region carries `role="alert"` when `error` is true so validation feedback is announced politely.
+
+The focus indicator uses `focus:ring-2` with a tinted color that swaps to error tone when `error` is set, so the keyboard focus stays visible against any surface — do not strip the ring without replacing it.
+
+The clear button is a native `<button type="button">` with an explicit `aria-label`. Reveal-password toggles in the password variant follow the same pattern.
+
+When the input has no visible label (a search field next to an icon), set `aria-label` explicitly so the field still has an accessible name.

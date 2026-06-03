@@ -39,8 +39,8 @@ export function NavbarGroup({
           className={cn(
             getSpacingClass("sm", "px"),
             getSpacingClass("1.5", "py"),
-            "text-xs text-gray-500 uppercase tracking-wider",
-            collapsible && "cursor-pointer hover:text-gray-700",
+            "text-xs text-fg-tertiary uppercase tracking-wider",
+            collapsible && "cursor-pointer hover:text-fg-secondary",
           )}
           onClick={collapsible ? () => setIsCollapsed(!isCollapsed) : undefined}
         >
@@ -68,9 +68,7 @@ export function NavbarGroup({
         </div>
       )}
       {!isCollapsed && (
-        <div className="flex flex-col gap-2">
-          {" "}
-          {/* gap-2 para consistência com outros componentes */}
+        <div className={`flex flex-col ${getSpacingClass("sm", "gap")}`}>
           {children}
         </div>
       )}

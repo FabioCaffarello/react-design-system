@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as StepperStories from "./Stepper.stories";
+
+<Meta of={StepperStories} />
+
+# Stepper
+
+Stepper guides the user through a sequenced multi-step task — onboarding, account setup, checkout, complex form wizards. Each step shows its content in turn, with visible progress through the sequence and navigation between completed steps. Reach for it when a workflow has a real linear order and the user benefits from seeing where they are and what remains.
+
+## When to use
+
+- Use Stepper for any workflow with two or more ordered steps — checkout, onboarding, multi-step forms, account verification.
+- Use `orientation="horizontal"` (default) for wide surfaces; `orientation="vertical"` for narrow surfaces or long step lists.
+- Use `showStepNumbers={true}` (default) when "step 3 of 5" framing helps; turn off for marketing flows.
+- Use `allowNavigation={true}` so the user can click back to amend; turn off for irreversible one-way flows.
+- Use per-step `status` to mark non-default states — `error` on failed validation, `completed` for out-of-order confirms.
+
+## When not to use
+
+- Use `Tabs` when the user moves between sibling views without a sequence; Stepper implies progression.
+- Use `Accordion` when sections are independently expandable without linear order.
+- Use a single long form when the steps are not genuinely separable — splitting a flat form into a fake wizard adds clicks without value.
+
+## Anatomy
+
+A horizontal Stepper places its parts left to right: each `step indicator` is a circle showing the step number (or a check when completed, an alert glyph when `status="error"`) anchored to the step's `title` label; `connectors` are the line segments running between adjacent indicators, color-shifted to mark completed segments; the `content panel` below the indicator row renders the active step's `content`; the `navigation row` at the bottom contains the Back and Next / Complete buttons. Vertical Stepper stacks the indicators top to bottom with connectors as vertical lines.
+
+<Canvas of={StepperStories.Default} />
+
+## Examples
+
+<Canvas of={StepperStories.Vertical} />
+
+<Canvas of={StepperStories.WithStatus} />
+
+<Canvas of={StepperStories.WithError} />
+
+## Props
+
+<Controls of={StepperStories.Default} />
+
+## Accessibility
+
+Each step indicator is a native `<button>` (when `allowNavigation` is true) carrying `aria-current="step"` on the active step, so assistive tech announces "current step, 3 of 5" alongside the title. Pending steps that the user cannot jump to yet are non-focusable; completed steps are focusable so the user can navigate back.
+
+Step status is communicated through both color and text — `completed` shows a check glyph and is announced "completed"; `error` shows an alert glyph and is announced "error"; the visible label changes accordingly so screen-reader users get the meaning without relying on color.
+
+The content panel uses `role="region"` with `aria-labelledby` pointing at the active step's title so the panel has an accessible name; assistive tech announces the new region when the user advances to the next step.
+
+Keyboard support: Tab moves through the visible step indicators (jumping past pending steps), the form controls inside the content, then the Back / Next buttons; Enter on a step indicator jumps to that step when navigation is allowed. Arrow keys are not bound — the linear sequence already implies one direction at a time.
+
+For step transitions that perform asynchronous validation (server check, file upload), set `disabled` on the Next button while in flight; without it, the user can double-click and submit twice.

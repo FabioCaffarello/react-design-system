@@ -1,197 +1,53 @@
-import { Meta } from "@storybook/addon-docs/blocks";
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as DialogStories from "./Dialog.stories";
 
-<Meta title="Components/Dialog" />
+<Meta of={DialogStories} />
 
 # Dialog
 
-A flexible and accessible dialog component using the compound components pattern. Supports both controlled and uncontrolled modes with full keyboard navigation and focus management.
+Dialog is a compound dialog component with explicit slots for the trigger, content, header, title, description, footer, and close button — the consumer assembles the parts to shape the dialog they need. Reach for it for interactive overlays that need richer composition than `Modal`'s flat-prop API (custom action layouts, multi-paragraph descriptions, embedded forms, AlertDialog variants).
 
-## Features
+## When to use
 
-- **Compound Components**: Flexible API with composable parts
-- **Controlled/Uncontrolled**: Works in both modes
-- **Focus Trap**: Automatically traps focus within dialog
-- **Portal Rendering**: Renders outside DOM hierarchy
-- **Accessibility**: Full ARIA support and keyboard navigation
-- **Sizes**: Multiple size options (sm, md, lg, xl, fullscreen)
-- **Body Scroll Lock**: Prevents background scrolling when open
+- Use Dialog for interactive overlays that need composed parts — confirmation flows with primary + secondary + destructive buttons, multi-paragraph explanations with custom layouts, embedded forms or surveys.
+- Use the compound API so the parts are wired correctly without prop boilerplate — `Dialog.Title` binds to `aria-labelledby` automatically, `Dialog.Description` binds to `aria-describedby`, `Dialog.Close` triggers the close handler.
+- Use controlled mode (`open` + `onOpenChange`) when external state drives visibility — programmatic opens, multi-instance coordination, persisted state.
+- Use the AlertDialog variant for destructive confirmations — it carries different ARIA semantics (`role="alertdialog"`) so screen readers signal the severity.
 
-## Basic Usage
+## When not to use
 
-### Uncontrolled Mode
+- Use `Modal` for the simple "title + body + footer with showCloseButton" shape — Modal's flat props cover the common case without compound boilerplate.
+- Use `Drawer` for side panels that slide in from an edge instead of centering on the page.
+- Use `Popover` for inline tooltips or compact contextual content anchored to a trigger — Dialog dominates the viewport, Popover floats next to its trigger.
 
-```tsx
-import { Dialog, Button } from "@fabio.caffarello/react-design-system";
+## Anatomy
 
-<Dialog>
-  <Dialog.Trigger>
-    <Button>Open Dialog</Button>
-  </Dialog.Trigger>
-  <Dialog.Content>
-    <Dialog.Header>
-      <Dialog.Title>Dialog Title</Dialog.Title>
-      <Dialog.Description>Dialog description text</Dialog.Description>
-    </Dialog.Header>
-    <Dialog.Footer>
-      <Dialog.Close>
-        <Button variant="outline">Cancel</Button>
-      </Dialog.Close>
-      <Button>Confirm</Button>
-    </Dialog.Footer>
-  </Dialog.Content>
-</Dialog>;
-```
+Dialog is composed from a deep compound API. The root `Dialog` mounts a context provider carrying open state and the generated `aria-labelledby` / `aria-describedby` IDs. `Dialog.Trigger` wraps the element that opens the dialog (typically a `Button`) and wires `aria-haspopup="dialog"` + `aria-expanded`. `Dialog.Content` is the portaled panel with `role="dialog"` containing the rest. Inside `Dialog.Content`: `Dialog.Header` carries the top region with `Dialog.Title` (the heading, wired to `aria-labelledby`) and optional `Dialog.Description` (the explanatory text, wired to `aria-describedby`). The body content sits between header and footer. `Dialog.Footer` carries the bottom action row. `Dialog.Close` is the explicit dismiss affordance (visible close button or a button inside the footer) that triggers `onOpenChange(false)`.
 
-### Controlled Mode
+<Canvas of={DialogStories.Default} />
 
-```tsx
-import { useState } from "react";
-import { Dialog, Button } from "@fabio.caffarello/react-design-system";
+## Examples
 
-function MyComponent() {
-  const [isOpen, setIsOpen] = useState(false);
+<Canvas of={DialogStories.WithForm} />
 
-  return (
-    <>
-      <Button onClick={() => setIsOpen(true)}>Open Dialog</Button>
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <Dialog.Content>
-          <Dialog.Header>
-            <Dialog.Title>Dialog Title</Dialog.Title>
-          </Dialog.Header>
-          <Dialog.Footer>
-            <Button variant="outline" onClick={() => setIsOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={() => setIsOpen(false)}>Confirm</Button>
-          </Dialog.Footer>
-        </Dialog.Content>
-      </Dialog>
-    </>
-  );
-}
-```
+<Canvas of={DialogStories.Sizes} />
 
-## Compound Components
+<Canvas of={DialogStories.WithoutOverlayClose} />
 
-### Dialog.Trigger
+## Props
 
-Opens the dialog when clicked:
-
-```tsx
-<Dialog.Trigger>
-  <Button>Open</Button>
-</Dialog.Trigger>
-```
-
-### Dialog.Content
-
-The main dialog container:
-
-```tsx
-<Dialog.Content size="lg" closeOnOverlayClick closeOnEscape>
-  {/* Content */}
-</Dialog.Content>
-```
-
-**Props:**
-
-- `size`: 'sm' | 'md' | 'lg' | 'xl' | 'fullscreen'
-- `closeOnOverlayClick`: Close when clicking overlay
-- `closeOnEscape`: Close on Escape key
-
-### Dialog.Header
-
-Container for title and description:
-
-```tsx
-<Dialog.Header>
-  <Dialog.Title>Title</Dialog.Title>
-  <Dialog.Description>Description</Dialog.Description>
-</Dialog.Header>
-```
-
-### Dialog.Title
-
-The dialog title (required for accessibility):
-
-```tsx
-<Dialog.Title>Dialog Title</Dialog.Title>
-```
-
-### Dialog.Description
-
-Optional description text:
-
-```tsx
-<Dialog.Description>Additional context about the dialog</Dialog.Description>
-```
-
-### Dialog.Footer
-
-Container for action buttons:
-
-```tsx
-<Dialog.Footer>
-  <Button>Action</Button>
-</Dialog.Footer>
-```
-
-### Dialog.Close
-
-Closes the dialog when clicked:
-
-```tsx
-<Dialog.Close>
-  <Button variant="outline">Close</Button>
-</Dialog.Close>
-```
-
-## Sizes
-
-```tsx
-<Dialog.Content size="sm">Small Dialog</Dialog.Content>
-<Dialog.Content size="md">Medium Dialog</Dialog.Content>
-<Dialog.Content size="lg">Large Dialog</Dialog.Content>
-<Dialog.Content size="xl">Extra Large Dialog</Dialog.Content>
-<Dialog.Content size="fullscreen">Fullscreen Dialog</Dialog.Content>
-```
-
-## Focus Management
-
-The Dialog automatically:
-
-- Focuses the first focusable element when opened
-- Traps focus within the dialog
-- Restores focus to the trigger when closed
-- Prevents body scrolling when open
-
-## Keyboard Navigation
-
-- **Escape**: Closes the dialog (if `closeOnEscape` is true)
-- **Tab**: Navigates between focusable elements
-- **Shift+Tab**: Navigates backwards
-- Focus wraps within the dialog
+<Controls of={DialogStories.Default} />
 
 ## Accessibility
 
-The Dialog component follows ARIA best practices:
+Dialog implements the WAI-ARIA Dialog pattern. `Dialog.Content` carries `role="dialog"` with `aria-modal="true"`, `aria-labelledby` pointing at `Dialog.Title`'s generated ID, and `aria-describedby` pointing at `Dialog.Description`'s generated ID when present. The wiring is automatic — the consumer composes the parts, the provider connects them.
 
-- Uses `role="dialog"` with `aria-modal="true"`
-- Associates title via `aria-labelledby`
-- Associates description via `aria-describedby`
-- Manages focus automatically
-- Supports screen readers
+Focus moves to the first focusable element inside `Dialog.Content` on open (often `Dialog.Close` or the first form control) and returns to the trigger on close. While open, focus is trapped inside the dialog — Tab cycles only within the dialog, the underlying page is inert.
 
-### Required ARIA Attributes
+`Dialog.Close` is a native `<button>` with an explicit `aria-label="Close dialog"` when it renders as the icon-only variant; when used inside `Dialog.Footer` as a labelled button, the visible label provides the accessible name. ESC closes the dialog by default; outside-click closes it unless `closeOnOverlayClick={false}` is passed.
 
-- **Title**: Always provide a `Dialog.Title` for `aria-labelledby`
-- **Description**: Optional but recommended for `aria-describedby`
+Body scroll locks while the dialog is open so the underlying page does not move under the user. The lock is automatic; do not duplicate it in consumer code.
 
-## Best Practices
+The AlertDialog variant changes `role="dialog"` to `role="alertdialog"` — assistive tech announces the severity differently, and screen-reader users hear a stronger signal that the dialog requires their attention. Use it only for destructive confirmations (delete, sign out from all sessions, irrevocable actions); overusing the role dilutes the signal.
 
-1. **Always provide a title**: Required for accessibility
-2. **Use descriptions**: Help users understand the dialog purpose
-3. **Clear actions**: Make button labels clear and actionable
-4. **Escape to close**: Allow users to close with Escape key
-5. **Focus management**: Let the component handle focus automatically
+For dialogs that render forms, set the form's submit button as the default focus target so Enter inside any field submits the form — the dialog's focus trap keeps the keyboard pattern intact.

@@ -1,13 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import Button from "./Button";
 import { Play, X, Save, Download, Trash2 } from "lucide-react";
 
 const meta: Meta<typeof Button> = {
   title: "Primitives/Button",
   component: Button,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -283,7 +282,7 @@ export const Accessibility: Story = {
   render: () => (
     <div className="space-y-4">
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Buttons with proper ARIA labels:
         </p>
         <div className="flex gap-2">
@@ -305,13 +304,15 @@ export const Accessibility: Story = {
         </div>
       </div>
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">Loading state with aria-busy:</p>
+        <p className="text-sm text-fg-secondary">
+          Loading state with aria-busy:
+        </p>
         <Button isLoading aria-busy="true">
           Processing...
         </Button>
       </div>
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Disabled state with aria-disabled:
         </p>
         <Button disabled aria-disabled="true">
@@ -333,7 +334,7 @@ export const Accessibility: Story = {
 export const KeyboardNavigation: Story = {
   render: () => (
     <div className="space-y-4">
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-secondary">
         Try navigating with Tab key and activating buttons with Enter or Space:
       </p>
       <div className="flex flex-col gap-2">
@@ -342,7 +343,7 @@ export const KeyboardNavigation: Story = {
         <Button variant="outline">Third Button</Button>
         <Button variant="ghost">Fourth Button</Button>
       </div>
-      <p className="text-xs text-gray-500 mt-4">
+      <p className="text-xs text-fg-tertiary mt-4">
         All buttons support keyboard navigation: Tab to focus, Enter or Space to
         activate.
       </p>
@@ -362,7 +363,9 @@ export const LoadingStates: Story = {
   render: () => (
     <div className="space-y-4">
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">Loading with default spinner:</p>
+        <p className="text-sm text-fg-secondary">
+          Loading with default spinner:
+        </p>
         <div className="flex gap-2">
           <Button isLoading>Loading</Button>
           <Button variant="secondary" isLoading>
@@ -374,7 +377,7 @@ export const LoadingStates: Story = {
         </div>
       </div>
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">Loading with custom text:</p>
+        <p className="text-sm text-fg-secondary">Loading with custom text:</p>
         <div className="flex gap-2">
           <Button isLoading loadingText="Saving...">
             Save
@@ -388,7 +391,7 @@ export const LoadingStates: Story = {
         </div>
       </div>
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">Loading with custom icon:</p>
+        <p className="text-sm text-fg-secondary">Loading with custom icon:</p>
         <div className="flex gap-2">
           <Button
             isLoading
@@ -415,20 +418,20 @@ export const Polymorphic: Story = {
   render: () => (
     <div className="space-y-4">
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">Button as anchor tag:</p>
+        <p className="text-sm text-fg-secondary">Button as anchor tag:</p>
         <Button as="a" href="https://example.com" target="_blank">
           Link Button
         </Button>
       </div>
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Button with href (for custom Link components):
         </p>
         <Button as="a" href="/dashboard">
           Dashboard Link
         </Button>
       </div>
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-fg-tertiary">
         The `as` prop allows rendering Button as different elements, useful for
         Next.js Link or React Router.
       </p>
@@ -473,7 +476,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Interact with the button below. Check the Actions panel to see events
           being fired.
         </p>

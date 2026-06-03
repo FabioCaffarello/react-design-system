@@ -6,7 +6,6 @@ import { getRadiusClass } from "../../tokens/radius";
 import { getShadowClass } from "../../tokens/shadows";
 import { getZIndexClass } from "../../tokens/z-index";
 import { getSpacingClass } from "../../tokens/spacing";
-import { getColorClass } from "../../tokens/colors";
 import { useMenuContext } from "./MenuContext";
 
 export interface MenuContentProps {
@@ -170,11 +169,11 @@ export default function MenuContent({
       className={`
         absolute
         ${getZIndexClass("popover")}
-        bg-white
+        bg-surface-overlay
         ${getRadiusClass("md")}
         ${getShadowClass("lg")}
         border
-        ${getColorClass("neutral", "DEFAULT", "border")}
+        border-line-default
         min-w-40
         ${getSpacingClass("xs", "py")}
         ${className}

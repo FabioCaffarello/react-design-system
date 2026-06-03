@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import React from "react";
 import Input from "./Input";
 import { Mail, Search, Lock, User } from "lucide-react";
@@ -8,7 +8,6 @@ import { Mail, Search, Lock, User } from "lucide-react";
 const meta: Meta<typeof Input> = {
   title: "Primitives/Input",
   component: Input,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -269,7 +268,7 @@ export const Controlled: Story = {
           onChange={(e) => setValue(e.target.value)}
           placeholder="Type something..."
         />
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Current value: {value || "(empty)"}
         </p>
       </div>
@@ -292,7 +291,7 @@ export const Uncontrolled: Story = {
         defaultValue="Initial value"
         placeholder="Type something..."
       />
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-secondary">
         Uses defaultValue for initial value without state management.
       </p>
     </div>
@@ -319,7 +318,7 @@ export const WithClearButton: Story = {
           onClear={() => setValue("")}
           placeholder="Type to search..."
         />
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Click the X button to clear the input.
         </p>
       </div>
@@ -385,7 +384,7 @@ export const Integration: Story = {
         />
         <button
           onClick={validate}
-          className="px-4 py-2 bg-indigo-500 text-white rounded"
+          className="px-4 py-2 bg-surface-brand-strong text-fg-inverse rounded"
         >
           Validate
         </button>
@@ -425,7 +424,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Interact with the input below. Check the Actions panel to see events
           being fired.
         </p>
@@ -438,7 +437,7 @@ export const WithEvents: Story = {
           onKeyDown={handleKeyDown}
           placeholder="Type something..."
         />
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-fg-tertiary">
           Current value: {value || "(empty)"}
         </p>
       </div>

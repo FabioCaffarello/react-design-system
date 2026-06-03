@@ -1,14 +1,13 @@
 import React from "react";
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import { Drawer, DrawerContent, DrawerHeader, DrawerFooter } from "./index";
 import { Button } from "../../primitives";
 
 const meta: Meta<typeof Drawer> = {
   title: "Components/Drawer",
   component: Drawer,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -277,26 +276,26 @@ export const ComplexContent: Story = {
           <DrawerContent showCloseButton>
             <DrawerHeader>
               <h2 className="text-xl font-semibold">Settings</h2>
-              <p className="text-sm text-gray-600 mt-1">
+              <p className="text-sm text-fg-secondary mt-1">
                 Manage your preferences
               </p>
             </DrawerHeader>
             <div className="p-6 space-y-4 flex-1 overflow-y-auto">
               <div>
                 <h3 className="font-medium mb-2">General</h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-fg-secondary">
                   General settings content...
                 </p>
               </div>
               <div>
                 <h3 className="font-medium mb-2">Notifications</h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-fg-secondary">
                   Notification settings content...
                 </p>
               </div>
               <div>
                 <h3 className="font-medium mb-2">Privacy</h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-fg-secondary">
                   Privacy settings content...
                 </p>
               </div>
@@ -328,10 +327,7 @@ export const WithEvents: Story = {
       <>
         <Button onClick={() => setOpen(true)}>Open Drawer</Button>
         <Drawer open={open} onOpenChange={handleOpenChange}>
-          <DrawerContent>
-            <DrawerHeader>
-              <h2 className="text-lg font-semibold">Interactive Drawer</h2>
-            </DrawerHeader>
+          <DrawerContent title="Interactive Drawer">
             <div className="p-6">
               <p>
                 Interact with the drawer. Check the Actions panel to see events
@@ -407,10 +403,7 @@ export const OpenState: Story = {
       <>
         <Button onClick={() => setOpen(false)}>Close Drawer</Button>
         <Drawer open={open} onOpenChange={setOpen}>
-          <DrawerContent>
-            <DrawerHeader>
-              <h2 className="text-lg font-semibold">Open Drawer</h2>
-            </DrawerHeader>
+          <DrawerContent title="Open Drawer">
             <div className="p-6">
               <p>This drawer is open.</p>
             </div>

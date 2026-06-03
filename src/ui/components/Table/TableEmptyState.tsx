@@ -3,6 +3,7 @@
 import type { HTMLAttributes } from "react";
 import { useTableContext } from "./TableContext";
 import { EmptyState } from "../../components";
+import { getSpacingClass } from "../../tokens/spacing";
 
 export type TableEmptyStateProps = HTMLAttributes<HTMLDivElement>;
 
@@ -35,14 +36,18 @@ export default function TableEmptyState({
           illustration={emptyStateIllustration}
         />
         {emptyStateAction && (
-          <div className="mt-4 flex justify-center">{emptyStateAction}</div>
+          <div
+            className={`${getSpacingClass("base", "mt")} flex justify-center`}
+          >
+            {emptyStateAction}
+          </div>
         )}
       </div>
     );
   }
 
   return (
-    <div className={`text-center text-gray-500 ${className}`} {...props}>
+    <div className={`text-center text-fg-secondary ${className}`} {...props}>
       {emptyMessage || "No data available"}
     </div>
   );

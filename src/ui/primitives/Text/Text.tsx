@@ -27,36 +27,44 @@ const TEXT_COLOR_CLASSES: Record<
   Record<TextColorShade, string>
 > = {
   primary: {
+    // exception: variant color — no semantic equivalent (Principle 3, .claude/rules/colors.md)
     light: "text-indigo-400",
     DEFAULT: "text-fg-brand",
+    // exception: variant color — no semantic equivalent (Principle 3, .claude/rules/colors.md)
     dark: "text-indigo-600",
     contrast: "text-fg-inverse",
   },
   secondary: {
+    // exception: variant color — no semantic equivalent (Principle 3, .claude/rules/colors.md)
     light: "text-pink-300",
     DEFAULT: "text-fg-brand-secondary",
+    // exception: variant color — no semantic equivalent (Principle 3, .claude/rules/colors.md)
     dark: "text-pink-600",
     contrast: "text-fg-inverse",
   },
   success: {
+    // exception: variant color — no semantic equivalent (Principle 3, .claude/rules/colors.md)
     light: "text-green-300",
     DEFAULT: "text-fg-success",
     dark: "text-success-dark",
     contrast: "text-fg-inverse",
   },
   warning: {
+    // exception: variant color — no semantic equivalent (Principle 3, .claude/rules/colors.md)
     light: "text-yellow-300",
     DEFAULT: "text-fg-warning",
     dark: "text-warning-dark",
     contrast: "text-fg-inverse",
   },
   error: {
+    // exception: variant color — no semantic equivalent (Principle 3, .claude/rules/colors.md)
     light: "text-red-300",
     DEFAULT: "text-fg-error",
     dark: "text-error-dark",
     contrast: "text-fg-inverse",
   },
   info: {
+    // exception: variant color — no semantic equivalent (Principle 3, .claude/rules/colors.md)
     light: "text-blue-300",
     DEFAULT: "text-fg-info",
     dark: "text-info-dark",
@@ -84,7 +92,6 @@ interface Props<T extends ElementType>
   as?: T;
   bold?: boolean;
   italic?: boolean;
-  color?: string;
   colorRole?: TextColorRole;
   colorShade?: TextColorShade;
 }
@@ -99,7 +106,6 @@ function TextComponent<T extends ElementType = "p">(
     italic,
     className,
     as,
-    color,
     colorRole = "neutral",
     colorShade = "dark",
     ...rest
@@ -153,11 +159,9 @@ function TextComponent<T extends ElementType = "p">(
     classNames.push("italic");
   }
 
-  // Apply color via lookup table. `color` prop is accepted for API
-  // back-compat but Tailwind v4 can't generate dynamic `text-${color}`
-  // classes, so it has no visual effect — colorRole/colorShade are
-  // the supported channel.
-  void color;
+  // Apply color via lookup table. Tailwind v4 needs literal class names
+  // at build time, so role/shade resolve to a fixed entry in
+  // TEXT_COLOR_CLASSES rather than constructing `text-${...}` dynamically.
   classNames.push(TEXT_COLOR_CLASSES[colorRole][colorShade]);
 
   return <Tag ref={ref} className={cn(...classNames, className)} {...rest} />;

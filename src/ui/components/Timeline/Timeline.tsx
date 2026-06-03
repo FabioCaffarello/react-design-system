@@ -63,6 +63,11 @@ export default function Timeline({
               <div className="flex flex-col items-center flex-1">
                 {/* Icon/Indicator */}
                 <div
+                  // data-marker="pending" — see .claude/rules/colors.md
+                  // "fg-quaternary: AA-by-construction exception".
+                  {...(status === "default"
+                    ? { "data-marker": "pending" }
+                    : {})}
                   className={`
                   flex
                   items-center
@@ -73,12 +78,12 @@ export default function Timeline({
                   border-2
                   ${
                     status === "completed"
-                      ? `${"bg-success"} ${"border-success"} text-white`
+                      ? "bg-success border-success text-fg-inverse"
                       : status === "active"
-                        ? `${"bg-surface-brand"} ${"border-line-brand"} text-white`
+                        ? "bg-surface-brand-strong border-line-brand text-fg-inverse"
                         : status === "error"
-                          ? `${"bg-error"} ${"border-error"} text-white`
-                          : "bg-white border-gray-300 text-gray-400"
+                          ? "bg-error border-error text-fg-inverse"
+                          : "bg-surface-base border-line-emphasis text-fg-quaternary"
                   }
                 `}
                 >
@@ -96,30 +101,38 @@ export default function Timeline({
                     className={`
                       w-full
                       h-0.5
-                      mt-2
-                      ${status === "completed" ? "bg-success" : "bg-gray-300"}
+                      ${getSpacingClass("sm", "mt")}
+                      ${status === "completed" ? "bg-success" : "bg-line-emphasis"}
                     `}
                   />
                 )}
 
                 {/* Content */}
                 <div
-                  className={`mt-4 text-center ${getSpacingClass("base", "px")}`}
+                  className={`${getSpacingClass("base", "mt")} text-center ${getSpacingClass("base", "px")}`}
                 >
                   {item.timestamp && (
-                    <p className="text-xs text-gray-500 mb-1">
+                    <p
+                      className={`text-xs text-fg-tertiary ${getSpacingClass("xs", "mb")}`}
+                    >
                       {item.timestamp}
                     </p>
                   )}
-                  <h3 className="text-sm font-semibold text-gray-900">
+                  <h3 className="text-sm font-semibold text-fg-primary">
                     {item.title}
                   </h3>
                   {item.description && (
-                    <p className="text-xs text-gray-600 mt-1">
+                    <p
+                      className={`text-xs text-fg-secondary ${getSpacingClass("xs", "mt")}`}
+                    >
                       {item.description}
                     </p>
                   )}
-                  {item.content && <div className="mt-2">{item.content}</div>}
+                  {item.content && (
+                    <div className={getSpacingClass("sm", "mt")}>
+                      {item.content}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -131,7 +144,7 @@ export default function Timeline({
 
   // Vertical orientation
   return (
-    <div className={`space-y-0 ${className}`}>
+    <div className={`${getSpacingClass("none", "space-y")} ${className}`}>
       {items.map((item, index) => {
         const status =
           item.status ||
@@ -143,10 +156,16 @@ export default function Timeline({
         const isLast = index === items.length - 1;
 
         return (
-          <div key={item.id} className="flex items-start gap-4">
+          <div
+            key={item.id}
+            className={`flex items-start ${getSpacingClass("base", "gap")}`}
+          >
             {/* Timeline Line & Icon */}
             <div className="flex flex-col items-center">
               <div
+                // data-marker="pending" — see .claude/rules/colors.md
+                // "fg-quaternary: AA-by-construction exception".
+                {...(status === "default" ? { "data-marker": "pending" } : {})}
                 className={`
                 flex
                 items-center
@@ -157,12 +176,12 @@ export default function Timeline({
                 border-2
                 ${
                   status === "completed"
-                    ? `${"bg-success"} ${"border-success"} text-white`
+                    ? "bg-success border-success text-fg-inverse"
                     : status === "active"
-                      ? `${"bg-surface-brand"} ${"border-line-brand"} text-white`
+                      ? "bg-surface-brand-strong border-line-brand text-fg-inverse"
                       : status === "error"
-                        ? `${"bg-error"} ${"border-error"} text-white`
-                        : "bg-white border-gray-300 text-gray-400"
+                        ? "bg-error border-error text-fg-inverse"
+                        : "bg-surface-base border-line-emphasis text-fg-quaternary"
                 }
               `}
               >
@@ -179,31 +198,43 @@ export default function Timeline({
                     w-0.5
                     flex-1
                     min-h-16
-                    mt-2
-                    ${status === "completed" ? "bg-success" : "bg-gray-300"}
+                    ${getSpacingClass("sm", "mt")}
+                    ${status === "completed" ? "bg-success" : "bg-line-emphasis"}
                   `}
                 />
               )}
             </div>
 
             {/* Content */}
-            <div className="flex-1 pb-8">
+            <div className={`flex-1 ${getSpacingClass("xl", "pb")}`}>
               {item.timestamp && (
-                <p className="text-xs text-gray-500 mb-1">{item.timestamp}</p>
+                <p
+                  className={`text-xs text-fg-tertiary ${getSpacingClass("xs", "mb")}`}
+                >
+                  {item.timestamp}
+                </p>
               )}
               <h3
                 className={`
                 text-base
                 font-semibold
-                ${status === "active" ? "text-fg-brand" : "text-gray-900"}
+                ${status === "active" ? "text-fg-brand-emphasis" : "text-fg-primary"}
               `}
               >
                 {item.title}
               </h3>
               {item.description && (
-                <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                <p
+                  className={`text-sm text-fg-secondary ${getSpacingClass("xs", "mt")}`}
+                >
+                  {item.description}
+                </p>
               )}
-              {item.content && <div className="mt-3">{item.content}</div>}
+              {item.content && (
+                <div className={getSpacingClass("md", "mt")}>
+                  {item.content}
+                </div>
+              )}
             </div>
           </div>
         );

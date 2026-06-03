@@ -7,7 +7,6 @@ import {
   getSpacingClass,
   getTypographySizeFromFontSize,
   getTypographyWeightFromFontWeight,
-  getColorClass,
 } from "../../tokens";
 import type { FieldValues, Path, RegisterOptions } from "react-hook-form";
 import type { ReactNode } from "react";
@@ -96,7 +95,7 @@ export function FormField<TFieldValues extends FieldValues = FieldValues>({
             "block",
             getTypographySizeFromFontSize("sm"),
             getTypographyWeightFromFontWeight("medium"),
-            getColorClass("neutral", "dark", "text"),
+            "text-fg-primary",
           )}
         >
           {label}

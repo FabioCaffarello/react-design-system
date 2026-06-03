@@ -11,6 +11,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useDatePickerContext } from "./DatePickerContext";
 import Button from "../../primitives/Button/Button";
 import { getRadiusClass } from "../../tokens";
+import { getSpacingClass } from "../../tokens/spacing";
 
 export interface DatePickerCalendarProps
   extends HTMLAttributes<HTMLDivElement> {
@@ -102,7 +103,23 @@ export function DatePickerCalendar({
     controlledMonth || selectedDate || selectedRange?.start || new Date(),
   );
   const calendarRef = useRef<HTMLDivElement>(null);
-  const [focusedDate, setFocusedDate] = useState<Date | null>(null);
+
+  // Initial focusedDate: prefer selectedDate if in currentMonth, else today
+  // if in currentMonth, else first of currentMonth. Always non-null so
+  // exactly one cell has tabIndex=0 — required for canonical grid roving
+  // tabindex (Tab enters once, arrows navigate within).
+  const [focusedDate, setFocusedDate] = useState<Date>(() => {
+    const today = new Date();
+    const initialMonth =
+      controlledMonth || selectedDate || selectedRange?.start || today;
+    if (selectedDate && isSameMonth(selectedDate, initialMonth)) {
+      return selectedDate;
+    }
+    if (isSameMonth(today, initialMonth)) {
+      return today;
+    }
+    return new Date(initialMonth.getFullYear(), initialMonth.getMonth(), 1);
+  });
 
   // Update current month if controlled
   useEffect(() => {
@@ -110,6 +127,29 @@ export function DatePickerCalendar({
       setCurrentMonth(controlledMonth);
     }
   }, [controlledMonth]);
+
+  // Roving tabindex: when focusedDate changes (via arrow keys or initial
+  // mount), move the DOM focus to the matching cell. Without this, axe
+  // sees a correct grid structure but the keyboard experience is broken
+  // — arrow keys change only the state, not the actual focus.
+  useEffect(() => {
+    if (!calendarRef.current) return;
+    const cell = calendarRef.current.querySelector<HTMLElement>(
+      `[data-date="${focusedDate.toISOString()}"]`,
+    );
+    if (cell) cell.focus();
+  }, [focusedDate]);
+
+  // Effective focused date for tabIndex assignment: if focusedDate is not
+  // in currentMonth (e.g. user clicked Prev/Next via mouse), still keep
+  // exactly one cell with tabIndex=0 so Tab can re-enter the grid. Pick a
+  // sensible fallback in the visible month.
+  const effectiveFocusedDate = (() => {
+    if (isSameMonth(focusedDate, currentMonth)) return focusedDate;
+    const today = new Date();
+    if (isSameMonth(today, currentMonth)) return today;
+    return new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
+  })();
 
   const daysInMonth = getDaysInMonth(currentMonth);
   const firstDay = getFirstDayOfMonth(currentMonth);
@@ -228,16 +268,26 @@ export function DatePickerCalendar({
     }
   };
 
+  // Chunk days into rows of 7 (one per week). The previous implementation
+  // rendered all ~35 day cells as direct children of a single CSS grid div,
+  // which made role="grid" structurally invalid (grid must contain rows;
+  // rows must contain gridcells). Each week is now a role="row".
+  const weeks: (Date | null)[][] = [];
+  for (let i = 0; i < days.length; i += 7) {
+    weeks.push(days.slice(i, i + 7));
+  }
+
   return (
     <div
       ref={calendarRef}
-      className={`p-4 ${className}`}
-      role="grid"
-      aria-label="Calendar"
+      className={`${getSpacingClass("base", "p")} ${className}`}
       {...props}
     >
-      {/* Header with month navigation */}
-      <div className="flex items-center justify-between mb-4">
+      {/* Header with month navigation — sits OUTSIDE the role="grid" so
+          the grid's direct children are only rows. */}
+      <div
+        className={`flex items-center justify-between ${getSpacingClass("base", "mb")}`}
+      >
         <Button
           variant="iconOnly"
           size="sm"
@@ -259,53 +309,81 @@ export function DatePickerCalendar({
         </Button>
       </div>
 
-      {/* Weekday headers */}
-      <div className="grid grid-cols-7 gap-1 mb-2">
-        {WEEKDAYS.map((day) => (
+      <div role="grid" aria-label="Calendar">
+        {/* Weekday header row */}
+        <div
+          role="row"
+          className={`grid grid-cols-7 ${getSpacingClass("xs", "gap")} ${getSpacingClass("sm", "mb")}`}
+        >
+          {WEEKDAYS.map((day) => (
+            <div
+              key={day}
+              role="columnheader"
+              className={`text-center text-xs font-medium text-fg-tertiary ${getSpacingClass("xs", "py")}`}
+            >
+              {day}
+            </div>
+          ))}
+        </div>
+
+        {/* Calendar grid — one role="row" per week, role="gridcell" per day.
+            The buttons carry role="gridcell" explicitly: the explicit role
+            overrides the implicit button role, so aria-selected (allowed on
+            gridcell, prohibited on button) becomes valid. */}
+        {weeks.map((week, weekIdx) => (
           <div
-            key={day}
-            className="text-center text-xs font-medium text-gray-500 py-1"
+            role="row"
+            key={`week-${weekIdx}`}
+            className={`grid grid-cols-7 ${getSpacingClass("xs", "gap")}`}
           >
-            {day}
-          </div>
-        ))}
-      </div>
+            {week.map((date, dayIdx) => {
+              if (!date) {
+                return (
+                  <div
+                    role="gridcell"
+                    key={`empty-${weekIdx}-${dayIdx}`}
+                    className="aspect-square"
+                  />
+                );
+              }
 
-      {/* Calendar grid */}
-      <div className="grid grid-cols-7 gap-1">
-        {days.map((date, index) => {
-          if (!date) {
-            return <div key={`empty-${index}`} className="aspect-square" />;
-          }
+              const isSelected =
+                mode === "single"
+                  ? isSameDay(date, selectedDate)
+                  : isSameDay(date, selectedRange?.start || null) ||
+                    isSameDay(date, selectedRange?.end || null);
 
-          const isSelected =
-            mode === "single"
-              ? isSameDay(date, selectedDate)
-              : isSameDay(date, selectedRange?.start || null) ||
-                isSameDay(date, selectedRange?.end || null);
+              const isInRange =
+                mode === "range" && selectedRange
+                  ? isDateInRange(date, selectedRange.start, selectedRange.end)
+                  : false;
 
-          const isInRange =
-            mode === "range" && selectedRange
-              ? isDateInRange(date, selectedRange.start, selectedRange.end)
-              : false;
+              const isDisabled = isDateDisabled(
+                date,
+                minDate,
+                maxDate,
+                disabledDates,
+              );
+              const isToday = isSameDay(date, new Date());
+              const isFocused = isSameDay(date, focusedDate);
+              // Roving tabindex: exactly one cell has tabIndex=0 per render,
+              // and it is the effective focused cell. Other cells are
+              // tabIndex=-1 (programmatically focusable via arrows, but
+              // skipped by Tab). When focusedDate is outside currentMonth
+              // (mouse-driven Prev/Next month nav), effectiveFocusedDate
+              // picks a fallback so the grid never loses its single tab stop.
+              const isTabStop = isSameDay(date, effectiveFocusedDate);
 
-          const isDisabled = isDateDisabled(
-            date,
-            minDate,
-            maxDate,
-            disabledDates,
-          );
-          const isToday = isSameDay(date, new Date());
-          const isFocused = focusedDate && isSameDay(date, focusedDate);
-
-          return (
-            <button
-              key={date.toISOString()}
-              type="button"
-              onClick={() => handleDateClick(date)}
-              onKeyDown={(e) => handleKeyDown(e, date)}
-              disabled={isDisabled}
-              className={`
+              return (
+                <button
+                  key={date.toISOString()}
+                  role="gridcell"
+                  type="button"
+                  data-date={date.toISOString()}
+                  tabIndex={isTabStop ? 0 : -1}
+                  onClick={() => handleDateClick(date)}
+                  onKeyDown={(e) => handleKeyDown(e, date)}
+                  className={`
                 aspect-square
                 text-sm
                 ${getRadiusClass("md")}
@@ -315,26 +393,28 @@ export function DatePickerCalendar({
                 focus:ring-offset-1
                 ${
                   isDisabled
-                    ? "text-gray-300 cursor-not-allowed"
+                    ? "text-fg-disabled cursor-not-allowed opacity-50"
                     : isSelected
-                      ? `${"bg-surface-brand"} text-white font-semibold`
+                      ? "bg-surface-brand-strong text-fg-inverse font-semibold"
                       : isInRange
-                        ? `${"bg-indigo-400"} ${"text-fg-brand"}`
+                        ? "bg-surface-brand-muted text-fg-brand-emphasis"
                         : isToday
-                          ? "border-2 border-indigo-500 font-semibold"
+                          ? "border-2 border-line-brand font-semibold"
                           : isFocused
-                            ? `${"bg-indigo-400"}`
-                            : "hover:bg-gray-100"
+                            ? "bg-surface-brand-muted"
+                            : "hover:bg-surface-active"
                 }
               `}
-              aria-label={date.toDateString()}
-              aria-selected={isSelected}
-              aria-disabled={isDisabled}
-            >
-              {date.getDate()}
-            </button>
-          );
-        })}
+                  aria-label={date.toDateString()}
+                  aria-selected={isSelected}
+                  aria-disabled={isDisabled}
+                >
+                  {date.getDate()}
+                </button>
+              );
+            })}
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -1,7 +1,8 @@
 # Fase 7 — Migração de cores cruas → tokens semânticos
 
-**Status:** desbloqueada pela Phase 9 (closure 2026-05-28). Próxima
-fase a executar.
+**Status:** ✅ **FECHADA em 2026-05-28** (99 commits, ramo
+`phase/07-semantic-color-migration`, de `b12c26d` a `a0ad4c4`).
+
 **Origem:** Categoria H da varredura de valores off-scale (#3),
 expandida pela Phase 9 (categoria d) e absorção do escopo SideNavbar
 (categoria B).
@@ -96,6 +97,271 @@ src/ui/tokens/colors.ts`. Remover também os 4 re-exports legacy
    (eslint plugin tailwind ou regex no CI) que barre cores cruas em
    `src/ui/`, pra impedir regressão.
 
+## Heurística de tradução (registrada do piloto)
+
+Mapeamento canônico de papel visual → token semântico. Use como ponto
+de partida; o contexto do componente pode pedir desvio (registrar como
+decisão "média"/"baixa" confiança e consultar).
+
+| Papel visual                               | Token semântico                        |
+| ------------------------------------------ | -------------------------------------- |
+| title / heading                            | `text-fg-primary`                      |
+| subtitle / description                     | `text-fg-secondary`                    |
+| placeholder                                | `text-fg-placeholder`                  |
+| disabled (state, não hierarquia)           | `text-fg-disabled`                     |
+| timestamp / caption                        | `text-fg-tertiary`                     |
+| link                                       | `text-fg-link`                         |
+| error / success / warning / info message   | `text-fg-{error,success,warning,info}` |
+| brand idle (active state default)          | `text-fg-brand`                        |
+| brand emphasized (selected/active intenso) | `text-fg-brand-emphasis`               |
+| separator / divider                        | `bg-line-default`                      |
+| active item bg (neutro)                    | `bg-surface-active`                    |
+| selected item bg (brand)                   | `bg-surface-brand-muted`               |
+| hover bg (neutro mais sutil)               | `bg-surface-hover`                     |
+| focus ring                                 | `focus:ring-line-focus`                |
+| text sobre fundo colorido escuro           | `text-fg-inverse`                      |
+
+**Precedentes do piloto (registram decisões já validadas):**
+
+- **Disabled state usa `fg-disabled`, não `fg-quaternary`.** Mesmo
+  quando o shade original (slate-400) bate exato com `fg-quaternary`, o
+  papel correto é de _estado_, não de hierarquia. Aceita shift visual
+  de slate-400 → slate-300.
+- **Active brand state usa `fg-brand-emphasis`, não `fg-link`.**
+  `fg-link` é reservado para hyperlinks navegáveis; nav item ativo é
+  estado de seleção, papel distinto.
+- **Tokens novos só por papel, não por shade.** `fg-brand-emphasis`
+  preenche um papel novo (selected/active intensified). `fg-strong`
+  (slate-700) NÃO foi criado — só preencheria gap de shade entre
+  `fg-secondary` (slate-600) e `fg-primary` (slate-900) sem trazer
+  papel novo.
+- **Shifts de hue aceitos em feedback canônico.** `bg-red-500` migra
+  para `bg-error` (rose-500); `bg-green-500` migra para `bg-success`
+  (emerald-500). Sistema escolheu rose/emerald como paleta canônica de
+  feedback — manter red/green literal é inconsistência.
+
+**Precedentes do batch Form primitives (Input/Label/Textarea/Checkbox/
+Radio/Select):**
+
+- **`bg-white` literal em primitivo de formulário → `bg-surface-base`.**
+  Input é elemento _contido_ em superfície de formulário, não canvas da
+  página. `surface-base` preserva o contraste correto no dark mode
+  (slate-900 vs slate-950 do canvas), mantendo o input visível como
+  elemento elevado sobre o fundo da página.
+- **`after:text-*` em marcadores auxiliares de label →
+  `after:text-fg-{role}`.** Asterisco required (`after:text-red-500`)
+  usa `after:text-fg-error` (paleta rose canônica). Marcador "(optional)"
+  (`after:text-gray-400`) usa `after:text-fg-tertiary` — papel "marcador
+  auxiliar / caption-like", NÃO `fg-quaternary` mesmo com o valor mais
+  próximo. Papel vence shade (precedente do piloto-B, Decisão 2).
+
+**Precedentes do batch Overlay (Modal/DrawerContent/DrawerHeader/
+DrawerFooter):**
+
+- **Container de modal/popover → `bg-surface-overlay`.** Modal e Drawer
+  vivem na camada de elevação acima de `surface-base` (que é o tier de
+  conteúdo/formulário), que por sua vez vive acima de `surface-canvas`
+  (chão da página). Sistema tem hierarquia validada de três tiers:
+  `surface-canvas` → `surface-base` → `surface-overlay`. Use o tier
+  certo conforme onde o componente "flutua" na pilha visual.
+- **Magnitude de hover proporcional à proeminência do elemento.**
+  - Elemento acionável PRINCIPAL (nav item, primary button, link
+    principal): hover sobe múltiplos papéis (ex.: `fg-tertiary` →
+    `fg-primary`, salto de 3 papéis) para chamar atenção.
+  - Elemento acionável SECUNDÁRIO (close icon, dismiss, dropdown
+    chevron, tooltip trigger): hover sobe 1 papel (ex.: `fg-tertiary`
+    → `fg-secondary`) para confirmar interação sem competir por
+    atenção.
+  - Regra prática: se o usuário olha a tela buscando o elemento →
+    hover forte. Se o elemento existe para o usuário fechar/dispensar
+    algo que já encontrou → hover discreto.
+  - Casos de aplicação registrados: nav item subtle (piloto-B site
+    193, hover forte); close button Modal (Modal:155/167, hover
+    discreto).
+
+**Precedentes do batch Feedback (Badge/Chip/Progress/Tooltip):**
+
+- **Track de progress role-colored → `bg-{role}-bg-emphasis`.** Quando
+  o "track" (fundo) de um Progress bar tem variant colorida (success/
+  error/warning/info), o track usa a shade -100 (`bg-success-bg-
+emphasis` etc.), preservando role colorido e dando contraste claro
+  contra o bar (`bg-{role}`, shade -500). Variants primary/secondary
+  continuam com track neutro (`bg-surface-muted`) por convenção do
+  design original.
+- **Arrow de tooltip → `border-{direction}-surface-inverse`.** Arrow
+  CSS triangle deve usar o token de cor do body como border-color, em
+  TODAS as direções, para que a "ponta" funda visualmente no body.
+  Aplicar quando o body migrar para `surface-inverse`.
+- **`fg-brand-secondary-emphasis`** registrado como simétrico de
+  `fg-brand-emphasis` para selected/active em contexto secondary
+  brand. Token criado quando o batch Feedback (Badge secondary solid)
+  expôs o gap.
+
+**PRINCÍPIO — Exceção literal documentada > token forçado.**
+
+Quando a alternativa tokenizada exige:
+
+- shift visual significativo (≥ 2 shades), **E**
+- não há papel semântico real para o caso (criar token cobriria apenas
+  shade isolada, não papel),
+
+então MANTÉM primitive literal com comentário inline explicando o
+porquê. Formato do comentário:
+
+```
+// bg-{color}-{shade}: <componente/contexto> — no semantic equivalent
+// (would shift X shades to <token alternativo>). Kept literal until
+// <condição que destravaria criação de token>.
+```
+
+Mesma família dos micro-z (Phase 8) — exceção explícita preserva a
+disciplina do vocabulário. Casos registrados: Badge secondary solid
+bg (`bg-pink-300`); micro-z internals (Phase 8).
+
+Casos NÃO se aplicam:
+
+- Shifts de 1 shade — aceita (precedente Decisão 2 do piloto-B).
+- Valores idiomáticos de overlay/scrim (`bg-black/50`, `bg-black/10`)
+  — mantém literal por motivo diferente (falta de papel no sistema
+  pra scrim, não shade isolada). Tracked no BACKLOG.
+
+**PRINCÍPIO — Estado de hierarquia vs estado de interatividade.**
+
+Quando um elemento tem variação visual relacionada à **posição numa
+sequência ou ordem** (não relacionada a sua interatividade), use
+tokens de **HIERARQUIA** (`fg-primary` / `fg-secondary` / `fg-
+tertiary` / `fg-quaternary`) em vez de tokens de **ESTADO** (`fg-
+disabled`, `surface-disabled`).
+
+Critério prático: **o elemento permanece interativo no estado dito
+"menor"?**
+
+- **Sim → hierarquia.** Estado é de posição/ordem.
+- **Não (é genuinamente inativo) → estado.**
+
+Casos de aplicação:
+
+- Stepper step pending (ainda não alcançado mas clicável quando
+  `allowNavigation=true`) → `fg-quaternary`, NÃO `fg-disabled`.
+
+Casos opostos (estado real de interatividade):
+
+- Input disabled (genuinamente não-interativo) → `fg-disabled`,
+  `surface-disabled`.
+
+Razão: confundir hierarquia com estado mascara a função do
+componente. Um stepper pending clicável renderizado com `fg-disabled`
+engana o usuário sobre interatividade.
+
+**REFINAMENTO — Hierarquia vs Estado Binário Independente vs Estado
+de Interatividade.**
+
+Quando um elemento tem visual reduzido, identifique a **estrutura do
+conjunto** antes de escolher token. Três categorias distintas:
+
+1. **HIERARQUIA ORDENADA** (1º/2º/3º/4º posição relativa entre
+   elementos): → `fg-primary` / `secondary` / `tertiary` / `quaternary`.
+   - Caso: Stepper step pending (4 estados ordenados ao longo da
+     sequência).
+
+2. **ESTADO BINÁRIO INDEPENDENTE** (on/off por elemento, replicado):
+   → `fg-disabled` / `surface-disabled` (representa o "off" do estado
+   binário).
+   - Caso: Rating empty star (cada estrela on/off independente).
+   - Caso: Checkbox unmarked (binário marcado/não-marcado).
+
+3. **ESTADO DE INTERATIVIDADE GENUÍNA** (elemento não-interativo no
+   momento): → `fg-disabled` / `surface-disabled` (representa não-
+   interatividade).
+   - Caso: Disabled input, disabled button.
+
+Categorias 2 e 3 usam o **MESMO token** (`fg-disabled`) mas por
+razões distintas. A interatividade do componente pai é independente
+do token visual aplicado ao seu conteúdo — uma empty star é
+visualmente "off" mesmo que o `<button>` pai seja clicável.
+
+**Diferença estrutural Stepper vs Rating:**
+
+- Stepper: hierarquia ordenada (1º/2º/3º/4º) — usa `fg-quaternary`.
+- Rating: switches binários replicados (cada estrela on/off
+  independente) — usa `fg-disabled`.
+
+**PRINCÍPIO — Token semântico reflete conceito visual, não mecanismo
+CSS.**
+
+Linhas visuais (connectors, dividers, separators) usam tokens
+`line-*`, independente do mecanismo de implementação (`border-*`,
+`bg-*` em div fino, `height: 1px`, etc.).
+
+Casos de aplicação:
+
+- Stepper vertical connector (div com bg) → `bg-line-emphasis`.
+- Stepper horizontal Separator (border) → `border-line-emphasis`.
+- NavbarSeparator (div com bg) → `bg-line-default` (precedente
+  piloto-A).
+- MenuSeparator (div com bg) → `bg-line-default` (precedente Batch
+  Menu).
+
+Razão: token semântico expressa o **papel visual** (linha conectora,
+divisor), não a tecnologia de implementação. Manter coerência permite
+mudar implementação (div→hr, border→bg) sem precisar repensar a cor.
+
+**PRINCÍPIO — Cardinalidade do estado determina intensidade do realce.**
+
+- `bg-surface-brand-muted` (indigo-100) — **ACTIVE state em elemento
+  singular** (nav item atual, primary button ativo, current tab). Um
+  sítio destacado por vez na tela, pode ser intenso.
+- `bg-surface-selected` (indigo-50) — **SELECTED state em coleção**
+  (row selecionada, multiselect option marcada, checkbox row picker,
+  lista de items com seleção múltipla). Múltiplos sítios podem
+  coexistir; menor intensidade evita que a tela vire mar de brand
+  quando o usuário marca vários.
+
+Razão: cardinalidade do estado dita o equilíbrio visual. Material e
+Carbon seguem padrão idêntico.
+
+Casos de aplicação:
+
+- TableRow:62 (`isSelected` true) → `bg-surface-selected`.
+- NavbarItem default variant active → `bg-surface-brand-muted`
+  (singular, current item).
+- CommandPalette selected item → `bg-surface-brand-muted` (singular,
+  cursor highlight em qualquer momento).
+
+Aplicar em batches futuros para MultiSelect option marcada,
+Checkbox-as-row-selector, lista de items com seleção múltipla.
+
+**PRINCÍPIO — Família semântica incompleta justifica criação de token.**
+
+Quando um componente tem CVA/variants com N estados semânticos e o
+sistema de tokens cobre N-1 deles, criar o token faltante para
+completar a família é justificado mesmo se o caso parecer isolado.
+
+Critério prático (as três condições simultaneamente):
+
+- **Os outros membros da família já têm token?** Ex.: `success`,
+  `warning`, `error`, `info` → sim.
+- **O membro faltante representa estado semântico distinto?** Ex.:
+  `offline` ≠ `loading` ≠ `disabled`.
+- **Há consumidor real agora?** Ex.: Dot variant offline.
+
+Se todas as três sim, criar token completa coerência.
+
+Casos de aplicação:
+
+- `--color-status-neutral` para Dot variant offline. Família
+  `success`/`warning`/`error`/`info`/`neutral` agora completa para
+  status indicators.
+
+Contraste com **"papel vence shade"**: aqui o papel **existe**
+(status indicator) e a família está **incompleta**. Não é criar token
+para shade isolada — é fechar simetria estabelecida pelos outros
+membros.
+
+Contraste com **"exceção literal documentada"**: ali o caso é
+genuinamente isolado e não pertence a família semântica; aqui
+pertence.
+
 ## Mesma família da Phase 8
 
 Tokens semânticos existem mas não são consumidos. Mesma patologia,
@@ -105,12 +371,121 @@ outra antes pra ver se aplicam regras comuns.
 
 ## Critério de pronto
 
-- Zero cores cruas do Tailwind em código de componente
-  (`src/ui/**/*.tsx`, exceto stories/tests e dados intencionais como
-  o ColorPicker). Toda cor referencia um token semântico.
-- Zero `getColorClass("neutral", ...)` (frente b consumida).
-- Zero `bg-[var(--color-*)]` arbitrary syntax na SideNavbar (frente c
-  consumida).
-- `src/ui/tokens/colors.ts` deletado.
-- Bloco "LEGACY" em `src/ui/tokens/index.ts` removido.
-- Build verde, tests verdes.
+Status final, verificado em 2026-05-28:
+
+- ✅ **Zero cores cruas Tailwind** em `src/ui/components/` e
+  `src/ui/primitives/`, exceto **4 exceções literais documentadas**:
+  - `TokenVisualizations.tsx` — demo dos tokens.
+  - `Text.tsx` lookup table — light/dark cells de brand/feedback sem
+    equivalente semântico (registrado em comentário no código).
+  - `Badge.tsx` — `bg-pink-300` para variant secondary solid (literal
+    exception inline + precedente registrado).
+  - Scrim/tint literals na pré-migração para `bg-scrim` / `bg-tint-
+hover` (theme-agnostic by design).
+- ✅ **Zero `getColorClass("neutral", ...)`** em components/primitives
+  (Frente B fechada).
+- ✅ **Zero `bg-[var(--color-*)]` arbitrary syntax** em
+  `src/ui/components/SideNavbar/` (Frente C fechada).
+- ✅ **Bloco LEGACY** em `src/ui/tokens/index.ts` removido (commit
+  `91c34be`).
+- ⚠️ **`src/ui/tokens/colors.ts` PERMANECE** — escopo Phase 7 era
+  components/primitives, não infraestrutura interna de tokens. O shim
+  ainda é consumido por 4 arquivos dentro de `src/ui/tokens/`
+  (`gradients.ts`, `themes/light.ts`, `tokens.factory.ts`,
+  `TokenVisualizations.tsx`). Deleção física do shim **adiada para
+  Phase 10 — Tokens infrastructure cleanup** (registrada no BACKLOG).
+- ✅ **Build verde, 764/764 tests verdes** no fechamento.
+
+## Sumário executivo
+
+- **99 commits** no branch `phase/07-semantic-color-migration`.
+- **17 batches** + 1 mini-batch scrim, com mapeamento curto antes de
+  cada e reporte ao fim.
+- **368 sítios migrados** em **~80 arquivos** (estimativa original 267 —
+  realidade ~38% maior; ver nota metodológica).
+- **5 tokens semânticos novos criados** durante a fase:
+  - `--color-fg-brand-emphasis` (piloto-B)
+  - `--color-fg-brand-secondary-emphasis` (batch Feedback)
+  - `--color-scrim` (mini-batch scrim)
+  - `--color-tint-hover` (mini-batch scrim)
+  - `--color-status-neutral` (batch 14)
+- **7 tokens fantasma corrigidos** (referenciavam vars inexistentes em
+  `@theme` — bugs visuais latentes): `--color-card`, `--color-border`,
+  `--color-accent`, `--color-muted`, `--color-neutral-{100,400,500,
+600,800}`, `--color-primary-500`. Todos resolvidos durante migração
+  da SideNavbar Frente C.
+
+## 9 precedentes acumulados durante a fase
+
+Cada um foi registrado no momento da decisão e referenciado em
+batches futuros:
+
+1. **Papel vence shade** (piloto-B Decisão 2). `fg-disabled` sobre
+   `fg-quaternary` quando o intent é estado, não hierarquia.
+2. **Magnitude de hover proporcional à proeminência** (Batch Overlay).
+   Elementos acionáveis principais saltam múltiplos papéis no hover;
+   secundários sobem 1 papel.
+3. **Exceção literal documentada > token forçado** (Batch Feedback).
+   Shift ≥ 2 shades + ausência de papel novo justifica primitive com
+   comentário inline. Casos: `bg-pink-300` Badge, micro-z internals.
+4. **Hierarquia de elevação de superfície de três tiers** (Batch
+   Overlay). `surface-canvas` → `surface-base` → `surface-overlay`.
+   Tier é determinado por _onde o componente flutua_ na pilha visual.
+5. **Scrim e tint-hover são theme-agnostic by design** (Mini-batch
+   scrim). Backdrop/veil que "lighten" no dark perdem função; não
+   devem inverter.
+6. **Hierarquia vs estado binário vs estado de interatividade**
+   (Stepper + Rating batches). Hierarquia ordenada → `fg-N`. Estado
+   binário independente (Rating off-star, Checkbox unmarked) →
+   `fg-disabled`. Estado de interatividade real (disabled input) →
+   `fg-disabled`. Os dois últimos usam o mesmo token por razões
+   distintas.
+7. **Token semântico reflete papel visual, não mecanismo CSS** (Stepper
+   batch). Linhas (connectors, dividers, separators) usam tokens
+   `line-*` independente da implementação (border, bg-div, height: 1px).
+8. **Cardinalidade do estado dita intensidade** (Batch Table).
+   `surface-brand-muted` para active singular; `surface-selected` para
+   selected em coleção (múltiplos sítios podem coexistir).
+9. **Família semântica incompleta justifica criação de token** (Batch
+   14). Quando o CVA de um componente cobre N estados semânticos e o
+   sistema tem N-1 tokens, criar o que falta fecha simetria. Caso:
+   `--color-status-neutral` completou `success/warning/error/info/
+neutral`.
+
+## Nota metodológica — estimativa vs realidade
+
+**Estimativa original: 267 sítios em ~50 arquivos.** Distribuída em
+três frentes:
+
+- Frente A (cores cruas Tailwind originais): 129 sítios.
+- Frente B (consumers neutral do shim): 113 sítios.
+- Frente C (arbitrary syntax SideNavbar): ~25 sítios.
+
+**Realidade ao fechar: 368 sítios em ~80 arquivos.**
+
+- Frente A: 180 (140% da estimativa).
+- Frente B: 151 (134% da estimativa).
+- Frente C: 37 (100% — única que bateu).
+
+**Erro de ~38% no escopo total** (267 → 368). Causas observadas:
+
+1. Inventário inicial dependia de grep contando _linhas com matches_,
+   não _sítios reais_. Linhas com múltiplas classes (típico de
+   componentes complexos como NavbarItem, Stepper, Timeline) foram
+   subcontadas por fator 2–3.
+2. Cores cruas Tailwind apareciam em locais não-óbvios em organisms:
+   estados disabled, hover, focus em variant tables que o grep básico
+   pulava (texto interno em IIFEs, template literals multilinha).
+3. Infraestrutura interna de `tokens/` (gradients, themes, factory)
+   não foi inventariada — e ainda assim representa parte do shim
+   (~14k de código). Phase 10 vai endereçar.
+
+**Aprendizado para próximas fases:** cleanup grande sub-estima escopo
+até ele ser efetivamente feito. Reservar +30–40% no orçamento de
+batches e estar preparado pra dividir a fase em sub-fases conforme o
+escopo real se revela. O método de piloto + batches incrementais com
+reporte ao fim provou ser robusto a essa expansão: cada batch foi
+re-orçado em real-time conforme o inventário do mapeamento curto
+revelou tamanho atualizado.
+
+## Mesma família da Phase 8

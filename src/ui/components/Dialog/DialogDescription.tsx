@@ -19,7 +19,7 @@ export function DialogDescription({
   return (
     <p
       id={finalId}
-      className={`${getTypographyClasses("bodySmall")} text-gray-500 ${className}`}
+      className={`${getTypographyClasses("bodySmall")} text-fg-secondary ${className}`}
       {...props}
     >
       {children}

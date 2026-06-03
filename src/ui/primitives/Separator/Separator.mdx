@@ -1,0 +1,41 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as SeparatorStories from "./Separator.stories";
+
+<Meta of={SeparatorStories} />
+
+# Separator
+
+Separator renders a thin line that divides regions of content — sections of a card, groups of menu items, columns in a toolbar. Use it sparingly; whitespace divides content well enough most of the time, and an unnecessary line adds visual noise without adding information.
+
+## When to use
+
+- Use Separator between groups of items in a menu, list, or toolbar when whitespace alone is not enough to communicate the grouping — usually because the items are tightly packed.
+- Use Separator between sections of a card or page when the surface lacks the room for visible spacing — dense forms, settings panels, summary cards.
+- Use `orientation="vertical"` for inline separators in a toolbar or row of inline controls; `orientation="horizontal"` (the default) is right for stacked sections.
+- Use `variant="dashed"` or `"dotted"` only when the visual carries meaning — a dashed line for a "draft" boundary, a dotted line for an inferred relationship. Default to `solid` otherwise.
+
+## When not to use
+
+- Use whitespace (margin or padding) when the layout has room for it — visible lines are heavier than space, and a well-spaced layout reads cleaner.
+- Use a different background color (`bg-surface-muted` vs `bg-surface-base`) when the regions belong to distinct semantic zones — a colored band often communicates grouping better than a line.
+- Avoid Separator inside text or paragraphs — that breaks the reading flow rather than helping it.
+
+## Examples
+
+<Canvas of={SeparatorStories.Default} />
+
+<Canvas of={SeparatorStories.Vertical} />
+
+<Canvas of={SeparatorStories.Variants} />
+
+## Props
+
+<Controls of={SeparatorStories.Default} />
+
+## Accessibility
+
+Separator renders a native `<hr>` for horizontal orientation, which assistive tech treats as a thematic break — useful between sections of a document. For vertical orientation, the component renders a `<div role="separator" aria-orientation="vertical">` so screen readers still get the semantic boundary; the visual line is achieved via `border-l`.
+
+Separators are usually purely visual and do not need an `aria-label`. If the separator divides regions with distinct semantic identities, label the regions themselves (with `aria-labelledby` or `<section aria-label>`) rather than labelling the line.
+
+Avoid stacking separators close together — the cumulative noise harms screen-reader navigation as much as visual scanning. If the layout demands multiple lines close together, the layout itself probably wants a different approach.

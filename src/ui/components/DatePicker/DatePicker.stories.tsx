@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import { useState } from "react";
 import DatePicker from "./DatePicker";
 
@@ -95,7 +95,7 @@ export const Default: Story = {
           placeholder="Select a date"
         />
         {date && (
-          <p className="mt-4 text-sm text-gray-600">
+          <p className="mt-4 text-sm text-fg-secondary">
             Selected: {date.toLocaleDateString()}
           </p>
         )}
@@ -149,21 +149,21 @@ export const DateRange: Story = {
           placeholder="Select date range"
         />
         {range.start && range.end && (
-          <div className="text-sm space-y-2 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="font-medium text-blue-900">Selected Range:</p>
-            <p className="text-blue-700">
+          <div className="text-sm space-y-2 p-4 bg-surface-selected-subtle border border-line-default rounded-lg">
+            <p className="font-medium text-fg-primary">Selected Range:</p>
+            <p className="text-fg-primary">
               <strong>Start:</strong> {range.start.toLocaleDateString()}
             </p>
-            <p className="text-blue-700">
+            <p className="text-fg-primary">
               <strong>End:</strong> {range.end.toLocaleDateString()}
             </p>
-            <p className="text-blue-700">
+            <p className="text-fg-primary">
               <strong>Duration:</strong> {calculateDays()} day(s)
             </p>
           </div>
         )}
         {range.start && !range.end && (
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-fg-secondary">
             Start date selected: {range.start.toLocaleDateString()}. Select end
             date.
           </p>
@@ -215,14 +215,14 @@ export const WithMinMaxDate: Story = {
         />
         {date && (
           <div className="text-sm space-y-2">
-            <p className="text-gray-600">
+            <p className="text-fg-secondary">
               <strong>Selected:</strong> {date.toLocaleDateString()}
             </p>
-            <p className="text-gray-500">
+            <p className="text-fg-tertiary">
               Valid range: {minDate.toLocaleDateString()} -{" "}
               {maxDate.toLocaleDateString()}
             </p>
-            {error && <p className="text-red-600">⚠ {error}</p>}
+            {error && <p className="text-fg-error">⚠ {error}</p>}
           </div>
         )}
       </div>
@@ -273,16 +273,16 @@ export const WithDisabledDates: Story = {
         />
         <div className="text-sm space-y-2">
           {date && (
-            <p className="text-gray-600">
+            <p className="text-fg-secondary">
               <strong>Selected:</strong> {date.toLocaleDateString()}
             </p>
           )}
-          <p className="text-gray-500">
+          <p className="text-fg-tertiary">
             <strong>Disabled dates:</strong>{" "}
             {disabledDates.map((d) => d.getDate()).join(", ")} of this month
           </p>
           {date && isDisabled(date) && (
-            <p className="text-red-600">⚠ This date is disabled!</p>
+            <p className="text-fg-error">⚠ This date is disabled!</p>
           )}
         </div>
       </div>
@@ -405,25 +405,25 @@ export const DateRangeWithValidation: Story = {
           placeholder="Select date range"
         />
         {error && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded text-sm text-red-800">
+          <div className="p-3 bg-error-bg border border-error rounded text-sm text-fg-error">
             ⚠ {error}
           </div>
         )}
         {range.start && range.end && !error && (
-          <div className="p-4 bg-green-50 border border-green-200 rounded-lg space-y-2">
-            <p className="font-medium text-green-900">Valid Range Selected:</p>
-            <p className="text-green-700">
+          <div className="p-4 bg-success-bg border border-success rounded-lg space-y-2">
+            <p className="font-medium text-fg-success">Valid Range Selected:</p>
+            <p className="text-fg-success">
               <strong>Start:</strong> {range.start.toLocaleDateString()}
             </p>
-            <p className="text-green-700">
+            <p className="text-fg-success">
               <strong>End:</strong> {range.end.toLocaleDateString()}
             </p>
-            <p className="text-green-700">
+            <p className="text-fg-success">
               <strong>Duration:</strong> {calculateDays()} day(s)
             </p>
           </div>
         )}
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-fg-secondary">
           <p>
             <strong>Valid range:</strong> {minDate.toLocaleDateString()} -{" "}
             {maxDate.toLocaleDateString()}
@@ -454,11 +454,11 @@ export const KeyboardNavigation: Story = {
           placeholder="Try keyboard navigation..."
         />
         {date && (
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-fg-secondary">
             Selected: {date.toLocaleDateString()}
           </p>
         )}
-        <div className="text-sm text-gray-600 space-y-2 p-4 bg-gray-50 rounded">
+        <div className="text-sm text-fg-secondary space-y-2 p-4 bg-surface-subtle rounded">
           <p>
             <strong>Keyboard Navigation:</strong>
           </p>
@@ -493,7 +493,7 @@ export const Uncontrolled: Story = {
           defaultValue={today}
           placeholder="Uncontrolled date picker"
         />
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Uses defaultValue for initial value without state management.
         </p>
       </div>
@@ -518,7 +518,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="p-8 space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Select a date. Check the Actions panel to see events being fired.
         </p>
         <DatePicker
@@ -527,7 +527,7 @@ export const WithEvents: Story = {
           placeholder="Select a date"
         />
         {date && (
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-fg-tertiary">
             Selected: {date.toLocaleDateString()}
           </p>
         )}
@@ -576,7 +576,7 @@ export const OpenState: Story = {
           onValueChange={(value) => setDate(value as Date | null)}
           placeholder="Focus to open calendar..."
         />
-        <p className="text-xs text-gray-500 mt-2">
+        <p className="text-xs text-fg-tertiary mt-2">
           Focus the input to see the open state
         </p>
       </div>

@@ -1,0 +1,45 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as StackStories from "./Stack.stories";
+
+<Meta of={StackStories} />
+
+# Stack
+
+Stack arranges its children in a column or a row with consistent `spacing` between them, plus `align` (cross-axis) and `justify` (main-axis) controls. Reach for it whenever a layout needs predictable gaps and alignment between sibling elements — form sections, action rows, page-level vertical rhythm, sidebar item lists.
+
+## When to use
+
+- Use Stack for any group of sibling elements that need consistent spacing — form field columns, paragraph stacks inside a card, action button rows, navigation item lists.
+- Use `direction="column"` (default) for vertical stacks; `direction="row"` for horizontal flex rows. Switch by intent, not by trying to repurpose one for the other.
+- Use the `spacing` scale to set the gap — `xs` / `sm` for tight clusters (chip rows, inline metadata), `base` (default) for general content rhythm, `lg` / `xl` for section separations, `2xl` for page-level vertical rests.
+- Use `align` for the cross-axis (vertical alignment in a row, horizontal alignment in a column) and `justify` for the main-axis (the distribution of items along the flex direction). The two are independent — fixing one rarely fixes the other.
+
+## When not to use
+
+- Use `Container` to constrain width and apply page-level gutters — Stack arranges children flow but does not cap width.
+- Use a CSS Grid pattern (a `<div className="grid …">` or a dedicated grid component) when the layout has both row and column structure — Stack is single-axis only.
+- Use a plain `<div>` when only one child is involved or the spacing is irrelevant — Stack's value is the multi-child rhythm.
+
+## Examples
+
+<Canvas of={StackStories.Default} />
+
+<Canvas of={StackStories.SpacingVariations} />
+
+<Canvas of={StackStories.Horizontal} />
+
+<Canvas of={StackStories.Alignments} />
+
+## Props
+
+<Controls of={StackStories.Default} />
+
+## Accessibility
+
+Stack renders a plain `<div>` with no implicit role or landmark — the children inside provide the semantics. The visual layout the consumer sees does not change the document outline that assistive tech reads.
+
+For Stacks that wrap a logical group (a row of related actions, a column of related controls in a form), the consumer should add an appropriate wrapping role on a parent — `<section>` for a content section, `<fieldset>` for a form field group, `<nav>` for a list of navigation items — rather than relying on Stack to imply it.
+
+The main-axis vs cross-axis distinction is the most common source of layout bugs in Stack: `align` controls the perpendicular axis (vertical alignment when `direction="row"`, horizontal alignment when `direction="column"`); `justify` controls the parallel axis (the flow direction itself). Picking the wrong one produces "items won't center" debugging that disappears once the axis intent is clear.
+
+When Stack contains interactive elements that the user navigates with Tab, the source order in the DOM is the Tab order — the visual layout the consumer arranges with `direction="row"` does not change this. For navigation that should follow the visual order even when CSS rearranges it (`flex-direction: row-reverse`), the consumer is responsible for matching DOM order to visual order.

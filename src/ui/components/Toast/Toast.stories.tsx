@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
-import { fn } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, userEvent, within, waitFor } from "storybook/test";
+import { fn } from "storybook/test";
 import { ToastContainer, useToast } from "./index";
 import { ToastProvider } from "../../providers/ToastProvider";
 import { Button } from "../../primitives";
@@ -120,7 +120,6 @@ A toast notification system with provider, hook, and container. Supports multipl
       },
     },
   },
-  tags: ["autodocs"],
   argTypes: {
     children: {
       description: "Child components that can use the toast context",
@@ -546,7 +545,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4 p-8">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Show toasts and click action buttons. Check the Actions panel to see
           events being fired.
         </p>

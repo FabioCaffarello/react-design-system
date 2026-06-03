@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { expect, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, within, waitFor } from "storybook/test";
 import { DashboardLayout } from "./DashboardLayout";
 import { Button, Text } from "../../primitives";
 import { SideNavbar } from "../../components";
@@ -8,9 +8,28 @@ import { Home, Settings, Users, FileText } from "lucide-react";
 const meta: Meta<typeof DashboardLayout> = {
   title: "Components/DashboardLayout",
   component: DashboardLayout,
-  tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
+    // DashboardLayout renders <header> + <main> + <footer> — a real page
+    // structure. Re-enable the three landmark/heading rules disabled
+    // globally in .storybook/preview.tsx so this component IS held to
+    // the page-level a11y contract its API promises.
+    //
+    // The re-enable is expressed via `options.rules` (run-time) rather
+    // than `config.rules` (configure-time). axe-core 4.11.4 ignores
+    // configure-time enabled flags when runOnly is tag-based, so the
+    // global disable AND any per-story override must both flow through
+    // axe.run options. See `.storybook/a11y-config.mjs` for the
+    // full rationale.
+    a11y: {
+      options: {
+        rules: {
+          region: { enabled: true },
+          "landmark-one-main": { enabled: true },
+          "page-has-heading-one": { enabled: true },
+        },
+      },
+    },
     docs: {
       description: {
         component: `
@@ -103,7 +122,7 @@ export const Default: Story = {
         </Text>
         <div className="grid grid-cols-3 gap-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-gray-100 p-4 rounded">
+            <div key={i} className="bg-surface-muted p-4 rounded">
               <Text variant="heading" className="text-base">
                 Card {i}
               </Text>
@@ -115,10 +134,10 @@ export const Default: Story = {
     ),
     footer: (
       <div className="flex items-center justify-between">
-        <Text variant="bodySmall" className="text-gray-600">
+        <Text variant="bodySmall" className="text-fg-secondary">
           © 2024 Company Name
         </Text>
-        <Text variant="bodySmall" className="text-gray-600">
+        <Text variant="bodySmall" className="text-fg-secondary">
           Version 1.0.0
         </Text>
       </div>
@@ -159,7 +178,7 @@ export const WithEvents: Story = {
   render: () => {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Toggle sidebar or click navigation items. Check the Actions panel to
           see events being fired.
         </p>
@@ -220,10 +239,10 @@ export const DefaultState: Story = {
     ),
     footer: (
       <div className="flex items-center justify-between">
-        <Text variant="bodySmall" className="text-gray-600">
+        <Text variant="bodySmall" className="text-fg-secondary">
           © 2024 Company Name
         </Text>
-        <Text variant="bodySmall" className="text-gray-600">
+        <Text variant="bodySmall" className="text-fg-secondary">
           Version 1.0.0
         </Text>
       </div>

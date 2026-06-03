@@ -70,24 +70,4 @@
   /* Images and media */
   --radius-image: var(--radius-xl); /* 8px */
   --radius-thumbnail: var(--radius-lg); /* 6px */
-
-  /* ============================================
-   * THEME VARIANT RADIUS
-   * Different styles have different roundness
-   * ============================================ */
-
-  /* Tech variant (default) - medium roundness */
-  --radius-variant-button: var(--radius-lg); /* 6px */
-  --radius-variant-card: var(--radius-xl); /* 8px */
-  --radius-variant-input: var(--radius-lg); /* 6px */
-
-  /* Creative variant - more rounded */
-  --radius-variant-creative-button: var(--radius-xl); /* 8px */
-  --radius-variant-creative-card: var(--radius-2xl); /* 12px */
-  --radius-variant-creative-input: var(--radius-xl); /* 8px */
-
-  /* Minimal variant - sharp corners */
-  --radius-variant-minimal-button: var(--radius-md); /* 4px */
-  --radius-variant-minimal-card: var(--radius-lg); /* 6px */
-  --radius-variant-minimal-input: var(--radius-md); /* 4px */
 }

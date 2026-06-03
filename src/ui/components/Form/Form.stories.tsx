@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Form from "./Form";
@@ -114,7 +114,7 @@ export const Default: StoryObj<typeof Form> = {
           </Button>
         </Form>
         {submitted && (
-          <div className="max-w-md text-sm text-gray-600">
+          <div className="max-w-md text-sm text-fg-secondary">
             Form data: {JSON.stringify({ name, email })}
           </div>
         )}
@@ -468,7 +468,7 @@ export const CompleteForm: StoryObj<typeof Form> = {
         {Object.keys(formData).some(
           (key) => formData[key as keyof typeof formData],
         ) && (
-          <div className="max-w-md text-sm text-gray-600 p-4 bg-gray-50 rounded">
+          <div className="max-w-md text-sm text-fg-secondary p-4 bg-surface-subtle rounded">
             <strong>Form Data:</strong>
             <pre className="mt-2 text-xs">
               {JSON.stringify(formData, null, 2)}
@@ -1023,7 +1023,7 @@ export const Accessibility: StoryObj<typeof Form> = {
             Submit
           </Button>
         </Form>
-        <div className="max-w-md text-sm text-gray-600 space-y-2 p-4 bg-gray-50 rounded">
+        <div className="max-w-md text-sm text-fg-secondary space-y-2 p-4 bg-surface-subtle rounded">
           <p>
             <strong>Accessibility Features:</strong>
           </p>
@@ -1165,7 +1165,7 @@ export const WithReactHookForm: StoryObj<typeof Form> = {
             {isSubmitting ? "Submitting..." : "Submit"}
           </Button>
         </Form>
-        <div className="max-w-md text-sm text-gray-600 p-4 bg-gray-50 rounded">
+        <div className="max-w-md text-sm text-fg-secondary p-4 bg-surface-subtle rounded">
           <strong>Form Values:</strong>
           <pre className="mt-2 text-xs">
             {JSON.stringify(form.watch(), null, 2)}
@@ -1389,7 +1389,7 @@ export const WithEvents: StoryObj<typeof Form> = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Fill in the form and submit. Check the Actions panel to see events
           being fired.
         </p>

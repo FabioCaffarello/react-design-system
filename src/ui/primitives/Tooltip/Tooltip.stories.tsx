@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import Tooltip from "./Tooltip";
 import Button from "../Button/Button";
 
@@ -36,7 +36,6 @@ A tooltip component that displays additional information on hover or focus. Supp
       },
     },
   },
-  tags: ["autodocs"],
   argTypes: {
     content: {
       control: "text",
@@ -175,7 +174,7 @@ export const AllPositions: Story = {
 export const KeyboardNavigation: Story = {
   render: () => (
     <div className="space-y-4">
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-secondary">
         Try navigating with Tab key. Tooltips appear immediately on focus (no
         delay):
       </p>
@@ -190,7 +189,7 @@ export const KeyboardNavigation: Story = {
           <Button>Third Button</Button>
         </Tooltip>
       </div>
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-fg-tertiary">
         Tooltips support keyboard navigation: Tab to focus, tooltip appears
         immediately. Press Escape to close.
       </p>
@@ -224,7 +223,7 @@ export const WithDifferentDelays: Story = {
           <Button>Slow delay (500ms)</Button>
         </Tooltip>
       </div>
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-secondary">
         Note: Delay only applies to hover. On focus, tooltip appears
         immediately.
       </p>
@@ -249,7 +248,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Hover or focus the button below. Check the Actions panel to see events
           being fired.
         </p>

@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, within, waitFor } from "storybook/test";
 import { useState } from "react";
 import { FormWizardPattern } from "./FormWizardPattern";
 import { Input, Checkbox } from "../../primitives";
@@ -9,7 +9,6 @@ import type { FormWizardStep } from "./FormWizardPattern";
 const meta: Meta<typeof FormWizardPattern> = {
   title: "Components/FormWizardPattern",
   component: FormWizardPattern,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -105,7 +104,7 @@ const _createBasicSteps = (): FormWizardStep[] => {
 
   return [
     {
-      label: "Personal Information",
+      title: "Personal Information",
       description: "Enter your personal details",
       fields: (
         <div className="space-y-4">
@@ -145,7 +144,7 @@ const _createBasicSteps = (): FormWizardStep[] => {
       },
     },
     {
-      label: "Preferences",
+      title: "Preferences",
       description: "Choose your preferences",
       fields: (
         <div className="space-y-4">
@@ -167,11 +166,11 @@ const _createBasicSteps = (): FormWizardStep[] => {
       ),
     },
     {
-      label: "Review",
+      title: "Review",
       description: "Review your information",
       fields: (
         <div className="space-y-2">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-fg-secondary">
             Please review your information before submitting.
           </p>
         </div>
@@ -195,7 +194,7 @@ export const Default: Story = {
 
     const steps: FormWizardStep[] = [
       {
-        label: "Personal Information",
+        title: "Personal Information",
         description: "Enter your personal details",
         fields: (
           <div className="space-y-4">
@@ -235,7 +234,7 @@ export const Default: Story = {
         },
       },
       {
-        label: "Preferences",
+        title: "Preferences",
         description: "Choose your preferences",
         fields: (
           <div className="space-y-4">
@@ -257,22 +256,22 @@ export const Default: Story = {
         ),
       },
       {
-        label: "Review",
+        title: "Review",
         description: "Review your information",
         fields: (
           <div className="space-y-2">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-fg-secondary">
               <strong>Name:</strong> {personalInfo.firstName}{" "}
               {personalInfo.lastName}
             </p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-fg-secondary">
               <strong>Email:</strong> {personalInfo.email}
             </p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-fg-secondary">
               <strong>Newsletter:</strong>{" "}
               {preferences.newsletter ? "Yes" : "No"}
             </p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-fg-secondary">
               <strong>Notifications:</strong>{" "}
               {preferences.notifications ? "Yes" : "No"}
             </p>
@@ -300,7 +299,7 @@ export const WithoutBackNavigation: Story = {
 
     const steps: FormWizardStep[] = [
       {
-        label: "Step 1",
+        title: "Step 1",
         description: "First step",
         fields: (
           <Input
@@ -311,7 +310,7 @@ export const WithoutBackNavigation: Story = {
         ),
       },
       {
-        label: "Step 2",
+        title: "Step 2",
         description: "Second step",
         fields: (
           <Input
@@ -345,7 +344,7 @@ export const WithEvents: Story = {
 
     const steps: FormWizardStep[] = [
       {
-        label: "Personal Information",
+        title: "Personal Information",
         description: "Enter your personal details",
         fields: (
           <div className="space-y-4">
@@ -369,11 +368,11 @@ export const WithEvents: Story = {
         ),
       },
       {
-        label: "Review",
+        title: "Review",
         description: "Review your information",
         fields: (
           <div className="space-y-2">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-fg-secondary">
               Please review your information before submitting.
             </p>
           </div>
@@ -383,7 +382,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Navigate through steps or complete the wizard. Check the Actions panel
           to see events being fired.
         </p>
@@ -426,7 +425,7 @@ export const DefaultState: Story = {
 
     const steps: FormWizardStep[] = [
       {
-        label: "Personal Information",
+        title: "Personal Information",
         description: "Enter your personal details",
         fields: (
           <div className="space-y-4">
@@ -472,7 +471,7 @@ export const WithBackNavigationState: Story = {
 
     const steps: FormWizardStep[] = [
       {
-        label: "Step 1",
+        title: "Step 1",
         description: "First step",
         fields: (
           <Input
@@ -483,7 +482,7 @@ export const WithBackNavigationState: Story = {
         ),
       },
       {
-        label: "Step 2",
+        title: "Step 2",
         description: "Second step",
         fields: (
           <Input
@@ -517,7 +516,7 @@ export const WithoutBackNavigationState: Story = {
 
     const steps: FormWizardStep[] = [
       {
-        label: "Step 1",
+        title: "Step 1",
         description: "First step",
         fields: (
           <Input
@@ -528,7 +527,7 @@ export const WithoutBackNavigationState: Story = {
         ),
       },
       {
-        label: "Step 2",
+        title: "Step 2",
         description: "Second step",
         fields: (
           <Input

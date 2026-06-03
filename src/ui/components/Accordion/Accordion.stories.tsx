@@ -1,12 +1,11 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import Accordion from "./Accordion";
 
 const meta: Meta<typeof Accordion> = {
   title: "Components/Accordion",
   component: Accordion,
-  tags: ["autodocs"],
   parameters: {
     layout: "padded",
     docs: {
@@ -197,7 +196,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Click accordion items below. Check the Actions panel to see events
           being fired.
         </p>

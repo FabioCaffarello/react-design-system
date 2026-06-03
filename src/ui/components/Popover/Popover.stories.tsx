@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import { useState } from "react";
 import Popover from "./Popover";
 import { Button } from "../../primitives";
@@ -8,7 +8,6 @@ import { Button } from "../../primitives";
 const meta: Meta<typeof Popover> = {
   title: "Components/Popover",
   component: Popover,
-  tags: ["autodocs"],
   parameters: {
     layout: "centered",
     docs: {
@@ -136,7 +135,7 @@ export const RichContent: Story = {
           <li>Multiple paragraphs</li>
           <li>Any React components</li>
         </ul>
-        <div className="mt-4 pt-4 border-t border-gray-200">
+        <div className="mt-4 pt-4 border-t border-line-default">
           <Button size="sm" variant="primary">
             Action Button
           </Button>
@@ -159,7 +158,7 @@ export const Controlled: Story = {
           showCloseButton
         >
           <p>This popover is controlled by external state.</p>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-2 text-sm text-fg-secondary">
             Open: {open ? "Yes" : "No"}
           </p>
         </Popover>
@@ -194,7 +193,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Click the button to open/close the popover. Check the Actions panel to
           see events being fired.
         </p>
@@ -206,7 +205,7 @@ export const WithEvents: Story = {
           showCloseButton
         >
           <p>This popover fires events when opened/closed.</p>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-2 text-sm text-fg-secondary">
             Open: {open ? "Yes" : "No"}
           </p>
         </Popover>

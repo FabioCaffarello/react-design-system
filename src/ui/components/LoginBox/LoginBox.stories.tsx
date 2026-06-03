@@ -1,13 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, within, waitFor } from "storybook/test";
 import { useState } from "react";
 import LoginBox from "./LoginBox";
 
 const meta: Meta<typeof LoginBox> = {
   title: "Components/LoginBox",
   component: LoginBox,
-  tags: ["autodocs"],
   parameters: {
     layout: "centered",
     actions: {
@@ -68,13 +67,13 @@ export const WithEvents: StoryObj<typeof LoginBox> = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Fill in the form and submit. Check the Actions panel to see events
           being fired.
         </p>
         <LoginBox className="w-[300px]" onSubmit={handleSubmit} />
         {submitted && (
-          <p className="text-sm text-green-600">✓ Form submitted!</p>
+          <p className="text-sm text-fg-success">✓ Form submitted!</p>
         )}
       </div>
     );

@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
-import { fn } from "@storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
+import { fn } from "storybook/test";
 import CommandPalette from "./CommandPalette";
 import Button from "../../primitives/Button/Button";
 import {
@@ -19,7 +19,6 @@ import {
 const meta: Meta<typeof CommandPalette> = {
   title: "Components/CommandPalette",
   component: CommandPalette,
-  tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
     docs: {
@@ -131,7 +130,7 @@ export const Default: Story = {
           open={open}
           onOpenChange={handleOpenChange}
         />
-        <p className="mt-4 text-sm text-gray-600">
+        <p className="mt-4 text-sm text-fg-secondary">
           Press Cmd/Ctrl + K to open, or click the button above
         </p>
       </div>
@@ -349,7 +348,7 @@ export const WithKeywords: Story = {
           open={open}
           onOpenChange={setOpen}
         />
-        <p className="mt-4 text-sm text-gray-600">
+        <p className="mt-4 text-sm text-fg-secondary">
           Try searching for "dark", "theme", "logout", etc.
         </p>
       </div>
@@ -435,11 +434,11 @@ export const KeyboardNavigation: Story = {
           onOpenChange={setOpen}
         />
         {selectedCommand && (
-          <p className="mt-4 text-sm text-green-600">
+          <p className="mt-4 text-sm text-fg-success">
             Selected: {selectedCommand}
           </p>
         )}
-        <p className="mt-2 text-sm text-gray-600">
+        <p className="mt-2 text-sm text-fg-secondary">
           Use Arrow Up/Down to navigate, Enter to select, Escape to close
         </p>
       </div>
@@ -520,7 +519,7 @@ export const SearchWithKeywords: Story = {
           open={open}
           onOpenChange={setOpen}
         />
-        <p className="mt-4 text-sm text-gray-600">
+        <p className="mt-4 text-sm text-fg-secondary">
           Try searching for "dark", "theme", "logout", etc. Keywords are also
           searchable.
         </p>
@@ -583,7 +582,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="p-8 space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Open the command palette and select a command. Check the Actions panel
           to see events being fired.
         </p>

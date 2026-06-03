@@ -1,10 +1,5 @@
 import { forwardRef, memo, useMemo } from "react";
 import type { ButtonHTMLAttributes, ReactNode, ElementType } from "react";
-import {
-  getColorClass,
-  getHoverColorClass,
-  getFocusRingClass,
-} from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import {
@@ -61,7 +56,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: cn(
-          "bg-surface-brand",
+          "bg-surface-brand-strong",
           "text-fg-inverse",
           "hover:opacity-90",
           "focus:ring-line-brand",
@@ -80,24 +75,24 @@ const buttonVariants = cva(
         ),
         outline: cn(
           "border-2",
-          getColorClass("neutral", "DEFAULT", "border"),
+          "border-line-default",
           "bg-transparent",
-          getColorClass("neutral", "dark", "text"),
-          getHoverColorClass("neutral", "light", "bg"),
-          getFocusRingClass("neutral", "DEFAULT"),
+          "text-fg-primary",
+          "hover:bg-surface-hover",
+          "focus:ring-line-focus",
         ),
         ghost: cn(
           "bg-transparent",
-          getColorClass("neutral", "dark", "text"),
-          getHoverColorClass("neutral", "light", "bg"),
-          getFocusRingClass("neutral", "DEFAULT"),
+          "text-fg-primary",
+          "hover:bg-surface-hover",
+          "focus:ring-line-focus",
         ),
         iconOnly: cn(
           "bg-transparent",
-          getColorClass("neutral", "dark", "text"),
-          getHoverColorClass("neutral", "light", "bg"),
-          getFocusRingClass("neutral", "DEFAULT"),
-          "p-0",
+          "text-fg-primary",
+          "hover:bg-surface-hover",
+          "focus:ring-line-focus",
+          getSpacingClass("none", "p"),
         ),
       },
       size: {
@@ -126,17 +121,17 @@ const buttonVariants = cva(
       {
         variant: "iconOnly",
         size: "sm",
-        class: cn("h-8", "w-8", "p-0"),
+        class: cn("h-8", "w-8", getSpacingClass("none", "p")),
       },
       {
         variant: "iconOnly",
         size: "md",
-        class: cn("h-10", "w-10", "p-0"),
+        class: cn("h-10", "w-10", getSpacingClass("none", "p")),
       },
       {
         variant: "iconOnly",
         size: "lg",
-        class: cn("h-12", "w-12", "p-0"),
+        class: cn("h-12", "w-12", getSpacingClass("none", "p")),
       },
     ],
     defaultVariants: {
@@ -161,7 +156,7 @@ function IconWrapper({
 
   return (
     <span
-      className={`inline-flex items-center ${position === "left" ? "mr-0" : "ml-0"}`}
+      className={`inline-flex items-center ${position === "left" ? getSpacingClass("none", "mr") : getSpacingClass("none", "ml")}`}
     >
       {children}
     </span>
@@ -290,9 +285,13 @@ const Button = memo(
         {isLoading ? (
           <>
             {displayLoadingIcon}
-            {loadingText && <span className="ml-2">{loadingText}</span>}
+            {loadingText && (
+              <span className={getSpacingClass("sm", "ml")}>{loadingText}</span>
+            )}
             {!loadingText && children && (
-              <span className="ml-2 opacity-0">{children}</span>
+              <span className={`${getSpacingClass("sm", "ml")} opacity-0`}>
+                {children}
+              </span>
             )}
           </>
         ) : (

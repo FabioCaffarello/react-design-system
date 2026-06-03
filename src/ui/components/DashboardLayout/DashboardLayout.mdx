@@ -1,0 +1,49 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as DashboardLayoutStories from "./DashboardLayout.stories";
+
+<Meta of={DashboardLayoutStories} />
+
+# DashboardLayout
+
+DashboardLayout composes a complete dashboard shell — a collapsible side rail, an optional top header, the main content area, and an optional bottom footer — into a single layout primitive. Reach for it on any back-office, admin, or internal-tools page where the chrome stays constant and the main content swaps between routes.
+
+## When to use
+
+- Use DashboardLayout for any application shell with a persistent side rail — admin dashboards, internal tools, customer success surfaces, project workspaces.
+- Pass the side rail content through `sidebar` using `SideNavbar.Navbar` + `SideNavbar.Sidebar` subcomponents so the rail handles collapse, resize, and the responsive overlay automatically.
+- Pass `header` for the top chrome (typically a `Header`); pass `footer` for a thin always-visible bottom row (status, version, persistent links).
+- Use `defaultCollapsed` to start with the sidebar collapsed when the screen is narrow or when the application's persisted preference is "minimal chrome".
+
+## When not to use
+
+- Use a plain page layout for marketing or landing pages — DashboardLayout's chrome is wrong there.
+- Use a single `Header` with no sidebar when the application does not need persistent secondary nav.
+- Use `Drawer` for side panels that open and close as part of a task — DashboardLayout's sidebar is persistent chrome.
+
+## Anatomy
+
+DashboardLayout fills the viewport with a horizontal flex row: the `sidebar region` (rendered via `SideNavbar` when `sidebar` is passed, omitted when not) sits on the left and owns its own collapse / resize state; the `main column` takes the remaining width and stacks a `header band` (the `header` prop wrapped in a `<header>` with a bottom border), the `main content area` (the `children` inside a scrollable region), and a `footer band` (the `footer` prop if passed). When `sidebar` is omitted, the main column expands to the full viewport width.
+
+<Canvas of={DashboardLayoutStories.Default} />
+
+## Examples
+
+<Canvas of={DashboardLayoutStories.CollapsedSidebar} />
+
+<Canvas of={DashboardLayoutStories.NoSidebar} />
+
+## Props
+
+<Controls of={DashboardLayoutStories.Default} />
+
+## Accessibility
+
+DashboardLayout sets the document's overall landmark structure — the header region is a `<header>`, the main content area is a `<main>`, and the sidebar inherits whatever landmark its `SideNavbar` content provides. Assistive tech exposes each region via the landmarks rotor, so the user can jump directly to "main" or "navigation" without scanning the whole page.
+
+The sidebar collapse state is wired to a toggle inside `SideNavbar` — the toggle button carries `aria-expanded` reflecting the current state, so assistive tech announces whether activating it will open or collapse the rail. Focus management on collapse is handled by `SideNavbar`; the parent `DashboardLayout` does not interfere.
+
+The viewport-fill behavior uses `h-screen overflow-hidden` on the root container, with the main content area handling its own scroll. Screen readers reading the page in flow do not encounter the visual scrollbar; keyboard users navigate the content via Tab and arrow keys as usual.
+
+When the layout switches between full sidebar and collapsed sidebar at responsive breakpoints, the sidebar's items stay focusable in both states — the visual change is purely cosmetic.
+
+For page identity, place a `PageHeader` as the first child of the main content area — its `<h1>` gives the document outline a page-level heading.

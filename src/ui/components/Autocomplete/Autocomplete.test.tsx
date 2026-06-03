@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Autocomplete from "./Autocomplete";
 
@@ -107,6 +107,62 @@ describe("Autocomplete", () => {
 
     await waitFor(() => {
       expect(screen.queryByText("Option 1")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("Accessible name (aria-input-field-name)", () => {
+    let warnSpy: ReturnType<typeof vi.spyOn>;
+    beforeEach(() => {
+      warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    });
+    afterEach(() => {
+      warnSpy.mockRestore();
+    });
+
+    it("label prop renders a visible label associated via htmlFor", () => {
+      render(<Autocomplete label="Fruit" options={mockOptions} />);
+      const input = screen.getByRole("textbox", { name: "Fruit" });
+      expect(input).toBeInTheDocument();
+      const label = screen.getByText("Fruit");
+      expect(label.tagName).toBe("LABEL");
+      expect(label).toHaveAttribute("for", input.id);
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it("aria-label prop sets the input's invisible name", () => {
+      render(<Autocomplete aria-label="Fruit" options={mockOptions} />);
+      const input = screen.getByRole("textbox", { name: "Fruit" });
+      expect(input).toBeInTheDocument();
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it("aria-labelledby prop points at an external label id", () => {
+      render(
+        <>
+          <span id="ext-label">Fruit</span>
+          <Autocomplete aria-labelledby="ext-label" options={mockOptions} />
+        </>,
+      );
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it("external <label htmlFor={id}> matches the input id (auto-generated)", () => {
+      const { container } = render(
+        <>
+          <label htmlFor="my-ac">Fruit</label>
+          <Autocomplete id="my-ac" options={mockOptions} />
+        </>,
+      );
+      const input = container.querySelector("input");
+      expect(input?.id).toBe("my-ac");
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it("warns in dev when no accessible-name source is provided", () => {
+      render(<Autocomplete options={mockOptions} />);
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining("[Autocomplete] Missing accessible name"),
+      );
     });
   });
 });

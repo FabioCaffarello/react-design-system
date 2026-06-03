@@ -57,10 +57,106 @@ describe("Menu", () => {
         </Menu>,
       );
 
-      const triggers = screen.getAllByRole("button", { name: "Open Menu" });
-      const trigger = triggers[0]; // Get the MenuTrigger, not the Button inside
-      const wrapper = trigger.closest('[aria-haspopup="menu"]');
-      expect(wrapper).toBeInTheDocument();
+      // MenuTrigger now merges trigger semantics onto the single child by
+      // default (asChild inferred). The trigger IS the Button — not a
+      // wrapping div + an inner button. Exactly one role="button" with the
+      // accessible name. Do not "fix" this by re-adding a wrapper: that
+      // would reintroduce nested-interactive.
+      const trigger = screen.getByRole("button", { name: "Open Menu" });
+      expect(trigger).toHaveAttribute("aria-haspopup", "menu");
+      expect(trigger).toHaveAttribute("aria-expanded", "false");
+    });
+
+    it("wraps in a div when asChild={false} is explicit (legacy opt-out)", () => {
+      render(
+        <Menu>
+          <MenuTrigger asChild={false}>
+            <Button>Open Menu</Button>
+          </MenuTrigger>
+          <MenuContent>
+            <MenuItem>Item 1</MenuItem>
+          </MenuContent>
+        </Menu>,
+      );
+
+      // Explicit opt-out preserves the legacy wrapper. Two role="button"
+      // nodes exist (the div wrapper carrying trigger semantics + the
+      // Button inside). This path is intentionally kept for any consumer
+      // that needs the wrapping div as a layout/styling hook.
+      const buttons = screen.getAllByRole("button", { name: "Open Menu" });
+      expect(buttons).toHaveLength(2);
+      const wrapper = buttons[0].closest('[aria-haspopup="menu"]');
+      expect(wrapper?.tagName).toBe("DIV");
+    });
+
+    it("wraps in a div when there are multiple children (no single child to clone)", () => {
+      render(
+        <Menu>
+          <MenuTrigger>
+            <Button>Open Menu</Button>
+            <span data-testid="badge">3</span>
+          </MenuTrigger>
+          <MenuContent>
+            <MenuItem>Item 1</MenuItem>
+          </MenuContent>
+        </Menu>,
+      );
+
+      // Multi-child path falls back to wrap. Trigger semantics live on
+      // the wrapper div; the children render as-is inside. This guards
+      // the wrap-path against accidental removal — without this test,
+      // the legacy branch is uncovered.
+      const wrapper = screen
+        .getByText("Open Menu")
+        .closest('[aria-haspopup="menu"]');
+      expect(wrapper?.tagName).toBe("DIV");
+      expect(screen.getByTestId("badge")).toBeInTheDocument();
+    });
+
+    it("clones onto a single non-interactive child (span gets role='button')", () => {
+      render(
+        <Menu>
+          <MenuTrigger>
+            <span>Open</span>
+          </MenuTrigger>
+          <MenuContent>
+            <MenuItem>Item 1</MenuItem>
+          </MenuContent>
+        </Menu>,
+      );
+
+      // Edge case: structural detection is single-element, not "is
+      // interactive". A single <span> child gets role="button" +
+      // tabIndex=0 + aria-haspopup merged — semantically valid trigger,
+      // just unstyled. Consumers who want a button-styled wrapper can
+      // pass asChild={false} explicitly. Documenting this so the
+      // behavior isn't read as a bug.
+      const trigger = screen.getByRole("button", { name: "Open" });
+      expect(trigger.tagName).toBe("SPAN");
+      expect(trigger).toHaveAttribute("tabIndex", "0");
+      expect(trigger).toHaveAttribute("aria-haspopup", "menu");
+    });
+
+    it("toggles the menu on click (no stale asChild gate)", async () => {
+      render(
+        <Menu>
+          <MenuTrigger asChild>
+            <Button>Open Menu</Button>
+          </MenuTrigger>
+          <MenuContent>
+            <MenuItem>Item 1</MenuItem>
+          </MenuContent>
+        </Menu>,
+      );
+
+      // Regression test for the prior `if (!asChild) setIsOpen(...)`
+      // gate: with asChild={true}, the menu must still toggle. The gate
+      // is gone; this test guards against its return.
+      const trigger = screen.getByRole("button", { name: "Open Menu" });
+      fireEvent.click(trigger);
+      await waitFor(() => {
+        expect(screen.getByText("Item 1")).toBeInTheDocument();
+      });
     });
   });
 

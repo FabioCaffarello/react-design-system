@@ -1,0 +1,219 @@
+{
+  "generatedAt": "2026-06-02T00:17:02.539Z",
+  "axeCoreVersion": "4.11.4",
+  "workers": 1,
+  "settleMs": 200,
+  "storyTimeout": 15000,
+  "filter": null,
+  "themes": ["light", "dark"],
+  "light": {
+    "durationMs": 330045,
+    "totalStories": 852,
+    "storiesWithViolations": 5,
+    "totalNodes": 7,
+    "byImpact": {
+      "critical": 0,
+      "serious": 0,
+      "moderate": 7,
+      "minor": 0
+    },
+    "storiesWithErrors": [],
+    "rules": {
+      "region": {
+        "impact": "moderate",
+        "nodes": 1,
+        "stories": ["components-dashboardlayout--with-events"]
+      },
+      "landmark-no-duplicate-banner": {
+        "impact": "moderate",
+        "nodes": 1,
+        "stories": ["components-header--variants"]
+      },
+      "landmark-complementary-is-top-level": {
+        "impact": "moderate",
+        "nodes": 1,
+        "stories": ["components-header--with-dashboard-layout"]
+      },
+      "landmark-unique": {
+        "impact": "moderate",
+        "nodes": 3,
+        "stories": [
+          "components-header--with-dashboard-layout",
+          "components-sidenavbar--variants"
+        ]
+      },
+      "heading-order": {
+        "impact": "moderate",
+        "nodes": 1,
+        "stories": ["components-sidenavbar--with-header"]
+      }
+    },
+    "stories": [
+      {
+        "storyId": "components-dashboardlayout--with-events",
+        "nodes": 1,
+        "violations": [
+          {
+            "id": "region",
+            "impact": "moderate",
+            "nodes": 1
+          }
+        ]
+      },
+      {
+        "storyId": "components-header--variants",
+        "nodes": 1,
+        "violations": [
+          {
+            "id": "landmark-no-duplicate-banner",
+            "impact": "moderate",
+            "nodes": 1
+          }
+        ]
+      },
+      {
+        "storyId": "components-header--with-dashboard-layout",
+        "nodes": 2,
+        "violations": [
+          {
+            "id": "landmark-complementary-is-top-level",
+            "impact": "moderate",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-unique",
+            "impact": "moderate",
+            "nodes": 1
+          }
+        ]
+      },
+      {
+        "storyId": "components-sidenavbar--with-header",
+        "nodes": 1,
+        "violations": [
+          {
+            "id": "heading-order",
+            "impact": "moderate",
+            "nodes": 1
+          }
+        ]
+      },
+      {
+        "storyId": "components-sidenavbar--variants",
+        "nodes": 2,
+        "violations": [
+          {
+            "id": "landmark-unique",
+            "impact": "moderate",
+            "nodes": 2
+          }
+        ]
+      }
+    ]
+  },
+  "dark": {
+    "durationMs": 331698,
+    "totalStories": 852,
+    "storiesWithViolations": 5,
+    "totalNodes": 7,
+    "byImpact": {
+      "critical": 0,
+      "serious": 0,
+      "moderate": 7,
+      "minor": 0
+    },
+    "storiesWithErrors": [],
+    "rules": {
+      "region": {
+        "impact": "moderate",
+        "nodes": 1,
+        "stories": ["components-dashboardlayout--with-events"]
+      },
+      "landmark-no-duplicate-banner": {
+        "impact": "moderate",
+        "nodes": 1,
+        "stories": ["components-header--variants"]
+      },
+      "landmark-complementary-is-top-level": {
+        "impact": "moderate",
+        "nodes": 1,
+        "stories": ["components-header--with-dashboard-layout"]
+      },
+      "landmark-unique": {
+        "impact": "moderate",
+        "nodes": 3,
+        "stories": [
+          "components-header--with-dashboard-layout",
+          "components-sidenavbar--variants"
+        ]
+      },
+      "heading-order": {
+        "impact": "moderate",
+        "nodes": 1,
+        "stories": ["components-sidenavbar--with-header"]
+      }
+    },
+    "stories": [
+      {
+        "storyId": "components-dashboardlayout--with-events",
+        "nodes": 1,
+        "violations": [
+          {
+            "id": "region",
+            "impact": "moderate",
+            "nodes": 1
+          }
+        ]
+      },
+      {
+        "storyId": "components-header--variants",
+        "nodes": 1,
+        "violations": [
+          {
+            "id": "landmark-no-duplicate-banner",
+            "impact": "moderate",
+            "nodes": 1
+          }
+        ]
+      },
+      {
+        "storyId": "components-header--with-dashboard-layout",
+        "nodes": 2,
+        "violations": [
+          {
+            "id": "landmark-complementary-is-top-level",
+            "impact": "moderate",
+            "nodes": 1
+          },
+          {
+            "id": "landmark-unique",
+            "impact": "moderate",
+            "nodes": 1
+          }
+        ]
+      },
+      {
+        "storyId": "components-sidenavbar--with-header",
+        "nodes": 1,
+        "violations": [
+          {
+            "id": "heading-order",
+            "impact": "moderate",
+            "nodes": 1
+          }
+        ]
+      },
+      {
+        "storyId": "components-sidenavbar--variants",
+        "nodes": 2,
+        "violations": [
+          {
+            "id": "landmark-unique",
+            "impact": "moderate",
+            "nodes": 2
+          }
+        ]
+      }
+    ]
+  }
+}

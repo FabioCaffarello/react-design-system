@@ -2,7 +2,6 @@
 
 import { memo, forwardRef, useMemo } from "react";
 import type { HTMLAttributes, ReactNode } from "react";
-import { getColorClass } from "../../tokens/colors";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import {
@@ -114,21 +113,28 @@ const badgeVariants = cva(
       {
         variant: "neutral",
         style: "solid",
-        class: cn(
-          getColorClass("neutral", "light", "bg"),
-          getColorClass("neutral", "dark", "text"),
-          getColorClass("neutral", "DEFAULT", "border"),
-        ),
+        class: cn("bg-surface-muted", "text-fg-primary", "border-line-default"),
       },
       {
         variant: "primary",
         style: "solid",
-        class: cn("bg-indigo-400", "text-indigo-600", "border-line-brand"),
+        class: cn(
+          "bg-surface-brand-subtle",
+          "text-fg-brand-emphasis",
+          "border-line-brand",
+        ),
       },
       {
         variant: "secondary",
         style: "solid",
-        class: cn("bg-pink-300", "text-pink-600", "border-line-secondary"),
+        // bg-pink-300: secondary solid badge — no semantic equivalent
+        // (would shift 2 shades to bg-surface-secondary). Kept literal until
+        // secondary brand surface palette expands beyond DEFAULT.
+        class: cn(
+          "bg-pink-300",
+          "text-fg-brand-secondary-emphasis",
+          "border-line-secondary",
+        ),
       },
       // Outline style variants
       {
@@ -154,11 +160,7 @@ const badgeVariants = cva(
       {
         variant: "neutral",
         style: "outline",
-        class: cn(
-          "bg-transparent",
-          getColorClass("neutral", "DEFAULT", "border"),
-          getColorClass("neutral", "DEFAULT", "text"),
-        ),
+        class: cn("bg-transparent", "border-line-default", "text-fg-secondary"),
       },
       {
         variant: "primary",

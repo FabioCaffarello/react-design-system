@@ -20,6 +20,16 @@ export interface AutocompleteListProps {
   allSelected?: boolean;
   onSelectAll?: () => void;
   onDeselectAll?: () => void;
+  /**
+   * Accessible name for the listbox. axe `aria-input-field-name`
+   * (serious) flags a `role="listbox"` portal without `aria-label` /
+   * `aria-labelledby` / `title`. The Autocomplete / MultiSelect parent
+   * cascades whatever accessible-name source the consumer provided
+   * (label string, aria-label, or external id) so the listbox inherits
+   * the same name as the input it dropdowns from.
+   */
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
 }
 
 /**
@@ -41,6 +51,8 @@ const AutocompleteList = forwardRef<HTMLDivElement, AutocompleteListProps>(
       allSelected = false,
       onSelectAll,
       onDeselectAll,
+      "aria-label": ariaLabel,
+      "aria-labelledby": ariaLabelledBy,
     },
     ref,
   ) {
@@ -62,14 +74,16 @@ const AutocompleteList = forwardRef<HTMLDivElement, AutocompleteListProps>(
       <div
         ref={ref}
         role="listbox"
+        aria-label={ariaLabelledBy ? undefined : ariaLabel}
+        aria-labelledby={ariaLabelledBy}
         className={`
           absolute
           ${getZIndexClass("popover")}
-          bg-white
+          bg-surface-overlay
           ${getRadiusClass("md")}
           ${getShadowClass("lg")}
           border
-          border-gray-200
+          border-line-default
           max-h-60
           overflow-y-auto
           ${getSpacingClass("xs", "py")}
@@ -85,7 +99,7 @@ const AutocompleteList = forwardRef<HTMLDivElement, AutocompleteListProps>(
             className={`
               ${getSpacingClass("md", "p")}
               text-sm
-              text-gray-500
+              text-fg-tertiary
               text-center
             `}
           >
@@ -96,7 +110,7 @@ const AutocompleteList = forwardRef<HTMLDivElement, AutocompleteListProps>(
             className={`
               ${getSpacingClass("md", "p")}
               text-sm
-              text-gray-500
+              text-fg-tertiary
               text-center
             `}
           >
@@ -112,9 +126,9 @@ const AutocompleteList = forwardRef<HTMLDivElement, AutocompleteListProps>(
                   text-sm
                   font-medium
                   cursor-pointer
-                  hover:bg-gray-50
+                  hover:bg-surface-hover
                   border-b
-                  border-gray-200
+                  border-line-default
                 `}
                 onClick={allSelected ? onDeselectAll : onSelectAll}
               >

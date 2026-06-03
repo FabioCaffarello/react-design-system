@@ -1,7 +1,7 @@
 import React from "react";
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import {
   Menu,
   MenuTrigger,
@@ -23,7 +23,6 @@ import {
 const meta: Meta<typeof Menu> = {
   title: "Components/Menu",
   component: Menu,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -199,7 +198,7 @@ export const TableActions: Story = {
   render: () => (
     <Menu>
       <MenuTrigger>
-        <Button variant="ghost" size="sm">
+        <Button variant="ghost" size="sm" aria-label="Actions">
           <MoreVertical className="h-4 w-4" />
         </Button>
       </MenuTrigger>
@@ -277,7 +276,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Interact with the menu below. Check the Actions panel to see events
           being fired.
         </p>
@@ -294,7 +293,7 @@ export const WithEvents: Story = {
             <MenuItem onClick={() => handleSelect("logout")}>Logout</MenuItem>
           </MenuContent>
         </Menu>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-fg-tertiary">
           Menu is {open ? "open" : "closed"}
         </p>
       </div>

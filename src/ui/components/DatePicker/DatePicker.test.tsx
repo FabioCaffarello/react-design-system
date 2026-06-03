@@ -77,7 +77,7 @@ describe("DatePicker", () => {
 
       // Find and click a date (15th of current month)
       const calendar = screen.getByRole("dialog");
-      const dateButtons = within(calendar).getAllByRole("button");
+      const dateButtons = within(calendar).getAllByRole("gridcell");
       const day15 = dateButtons.find((btn) => btn.textContent === "15");
 
       if (day15) {
@@ -156,7 +156,7 @@ describe("DatePicker", () => {
 
       // Select start date
       const calendar = screen.getByRole("dialog");
-      const dateButtons = within(calendar).getAllByRole("button");
+      const dateButtons = within(calendar).getAllByRole("gridcell");
       const day10 = dateButtons.find((btn) => btn.textContent === "10");
 
       if (day10) {
@@ -182,7 +182,7 @@ describe("DatePicker", () => {
       });
 
       const calendar = screen.getByRole("dialog");
-      const dateButtons = within(calendar).getAllByRole("button");
+      const dateButtons = within(calendar).getAllByRole("gridcell");
 
       // Dates before minDate should be disabled
       // Find a date button that should be disabled (day 5, which is before day 10)
@@ -192,7 +192,11 @@ describe("DatePicker", () => {
         return text === "5" && !ariaLabel.includes("selected");
       });
       if (day5) {
-        expect(day5).toBeDisabled();
+        // APG: disabled date cells use aria-disabled (semantic, focusable)
+        // not the HTML disabled attribute (which removes them from focus
+        // order). Cells must remain focusable so screen readers can announce
+        // why they cannot be activated.
+        expect(day5.getAttribute("aria-disabled")).toBe("true");
       } else {
         // If day 5 is not found, check if any date before 10 is disabled
         const earlyDate = dateButtons.find((btn) => {
@@ -221,12 +225,13 @@ describe("DatePicker", () => {
       });
 
       const calendar = screen.getByRole("dialog");
-      const dateButtons = within(calendar).getAllByRole("button");
+      const dateButtons = within(calendar).getAllByRole("gridcell");
 
-      // Dates after maxDate should be disabled
+      // Dates after maxDate should be disabled (APG: aria-disabled, not
+      // HTML disabled — cells stay focusable so AT can announce them).
       const day25 = dateButtons.find((btn) => btn.textContent === "25");
       if (day25) {
-        expect(day25).toHaveAttribute("disabled");
+        expect(day25.getAttribute("aria-disabled")).toBe("true");
       }
     });
 
@@ -247,20 +252,20 @@ describe("DatePicker", () => {
       );
 
       const calendar = screen.getByRole("dialog");
-      const dateButtons = within(calendar).getAllByRole("button");
+      const dateButtons = within(calendar).getAllByRole("gridcell");
       const day15 = dateButtons.find((btn) => {
         const text = btn.textContent?.trim();
         return text === "15" && /^\d+$/.test(text);
       });
 
       if (day15) {
-        // The date should be disabled or have disabled styling
+        // The date should be disabled or have disabled styling (APG:
+        // aria-disabled is the semantic primary; HTML disabled removed
+        // intentionally so cells stay focusable for AT announcement).
         const isDisabled =
-          day15.disabled ||
           day15.getAttribute("aria-disabled") === "true" ||
           day15.classList.contains("opacity-50") ||
-          day15.classList.contains("cursor-not-allowed") ||
-          day15.hasAttribute("disabled");
+          day15.classList.contains("cursor-not-allowed");
         expect(isDisabled).toBe(true);
       } else {
         // If day 15 not found, calendar might be showing different month
@@ -308,10 +313,12 @@ describe("DatePicker", () => {
 
       // Find a date button and focus it, then press Enter
       const calendar = screen.getByRole("dialog");
-      const dateButtons = within(calendar).getAllByRole("button");
+      const dateButtons = within(calendar).getAllByRole("gridcell");
       const firstDateButton = dateButtons.find(
         (btn) =>
-          !btn.disabled && btn.textContent && /^\d+$/.test(btn.textContent),
+          btn.getAttribute("aria-disabled") !== "true" &&
+          btn.textContent &&
+          /^\d+$/.test(btn.textContent),
       );
 
       if (firstDateButton) {

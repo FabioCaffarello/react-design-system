@@ -112,7 +112,7 @@ export default function Stepper({
 
   if (orientation === "vertical") {
     return (
-      <div className={`flex gap-4 ${className}`}>
+      <div className={`flex ${getSpacingClass("base", "gap")} ${className}`}>
         {/* Steps List */}
         <div className="flex flex-col">
           {steps.map((step, index) => {
@@ -120,13 +120,29 @@ export default function Stepper({
             const isActive = index === currentStepIndex;
 
             return (
-              <div key={step.id} className="flex items-start gap-3">
+              <div
+                key={step.id}
+                className={`flex items-start ${getSpacingClass("md", "gap")}`}
+              >
                 {/* Step Indicator */}
                 <div className="flex flex-col items-center">
                   <button
                     type="button"
                     onClick={() => handleStepClick(index)}
                     disabled={!allowNavigation || step.disabled}
+                    aria-label={
+                      step.title
+                        ? `Step ${index + 1}: ${step.title}`
+                        : `Step ${index + 1}`
+                    }
+                    // data-marker="pending" — see .claude/rules/colors.md
+                    // "fg-quaternary: AA-by-construction exception". Anchors
+                    // the directed a11y suppression to the pending-marker
+                    // ROLE, not to style classes; survives a future restyle
+                    // of the bubble.
+                    {...(status === "pending"
+                      ? { "data-marker": "pending" }
+                      : {})}
                     className={`
                       flex
                       items-center
@@ -138,12 +154,12 @@ export default function Stepper({
                       ${getAnimationClass("base")}
                       ${
                         status === "completed"
-                          ? `${"bg-success"} ${"border-success"} text-white`
+                          ? `${"bg-success"} ${"border-success"} text-fg-inverse`
                           : status === "active"
-                            ? `${"bg-surface-brand"} ${"border-line-brand"} text-white`
+                            ? `${"bg-surface-brand-strong"} ${"border-line-brand"} text-fg-inverse`
                             : status === "error"
-                              ? `${"bg-error"} ${"border-error"} text-white`
-                              : "bg-white border-gray-300 text-gray-400"
+                              ? `${"bg-error"} ${"border-error"} text-fg-inverse`
+                              : "bg-surface-base border-line-emphasis text-fg-quaternary"
                       }
                       ${!allowNavigation || step.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
                     `}
@@ -159,15 +175,15 @@ export default function Stepper({
                       className={`
                         w-0.5
                         h-12
-                        mt-2
-                        ${status === "completed" ? "bg-success" : "bg-gray-300"}
+                        ${getSpacingClass("sm", "mt")}
+                        ${status === "completed" ? "bg-success" : "bg-line-emphasis"}
                       `}
                     />
                   )}
                 </div>
 
                 {/* Step Content */}
-                <div className="flex-1 pb-8">
+                <div className={`flex-1 ${getSpacingClass("xl", "pb")}`}>
                   <button
                     type="button"
                     onClick={() => handleStepClick(index)}
@@ -175,14 +191,16 @@ export default function Stepper({
                     className={`
                       text-left
                       ${isActive ? "font-semibold" : "font-medium"}
-                      ${status === "active" ? "text-fg-brand" : "text-gray-700"}
+                      ${status === "active" ? "text-fg-brand-emphasis" : "text-fg-secondary"}
                       ${!allowNavigation || step.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
                     `}
                   >
                     {step.title}
                   </button>
                   {step.description && (
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p
+                      className={`text-sm text-fg-tertiary ${getSpacingClass("xs", "mt")}`}
+                    >
                       {step.description}
                     </p>
                   )}
@@ -198,9 +216,9 @@ export default function Stepper({
             className={`
             ${getSpacingClass("lg", "p")}
             border
-            border-gray-200
+            border-line-default
             ${getRadiusClass("lg")}
-            bg-white
+            bg-surface-base
           `}
           >
             {currentStep.content}
@@ -208,7 +226,7 @@ export default function Stepper({
 
           {/* Navigation */}
           <div
-            className={`flex justify-between mt-4 ${getSpacingClass("base", "gap")}`}
+            className={`flex justify-between ${getSpacingClass("base", "mt")} ${getSpacingClass("base", "gap")}`}
           >
             <Button
               variant="outline"
@@ -228,7 +246,7 @@ export default function Stepper({
 
   // Horizontal orientation
   return (
-    <div className={`space-y-6 ${className}`}>
+    <div className={`${getSpacingClass("lg", "space-y")} ${className}`}>
       {/* Steps List */}
       <div className="flex items-center">
         {steps.map((step, index) => {
@@ -242,6 +260,16 @@ export default function Stepper({
                   type="button"
                   onClick={() => handleStepClick(index)}
                   disabled={!allowNavigation || step.disabled}
+                  aria-label={
+                    step.title
+                      ? `Step ${index + 1}: ${step.title}`
+                      : `Step ${index + 1}`
+                  }
+                  // data-marker="pending" — see .claude/rules/colors.md
+                  // "fg-quaternary: AA-by-construction exception".
+                  {...(status === "pending"
+                    ? { "data-marker": "pending" }
+                    : {})}
                   className={`
                     flex
                     items-center
@@ -253,12 +281,12 @@ export default function Stepper({
                     ${getAnimationClass("base")}
                     ${
                       status === "completed"
-                        ? `${"bg-success"} ${"border-success"} text-white`
+                        ? `${"bg-success"} ${"border-success"} text-fg-inverse`
                         : status === "active"
-                          ? `${"bg-surface-brand"} ${"border-line-brand"} text-white`
+                          ? `${"bg-surface-brand-strong"} ${"border-line-brand"} text-fg-inverse`
                           : status === "error"
-                            ? `${"bg-error"} ${"border-error"} text-white`
-                            : "bg-white border-gray-300 text-gray-400"
+                            ? `${"bg-error"} ${"border-error"} text-fg-inverse`
+                            : "bg-surface-base border-line-emphasis text-fg-quaternary"
                     }
                     ${!allowNavigation || step.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
                   `}
@@ -270,29 +298,31 @@ export default function Stepper({
                   ) : null}
                 </button>
                 <div
-                  className={`mt-2 text-center ${getSpacingClass("sm", "px")}`}
+                  className={`${getSpacingClass("sm", "mt")} text-center ${getSpacingClass("sm", "px")}`}
                 >
                   <p
                     className={`
                       text-sm
                       font-medium
-                      ${isActive ? "text-fg-brand" : "text-gray-600"}
+                      ${isActive ? "text-fg-brand-emphasis" : "text-fg-secondary"}
                     `}
                   >
                     {step.title}
                   </p>
                   {step.description && (
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p
+                      className={`text-xs text-fg-tertiary ${getSpacingClass("xs", "mt")}`}
+                    >
                       {step.description}
                     </p>
                   )}
                 </div>
               </div>
               {index < steps.length - 1 && (
-                <div className={`flex-1 mx-2 ${getSpacingClass("base", "mx")}`}>
+                <div className={`flex-1 ${getSpacingClass("base", "mx")}`}>
                   <Separator
                     className={`
-                      ${status === "completed" ? "border-success" : "border-gray-300"}
+                      ${status === "completed" ? "border-success" : "border-line-emphasis"}
                     `}
                   />
                 </div>
@@ -307,9 +337,9 @@ export default function Stepper({
         className={`
         ${getSpacingClass("lg", "p")}
         border
-        border-gray-200
+        border-line-default
         ${getRadiusClass("lg")}
-        bg-white
+        bg-surface-base
       `}
       >
         {currentStep.content}

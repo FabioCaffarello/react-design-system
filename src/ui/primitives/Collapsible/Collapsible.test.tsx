@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { createRef } from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Collapsible from "./Collapsible";
 
@@ -170,5 +171,15 @@ describe("Collapsible", () => {
     expect(button).toHaveAttribute("aria-controls");
     expect(content).toHaveAttribute("id");
     expect(content).toHaveAttribute("aria-hidden", "false");
+  });
+
+  it("forwards ref to the underlying root div", () => {
+    const ref = createRef<HTMLDivElement>();
+    render(
+      <Collapsible ref={ref} trigger={<span>Toggle</span>}>
+        <div>Content</div>
+      </Collapsible>,
+    );
+    expect(ref.current).toBeInstanceOf(HTMLDivElement);
   });
 });

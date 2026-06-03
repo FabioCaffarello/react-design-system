@@ -1,0 +1,47 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as SwitchStories from "./Switch.stories";
+
+<Meta of={SwitchStories} />
+
+# Switch
+
+Switch renders a toggle for an immediate on / off state — the change takes effect the moment the user flips it, without a submit step. Reach for it for live settings (notifications on / off, dark mode on / off, autosave on / off), not for form-submit selections where Checkbox is the right primitive.
+
+## When to use
+
+- Use Switch for a setting that applies immediately when toggled — feature flags, notification preferences, theme mode, autosave.
+- Use `helperText` to explain the consequence of the on state — "Receive an email for every comment" — when the label alone leaves the impact unclear.
+- Use `size` to match the surrounding density — `sm` for compact rows, `md` for general lists, `lg` for prominent settings.
+- Pair Switch with a status row underneath when the on / off transition has lag (saving, syncing) so the user sees that the toggle took effect.
+
+## When not to use
+
+- Use `Checkbox` for a selection that is committed at form submit — agree to terms, pick filters, mark rows for a bulk action. Switch is for live state, not staged state.
+- Use `Radio` (or a `RadioGroup`) for mutually-exclusive options. Switch is binary; Radio answers "one of N".
+- Avoid Switch when the off state is unsafe (disabling 2FA, turning off backups). Use a confirmation Modal so the consequence is acknowledged before the change.
+
+## Anatomy
+
+Switch renders in source order: the visual `track` (the rounded background that shows the on / off color) wrapping the `thumb` (the circle that translates left / right with the state), an optional `label` rendered to the right and bound via `htmlFor`, and an optional `helperText` beneath the label carrying secondary explanation text.
+
+<Canvas of={SwitchStories.Default} />
+
+## Examples
+
+<Canvas of={SwitchStories.States} />
+
+<Canvas of={SwitchStories.WithLabel} />
+
+## Props
+
+<Controls of={SwitchStories.Default} />
+
+## Accessibility
+
+The component renders a native `<input type="checkbox">` styled as a toggle — assistive tech announces it as a checkbox, which most screen readers translate to "switch" automatically because of the visual styling. Some readers may say "checkbox" instead; this is a known platform inconsistency. The functional outcome — focus on Tab, Space to toggle, label announced on focus — works in both cases.
+
+The `label` is bound to the input via `htmlFor` so clicking the label transfers focus to and toggles the switch. The `helperText` is wired through `aria-describedby` so screen readers read it alongside the label when the switch receives focus.
+
+When the switch controls something destructive or irreversible, the doc-level guidance ("use a Modal for confirmation") matters more than wiring alone — assistive tech announces the state change after it has already happened.
+
+When the switch is the only interactive control in a setting row (no Label, no Description), set `aria-label` explicitly so the toggle has an accessible name. Same applies for icon-only toggles.

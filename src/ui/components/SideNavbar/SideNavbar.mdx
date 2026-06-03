@@ -1,0 +1,53 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as SideNavbarStories from "./SideNavbar.stories";
+
+<Meta of={SideNavbarStories} />
+
+# SideNavbar
+
+SideNavbar renders an application's persistent left rail — an always-visible icon `Navbar` column plus an expandable `Sidebar` content panel — with collapse, resize, slot-based content switching, and responsive backdrop. Reach for it as the chrome for any dashboard, admin tool, or workspace where the user navigates between sections without losing the rail's persistence.
+
+## When to use
+
+- Use SideNavbar as the left rail of any application shell — admin dashboards, internal tools, customer support surfaces, design tools.
+- Use `mode="full"` for the standard pattern (icon rail + collapsible content); `mode="navigation"` when the rail is icons only and there is no content panel.
+- Use the slot system (`SideNavbar.Sidebar.Slot` + `SidebarSlotContent`) for content-switching rails — the navbar items trigger different sidebar contents without route changes (filters per section, contextual lists, dynamic panels).
+- Use `defaultCollapsed` to start with the sidebar collapsed when the application's persisted preference is "icons only"; pair with `SideNavbar.ResizeHandle` for user-controlled width.
+- Wrap SideNavbar inside `DashboardLayout` for the standard app shell — DashboardLayout handles the surrounding header / main / footer composition.
+
+## When not to use
+
+- Use `Header.Navigation` for horizontal nav inside an app's top bar — SideNavbar is vertical chrome.
+- Use `Drawer` for side panels that open and close as part of a task — SideNavbar is persistent chrome.
+- Use `Menu` for transient action menus anchored to a trigger — SideNavbar is a persistent navigation surface.
+- Use a flat `<nav>` with `NavLink`s when the surface is simple enough not to need collapse, resize, or slot switching.
+
+## Anatomy
+
+SideNavbar's compound API runs deep. The `root` mounts four layered providers (theme, config, state, slot) and houses a horizontal flex container. The `SideNavbar.Navbar` column renders the icon rail and contains `SideNavbar.Navbar.Item` per route plus `SideNavbar.Navbar.Toggle` and `SideNavbar.Navbar.Separator`. The `SideNavbar.Sidebar` panel holds expandable content via `SideNavbar.Sidebar.Header`, `SideNavbar.Sidebar.Content` (often nesting `SideNavbar.Sidebar.Group` collapsibles and `SideNavbar.Sidebar.Slot` switchers), and `SideNavbar.Sidebar.Footer`. Three root-level utility parts: `SideNavbar.Toggle` (the main collapse button), `SideNavbar.ResizeHandle` (the draggable width border), and `SideNavbar.Backdrop` (the mobile overlay). The slot system is Sidebar-only.
+
+<Canvas of={SideNavbarStories.Default} />
+
+## Examples
+
+<Canvas of={SideNavbarStories.Collapsed} />
+
+<Canvas of={SideNavbarStories.WithHeader} />
+
+<Canvas of={SideNavbarStories.Controlled} />
+
+## Props
+
+<Controls of={SideNavbarStories.Default} />
+
+## Accessibility
+
+The root `SideNavbar` renders a `<nav>` landmark with `aria-label="Sidebar navigation"` (or a consumer-provided label) so assistive tech identifies the rail via the landmarks rotor. Each `SideNavbar.Navbar.Item` is a `<button>` or `<a>` (depending on whether it carries an `href`) with the icon hidden via `aria-hidden="true"` and the visible label as the accessible name; active items carry `aria-current="page"` so the current route is announced.
+
+The collapse toggle (`SideNavbar.Toggle` or `Navbar.Toggle`) carries `aria-expanded` + `aria-controls` pointing at the Sidebar's `id`; activation works via Enter or Space.
+
+`SideNavbar.Sidebar.Group` collapsibles inherit `aria-expanded` + `aria-controls` from the underlying primitives. Group content stays in the DOM when collapsed; pair the collapsed state with `aria-hidden="true"` on the group content when interactivity inside should leave the tab order.
+
+`SideNavbar.ResizeHandle` is `role="separator"` with `aria-orientation="vertical"` and `aria-valuenow` / `aria-valuemin` / `aria-valuemax` for the current width; arrow keys adjust in steps. Hidden from interaction on mobile.
+
+`SideNavbar.Backdrop` (mobile-only) is `aria-hidden="true"`; clicking it dismisses the sidebar and returns focus to the toggle.

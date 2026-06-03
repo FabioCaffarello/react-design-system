@@ -1,9 +1,22 @@
 import type { StorybookConfig } from "@storybook/react-vite";
+import remarkGfm from "remark-gfm";
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
-    "@storybook/addon-docs", // Documentation support (includes Controls, Actions, Viewport, and Interactions in Storybook 10)
+    {
+      // GFM enabled so pipe tables (| col | col |) render as <table>.
+      // Without remark-gfm the MDX2/3 pipeline falls back to CommonMark
+      // and tables drop to <p> as inline pipe-delimited text.
+      name: "@storybook/addon-docs",
+      options: {
+        mdxPluginOptions: {
+          mdxCompileOptions: {
+            remarkPlugins: [remarkGfm],
+          },
+        },
+      },
+    },
     "@storybook/addon-a11y", // Accessibility testing
     "@storybook/addon-vitest", // Vitest integration
     // Note: @storybook/addon-interactions is now part of @storybook/addon-docs in Storybook 10
@@ -41,16 +54,10 @@ const config: StorybookConfig = {
     // Improve module resolution for complex imports
     config.resolve.alias = config.resolve.alias || {};
 
-    // CRITICAL: Ensure PostCSS is configured for Tailwind CSS v4
-    // Explicitly configure PostCSS to use @tailwindcss/postcss
-    config.css = config.css || {};
-    if (!config.css.postcss) {
-      // Use the same configuration as postcss.config.mjs
-      const tailwindcssPlugin = (await import("@tailwindcss/postcss")).default;
-      config.css.postcss = {
-        plugins: [tailwindcssPlugin()],
-      };
-    }
+    // Tailwind v4 is wired via @tailwindcss/vite in vite.config.ts which
+    // Storybook 10 inherits through its merged Vite config. No PostCSS
+    // override needed — the plugin owns the CSS pipeline end-to-end and
+    // does not depend on postcss-import's strict @import ordering.
 
     // Ensure proper handling of client directives (Next.js compatibility)
     // Vite will ignore 'use client' directives, but we need to ensure they don't break module resolution

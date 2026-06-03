@@ -1,0 +1,48 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as NavigationStories from "./Navigation.stories";
+
+<Meta of={NavigationStories} />
+
+# Navigation
+
+Navigation arranges a list of `NavLink` items into a horizontal or vertical nav block, with `default` / `pills` / `tabs` styling variants. Reach for it whenever a region of the page needs a coordinated set of navigation links — secondary nav bars, sidebar sections, in-page chrome that pairs related routes together.
+
+## When to use
+
+- Use Navigation for the secondary or in-page nav inside `Header.Navigation`, sidebar regions, or any clustered set of routes that belong together.
+- Use `variant="default"` for inline link styling (color + hover only), `variant="pills"` for chip-shaped items with a hovered surface fill, `variant="tabs"` for an underline-on-active pattern reminiscent of tabs.
+- Use `orientation="horizontal"` (default) for top-bar or in-page nav rows; `orientation="vertical"` for sidebars where the items stack.
+- Pair Navigation with the routing library of the application — the underlying `NavLink` handles active-state detection automatically.
+
+## When not to use
+
+- Use `Tabs` for switching between content views in the same region — Tabs swap content in place, Navigation moves the user to a different route.
+- Use a single `NavLink` for one-off links inline in prose or in a footer; Navigation is for clustered sets.
+- Use `Breadcrumb` for hierarchical navigation showing where the user is — Breadcrumb is the trail, Navigation is the siblings.
+- Use a `Menu` for items that open content rather than navigate — Navigation items always go somewhere.
+
+## Examples
+
+<Canvas of={NavigationStories.Default} />
+
+<Canvas of={NavigationStories.Vertical} />
+
+<Canvas of={NavigationStories.WithIcons} />
+
+<Canvas of={NavigationStories.WithDisabled} />
+
+## Props
+
+<Controls of={NavigationStories.Default} />
+
+## Accessibility
+
+Navigation renders a `<nav>` landmark so assistive tech recognizes the region as a navigation block and exposes it via the landmarks rotor. Wrap each Navigation instance with an `aria-label` describing the role of the block ("Primary", "Section", "Settings") — without a label, screen readers announce a generic "navigation" with no further context, and multiple unlabelled nav regions on the same page become indistinguishable.
+
+The underlying `NavLink` items handle the per-item semantics — `aria-current="page"` on the active route, focus ring on keyboard focus, link semantics from the native `<a>` element. Tab moves between items in source order; activated items follow the route the way any anchor does.
+
+Disabled items are rendered as non-interactive (no focus, no click) but stay visible in the row so the user knows the route exists in principle. Assistive tech announces them as disabled when reached by other means.
+
+The variant (`default` / `pills` / `tabs`) is purely visual — assistive tech reads the nav structure identically regardless of which variant is applied. Choose by surrounding visual density; the choice has no functional effect.
+
+When Navigation items exceed the row width on small viewports, the consumer owns the overflow behavior (collapse into `Menu`, wrap, or scroll). No built-in strategy.

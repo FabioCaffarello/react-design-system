@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AppProvider } from "./AppProvider";
 import { Button } from "../primitives";
 
 const meta: Meta<typeof AppProvider> = {
-  title: "Providers/AppProvider",
+  title: "Design System/Providers/AppProvider",
   component: AppProvider,
   parameters: {
     docs: {
@@ -68,7 +68,6 @@ The AppProvider uses a bottom-up composition strategy:
       },
     },
   },
-  tags: ["autodocs"],
 };
 
 export default meta;

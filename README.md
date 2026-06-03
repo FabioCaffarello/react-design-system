@@ -2,11 +2,68 @@
 
 Mono-brand React design system. Single source of UI truth for my projects, maintained mainly through Claude Code prompts.
 
+## Installation
+
+```bash
+npm install @fabio.caffarello/react-design-system
+```
+
+`react@19` and `react-dom@19` are peer dependencies.
+
+## Usage
+
+Import components and the bundled stylesheet. No Tailwind setup required in your project — the DS ships the full token cascade (tokens, light/dark theme overrides) in one CSS file.
+
+```tsx
+import { Button, Card, Form } from "@fabio.caffarello/react-design-system";
+import "@fabio.caffarello/react-design-system/styles";
+
+export default function App() {
+  return (
+    <div className="bg-surface-canvas text-fg-primary">
+      <Button variant="primary">Hello</Button>
+    </div>
+  );
+}
+```
+
+Use `bg-surface-canvas` / `text-fg-primary` (or any other DS semantic class) on your page wrapper so the surface follows the active theme — hardcoding `background: #fff` will look broken on a dark-mode machine.
+
+## Theming
+
+The DS follows the user's OS color scheme preference automatically via the `prefers-color-scheme` media query. A consumer in a dark-mode environment sees the dark variant of every token without any setup in the app.
+
+### Override the theme
+
+Force light or dark regardless of OS preference by setting the attribute or class on `<html>`:
+
+```html
+<html data-theme="light">
+  ...
+</html>
+<!-- or -->
+<html data-theme="dark">
+  ...
+</html>
+```
+
+Class-based opt-in works too:
+
+```html
+<html class="light">
+  ...
+</html>
+<html class="dark">
+  ...
+</html>
+```
+
 ## Stack
 
 - React 19 + TypeScript 5 (strict)
-- Vite (build) · Vitest + Testing Library (test)
-- TailwindCSS (tokens in `src/style.css`)
+- Vite (build) via `@tailwindcss/vite` plugin
+- Vitest + Testing Library (test)
+- TailwindCSS v4 — CSS-first config via `@theme` in `src/styles/`
 - Storybook (docs)
 - Plop (scaffolding)
 
@@ -33,7 +90,7 @@ Do not reintroduce atoms/molecules/organisms/templates/patterns layers. Three la
 
 ## Hard rules (enforced via `.claude/rules/`)
 
-- Every component ships with `.tsx`, `.test.tsx`, `.stories.tsx`, `index.ts`.
+- Every component ships with `.tsx`, `.test.tsx`, `.accessibility.test.tsx`, `.stories.tsx`, `index.ts`.
 - Zero `any`. Props typed explicitly and exported.
 - Styling via tokens / Tailwind only. No hardcoded hex / px in components.
 - WCAG 2.1 AA: keyboard navigation, ARIA, focus management.
@@ -49,6 +106,9 @@ npm run test:coverage     # with coverage
 npm run lint              # eslint
 npm run build             # library build (tsc + vite)
 npm run build-storybook   # static storybook
+npm run storybook:smoke   # runtime smoke-test all stories
+npm run test:a11y:baseline # serial axe baseline (light + dark, ~11min on local SSD)
+node scripts/validate-a11y-baseline.mjs # gate: exits 1 if critical+serious>0 on either theme
 npm run plop              # scaffold a new component
 ```
 
@@ -56,12 +116,10 @@ npm run plop              # scaffold a new component
 
 Consumers can import from:
 
-- `@fabio.caffarello/react-design-system` — everything
-- `@fabio.caffarello/react-design-system/primitives`
-- `@fabio.caffarello/react-design-system/components`
-- `@fabio.caffarello/react-design-system/tokens`
-- `@fabio.caffarello/react-design-system/providers`
-- `@fabio.caffarello/react-design-system/styles` — the CSS bundle
+- `@fabio.caffarello/react-design-system` — all components, providers, hooks, tokens
+- `@fabio.caffarello/react-design-system/styles` — the bundled CSS
+
+Sub-entries (`/primitives`, `/components`, `/tokens`, `/providers`) were removed in Phase 13d — they had been silently broken for external consumers since v1.0.0 because cross-chunk references to `cva` and other shared utilities failed at runtime. A single entry collapses the cross-chunk class of bug structurally; tree-shaking still works at the named-export level via any modern bundler.
 
 ## Working with Claude Code
 

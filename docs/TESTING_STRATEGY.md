@@ -21,8 +21,11 @@ tests/
 │   ├── accessibility.spec.ts
 │   └── navigation.spec.ts
 src/
-├── **/*.test.tsx     # Unit tests junto com componentes
-└── **/*.stories.tsx  # Story tests (via Vitest)
+├── **/*.test.tsx                # Unit tests (behavior) junto com componentes
+├── **/*.accessibility.test.tsx  # A11y tests dedicados (ARIA / keyboard /
+│                                # focus / screen reader); mirror
+│                                # Header.accessibility.test.tsx
+└── **/*.stories.tsx             # Story tests (via Vitest)
 ```
 
 ## Tipos de Testes

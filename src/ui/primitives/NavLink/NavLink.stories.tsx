@@ -4,14 +4,13 @@
  * Storybook stories for the NavLink component.
  */
 
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, fn, userEvent, within } from "storybook/test";
 import { NavLink } from "./NavLink";
 
 const meta: Meta<typeof NavLink> = {
   title: "Primitives/NavLink",
   component: NavLink,
-  tags: ["autodocs"],
   parameters: {
     layout: "centered",
     docs: {
@@ -241,11 +240,30 @@ export const AllStates: Story = {
 
 /**
  * Interactive
+ *
+ * Verifies the `onClick` callback fires when the NavLink is clicked
+ * and that keyboard focus reaches the underlying anchor element.
+ *
+ * `href="#"` is intentional: a real path would cause the iframe to
+ * navigate when the play function clicks the link, breaking
+ * Storybook's render-terminal check (the iframe leaves the story
+ * URL). Clicking `#` still triggers onClick — same code path —
+ * without leaving the page.
  */
 export const Interactive: Story = {
   args: {
-    href: "/home",
+    href: "#",
     children: "Click me",
     onClick: fn(),
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const link = canvas.getByRole("link", { name: /click me/i });
+
+    await userEvent.click(link);
+    expect(args.onClick).toHaveBeenCalledTimes(1);
+
+    link.focus();
+    expect(link).toHaveFocus();
   },
 };

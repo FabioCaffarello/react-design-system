@@ -7,6 +7,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import { useTableContext } from "./TableContext";
+import { getSpacingClass } from "../../tokens/spacing";
 import type { TableColumn } from "./TableTypes";
 
 export interface TableHeaderCellProps
@@ -118,9 +119,9 @@ export default function TableHeaderCell({
             ? "none"
             : undefined
       }
-      className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${
+      className={`${getSpacingClass("lg", "px")} ${getSpacingClass("md", "py")} text-left text-xs font-medium text-fg-tertiary uppercase tracking-wider ${
         isSortable
-          ? "cursor-pointer hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 select-none"
+          ? "cursor-pointer hover:bg-surface-active focus:bg-surface-active focus:outline-none focus:ring-2 focus:ring-line-focus focus:ring-offset-2 select-none"
           : ""
       } ${column.hiddenOnMobile ? "hidden md:table-cell" : ""} ${className}`}
       onClick={isSortable ? handleSort : undefined}
@@ -131,17 +132,19 @@ export default function TableHeaderCell({
       }
       {...props}
     >
-      <div className="flex items-center gap-2 relative">
+      <div
+        className={`flex items-center ${getSpacingClass("sm", "gap")} relative`}
+      >
         <span>{column.label}</span>
         {isSorted && (
-          <span className="text-gray-400" aria-hidden="true">
+          <span className="text-fg-tertiary" aria-hidden="true">
             {sortState.direction === "asc" ? "↑" : "↓"}
           </span>
         )}
         {resizable && onResize && (
           <div
             ref={resizeHandleRef}
-            className="absolute right-0 top-0 bottom-0 w-1 cursor-col-resize hover:bg-indigo-500 transition-colors"
+            className="absolute right-0 top-0 bottom-0 w-1 cursor-col-resize hover:bg-surface-brand transition-colors"
             onMouseDown={handleResizeStart}
             role="separator"
             aria-orientation="vertical"

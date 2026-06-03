@@ -2,7 +2,6 @@
 
 import { type ReactNode, type HTMLAttributes } from "react";
 import { getSpacingClass } from "../../tokens/spacing";
-import { getColorClass } from "../../tokens/colors";
 
 export interface DrawerFooterProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
@@ -31,7 +30,7 @@ export default function DrawerFooter({
       className={`
         ${getSpacingClass("lg", "p")}
         border-t
-        ${getColorClass("neutral", "DEFAULT", "border")}
+        border-line-default
         flex
         justify-end
         ${getSpacingClass("sm", "gap")}

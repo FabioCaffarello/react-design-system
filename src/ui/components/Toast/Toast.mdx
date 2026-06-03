@@ -1,0 +1,50 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as ToastStories from "./Toast.stories";
+
+<Meta of={ToastStories} />
+
+# Toast
+
+Toast renders a small notification card that floats over the page corner, announces a state change, and dismisses on its own (or on click). Reach for it for non-blocking feedback the user should notice but does not need to act on — save succeeded, copy to clipboard, action completed, sync finished.
+
+## When to use
+
+- Use Toast for transient success / failure / info / warning notifications tied to an action the user just took — "Saved", "Copied to clipboard", "Sync complete", "Could not reach upstream".
+- Use `variant="success"` for confirmations, `error` for failures, `warning` for cautionary states, `info` for neutral context.
+- Use `position` to match the application convention — `top-right` (default) is common for global app shells, `bottom-right` for in-content surfaces, `top-center` for prominence.
+- Use the `actions` slot for a single "Undo" or "Retry" affordance when the user might want to reverse or repeat the action. Avoid loading the toast with more than one action.
+
+## When not to use
+
+- Use `Modal` for messages the user must acknowledge before continuing — Toast auto-dismisses and is silent for screen-reader users who do not catch the brief announcement.
+- Use `Info` for inline messages tied to a specific section of the page — Toast floats over the page, Info sits inside it.
+- Use `ErrorMessage` for field-level validation feedback — Toast is page-level, ErrorMessage is field-level.
+- Avoid Toast for messages with no triggering action (passive marketing) — the appearance / dismiss interrupts attention without value.
+
+## Anatomy
+
+Toast renders in source order: an outer `<div role="alert">` (or `role="status"` when `variant="info"`) carrying the positioning + animation, an `icon` (`CheckCircle`, `AlertCircle`, `AlertTriangle`, `Info` — picked by variant, decorative), a `body` (the message text inside a column), an optional `actions` slot (a single Button row, typically "Undo" or "Retry"), and a `close button` (a native `<button aria-label="Dismiss notification">` for explicit dismissal).
+
+<Canvas of={ToastStories.Default} />
+
+## Examples
+
+<Canvas of={ToastStories.BottomRight} />
+
+<Canvas of={ToastStories.MultipleToasts} />
+
+<Canvas of={ToastStories.WithActions} />
+
+## Props
+
+<Controls of={ToastStories.Default} />
+
+## Accessibility
+
+Toast renders a live region — `role="alert"` for the action-feedback variants (`success`, `warning`, `error`) and `role="status"` for `info`. Both region types are announced by screen readers when the element enters the DOM, without the user moving focus to them. `aria-live="polite"` (implicit in `role="status"`) waits for the current utterance to finish before announcing; `assertive` (implicit in `role="alert"`) interrupts.
+
+The close button has an explicit `aria-label="Dismiss notification"` so its purpose is announced even though it renders only an `X` icon. The variant icon is decorative (`aria-hidden="true"`) — the message text alone carries the meaning.
+
+Auto-dismiss after a timeout is the default behavior, but screen-reader users may not catch a brief announcement. The Toast remains in the DOM until dismissed (auto or manual); if the surface relies on the user reading the toast (an error that needs attention), provide an explicit "Undo" or "Retry" affordance so the toast is actionable, and consider raising the timeout or removing it for critical errors.
+
+Focus does not move to the toast on appear — keyboard users continue with their current focus. Action buttons inside a toast become focusable only via Tab after the user reaches the toast region.

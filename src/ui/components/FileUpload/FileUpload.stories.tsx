@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { useState } from "react";
 import { CheckCircle2, AlertCircle } from "lucide-react";
 import FileUpload from "./FileUpload";
@@ -8,7 +8,6 @@ import type { FileUploadFile } from "./FileUpload";
 const meta: Meta<typeof FileUpload> = {
   title: "Components/FileUpload",
   component: FileUpload,
-  tags: ["autodocs"],
   parameters: {
     layout: "padded",
     docs: {
@@ -99,7 +98,7 @@ export const Default: Story = {
       <div className="w-full max-w-md">
         <FileUpload {...args} onFilesChange={setFiles} />
         {files.length > 0 && (
-          <div className="mt-4 text-sm text-gray-600">
+          <div className="mt-4 text-sm text-fg-secondary">
             {files.length} file(s) selected
           </div>
         )}
@@ -164,18 +163,18 @@ export const MultipleFiles: Story = {
         />
         {files.length > 0 && (
           <div className="space-y-2">
-            <div className="text-sm font-medium text-gray-700">
+            <div className="text-sm font-medium text-fg-primary">
               Files ({files.length}/{maxFiles}):
             </div>
-            <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
+            <ul className="list-disc list-inside text-sm text-fg-secondary space-y-1">
               {files.map((file) => (
-                <li key={file.id} className={file.error ? "text-red-600" : ""}>
+                <li key={file.id} className={file.error ? "text-fg-error" : ""}>
                   {file.file.name} {file.error && `- ${file.error}`}
                 </li>
               ))}
             </ul>
             {!canAddMore && (
-              <div className="p-2 bg-yellow-50 border border-yellow-200 rounded text-sm text-yellow-800">
+              <div className="p-2 bg-warning-bg border border-warning rounded text-sm text-fg-warning">
                 Maximum number of files reached ({maxFiles})
               </div>
             )}
@@ -221,7 +220,7 @@ export const WithProgress: Story = {
       <div className="w-full max-w-md space-y-4">
         <FileUpload {...args} onFilesChange={handleFilesChange} showProgress />
         {files.length > 0 && (
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-fg-secondary">
             <p>
               <strong>Files with progress:</strong>
             </p>
@@ -267,23 +266,23 @@ export const WithValidation: Story = {
         />
         {files.length > 0 && (
           <div className="space-y-2">
-            <div className="text-sm font-medium text-gray-700">
+            <div className="text-sm font-medium text-fg-primary">
               Upload Status:
             </div>
             {validFiles.length > 0 && (
-              <div className="p-3 bg-green-50 border border-green-200 rounded-md">
-                <p className="text-sm text-green-800">
+              <div className="p-3 bg-success-bg border border-success rounded-md">
+                <p className="text-sm text-fg-success">
                   ✓ {validFiles.length} file(s) valid:{" "}
                   {validFiles.map((f) => f.file.name).join(", ")}
                 </p>
               </div>
             )}
             {hasErrors && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-md">
-                <p className="text-sm font-medium text-red-800 mb-1">
+              <div className="p-3 bg-error-bg border border-error rounded-md">
+                <p className="text-sm font-medium text-fg-error mb-1">
                   ✗ Validation Errors:
                 </p>
-                <ul className="list-disc list-inside text-sm text-red-700 space-y-1">
+                <ul className="list-disc list-inside text-sm text-fg-error space-y-1">
                   {files
                     .filter((f) => f.error)
                     .map((file) => (
@@ -329,7 +328,7 @@ export const WithFileRemoval: Story = {
           multiple
         />
         {files.length > 0 && (
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-fg-secondary">
             <p>
               <strong>Current files ({files.length}):</strong>
             </p>
@@ -369,7 +368,7 @@ export const ImagePreview: Story = {
           multiple
         />
         {files.length > 0 && (
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-fg-secondary">
             <p>
               <strong>Uploaded images ({files.length}):</strong>
             </p>
@@ -459,8 +458,8 @@ export const RealWorldUpload: Story = {
           maxFiles={5}
         />
         {files.length > 0 && (
-          <div className="space-y-2 p-4 bg-gray-50 rounded-md">
-            <div className="text-sm font-medium text-gray-700">
+          <div className="space-y-2 p-4 bg-surface-subtle rounded-md">
+            <div className="text-sm font-medium text-fg-primary">
               Upload Status ({files.length} files):
             </div>
             <div className="space-y-2">
@@ -472,25 +471,25 @@ export const RealWorldUpload: Story = {
                   <span
                     className={
                       file.error
-                        ? "text-red-600"
+                        ? "text-fg-error"
                         : uploaded.includes(file.id)
-                          ? "text-green-600"
-                          : "text-gray-700"
+                          ? "text-fg-success"
+                          : "text-fg-primary"
                     }
                   >
                     {file.file.name}
                   </span>
                   <div className="flex items-center gap-2">
                     {file.progress !== undefined && file.progress < 100 && (
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-fg-tertiary">
                         {file.progress}%
                       </span>
                     )}
                     {uploaded.includes(file.id) && (
-                      <CheckCircle2 className="h-4 w-4 text-green-600" />
+                      <CheckCircle2 className="h-4 w-4 text-fg-success" />
                     )}
                     {file.error && (
-                      <AlertCircle className="h-4 w-4 text-red-600" />
+                      <AlertCircle className="h-4 w-4 text-fg-error" />
                     )}
                   </div>
                 </div>
@@ -525,7 +524,7 @@ export const DragAndDrop: Story = {
           multiple
         />
         {files.length > 0 && (
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-fg-secondary">
             <p>
               <strong>Dropped files ({files.length}):</strong>
             </p>
@@ -538,7 +537,7 @@ export const DragAndDrop: Story = {
             </ul>
           </div>
         )}
-        <div className="text-xs text-gray-500 p-2 bg-blue-50 rounded">
+        <div className="text-xs text-fg-tertiary p-2 bg-info-bg rounded">
           💡 Tip: Try dragging files from your file explorer onto the upload
           area.
         </div>
@@ -568,7 +567,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="w-full max-w-md space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Upload files or remove them. Check the Actions panel to see events
           being fired.
         </p>
@@ -580,7 +579,7 @@ export const WithEvents: Story = {
           multiple
         />
         {files.length > 0 && (
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-fg-secondary">
             {files.length} file(s) selected
           </div>
         )}
@@ -624,7 +623,7 @@ export const WithFilesState: Story = {
           multiple
         />
         {files.length > 0 && (
-          <div className="mt-4 text-sm text-gray-600">
+          <div className="mt-4 text-sm text-fg-secondary">
             {files.length} file(s) selected
           </div>
         )}
@@ -652,5 +651,61 @@ export const DisabledState: Story = {
           "Disabled state - file upload is disabled and cannot be interacted with.",
       },
     },
+  },
+};
+
+/**
+ * Interactive
+ *
+ * Verifies that selecting a file via the hidden <input type="file">
+ * fires onFilesChange with the file in the payload and that the file
+ * name renders in the file list afterwards. Uses userEvent.upload which
+ * bypasses the "Click to upload" dropzone and writes directly into the
+ * input — that path matches how assistive tech reaches the control.
+ */
+export const Interactive: Story = {
+  render: (args) => {
+    const [files, setFiles] = useState<FileUploadFile[]>([]);
+    return (
+      <div className="w-full max-w-md">
+        <FileUpload
+          {...args}
+          onFilesChange={(next) => {
+            setFiles(next);
+            args.onFilesChange?.(next);
+          }}
+        />
+        {files.length > 0 && (
+          <div className="mt-4 text-sm text-fg-secondary">
+            {files.length} file(s) selected
+          </div>
+        )}
+      </div>
+    );
+  },
+  args: {
+    accept: ".txt",
+    onFilesChange: fn(),
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Sanity: the CTA copy describes the default empty state.
+    expect(canvas.getByText(/click to upload/i)).toBeInTheDocument();
+
+    const fileInput = canvasElement.querySelector(
+      'input[type="file"]',
+    ) as HTMLInputElement;
+    expect(fileInput).toBeTruthy();
+
+    const file = new File(["hello"], "hello.txt", { type: "text/plain" });
+    await userEvent.upload(fileInput, file);
+
+    await waitFor(() => {
+      expect(args.onFilesChange).toHaveBeenCalled();
+    });
+    await waitFor(() => {
+      expect(canvas.getByText("hello.txt")).toBeInTheDocument();
+    });
   },
 };

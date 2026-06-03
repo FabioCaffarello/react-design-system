@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import { useState } from "react";
 import Collapsible from "./Collapsible";
 import { Button, Text } from "../../primitives";
@@ -77,7 +77,7 @@ export const Default: StoryObj<typeof Collapsible> = {
   args: {
     defaultOpen: true,
     trigger: (
-      <div className="px-4 py-2 bg-gray-100 rounded-md">
+      <div className="px-4 py-2 bg-surface-muted rounded-md">
         <Text as="span" className="font-medium">
           Click to toggle
         </Text>
@@ -95,7 +95,7 @@ export const DefaultClosed: StoryObj<typeof Collapsible> = {
   args: {
     defaultOpen: false,
     trigger: (
-      <div className="px-4 py-2 bg-gray-100 rounded-md">
+      <div className="px-4 py-2 bg-surface-muted rounded-md">
         <Text as="span" className="font-medium">
           Click to expand
         </Text>
@@ -121,7 +121,7 @@ export const Controlled: StoryObj<typeof Collapsible> = {
           open={isOpen}
           onOpenChange={setIsOpen}
           trigger={
-            <div className="px-4 py-2 bg-gray-100 rounded-md">
+            <div className="px-4 py-2 bg-surface-muted rounded-md">
               <Text as="span" className="font-medium">
                 Controlled Collapsible
               </Text>
@@ -142,7 +142,7 @@ export const WithStorage: StoryObj<typeof Collapsible> = {
     defaultOpen: true,
     storageKey: "storybook-collapsible-state",
     trigger: (
-      <div className="px-4 py-2 bg-gray-100 rounded-md">
+      <div className="px-4 py-2 bg-surface-muted rounded-md">
         <Text as="span" className="font-medium">
           State persists in localStorage
         </Text>
@@ -163,7 +163,7 @@ export const Disabled: StoryObj<typeof Collapsible> = {
     defaultOpen: true,
     disabled: true,
     trigger: (
-      <div className="px-4 py-2 bg-gray-100 rounded-md opacity-50">
+      <div className="px-4 py-2 bg-surface-muted rounded-md opacity-50">
         <Text as="span" className="font-medium">
           Disabled (cannot toggle)
         </Text>
@@ -181,7 +181,7 @@ export const Accessibility: StoryObj<typeof Collapsible> = {
   args: {
     defaultOpen: false,
     trigger: (
-      <div className="px-4 py-2 bg-gray-100 rounded-md">
+      <div className="px-4 py-2 bg-surface-muted rounded-md">
         <Text as="span" className="font-medium">
           Accessible Collapsible
         </Text>
@@ -210,7 +210,7 @@ export const KeyboardNavigation: StoryObj<typeof Collapsible> = {
   args: {
     defaultOpen: false,
     trigger: (
-      <div className="px-4 py-2 bg-gray-100 rounded-md">
+      <div className="px-4 py-2 bg-surface-muted rounded-md">
         <Text as="span" className="font-medium">
           Try Keyboard Navigation
         </Text>
@@ -239,7 +239,7 @@ export const Uncontrolled: StoryObj<typeof Collapsible> = {
   args: {
     defaultOpen: false,
     trigger: (
-      <div className="px-4 py-2 bg-gray-100 rounded-md">
+      <div className="px-4 py-2 bg-surface-muted rounded-md">
         <Text as="span" className="font-medium">
           Uncontrolled Collapsible
         </Text>
@@ -275,7 +275,7 @@ export const WithEvents: StoryObj<typeof Collapsible> = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Click the trigger below. Check the Actions panel to see events being
           fired.
         </p>
@@ -283,7 +283,7 @@ export const WithEvents: StoryObj<typeof Collapsible> = {
           open={isOpen}
           onOpenChange={handleOpenChange}
           trigger={
-            <div className="px-4 py-2 bg-gray-100 rounded-md">
+            <div className="px-4 py-2 bg-surface-muted rounded-md">
               <Text as="span" className="font-medium">
                 Interactive Collapsible
               </Text>
@@ -324,7 +324,7 @@ export const ClosedState: StoryObj<typeof Collapsible> = {
   args: {
     defaultOpen: false,
     trigger: (
-      <div className="px-4 py-2 bg-gray-100 rounded-md">
+      <div className="px-4 py-2 bg-surface-muted rounded-md">
         <Text as="span" className="font-medium">
           Closed Collapsible
         </Text>
@@ -349,7 +349,7 @@ export const OpenState: StoryObj<typeof Collapsible> = {
   args: {
     defaultOpen: true,
     trigger: (
-      <div className="px-4 py-2 bg-gray-100 rounded-md">
+      <div className="px-4 py-2 bg-surface-muted rounded-md">
         <Text as="span" className="font-medium">
           Open Collapsible
         </Text>
@@ -375,7 +375,7 @@ export const DisabledState: StoryObj<typeof Collapsible> = {
     defaultOpen: true,
     disabled: true,
     trigger: (
-      <div className="px-4 py-2 bg-gray-100 rounded-md opacity-50">
+      <div className="px-4 py-2 bg-surface-muted rounded-md opacity-50">
         <Text as="span" className="font-medium">
           Disabled Collapsible
         </Text>

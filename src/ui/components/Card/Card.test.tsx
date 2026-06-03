@@ -12,10 +12,10 @@ describe("Card", () => {
     const { container } = render(<Card>Content</Card>);
     const card = container.firstChild as HTMLElement;
     expect(card).toHaveClass(
-      "bg-white",
+      "bg-surface-base",
       "rounded-lg",
       "border",
-      "border-gray-500",
+      "border-line-default",
     );
   });
 
@@ -63,5 +63,44 @@ describe("Card", () => {
     const { container } = render(<Card className="custom-class">Content</Card>);
     const card = container.firstChild as HTMLElement;
     expect(card).toHaveClass("custom-class");
+  });
+
+  describe("ARIA interactivity (decoupled from variant=hover)", () => {
+    // `variant="hover"` is a visual hover style only — NOT an ARIA
+    // interactivity signal. The previous coupling (`isInteractive =
+    // onClick || variant === "hover"`) made hover cards `role="button"
+    // tabindex=0` even when the consumer composed real Buttons inside,
+    // triggering axe `nested-interactive`. The fix below ties role/
+    // tabindex to `onClick` only. Re-coupling regresses the violation;
+    // these tests guard against that.
+
+    it("variant=hover WITHOUT onClick has no role and no tabIndex", () => {
+      const { container } = render(<Card variant="hover">Content</Card>);
+      const card = container.firstChild as HTMLElement;
+      expect(card).not.toHaveAttribute("role");
+      expect(card).not.toHaveAttribute("tabIndex");
+    });
+
+    it("variant=hover WITH onClick has role=button + tabindex=0", () => {
+      const { container } = render(
+        <Card variant="hover" onClick={() => {}} aria-label="Clickable">
+          Content
+        </Card>,
+      );
+      const card = container.firstChild as HTMLElement;
+      expect(card).toHaveAttribute("role", "button");
+      expect(card).toHaveAttribute("tabIndex", "0");
+    });
+
+    it("variant=default WITH onClick still gets role=button + tabindex=0", () => {
+      const { container } = render(
+        <Card onClick={() => {}} aria-label="Clickable">
+          Content
+        </Card>,
+      );
+      const card = container.firstChild as HTMLElement;
+      expect(card).toHaveAttribute("role", "button");
+      expect(card).toHaveAttribute("tabIndex", "0");
+    });
   });
 });

@@ -5,6 +5,7 @@ import {
   useRef,
   useEffect,
   useCallback,
+  useId,
   type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
@@ -14,7 +15,6 @@ import { getRadiusClass } from "../../tokens/radius";
 import { getShadowClass } from "../../tokens/shadows";
 import { getZIndexClass } from "../../tokens/z-index";
 import { getAnimationClass } from "../../tokens/animations";
-import { getColorClass } from "../../tokens/colors";
 import {
   getTypographySize,
   getTypographyWeight,
@@ -87,6 +87,7 @@ export default function Popover({
   const triggerRef = useRef<HTMLDivElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ top: 0, left: 0 });
+  const titleId = useId();
 
   const isControlled = controlledOpen !== undefined;
   const isOpen = isControlled ? controlledOpen : internalOpen;
@@ -233,11 +234,11 @@ export default function Popover({
       className={`
         absolute
         ${getZIndexClass("popover")}
-        bg-white
+        bg-surface-overlay
         ${getRadiusClass("lg")}
         ${getShadowClass("lg")}
         border
-        ${getColorClass("neutral", "DEFAULT", "border")}
+        border-line-default
         min-w-48
         max-w-96
         ${getAnimationClass("base")}
@@ -249,6 +250,7 @@ export default function Popover({
       }}
       role="dialog"
       aria-modal="false"
+      aria-labelledby={title ? titleId : undefined}
     >
       {(title || showCloseButton) && (
         <div
@@ -259,12 +261,13 @@ export default function Popover({
           ${getSpacingClass("base", "px")}
           ${getSpacingClass("md", "py")}
           border-b
-          ${getColorClass("neutral", "DEFAULT", "border")}
+          border-line-default
         `}
         >
           {title && (
             <h3
-              className={`${getTypographySize("bodySmall")} ${getTypographyWeight("h5")} ${getColorClass("neutral", "dark", "text")}`}
+              id={titleId}
+              className={`${getTypographySize("bodySmall")} ${getTypographyWeight("h5")} text-fg-primary`}
             >
               {title}
             </h3>
@@ -274,7 +277,7 @@ export default function Popover({
               variant="ghost"
               size="sm"
               onClick={handleClose}
-              className="h-auto p-1"
+              className={`h-auto ${getSpacingClass("xs", "p")}`}
               aria-label="Close popover"
             >
               <X className="h-4 w-4" />

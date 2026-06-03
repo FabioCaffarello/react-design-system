@@ -1,13 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import { useState } from "react";
 import Chip from "./Chip";
 
 const meta: Meta<typeof Chip> = {
   title: "Primitives/Chip",
   component: Chip,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -74,7 +73,7 @@ export const Default: Story = {
         <Chip>Another Tag</Chip>
         <Chip>Third Tag</Chip>
       </div>
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-secondary">
         Default chips for displaying tags or labels.
       </p>
     </div>
@@ -113,16 +112,16 @@ export const Removable: Story = {
           ))}
         </div>
         {removedChip && (
-          <p className="text-sm text-green-600">
+          <p className="text-sm text-fg-success">
             ✓ Removed: <strong>{removedChip}</strong>
           </p>
         )}
         {chips.length === 0 && (
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-fg-tertiary">
             All chips removed. Refresh to see them again.
           </p>
         )}
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Click the X button to remove chips. Removed: {3 - chips.length} of 3
         </p>
       </div>
@@ -189,11 +188,11 @@ export const Selected: Story = {
             </Chip>
           ))}
         </div>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Selected:{" "}
           <strong>{Array.from(selectedChips).join(", ") || "None"}</strong>
         </p>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-fg-tertiary">
           Click chips to toggle their selected state.
         </p>
       </div>
@@ -221,7 +220,7 @@ export const Disabled: Story = {
           Disabled Removable
         </Chip>
       </div>
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-secondary">
         Disabled chips cannot be interacted with. Try clicking them - nothing
         happens.
       </p>
@@ -256,14 +255,14 @@ export const Clickable: Story = {
           <Chip onClick={() => handleClick("Filter 3")}>Filter 3</Chip>
         </div>
         {clickedChip && (
-          <p className="text-sm text-green-600">
+          <p className="text-sm text-fg-success">
             ✓ Clicked: <strong>{clickedChip}</strong>
           </p>
         )}
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Total clicks: <strong>{clickCount}</strong>
         </p>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-fg-tertiary">
           Click chips to see them activate. Use Tab to focus, then Enter or
           Space to activate.
         </p>
@@ -309,11 +308,13 @@ export const ClickableAndRemovable: Story = {
             </Chip>
           ))}
         </div>
-        {lastAction && <p className="text-sm text-green-600">✓ {lastAction}</p>}
-        {chips.length === 0 && (
-          <p className="text-sm text-gray-500">All chips removed.</p>
+        {lastAction && (
+          <p className="text-sm text-fg-success">✓ {lastAction}</p>
         )}
-        <p className="text-sm text-gray-600">
+        {chips.length === 0 && (
+          <p className="text-sm text-fg-tertiary">All chips removed.</p>
+        )}
+        <p className="text-sm text-fg-secondary">
           Chips can be both clicked and removed. Click to activate, X button to
           remove.
         </p>
@@ -334,7 +335,9 @@ export const Accessibility: Story = {
   render: () => (
     <div className="space-y-4">
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">Chips with proper ARIA labels:</p>
+        <p className="text-sm text-fg-secondary">
+          Chips with proper ARIA labels:
+        </p>
         <div className="flex gap-2">
           <Chip onClick={() => {}} aria-label="Filter by category: Technology">
             Technology
@@ -348,20 +351,30 @@ export const Accessibility: Story = {
         </div>
       </div>
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">
-          Selected state with aria-selected:
+        <p className="text-sm text-fg-secondary">
+          Selected state announced via aria-pressed (toggle button pattern):
         </p>
         <div className="flex gap-2">
-          <Chip selected aria-label="Selected filter: Active">
+          {/* The pair below demonstrates `selected={true}` AND
+              `selected={false}` with `onClick` — the label-button gets
+              `aria-pressed={selected}` so AT announces the toggle state
+              honestly. Labels carry the FUNCTION ("Active filter",
+              "Inactive filter"); the state lives in aria-pressed, not
+              duplicated in the label. */}
+          <Chip selected onClick={() => {}} aria-label="Active filter">
             Active
           </Chip>
-          <Chip selected={false} aria-label="Unselected filter: Inactive">
+          <Chip
+            selected={false}
+            onClick={() => {}}
+            aria-label="Inactive filter"
+          >
             Inactive
           </Chip>
         </div>
       </div>
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Keyboard navigation: Use Tab to focus, Enter or Space to activate:
         </p>
         <div className="flex gap-2">
@@ -371,7 +384,7 @@ export const Accessibility: Story = {
         </div>
       </div>
       <div className="space-y-2">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Removable chips with descriptive aria-label:
         </p>
         <div className="flex gap-2">
@@ -406,7 +419,7 @@ export const KeyboardNavigation: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Try navigating with Tab key and activating chips with Enter or Space:
         </p>
         <div className="flex flex-col gap-2">
@@ -418,11 +431,11 @@ export const KeyboardNavigation: Story = {
           <Chip onClick={() => handleActivate("Fourth Chip")}>Fourth Chip</Chip>
         </div>
         {activatedChip && (
-          <p className="text-sm text-green-600">
+          <p className="text-sm text-fg-success">
             ✓ Activated: <strong>{activatedChip}</strong>
           </p>
         )}
-        <div className="text-xs text-gray-500 space-y-1">
+        <div className="text-xs text-fg-tertiary space-y-1">
           <p>
             <strong>Keyboard shortcuts:</strong>
           </p>
@@ -470,7 +483,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Interact with the chips below. Check the Actions panel to see events
           being fired.
         </p>
@@ -485,7 +498,9 @@ export const WithEvents: Story = {
             </Chip>
           ))}
         </div>
-        <p className="text-sm text-gray-500">Chips remaining: {chips.length}</p>
+        <p className="text-sm text-fg-tertiary">
+          Chips remaining: {chips.length}
+        </p>
       </div>
     );
   },

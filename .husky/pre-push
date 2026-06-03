@@ -5,3 +5,21 @@ npm run test
 # Run full lint check
 echo "Running lint check..."
 npm run lint
+
+# Validate dark-theme coverage (both blocks in dark.css must stay in
+# lockstep — see scripts/validate-dark-coverage.mjs header for context).
+echo "Validating dark-theme coverage..."
+node scripts/validate-dark-coverage.mjs
+
+# Validate component file-set discipline (every component dir under
+# src/ui/{primitives,components,layouts}/ ships .tsx, .test.tsx,
+# .stories.tsx, index.ts). Grandfathered exceptions are allowlisted
+# inside the script and shrink as Wave 2 fills the missing tests.
+echo "Validating component file-set..."
+node scripts/validate-file-set.mjs
+
+# Validate the three-layer import rule: primitives never import from
+# components or layouts; layouts import primitives only. Components
+# may import any primitive and each other.
+echo "Validating cross-layer imports..."
+node scripts/validate-cross-layer-imports.mjs

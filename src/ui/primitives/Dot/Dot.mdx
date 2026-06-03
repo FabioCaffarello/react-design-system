@@ -1,0 +1,42 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as DotStories from "./Dot.stories";
+
+<Meta of={DotStories} />
+
+# Dot
+
+Dot renders a single colored circle that signals a status by color and nothing else — online / offline / pending / warning / error / info. Reach for it when a row, name, or icon needs a one-glance state indicator that takes almost no space and never blocks the surrounding text.
+
+## When to use
+
+- Use Dot next to a name or label to show a binary or status — online / offline next to a user, healthy / failing next to a service, pending / done next to a task.
+- Use Dot inside a row's leading slot or absolutely-positioned on a corner of a parent (avatar overlay, icon button badge) when the size budget is tiny and the meaning is "what state is this in?".
+- Default to `variant="offline"` (the `bg-status-neutral` tone) for the "no specific status" case; Dot was designed with neutral as the legitimate fifth member of the status family.
+
+## When not to use
+
+- Use `Badge` when the status needs a text label — Badge carries words, Dot carries color alone.
+- Use a status `Toast` for a transition you want the user to notice; Dot is silent.
+- Avoid Dot as the only indicator of a critical status (an error that blocks a flow). Pair the dot with text or a Badge so the user does not have to interpret color alone.
+
+## Examples
+
+<Canvas of={DotStories.Default} />
+
+<Canvas of={DotStories.Variants} />
+
+Always pair Dot with adjacent text or an `aria-label`; color alone is invisible to many assistive contexts.
+
+<Canvas of={DotStories.WithLabels} />
+
+## Props
+
+<Controls of={DotStories.Default} />
+
+## Accessibility
+
+Dot renders a `<span>` with no implicit role or text content. Without help, it is invisible to screen readers and to users who cannot perceive the color difference (color-blind users, low-contrast environments, monochrome displays).
+
+Always set `aria-label` describing the meaning, not the color — `"User is online"`, not `"green dot"`. If Dot sits next to a visible label that already names the state ("Online" written next to a user row), the dot is decoration and can be marked `aria-hidden="true"` to avoid double-announcement.
+
+The variant colors come from the status family tokens (`bg-success`, `bg-status-neutral`, `bg-warning`, `bg-error`, `bg-info`). They are tuned for WCAG 2.1 AA contrast on the canonical canvas; on a colored surface, validate manually.

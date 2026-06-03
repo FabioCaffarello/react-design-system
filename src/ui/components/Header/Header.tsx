@@ -18,11 +18,12 @@ import { HeaderNavigation } from "./components/HeaderNavigation";
 import { HeaderActions } from "./components/HeaderActions";
 import { HeaderHamburger } from "./components/HeaderHamburger";
 import { HeaderMobileMenu } from "./components/HeaderMobileMenu";
+import { getShadowClass } from "../../tokens/shadows";
+import { getSpacingClass } from "../../tokens/spacing";
 import { getZIndexClass } from "../../tokens/z-index";
 import type { HeaderProps } from "./types";
 import { cn, cva } from "../../utils";
 import { Container } from "../../layouts";
-import { getColorClass } from "../../tokens/colors";
 
 /**
  * Header Variants using CVA
@@ -30,13 +31,13 @@ import { getColorClass } from "../../tokens/colors";
  */
 const headerVariants = cva(
   // Base classes
-  cn("w-full", "bg-white", "transition-shadow", "transition-colors"),
+  cn("w-full", "bg-surface-base", "transition-shadow", "transition-colors"),
   {
     variants: {
       variant: {
         default: "",
-        elevated: "shadow-sm",
-        bordered: cn("border-b", getColorClass("neutral", "light", "border")),
+        elevated: getShadowClass("sm"),
+        bordered: cn("border-b", "border-line-muted"),
       },
     },
     defaultVariants: {
@@ -74,7 +75,9 @@ export function Header({
   ...props
 }: HeaderProps) {
   const content = (
-    <div className="flex items-center justify-between gap-4">
+    <div
+      className={`flex items-center justify-between ${getSpacingClass("base", "gap")}`}
+    >
       {/* Children are rendered here - compound components handle their own layout */}
       {children}
     </div>
@@ -99,7 +102,7 @@ export function Header({
         className={cn(
           headerVariants({ variant }),
           sticky && `sticky top-0 ${getZIndexClass("sticky")}`,
-          sticky && "backdrop-blur-sm bg-white/95",
+          sticky && "backdrop-blur-sm bg-surface-base/95",
           className,
         )}
         {...props}

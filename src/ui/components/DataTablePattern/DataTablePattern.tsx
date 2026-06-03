@@ -5,6 +5,7 @@ import { Table } from "../../components";
 import { Pagination, SearchInput } from "../../components";
 import { Container } from "../../layouts/Container/Container";
 import { Stack } from "../../layouts/Stack/Stack";
+import { getSpacingClass } from "../../tokens/spacing";
 import type { TableColumn } from "../../components/Table/TableTypes";
 
 // Extended TableColumn type for DataTablePattern (supports accessor and header for backward compatibility)
@@ -160,7 +161,9 @@ export function DataTablePattern<
     <Container maxWidth="full" paddingX="base" paddingY="base">
       <Stack spacing="md">
         {/* Header with Search and Actions */}
-        <div className="flex items-center justify-between gap-4">
+        <div
+          className={`flex items-center justify-between ${getSpacingClass("base", "gap")}`}
+        >
           {enableSearch && (
             <div className="flex-1 max-w-md">
               <SearchInput
@@ -170,7 +173,11 @@ export function DataTablePattern<
               />
             </div>
           )}
-          {actions && <div className="flex gap-2">{actions}</div>}
+          {actions && (
+            <div className={`flex ${getSpacingClass("sm", "gap")}`}>
+              {actions}
+            </div>
+          )}
         </div>
 
         {/* Table */}
@@ -208,7 +215,7 @@ export function DataTablePattern<
 
         {/* Results count */}
         {enableSearch && (
-          <div className="text-sm text-gray-600 text-center">
+          <div className="text-sm text-fg-secondary text-center">
             Showing {paginatedData.length} of {filteredData.length} results
           </div>
         )}

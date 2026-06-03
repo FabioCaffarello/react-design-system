@@ -1,13 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import { useState } from "react";
 import Checkbox from "./Checkbox";
 
 const meta: Meta<typeof Checkbox> = {
   title: "Primitives/Checkbox",
   component: Checkbox,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -106,7 +105,7 @@ export const Default: Story = {
           checked={checked}
           onChange={(e) => setChecked(e.target.checked)}
         />
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Status: <strong>{checked ? "Checked" : "Unchecked"}</strong>
         </p>
       </div>
@@ -132,7 +131,7 @@ export const Checked: Story = {
           checked={checked}
           onChange={(e) => setChecked(e.target.checked)}
         />
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Status: <strong>{checked ? "Subscribed" : "Not subscribed"}</strong>
         </p>
       </div>
@@ -181,12 +180,12 @@ export const WithError: Story = {
         />
         <button
           onClick={handleSubmit}
-          className="px-4 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 text-sm bg-surface-brand-strong text-fg-inverse rounded hover:opacity-90"
         >
           Submit
         </button>
         {checked && !submitted && (
-          <p className="text-sm text-green-600">✓ Terms accepted</p>
+          <p className="text-sm text-fg-success">✓ Terms accepted</p>
         )}
       </div>
     );
@@ -210,7 +209,7 @@ export const Disabled: Story = {
         disabled
         checked={true}
       />
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-secondary">
         Disabled checkboxes cannot be interacted with. Try clicking them -
         nothing happens.
       </p>
@@ -237,11 +236,11 @@ export const WithoutLabel: Story = {
             onChange={(e) => setChecked(e.target.checked)}
             aria-label="Toggle option"
           />
-          <span className="text-sm text-gray-600">
+          <span className="text-sm text-fg-secondary">
             Checkbox without visible label (uses aria-label)
           </span>
         </div>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Status: <strong>{checked ? "Checked" : "Unchecked"}</strong>
         </p>
       </div>
@@ -308,7 +307,7 @@ export const Indeterminate: Story = {
             }
           />
         </div>
-        <div className="text-sm text-gray-600 space-y-1">
+        <div className="text-sm text-fg-secondary space-y-1">
           <p>
             <strong>Select All State:</strong>{" "}
             {allChecked
@@ -353,7 +352,7 @@ export const Controlled: Story = {
             setChangeCount((prev) => prev + 1);
           }}
         />
-        <div className="text-sm text-gray-600 space-y-1">
+        <div className="text-sm text-fg-secondary space-y-1">
           <p>
             <strong>Checked:</strong> {checked ? "Yes" : "No"}
           </p>
@@ -364,13 +363,13 @@ export const Controlled: Story = {
         <div className="flex gap-2">
           <button
             onClick={() => setChecked(true)}
-            className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            className="px-3 py-1 text-sm bg-surface-emphasis rounded hover:bg-surface-strong"
           >
             Check
           </button>
           <button
             onClick={() => setChecked(false)}
-            className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            className="px-3 py-1 text-sm bg-surface-emphasis rounded hover:bg-surface-strong"
           >
             Uncheck
           </button>
@@ -453,7 +452,7 @@ export const Uncontrolled: Story = {
     <div className="space-y-4">
       <Checkbox label="Uncontrolled checkbox" defaultChecked={false} />
       <Checkbox label="Uncontrolled checked" defaultChecked={true} />
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-secondary">
         Uses defaultChecked for initial state without state management.
       </p>
     </div>
@@ -470,7 +469,7 @@ export const Uncontrolled: Story = {
 export const KeyboardNavigation: Story = {
   render: () => (
     <div className="space-y-4">
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-secondary">
         Try navigating with Tab key and toggling with Space:
       </p>
       <div className="space-y-2">
@@ -480,7 +479,7 @@ export const KeyboardNavigation: Story = {
         <Checkbox label="Disabled checkbox" disabled />
         <Checkbox label="Fourth checkbox" />
       </div>
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-fg-tertiary">
         All checkboxes support keyboard navigation: Tab to focus, Space to
         toggle.
       </p>
@@ -547,7 +546,7 @@ export const IndeterminateState: Story = {
             }
           />
         </div>
-        <div className="text-sm text-gray-600 space-y-1">
+        <div className="text-sm text-fg-secondary space-y-1">
           <p>
             <strong>Select All State:</strong>{" "}
             {allChecked
@@ -563,7 +562,7 @@ export const IndeterminateState: Story = {
               .map(([key]) => key)
               .join(", ") || "None"}
           </p>
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-fg-tertiary mt-2">
             The "Select all" checkbox shows indeterminate state (⊟) when some
             items are selected.
           </p>
@@ -601,7 +600,7 @@ export const WithEvents: Story = {
 
     return (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Interact with the checkbox below. Check the Actions panel to see
           events being fired.
         </p>
@@ -612,7 +611,7 @@ export const WithEvents: Story = {
           onFocus={handleFocus}
           onBlur={handleBlur}
         />
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-fg-tertiary">
           Current state: {checked ? "Checked" : "Unchecked"}
         </p>
       </div>

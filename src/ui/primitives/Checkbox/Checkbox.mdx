@@ -1,0 +1,51 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as CheckboxStories from "./Checkbox.stories";
+
+<Meta of={CheckboxStories} />
+
+# Checkbox
+
+Checkbox renders a single boolean control with optional `label`, `helperText`, and an `indeterminate` visual for parent-of-children selection patterns (a "select all" that reflects mixed child state). Reach for it whenever the user picks zero or more items from an independent list — each box is its own decision.
+
+## When to use
+
+- Use Checkbox for any single binary choice — agree to terms, enable a feature, mark a row as selected.
+- Use a list of Checkboxes for "pick any subset" lists — filters, multi-select preferences, bulk-action selections.
+- Use `indeterminate={true}` on a parent that controls a collection when some — but not all — children are checked. The mark is purely visual; combine with state to drive the actual select-all / clear-all behavior.
+- Use `error` + `helperText` when validation requires the box to be checked (terms acceptance, mandatory disclosures).
+
+## When not to use
+
+- Use `Radio` (or a `RadioGroup`) for "pick exactly one of N" — Radio is mutually exclusive, Checkbox is independent.
+- Use `Switch` for an immediate state toggle that takes effect right away (notifications on / off, dark mode on / off). Checkbox is for selections that persist as part of a form submission.
+- Use a multi-select dropdown (`MultiSelect`) when the list of options is long enough that fitting them on the page is awkward.
+
+## Anatomy
+
+Checkbox renders in source order: the native `<input type="checkbox">` (the visual square), an optional `label` rendered to its right and bound via `htmlFor`, and an optional `helperText` row below carrying validation feedback with `role="alert"` when `error` is set.
+
+<Canvas of={CheckboxStories.Default} />
+
+## Examples
+
+<Canvas of={CheckboxStories.AllStates} />
+
+<Canvas of={CheckboxStories.WithError} />
+
+`indeterminate` is a visual state on the input — combine it with `checked` state on the parent to drive a "select all" toggle.
+
+<Canvas of={CheckboxStories.Indeterminate} />
+
+## Props
+
+<Controls of={CheckboxStories.Default} />
+
+## Accessibility
+
+The native `<input type="checkbox">` carries the role, the checked state, and the keyboard behavior (Space toggles when focused). The component wires the visible label via `htmlFor` so clicking the label transfers focus to and toggles the checkbox, and so screen readers announce the label as the field's accessible name.
+
+The `helperText` and `error` regions get IDs that the input references through `aria-describedby` so screen readers read the helper alongside the field on focus. When `error` is true, the helper region carries `role="alert"` so the validation feedback announces politely without stealing focus.
+
+`indeterminate` is set imperatively on the DOM element (it is not an HTML attribute that React reflects directly). The component handles the DOM write via `useEffect`; consumers only set the prop. Assistive tech announces "mixed" instead of "checked" or "unchecked" when the state is indeterminate.
+
+For groups of checkboxes that share a question (a list of features the user can enable), wrap the group in a `<fieldset>` with a `<legend>` describing the question so the group's purpose is announced before each individual checkbox's label.

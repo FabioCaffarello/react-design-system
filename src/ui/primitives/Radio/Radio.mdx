@@ -1,0 +1,49 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as RadioStories from "./Radio.stories";
+
+<Meta of={RadioStories} />
+
+# Radio
+
+Radio renders a single mutually-exclusive choice with optional `label` and `helperText`. Reach for it when the user must pick exactly one option from a small set — payment method, account type, theme preference. Group radios by sharing a `name` attribute so the browser enforces the single-selection invariant.
+
+## When to use
+
+- Use Radio inside a group (`name="payment_method"`) for "pick exactly one" decisions where the set is small enough to display all options at once — 2 to 5 options is the comfort zone.
+- Use Radio when seeing every option matters to the decision; a `Select` hides choices behind a trigger and is wrong when the comparison itself is the value.
+- Use `error` + `helperText` on the group (typically on the last radio or in a sibling region) when validation requires a selection — none-selected is the failure case.
+- Pair Radio with `Label` for clarity when the radio itself does not carry its own visible label.
+
+## When not to use
+
+- Use `Checkbox` for "pick any subset" — Checkbox lets choices be independent; Radio forces one.
+- Use `Select` when the set is large enough that listing all options inline would crowd the form (more than 5-7 options, or options the user does not need to compare side by side).
+- Use `Switch` for an immediate on / off toggle that takes effect right away — Radio belongs to form-submit flows, not to live settings.
+
+## Anatomy
+
+Radio renders in source order: the native `<input type="radio">` (the visual circle with its filled center when checked), an optional `label` rendered to its right and bound via `htmlFor`, and an optional `helperText` row below carrying validation feedback with `role="alert"` when `error` is set. Multiple Radios in the same group share a `name` attribute so the browser enforces the single-selection rule.
+
+<Canvas of={RadioStories.Default} />
+
+## Examples
+
+<Canvas of={RadioStories.RadioGroup} />
+
+<Canvas of={RadioStories.WithError} />
+
+<Canvas of={RadioStories.Disabled} />
+
+## Props
+
+<Controls of={RadioStories.Default} />
+
+## Accessibility
+
+The native `<input type="radio">` carries the role, the checked state, and the keyboard behavior — Tab moves into the group, arrow keys move between radios in the same group, Space selects the focused radio. The component wires the visible label via `htmlFor` so clicking the label transfers focus to and selects the radio.
+
+The `helperText` and `error` regions get IDs that the input references through `aria-describedby` so screen readers read the helper alongside the radio on focus. When `error` is true, the helper region carries `role="alert"` so the validation feedback announces politely.
+
+The group's accessible name is the most important wiring: wrap a logical group of radios in `<fieldset>` with a `<legend>` describing the question being answered ("Select payment method"). Without the fieldset, the question — the thing the radios collectively answer — is invisible to assistive tech, even though each radio's individual label is announced.
+
+When the radios share a `name`, only one can be focused via arrow-key navigation at a time (the currently-checked one, or the first one if none is checked). This is browser behavior — do not override it with manual focus management; the standard keyboard pattern is what users expect.

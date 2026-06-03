@@ -4,7 +4,8 @@
  * Storybook stories for the Navigation component.
  */
 
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, userEvent, within } from "storybook/test";
 import { Navigation } from "./Navigation";
 import type { NavItem } from "./types";
 import { Home, Settings, User, FileText, Bell } from "lucide-react";
@@ -12,7 +13,6 @@ import { Home, Settings, User, FileText, Bell } from "lucide-react";
 const meta: Meta<typeof Navigation> = {
   title: "Components/Navigation",
   component: Navigation,
-  tags: ["autodocs"],
   parameters: {
     layout: "centered",
     docs: {
@@ -122,15 +122,27 @@ export const Variants: Story = {
     <div className="space-y-8">
       <div>
         <h3 className="mb-2 text-sm font-medium">Default</h3>
-        <Navigation items={basicItems} variant="default" />
+        <Navigation
+          items={basicItems}
+          variant="default"
+          aria-label="Navigation — default variant"
+        />
       </div>
       <div>
         <h3 className="mb-2 text-sm font-medium">Pills</h3>
-        <Navigation items={basicItems} variant="pills" />
+        <Navigation
+          items={basicItems}
+          variant="pills"
+          aria-label="Navigation — pills variant"
+        />
       </div>
       <div>
         <h3 className="mb-2 text-sm font-medium">Tabs</h3>
-        <Navigation items={basicItems} variant="tabs" />
+        <Navigation
+          items={basicItems}
+          variant="tabs"
+          aria-label="Navigation — tabs variant"
+        />
       </div>
     </div>
   ),
@@ -243,7 +255,7 @@ export const WithBadges: Story = {
         label: "Notifications",
         icon: <Bell className="h-4 w-4" />,
         badge: (
-          <span className="ml-2 rounded-full bg-red-500 text-white text-xs px-2 py-0.5">
+          <span className="ml-2 rounded-full bg-status-neutral text-fg-inverse text-xs px-2 py-0.5">
             3
           </span>
         ),
@@ -253,7 +265,7 @@ export const WithBadges: Story = {
         label: "Messages",
         icon: <FileText className="h-4 w-4" />,
         badge: (
-          <span className="ml-2 rounded-full bg-blue-500 text-white text-xs px-2 py-0.5">
+          <span className="ml-2 rounded-full bg-status-neutral text-fg-inverse text-xs px-2 py-0.5">
             12
           </span>
         ),
@@ -337,5 +349,45 @@ export const BareMode: Story = {
           "Use `bare` prop when Navigation is used inside Header.Navigation to avoid nested nav elements.",
       },
     },
+  },
+};
+
+/**
+ * Interactive
+ *
+ * Verifies the items array reaches the rendered DOM as anchor elements
+ * with the expected hrefs, that the active item carries the
+ * aria-current="page" attribute, and that keyboard navigation reaches
+ * each link via Tab.
+ */
+export const Interactive: Story = {
+  args: {
+    items: basicItems,
+    orientation: "horizontal",
+    variant: "default",
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const home = canvas.getByRole("link", { name: /home/i });
+    const about = canvas.getByRole("link", { name: /about/i });
+    const contact = canvas.getByRole("link", { name: /contact/i });
+
+    expect(home).toHaveAttribute("href", "/home");
+    expect(about).toHaveAttribute("href", "/about");
+    expect(contact).toHaveAttribute("href", "/contact");
+
+    // The basicItems fixture marks Home as active — Navigation must
+    // forward that into aria-current on the corresponding NavLink so
+    // assistive tech announces the current page.
+    expect(home).toHaveAttribute("aria-current", "page");
+    expect(about).not.toHaveAttribute("aria-current");
+
+    // Sanity: tab order reaches each link (visual hint that the
+    // markup is in document order, not just visually adjacent).
+    home.focus();
+    expect(home).toHaveFocus();
+    await userEvent.tab();
+    expect(about).toHaveFocus();
   },
 };

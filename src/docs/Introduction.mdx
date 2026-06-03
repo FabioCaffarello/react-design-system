@@ -1,0 +1,26 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Design System/Introduction" />
+
+# react-design-system
+
+A mono-brand React design system, built and maintained by a single developer for personal projects. The vocabulary is opinionated: semantic role tokens (`text-fg-primary`, `bg-surface-base`, `border-line-default`) instead of tone names; three-layer architecture (primitives → components → layouts) instead of atomic/molecular; native Tailwind v4 classes generated from `@theme` instead of runtime CSS-in-JS. Role beats shade — the same hex can map to different tokens depending on intent (state vs hierarchy vs feedback). See `.claude/rules/colors.md` for the full discipline and the 9 principles that govern role choice.
+
+For installation, consumer setup, and theming options (light/dark auto-apply, overrides), see the [README](https://github.com/FabioCaffarello/react-design-system#installation).
+
+## Stack
+
+React 19 · TypeScript 5 (strict) · Vite · TailwindCSS v4 · Storybook 10 · Vitest · Testing Library
+
+## Inventory
+
+- **23 Primitives** — indivisible building blocks. `Button`, `Input`, `Text`, `Badge`, `Avatar`, `Tooltip` are the load-bearing ones; the rest (`Checkbox`, `Radio`, `Switch`, `Select`, `Textarea`, `Slider`, `Progress`, `Spinner`, `Skeleton`, `Separator`, `Chip`, `Collapsible`, `Dot`, `ErrorMessage`, `Info`, `Label`, `NavLink`) fill the form/state/feedback surface.
+- **37 Components** — composed UI. `Modal`, `Drawer`, `Dialog`, `Form`, `Card`, `Table`, `DataGrid` cover the heavy interaction surfaces; the rest spans collection (`Accordion`, `Tabs`, `Pagination`, `Timeline`, `Stepper`), input (`Autocomplete`, `MultiSelect`, `DatePicker`, `TimePicker`, `ColorPicker`, `FileUpload`, `SearchInput`, `Rating`), navigation (`Breadcrumb`, `Menu`, `Dropdown`, `Popover`, `CommandPalette`, `Navigation`, `Header`, `PageHeader`, `SideNavbar`), feedback (`Toast`, `EmptyState`), and composed patterns (`ButtonGroup`, `DashboardLayout`, `LoginBox`, `DataTablePattern`, `FormWizardPattern`, `SearchAndFilterPattern`).
+- **2 Layouts** — structure only. `Container`, `Stack`.
+- **Design System resources** — `Tokens` (colors, spacing, typography, radius, shadow, z-index, motion), `Component Status` (inventory + coverage), the `Component Composition` guide, and `AppProvider` (root provider composing Theme/Config/Toast/Dialog).
+
+## Documentation philosophy
+
+Polaris-Stripe hybrid: principled but concise. Each component doc covers Intro, When to use, When not to use, Anatomy (where applicable), Examples, Props, and Accessibility — typically 270–540 words. Storybook Controls render live props alongside the prose; play functions double as interaction tests where they pay off. The doc skeleton lives at `.claude/skills/component-doc/template.mdx`.
+
+Start with `Tokens` (color, spacing, typography) and walk into primitives from there.

@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as AutocompleteStories from "./Autocomplete.stories";
+
+<Meta of={AutocompleteStories} />
+
+# Autocomplete
+
+Autocomplete pairs an input field with a dropdown of suggestions filtered as the user types. Reach for it when the user picks one value from a large or arbitrary set and typing is the natural affordance — countries, tags, search-as-you-type pickers, mention selectors, anything where a flat `Select` would be unwieldy.
+
+## When to use
+
+- Use Autocomplete for "pick one from many" surfaces where the option set is large enough that a `Select` dropdown would crowd the page (more than ~30 options, or options the user does not need to compare).
+- Use Autocomplete for search-as-you-type patterns where suggestions come from a remote endpoint — pair with `loading` to show the spinner while the request is in flight, and `emptyMessage` to label the no-results state.
+- Use `debounceMs` to wait for typing to settle before filtering or requesting — default 300 ms is the comfort zone; below 200 ms fires too often, above 500 ms feels laggy.
+- Pass `filterOptions` for custom matching (case-insensitive substring, fuzzy, scored ranking) when the default substring match does not fit.
+
+## When not to use
+
+- Use `Select` for "pick one from a small known set" (under ~30 options) where the user benefits from scanning all options inline.
+- Use `MultiSelect` for "pick any subset" — Autocomplete is single-value.
+- Use `CommandPalette` for keyboard-driven action discovery across the whole app — Autocomplete is for picking a value, CommandPalette is for executing a command.
+- Use `SearchInput` for plain query strings that drive filtering of an external list, not for picking one suggestion from a dropdown.
+
+## Anatomy
+
+Autocomplete renders an `input field` (an `Input` primitive with a chevron glyph) that the user types into; below the input, a portaled `options list` (visible when the input is focused and has matching suggestions) shows each match as an `option row` highlighted as the user moves through them with arrow keys. The list collapses when the user picks an option, blurs the input, or presses ESC.
+
+<Canvas of={AutocompleteStories.Default} />
+
+## Examples
+
+<Canvas of={AutocompleteStories.WithIcons} />
+
+`loading` shows a spinner inside the input while the suggestions request is in flight; the dropdown stays open so the user sees both the in-flight indicator and any cached options.
+
+<Canvas of={AutocompleteStories.Loading} />
+
+<Canvas of={AutocompleteStories.CustomFilter} />
+
+## Props
+
+<Controls of={AutocompleteStories.Default} />
+
+## Accessibility
+
+Autocomplete implements the WAI-ARIA Combobox pattern. The input carries `role="combobox"` with `aria-expanded` reflecting whether the list is visible, `aria-controls` pointing at the list's `id`, and `aria-activedescendant` pointing at the currently-highlighted option as the user moves through them with arrow keys. The list carries `role="listbox"` and each option is `role="option"` with `aria-selected` on the highlighted one.
+
+Keyboard navigation: typing filters the list; Down / Up arrows move the highlight (the input retains focus, the highlight moves via `aria-activedescendant` — no focus rings on options); Enter selects the highlighted option and closes the list; ESC closes without selecting; Tab moves out of the field and dismisses the list.
+
+When `loading` is true, the input region carries `aria-busy="true"` and the spinner replaces the chevron glyph; assistive tech announces "busy" so the user knows the suggestions are being fetched. The `emptyMessage` is announced when the list resolves to zero matches; do not leave the list silently empty.
+
+For accessible labeling, wire a visible `Label` to the input (binding via `htmlFor` and the input's `id`) so screen readers announce the field's purpose on focus. Without a label, the role announcement is "combobox" with no further context.

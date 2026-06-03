@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { expect, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, within, waitFor } from "storybook/test";
 import { DataTablePattern, type DataTableColumn } from "./DataTablePattern";
 import { Button } from "../../primitives";
 
@@ -14,7 +14,6 @@ interface User {
 const meta: Meta<typeof DataTablePattern> = {
   title: "Components/DataTablePattern",
   component: DataTablePattern,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
@@ -110,8 +109,8 @@ const columns: DataTableColumn<User>[] = [
       <span
         className={`px-2 py-1 rounded text-xs ${
           value === "active"
-            ? "bg-green-100 text-green-800"
-            : "bg-gray-100 text-gray-800"
+            ? "bg-success-bg text-fg-success"
+            : "bg-surface-muted text-fg-primary"
         }`}
       >
         {value}
@@ -196,7 +195,7 @@ export const WithEvents: Story = {
   decorators: [
     (Story) => (
       <div className="space-y-4">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-fg-secondary">
           Search or change pages. Check the Actions panel to see events being
           fired.
         </p>

@@ -9,7 +9,6 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { Search, Command } from "lucide-react";
-import { getColorClass } from "../../tokens/colors";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getRadiusClass } from "../../tokens/radius";
 import { getShadowClass } from "../../tokens/shadows";
@@ -195,8 +194,7 @@ export default function CommandPalette({
         fixed
         inset-0
         ${getZIndexClass("modal-backdrop")}
-        bg-black
-        bg-opacity-50
+        bg-scrim
         flex
         items-start
         justify-center
@@ -210,7 +208,7 @@ export default function CommandPalette({
           w-full
           max-w-2xl
           ${getSpacingClass("base", "mx")}
-          bg-white
+          bg-surface-overlay
           ${getRadiusClass("lg")}
           ${getShadowClass("xl")}
           ${getZIndexClass("modal")}
@@ -224,15 +222,13 @@ export default function CommandPalette({
           className={`
           flex
           items-center
-          gap-3
+          ${getSpacingClass("md", "gap")}
           ${getSpacingClass("base", "p")}
           border-b
-          border-gray-200
+          border-line-default
         `}
         >
-          <Search
-            className={`h-5 w-5 ${getColorClass("neutral", "DEFAULT", "text")}`}
-          />
+          <Search className="h-5 w-5 text-fg-secondary" />
           <Input
             ref={inputRef}
             value={searchQuery}
@@ -246,13 +242,13 @@ export default function CommandPalette({
             className={`
             flex
             items-center
-            gap-1
+            ${getSpacingClass("xs", "gap")}
             ${getSpacingClass("sm", "px")}
             ${getSpacingClass("xs", "py")}
             ${getRadiusClass("sm")}
-            bg-gray-100
+            bg-surface-muted
             text-xs
-            text-gray-500
+            text-fg-tertiary
           `}
           >
             <Command className="h-3 w-3" />
@@ -275,7 +271,7 @@ export default function CommandPalette({
               ${getSpacingClass("lg", "p")}
               text-center
               text-sm
-              ${getColorClass("neutral", "DEFAULT", "text")}
+              text-fg-secondary
             `}
             >
               {emptyMessage}
@@ -290,7 +286,7 @@ export default function CommandPalette({
                     ${getSpacingClass("xs", "py")}
                     text-xs
                     font-semibold
-                    ${getColorClass("neutral", "DEFAULT", "text")}
+                    text-fg-tertiary
                     uppercase
                     tracking-wider
                   `}
@@ -312,12 +308,12 @@ export default function CommandPalette({
                         w-full
                         flex
                         items-center
-                        gap-3
+                        ${getSpacingClass("md", "gap")}
                         ${getSpacingClass("base", "px")}
                         ${getSpacingClass("md", "py")}
                         text-left
                         ${getAnimationClass("base")}
-                        ${isSelected ? "bg-indigo-400" : "hover:bg-gray-50"}
+                        ${isSelected ? "bg-surface-brand-muted" : "hover:bg-surface-hover"}
                       `}
                     >
                       {item.icon && (
@@ -325,8 +321,8 @@ export default function CommandPalette({
                           className={`
                           ${
                             isSelected
-                              ? "text-fg-brand"
-                              : getColorClass("neutral", "DEFAULT", "text")
+                              ? "text-fg-brand-emphasis"
+                              : "text-fg-secondary"
                           }
                         `}
                         >
@@ -338,14 +334,16 @@ export default function CommandPalette({
                           className={`
                           text-sm
                           font-medium
-                          ${isSelected ? "text-fg-brand" : "text-gray-900"}
+                          ${isSelected ? "text-fg-brand-emphasis" : "text-fg-primary"}
                         `}
                         >
                           {item.label}
                         </div>
                         {item.description && (
+                          // fg-secondary on selected: brand-muted bg drops fg-tertiary below AA;
+                          // caption role preserved, intensity raised for contrast.
                           <div
-                            className={`text-xs text-gray-500 ${getSpacingClass("0.5", "mt")}`}
+                            className={`text-xs ${isSelected ? "text-fg-secondary" : "text-fg-tertiary"} ${getSpacingClass("0.5", "mt")}`}
                           >
                             {item.description}
                           </div>

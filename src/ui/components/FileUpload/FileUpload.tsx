@@ -4,8 +4,6 @@ import { useState, useRef, type DragEvent, type ChangeEvent } from "react";
 import { Upload, X, File, CheckCircle2, AlertCircle } from "lucide-react";
 import { cn } from "../../utils";
 import {
-  getColorClass,
-  getHoverColorClass,
   getSpacingClass,
   getRadiusClass,
   getAnimationClass,
@@ -198,7 +196,7 @@ export default function FileUpload({
                 "block",
                 getTypographySizeFromFontSize("sm"),
                 getTypographyWeightFromFontWeight("medium"),
-                getColorClass("neutral", "dark", "text"),
+                "text-fg-primary",
                 getSpacingClass("xs", "mb"),
               )}
             >
@@ -209,7 +207,7 @@ export default function FileUpload({
             <p
               className={cn(
                 getTypographySizeFromFontSize("sm"),
-                getColorClass("neutral", "DEFAULT", "text"),
+                "text-fg-secondary",
               )}
             >
               {description}
@@ -227,9 +225,7 @@ export default function FileUpload({
           "relative",
           "border-2",
           "border-dashed",
-          isDragging
-            ? "border-line-brand"
-            : getColorClass("neutral", "DEFAULT", "border"),
+          isDragging ? "border-line-brand" : "border-line-default",
           getRadiusClass("lg"),
           getSpacingClass("lg", "p"),
           "text-center",
@@ -239,7 +235,7 @@ export default function FileUpload({
           disabled
             ? "opacity-50 cursor-not-allowed"
             : cn(
-                getHoverColorClass("neutral", "dark", "border"),
+                "hover:border-line-strong",
                 "focus:outline-none",
                 "focus:ring-2",
                 "focus:ring-offset-2",
@@ -272,9 +268,7 @@ export default function FileUpload({
             className={cn(
               "h-8",
               "w-8",
-              isDragging
-                ? "text-fg-brand"
-                : getColorClass("neutral", "DEFAULT", "text"),
+              isDragging ? "text-fg-brand" : "text-fg-secondary",
             )}
           />
           <div>
@@ -282,7 +276,7 @@ export default function FileUpload({
               className={cn(
                 getTypographySizeFromFontSize("sm"),
                 getTypographyWeightFromFontWeight("medium"),
-                getColorClass("neutral", "dark", "text"),
+                "text-fg-primary",
               )}
             >
               {isDragging
@@ -293,7 +287,7 @@ export default function FileUpload({
               <p
                 className={cn(
                   getTypographySizeFromFontSize("xs"),
-                  getColorClass("neutral", "DEFAULT", "text"),
+                  "text-fg-secondary",
                   getSpacingClass("xs", "mt"),
                 )}
               >
@@ -304,7 +298,7 @@ export default function FileUpload({
               <p
                 className={cn(
                   getTypographySizeFromFontSize("xs"),
-                  getColorClass("neutral", "DEFAULT", "text"),
+                  "text-fg-secondary",
                 )}
               >
                 Max size: {formatFileSize(maxSize)}
@@ -325,11 +319,9 @@ export default function FileUpload({
                 getSpacingClass("md", "gap"),
                 getSpacingClass("base", "p"),
                 "border",
-                getColorClass("neutral", "DEFAULT", "border"),
+                "border-line-default",
                 getRadiusClass("md"),
-                fileUpload.error
-                  ? "bg-error-bg"
-                  : getColorClass("neutral", "light", "bg"),
+                fileUpload.error ? "bg-error-bg" : "bg-surface-muted",
               )}
             >
               {showPreview && fileUpload.preview ? (
@@ -344,13 +336,7 @@ export default function FileUpload({
                   )}
                 />
               ) : (
-                <File
-                  className={cn(
-                    "h-8",
-                    "w-8",
-                    getColorClass("neutral", "DEFAULT", "text"),
-                  )}
-                />
+                <File className={cn("h-8", "w-8", "text-fg-secondary")} />
               )}
 
               <div className={cn("flex-1", "min-w-0")}>
@@ -358,7 +344,7 @@ export default function FileUpload({
                   className={cn(
                     getTypographySizeFromFontSize("sm"),
                     getTypographyWeightFromFontWeight("medium"),
-                    getColorClass("neutral", "dark", "text"),
+                    "text-fg-primary",
                     "truncate",
                   )}
                 >
@@ -367,7 +353,7 @@ export default function FileUpload({
                 <p
                   className={cn(
                     getTypographySizeFromFontSize("xs"),
-                    getColorClass("neutral", "DEFAULT", "text"),
+                    "text-fg-secondary",
                   )}
                 >
                   {formatFileSize(fileUpload.file.size)}
@@ -412,7 +398,7 @@ export default function FileUpload({
                   e.stopPropagation();
                   handleRemove(fileUpload.id);
                 }}
-                className="h-auto p-1"
+                className={`h-auto ${getSpacingClass("xs", "p")}`}
                 aria-label={`Remove ${fileUpload.file.name}`}
               >
                 <X className="h-4 w-4" />

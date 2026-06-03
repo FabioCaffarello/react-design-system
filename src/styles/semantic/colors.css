@@ -4,8 +4,8 @@
  * Meaningful color tokens that reference primitive values.
  * Declared in @theme so Tailwind v4 generates native utility classes
  * (bg-surface-base, text-fg-primary, border-line-strong, etc.).
- * Theme overrides (light/dark/variants) remain in selectors —
- * see themes/{light,dark}.css and themes/variants/*.css.
+ * Theme overrides (light/dark) remain in selectors —
+ * see themes/{light,dark}.css.
  *
  * @brand AIppin
  * @version 1.0.0
@@ -52,7 +52,9 @@
 
   /* Brand text */
   --color-fg-brand: var(--color-brand-primary);
+  --color-fg-brand-emphasis: var(--color-indigo-600);
   --color-fg-brand-secondary: var(--color-brand-secondary);
+  --color-fg-brand-secondary-emphasis: var(--color-pink-600);
 
   /* Feedback text */
   --color-fg-success: var(--color-emerald-700);
@@ -77,10 +79,11 @@
   --color-surface-brand-subtle: var(--color-indigo-50);
   --color-surface-brand-muted: var(--color-indigo-100);
   --color-surface-brand: var(--color-indigo-500);
+  --color-surface-brand-strong: var(--color-indigo-600);
   --color-surface-brand-emphasis: var(--color-indigo-600);
 
   --color-surface-secondary-subtle: var(--color-pink-50);
-  --color-surface-secondary: var(--color-pink-500);
+  --color-surface-secondary: var(--color-pink-700);
 
   --color-surface-accent-subtle: var(--color-cyan-50);
   --color-surface-accent: var(--color-cyan-500);
@@ -131,10 +134,6 @@
   --color-surface-disabled-subtle: var(--color-slate-50);
   --color-surface-focus: var(--color-indigo-100);
 
-  /* Brand state colors */
-  --color-surface-hover-brand: var(--color-indigo-600);
-  --color-surface-active-brand: var(--color-indigo-700);
-
   /* ============================================
    * FEEDBACK COLORS
    * For success, warning, error, info states
@@ -143,7 +142,7 @@
   /* Success */
   --color-success: var(--color-emerald-500);
   --color-success-light: var(--color-emerald-400);
-  --color-success-dark: var(--color-emerald-600);
+  --color-success-dark: var(--color-emerald-700);
   --color-success-bg: var(--color-emerald-50);
   --color-success-bg-emphasis: var(--color-emerald-100);
   --color-success-border: var(--color-emerald-200);
@@ -152,16 +151,16 @@
   /* Warning */
   --color-warning: var(--color-amber-500);
   --color-warning-light: var(--color-amber-400);
-  --color-warning-dark: var(--color-amber-600);
+  --color-warning-dark: var(--color-amber-700);
   --color-warning-bg: var(--color-amber-50);
   --color-warning-bg-emphasis: var(--color-amber-100);
   --color-warning-border: var(--color-amber-200);
   --color-warning-border-emphasis: var(--color-amber-500);
 
   /* Error */
-  --color-error: var(--color-rose-500);
+  --color-error: var(--color-rose-700);
   --color-error-light: var(--color-rose-400);
-  --color-error-dark: var(--color-rose-600);
+  --color-error-dark: var(--color-rose-700);
   --color-error-bg: var(--color-rose-50);
   --color-error-bg-emphasis: var(--color-rose-100);
   --color-error-border: var(--color-rose-200);
@@ -170,11 +169,29 @@
   /* Info */
   --color-info: var(--color-sky-500);
   --color-info-light: var(--color-sky-400);
-  --color-info-dark: var(--color-sky-600);
+  --color-info-dark: var(--color-sky-700);
   --color-info-bg: var(--color-sky-50);
   --color-info-bg-emphasis: var(--color-sky-100);
   --color-info-border: var(--color-sky-200);
   --color-info-border-emphasis: var(--color-sky-500);
+
+  /* Status neutral — completes the status family (success/warning/error/info/neutral)
+   * for components like Dot, status Badge, online presence indicators. */
+  --color-status-neutral: var(--color-slate-500);
+
+  /* ============================================
+   * SCRIM & TRANSLUCENT STATE LAYERS
+   * Theme-agnostic — these must stay dark in all modes by design.
+   * Scrim is a backdrop veil that focuses attention on an overlay.
+   * Tint is a translucent state layer for hover/interaction feedback
+   * on elements whose surface color is not fixed.
+   * ============================================ */
+
+  /* Scrim color (theme-agnostic — backdrop should be dark in all modes by design) */
+  --color-scrim: rgb(0 0 0 / 0.5);
+
+  /* Tint-hover color (theme-agnostic — translucent layer works over any surface) */
+  --color-tint-hover: rgb(0 0 0 / 0.1);
 
   /* ============================================
    * ICON COLORS
@@ -218,4 +235,37 @@
   --color-divider: var(--color-slate-200);
   --color-divider-subtle: var(--color-slate-100);
   --color-divider-emphasis: var(--color-slate-300);
+}
+
+/* ============================================
+ * CANVAS-TOKEN CONSUMPTION
+ *
+ * The body element materialises the design-system canvas color so it
+ * exists in the rendered DOM (axe-core walks the background-color
+ * ancestor chain to compute contrast and DOES NOT read color-scheme).
+ *
+ * Without this rule, --color-surface-canvas was defined but nothing
+ * consumed it: the browser painted an OS/UA dark default when
+ * color-scheme:dark was set, which happened to LOOK approximately
+ * correct, but axe walked the cascade, found rgba(0,0,0,0) everywhere,
+ * defaulted to assuming white-canvas, and flagged every text-fg-* over
+ * an "unbounded" area as ratio ~1.05 — even though the visible
+ * contrast was 6.9–17.0. 67% of the dark color-contrast baseline
+ * (783 of 1159 nodes in the parallel re-sweep) was this single
+ * false-positive class. PR ${??} verified the no-shift property in
+ * light, the spec-alignment shift in dark (UA accidental gray →
+ * DS-specified slate-950), and the surgical positional correlation of
+ * the drop (canvas-fallback stories evaporated; raw-color / Bucket-F /
+ * other-cause stories were untouched).
+ *
+ * `color: var(--color-fg-primary)` makes text without an explicit color
+ * inherit the DS foreground rather than the UA default. Same axe issue
+ * in the foreground direction.
+ * ============================================ */
+
+@layer base {
+  body {
+    background-color: var(--color-surface-canvas);
+    color: var(--color-fg-primary);
+  }
 }

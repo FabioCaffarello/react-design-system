@@ -2,7 +2,7 @@
 
 import { memo, forwardRef, useMemo } from "react";
 import type { HTMLAttributes } from "react";
-import { getColorClass } from "../../tokens/colors";
+import { getRadiusClass } from "../../tokens/radius";
 import { cn, cva } from "../../utils";
 
 export type DotVariant =
@@ -37,7 +37,7 @@ export interface DotProps extends HTMLAttributes<HTMLSpanElement> {
 // Dot variants using CVA
 const dotVariants = cva(
   // Base classes
-  cn("inline-block", "rounded-full"),
+  cn("inline-block", getRadiusClass("full")),
   {
     variants: {
       variant: {
@@ -57,7 +57,7 @@ const dotVariants = cva(
     compoundVariants: [
       // Map semantic variants to color tokens
       { variant: "online", class: "bg-success" },
-      { variant: "offline", class: getColorClass("neutral", "DEFAULT", "bg") },
+      { variant: "offline", class: "bg-status-neutral" },
       { variant: "pending", class: "bg-warning" },
       { variant: "warning", class: "bg-warning" },
       { variant: "error", class: "bg-error" },

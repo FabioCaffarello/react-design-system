@@ -1,0 +1,47 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as EmptyStateStories from "./EmptyState.stories";
+
+<Meta of={EmptyStateStories} />
+
+# EmptyState
+
+EmptyState renders a centered illustration + title + message + optional action, used to fill a region that has no content to show — a table with no rows, a search with no results, a feature the user has not configured yet. Reach for it whenever an empty surface deserves a positive, action-oriented message instead of a blank rectangle.
+
+## When to use
+
+- Use EmptyState in any list, table, or grid that resolves to zero results — search returns nothing, filters exclude everything, the user hasn't created anything yet.
+- Use it for "feature not configured yet" surfaces — a settings page before the user fills it, a dashboard before a data source is connected.
+- Use `actionLabel` + `onAction` for the primary affordance that resolves the empty state — "Create your first epic", "Connect a data source", "Clear filters".
+- Use `illustration` for a contextual visual when the surface deserves one — onboarding screens, big surfaces. Skip it on dense table empty states.
+
+## When not to use
+
+- Use a loading skeleton (`Skeleton`) when the content might arrive — EmptyState is for confirmed empty, not "loading".
+- Use `ErrorMessage` (page-level error notice) when the surface is empty because of a failure — EmptyState reads as success-without-content, not failure.
+- Avoid EmptyState in regions where a blank surface is honest — toolbars, side panels that may legitimately be empty without commentary.
+
+## Anatomy
+
+EmptyState renders in source order, centered vertically and horizontally: an optional `illustration` slot (a `ReactNode` — image, icon stack, or rendered component), a `title` (the headline string, prominent and short — "No epics yet"), a `message` (the explanatory string under the title — one or two sentences), and an optional `action` (a `Button` rendered from `actionLabel` + `onAction`, the primary affordance that resolves the empty state).
+
+<Canvas of={EmptyStateStories.Default} />
+
+## Examples
+
+<Canvas of={EmptyStateStories.WithAction} />
+
+<Canvas of={EmptyStateStories.WithIllustration} />
+
+## Props
+
+<Controls of={EmptyStateStories.Default} />
+
+## Accessibility
+
+EmptyState renders a `<div>` with no implicit role — by default it is a layout region, not a landmark. The `title` is rendered as a heading element (typically `<h2>` or matching the surrounding heading hierarchy) so screen readers and outline tools recognize it as a section heading. Verify the heading level matches the surrounding context — wrong heading levels break the document outline even when the visual hierarchy reads correctly.
+
+The `illustration` is decorative by default — when it is an icon or generic vector, set `aria-hidden="true"` on its container so it does not get announced. When the illustration carries meaning the title does not (e.g. a person-shaped icon indicating "no people"), give the illustration a meaningful `aria-label` or describe it through visible text alongside.
+
+The action button inherits all `Button` semantics — focus on Tab, Enter / Space to activate, `disabled` announced. The button's label should name the resolution explicitly ("Create your first epic"), not generic ("OK", "Get started") so the user knows what activating does.
+
+When EmptyState replaces a previously-populated region (a list that just emptied), the change is not announced automatically — wire `aria-live="polite"` on the container if the user needs to hear the transition (a search that just filtered to zero, for example).

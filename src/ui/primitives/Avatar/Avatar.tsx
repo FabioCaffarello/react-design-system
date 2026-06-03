@@ -6,7 +6,7 @@ import {
   type HTMLAttributes,
   type ReactNode,
 } from "react";
-import { getColorClass } from "../../tokens";
+import { getRadiusClass } from "../../tokens/radius";
 import { cn } from "../../utils";
 
 export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
@@ -66,9 +66,9 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(function Avatar(
   };
 
   const variantClasses = {
-    circle: "rounded-full",
-    square: "rounded-none",
-    rounded: "rounded-md",
+    circle: getRadiusClass("full"),
+    square: getRadiusClass("none"),
+    rounded: getRadiusClass("md"),
   };
 
   const showFallback = !src || imageError;
@@ -92,8 +92,8 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(function Avatar(
         "overflow-hidden",
         sizeClasses[size],
         variantClasses[variant],
-        getColorClass("neutral", "light", "bg"),
-        getColorClass("neutral", "dark", "text"),
+        "bg-surface-muted",
+        "text-fg-primary",
         className,
       )}
       role="img"
@@ -108,11 +108,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(function Avatar(
             "w-full",
             "h-full",
             "object-cover",
-            variant === "circle"
-              ? "rounded-full"
-              : variant === "square"
-                ? "rounded-none"
-                : "rounded-md",
+            variantClasses[variant],
             !imageLoaded ? "opacity-0" : "opacity-100",
             "transition-opacity",
             "duration-200",
@@ -133,11 +129,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(function Avatar(
             "justify-center",
             "w-full",
             "h-full",
-            variant === "circle"
-              ? "rounded-full"
-              : variant === "square"
-                ? "rounded-none"
-                : "rounded-md",
+            variantClasses[variant],
           )}
           aria-hidden="true"
         >

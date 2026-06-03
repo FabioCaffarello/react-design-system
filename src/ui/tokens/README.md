@@ -8,26 +8,82 @@ O sistema de tokens utiliza o **Factory Pattern** para criar tokens de forma typ
 
 ## Estrutura de Tokens
 
-### 1. Colors (`colors.ts`)
+### 1. Colors (`colors/` + `src/styles/semantic/`)
 
-Sistema de cores semânticas com suporte a temas claro e escuro.
+Sistema de cores semânticas pós-Phase 9. Tokens são definidos via
+`@theme` em `src/styles/semantic/colors.css`, e o Tailwind v4 gera
+classes nativas automaticamente. Cor é consumida **direto via classes
+Tailwind**, não via getter JS.
 
-**Roles**: `primary`, `secondary`, `success`, `warning`, `error`, `info`, `neutral`
+**Vocabulário canônico** (use estas classes em JSX):
 
-**Shades**: `light`, `DEFAULT`, `dark`, `contrast`
+- **`bg-surface-*`** — superfícies de fundo, com hierarquia de elevação:
+  `surface-canvas` (chão da página) → `surface-base` (formulário/
+  conteúdo contido) → `surface-overlay` (modal/popover) →
+  `surface-sunken` (afundado). Variantes: `surface-muted`,
+  `surface-subtle`, `surface-emphasis`, `surface-strong`,
+  `surface-active`, `surface-hover`, `surface-selected`,
+  `surface-brand`, `surface-brand-muted`, `surface-inverse`, etc.
+- **`text-fg-*`** — foreground (texto, ícones), com hierarquia:
+  `fg-primary` → `fg-secondary` → `fg-tertiary` → `fg-quaternary`.
+  Variantes: `fg-disabled`, `fg-placeholder`, `fg-inverse`, `fg-link`,
+  `fg-brand`, `fg-brand-emphasis`, `fg-brand-secondary`,
+  `fg-brand-secondary-emphasis`, `fg-success/warning/error/info`.
+- **`border-line-*` / `bg-line-*`** — linhas visuais (divisores,
+  separators, marks): `line-default`, `line-muted`, `line-subtle`,
+  `line-emphasis`, `line-strong`, `line-inverse`, `line-focus`,
+  `line-brand`, `line-secondary`.
+- **Feedback**: `bg-success/warning/error/info` (+ `-bg`,
+  `-bg-emphasis`, `-border`, `-border-emphasis`, `-light`, `-dark`).
+- **Status indicators**: `bg-status-neutral` completa a família dos
+  status (dots, online presence, status badges).
+- **Scrim e tint** (theme-agnostic): `bg-scrim` (backdrop modal/drawer
+  50% opacity), `bg-tint-hover` (hover translúcido 10% opacity).
 
 **Uso:**
 
-```typescript
-import { getColorClass, COLOR_TOKENS } from "./tokens/colors";
+```tsx
+// Cor consumida direto via classes Tailwind nativas em JSX
+<div className="bg-surface-brand text-fg-inverse">Brand button</div>
 
-// Obter classe Tailwind
-const bgClass = getColorClass("primary", "DEFAULT", "bg"); // 'bg-indigo-500'
-const textClass = getColorClass("error", "dark", "text"); // 'text-red-600'
+// Foreground neutro com hierarquia
+<p className="text-fg-secondary">Description text</p>
 
-// Acessar token diretamente
-const primaryColor = COLOR_TOKENS.primary.DEFAULT.hex; // '#6366f1'
+// Superfícies por nível de elevação
+<div className="bg-surface-base">Form content</div>
+<div className="bg-surface-overlay shadow-lg">Modal content</div>
+
+// Linhas visuais
+<hr className="border-line-default" />
+
+// Feedback semântico
+<div className="bg-error-bg text-fg-error">Error message</div>
+
+// Status indicator
+<span className="bg-status-neutral inline-block w-2 h-2 rounded-full" />
 ```
+
+**Quando usar JS color helpers (`colors/utils.ts`):**
+
+O sistema novo expõe helpers JS (`getColor`, `getSemanticColorClass`,
+`withOpacity`, `blendColors`, `getContrastColor`, `lighten`,
+`darken`) para **casos especializados**:
+
+- Cores derivadas em runtime (cálculo de contraste WCAG).
+- Composição de cores (overlay opacity, blend de tonalidades).
+- Lógica que precisa do valor hex/RGB do token (gradiente dinâmico,
+  conversão entre espaços de cor).
+
+**NÃO use os helpers JS para consumo padrão de cor em componentes** —
+classes Tailwind nativas são a API canônica.
+
+**Estrutura interna:**
+
+- `src/styles/semantic/colors.css` — definições `@theme` com light
+  como default + variantes por role.
+- `src/styles/themes/dark.css` — override completo via
+  `[data-theme="dark"]` (e variantes minimal/tech/creative).
+- `tokens/colors/` — helpers JS para casos especializados acima.
 
 ### 2. Spacing (`spacing.ts`)
 
@@ -168,44 +224,69 @@ const shadows = tokenSet.shadows;
 
 ### ✅ Usar Tokens
 
-```typescript
-import { getColorClass } from "./tokens/colors";
+```tsx
 import { getSpacingClass } from "./tokens/spacing";
 import { getRadiusClass } from "./tokens/radius";
 import { getShadowClass } from "./tokens/shadows";
 
-const className = `
-  ${getColorClass("primary", "DEFAULT", "bg")}
-  ${getSpacingClass("md", "p")}
-  ${getRadiusClass("lg")}
-  ${getShadowClass("md")}
-`;
+// Cor via classes Tailwind nativas (geradas a partir de @theme).
+// Spacing/Radius/Shadows ainda via getter JS (escala fina, multi-axis).
+const className = cn(
+  "bg-surface-brand",
+  "text-fg-inverse",
+  getSpacingClass("md", "p"),
+  getRadiusClass("lg"),
+  getShadowClass("md"),
+);
 ```
 
-### ❌ Evitar Classes Hardcoded
+### ❌ Evitar Classes Hardcoded Tailwind
 
-```typescript
-// ❌ Evitar
-const className = "bg-indigo-500 p-3 rounded-lg shadow-md";
+```tsx
+// ❌ Evitar — bypass do vocabulário semântico
+const className = "bg-indigo-500 text-white p-3 rounded-lg shadow-md";
 
-// ✅ Preferir
-const className = `
-  ${getColorClass("primary", "DEFAULT", "bg")}
-  ${getSpacingClass("md", "p")}
-  ${getRadiusClass("lg")}
-  ${getShadowClass("md")}
-`;
+// ✅ Preferir — classes semânticas + helpers
+const className = cn(
+  "bg-surface-brand",
+  "text-fg-inverse",
+  getSpacingClass("md", "p"),
+  getRadiusClass("lg"),
+  getShadowClass("md"),
+);
 ```
 
 ## Migração de Classes Hardcoded
 
-Ao refatorar componentes, substitua classes hardcoded por tokens:
+Ao refatorar componentes, substitua classes hardcoded por o vocabulário
+semântico:
 
-1. **Cores**: `bg-gray-500` → `getColorClass('neutral', 'DEFAULT', 'bg')`
-2. **Espaçamento**: `p-4` → `getSpacingClass('base', 'p')`
-3. **Sombras**: `shadow-lg` → `getShadowClass('lg')`
-4. **Radius**: `rounded-md` → `getRadiusClass('md')`
-5. **Bordas**: `border-2` → `getBorderWidthClass('medium')`
+1. **Cores de superfície**: `bg-white` → `bg-surface-base` (form
+   contido) / `bg-surface-overlay` (modal/popover); `bg-gray-50` →
+   `bg-surface-subtle`; `bg-gray-100` → `bg-surface-muted`.
+2. **Cores de texto**: `text-gray-900` → `text-fg-primary`;
+   `text-gray-600` → `text-fg-secondary`; `text-gray-500` →
+   `text-fg-tertiary`; `text-white` (em fundo colorido) →
+   `text-fg-inverse`.
+3. **Bordas/divisores**: `border-gray-200` → `border-line-default`;
+   `border-gray-300` → `border-line-emphasis`. Para divisores em
+   `<div>` ou `<hr>`, use `bg-line-default` (precedente: papel
+   visual prevalece sobre mecanismo CSS).
+4. **Feedback colors**: `bg-red-500` (badge erro) → `bg-error`;
+   `text-red-600` → `text-fg-error`; `bg-green-50` → `bg-success-bg`.
+5. **Espaçamento**: `p-4` → `getSpacingClass('base', 'p')`.
+6. **Sombras**: `shadow-lg` → `getShadowClass('lg')`.
+7. **Radius**: `rounded-md` → `getRadiusClass('md')`.
+8. **Bordas**: `border-2` → `getBorderWidthClass('medium')`.
+
+Casos especiais (literal aceitos com comentário inline):
+
+- **Scrim/tint**: `bg-black/50` (backdrop) → `bg-scrim`;
+  `hover:bg-black/10` (translucent hover) → `hover:bg-tint-hover`.
+  Esses são theme-agnostic e não invertem no dark.
+- **Cores cruas em data/demo**: arquivos de visualização de tokens e
+  ColorPicker presets mantêm hex literais — não são styling, são
+  dados.
 
 ## Benefícios
 
@@ -217,8 +298,11 @@ Ao refatorar componentes, substitua classes hardcoded por tokens:
 
 ## Próximos Passos
 
-- [ ] Auditar todos os componentes para uso de tokens
-- [ ] Substituir classes hardcoded por tokens
-- [ ] Adicionar tokens para animações e transições
-- [ ] Criar tokens para z-index layers
-- [ ] Documentar tokens no Storybook
+- [ ] Documentar tokens no Storybook (parcialmente feito em
+      `Tokens.mdx` — atualizar conforme novos tokens semânticos
+      ganham consumidores).
+- [ ] Avaliar criação de `--color-notification` distinto de
+      `--color-warning` (atual: badge `bg-error` cobre o caso de
+      "notificação genérica" por aproximação; ver BACKLOG).
+- [ ] Lint rule (eslint plugin tailwind ou regex CI) que barre cores
+      Tailwind cruas em `src/ui/` para impedir regressão pós-Phase 7.

@@ -1,0 +1,48 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as TextStories from "./Text.stories";
+
+<Meta of={TextStories} />
+
+# Text
+
+Text renders any typographic content with a consistent variant ladder (heading, body, bodySmall, bodyLarge, caption, label) and a constrained color role surface. Reach for it whenever the visual hierarchy or color of words matters, instead of inlining `<p>` / `<span>` with raw class names.
+
+## When to use
+
+- Use Text for any visible string that participates in the typographic hierarchy — body copy, headings, captions, metadata.
+- Use Text with `as` to keep the semantic HTML correct (`as="h2"` for a section heading rendered with body styling, `as="strong"` for emphasized inline text) while inheriting the design system's tokens.
+- Use the `colorRole` and `colorShade` props to communicate role — `error` for inline feedback, `success` for confirmations, `neutral` for hierarchy through `light` / `DEFAULT` / `dark` shades.
+- Use Text inside primitives that need labelled or metadata text (cards, list rows, badges with descriptive content) so the typography stays uniform.
+
+## When not to use
+
+- Use `Heading` directly when a dedicated heading API exists for a layout slot.
+- Use `Label` for form-field labels — Label binds to inputs via `htmlFor` and has required / optional variants.
+- Use `ErrorMessage` for validation feedback — it carries `role="alert"` and `aria-live="polite"` for screen-reader announcement.
+- Avoid Text for purely decorative typography that should never appear to assistive tech; wrap that content in `aria-hidden` at the layout level.
+
+## Examples
+
+<Canvas of={TextStories.Default} />
+
+The variant prop controls type scale and weight. Pair with `as` to keep semantic HTML separate from visual styling.
+
+<Canvas of={TextStories.Variants} />
+
+<Canvas of={TextStories.Polymorphic} />
+
+## Props
+
+<Controls of={TextStories.Default} />
+
+{/* exception: polymorphic as-prop framing — SKILL.md Props handling exception clause */}
+
+`as` is a polymorphic prop. Controls shows it as opaque `ElementType` — pass any React element type (`"h1"`, `"span"`, `"strong"`, a component) and Text forwards props with the correct typing.
+
+## Accessibility
+
+Text does not impose any role or interaction; it inherits the semantics of the element passed to `as`. The default rendering is a `<p>`, so headings, emphasis, and links must be expressed via `as` (`as="h2"`, `as="strong"`, `as="a"`) — never by styling alone, because screen readers and outline tools read structure, not appearance.
+
+The color role tokens (`primary`, `secondary`, `success`, `warning`, `error`, `info`, `neutral`) each carry the `DEFAULT` shade tuned for WCAG 2.1 AA contrast against the canonical surfaces. The `light` and `dark` shades are escape valves for adjacent surfaces; verify contrast manually before using them on non-default backgrounds.
+
+When Text is the only label for an interactive element (an icon button, a clickable card), set an explicit `aria-label` or `aria-labelledby` on the interactive parent — Text itself does not announce its content beyond what the rendered element semantics provide.

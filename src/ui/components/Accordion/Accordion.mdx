@@ -1,0 +1,52 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as AccordionStories from "./Accordion.stories";
+
+<Meta of={AccordionStories} />
+
+# Accordion
+
+Accordion renders a vertical stack of collapsible items — each with a header that toggles its content panel open or closed. Reach for it when the page has a list of related sections the user scans top to bottom and dives into selectively, like FAQs, settings categories, expandable list rows, or document outlines.
+
+## When to use
+
+- Use Accordion for top-to-bottom lists of expandable sections — FAQs, settings categories, troubleshooting guides, optional configuration blocks.
+- Use `type="single"` when only one item should be open at a time (FAQs are the canonical example — the user reads one answer, then opens the next).
+- Use `type="multiple"` when comparing multiple sections side by side adds value (advanced filter groups, parallel feature comparisons).
+- Use `defaultOpen` (string or array depending on type) to pre-open the most likely starting point — the first FAQ, the most recent settings category.
+
+## When not to use
+
+- Use `Tabs` when the user is choosing between alternative views of the same region — Accordion is for stacked sections, Tabs is for switching content in place.
+- Use `Collapsible` for a single open/close toggle outside a stack of items — Collapsible is the underlying primitive; Accordion adds the coordinated set.
+- Use a dedicated outline component for hierarchical navigation — Accordion is for flat lists of expandable sections, not multi-level trees.
+- Avoid Accordion when the user almost always wants to read every item — inline-stacked content saves the click and the animation.
+
+## Anatomy
+
+Accordion renders a vertical stack of `items`; each item has a `header` (a `<button>` element containing the `title` plus a chevron icon that rotates with the open state) and a `content` panel (the `ReactNode` from the item's `content` field, animated open / closed with `height` transitions). The item carries `disabled` when its `disabled` flag is true — the header is non-interactive and skipped during keyboard navigation.
+
+<Canvas of={AccordionStories.Default} />
+
+## Examples
+
+<Canvas of={AccordionStories.Multiple} />
+
+<Canvas of={AccordionStories.WithDisabledItems} />
+
+<Canvas of={AccordionStories.RichContent} />
+
+## Props
+
+<Controls of={AccordionStories.Default} />
+
+## Accessibility
+
+Accordion follows the WAI-ARIA Accordion pattern. Each item header is a `<button>` with `aria-expanded` reflecting the open / closed state and `aria-controls` pointing at the content panel's `id`; the panel carries `role="region"` and `aria-labelledby` pointing back at the header. Screen readers announce "expanded" or "collapsed" alongside the header label when the user moves focus to it.
+
+Keyboard navigation: Tab moves between item headers; Enter or Space toggles the focused item; Up / Down arrows move between headers in the stack (some platforms wire Home / End to jump to first / last). Disabled items are skipped during arrow-key navigation but stay in the DOM so assistive tech announces them as disabled if the user reaches them.
+
+In `type="single"`, activating one item closes any other open item — the screen reader announces the implicit collapse alongside the new expand. In `type="multiple"`, items operate independently.
+
+The chevron icon is decorative (`aria-hidden="true"`) — the `aria-expanded` attribute alone communicates the state to assistive tech.
+
+When the accordion items contain interactive controls (forms, links), focus moves naturally into the content when Tab takes the user past the header. Closing the item moves focus back to the header to avoid leaving focus on an invisible element.

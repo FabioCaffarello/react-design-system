@@ -1,0 +1,48 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as PopoverStories from "./Popover.stories";
+
+<Meta of={PopoverStories} />
+
+# Popover
+
+Popover anchors a small floating panel to a `trigger` element — a button, an icon, a name — and opens it on click with rich, interactive content inside. Reach for it when the user needs more than a tooltip's hint but less than a drawer or modal — quick edits, contextual details, confirmation prompts, mini-forms.
+
+## When to use
+
+- Use Popover for interactive content tied to a specific trigger — a quick-edit form anchored to a row, a filter dropdown attached to a header, a contact card opened from an avatar.
+- Use `title` for content that benefits from a top heading inside the panel; omit for compact informational popovers.
+- Use `placement` to control where the panel opens relative to the trigger; the 12 variants (`top` / `top-start` / `top-end` and so on for each side) cover edge cases where the default would clip off-screen.
+- Use `showCloseButton` for popovers users may interact with for a while — without it, clicking outside is the only dismissal affordance.
+
+## When not to use
+
+- Use `Tooltip` for transient hints — Tooltip dismisses on blur and cannot contain interactive elements; Popover stays open and accepts clicks.
+- Use `Modal` when the interaction must block the page until acknowledged; Popover is non-blocking.
+- Use `Drawer` for substantial side tasks that need their own surface area — Popover is for compact contextual content.
+- Use `Dropdown` or `Menu` when the content is a list of actions — Popover is for arbitrary content.
+
+## Anatomy
+
+Inside the surface, Popover places its parts in source order: a `trigger` element (wrapped to track click and focus events), a `panel` portaled near the trigger and positioned by `placement`, an optional `arrow` glyph pointing at the trigger, an optional `title` row at the top of the panel, the `content` (the `children`), and an optional close button (`showCloseButton`) in the top-right of the panel. The panel renders into a portal so its `z-index` and overflow are independent of the trigger's container.
+
+<Canvas of={PopoverStories.Default} />
+
+## Examples
+
+<Canvas of={PopoverStories.WithTitle} />
+
+<Canvas of={PopoverStories.Placements} />
+
+## Props
+
+<Controls of={PopoverStories.Default} />
+
+## Accessibility
+
+The trigger element is wired with `aria-haspopup="dialog"` (since Popover content is more than a menu) and `aria-expanded` reflecting the open / closed state. The panel carries `role="dialog"` with `aria-labelledby` pointing at the `title` when present; without a title, set `aria-label` on the panel via the consumer's content so the popover has an accessible name.
+
+Focus management: on open, focus moves to the first focusable element inside the panel (the close button, the first input, the first action); on close (via close button, ESC, or outside click), focus returns to the trigger. ESC dismisses when `closeOnEscape` is true (default); outside-click dismisses when `closeOnClickOutside` is true (default).
+
+Unlike `Modal` and `Drawer`, Popover does not trap focus — Tab can escape the panel into the page underneath. This is intentional: popovers are non-blocking, and forcing the user to dismiss before continuing would conflict with the "contextual quick edit" model. If the popover content is substantial enough that focus trap is the right behavior, the surface is probably a `Modal` or `Drawer` instead.
+
+The arrow glyph is decorative (`aria-hidden="true"`). Placements flip automatically when the panel would clip the viewport — assistive tech announces the dialog identically regardless of where it lands visually.

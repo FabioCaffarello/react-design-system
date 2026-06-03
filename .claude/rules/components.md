@@ -9,13 +9,16 @@ When creating or editing a component:
 
 1. **File set is mandatory.** A component folder MUST contain:
    - `ComponentName.tsx` — implementation
-   - `ComponentName.test.tsx` — Vitest + Testing Library
+   - `ComponentName.test.tsx` — Vitest + Testing Library (behavior coverage)
+   - `ComponentName.accessibility.test.tsx` — Vitest + Testing Library (dedicated a11y suite; mirror `Header.accessibility.test.tsx` for the four-section scaffold: ARIA Labels and Roles / Keyboard Navigation / Focus Management / Screen Reader Support)
    - `ComponentName.stories.tsx` — Storybook
    - `index.ts` — single explicit export
 
+   Enforced by `scripts/validate-file-set.mjs` in pre-push and CI. New dirs cannot land without all five files.
+
 2. **Props.** Define and export a `ComponentNameProps` interface. No inline prop types. No `any`. Prefer composition over boolean prop explosion (avoid >4 boolean props — use a `variant` union instead).
 
-3. **Styling.** Tailwind utility classes only, driven by tokens. No hardcoded colors, spacing, or radii. If a value isn't in the token scale, add it to the scale first — don't inline it.
+3. **Styling.** Tailwind utility classes only. For color, read `.claude/rules/colors.md` before applying any color — use the semantic role-based vocabulary (`text-fg-*`, `bg-surface-*`, `border-line-*`, etc.). Never use raw Tailwind color classes (`text-gray-*`, `bg-white`, etc.). For spacing, radius, shadow, z-index: use the token scale; don't inline values. See `.claude/rules/tokens.md` for the full discipline.
 
 4. **forwardRef.** Interactive primitives forward refs and spread `...rest` onto the root element.
 

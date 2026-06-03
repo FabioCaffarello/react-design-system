@@ -1,0 +1,50 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as TextareaStories from "./Textarea.stories";
+
+<Meta of={TextareaStories} />
+
+# Textarea
+
+Textarea renders a multi-line `<textarea>` styled to match the design system, with optional `error` state and configurable `resize` direction. Reach for it whenever the user needs to type more than one line — descriptions, notes, messages, code snippets, comments.
+
+## When to use
+
+- Use Textarea for any freeform multi-line text — issue descriptions, bug reports, comments, internal notes, message bodies.
+- Use `resize="vertical"` (the default) so the user can grow the textarea downward when their content needs more room without breaking the horizontal layout.
+- Use `resize="none"` for textareas in compact form rows where the horizontal layout depends on a fixed height and you accept that the user scrolls inside the field.
+- Use `rows` to set the initial visible height — three or four rows for comments and short notes, eight or more for descriptions and message bodies.
+- Use `error` together with an `ErrorMessage` underneath when validation fails — required missing, length out of bounds, format wrong.
+
+## When not to use
+
+- Use `Input` for single-line text — names, emails, search, slugs. Textarea is wrong even for short fields when a line break would never be valid.
+- Use a rich-text editor (out of scope for this primitive) when the user needs formatting — bold, italic, lists, links. Textarea is plain text only.
+- Use a code editor surface (Monaco, CodeMirror) when the value needs syntax highlighting, autocompletion, or diff rendering — Textarea has no language awareness.
+
+## Anatomy
+
+Textarea renders in source order: an optional `label` rendered above and bound via `htmlFor`, the native `<textarea>` (the field surface itself, sized by `rows` and `cols`) with its resize handle at the bottom-right corner when `resize` is anything other than `none`, and an optional `helperText` rendered beneath. When validation feedback needs role="alert" semantics rather than passive helper copy, pair Textarea with `ErrorMessage` below instead of (or in addition to) `helperText`.
+
+<Canvas of={TextareaStories.Default} />
+
+## Examples
+
+<Canvas of={TextareaStories.WithError} />
+
+`resize` controls which axes the user can drag — `vertical` (default), `horizontal`, `both`, or `none`. Pick by layout: vertical preserves horizontal stability, none locks the field in dense form rows.
+
+<Canvas of={TextareaStories.ResizeOptions} />
+
+## Props
+
+<Controls of={TextareaStories.Default} />
+
+## Accessibility
+
+The native `<textarea>` carries the role, the keyboard behavior (Tab focuses, Enter inserts a newline, Shift+Enter is the same — there is no native "submit on Enter" inside a textarea), and the screen-reader announcement of the field as a multi-line text input.
+
+When `label` is provided, Textarea wires it to the field via `htmlFor` so clicking the label transfers focus and so screen readers announce the label as the field's accessible name on focus. The `helperText` prop is wired through `aria-describedby` so the same screen-reader pass picks up the secondary explanation alongside the label. For dedicated validation feedback that needs `role="alert"`, pair Textarea with `ErrorMessage` below — its own ID can be added to `aria-describedby` via the standard React props passthrough.
+
+The browser-rendered resize handle is keyboard-accessible on some platforms and not on others. Do not rely on the user dragging the corner to fit their content; either pick a `rows` that fits typical input, or leave `resize="vertical"` so the user can grow the field with the mouse when they need to.
+
+When the textarea has no visible label (an inline quick-note field), set `aria-label` so the field still has an accessible name. For dynamic character counters or remaining-character announcements, wire them through `aria-describedby` rather than relying on visual-only feedback.

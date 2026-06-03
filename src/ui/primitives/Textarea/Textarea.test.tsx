@@ -1,55 +1,169 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import Textarea from "./Textarea";
 
 describe("Textarea", () => {
   it("renders with placeholder", () => {
-    render(<Textarea placeholder="Enter text..." />);
+    render(<Textarea aria-label="Notes" placeholder="Enter text..." />);
     const textarea = screen.getByPlaceholderText("Enter text...");
     expect(textarea).toBeInTheDocument();
   });
 
   it("renders with default value", () => {
-    render(<Textarea defaultValue="Default text" />);
+    render(<Textarea aria-label="Notes" defaultValue="Default text" />);
     const textarea = screen.getByDisplayValue("Default text");
     expect(textarea).toBeInTheDocument();
   });
 
   it("applies error styling when error is true", () => {
-    render(<Textarea error />);
+    render(<Textarea aria-label="Notes" error />);
     const textarea = screen.getByRole("textbox");
     expect(textarea).toHaveClass("border-error");
     expect(textarea).toHaveAttribute("aria-invalid", "true");
   });
 
   it("applies custom className", () => {
-    render(<Textarea className="custom-class" />);
+    render(<Textarea aria-label="Notes" className="custom-class" />);
     const textarea = screen.getByRole("textbox");
     expect(textarea).toHaveClass("custom-class");
   });
 
   it("applies resize-none class when resize is none", () => {
-    render(<Textarea resize="none" />);
+    render(<Textarea aria-label="Notes" resize="none" />);
     const textarea = screen.getByRole("textbox");
     expect(textarea).toHaveClass("resize-none");
   });
 
   it("applies resize-y class when resize is vertical", () => {
-    render(<Textarea resize="vertical" />);
+    render(<Textarea aria-label="Notes" resize="vertical" />);
     const textarea = screen.getByRole("textbox");
     expect(textarea).toHaveClass("resize-y");
   });
 
   it("has accessible attributes when error", () => {
-    render(<Textarea error id="test-textarea" />);
+    render(<Textarea aria-label="Notes" error id="test-textarea" />);
     const textarea = screen.getByRole("textbox");
     expect(textarea).toHaveAttribute("aria-invalid", "true");
     expect(textarea).toHaveAttribute("aria-describedby", "test-textarea-error");
   });
 
   it("respects rows prop", () => {
-    render(<Textarea rows={10} />);
+    render(<Textarea aria-label="Notes" rows={10} />);
     const textarea = screen.getByRole("textbox");
     expect(textarea).toHaveAttribute("rows", "10");
+  });
+
+  it("renders visible label associated via htmlFor when label prop is provided", () => {
+    render(<Textarea label="Description" />);
+    const textarea = screen.getByRole("textbox", { name: "Description" });
+    expect(textarea).toBeInTheDocument();
+    const labelEl = screen.getByText("Description");
+    expect(labelEl.tagName).toBe("LABEL");
+    expect(labelEl).toHaveAttribute("for", textarea.id);
+  });
+
+  it("does not wrap in a div when no label is provided (preserves bare textarea)", () => {
+    const { container } = render(<Textarea aria-label="Notes" />);
+    expect(container.firstChild?.nodeName).toBe("TEXTAREA");
+  });
+
+  describe("dev-only accessible-name warning", () => {
+    let warnSpy: ReturnType<typeof vi.spyOn>;
+    beforeEach(() => {
+      warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    });
+    afterEach(() => {
+      warnSpy.mockRestore();
+    });
+
+    it("warns when no label, aria-label, aria-labelledby, or external label exists", () => {
+      render(<Textarea />);
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining("[Textarea] Missing accessible name"),
+      );
+    });
+
+    it("does not warn when label prop is provided", () => {
+      render(<Textarea label="Description" />);
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it("does not warn when aria-label is provided", () => {
+      render(<Textarea aria-label="Notes" />);
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it("does not warn when aria-labelledby is provided", () => {
+      render(
+        <>
+          <span id="ext-label">Notes</span>
+          <Textarea aria-labelledby="ext-label" />
+        </>,
+      );
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+
+    it("does not warn when an external label[for=id] is present", () => {
+      render(
+        <>
+          <label htmlFor="my-textarea">Notes</label>
+          <Textarea id="my-textarea" />
+        </>,
+      );
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("helperText", () => {
+    it("renders helperText below the textarea", () => {
+      render(<Textarea aria-label="Notes" helperText="Up to 500 characters" />);
+      expect(screen.getByText("Up to 500 characters")).toBeInTheDocument();
+    });
+
+    it("wires aria-describedby to the helperText id", () => {
+      render(
+        <Textarea
+          aria-label="Notes"
+          id="notes"
+          helperText="Up to 500 characters"
+        />,
+      );
+      const textarea = screen.getByRole("textbox");
+      expect(textarea).toHaveAttribute("aria-describedby", "notes-helper");
+      expect(screen.getByText("Up to 500 characters")).toHaveAttribute(
+        "id",
+        "notes-helper",
+      );
+    });
+
+    it("uses error styling on the helper when both error and helperText are set", () => {
+      render(
+        <Textarea aria-label="Notes" error helperText="Field is required" />,
+      );
+      const helper = screen.getByText("Field is required");
+      expect(helper).toHaveClass("text-fg-error");
+    });
+  });
+
+  describe("success state", () => {
+    it("applies border-success on the textarea when success is set", () => {
+      render(<Textarea aria-label="Notes" success />);
+      expect(screen.getByRole("textbox")).toHaveClass("border-success");
+    });
+
+    it("renders helperText in fg-success styling when success is set", () => {
+      render(<Textarea aria-label="Notes" success helperText="Looks good!" />);
+      expect(screen.getByText("Looks good!")).toHaveClass("text-fg-success");
+    });
+
+    it("lets error win when both error and success are set", () => {
+      render(
+        <Textarea aria-label="Notes" error success helperText="Conflict" />,
+      );
+      const textarea = screen.getByRole("textbox");
+      expect(textarea).toHaveClass("border-error");
+      expect(textarea).not.toHaveClass("border-success");
+      expect(screen.getByText("Conflict")).toHaveClass("text-fg-error");
+    });
   });
 });

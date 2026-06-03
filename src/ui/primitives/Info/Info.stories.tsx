@@ -1,10 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import Info from "./Info";
 
 const meta: Meta<typeof Info> = {
   title: "Primitives/Info",
   component: Info,
-  tags: ["autodocs"],
   parameters: {
     docs: {
       description: {

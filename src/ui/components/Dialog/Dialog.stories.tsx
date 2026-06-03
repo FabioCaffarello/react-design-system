@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { expect, userEvent, within, waitFor } from "@storybook/test";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
+import { expect, userEvent, within, waitFor } from "storybook/test";
 import { useState } from "react";
 import Dialog from "./Dialog";
 import AlertDialog from "./AlertDialog";
@@ -224,7 +224,6 @@ const _alertDialogMeta: Meta<typeof AlertDialog> = {
       },
     },
   },
-  tags: ["autodocs"],
 };
 
 export const AlertDialogDefault: StoryObj<typeof AlertDialog> = {

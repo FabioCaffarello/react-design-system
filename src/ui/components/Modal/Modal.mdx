@@ -1,0 +1,54 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as ModalStories from "./Modal.stories";
+
+<Meta of={ModalStories} />
+
+# Modal
+
+Modal renders a focused dialog over the page with an overlay backdrop, focus trap, and ESC / outside-click dismissal. Reach for it when an interaction needs to interrupt the page until the user explicitly confirms or cancels.
+
+## When to use
+
+- Use Modal to confirm a destructive or irreversible action (delete, sign out, cancel subscription) before it commits.
+- Use Modal when a short task needs the user's full attention and switching context would lose state — multi-field forms, account verification, OTP entry.
+- Use Modal to acknowledge a critical message the user must see before continuing — payment failures, terms updates, blocking errors.
+- Use Modal for a focused multi-step flow when the steps belong together and the rest of the page is irrelevant to the decision.
+
+## When not to use
+
+- Use `Toast` for non-blocking confirmations or status feedback that doesn't require an action.
+- Use `Drawer` for side panels, settings, or peripheral surfaces — Drawer keeps the page visible alongside.
+- Use `Popover` for transient hints or inline disclosures anchored to a trigger.
+- Avoid Modal for required information that the user needs to consult while operating on the page — that's a sidebar or an inline panel.
+
+## Anatomy
+
+Modal renders in source order: an `overlay` (`bg-scrim` backdrop, clicking it triggers `onClose`), a `container` (the centered surface, sized by `variant`), a `header` (the optional `title` plus the close button when `showCloseButton` is true), a `body` (the `children` slot), and a `footer` (the optional `footer` slot for action rows).
+
+<Canvas of={ModalStories.Default} />
+
+## Examples
+
+<Canvas of={ModalStories.Default} />
+
+Compose the footer with a Button row when the decision is a confirm / cancel ladder.
+
+<Canvas of={ModalStories.WithFooter} />
+
+<Canvas of={ModalStories.Large} />
+
+Disable `showCloseButton` when dismissal must happen explicitly through the footer — useful for confirmations the user shouldn't dismiss by accident.
+
+<Canvas of={ModalStories.WithoutCloseButton} />
+
+## Props
+
+<Controls of={ModalStories.Default} />
+
+## Accessibility
+
+The dialog surface carries `role="dialog"` and `aria-modal="true"`, and when `title` is set it is wired as `aria-labelledby` so the heading is announced when the modal opens. The close button has `aria-label="Close modal"` so screen readers identify it without relying on the icon.
+
+Focus moves to the modal container on open and is restored to the previously focused element on close, so the user returns to the same place in the page. Tab and Shift+Tab cycle within the modal — the focus trap prevents escape into the background. ESC closes the modal at any time. Clicking the overlay also closes it; if a dismissal must be explicit, set `showCloseButton={false}` and gate the close behind a footer action.
+
+Body scroll is locked while the modal is open so screen readers and keyboard users do not get pushed off the dialog by background scrolling.
