@@ -3,6 +3,7 @@ import { SearchInput, Card } from "../../components";
 import { Button, Text } from "../../primitives";
 import { Container } from "../../layouts/Container/Container";
 import { Stack } from "../../layouts/Stack/Stack";
+import { getSpacingClass } from "../../tokens/spacing";
 
 export interface FilterOption {
   id: string;
@@ -135,14 +136,17 @@ export function SearchAndFilterPattern<T = unknown>({
 
             {/* Filters */}
             {filters.length > 0 && (
-              <div className="flex flex-wrap gap-2">
+              <div className={`flex flex-wrap ${getSpacingClass("sm", "gap")}`}>
                 {filters.map((filter) => (
-                  <div key={filter.id} className="flex items-center gap-2">
+                  <div
+                    key={filter.id}
+                    className={`flex items-center ${getSpacingClass("sm", "gap")}`}
+                  >
                     <Text className="text-fg-secondary text-sm">
                       {filter.label}:
                     </Text>
                     <select
-                      className="px-3 py-1 border rounded text-sm"
+                      className={`${getSpacingClass("md", "px")} ${getSpacingClass("xs", "py")} border rounded text-sm`}
                       // Accessible name comes from the `filter.label` prop
                       // (the same string the adjacent `<Text>` displays as
                       // a visible legend). Without aria-label the raw
@@ -216,7 +220,9 @@ export function SearchAndFilterPattern<T = unknown>({
             </div>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div
+            className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ${getSpacingClass("base", "gap")}`}
+          >
             {filteredItems.map((item, index) => (
               <div key={index}>{renderItem(item, index)}</div>
             ))}

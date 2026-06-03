@@ -4,6 +4,7 @@ import { Container } from "../../layouts/Container/Container";
 import { Stack } from "../../layouts/Stack/Stack";
 import { Button } from "../../primitives";
 import { getRadiusClass } from "../../tokens/radius";
+import { getSpacingClass } from "../../tokens/spacing";
 import type { StepperStep } from "../../components";
 
 export interface FormWizardStep extends StepperStep {
@@ -140,21 +141,27 @@ export function FormWizardPattern({
         />
 
         {/* Form Content */}
-        <div className={`bg-surface-base ${getRadiusClass("lg")} border p-6`}>
+        <div
+          className={`bg-surface-base ${getRadiusClass("lg")} border ${getSpacingClass("lg", "p")}`}
+        >
           <Stack spacing="md">
             <div>
               <h2 className="text-2xl font-semibold">
                 {currentStepData.title}
               </h2>
               {currentStepData.description && (
-                <p className="text-fg-secondary mt-1">
+                <p
+                  className={`text-fg-secondary ${getSpacingClass("xs", "mt")}`}
+                >
                   {currentStepData.description}
                 </p>
               )}
             </div>
 
             {hasError && (
-              <div className="bg-error-bg border border-error-border rounded p-3">
+              <div
+                className={`bg-error-bg border border-error-border rounded ${getSpacingClass("md", "p")}`}
+              >
                 <p className="text-sm text-fg-error">
                   Please fix the errors before proceeding.
                 </p>
@@ -164,7 +171,9 @@ export function FormWizardPattern({
             <div className="min-h-48">{currentStepData.fields}</div>
 
             {/* Navigation Buttons */}
-            <div className="flex justify-between pt-4 border-t">
+            <div
+              className={`flex justify-between ${getSpacingClass("base", "pt")} border-t`}
+            >
               <Button
                 variant="outline"
                 onClick={handleBack}

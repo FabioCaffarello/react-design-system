@@ -223,7 +223,7 @@ export default function DataGrid<
   };
 
   return (
-    <div className={`space-y-4 ${className}`}>
+    <div className={`${getSpacingClass("base", "space-y")} ${className}`}>
       {/* Toolbar */}
       {(exportable || groupable || toolbarActions) && (
         <div
@@ -238,7 +238,7 @@ export default function DataGrid<
           ${getRadiusClass("lg")}
         `}
         >
-          <div className="flex items-center gap-2">
+          <div className={`flex items-center ${getSpacingClass("sm", "gap")}`}>
             {groupable && (
               <Button
                 variant="outline"
@@ -250,10 +250,12 @@ export default function DataGrid<
             )}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className={`flex items-center ${getSpacingClass("sm", "gap")}`}>
             {toolbarActions}
             {exportable && (
-              <div className="flex items-center gap-1">
+              <div
+                className={`flex items-center ${getSpacingClass("xs", "gap")}`}
+              >
                 {exportFormats.map((format) => (
                   <Button
                     key={format}

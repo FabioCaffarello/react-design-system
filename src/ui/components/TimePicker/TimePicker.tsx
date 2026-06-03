@@ -173,9 +173,13 @@ export default function TimePicker({
 
   const timePickerContent = (
     <div className={`${getSpacingClass("base", "p")} min-w-48`}>
-      <div className="flex items-center justify-center gap-4">
+      <div
+        className={`flex items-center justify-center ${getSpacingClass("base", "gap")}`}
+      >
         {/* Hours */}
-        <div className="flex flex-col items-center gap-2">
+        <div
+          className={`flex flex-col items-center ${getSpacingClass("sm", "gap")}`}
+        >
           <Button
             variant="ghost"
             size="sm"
@@ -202,7 +206,9 @@ export default function TimePicker({
         <div className="text-2xl font-semibold">:</div>
 
         {/* Minutes */}
-        <div className="flex flex-col items-center gap-2">
+        <div
+          className={`flex flex-col items-center ${getSpacingClass("sm", "gap")}`}
+        >
           <Button
             variant="ghost"
             size="sm"
@@ -228,7 +234,9 @@ export default function TimePicker({
 
         {/* AM/PM for 12h format */}
         {format === "12h" && (
-          <div className="flex flex-col gap-2 ml-2">
+          <div
+            className={`flex flex-col ${getSpacingClass("sm", "gap")} ${getSpacingClass("sm", "ml")}`}
+          >
             <Button
               variant={amPm === "AM" ? "primary" : "outline"}
               size="sm"

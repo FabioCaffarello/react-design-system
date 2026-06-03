@@ -88,12 +88,14 @@ export default function TableFilters({
       className={`bg-surface-base border-b border-line-default ${className}`}
       {...props}
     >
-      <div className="px-4 py-3 sm:px-6">
+      <div
+        className={`${getSpacingClass("base", "px")} ${getSpacingClass("md", "py")} sm:${getSpacingClass("lg", "px")}`}
+      >
         <div className="flex items-center justify-between">
           <button
             type="button"
             onClick={() => setIsExpanded(!isExpanded)}
-            className="flex items-center gap-2 text-sm font-medium text-fg-secondary hover:text-fg-primary"
+            className={`flex items-center ${getSpacingClass("sm", "gap")} text-sm font-medium text-fg-secondary hover:text-fg-primary`}
           >
             <Filter className="h-4 w-4" />
             <span>Filters</span>
@@ -119,12 +121,17 @@ export default function TableFilters({
         </div>
 
         {isExpanded && (
-          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div
+            className={`${getSpacingClass("base", "mt")} grid grid-cols-1 ${getSpacingClass("base", "gap")} sm:grid-cols-2 lg:grid-cols-3`}
+          >
             {filters.map((filter) => {
               const value = filterValues[filter.key] || "";
 
               return (
-                <div key={filter.key} className="space-y-1">
+                <div
+                  key={filter.key}
+                  className={getSpacingClass("xs", "space-y")}
+                >
                   <Label htmlFor={`filter-${filter.key}`} variant="optional">
                     {filter.label}
                   </Label>

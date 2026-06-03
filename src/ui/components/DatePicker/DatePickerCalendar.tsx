@@ -11,6 +11,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useDatePickerContext } from "./DatePickerContext";
 import Button from "../../primitives/Button/Button";
 import { getRadiusClass } from "../../tokens";
+import { getSpacingClass } from "../../tokens/spacing";
 
 export interface DatePickerCalendarProps
   extends HTMLAttributes<HTMLDivElement> {
@@ -277,10 +278,16 @@ export function DatePickerCalendar({
   }
 
   return (
-    <div ref={calendarRef} className={`p-4 ${className}`} {...props}>
+    <div
+      ref={calendarRef}
+      className={`${getSpacingClass("base", "p")} ${className}`}
+      {...props}
+    >
       {/* Header with month navigation — sits OUTSIDE the role="grid" so
           the grid's direct children are only rows. */}
-      <div className="flex items-center justify-between mb-4">
+      <div
+        className={`flex items-center justify-between ${getSpacingClass("base", "mb")}`}
+      >
         <Button
           variant="iconOnly"
           size="sm"
@@ -304,12 +311,15 @@ export function DatePickerCalendar({
 
       <div role="grid" aria-label="Calendar">
         {/* Weekday header row */}
-        <div role="row" className="grid grid-cols-7 gap-1 mb-2">
+        <div
+          role="row"
+          className={`grid grid-cols-7 ${getSpacingClass("xs", "gap")} ${getSpacingClass("sm", "mb")}`}
+        >
           {WEEKDAYS.map((day) => (
             <div
               key={day}
               role="columnheader"
-              className="text-center text-xs font-medium text-fg-tertiary py-1"
+              className={`text-center text-xs font-medium text-fg-tertiary ${getSpacingClass("xs", "py")}`}
             >
               {day}
             </div>
@@ -324,7 +334,7 @@ export function DatePickerCalendar({
           <div
             role="row"
             key={`week-${weekIdx}`}
-            className="grid grid-cols-7 gap-1"
+            className={`grid grid-cols-7 ${getSpacingClass("xs", "gap")}`}
           >
             {week.map((date, dayIdx) => {
               if (!date) {
