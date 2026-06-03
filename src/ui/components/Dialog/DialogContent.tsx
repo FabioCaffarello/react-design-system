@@ -4,6 +4,7 @@ import { useEffect, useRef, type HTMLAttributes, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useDialogContext } from "../../providers/DialogContext";
 import { getRadiusClass, getShadowClass, getZIndexClass } from "../../tokens";
+import { getSpacingClass } from "../../tokens/spacing";
 
 export interface DialogContentProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "role"> {
@@ -95,7 +96,7 @@ export function DialogContent({
     md: "max-w-md",
     lg: "max-w-lg",
     xl: "max-w-2xl",
-    fullscreen: "max-w-full h-full m-0 rounded-none",
+    fullscreen: `max-w-full h-full ${getSpacingClass("none", "m")} ${getRadiusClass("none")}`,
   };
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -117,7 +118,9 @@ export function DialogContent({
       />
 
       {/* Dialog */}
-      <div className="flex min-h-full items-center justify-center p-4">
+      <div
+        className={`flex min-h-full items-center justify-center ${getSpacingClass("base", "p")}`}
+      >
         <div
           ref={contentRef}
           role="dialog"

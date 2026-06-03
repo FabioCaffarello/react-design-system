@@ -2,13 +2,17 @@
 /**
  * validate-file-set.mjs
  *
- * Enforces the "every component ships with four files" hard rule from
+ * Enforces the "every component ships with five files" hard rule from
  * CLAUDE.md and .claude/rules/components.md:
  *
- *   <Name>.tsx       — implementation
- *   <Name>.test.tsx  — Vitest + Testing Library
- *   <Name>.stories.tsx — Storybook
- *   index.ts         — single explicit export
+ *   <Name>.tsx                    — implementation
+ *   <Name>.test.tsx               — Vitest + Testing Library (behavior)
+ *   <Name>.accessibility.test.tsx — Vitest + Testing Library (a11y;
+ *                                   scaffold per
+ *                                   Header.accessibility.test.tsx —
+ *                                   ARIA / keyboard / focus / SR)
+ *   <Name>.stories.tsx            — Storybook
+ *   index.ts                      — single explicit export
  *
  * Scans one level deep under src/ui/{primitives,components,layouts}/.
  * A directory is considered a component dir iff <Name>.tsx exists at
@@ -19,10 +23,17 @@
  * intentionally NOT scanned — those are internal helpers of their
  * parent component, not standalone DS exports.
  *
+ * The a11y test slot (`.accessibility.test.tsx`) was added in W5.3:
+ * the program-wide pattern is one dedicated suite per dir covering
+ * ARIA Labels and Roles / Keyboard Navigation / Focus Management /
+ * Screen Reader Support, mirroring Header.accessibility.test.tsx as
+ * the canonical scaffold. Every existing dir was filled in W5.3.1
+ * through W5.3.12 (PRs #105-#122); the validator now enforces the
+ * slot on every new dir going forward.
+ *
  * Allowlist: grandfathered exceptions for component dirs that pre-date
- * this gate and are scheduled to be filled in Wave 2 of the post-quick-
- * win sequence. Remove entries from the allowlist as each PR fills the
- * missing file — the gate keeps tightening automatically.
+ * this gate. Remove entries as each PR fills the missing file — the
+ * gate keeps tightening automatically.
  */
 
 import { readdirSync, statSync } from "node:fs";
@@ -31,7 +42,12 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const LAYERS = ["primitives", "components", "layouts"];
-const REQUIRED_EXTS = [".tsx", ".test.tsx", ".stories.tsx"];
+const REQUIRED_EXTS = [
+  ".tsx",
+  ".test.tsx",
+  ".accessibility.test.tsx",
+  ".stories.tsx",
+];
 
 // Grandfathered missing-file exceptions. Each entry is `<layer>/<name>:<file>`.
 // Scheduled for cleanup in Wave 2 of the post-quick-win sequence (see the
@@ -102,7 +118,7 @@ const staleAllowlist = [...ALLOWLIST].filter(
 if (violations.length === 0 && staleAllowlist.length === 0) {
   const total = ALLOWLIST.size;
   console.log(
-    `[validate-file-set] OK — every component dir under src/ui/{primitives,components,layouts}/ ships the four required files (${total} grandfathered exceptions allowlisted).`,
+    `[validate-file-set] OK — every component dir under src/ui/{primitives,components,layouts}/ ships the five required files (${total} grandfathered exceptions allowlisted).`,
   );
   process.exit(0);
 }
@@ -116,7 +132,7 @@ if (violations.length > 0) {
     console.error(`  ${dir} is missing ${file}`);
   }
   console.error(
-    "\nEvery component ships with .tsx, .test.tsx, .stories.tsx, index.ts — see CLAUDE.md and .claude/rules/components.md.",
+    "\nEvery component ships with .tsx, .test.tsx, .accessibility.test.tsx, .stories.tsx, index.ts — see CLAUDE.md and .claude/rules/components.md. The a11y suite mirrors Header.accessibility.test.tsx as the canonical scaffold.",
   );
 }
 

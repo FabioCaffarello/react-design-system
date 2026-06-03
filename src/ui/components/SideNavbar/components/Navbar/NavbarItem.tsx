@@ -3,6 +3,7 @@
 import React from "react";
 import { useNavbarRequired } from "../../contexts/NavbarContext";
 import { cn } from "../../../../utils";
+import { getRadiusClass } from "../../../../tokens/radius";
 import { getSpacingClass } from "../../../../tokens/spacing";
 import { getZIndexClass } from "../../../../tokens/z-index";
 import Tooltip from "../../../../primitives/Tooltip/Tooltip";
@@ -150,7 +151,7 @@ export default function NavbarItem({
     "items-center",
     effectiveLabelMode === "inline" ? "justify-start" : "justify-center",
     effectiveLabelMode === "below" && "flex-col",
-    "rounded-lg",
+    getRadiusClass("lg"),
     "box-border", // Garantir box-sizing consistente
     "focus:outline-none",
     "focus:ring-2",
@@ -245,10 +246,10 @@ export default function NavbarItem({
             "flex",
             "items-center",
             "justify-center",
-            "px-1",
+            getSpacingClass("xs", "px"),
             "font-medium",
             "text-fg-inverse",
-            "rounded-full",
+            getRadiusClass("full"),
             sizeConfig.badge,
             BADGE_VARIANTS[badgeVariant],
           )}

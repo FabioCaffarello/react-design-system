@@ -5,6 +5,7 @@ import { Download, ArrowUpDown } from "lucide-react";
 import Table, { type TableColumn } from "../Table/Table";
 import Button from "../../primitives/Button/Button";
 import { getSpacingClass } from "../../tokens/spacing";
+import { getRadiusClass } from "../../tokens/radius";
 import type { TableAction } from "../Table/TableActions/TableActions";
 
 export type DataGridColumn<T = unknown> = TableColumn<T> & {
@@ -222,7 +223,7 @@ export default function DataGrid<
   };
 
   return (
-    <div className={`space-y-4 ${className}`}>
+    <div className={`${getSpacingClass("base", "space-y")} ${className}`}>
       {/* Toolbar */}
       {(exportable || groupable || toolbarActions) && (
         <div
@@ -234,10 +235,10 @@ export default function DataGrid<
           bg-surface-base
           border
           border-line-default
-          rounded-lg
+          ${getRadiusClass("lg")}
         `}
         >
-          <div className="flex items-center gap-2">
+          <div className={`flex items-center ${getSpacingClass("sm", "gap")}`}>
             {groupable && (
               <Button
                 variant="outline"
@@ -249,10 +250,12 @@ export default function DataGrid<
             )}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className={`flex items-center ${getSpacingClass("sm", "gap")}`}>
             {toolbarActions}
             {exportable && (
-              <div className="flex items-center gap-1">
+              <div
+                className={`flex items-center ${getSpacingClass("xs", "gap")}`}
+              >
                 {exportFormats.map((format) => (
                   <Button
                     key={format}

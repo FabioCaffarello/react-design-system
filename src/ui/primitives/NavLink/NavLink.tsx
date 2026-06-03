@@ -58,7 +58,6 @@ const navLinkVariants = cva(
         background: cn(
           "text-fg-primary",
           "hover:bg-surface-hover",
-          "rounded-md",
           getRadiusClass("md"),
           "focus:ring-line-brand",
         ),

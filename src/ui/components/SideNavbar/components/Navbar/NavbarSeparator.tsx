@@ -2,6 +2,7 @@
 
 import React from "react";
 import { cn } from "../../../../utils";
+import { getSpacingClass } from "../../../../tokens/spacing";
 import type { NavbarSeparatorProps } from "../../types";
 
 /**
@@ -40,7 +41,7 @@ export default function NavbarSeparator({
         "w-full",
         "h-px",
         "bg-line-default",
-        "my-2", // my-2 (8px) para consistência com gap-2 usado em outros lugares
+        getSpacingClass("sm", "my"), // my-2 (8px) para consistência com gap-2 usado em outros lugares
         "flex-shrink-0", // Prevenir que separator encolha
         className,
       )}

@@ -230,7 +230,7 @@ const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(
             "flex-1",
             "bg-transparent",
             "border-0",
-            "p-0",
+            getSpacingClass("none", "p"),
             "text-inherit",
             "text-left",
             "cursor-pointer",

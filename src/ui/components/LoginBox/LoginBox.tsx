@@ -28,15 +28,15 @@ export default function LoginBox({
           e.preventDefault();
           if (props.onSubmit) props.onSubmit(e);
         }}
-        className={cn("space-y-4", props.className)}
+        className={cn(getSpacingClass("base", "space-y"), props.className)}
       >
-        <div className="space-y-2">
+        <div className={getSpacingClass("sm", "space-y")}>
           <Label htmlFor="login-email" variant="required">
             Your email
           </Label>
           <Input id="login-email" placeholder="myname@email.com" type="email" />
         </div>
-        <div className="space-y-2">
+        <div className={getSpacingClass("sm", "space-y")}>
           <Label htmlFor="login-password" variant="required">
             Your password
           </Label>

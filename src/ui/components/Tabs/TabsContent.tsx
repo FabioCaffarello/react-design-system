@@ -1,6 +1,7 @@
 "use client";
 
 import { useTabsContext } from "./TabsContext";
+import { getSpacingClass } from "../../tokens/spacing";
 import type { HTMLAttributes, ReactNode } from "react";
 
 export interface TabsContentProps extends HTMLAttributes<HTMLDivElement> {
@@ -38,7 +39,7 @@ export function TabsContent({
       aria-labelledby={`tab-${value}`}
       hidden={!isActive}
       className={`
-        mt-2
+        ${getSpacingClass("sm", "mt")}
         focus:outline-none
         ${className}
       `}

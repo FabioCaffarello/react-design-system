@@ -44,7 +44,7 @@ export default function Skeleton({
     text: "h-4",
     card: "h-32",
     list: "h-12",
-    circle: "rounded-full",
+    circle: getRadiusClass("full"),
   };
 
   const classes = cn(...baseClasses, variantClasses[variant], className);

@@ -40,7 +40,7 @@ const AutocompleteOption = forwardRef<HTMLDivElement, AutocompleteOptionProps>(
         className={`
           flex
           items-center
-          gap-2
+          ${getSpacingClass("sm", "gap")}
           ${getSpacingClass("sm", "px")}
           ${getSpacingClass("sm", "py")}
           text-sm

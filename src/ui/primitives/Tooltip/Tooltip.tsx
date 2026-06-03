@@ -17,6 +17,7 @@ import {
 } from "react";
 import { getBorderWidthClass } from "../../tokens/borders";
 import { getRadiusClass } from "../../tokens/radius";
+import { getShadowClass } from "../../tokens/shadows";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getTypographySize } from "../../tokens/typography";
 import { getZIndexClass } from "../../tokens/z-index";
@@ -158,7 +159,7 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(
       "text-fg-inverse",
       "bg-surface-inverse",
       getRadiusClass("md"),
-      "shadow-lg",
+      getShadowClass("lg"),
       "whitespace-nowrap",
     ),
     {

@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { type Toast as ToastType } from "../../providers/ToastContext";
 import { getRadiusClass, getShadowClass, getZIndexClass } from "../../tokens";
+import { getSpacingClass } from "../../tokens/spacing";
 import Button from "../../primitives/Button/Button";
 
 export interface ToastProps
@@ -114,8 +115,8 @@ export function Toast({
     >
       <div
         className={`
-          flex items-start gap-3
-          p-4
+          flex items-start ${getSpacingClass("md", "gap")}
+          ${getSpacingClass("base", "p")}
           bg-surface-overlay
           ${getRadiusClass("lg")}
           ${getShadowClass("lg")}
@@ -132,12 +133,14 @@ export function Toast({
         <div className="flex-1 min-w-0">
           <div className="font-medium text-fg-primary">{toast.title}</div>
           {toast.description && (
-            <div className="mt-1 text-sm text-fg-secondary">
+            <div
+              className={`${getSpacingClass("xs", "mt")} text-sm text-fg-secondary`}
+            >
               {toast.description}
             </div>
           )}
           {toast.action && (
-            <div className="mt-3">
+            <div className={getSpacingClass("md", "mt")}>
               <Button
                 variant="outline"
                 size="sm"

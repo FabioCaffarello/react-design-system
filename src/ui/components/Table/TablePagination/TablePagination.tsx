@@ -3,6 +3,7 @@
 import type { HTMLAttributes } from "react";
 import { Button, Select, Text } from "../../../primitives";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { getSpacingClass } from "../../../tokens/spacing";
 
 export interface TablePaginationProps extends HTMLAttributes<HTMLDivElement> {
   page: number;
@@ -74,7 +75,7 @@ export default function TablePagination({
 
   return (
     <div
-      className={`flex items-center justify-between px-4 py-3 bg-surface-base border-t border-line-default sm:px-6 ${className}`}
+      className={`flex items-center justify-between ${getSpacingClass("base", "px")} ${getSpacingClass("md", "py")} bg-surface-base border-t border-line-default sm:${getSpacingClass("lg", "px")} ${className}`}
       {...props}
     >
       <div className="flex flex-1 justify-between sm:hidden">
@@ -107,9 +108,11 @@ export default function TablePagination({
           </div>
         )}
 
-        <div className="flex items-center gap-4">
+        <div className={`flex items-center ${getSpacingClass("base", "gap")}`}>
           {showPageSizeSelector && (
-            <div className="flex items-center gap-2">
+            <div
+              className={`flex items-center ${getSpacingClass("sm", "gap")}`}
+            >
               <Text as="span" className="text-sm text-fg-secondary">
                 Show:
               </Text>
@@ -131,7 +134,10 @@ export default function TablePagination({
             </div>
           )}
 
-          <nav className="flex items-center gap-1" aria-label="Pagination">
+          <nav
+            className={`flex items-center ${getSpacingClass("xs", "gap")}`}
+            aria-label="Pagination"
+          >
             <Button
               variant="ghost"
               size="sm"
@@ -152,7 +158,9 @@ export default function TablePagination({
               <ChevronLeft className="h-4 w-4" />
             </Button>
 
-            <div className="flex items-center gap-1">
+            <div
+              className={`flex items-center ${getSpacingClass("xs", "gap")}`}
+            >
               {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                 let pageNum: number;
                 if (totalPages <= 5) {

@@ -398,7 +398,7 @@ export default function FileUpload({
                   e.stopPropagation();
                   handleRemove(fileUpload.id);
                 }}
-                className="h-auto p-1"
+                className={`h-auto ${getSpacingClass("xs", "p")}`}
                 aria-label={`Remove ${fileUpload.file.name}`}
               >
                 <X className="h-4 w-4" />

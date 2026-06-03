@@ -92,7 +92,7 @@ const buttonVariants = cva(
           "text-fg-primary",
           "hover:bg-surface-hover",
           "focus:ring-line-focus",
-          "p-0",
+          getSpacingClass("none", "p"),
         ),
       },
       size: {
@@ -121,17 +121,17 @@ const buttonVariants = cva(
       {
         variant: "iconOnly",
         size: "sm",
-        class: cn("h-8", "w-8", "p-0"),
+        class: cn("h-8", "w-8", getSpacingClass("none", "p")),
       },
       {
         variant: "iconOnly",
         size: "md",
-        class: cn("h-10", "w-10", "p-0"),
+        class: cn("h-10", "w-10", getSpacingClass("none", "p")),
       },
       {
         variant: "iconOnly",
         size: "lg",
-        class: cn("h-12", "w-12", "p-0"),
+        class: cn("h-12", "w-12", getSpacingClass("none", "p")),
       },
     ],
     defaultVariants: {
@@ -156,7 +156,7 @@ function IconWrapper({
 
   return (
     <span
-      className={`inline-flex items-center ${position === "left" ? "mr-0" : "ml-0"}`}
+      className={`inline-flex items-center ${position === "left" ? getSpacingClass("none", "mr") : getSpacingClass("none", "ml")}`}
     >
       {children}
     </span>
@@ -285,9 +285,13 @@ const Button = memo(
         {isLoading ? (
           <>
             {displayLoadingIcon}
-            {loadingText && <span className="ml-2">{loadingText}</span>}
+            {loadingText && (
+              <span className={getSpacingClass("sm", "ml")}>{loadingText}</span>
+            )}
             {!loadingText && children && (
-              <span className="ml-2 opacity-0">{children}</span>
+              <span className={`${getSpacingClass("sm", "ml")} opacity-0`}>
+                {children}
+              </span>
             )}
           </>
         ) : (

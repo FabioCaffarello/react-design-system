@@ -28,7 +28,7 @@ If unsure where something goes: composed of other UI → `components/`; pure str
 
 ## Hard rules (enforced — see .claude/rules/)
 
-- Every component ships with: `.tsx`, `.test.tsx`, `.stories.tsx`, `index.ts`.
+- Every component ships with: `.tsx`, `.test.tsx`, `.accessibility.test.tsx`, `.stories.tsx`, `index.ts`. The a11y suite is a separate file from the behavior test — it mirrors `Header.accessibility.test.tsx` as the canonical scaffold (ARIA Labels and Roles / Keyboard Navigation / Focus Management / Screen Reader Support). Enforced by `scripts/validate-file-set.mjs` in pre-push and CI.
 - Zero `any`. Props typed explicitly and exported.
 - Styling via tokens/Tailwind only. No hardcoded hex/px in components.
 - WCAG 2.1 AA: keyboard nav, ARIA, focus management.
@@ -41,7 +41,7 @@ This project has a canonical semantic color vocabulary established in Phase 7 (s
 
 Color discipline is enforced automatically by the `ds/no-raw-color-classes` ESLint rule (`eslint-rules/`) — it runs in pre-commit, pre-push, and CI, and blocks any raw Tailwind color class or `bg-[var(--color-*)]` arbitrary syntax in shipped component source. See `.claude/rules/colors.md` for the exception-comment escape valve (Principle 3).
 
-Same discipline for tokens generally: `.claude/rules/tokens.md`.
+The same enforcement shape extends to **radius** (`ds/no-raw-radius-classes`), **shadow** (`ds/no-raw-shadow-classes`), and **spacing** (`ds/no-raw-spacing-classes`): raw `rounded-md` / `shadow-md` / `p-4` etc. in production source are blocked at the `error` level; use `getRadiusClass(scale)` / `getShadowClass(scale)` / `getSpacingClass(scale, direction)` from `src/ui/tokens/`. Same `// exception: <reason>` escape valve. See `.claude/rules/tokens.md` for the full enforcement table.
 
 ## Commands
 
