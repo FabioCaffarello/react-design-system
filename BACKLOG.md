@@ -1074,7 +1074,7 @@ A distinção que os KPIs/roles supostamente "preservavam" não se perde de verd
 | CATEGORIAS paralelas sem valência | NEUTRALIZAR (label distingue) | Admin/User role pills, KPI Users/Revenue, Stack Item 1/2/3       |
 | ESTADO com valência               | FICA status                   | Active (positive operational), Error, Warning, Success-confirmed |
 | BRAND identity                    | FICA brand-\*                 | Primary CTA, brand-tinted avatar, brand emphasis                 |
-| STATUS message genuíno            | FICA status-bg + status-fg    | "✓ Form submitted", "⚠ Maximum reached", "✗ Error: ..."         |
+| STATUS message genuíno            | FICA status-bg + status-fg    | "✓ Form submitted", "⚠ Maximum reached", "✗ Error: ..."          |
 
 Aplicar o mesmo PRINCÍPIO a casos diferentes (categoria neutraliza, estado fica) é a consistência REAL — não tratar tudo igual por "coerência".
 

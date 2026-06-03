@@ -21,8 +21,10 @@ export type BadgeVariant =
 export type BadgeSize = "sm" | "md" | "lg";
 export type BadgeStyle = "solid" | "outline";
 
-export interface BadgeProps
-  extends Omit<HTMLAttributes<HTMLSpanElement>, "style"> {
+export interface BadgeProps extends Omit<
+  HTMLAttributes<HTMLSpanElement>,
+  "style"
+> {
   variant?: BadgeVariant;
   size?: BadgeSize;
   style?: BadgeStyle;

@@ -78,8 +78,9 @@ const TEXT_COLOR_CLASSES: Record<
   },
 };
 
-interface Props<T extends ElementType>
-  extends HTMLAttributes<JSX.IntrinsicElements> {
+interface Props<
+  T extends ElementType,
+> extends HTMLAttributes<JSX.IntrinsicElements> {
   variant?:
     | "heading"
     | "list"

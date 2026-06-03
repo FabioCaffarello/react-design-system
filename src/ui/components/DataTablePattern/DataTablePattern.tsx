@@ -9,8 +9,10 @@ import { getSpacingClass } from "../../tokens/spacing";
 import type { TableColumn } from "../../components/Table/TableTypes";
 
 // Extended TableColumn type for DataTablePattern (supports accessor and header for backward compatibility)
-export interface DataTableColumn<T = unknown>
-  extends Omit<TableColumn<T>, "key" | "label"> {
+export interface DataTableColumn<T = unknown> extends Omit<
+  TableColumn<T>,
+  "key" | "label"
+> {
   key?: keyof T | string;
   label?: string;
   // Legacy support

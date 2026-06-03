@@ -16,8 +16,10 @@ import {
 import { getRadiusClass } from "../../tokens/radius";
 import { cn } from "../../utils";
 
-export interface CollapsibleProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
+export interface CollapsibleProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "onChange"
+> {
   children: ReactNode;
   trigger: ReactNode; // Content for the toggle button
   defaultOpen?: boolean;

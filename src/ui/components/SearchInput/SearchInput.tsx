@@ -8,8 +8,10 @@ import Button from "../../primitives/Button/Button";
 import { cn } from "../../utils";
 import { getSpacingClass } from "../../tokens";
 
-export interface SearchInputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "onChange"> {
+export interface SearchInputProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "size" | "onChange"
+> {
   onSearch?: (value: string) => void;
   onClear?: () => void;
   loading?: boolean;

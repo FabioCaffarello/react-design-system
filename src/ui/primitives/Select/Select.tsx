@@ -68,8 +68,10 @@ export interface SelectOptionGroup {
   options: SelectOption[];
 }
 
-export interface SelectProps
-  extends Omit<SelectHTMLAttributes<HTMLSelectElement>, "children" | "size"> {
+export interface SelectProps extends Omit<
+  SelectHTMLAttributes<HTMLSelectElement>,
+  "children" | "size"
+> {
   options: SelectOption[];
   optionGroups?: SelectOptionGroup[];
   placeholder?: string;
