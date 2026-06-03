@@ -5,6 +5,7 @@ import { ChevronDown } from "lucide-react";
 import { useSideNavbarStateRequired } from "../contexts/SideNavbarStateContext";
 import { useSideNavbarThemeRequired } from "../contexts/SideNavbarThemeContext";
 import Collapsible from "../../../primitives/Collapsible/Collapsible";
+import { getSpacingClass } from "../../../tokens/spacing";
 import { getSpacingClass } from "../../../tokens";
 
 export interface SideNavbarGroupProps
@@ -142,7 +143,9 @@ export default function SideNavbarGroup({
           aria-expanded={!isCollapsed}
           aria-controls={`group-content-${id}`}
         >
-          <div className="flex items-center gap-2 min-w-0">
+          <div
+            className={`flex items-center ${getSpacingClass("sm", "gap")} min-w-0`}
+          >
             {icon && (
               <span className="flex-shrink-0 text-fg-primary">{icon}</span>
             )}
@@ -151,10 +154,12 @@ export default function SideNavbarGroup({
             </span>
           </div>
 
-          <div className="flex items-center gap-1 flex-shrink-0">
+          <div
+            className={`flex items-center ${getSpacingClass("xs", "gap")} flex-shrink-0`}
+          >
             {actions && (
               <div
-                className="flex items-center gap-1"
+                className={`flex items-center ${getSpacingClass("xs", "gap")}`}
                 onClick={(e) => e.stopPropagation()}
               >
                 {actions}

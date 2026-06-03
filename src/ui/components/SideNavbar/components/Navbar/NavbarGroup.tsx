@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { cn } from "../../../../utils";
 import { getSpacingClass } from "../../../../tokens/spacing";
+import { getSpacingClass } from "../../../../tokens/spacing";
 import type { NavbarGroupProps } from "../../types";
 
 /**
@@ -68,9 +69,7 @@ export function NavbarGroup({
         </div>
       )}
       {!isCollapsed && (
-        <div className="flex flex-col gap-2">
-          {" "}
-          {/* gap-2 para consistência com outros componentes */}
+        <div className={`flex flex-col ${getSpacingClass("sm", "gap")}`}>
           {children}
         </div>
       )}

@@ -194,7 +194,7 @@ export default function DrawerContent({
                 variant="ghost"
                 size="sm"
                 onClick={closeDrawer}
-                className="h-auto p-1"
+                className={`h-auto ${getSpacingClass("xs", "p")}`}
                 aria-label="Close drawer"
               >
                 <X className="h-4 w-4" />
