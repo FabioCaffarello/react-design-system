@@ -14,21 +14,24 @@ globs: src/ui/tokens/**/*.*, src/styles/**/*.css
 
 ## Enforcement (ESLint)
 
-Three custom ESLint rules (in `eslint-rules/`, exported as `eslint-plugin-ds-tokens`) block raw Tailwind token classes in shipped component source. They run in pre-commit (lint-staged), pre-push (full `npm run lint`), and CI (the `lint` job in `.github/workflows/ci.yml`):
+Four custom ESLint rules (in `eslint-rules/`, exported as `eslint-plugin-ds-tokens`) block raw Tailwind token classes in shipped component source. They run in pre-commit (lint-staged), pre-push (full `npm run lint`), and CI (the `lint` job in `.github/workflows/ci.yml`):
 
-- `ds/no-raw-color-classes` — blocks raw Tailwind color classes (`text-gray-*`, `bg-white`, etc.) and `bg-[var(--color-*)]` arbitrary syntax. Use semantic role classes (`text-fg-*`, `bg-surface-*`, …). See `.claude/rules/colors.md` for vocabulary and the exception-comment escape valve (Principle 3).
-- `ds/no-raw-radius-classes` — blocks `rounded-(none|sm|md|lg|xl|2xl|3xl|full)`. Use `getRadiusClass(scale)` from `src/ui/tokens/radius.ts`. The bare `rounded` class is intentionally NOT flagged (would false-positive on Avatar's `variant: "rounded"` type union literals). Side-specific radii (`rounded-l-md`, etc.) are not covered by the token getter and remain raw.
-- `ds/no-raw-shadow-classes` — blocks `shadow-(none|sm|md|lg|xl|2xl|inner)`. Use `getShadowClass(scale)` from `src/ui/tokens/shadows.ts`. The bare `shadow` class and prefixed forms like `drop-shadow-md` are intentionally NOT flagged (no equivalent in the getter; `drop-shadow-*` is a different CSS property).
+- `ds/no-raw-color-classes` — blocks raw Tailwind color classes (`text-gray-*`, `bg-white`, etc.) and `bg-[var(--color-*)]` arbitrary syntax. Use semantic role classes (`text-fg-*`, `bg-surface-*`, …). See `.claude/rules/colors.md` for vocabulary and the exception-comment escape valve (Principle 3). **Level: error.**
+- `ds/no-raw-radius-classes` — blocks `rounded-(none|sm|md|lg|xl|2xl|3xl|full)`. Use `getRadiusClass(scale)` from `src/ui/tokens/radius.ts`. The bare `rounded` class is intentionally NOT flagged (would false-positive on Avatar's `variant: "rounded"` type union literals). Side-specific radii (`rounded-l-md`, etc.) are not covered by the token getter and remain raw. **Level: error.**
+- `ds/no-raw-shadow-classes` — blocks `shadow-(none|sm|md|lg|xl|2xl|inner)`. Use `getShadowClass(scale)` from `src/ui/tokens/shadows.ts`. The bare `shadow` class and prefixed forms like `drop-shadow-md` are intentionally NOT flagged (no equivalent in the getter; `drop-shadow-*` is a different CSS property). **Level: error.**
+- `ds/no-raw-spacing-classes` — blocks raw spacing classes (`p-N`, `m-N`, `px-N`, `mx-N`, `pt-N`, `mt-N`, …, `gap-N`, `gap-x-N`, `gap-y-N`, `space-y-N`) where `N` is a scale value the getter exposes (`0|0.5|1|1.5|2|2.5|3|3.5|4|6|8|10|12|16|20|24`). Use `getSpacingClass(scale, direction)` from `src/ui/tokens/spacing.ts`. **Level: warn (transitional — see below).** Scales outside the getter's surface (`p-5`, `p-7`, `p-32`, …) are intentionally NOT flagged — the token-system response is to extend the getter (Principle 9 in `colors.md`) or use the `// exception` escape valve, not to expand the rule's allow-list. `space-x-N` is NOT in scope: `getSpacingClass` has no `space-x` direction yet, so flagging it would force migrations to a non-existent API. Negative margin (`-mt-N`) is excluded by lookbehind.
 
-All three rules share the same exception comment shapes (within ~15 lines above the offending literal):
+**Why spacing ships at warn level.** The radius and shadow rules landed at `error` with all violations (~18 each) migrated atomically. The spacing rule had ~175 sites in violation at first introduction — flipping it straight to `error` would block every pre-push until the bulk migration completes. Phased PRs (W5.1.2 / W5.1.3 / …) shrink the warning count to zero, at which point the rule flips to `error` in lockstep. New code that uses raw spacing classes still shows a warning at write-time, so the visibility is intact even before the floor is reached. This is the deliberate transitional shape, not an oversight; when `npm run lint` reports near-zero `no-raw-spacing-classes` warnings, the next PR should flip the rule to `error`.
+
+All four rules share the same exception comment shapes (within ~15 lines above the offending literal):
 
 - `// exception: <reason>` — generic Principle 3 marker.
 - `// micro-z: <reason>` — z-index inline/className pitfall (Phase 8; color rule only, kept for compat).
 - `// <the-exact-class>: <reason>` — names the class being excused.
 
-Token files themselves (`src/ui/tokens/radius.ts`, `src/ui/tokens/shadows.ts`, `src/ui/tokens/TokenVisualizations.tsx`) are exempt by `eslint.config.js` because they legitimately contain literal class names as data (the `tailwind` field of each token).
+Token files themselves (`src/ui/tokens/radius.ts`, `src/ui/tokens/shadows.ts`, `src/ui/tokens/spacing.ts`, `src/ui/tokens/TokenVisualizations.tsx`) are exempt by `eslint.config.js` because they legitimately contain literal class names as data (the `tailwind` field of each token). `src/ui/tokens/sidebar.ts` is also exempt from the spacing rule specifically — it maps domain-specific composite tokens (item padding, nested-indent steps) to Tailwind strings, and two of its entries (`nestedIndentLevel3: "pl-14"` for 56px, plus the dynamic `pl-${4 + level * 4}` in `getNestedIndentClass`) have no counterpart in `getSpacingClass`'s scale. A follow-up PR can adopt the getter once the spacing scale extends to cover those steps.
 
-Stories (`*.stories.tsx`) are intentionally out of scope for raw-class enforcement pending a triage phase. Spacing tokens (`p-*`, `gap-*`, `m-*`) are not yet covered by an ESLint rule — migration is tracked as a follow-up phased work-item; use `getSpacingClass(scale, axis)` from `src/ui/tokens/spacing.ts` for new code.
+Stories (`*.stories.tsx`) are intentionally out of scope for raw-class enforcement pending a triage phase.
 
 ## CSS pipeline (Tailwind v4)
 
