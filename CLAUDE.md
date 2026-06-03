@@ -28,7 +28,7 @@ If unsure where something goes: composed of other UI → `components/`; pure str
 
 ## Hard rules (enforced — see .claude/rules/)
 
-- Every component ships with: `.tsx`, `.test.tsx`, `.stories.tsx`, `index.ts`.
+- Every component ships with: `.tsx`, `.test.tsx`, `.accessibility.test.tsx`, `.stories.tsx`, `index.ts`. The a11y suite is a separate file from the behavior test — it mirrors `Header.accessibility.test.tsx` as the canonical scaffold (ARIA Labels and Roles / Keyboard Navigation / Focus Management / Screen Reader Support). Enforced by `scripts/validate-file-set.mjs` in pre-push and CI.
 - Zero `any`. Props typed explicitly and exported.
 - Styling via tokens/Tailwind only. No hardcoded hex/px in components.
 - WCAG 2.1 AA: keyboard nav, ARIA, focus management.

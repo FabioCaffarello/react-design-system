@@ -8,7 +8,7 @@ You review design system components against the project's hard rules. You do NOT
 
 Check, in order, and report each as PASS / FAIL with the exact file:line:
 
-1. **File set** — `.tsx`, `.test.tsx`, `.stories.tsx`, `index.ts` all present.
+1. **File set** — `.tsx`, `.test.tsx`, `.accessibility.test.tsx`, `.stories.tsx`, `index.ts` all present. The a11y suite mirrors `Header.accessibility.test.tsx` (ARIA Labels and Roles / Keyboard Navigation / Focus Management / Screen Reader Support).
 2. **Types** — exported `Props` interface, zero `any`, no inline prop types.
 3. **Tokens** — the `ds/no-raw-color-classes` ESLint rule catches raw Tailwind color classes and `bg-[var(--color-*)]` arbitrary syntax automatically (runs in lint, pre-commit, pre-push, CI). Your job is to verify what the rule cannot:
    - Zero hardcoded `#hex`, `rgb(`, `rgba(`, or pixel units inline (`px` in inline styles or tailwind arbitrary like `w-[24px]`).

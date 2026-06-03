@@ -15,14 +15,17 @@ src/ui/
   utils/        # cn, cva, variants, css-variables
 ```
 
-Every component directory carries four files and nothing else:
+Every component directory carries five files and nothing else:
 
 ```
 ComponentName/
-  ComponentName.tsx          # implementation
-  ComponentName.test.tsx     # vitest + testing-library
-  ComponentName.stories.tsx  # storybook
-  index.ts                   # single explicit export
+  ComponentName.tsx                    # implementation
+  ComponentName.test.tsx               # vitest + testing-library (behavior)
+  ComponentName.accessibility.test.tsx # vitest + testing-library (a11y;
+                                       # ARIA / keyboard / focus / SR — mirror
+                                       # Header.accessibility.test.tsx)
+  ComponentName.stories.tsx            # storybook
+  index.ts                             # single explicit export
 ```
 
 ## The three layers
@@ -100,7 +103,7 @@ dist/
 ## The rules CLAUDE.md enforces
 
 - One source of visual values (tokens). No raw hex/px in a component.
-- A new component ships `.tsx` + `.test.tsx` + `.stories.tsx` + `index.ts`.
+- A new component ships `.tsx` + `.test.tsx` + `.accessibility.test.tsx` + `.stories.tsx` + `index.ts`.
 - Zero `any`. Props are typed and exported as `ComponentNameProps`.
 - WCAG 2.1 AA: keyboard nav, ARIA, focus ring.
 - Coverage ≥ 80% per component.
