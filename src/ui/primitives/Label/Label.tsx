@@ -55,7 +55,7 @@ const Label = memo(
         ),
         optional: cn(
           "after:content-['(optional)']",
-          "after:ml-1", // xs spacing = 1 (4px) - note: test expects ml-1, not ml-0.5
+          `after:${getSpacingClass("xs", "ml")}`,
           "after:text-fg-tertiary",
           "after:font-normal",
         ),

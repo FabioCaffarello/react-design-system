@@ -181,7 +181,7 @@ const Textarea = memo(
             htmlFor={id}
             className={cn(
               "block",
-              "mb-1",
+              getSpacingClass("xs", "mb"),
               getTypographySize("label"),
               "font-medium",
               "text-fg-primary",
