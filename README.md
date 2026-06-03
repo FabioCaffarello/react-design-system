@@ -90,7 +90,7 @@ Do not reintroduce atoms/molecules/organisms/templates/patterns layers. Three la
 
 ## Hard rules (enforced via `.claude/rules/`)
 
-- Every component ships with `.tsx`, `.test.tsx`, `.stories.tsx`, `index.ts`.
+- Every component ships with `.tsx`, `.test.tsx`, `.accessibility.test.tsx`, `.stories.tsx`, `index.ts`.
 - Zero `any`. Props typed explicitly and exported.
 - Styling via tokens / Tailwind only. No hardcoded hex / px in components.
 - WCAG 2.1 AA: keyboard navigation, ARIA, focus management.
