@@ -338,10 +338,10 @@ structural property of the 4-level ordered hierarchy, not a token bug.
 
 **Sites that carry this exception.** Four sites use `fg-quaternary` in the _pending-sequence-marker_ role on a light background where the contrast fails AA — these are the sites that carry the exception (and the `data-marker="pending"` attribute that anchors the directed suppression):
 
-- `src/ui/components/Stepper/Stepper.tsx:140` (horizontal pending bubble)
-- `src/ui/components/Stepper/Stepper.tsx:255` (vertical pending bubble)
-- `src/ui/components/Timeline/Timeline.tsx:65` (horizontal pending dot)
-- `src/ui/components/Timeline/Timeline.tsx:154` (vertical pending dot)
+- `src/ui/components/Stepper/Stepper.tsx:162` (horizontal pending bubble)
+- `src/ui/components/Stepper/Stepper.tsx:289` (vertical pending bubble)
+- `src/ui/components/Timeline/Timeline.tsx:86` (horizontal pending dot)
+- `src/ui/components/Timeline/Timeline.tsx:184` (vertical pending dot)
 
 **Other uses of `fg-quaternary` that do not fail AA in their context do not need this exception nor the `data-marker` attribute.** Example: the SideNavbar collapsible-group chevron at `src/ui/tokens/sidebar.ts:52` (consumed by `SidebarContent.tsx`) uses `fg-quaternary` over a tinted sidebar surface where the contrast passes empirically — no current baseline story flags it. The list above is "sites that carry the failing case", not "every occurrence of the token". Before adopting this exception, a new consumer should first check whether its actual rendering context fails AA — if not, the exception (and the suppression scaffolding) is unnecessary.
 
