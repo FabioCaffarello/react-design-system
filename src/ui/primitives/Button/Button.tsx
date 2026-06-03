@@ -18,8 +18,10 @@ export type ButtonVariant =
   | "iconOnly";
 export type ButtonSize = "sm" | "md" | "lg";
 
-export interface ButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "as"> {
+export interface ButtonProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  "as"
+> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   isLoading?: boolean;

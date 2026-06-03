@@ -6,8 +6,10 @@ import { useDatePickerContext } from "./DatePickerContext";
 import Input from "../../primitives/Input/Input";
 import Button from "../../primitives/Button/Button";
 
-export interface DatePickerInputProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, "onChange" | "onFocus"> {
+export interface DatePickerInputProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "onChange" | "onFocus"
+> {
   placeholder?: string;
   format?: string; // Date format string (e.g., 'MM/dd/yyyy')
   showCalendarButton?: boolean;

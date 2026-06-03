@@ -4,8 +4,9 @@ import type { HTMLAttributes } from "react";
 import { getSpacingClass } from "../../tokens/spacing";
 import type { TableColumn } from "./TableTypes";
 
-export interface TableCellProps<T = unknown>
-  extends HTMLAttributes<HTMLTableCellElement> {
+export interface TableCellProps<
+  T = unknown,
+> extends HTMLAttributes<HTMLTableCellElement> {
   column: TableColumn<T>;
   row: T;
 }

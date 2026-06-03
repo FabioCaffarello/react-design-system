@@ -61,8 +61,10 @@ export type InputSize = "sm" | "md" | "lg";
 export type InputVariant = "default" | "outlined" | "filled";
 export type InputState = "default" | "error" | "success";
 
-export interface InputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
+export interface InputProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "size"
+> {
   label?: ReactNode;
   error?: boolean;
   success?: boolean;

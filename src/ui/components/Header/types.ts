@@ -23,8 +23,10 @@ export type HeaderMaxWidth = "sm" | "md" | "lg" | "xl" | "full";
  * @see RFC-003: Header Composition Pattern (APPROVED)
  * @see ADR-002: Header + SideNavbar Compatibility (ACCEPTED)
  */
-export interface HeaderProps
-  extends Omit<HTMLAttributes<HTMLElement>, "children"> {
+export interface HeaderProps extends Omit<
+  HTMLAttributes<HTMLElement>,
+  "children"
+> {
   /**
    * Header content (uses compound components pattern)
    *

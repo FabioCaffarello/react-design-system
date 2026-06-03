@@ -13,8 +13,7 @@ import Button from "../../primitives/Button/Button";
 import { getRadiusClass } from "../../tokens";
 import { getSpacingClass } from "../../tokens/spacing";
 
-export interface DatePickerCalendarProps
-  extends HTMLAttributes<HTMLDivElement> {
+export interface DatePickerCalendarProps extends HTMLAttributes<HTMLDivElement> {
   month?: Date; // Current month to display
   onMonthChange?: (month: Date) => void;
 }

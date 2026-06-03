@@ -7,8 +7,10 @@ import { useSideNavbarThemeRequired } from "../contexts/SideNavbarThemeContext";
 import Collapsible from "../../../primitives/Collapsible/Collapsible";
 import { getSpacingClass } from "../../../tokens/spacing";
 
-export interface SideNavbarGroupProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
+export interface SideNavbarGroupProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "title"
+> {
   /**
    * Unique identifier for the group
    */

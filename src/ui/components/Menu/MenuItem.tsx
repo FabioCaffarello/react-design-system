@@ -6,8 +6,10 @@ import { getSpacingClass } from "../../tokens/spacing";
 import { getTypographySize } from "../../tokens/typography";
 import { useMenuContext } from "./MenuContext";
 
-export interface MenuItemProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, "onClick"> {
+export interface MenuItemProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "onClick"
+> {
   children: ReactNode;
   icon?: ReactNode;
   rightIcon?: ReactNode;

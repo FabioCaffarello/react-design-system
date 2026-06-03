@@ -6,8 +6,10 @@ import { getTypographyClasses } from "../../tokens/typography";
 import { getSpacingClass } from "../../tokens/spacing";
 import { cn } from "../../utils";
 
-export interface RadioProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
+export interface RadioProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "type"
+> {
   label?: ReactNode;
   error?: boolean;
   /**

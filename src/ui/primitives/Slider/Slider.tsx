@@ -15,8 +15,10 @@ import { cn, cva } from "../../utils";
 export type SliderVariant = "single" | "range";
 export type SliderSize = "sm" | "md" | "lg";
 
-export interface SliderProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, "onChange" | "defaultValue"> {
+export interface SliderProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "onChange" | "defaultValue"
+> {
   value?: number | [number, number];
   defaultValue?: number | [number, number];
   min?: number;

@@ -14,8 +14,10 @@ import { cn } from "../../utils";
 
 export type SwitchSize = "sm" | "md" | "lg";
 
-export interface SwitchProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
+export interface SwitchProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "size" | "type"
+> {
   size?: SwitchSize;
   label?: string;
   /**

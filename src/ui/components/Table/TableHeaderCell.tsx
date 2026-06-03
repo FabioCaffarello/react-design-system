@@ -10,8 +10,7 @@ import { useTableContext } from "./TableContext";
 import { getSpacingClass } from "../../tokens/spacing";
 import type { TableColumn } from "./TableTypes";
 
-export interface TableHeaderCellProps
-  extends HTMLAttributes<HTMLTableCellElement> {
+export interface TableHeaderCellProps extends HTMLAttributes<HTMLTableCellElement> {
   column: TableColumn;
   resizable?: boolean;
   width?: number;
