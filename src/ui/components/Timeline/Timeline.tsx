@@ -101,7 +101,7 @@ export default function Timeline({
                     className={`
                       w-full
                       h-0.5
-                      mt-2
+                      ${getSpacingClass("sm", "mt")}
                       ${status === "completed" ? "bg-success" : "bg-line-emphasis"}
                     `}
                   />
@@ -109,10 +109,12 @@ export default function Timeline({
 
                 {/* Content */}
                 <div
-                  className={`mt-4 text-center ${getSpacingClass("base", "px")}`}
+                  className={`${getSpacingClass("base", "mt")} text-center ${getSpacingClass("base", "px")}`}
                 >
                   {item.timestamp && (
-                    <p className="text-xs text-fg-tertiary mb-1">
+                    <p
+                      className={`text-xs text-fg-tertiary ${getSpacingClass("xs", "mb")}`}
+                    >
                       {item.timestamp}
                     </p>
                   )}
@@ -120,11 +122,17 @@ export default function Timeline({
                     {item.title}
                   </h3>
                   {item.description && (
-                    <p className="text-xs text-fg-secondary mt-1">
+                    <p
+                      className={`text-xs text-fg-secondary ${getSpacingClass("xs", "mt")}`}
+                    >
                       {item.description}
                     </p>
                   )}
-                  {item.content && <div className="mt-2">{item.content}</div>}
+                  {item.content && (
+                    <div className={getSpacingClass("sm", "mt")}>
+                      {item.content}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -136,7 +144,7 @@ export default function Timeline({
 
   // Vertical orientation
   return (
-    <div className={`space-y-0 ${className}`}>
+    <div className={`${getSpacingClass("none", "space-y")} ${className}`}>
       {items.map((item, index) => {
         const status =
           item.status ||
@@ -148,7 +156,10 @@ export default function Timeline({
         const isLast = index === items.length - 1;
 
         return (
-          <div key={item.id} className="flex items-start gap-4">
+          <div
+            key={item.id}
+            className={`flex items-start ${getSpacingClass("base", "gap")}`}
+          >
             {/* Timeline Line & Icon */}
             <div className="flex flex-col items-center">
               <div
@@ -187,7 +198,7 @@ export default function Timeline({
                     w-0.5
                     flex-1
                     min-h-16
-                    mt-2
+                    ${getSpacingClass("sm", "mt")}
                     ${status === "completed" ? "bg-success" : "bg-line-emphasis"}
                   `}
                 />
@@ -195,9 +206,11 @@ export default function Timeline({
             </div>
 
             {/* Content */}
-            <div className="flex-1 pb-8">
+            <div className={`flex-1 ${getSpacingClass("xl", "pb")}`}>
               {item.timestamp && (
-                <p className="text-xs text-fg-tertiary mb-1">
+                <p
+                  className={`text-xs text-fg-tertiary ${getSpacingClass("xs", "mb")}`}
+                >
                   {item.timestamp}
                 </p>
               )}
@@ -211,11 +224,17 @@ export default function Timeline({
                 {item.title}
               </h3>
               {item.description && (
-                <p className="text-sm text-fg-secondary mt-1">
+                <p
+                  className={`text-sm text-fg-secondary ${getSpacingClass("xs", "mt")}`}
+                >
                   {item.description}
                 </p>
               )}
-              {item.content && <div className="mt-3">{item.content}</div>}
+              {item.content && (
+                <div className={getSpacingClass("md", "mt")}>
+                  {item.content}
+                </div>
+              )}
             </div>
           </div>
         );
