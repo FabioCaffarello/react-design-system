@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { getRadiusClass } from "../../tokens/radius";
 import { getShadowClass } from "../../tokens/shadows";
+import { getSpacingClass } from "../../tokens/spacing";
 import { getZIndexClass } from "../../tokens/z-index";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -108,10 +109,10 @@ export default function Modal({
     "bg-surface-overlay",
     getRadiusClass("lg"),
     getShadowClass("xl"),
-    "my-8",
+    getSpacingClass("xl", "my"),
     "mx-auto",
     modalSizeClasses[variant],
-    "p-6",
+    getSpacingClass("lg", "p"),
     className,
   ]
     .filter(Boolean)
@@ -130,7 +131,9 @@ export default function Modal({
       }}
     >
       <div className={overlayClasses.join(" ")} aria-hidden="true" />
-      <div className="flex min-h-full items-center justify-center p-4">
+      <div
+        className={`flex min-h-full items-center justify-center ${getSpacingClass("base", "p")}`}
+      >
         <div
           ref={modalRef}
           tabIndex={-1}
@@ -139,7 +142,9 @@ export default function Modal({
           {...props}
         >
           {title && (
-            <div className="flex justify-between items-center mb-4">
+            <div
+              className={`flex justify-between items-center ${getSpacingClass("base", "mb")}`}
+            >
               <h2
                 id="modal-title"
                 className="text-xl font-semibold text-fg-primary"
@@ -158,7 +163,9 @@ export default function Modal({
             </div>
           )}
           {!title && showCloseButton && (
-            <div className="flex justify-end mb-4">
+            <div
+              className={`flex justify-end ${getSpacingClass("base", "mb")}`}
+            >
               <button
                 onClick={onClose}
                 className="text-fg-tertiary hover:text-fg-secondary focus:outline-none"
@@ -168,9 +175,13 @@ export default function Modal({
               </button>
             </div>
           )}
-          <div className="mb-4">{children}</div>
+          <div className={getSpacingClass("base", "mb")}>{children}</div>
           {footer && (
-            <div className="flex justify-end gap-2 mt-4">{footer}</div>
+            <div
+              className={`flex justify-end ${getSpacingClass("sm", "gap")} ${getSpacingClass("base", "mt")}`}
+            >
+              {footer}
+            </div>
           )}
         </div>
       </div>
