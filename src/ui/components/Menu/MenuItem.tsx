@@ -77,7 +77,7 @@ const MenuItem = forwardRef<HTMLDivElement, MenuItemProps>(function MenuItem(
       className={`
           flex
           items-center
-          gap-2
+          ${getSpacingClass("sm", "gap")}
           ${getSpacingClass("sm", "px")}
           ${getSpacingClass("sm", "py")}
           ${getTypographySize("bodySmall")}

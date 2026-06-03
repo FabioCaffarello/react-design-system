@@ -1,6 +1,7 @@
 "use client";
 
 import { type HTMLAttributes, type ReactNode } from "react";
+import { getSpacingClass } from "../../tokens/spacing";
 
 export interface DialogHeaderProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
@@ -13,7 +14,7 @@ export function DialogHeader({
 }: DialogHeaderProps) {
   return (
     <div
-      className={`flex flex-col space-y-1.5 p-6 pb-4 ${className}`}
+      className={`flex flex-col ${getSpacingClass("1.5", "space-y")} ${getSpacingClass("lg", "p")} ${getSpacingClass("base", "pb")} ${className}`}
       {...props}
     >
       {children}

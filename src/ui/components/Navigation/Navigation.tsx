@@ -13,6 +13,7 @@ import React, { useMemo } from "react";
 import { NavLink } from "../../primitives/NavLink";
 import type { NavigationProps } from "./types";
 import { cn, cva } from "../../utils";
+import { getSpacingClass } from "../../tokens/spacing";
 
 /**
  * Navigation Variants using CVA
@@ -20,7 +21,7 @@ import { cn, cva } from "../../utils";
  */
 const navigationVariants = cva(
   // Base classes
-  cn("flex", "items-center", "gap-2"),
+  cn("flex", "items-center", getSpacingClass("sm", "gap")),
   {
     variants: {
       orientation: {
@@ -153,7 +154,8 @@ function NavigationWithPathname({
             disabled={item.disabled}
             variant={navLinkVariant}
             className={cn(
-              "flex items-center gap-2",
+              "flex items-center",
+              getSpacingClass("sm", "gap"),
               orientation === "vertical" && "w-full justify-start",
               item.className,
             )}

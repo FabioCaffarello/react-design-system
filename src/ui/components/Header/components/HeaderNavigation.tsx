@@ -11,6 +11,7 @@
 
 import React, { type ReactNode } from "react";
 import { cn } from "../../../utils";
+import { getSpacingClass } from "../../../tokens/spacing";
 
 export interface HeaderNavigationProps {
   /**
@@ -44,7 +45,8 @@ export function HeaderNavigation({
   return (
     <nav
       className={cn(
-        "flex-1 flex items-center justify-center gap-4",
+        "flex-1 flex items-center justify-center",
+        getSpacingClass("base", "gap"),
         "hidden md:flex", // Hidden on mobile, visible on desktop
         className,
       )}

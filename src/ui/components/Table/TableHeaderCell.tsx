@@ -7,6 +7,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import { useTableContext } from "./TableContext";
+import { getSpacingClass } from "../../tokens/spacing";
 import type { TableColumn } from "./TableTypes";
 
 export interface TableHeaderCellProps
@@ -118,7 +119,7 @@ export default function TableHeaderCell({
             ? "none"
             : undefined
       }
-      className={`px-6 py-3 text-left text-xs font-medium text-fg-tertiary uppercase tracking-wider ${
+      className={`${getSpacingClass("lg", "px")} ${getSpacingClass("md", "py")} text-left text-xs font-medium text-fg-tertiary uppercase tracking-wider ${
         isSortable
           ? "cursor-pointer hover:bg-surface-active focus:bg-surface-active focus:outline-none focus:ring-2 focus:ring-line-focus focus:ring-offset-2 select-none"
           : ""
@@ -131,7 +132,9 @@ export default function TableHeaderCell({
       }
       {...props}
     >
-      <div className="flex items-center gap-2 relative">
+      <div
+        className={`flex items-center ${getSpacingClass("sm", "gap")} relative`}
+      >
         <span>{column.label}</span>
         {isSorted && (
           <span className="text-fg-tertiary" aria-hidden="true">

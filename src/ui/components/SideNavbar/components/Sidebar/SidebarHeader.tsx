@@ -57,7 +57,7 @@ export default function SidebarHeader({
               className={`
                 ${getTypographyClasses("h4")}
                 text-fg-primary
-                m-0
+                ${getSpacingClass("none", "m")}
                 font-semibold
               `}
             >
@@ -69,8 +69,8 @@ export default function SidebarHeader({
               className={`
                 ${getTypographyClasses("bodySmall")}
                 text-fg-secondary
-                m-0
-                mt-1
+                ${getSpacingClass("none", "m")}
+                ${getSpacingClass("xs", "mt")}
               `}
             >
               {subtitle}

@@ -11,6 +11,7 @@
 
 import React, { type ReactNode } from "react";
 import { cn } from "../../../utils";
+import { getSpacingClass } from "../../../tokens/spacing";
 
 export interface HeaderActionsProps {
   /**
@@ -39,7 +40,13 @@ export interface HeaderActionsProps {
  */
 export function HeaderActions({ children, className }: HeaderActionsProps) {
   return (
-    <div className={cn("flex-shrink-0 flex items-center gap-2", className)}>
+    <div
+      className={cn(
+        "flex-shrink-0 flex items-center",
+        getSpacingClass("sm", "gap"),
+        className,
+      )}
+    >
       {children}
     </div>
   );

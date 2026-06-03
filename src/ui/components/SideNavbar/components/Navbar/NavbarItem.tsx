@@ -246,7 +246,7 @@ export default function NavbarItem({
             "flex",
             "items-center",
             "justify-center",
-            "px-1",
+            getSpacingClass("xs", "px"),
             "font-medium",
             "text-fg-inverse",
             getRadiusClass("full"),

@@ -7,6 +7,7 @@ import { useSideNavbarThemeRequired } from "../contexts/SideNavbarThemeContext";
 import { useSideNavbarConfigRequired } from "../contexts/SideNavbarConfigContext";
 import { getRadiusClass } from "../../../tokens/radius";
 import { getShadowClass } from "../../../tokens/shadows";
+import { getSpacingClass } from "../../../tokens/spacing";
 import { getZIndexClass, Z_INDEX_TOKENS } from "../../../tokens/z-index";
 import Tooltip from "../../../primitives/Tooltip/Tooltip";
 import type {
@@ -38,9 +39,9 @@ const positionClasses: Record<SideNavbarTogglePosition, string> = {
   // micro-z: toggle above sibling content in relative inside position
   inside: "relative z-10",
   // micro-z: toggle above sibling content in relative inside position
-  "navigation-top": "relative mt-2 mx-auto z-10",
+  "navigation-top": `relative ${getSpacingClass("sm", "mt")} mx-auto z-10`,
   // micro-z: toggle above sibling content in relative inside position
-  "navigation-bottom": "relative mt-auto mb-2 mx-auto z-10",
+  "navigation-bottom": `relative mt-auto ${getSpacingClass("sm", "mb")} mx-auto z-10`,
 };
 
 const variantClasses: Record<SideNavbarToggleVariant, string> = {

@@ -19,6 +19,7 @@ import { HeaderActions } from "./components/HeaderActions";
 import { HeaderHamburger } from "./components/HeaderHamburger";
 import { HeaderMobileMenu } from "./components/HeaderMobileMenu";
 import { getShadowClass } from "../../tokens/shadows";
+import { getSpacingClass } from "../../tokens/spacing";
 import { getZIndexClass } from "../../tokens/z-index";
 import type { HeaderProps } from "./types";
 import { cn, cva } from "../../utils";
@@ -74,7 +75,9 @@ export function Header({
   ...props
 }: HeaderProps) {
   const content = (
-    <div className="flex items-center justify-between gap-4">
+    <div
+      className={`flex items-center justify-between ${getSpacingClass("base", "gap")}`}
+    >
       {/* Children are rendered here - compound components handle their own layout */}
       {children}
     </div>
