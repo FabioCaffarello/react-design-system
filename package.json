@@ -101,7 +101,7 @@
     "remark-gfm": "^4.0.1",
     "storybook": "^10.0.3",
     "storybook-addon-performance": "^0.17.3",
-    "tailwindcss": "^4.1.16",
+    "tailwindcss": "^4.3.0",
     "tsx": "^4.22.4",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.45.0",
