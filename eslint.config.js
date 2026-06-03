@@ -52,14 +52,7 @@ export default defineConfig([
       // follow-up phased PRs; the rule itself is now enforcing.
       "ds/no-raw-radius-classes": "error",
       "ds/no-raw-shadow-classes": "error",
-      // Spacing rule ships at WARN for the first migration wave. ~180
-      // sites already in violation; flipping to error here would block
-      // every pre-push until the bulk migration completes. Phased PRs
-      // (W5.1.2 / W5.1.3 / …) shrink the warning count to zero, at
-      // which point the rule flips to error in lockstep. New code that
-      // uses raw spacing classes still shows a warning at write-time —
-      // the visibility is intact even before the floor is reached.
-      "ds/no-raw-spacing-classes": "warn",
+      "ds/no-raw-spacing-classes": "error",
 
       // TypeScript rules (non-type-aware for better performance)
       // `any` is locked at the error level across all scopes — see
