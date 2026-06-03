@@ -6,7 +6,6 @@ import { useSideNavbarStateRequired } from "../contexts/SideNavbarStateContext";
 import { useSideNavbarThemeRequired } from "../contexts/SideNavbarThemeContext";
 import Collapsible from "../../../primitives/Collapsible/Collapsible";
 import { getSpacingClass } from "../../../tokens/spacing";
-import { getSpacingClass } from "../../../tokens";
 
 export interface SideNavbarGroupProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {

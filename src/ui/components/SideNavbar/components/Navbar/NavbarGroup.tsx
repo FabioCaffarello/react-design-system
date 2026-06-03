@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { cn } from "../../../../utils";
 import { getSpacingClass } from "../../../../tokens/spacing";
-import { getSpacingClass } from "../../../../tokens/spacing";
 import type { NavbarGroupProps } from "../../types";
 
 /**
