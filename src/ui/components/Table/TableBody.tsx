@@ -3,6 +3,7 @@
 import { useMemo, type HTMLAttributes, ReactNode } from "react";
 import { useTableContext } from "./TableContext";
 import { Skeleton } from "../../primitives";
+import { getSpacingClass } from "../../tokens/spacing";
 import TableRow from "./TableRow";
 import TableEmptyState from "./TableEmptyState";
 import { useVirtualScrolling } from "./useVirtualScrolling";
@@ -69,7 +70,10 @@ export default function TableBody({
         {Array.from({ length: 5 }).map((_, index) => (
           <tr key={index}>
             {Array.from({ length: totalColumns }).map((_, colIndex) => (
-              <td key={colIndex} className="px-6 py-4">
+              <td
+                key={colIndex}
+                className={`${getSpacingClass("lg", "px")} ${getSpacingClass("base", "py")}`}
+              >
                 <Skeleton className="h-4 w-full" />
               </td>
             ))}
@@ -86,7 +90,10 @@ export default function TableBody({
         {...props}
       >
         <tr>
-          <td colSpan={totalColumns} className="px-6 py-12">
+          <td
+            colSpan={totalColumns}
+            className={`${getSpacingClass("lg", "px")} ${getSpacingClass("3xl", "py")}`}
+          >
             <TableEmptyState />
           </td>
         </tr>

@@ -7,6 +7,7 @@ import { useSideNavbarThemeRequired } from "../../contexts/SideNavbarThemeContex
 import { useSideNavbarConfigRequired } from "../../contexts/SideNavbarConfigContext";
 import { useSideNavbarToggleContextRequired } from "../../contexts/SideNavbarToggleContext";
 import { cn } from "../../../../utils";
+import { getSpacingClass } from "../../../../tokens/spacing";
 import type { NavbarProps, NavbarContextValue } from "../../types";
 import NavbarToggle from "./NavbarToggle";
 import NavbarItem from "./NavbarItem";
@@ -120,7 +121,7 @@ function Navbar({
         {/* Top toggle position (internal) */}
         {showToggle && togglePosition === "top" && (
           <div
-            className="flex-shrink-0 p-2"
+            className={`flex-shrink-0 ${getSpacingClass("sm", "p")}`}
             style={{ borderBottom: "1px solid var(--color-line-default)" }}
           >
             <NavbarToggle />
@@ -136,8 +137,8 @@ function Navbar({
             "flex-col",
             "overflow-y-auto",
             "overflow-x-hidden",
-            "p-2", // Padding consistente de 0.5rem (8px)
-            "gap-2", // Gap consistente de 0.5rem (8px) entre itens
+            getSpacingClass("sm", "p"), // 0.5rem (8px)
+            getSpacingClass("sm", "gap"), // 0.5rem (8px) between items
             "w-full",
             "min-w-0", // Prevent flex items from overflowing
             shouldExpand ? "items-stretch" : "items-center",
@@ -154,7 +155,7 @@ function Navbar({
         {/* Bottom toggle position (internal) */}
         {showToggle && togglePosition === "bottom" && (
           <div
-            className="flex-shrink-0 p-2"
+            className={`flex-shrink-0 ${getSpacingClass("sm", "p")}`}
             style={{ borderTop: "1px solid var(--color-line-default)" }}
           >
             <NavbarToggle />

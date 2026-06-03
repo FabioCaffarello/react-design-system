@@ -3,6 +3,7 @@
 import type { HTMLAttributes } from "react";
 import { useTableContext } from "./TableContext";
 import { Checkbox } from "../../primitives";
+import { getSpacingClass } from "../../tokens/spacing";
 import TableCell from "./TableCell";
 import TableActions from "./TableActions";
 
@@ -65,12 +66,14 @@ export default function TableRow<
       {...props}
     >
       {selectable && (
-        <td className="px-6 py-4">
+        <td
+          className={`${getSpacingClass("lg", "px")} ${getSpacingClass("base", "py")}`}
+        >
           <Checkbox
             checked={isSelected}
             onChange={() => toggleRowSelection(id)}
             aria-label={`Select row ${id}`}
-            className="my-0"
+            className={getSpacingClass("none", "my")}
           />
         </td>
       )}
@@ -80,7 +83,9 @@ export default function TableRow<
       ))}
 
       {actions && (
-        <td className="px-6 py-4 text-right">
+        <td
+          className={`${getSpacingClass("lg", "px")} ${getSpacingClass("base", "py")} text-right`}
+        >
           <TableActions row={row} />
         </td>
       )}
