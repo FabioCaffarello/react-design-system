@@ -9,7 +9,7 @@
 
 "use client";
 
-import React, { type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { cn } from "../../../utils";
 import type { NavLinkProps } from "../../../primitives/NavLink";
 import { NavLink } from "../../../primitives/NavLink";
@@ -39,11 +39,16 @@ export interface HeaderLogoProps extends Omit<NavLinkProps, "children"> {
  * </Header.Logo>
  * ```
  */
-export function HeaderLogo({ children, className, ...props }: HeaderLogoProps) {
+export function HeaderLogo({
+  children,
+  className,
+  href,
+  ...props
+}: HeaderLogoProps) {
   return (
     <div className="flex-shrink-0">
       <NavLink
-        href={props.href || "/"}
+        href={href || "/"}
         variant="default"
         className={cn("flex items-center font-semibold text-lg", className)}
         {...props}
