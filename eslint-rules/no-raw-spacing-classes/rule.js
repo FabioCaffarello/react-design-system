@@ -11,19 +11,17 @@
  *   - Padding: `p-N`, `px-N`, `py-N`, `pt-N`, `pr-N`, `pb-N`, `pl-N`
  *   - Margin:  `m-N`, `mx-N`, `my-N`, `mt-N`, `mr-N`, `mb-N`, `ml-N`
  *   - Gap:     `gap-N`, `gap-x-N`, `gap-y-N`
- *   - Stack:   `space-y-N`
+ *   - Stack:   `space-x-N`, `space-y-N`
  *
  * Where N is any value in the SpacingScale union from spacing.ts
  * (`0|0.5|1|1.5|2|2.5|3|3.5|4|5|6|8|10|12|16|20|24|32|40|48|64|80|96`).
  *
  * What it does NOT match (by design):
- *   - `space-x-N` — getSpacingClass has no `space-x` direction yet; if
- *     we matched it, the rule would have no automated fix path.
  *   - Negative margin `-mt-N` — lookbehind ensures the prefix isn't
  *     preceded by `-`; same logic the shadow rule uses to avoid
  *     false-positing on `drop-shadow-md`.
  *   - Arbitrary values `p-[12px]` — regex requires a digit after `-`.
- *   - `space-y-reverse` — alternation is numeric only.
+ *   - `space-y-reverse` / `space-x-reverse` — alternation is numeric only.
  *
  * Pattern: `(?<=^|[\s:])(prefix)-(spacingScale)` with the lookbehind
  * keeping the rule from triggering inside compound class names and
@@ -40,7 +38,7 @@
 // Order matters in regex alternation — longer alternatives must come
 // first so `gap-x` is preferred over a hypothetical `gap` match.
 const DIRECTIONS =
-  "gap-x|gap-y|space-y|gap|px|py|pt|pr|pb|pl|mx|my|mt|mr|mb|ml|p|m";
+  "gap-x|gap-y|space-x|space-y|gap|px|py|pt|pr|pb|pl|mx|my|mt|mr|mb|ml|p|m";
 
 // Scales that the design-system spacing getter actually exposes
 // (`SPACING_TOKENS` in src/ui/tokens/spacing.ts). The Tailwind scale is
@@ -126,6 +124,7 @@ const DIRECTION_TO_GETTER = {
   gap: "gap",
   "gap-x": "gap-x",
   "gap-y": "gap-y",
+  "space-x": "space-x",
   "space-y": "space-y",
 };
 

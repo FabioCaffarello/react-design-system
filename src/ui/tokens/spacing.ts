@@ -152,6 +152,7 @@ export function getSpacingClass(
     | "gap"
     | "gap-x"
     | "gap-y"
+    | "space-x"
     | "space-y" = "p",
 ): string {
   const token = SPACING_TOKENS[scale];
@@ -175,6 +176,7 @@ export function getSpacingClass(
     gap: "gap",
     "gap-x": "gap-x",
     "gap-y": "gap-y",
+    "space-x": "space-x",
     "space-y": "space-y",
   };
 
