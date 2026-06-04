@@ -2,7 +2,11 @@
 
 import { useFormContext } from "./FormContext";
 import { useFieldArray } from "react-hook-form";
-import type { FieldValues, Path, UseFieldArrayProps } from "react-hook-form";
+import type {
+  ArrayPath,
+  FieldValues,
+  UseFieldArrayProps,
+} from "react-hook-form";
 
 /**
  * Hook for managing field arrays in forms
@@ -32,7 +36,7 @@ import type { FieldValues, Path, UseFieldArrayProps } from "react-hook-form";
  */
 export function useFormFieldArray<
   TFieldValues extends FieldValues = FieldValues,
-  TFieldArrayName extends Path<TFieldValues> = Path<TFieldValues>,
+  TFieldArrayName extends ArrayPath<TFieldValues> = ArrayPath<TFieldValues>,
 >(props: Omit<UseFieldArrayProps<TFieldValues, TFieldArrayName>, "control">) {
   const { form } = useFormContext<TFieldValues>();
 
