@@ -3,11 +3,8 @@
 import { useState, useRef, useEffect, useId, forwardRef } from "react";
 import Input from "../../primitives/Input/Input";
 import { ChevronDown, Loader2 } from "lucide-react";
-import AutocompleteOption from "./AutocompleteOption";
 import AutocompleteList from "./AutocompleteList";
 import type { AutocompleteOptionType } from "./AutocompleteOption";
-
-export type { AutocompleteOptionType as AutocompleteOption };
 
 export interface AutocompleteProps {
   options: AutocompleteOptionType[];
@@ -147,7 +144,7 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
     };
 
     // Handle option select
-    const handleSelect = (option: AutocompleteOption) => {
+    const handleSelect = (option: AutocompleteOptionType) => {
       if (option.disabled) return;
 
       if (!isControlled) {

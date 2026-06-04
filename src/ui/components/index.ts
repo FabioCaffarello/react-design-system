@@ -23,7 +23,6 @@ export type { SearchInputProps } from "./SearchInput";
 export * from "./Autocomplete";
 export type {
   AutocompleteProps,
-  AutocompleteOption,
   AutocompleteOptionProps,
   AutocompleteListProps,
 } from "./Autocomplete";

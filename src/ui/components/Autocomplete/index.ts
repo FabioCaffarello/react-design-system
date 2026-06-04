@@ -1,5 +1,5 @@
 export { default as Autocomplete } from "./Autocomplete";
-export type { AutocompleteProps, AutocompleteOption } from "./Autocomplete";
+export type { AutocompleteProps } from "./Autocomplete";
 export type { AutocompleteOptionType } from "./AutocompleteOption";
 
 export { default as AutocompleteOption } from "./AutocompleteOption";
