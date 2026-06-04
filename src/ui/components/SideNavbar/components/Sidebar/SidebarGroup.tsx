@@ -64,17 +64,6 @@ export default function SidebarGroup({
   const isCollapsed = groupStates[id] ?? defaultCollapsed;
   const isActive = activeGroup === id;
 
-  // TODO(phase2): duplicação não-intencional — handleHeaderClick
-  // (abaixo) faz quase a mesma coisa que este handler. Bug de
-  // manutenção; candidato a consolidação.
-  const _handleToggle = () => {
-    if (collapsible) {
-      toggleGroup(id);
-    }
-    setActiveGroup(id);
-  };
-  void _handleToggle;
-
   const handleHeaderClick = () => {
     setActiveGroup(id);
     if (collapsible) {
