@@ -493,9 +493,37 @@ export interface NavbarItemProps extends Omit<
  * Navbar props with expanded mode and label support (defined below)
  */
 export interface NavbarProps extends HTMLAttributes<HTMLElement> {
-  /** Whether to show the main toggle button (at top-right of navbar) */
+  /**
+   * Per-Navbar override for the SideNavbar's main toggle button's
+   * visibility. When set, takes precedence over the root SideNavbar's
+   * `showToggle` prop. The toggle continues to render at the `<aside>`
+   * level (same DOM position as the default global toggle); only its
+   * visibility changes.
+   *
+   * Resolution is render-driven and SSR-safe — the value applies on
+   * the first commit without effects.
+   *
+   * Override is a single-Navbar feature. If multiple
+   * `<SideNavbar.Navbar>` children set overrides simultaneously, the
+   * first in tree order wins and the others are ignored — dev mode
+   * warns when this happens (mirrors React's duplicate-key warning).
+   *
+   * Only DIRECT `<SideNavbar.Navbar>` children are inspected. A Navbar
+   * wrapped in another element (e.g. inside a `<div>` or any custom
+   * wrapper) won't have its override applied — dev mode warns when it
+   * detects this one-level-deep miswiring.
+   */
   showMainToggle?: boolean;
-  /** Position of the main toggle button */
+  /**
+   * Per-Navbar override for the SideNavbar's main toggle button's
+   * position. When set, takes precedence over the root SideNavbar's
+   * `togglePosition` prop. The toggle continues to render at the
+   * `<aside>` level; only the position value changes.
+   *
+   * See `showMainToggle` for the resolution semantics, the
+   * multi-Navbar conflict policy, and the direct-children scope
+   * (with dev-mode warning when a wrapper hides a Navbar override).
+   */
   mainTogglePosition?: SideNavbarTogglePosition;
   /** Whether to show the internal toggle button (inside navbar) */
   showToggle?: boolean;

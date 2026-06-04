@@ -4,8 +4,6 @@ import { useState, useRef, useMemo } from "react";
 import { NavbarContext } from "../../contexts/NavbarContext";
 import { useSideNavbarStateRequired } from "../../contexts/SideNavbarStateContext";
 import { useSideNavbarThemeRequired } from "../../contexts/SideNavbarThemeContext";
-import { useSideNavbarConfigRequired } from "../../contexts/SideNavbarConfigContext";
-import { useSideNavbarToggleContextRequired } from "../../contexts/SideNavbarToggleContext";
 import { cn } from "../../../../utils";
 import { getSpacingClass } from "../../../../tokens/spacing";
 import type { NavbarProps, NavbarContextValue } from "../../types";
@@ -30,8 +28,16 @@ import { NavbarGroup } from "./NavbarGroup";
  */
 function Navbar({
   children,
-  showMainToggle: showMainToggleProp,
-  mainTogglePosition: mainTogglePositionProp,
+  // showMainToggle and mainTogglePosition are read by SideNavbarRoot
+  // via children inspection (render-driven override resolution — see
+  // resolveNavbarOverride in SideNavbarRoot.tsx). They're declared in
+  // the destructure so TS6133 doesn't flag the unused names, and so
+  // that consumers passing them as JSX attributes remain in the
+  // public NavbarProps signature. The Navbar function body itself
+  // does not consume them. Same pattern as `_multiSort` / `_reorderable`
+  // in DataGrid.
+  showMainToggle: _showMainToggle,
+  mainTogglePosition: _mainTogglePosition,
   showToggle = false,
   togglePosition = "bottom",
   labelMode = "tooltip",
@@ -42,20 +48,9 @@ function Navbar({
 }: NavbarProps) {
   const rootState = useSideNavbarStateRequired();
   const rootTheme = useSideNavbarThemeRequired();
-  const rootConfig = useSideNavbarConfigRequired();
-  const toggleContext = useSideNavbarToggleContextRequired();
   const navbarRef = useRef<HTMLElement>(null);
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [isHovered, setIsHovered] = useState(false);
-
-  // Use props if provided, otherwise use context values
-  const showMainToggle = showMainToggleProp ?? toggleContext.showMainToggle;
-  // TODO(phase2): mainTogglePosition é computado mas o JSX abaixo não
-  // distingue posições ("inside" vs "outside"). Fio solto de feature de
-  // posicionamento do toggle (par com _shouldShowMainToggle).
-  const _mainTogglePosition =
-    mainTogglePositionProp ?? toggleContext.mainTogglePosition;
-  void _mainTogglePosition;
 
   // When labelMode is 'inline', navbar should expand
   const shouldExpand = labelMode === "inline" && !rootState.collapsed;
@@ -89,14 +84,6 @@ function Navbar({
       labelMode,
     ],
   );
-
-  // TODO(phase2): gate de visibilidade do toggle é calculado mas o
-  // <nav> resultante não renderiza o toggle aqui. Par com
-  // _mainTogglePosition — feature de posicionamento do toggle pela
-  // metade.
-  const _shouldShowMainToggle =
-    showMainToggle && rootConfig.mode !== "navigation";
-  void _shouldShowMainToggle;
 
   return (
     <NavbarContext.Provider value={contextValue}>
@@ -182,5 +169,16 @@ Navbar.Group = NavbarGroup;
 
 // Add displayName for easier identification in cloneElement
 Navbar.displayName = "Navbar";
+
+// Stable tag SideNavbarRoot uses to identify Navbar children during
+// render-driven override resolution. A static-string marker survives
+// React DevTools displayName mutations and avoids the brittle
+// `element.type === Navbar` reference comparison that breaks under
+// HOC wrapping. Today this works because Navbar is a plain function;
+// if it's ever wrapped in `memo` / `forwardRef` (or any HOC that
+// produces a new wrapper object), MOVE this marker assignment onto
+// the wrapper that gets exported, not the inner function — otherwise
+// Root won't find it.
+Navbar.__SIDENAVBAR_KIND__ = "navbar" as const;
 
 export default Navbar;
