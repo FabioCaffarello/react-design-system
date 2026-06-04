@@ -185,78 +185,85 @@ const Input = memo(
       [errorFocusRing, successFocusRing],
     );
 
-    // Input variants using CVA
-    const inputVariants = cva(
-      // Base classes
-      cn(
-        "w-full",
-        getRadiusClass("md"),
-        "transition-colors",
-        "focus:outline-none",
-        "focus:ring-2",
-        "focus:ring-offset-2",
-        "disabled:opacity-50",
-        "disabled:cursor-not-allowed",
-      ),
-      {
-        variants: {
-          variant: {
-            default: cn(
-              "border-0",
-              "border-b-2",
-              "border-line-default",
-              "focus:border-line-focus",
-            ),
-            outlined: cn(
-              "border",
-              "border-line-default",
-              "focus:border-line-focus",
-            ),
-            filled: cn(
-              "bg-surface-muted",
-              "border-0",
-              "focus:bg-surface-base",
-              "focus:ring-2",
-              getFocusRingColor,
-            ),
+    // Input variants using CVA — memoize so the function reference is
+    // stable across renders. inputClasses below depends on this; without
+    // memoization a fresh cva() each render would invalidate that memo
+    // on every render (defeating its purpose).
+    const inputVariants = useMemo(
+      () =>
+        cva(
+          // Base classes
+          cn(
+            "w-full",
+            getRadiusClass("md"),
+            "transition-colors",
+            "focus:outline-none",
+            "focus:ring-2",
+            "focus:ring-offset-2",
+            "disabled:opacity-50",
+            "disabled:cursor-not-allowed",
+          ),
+          {
+            variants: {
+              variant: {
+                default: cn(
+                  "border-0",
+                  "border-b-2",
+                  "border-line-default",
+                  "focus:border-line-focus",
+                ),
+                outlined: cn(
+                  "border",
+                  "border-line-default",
+                  "focus:border-line-focus",
+                ),
+                filled: cn(
+                  "bg-surface-muted",
+                  "border-0",
+                  "focus:bg-surface-base",
+                  "focus:ring-2",
+                  getFocusRingColor,
+                ),
+              },
+              size: {
+                sm: cn(
+                  "h-8",
+                  getTypographySize("bodySmall"),
+                  getSpacingClass("md", "px"),
+                ),
+                md: cn(
+                  "h-10",
+                  getTypographySize("body"),
+                  getSpacingClass("base", "px"),
+                ),
+                lg: cn(
+                  "h-12",
+                  getTypographySize("bodyLarge"),
+                  getSpacingClass("lg", "px"),
+                ),
+              },
+              state: {
+                default: "",
+                error: cn(
+                  "border-error",
+                  "focus:border-error",
+                  getStateFocusRingColor("error"),
+                ),
+                success: cn(
+                  "border-success",
+                  "focus:border-success",
+                  getStateFocusRingColor("success"),
+                ),
+              },
+            },
+            defaultVariants: {
+              variant: "outlined",
+              size: "md",
+              state: "default",
+            },
           },
-          size: {
-            sm: cn(
-              "h-8",
-              getTypographySize("bodySmall"),
-              getSpacingClass("md", "px"),
-            ),
-            md: cn(
-              "h-10",
-              getTypographySize("body"),
-              getSpacingClass("base", "px"),
-            ),
-            lg: cn(
-              "h-12",
-              getTypographySize("bodyLarge"),
-              getSpacingClass("lg", "px"),
-            ),
-          },
-          state: {
-            default: "",
-            error: cn(
-              "border-error",
-              "focus:border-error",
-              getStateFocusRingColor("error"),
-            ),
-            success: cn(
-              "border-success",
-              "focus:border-success",
-              getStateFocusRingColor("success"),
-            ),
-          },
-        },
-        defaultVariants: {
-          variant: "outlined",
-          size: "md",
-          state: "default",
-        },
-      },
+        ),
+      [getFocusRingColor, getStateFocusRingColor],
     );
 
     // Memoize input classes
@@ -283,6 +290,7 @@ const Input = memo(
           className,
         ),
       [
+        inputVariants,
         variant,
         size,
         state,

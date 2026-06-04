@@ -156,52 +156,59 @@ const Select = memo(
       [errorFocusRing, successFocusRing, primaryFocusRing],
     );
 
-    // Select variants using CVA
-    const selectVariants = cva(
-      // Base classes
-      cn(
-        "block",
-        "w-full",
-        getRadiusClass("md"),
-        "border",
-        "bg-surface-base",
-        "transition-colors",
-        "focus:outline-none",
-        "focus:ring-2",
-        "focus:ring-offset-2",
-        "disabled:opacity-50",
-        "disabled:cursor-not-allowed",
-      ),
-      {
-        variants: {
-          size: {
-            sm: cn(
-              "h-8",
-              getTypographySize("bodySmall"),
-              getSpacingClass("md", "px"),
-            ),
-            md: cn(
-              "h-10",
-              getTypographySize("body"),
-              getSpacingClass("base", "px"),
-            ),
-            lg: cn(
-              "h-12",
-              getTypographySize("bodyLarge"),
-              getSpacingClass("lg", "px"),
-            ),
+    // Select variants using CVA — memoize so the function reference is
+    // stable across renders. selectClasses below depends on this; without
+    // memoization a fresh cva() each render would invalidate that memo
+    // on every render (defeating its purpose).
+    const selectVariants = useMemo(
+      () =>
+        cva(
+          // Base classes
+          cn(
+            "block",
+            "w-full",
+            getRadiusClass("md"),
+            "border",
+            "bg-surface-base",
+            "transition-colors",
+            "focus:outline-none",
+            "focus:ring-2",
+            "focus:ring-offset-2",
+            "disabled:opacity-50",
+            "disabled:cursor-not-allowed",
+          ),
+          {
+            variants: {
+              size: {
+                sm: cn(
+                  "h-8",
+                  getTypographySize("bodySmall"),
+                  getSpacingClass("md", "px"),
+                ),
+                md: cn(
+                  "h-10",
+                  getTypographySize("body"),
+                  getSpacingClass("base", "px"),
+                ),
+                lg: cn(
+                  "h-12",
+                  getTypographySize("bodyLarge"),
+                  getSpacingClass("lg", "px"),
+                ),
+              },
+              state: {
+                default: cn("border-line-default", getFocusRingColor()),
+                error: cn("border-error", getFocusRingColor("error")),
+                success: cn("border-success", getFocusRingColor("success")),
+              },
+            },
+            defaultVariants: {
+              size: "md",
+              state: "default",
+            },
           },
-          state: {
-            default: cn("border-line-default", getFocusRingColor()),
-            error: cn("border-error", getFocusRingColor("error")),
-            success: cn("border-success", getFocusRingColor("success")),
-          },
-        },
-        defaultVariants: {
-          size: "md",
-          state: "default",
-        },
-      },
+        ),
+      [getFocusRingColor],
     );
 
     // Memoize state
@@ -213,7 +220,7 @@ const Select = memo(
     // Memoize classes
     const selectClasses = useMemo(
       () => cn(selectVariants({ size, state: selectState }), className),
-      [size, selectState, className],
+      [selectVariants, size, selectState, className],
     );
 
     const labelClasses = useMemo(
