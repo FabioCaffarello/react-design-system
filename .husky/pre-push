@@ -23,3 +23,11 @@ node scripts/validate-file-set.mjs
 # may import any primitive and each other.
 echo "Validating cross-layer imports..."
 node scripts/validate-cross-layer-imports.mjs
+
+# Validate that infra Provider/Context modules (Toast/Dialog/Theme/
+# Config) live ONLY in src/ui/providers/. A duplicate elsewhere
+# creates a second React Context instance at module evaluation time
+# and silently breaks consumer hooks — see scripts/validate-provider-
+# canonicity.mjs header for the historical case this gate closes.
+echo "Validating provider canonicity..."
+node scripts/validate-provider-canonicity.mjs
