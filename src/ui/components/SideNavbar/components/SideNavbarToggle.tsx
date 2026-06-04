@@ -170,16 +170,6 @@ export default function SideNavbarToggle({
       }
     : {};
 
-  // TODO(phase2): branch de inline position calculado mas o style
-  // abaixo aplica positioning genérico sem distinguir o caso inline.
-  // Outro fio solto da família "posicionamento de toggle" (par com
-  // _mainTogglePosition/_shouldShowMainToggle em Navbar).
-  const _isInlinePosition =
-    position === "inside" ||
-    position === "navigation-top" ||
-    position === "navigation-bottom";
-  void _isInlinePosition;
-
   // Edge-following toggle positioning (right edge of sidebar)
   // The toggle is now positioned in SideNavbarRoot (at <aside> level), not in <nav>
   // This means it's positioned relative to the entire sidebar, not just the navbar
