@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, memo, useMemo, useCallback } from "react";
+import { forwardRef, memo, useId, useMemo, useCallback } from "react";
 import type { SelectHTMLAttributes, ReactNode } from "react";
 import {
   getTypographyClasses,
@@ -119,11 +119,11 @@ const Select = memo(
     },
     ref,
   ) {
-    // Memoize IDs
-    const selectId = useMemo(
-      () => id || `select-${Math.random().toString(36).substr(2, 9)}`,
-      [id],
-    );
+    // Stable fallback id when the consumer doesn't provide one. useId
+    // is SSR-safe and stable across renders, replacing the deprecated
+    // Math.random().substr() pattern.
+    const reactId = useId();
+    const selectId = id || `select-${reactId}`;
 
     const errorId = useMemo(
       () => (error ? `${selectId}-error` : undefined),

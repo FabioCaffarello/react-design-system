@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, memo, useMemo, useCallback, useState } from "react";
+import { forwardRef, memo, useId, useMemo, useCallback, useState } from "react";
 import type { InputHTMLAttributes } from "react";
 import { getAnimationClass } from "../../tokens/animations";
 import { getRadiusClass } from "../../tokens/radius";
@@ -97,11 +97,11 @@ const Switch = memo(
       defaultChecked ?? false,
     );
     const currentChecked = isControlled ? !!checked : internalChecked;
-    // Memoize IDs
-    const switchId = useMemo(
-      () => id || `switch-${Math.random().toString(36).substr(2, 9)}`,
-      [id],
-    );
+    // Stable fallback id when the consumer doesn't provide one. useId
+    // is SSR-safe and stable across renders, replacing the deprecated
+    // Math.random().substr() pattern.
+    const reactId = useId();
+    const switchId = id || `switch-${reactId}`;
 
     const labelId = useMemo(
       () => (label ? `${switchId}-label` : undefined),

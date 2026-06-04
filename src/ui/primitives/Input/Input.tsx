@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useState, memo, useMemo, useCallback } from "react";
+import { forwardRef, useState, memo, useId, useMemo, useCallback } from "react";
 import type { InputHTMLAttributes, ReactNode } from "react";
 import {
   getTypographyClasses,
@@ -120,11 +120,11 @@ const Input = memo(
     },
     ref,
   ) {
-    // Memoize input ID
-    const inputId = useMemo(
-      () => id || `input-${Math.random().toString(36).substr(2, 9)}`,
-      [id],
-    );
+    // Stable fallback id when the consumer doesn't provide one. useId
+    // is SSR-safe and stable across renders, replacing the deprecated
+    // Math.random().substr() pattern.
+    const reactId = useId();
+    const inputId = id || `input-${reactId}`;
 
     // Memoize error and helper IDs
     const errorId = useMemo(

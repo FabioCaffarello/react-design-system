@@ -3,6 +3,7 @@
 import {
   forwardRef,
   useEffect,
+  useId,
   useRef,
   useState,
   type HTMLAttributes,
@@ -108,7 +109,12 @@ const Collapsible = forwardRef<HTMLDivElement, CollapsibleProps>(
       };
     }, [isOpen]);
 
-    const contentId = `collapsible-content-${Math.random().toString(36).substr(2, 9)}`;
+    // Stable per-instance ID for the collapsible content panel —
+    // referenced by aria-controls on the toggle button. The previous
+    // Math.random() approach regenerated the ID on every render, so
+    // toggle/content pairing was technically inconsistent across
+    // re-renders. useId is SSR-safe and stable.
+    const contentId = `collapsible-content-${useId()}`;
 
     return (
       <div ref={ref} className={className} {...props}>

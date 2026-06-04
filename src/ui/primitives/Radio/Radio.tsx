@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, memo, useMemo } from "react";
+import { forwardRef, memo, useId, useMemo } from "react";
 import type { InputHTMLAttributes, ReactNode } from "react";
 import { getTypographyClasses } from "../../tokens/typography";
 import { getSpacingClass } from "../../tokens/spacing";
@@ -57,11 +57,11 @@ const Radio = memo(
     },
     ref,
   ) {
-    // Memoize IDs
-    const radioId = useMemo(
-      () => id || `radio-${Math.random().toString(36).substr(2, 9)}`,
-      [id],
-    );
+    // Stable fallback id when the consumer doesn't provide one. useId
+    // is SSR-safe and stable across renders, replacing the deprecated
+    // Math.random().substr() pattern.
+    const reactId = useId();
+    const radioId = id || `radio-${reactId}`;
 
     const errorId = useMemo(
       () => (error ? `${radioId}-error` : undefined),
