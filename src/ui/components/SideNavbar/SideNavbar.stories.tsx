@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import SideNavbar from "./SideNavbar";
 import { SidebarSlot, SidebarSlotContent } from "./components/Sidebar";
 import { SidebarSlotProvider } from "./providers/SidebarSlotProvider";
-import Tabs from "../../components/Tabs/Tabs";
 import Card from "../../components/Card/Card";
 import { Button, Input } from "../../primitives";
 import {
