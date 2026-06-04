@@ -1,6 +1,6 @@
 "use client";
 
-import { FormContext, type FormContextValue } from "./FormContext";
+import { FormContextProvider, type FormContextValue } from "./FormContext";
 import type { ReactNode } from "react";
 import type { FieldValues, UseFormReturn } from "react-hook-form";
 
@@ -28,16 +28,7 @@ export function FormProvider<TFieldValues extends FieldValues = FieldValues>({
     loading,
   };
 
-  // TODO(phase2): FormContext perde TFieldValues — createContext não
-  // carrega genérico, então o tipo do contexto é achatado para
-  // FormContextValue<FieldValues>; useFormContext faz o cast inverso
-  // na leitura. Migração para context factory genérico elimina o cast
-  // (ver TODO simétrico em TableContext/TableProvider).
   return (
-    <FormContext.Provider
-      value={contextValue as unknown as FormContextValue<FieldValues>}
-    >
-      {children}
-    </FormContext.Provider>
+    <FormContextProvider value={contextValue}>{children}</FormContextProvider>
   );
 }

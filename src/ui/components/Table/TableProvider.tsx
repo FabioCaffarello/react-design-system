@@ -3,7 +3,7 @@
 import { useState, useMemo, useCallback } from "react";
 import type { ReactNode } from "react";
 import {
-  TableContext,
+  TableContextProvider,
   type TableContextValue,
   type PaginationMode,
 } from "./TableContext";
@@ -383,12 +383,6 @@ export function TableProvider<
   const _controlledColumnWidths = columnWidths;
   void _controlledColumnWidths;
 
-  // TODO(phase2): TableContext perde T — createContext não carrega
-  // genérico (ver TableContext.tsx). O useMemo mantém TableContextValue<T>
-  // para preservar a tipagem interna; o cast pontual no Provider value
-  // abaixo é o único site que paga o preço do contexto não-genérico.
-  // Migração para context factory genérico apaga esse cast (ver também
-  // o TODO simétrico em FormProvider).
   const contextValue: TableContextValue<T> = useMemo(
     () => ({
       columns,
@@ -493,12 +487,6 @@ export function TableProvider<
   );
 
   return (
-    <TableContext.Provider
-      value={
-        contextValue as unknown as TableContextValue<Record<string, unknown>>
-      }
-    >
-      {children}
-    </TableContext.Provider>
+    <TableContextProvider value={contextValue}>{children}</TableContextProvider>
   );
 }

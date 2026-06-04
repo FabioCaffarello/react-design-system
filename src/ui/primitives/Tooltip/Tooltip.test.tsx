@@ -259,5 +259,21 @@ describe("Tooltip", () => {
       expect(ref.current).toBeInstanceOf(HTMLDivElement);
       expect(ref.current?.classList.contains("inline-block")).toBe(true);
     });
+
+    it("forwards a consumer ref on the trigger child to the underlying element", () => {
+      // Tooltip clones the trigger child to attach mouse/focus handlers
+      // and merges its own internal ref with whatever the consumer
+      // supplied. The merge happens through mergeRefs(triggerRef,
+      // existingRef) — this test guards against a future cloneElement
+      // refactor silently dropping the existing-ref leg.
+      const triggerRef = createRef<HTMLButtonElement>();
+      render(
+        <Tooltip content="x">
+          <Button ref={triggerRef}>Button</Button>
+        </Tooltip>,
+      );
+      expect(triggerRef.current).not.toBeNull();
+      expect(triggerRef.current).toBe(screen.getByText("Button"));
+    });
   });
 });
