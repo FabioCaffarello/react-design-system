@@ -109,11 +109,6 @@ export default function SideNavbarToggle({
 }: SideNavbarToggleProps) {
   const { collapsed, toggle } = useSideNavbarStateRequired();
   const { animationDuration, animationEasing } = useSideNavbarThemeRequired();
-  // TODO(phase2): navigationWidth/contentWidth/minWidth were destructured
-  // here but never read; the destructure of `minWidth` also referenced a
-  // property that does not exist on SideNavbarThemeContextValue. Audited
-  // out for Phase 0 — see Phase 2 backlog item for the underscored-vars
-  // sweep across SideNavbar.
   const config = useSideNavbarConfigRequired();
 
   // Use config values as defaults, allow prop overrides
