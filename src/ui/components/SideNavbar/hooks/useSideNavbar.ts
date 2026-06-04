@@ -1,5 +1,9 @@
 "use client";
 
+import { useSideNavbarThemeRequired } from "../contexts/SideNavbarThemeContext";
+import { useSideNavbarConfigRequired } from "../contexts/SideNavbarConfigContext";
+import { useSideNavbarStateRequired } from "../contexts/SideNavbarStateContext";
+
 // Layered context hooks
 export {
   useSideNavbarTheme,
