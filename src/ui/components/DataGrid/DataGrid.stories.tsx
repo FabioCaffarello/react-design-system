@@ -230,18 +230,12 @@ export const WithToolbar: Story = {
   },
 };
 
-export const WithGrouping: Story = {
-  render: () => {
-    return (
-      <DataGrid
-        columns={mockColumns}
-        data={mockData}
-        groupable
-        groups={[{ column: "role", expanded: true }]}
-      />
-    );
-  },
-};
+// `WithGrouping` story removed: the props it demonstrated (`groupable`,
+// `groups`) are now @experimental and have no visual effect. A story
+// that calls itself "WithGrouping" while rendering a flat table without
+// grouping misleads users; the JSDoc on DataGridGroup is the source of
+// truth for the reserved API. When row-grouping ships, restore the
+// story.
 
 export const Loading: Story = {
   render: () => <DataGrid columns={mockColumns} data={[]} loading />,

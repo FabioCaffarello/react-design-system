@@ -40,9 +40,14 @@ describe("DataGrid", () => {
     expect(screen.getByText("CSV")).toBeInTheDocument();
   });
 
-  it("displays group button when groupable", () => {
+  it("does not render any grouping UI when groupable=true (props @experimental)", () => {
+    // DataGridGroup / groups / onGroupChange / groupable are marked
+    // @experimental — reserved for upcoming row-grouping support. The
+    // previous "Group" button rendered but had no behaviour and was
+    // removed. This test pins the contract: passing groupable is a no-op
+    // visually today, but typechecks for forward-compatibility.
     render(<DataGrid columns={mockColumns} data={mockData} groupable />);
-    expect(screen.getByText("Group")).toBeInTheDocument();
+    expect(screen.queryByText("Group")).not.toBeInTheDocument();
   });
 
   it("handles loading state", () => {
