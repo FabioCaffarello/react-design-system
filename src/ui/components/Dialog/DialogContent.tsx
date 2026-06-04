@@ -6,8 +6,10 @@ import { useDialogContext } from "../../providers/DialogContext";
 import { getRadiusClass, getShadowClass, getZIndexClass } from "../../tokens";
 import { getSpacingClass } from "../../tokens/spacing";
 
-export interface DialogContentProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, "role"> {
+export interface DialogContentProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "role"
+> {
   children: ReactNode;
   size?: "sm" | "md" | "lg" | "xl" | "fullscreen";
   closeOnOverlayClick?: boolean;

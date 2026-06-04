@@ -13,8 +13,10 @@ import { getRadiusClass, getShadowClass, getZIndexClass } from "../../tokens";
 import { getSpacingClass } from "../../tokens/spacing";
 import Button from "../../primitives/Button/Button";
 
-export interface ToastProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
+export interface ToastProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "title"
+> {
   toast: ToastType;
   onDismiss: (id: string) => void;
   position?:

@@ -11,8 +11,10 @@ import { cn } from "../../utils";
 
 export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
 
-export interface AvatarProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+export interface AvatarProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "children"
+> {
   src?: string;
   alt?: string;
   fallback?: string | ReactNode;

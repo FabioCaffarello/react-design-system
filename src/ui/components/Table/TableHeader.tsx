@@ -5,8 +5,10 @@ import { useTableContext } from "./TableContext";
 import { getZIndexClass } from "../../tokens/z-index";
 import TableHeaderRow from "./TableHeaderRow";
 
-export interface TableHeaderProps
-  extends Omit<HTMLAttributes<HTMLTableSectionElement>, "children"> {
+export interface TableHeaderProps extends Omit<
+  HTMLAttributes<HTMLTableSectionElement>,
+  "children"
+> {
   className?: string;
 }
 

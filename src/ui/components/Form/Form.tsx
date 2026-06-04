@@ -21,8 +21,9 @@ interface SimpleFormProps extends FormHTMLAttributes<HTMLFormElement> {
 }
 
 // React Hook Form Props
-interface ReactHookFormProps<TFieldValues extends FieldValues = FieldValues>
-  extends Omit<FormHTMLAttributes<HTMLFormElement>, "onSubmit"> {
+interface ReactHookFormProps<
+  TFieldValues extends FieldValues = FieldValues,
+> extends Omit<FormHTMLAttributes<HTMLFormElement>, "onSubmit"> {
   children: ReactNode;
   form: UseFormReturn<TFieldValues>;
   onSubmit: (data: TFieldValues) => void | Promise<void>;

@@ -198,7 +198,8 @@ export interface SideNavbarStateProviderProps {
 // ============================================================================
 
 export interface SideNavbarProviderProps
-  extends SideNavbarThemeProviderProps,
+  extends
+    SideNavbarThemeProviderProps,
     Omit<SideNavbarConfigProviderProps, "children">,
     Omit<SideNavbarStateProviderProps, "children"> {}
 
@@ -206,8 +207,10 @@ export interface SideNavbarProviderProps
 // Component Props Types
 // ============================================================================
 
-export interface SideNavbarProps
-  extends Omit<HTMLAttributes<HTMLElement>, "children"> {
+export interface SideNavbarProps extends Omit<
+  HTMLAttributes<HTMLElement>,
+  "children"
+> {
   // Mode
   /** Operating mode */
   mode?: SideNavbarMode;
@@ -268,14 +271,18 @@ export interface SideNavbarProps
   children: ReactNode;
 }
 
-export interface SideNavbarRootProps
-  extends Omit<HTMLAttributes<HTMLElement>, "children"> {
+export interface SideNavbarRootProps extends Omit<
+  HTMLAttributes<HTMLElement>,
+  "children"
+> {
   /** Children components */
   children: ReactNode;
 }
 
-export interface SideNavbarToggleProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
+export interface SideNavbarToggleProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  "children"
+> {
   /** Position of the toggle button */
   position?: SideNavbarTogglePosition;
   /** Offset for fine-tuning position */
@@ -302,8 +309,7 @@ export interface SideNavbarToggleProps
 
 export type SideNavbarResizeHandleProps = HTMLAttributes<HTMLDivElement>;
 
-export interface SideNavbarBackdropProps
-  extends HTMLAttributes<HTMLDivElement> {
+export interface SideNavbarBackdropProps extends HTMLAttributes<HTMLDivElement> {
   /** Whether the backdrop is visible */
   visible?: boolean;
   /** Click handler */
@@ -449,8 +455,10 @@ export interface NavbarContextValue {
 /**
  * NavbarItem props with label support (defined below)
  */
-export interface NavbarItemProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
+export interface NavbarItemProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  "children"
+> {
   /** Unique identifier */
   id?: string;
   /** Icon to display */
@@ -506,8 +514,10 @@ export interface NavbarSeparatorProps extends HTMLAttributes<HTMLDivElement> {
   orientation?: "horizontal" | "vertical";
 }
 
-export interface NavbarToggleProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
+export interface NavbarToggleProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  "children"
+> {
   /** Custom icon or render function */
   icon?: ReactNode | ((collapsed: boolean) => ReactNode);
   /** Button size */

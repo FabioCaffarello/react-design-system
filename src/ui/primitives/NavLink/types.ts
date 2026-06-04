@@ -22,8 +22,10 @@ export type NavLinkSize = "sm" | "md" | "lg";
  * @see ADR-001 for active state detection strategy
  * @see RFC-002 for Next.js integration strategy
  */
-export interface NavLinkProps
-  extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "as" | "href"> {
+export interface NavLinkProps extends Omit<
+  AnchorHTMLAttributes<HTMLAnchorElement>,
+  "as" | "href"
+> {
   /**
    * URL of the navigation link
    */
