@@ -19,6 +19,7 @@ import {
   getTypographySize,
   getTypographyWeight,
 } from "../../tokens/typography";
+import { useFocusRestore } from "../../hooks/useFocusRestore";
 import Button from "../../primitives/Button/Button";
 
 export type PopoverPlacement =
@@ -91,6 +92,23 @@ export default function Popover({
 
   const isControlled = controlledOpen !== undefined;
   const isOpen = isControlled ? controlledOpen : internalOpen;
+
+  // Non-modal focus contract: restore only. Popover is explicitly
+  // non-modal (aria-modal="false" below), so per the WAI-ARIA disclosure
+  // pattern it does NOT trap focus and does NOT auto-focus on open.
+  // Users tab THROUGH the trigger / panel naturally. The single
+  // obligation it does carry: when the panel closes (Escape,
+  // click-outside, programmatic), focus should return to whatever had
+  // it before the panel opened — typically the trigger button — so the
+  // keyboard user is not stranded.
+  //
+  // Trigger-ref-free by design: `useFocusRestore` snapshots
+  // `document.activeElement` at open time, which captures the trigger
+  // wrapper or any other element that opened the popover. Avoids
+  // coupling restore to a specific `triggerRef`, leaves room for
+  // programmatic opens (notifications, kebab menus that reopen on
+  // focus event, etc.).
+  useFocusRestore(isOpen);
 
   const updatePosition = useCallback(() => {
     if (!triggerRef.current || !popoverRef.current) return;
