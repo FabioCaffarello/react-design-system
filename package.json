@@ -48,6 +48,30 @@
     "react-hook-form": "^7.77.0",
     "zod": "^3.0.0"
   },
+  "overrides": {
+    "handlebars": "^4.7.9",
+    "lodash": "^4.17.24",
+    "fast-uri": "^3.1.2",
+    "flatted": "^3.4.2",
+    "qs": "^6.15.2",
+    "js-yaml": "^4.2.0",
+    "yaml": "^2.9.0",
+    "rollup": "^4.59.0",
+    "picomatch": "^4.0.4",
+    "@commitlint/config-validator": {
+      "ajv": "^8.17.2"
+    },
+    "@jsdevtools/coverage-istanbul-loader": {
+      "ajv": "^8.17.2"
+    },
+    "micromatch": {
+      "picomatch": "^2.3.2"
+    },
+    "test-exclude": {
+      "minimatch": "^3.1.4",
+      "brace-expansion": "^1.1.13"
+    }
+  },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.16",
     "class-variance-authority": "^0.7.1",
