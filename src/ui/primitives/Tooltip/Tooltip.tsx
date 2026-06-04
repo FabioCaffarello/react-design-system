@@ -21,7 +21,7 @@ import { getShadowClass } from "../../tokens/shadows";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getTypographySize } from "../../tokens/typography";
 import { getZIndexClass } from "../../tokens/z-index";
-import { cn, cva } from "../../utils";
+import { cn, cva, mergeRefs } from "../../utils";
 
 export interface TooltipProps extends HTMLAttributes<HTMLDivElement> {
   content: string;
@@ -258,21 +258,7 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(
         const existingRef = existingProps.ref;
 
         return cloneElement(childElement, {
-          ref: (node: HTMLElement | null) => {
-            triggerRef.current = node;
-            // Preserve existing ref if any
-            if (typeof existingRef === "function") {
-              existingRef(node);
-            } else if (
-              existingRef &&
-              typeof existingRef === "object" &&
-              "current" in existingRef
-            ) {
-              (
-                existingRef as React.MutableRefObject<HTMLElement | null>
-              ).current = node;
-            }
-          },
+          ref: mergeRefs<HTMLElement>(triggerRef, existingRef),
           "aria-describedby": isVisible
             ? tooltipId
             : existingProps["aria-describedby"],
