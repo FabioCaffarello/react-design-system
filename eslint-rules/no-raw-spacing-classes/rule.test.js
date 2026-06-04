@@ -45,10 +45,8 @@ tester.run("no-raw-spacing-classes", rule, {
     // doesn't force migrations to a non-existent API. `p-5` falls in
     // the first bucket; `p-7` / `p-9` fall in the second.
     { code: `const cls = "p-5 p-7 m-9 gap-7 p-32";` },
-    // space-x not covered by getSpacingClass — rule does not match.
-    { code: `const cls = "space-x-2 space-x-4";` },
-    // space-y-reverse — not a number after the prefix.
-    { code: `const cls = "space-y-reverse";` },
+    // space-y-reverse / space-x-reverse — not a number after the prefix.
+    { code: `const cls = "space-y-reverse space-x-reverse";` },
     // Bare prefix without a numeric scale.
     { code: `const cls = "p m gap";` },
     // Strings that look spacing-like but aren't preceded by space/colon —
@@ -112,6 +110,11 @@ tester.run("no-raw-spacing-classes", rule, {
     // space-y is in scope.
     {
       code: `const cls = "space-y-4";`,
+      errors: [{ messageId: "rawSpacingClass" }],
+    },
+    // space-x is in scope (symmetric with space-y).
+    {
+      code: `const cls = "space-x-2";`,
       errors: [{ messageId: "rawSpacingClass" }],
     },
     // Half-step scale.
