@@ -13,6 +13,7 @@ A change to any source below **must** update every derived doc that restates it,
 
 - `docs/STORYBOOK_GUIDE.md` is derived from `.claude/rules/stories.md` (taxonomy, autodocs vs MDX-attached, import package), `CLAUDE.md` (3-layer model, "no external-consumer features (MCP)", "do not grow the npm script surface"), and `package.json` (every `npm run X` it mentions must exist as a script).
 - `CLAUDE.md`'s Commands section is derived from `package.json` — it lists only scripts that exist, and `package.json` adds no script beyond what `CLAUDE.md` sanctions. The two constrain each other in both directions.
+- `CLAUDE.md`'s Hard-rules item about CI/CT gate verification is derived from `.claude/rules/ci-gates.md`. The rule file is authoritative; CLAUDE.md restates the one-line gist.
 - `README.md` install/usage snippets are derived from `package.json` `exports`/`peerDependencies` and from `src/docs/Introduction.mdx`.
 - `src/docs/ComponentStatus.mdx` inventory counts are derived from the actual component dirs under `src/ui/`.
 
