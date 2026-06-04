@@ -253,7 +253,7 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
     // `aria-input-field-name` (serious) flags the input. Silent in
     // production.
     useEffect(() => {
-      if (process.env.NODE_ENV === "production") return;
+      if (!import.meta.env.DEV) return;
       if (label || ariaLabel || ariaLabelledBy) return;
       const externalLabel =
         typeof document !== "undefined"

@@ -132,7 +132,7 @@ const Textarea = memo(
 
     // Dev-only accessibility warning: ensure some accessible name source exists.
     useEffect(() => {
-      if (process.env.NODE_ENV === "production") return;
+      if (!import.meta.env.DEV) return;
       if (label || ariaLabel || ariaLabelledBy) return;
       const externalLabel =
         typeof document !== "undefined"
