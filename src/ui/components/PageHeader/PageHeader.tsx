@@ -8,7 +8,6 @@
 
 "use client";
 
-import React from "react";
 import Breadcrumb from "../Breadcrumb/Breadcrumb";
 import { Text } from "../../primitives";
 import type { PageHeaderProps } from "./types";

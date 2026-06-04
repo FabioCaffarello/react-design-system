@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { useSideNavbarStateRequired } from "../contexts/SideNavbarStateContext";
 import { useSideNavbarThemeRequired } from "../contexts/SideNavbarThemeContext";
@@ -109,13 +108,12 @@ export default function SideNavbarToggle({
   ...props
 }: SideNavbarToggleProps) {
   const { collapsed, toggle } = useSideNavbarStateRequired();
-  const {
-    animationDuration,
-    animationEasing,
-    navigationWidth: _navigationWidth,
-    contentWidth: _contentWidth,
-    minWidth: _minWidth,
-  } = useSideNavbarThemeRequired();
+  const { animationDuration, animationEasing } = useSideNavbarThemeRequired();
+  // TODO(phase2): navigationWidth/contentWidth/minWidth were destructured
+  // here but never read; the destructure of `minWidth` also referenced a
+  // property that does not exist on SideNavbarThemeContextValue. Audited
+  // out for Phase 0 — see Phase 2 backlog item for the underscored-vars
+  // sweep across SideNavbar.
   const config = useSideNavbarConfigRequired();
 
   // Use config values as defaults, allow prop overrides
@@ -172,11 +170,15 @@ export default function SideNavbarToggle({
       }
     : {};
 
-  // Determine if this is an inline position (inside navigation)
+  // TODO(phase2): branch de inline position calculado mas o style
+  // abaixo aplica positioning genérico sem distinguir o caso inline.
+  // Outro fio solto da família "posicionamento de toggle" (par com
+  // _mainTogglePosition/_shouldShowMainToggle em Navbar).
   const _isInlinePosition =
     position === "inside" ||
     position === "navigation-top" ||
     position === "navigation-bottom";
+  void _isInlinePosition;
 
   // Edge-following toggle positioning (right edge of sidebar)
   // The toggle is now positioned in SideNavbarRoot (at <aside> level), not in <nav>

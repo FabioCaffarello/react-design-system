@@ -35,7 +35,7 @@ export interface HeaderHamburgerProps {
    * Button variant
    * @default 'ghost'
    */
-  variant?: "ghost" | "outline" | "default";
+  variant?: "ghost" | "outline";
 
   /**
    * Button size

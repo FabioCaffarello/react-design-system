@@ -120,7 +120,7 @@ export function TableProvider<
   columnWidths,
   onColumnResize,
   virtualScrolling,
-  virtualScrollingOptions: _virtualScrollingOptions,
+  virtualScrollingOptions,
   children,
 }: TableProviderProps<T>) {
   // Detect pagination mode
@@ -173,7 +173,7 @@ export function TableProvider<
   // Filter state
   const isFilterControlled = controlledFilterValues !== undefined;
   const [internalFilterValues, setInternalFilterValues] =
-    useState<Record<string, unknown>>(initialFilterValues);
+    useState<Record<string, FilterValue>>(initialFilterValues);
 
   const filterValues = isFilterControlled
     ? controlledFilterValues!
@@ -198,7 +198,7 @@ export function TableProvider<
         const value = filterValues[filter.key];
         if (!value || value === "") return true;
 
-        const rowValue = (row as unknown)[filter.key];
+        const rowValue = (row as Record<string, unknown>)[filter.key];
         if (filter.type === "text") {
           return String(rowValue || "")
             .toLowerCase()
@@ -225,8 +225,8 @@ export function TableProvider<
     // Apply internal sorting
     const sorted = [...filteredData];
     sorted.sort((a, b) => {
-      const aValue = (a as unknown)[sortColumn];
-      const bValue = (b as unknown)[sortColumn];
+      const aValue = (a as Record<string, unknown>)[sortColumn];
+      const bValue = (b as Record<string, unknown>)[sortColumn];
       const comparison = String(aValue || "").localeCompare(
         String(bValue || ""),
       );
@@ -253,7 +253,10 @@ export function TableProvider<
       if (rowId) {
         return rowId(row);
       }
-      return (row as unknown)?.id?.toString() || index.toString();
+      return (
+        (row as { id?: { toString(): string } } | null)?.id?.toString() ||
+        index.toString()
+      );
     },
     [rowId],
   );
@@ -374,10 +377,18 @@ export function TableProvider<
     [isColumnWidthsControlled, onColumnResize],
   );
 
-  // Use controlledColumnWidths from props if provided
+  // TODO(phase2): alias órfão. O comentário "Use controlledColumnWidths
+  // from props if provided" promete um ponto de injeção que nunca foi
+  // consumido — `columnWidths` é lido direto em outros pontos.
   const _controlledColumnWidths = columnWidths;
+  void _controlledColumnWidths;
 
-  // Context value
+  // TODO(phase2): TableContext perde T — createContext não carrega
+  // genérico (ver TableContext.tsx). O useMemo mantém TableContextValue<T>
+  // para preservar a tipagem interna; o cast pontual no Provider value
+  // abaixo é o único site que paga o preço do contexto não-genérico.
+  // Migração para context factory genérico apaga esse cast (ver também
+  // o TODO simétrico em FormProvider).
   const contextValue: TableContextValue<T> = useMemo(
     () => ({
       columns,
@@ -410,6 +421,7 @@ export function TableProvider<
       resizable,
       columnWidths: finalColumnWidths,
       virtualScrolling,
+      virtualScrollingOptions,
       emptyMessage,
       emptyStateTitle,
       emptyStateMessage,
@@ -476,11 +488,16 @@ export function TableProvider<
       resizable,
       finalColumnWidths,
       virtualScrolling,
+      virtualScrollingOptions,
     ],
   );
 
   return (
-    <TableContext.Provider value={contextValue}>
+    <TableContext.Provider
+      value={
+        contextValue as unknown as TableContextValue<Record<string, unknown>>
+      }
+    >
       {children}
     </TableContext.Provider>
   );

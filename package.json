@@ -26,9 +26,10 @@
     "access": "public"
   },
   "scripts": {
-    "build": "npx tsc --project tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist || true && vite build && npm run build:validate",
+    "build": "npx tsc --project tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist && vite build && npm run build:validate",
     "build:validate": "tsx scripts/validate-build-exports.ts",
     "lint": "eslint .",
+    "typecheck": "tsc --build --force tsconfig.json",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "storybook:smoke": "npm run build-storybook && node scripts/storybook-smoke.mjs",

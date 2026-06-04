@@ -2,7 +2,7 @@
 
 import type { HTMLAttributes, ReactNode, KeyboardEvent } from "react";
 import React, { useState, useRef, useEffect } from "react";
-import { cn } from "../../utils";
+import { cn, mergeRefs } from "../../utils";
 import {
   getRadiusClass,
   getSpacingClass,
@@ -16,6 +16,23 @@ export interface DropdownItem {
   disabled?: boolean;
   variant?: "default" | "danger";
 }
+
+/**
+ * Shape of the props the trigger element accepts when cloned. Limits
+ * what cloneElement is allowed to override and what `props.ref` is
+ * permitted to be — both essential for React 19's tighter
+ * ReactElement<unknown> typing.
+ */
+type TriggerChildProps = {
+  onClick?: (e: React.MouseEvent) => void;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
+  "aria-label"?: string;
+  "aria-haspopup"?: React.AriaAttributes["aria-haspopup"];
+  "aria-expanded"?: React.AriaAttributes["aria-expanded"];
+  "aria-controls"?: React.AriaAttributes["aria-controls"];
+  id?: string;
+  ref?: React.Ref<HTMLElement>;
+};
 
 export interface DropdownProps extends HTMLAttributes<HTMLDivElement> {
   trigger: ReactNode;
@@ -54,7 +71,7 @@ export default function Dropdown({
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -183,7 +200,7 @@ export default function Dropdown({
     setActiveIndex(-1);
   };
 
-  const handleTriggerKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+  const handleTriggerKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
       e.preventDefault();
       setIsOpen(true);
@@ -192,43 +209,38 @@ export default function Dropdown({
 
   const alignClasses = align === "right" ? "right-0" : "left-0";
 
-  // Clone trigger to add accessibility props
-  // Handle both Button component and native button elements
-  const triggerWithProps = React.isValidElement(trigger) ? (
-    React.cloneElement(trigger as React.ReactElement<unknown>, {
+  // Clone trigger to add accessibility props. Handles both Button and
+  // native elements. React 19 surfaces consumer-supplied refs via
+  // `child.props.ref` (no longer on the element itself), so mergeRefs
+  // composes the parent's internal triggerRef with whatever the
+  // consumer attached.
+  const triggerWithProps = React.isValidElement<TriggerChildProps>(trigger) ? (
+    React.cloneElement(trigger, {
       onClick: (e: React.MouseEvent) => {
         handleTriggerClick();
-        // Call original onClick if it exists
-        if (trigger.props.onClick) {
-          trigger.props.onClick(e);
-        }
+        trigger.props.onClick?.(e);
       },
       onKeyDown: (e: React.KeyboardEvent) => {
         handleTriggerKeyDown(e);
-        // Call original onKeyDown if it exists
-        if (trigger.props.onKeyDown) {
-          trigger.props.onKeyDown(e);
-        }
+        trigger.props.onKeyDown?.(e);
       },
       "aria-haspopup": "menu",
       "aria-expanded": isOpen,
       "aria-controls": menuId,
       "aria-label": ariaLabel || trigger.props["aria-label"] || "Open menu",
       id: triggerId,
-      ref: (node: HTMLElement | null) => {
-        triggerRef.current = node;
-        // Forward ref if trigger has one
-        if (typeof trigger.ref === "function") {
-          trigger.ref(node);
-        } else if (trigger.ref) {
-          (trigger.ref as React.MutableRefObject<HTMLElement | null>).current =
-            node;
-        }
-      },
+      ref: mergeRefs<HTMLElement>(triggerRef, trigger.props.ref),
     })
   ) : (
     <div
-      ref={triggerRef}
+      ref={(node) => {
+        // Else-branch: trigger is a plain ReactNode (string/fragment/etc),
+        // so we wrap it in a div. Forward the div node into the shared
+        // HTMLElement-typed triggerRef via callback (RefObject is invariant
+        // — direct assignment of RefObject<HTMLElement> to a HTMLDivElement
+        // ref slot does not typecheck).
+        triggerRef.current = node;
+      }}
       onClick={handleTriggerClick}
       onKeyDown={handleTriggerKeyDown}
       role="button"

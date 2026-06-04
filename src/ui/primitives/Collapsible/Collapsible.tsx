@@ -21,7 +21,12 @@ export interface CollapsibleProps extends Omit<
   "onChange"
 > {
   children: ReactNode;
-  trigger: ReactNode; // Content for the toggle button
+  /**
+   * Content for the toggle button. When omitted, Collapsible renders only
+   * the animated content panel — the caller is responsible for its own
+   * trigger and `open`-state wiring (SidebarGroup/SideNavbarGroup pattern).
+   */
+  trigger?: ReactNode;
   defaultOpen?: boolean;
   open?: boolean; // Controlled mode
   onOpenChange?: (open: boolean) => void;
@@ -107,33 +112,35 @@ const Collapsible = forwardRef<HTMLDivElement, CollapsibleProps>(
 
     return (
       <div ref={ref} className={className} {...props}>
-        <button
-          type="button"
-          onClick={toggle}
-          onKeyDown={(e: KeyboardEvent<HTMLButtonElement>) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              if (!disabled) {
-                toggle();
+        {trigger !== undefined && (
+          <button
+            type="button"
+            onClick={toggle}
+            onKeyDown={(e: KeyboardEvent<HTMLButtonElement>) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                if (!disabled) {
+                  toggle();
+                }
               }
-            }
-          }}
-          disabled={disabled}
-          aria-expanded={isOpen}
-          aria-controls={contentId}
-          aria-disabled={disabled}
-          className={cn(
-            "w-full",
-            "text-left",
-            "focus:outline-none",
-            "focus:ring-2",
-            "focus:ring-line-brand",
-            "focus:ring-offset-2",
-            getRadiusClass("md"),
-          )}
-        >
-          {trigger}
-        </button>
+            }}
+            disabled={disabled}
+            aria-expanded={isOpen}
+            aria-controls={contentId}
+            aria-disabled={disabled}
+            className={cn(
+              "w-full",
+              "text-left",
+              "focus:outline-none",
+              "focus:ring-2",
+              "focus:ring-line-brand",
+              "focus:ring-offset-2",
+              getRadiusClass("md"),
+            )}
+          >
+            {trigger}
+          </button>
+        )}
         <div
           id={contentId}
           ref={contentRef}

@@ -3,11 +3,8 @@
 import { useState, useRef, useEffect, useId, forwardRef } from "react";
 import Input from "../../primitives/Input/Input";
 import { ChevronDown, Loader2 } from "lucide-react";
-import AutocompleteOption from "./AutocompleteOption";
 import AutocompleteList from "./AutocompleteList";
 import type { AutocompleteOptionType } from "./AutocompleteOption";
-
-export type { AutocompleteOptionType as AutocompleteOption };
 
 export interface AutocompleteProps {
   options: AutocompleteOptionType[];
@@ -100,7 +97,7 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
     const containerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const listRef = useRef<HTMLDivElement>(null);
-    const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const isControlled = controlledValue !== undefined;
     const currentValue = isControlled ? controlledValue : internalValue;
@@ -147,7 +144,7 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
     };
 
     // Handle option select
-    const handleSelect = (option: AutocompleteOption) => {
+    const handleSelect = (option: AutocompleteOptionType) => {
       if (option.disabled) return;
 
       if (!isControlled) {
@@ -256,7 +253,7 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
     // `aria-input-field-name` (serious) flags the input. Silent in
     // production.
     useEffect(() => {
-      if (process.env.NODE_ENV === "production") return;
+      if (!import.meta.env.DEV) return;
       if (label || ariaLabel || ariaLabelledBy) return;
       const externalLabel =
         typeof document !== "undefined"

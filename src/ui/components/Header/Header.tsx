@@ -11,7 +11,6 @@
 
 "use client";
 
-import React from "react";
 import { HeaderProvider } from "./contexts/HeaderContext";
 import { HeaderLogo } from "./components/HeaderLogo";
 import { HeaderNavigation } from "./components/HeaderNavigation";

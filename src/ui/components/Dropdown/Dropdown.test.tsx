@@ -1,3 +1,4 @@
+import { createRef } from "react";
 import { describe, it, expect, vi } from "vitest";
 import {
   render,
@@ -331,6 +332,54 @@ describe("Dropdown", () => {
         expect(screen.getByText("Edit")).toBeInTheDocument();
         expect(screen.getByText("Delete")).toBeInTheDocument();
       });
+    });
+  });
+
+  describe("Trigger Ref Forwarding", () => {
+    it("forwards a consumer ref on the trigger to the underlying element", () => {
+      const triggerRef = createRef<HTMLButtonElement>();
+
+      render(
+        <Dropdown
+          trigger={<Button ref={triggerRef}>Actions</Button>}
+          items={[{ label: "Edit", onClick: vi.fn() }]}
+        />,
+      );
+
+      expect(triggerRef.current).not.toBeNull();
+      expect(triggerRef.current).toBe(screen.getByText("Actions"));
+    });
+
+    it("preserves the consumer's onClick handler on the trigger", async () => {
+      const user = userEvent.setup();
+      const consumerClick = vi.fn();
+
+      render(
+        <Dropdown
+          trigger={<Button onClick={consumerClick}>Actions</Button>}
+          items={[{ label: "Edit", onClick: vi.fn() }]}
+        />,
+      );
+
+      await act(async () => {
+        await user.click(screen.getByText("Actions"));
+      });
+
+      expect(consumerClick).toHaveBeenCalledTimes(1);
+    });
+
+    it("preserves the consumer's onKeyDown handler on the trigger", () => {
+      const consumerKeyDown = vi.fn();
+
+      render(
+        <Dropdown
+          trigger={<Button onKeyDown={consumerKeyDown}>Actions</Button>}
+          items={[{ label: "Edit", onClick: vi.fn() }]}
+        />,
+      );
+
+      fireEvent.keyDown(screen.getByText("Actions"), { key: "Enter" });
+      expect(consumerKeyDown).toHaveBeenCalledTimes(1);
     });
   });
 });

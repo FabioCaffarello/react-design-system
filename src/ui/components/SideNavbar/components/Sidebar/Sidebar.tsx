@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useMemo, useCallback } from "react";
+import { useState, useRef, useMemo, useCallback } from "react";
 import { SidebarContext } from "../../contexts/SidebarContext";
 import { useSideNavbarStateRequired } from "../../contexts/SideNavbarStateContext";
 import { useSideNavbarThemeRequired } from "../../contexts/SideNavbarThemeContext";
@@ -38,7 +38,7 @@ import { cn } from "../../../../utils";
 function Sidebar({ children, className = "", style, ...props }: SidebarProps) {
   const rootState = useSideNavbarStateRequired();
   const rootTheme = useSideNavbarThemeRequired();
-  const sidebarRef = useRef<HTMLElement>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [hasHeader, setHasHeader] = useState(false);
   const [hasFooter, setHasFooter] = useState(false);

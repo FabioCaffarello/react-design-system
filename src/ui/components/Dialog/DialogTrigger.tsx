@@ -3,8 +3,12 @@
 import { cloneElement, isValidElement, type ReactElement } from "react";
 import { useDialogContext } from "../../providers/DialogContext";
 
+type TriggerChildProps = {
+  onClick?: (e: React.MouseEvent) => void;
+};
+
 export interface DialogTriggerProps {
-  children: ReactElement;
+  children: ReactElement<TriggerChildProps>;
   asChild?: boolean;
 }
 
@@ -14,15 +18,13 @@ export function DialogTrigger({
 }: DialogTriggerProps) {
   const { onOpenChange } = useDialogContext();
 
-  if (asChild && isValidElement(children)) {
+  if (asChild && isValidElement<TriggerChildProps>(children)) {
     return cloneElement(children, {
       onClick: (e: React.MouseEvent) => {
         onOpenChange(true);
-        if (children.props.onClick) {
-          children.props.onClick(e);
-        }
+        children.props.onClick?.(e);
       },
-    } as unknown);
+    });
   }
 
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo } from "react";
 import { NavbarContext } from "../../contexts/NavbarContext";
 import { useSideNavbarStateRequired } from "../../contexts/SideNavbarStateContext";
 import { useSideNavbarThemeRequired } from "../../contexts/SideNavbarThemeContext";
@@ -50,8 +50,12 @@ function Navbar({
 
   // Use props if provided, otherwise use context values
   const showMainToggle = showMainToggleProp ?? toggleContext.showMainToggle;
+  // TODO(phase2): mainTogglePosition é computado mas o JSX abaixo não
+  // distingue posições ("inside" vs "outside"). Fio solto de feature de
+  // posicionamento do toggle (par com _shouldShowMainToggle).
   const _mainTogglePosition =
     mainTogglePositionProp ?? toggleContext.mainTogglePosition;
+  void _mainTogglePosition;
 
   // When labelMode is 'inline', navbar should expand
   const shouldExpand = labelMode === "inline" && !rootState.collapsed;
@@ -86,9 +90,13 @@ function Navbar({
     ],
   );
 
-  // Determine if main toggle should be shown
+  // TODO(phase2): gate de visibilidade do toggle é calculado mas o
+  // <nav> resultante não renderiza o toggle aqui. Par com
+  // _mainTogglePosition — feature de posicionamento do toggle pela
+  // metade.
   const _shouldShowMainToggle =
     showMainToggle && rootConfig.mode !== "navigation";
+  void _shouldShowMainToggle;
 
   return (
     <NavbarContext.Provider value={contextValue}>

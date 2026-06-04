@@ -5,11 +5,15 @@ import { X } from "lucide-react";
 import { useDialogContext } from "../../providers/DialogContext";
 import Button from "../../primitives/Button/Button";
 
+type CloseChildProps = {
+  onClick?: (e: React.MouseEvent) => void;
+};
+
 export interface DialogCloseProps {
   "aria-label"?: string;
   className?: string;
   asChild?: boolean;
-  children?: ReactElement;
+  children?: ReactElement<CloseChildProps>;
 }
 
 export function DialogClose({
@@ -20,15 +24,13 @@ export function DialogClose({
 }: DialogCloseProps) {
   const { onClose } = useDialogContext();
 
-  if (asChild && isValidElement(children)) {
+  if (asChild && isValidElement<CloseChildProps>(children)) {
     return cloneElement(children, {
       onClick: (e: React.MouseEvent) => {
         onClose();
-        if (children.props.onClick) {
-          children.props.onClick(e);
-        }
+        children.props.onClick?.(e);
       },
-    } as unknown);
+    });
   }
 
   return (

@@ -34,6 +34,7 @@ If unsure where something goes: composed of other UI → `components/`; pure str
 - WCAG 2.1 AA: keyboard nav, ARIA, focus management.
 - Test coverage ≥ 80% per component.
 - Docs like `docs/STORYBOOK_GUIDE.md` and this file restate conventions whose canonical source is elsewhere (`.claude/rules/`, `package.json`). Before editing any rule or script that a doc restates — not just the doc itself — read `.claude/rules/docs-sync.md` and update every derived doc in the same commit.
+- When you add or modify a CI/CT gate (workflow step, validate script, lint rule, pre-push hook), prove it fails when it should fail — run the workflow's exact command locally, induce the bug the gate exists for, confirm a non-zero exit. The `-p` vs `--build` mismatch from Phase 0 is the canonical "false-green for months" trap. See `.claude/rules/ci-gates.md`.
 
 ## Color and tokens vocabulary
 
@@ -50,6 +51,7 @@ npm run storybook         # local dev / docs
 npm run test              # vitest
 npm run test:coverage     # vitest with coverage
 npm run lint              # eslint
+npm run typecheck         # tsc --build --force tsconfig.json (project references)
 npm run plop              # scaffold component (postplop auto-formats output)
 npm run build             # library build (build:validate auto-checks exports)
 npm run build-storybook   # static storybook

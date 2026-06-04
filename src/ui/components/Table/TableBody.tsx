@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, type HTMLAttributes, ReactNode } from "react";
+import { useMemo, type HTMLAttributes, type ReactNode } from "react";
 import { useTableContext } from "./TableContext";
 import { Skeleton } from "../../primitives";
 import { getSpacingClass } from "../../tokens/spacing";

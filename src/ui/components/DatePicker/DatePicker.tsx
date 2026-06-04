@@ -168,8 +168,8 @@ function DatePickerPopup({
   popupRef: externalPopupRef,
 }: {
   children: ReactNode;
-  containerRef?: RefObject<HTMLDivElement>;
-  popupRef?: RefObject<HTMLDivElement>;
+  containerRef?: RefObject<HTMLDivElement | null>;
+  popupRef?: RefObject<HTMLDivElement | null>;
 }) {
   const internalPopupRef = useRef<HTMLDivElement>(null);
   const popupRef = externalPopupRef || internalPopupRef;

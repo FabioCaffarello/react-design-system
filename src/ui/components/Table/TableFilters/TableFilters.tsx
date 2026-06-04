@@ -125,7 +125,8 @@ export default function TableFilters({
             className={`${getSpacingClass("base", "mt")} grid grid-cols-1 ${getSpacingClass("base", "gap")} sm:grid-cols-2 lg:grid-cols-3`}
           >
             {filters.map((filter) => {
-              const value = filterValues[filter.key] || "";
+              const rawValue = filterValues[filter.key];
+              const value = rawValue == null ? "" : String(rawValue);
 
               return (
                 <div

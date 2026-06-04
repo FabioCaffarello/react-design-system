@@ -51,30 +51,11 @@ export function useNavigationActiveState({
   items,
   pathname,
 }: UseNavigationActiveStateOptions): UseNavigationActiveStateResult {
-  // Try to get pathname from Next.js if not provided
-  const currentPathname = useMemo(() => {
-    if (pathname !== undefined) {
-      return pathname;
-    }
-
-    // Try to auto-detect using Next.js usePathname
-    try {
-      // Dynamic import to avoid breaking when Next.js is not available
-      // @ts-expect-error - usePathname is available at runtime but not in TypeScript types
-      const nextNavigation =
-        // eslint-disable-next-line @typescript-eslint/no-require-imports
-        typeof require !== "undefined" ? require("next/navigation") : null;
-      if (nextNavigation?.usePathname) {
-        // We can't call hooks conditionally, so we need to handle this differently
-        // For now, return undefined and let the component handle it
-        return undefined;
-      }
-    } catch {
-      // Next.js not available - this is expected and safe
-    }
-
-    return undefined;
-  }, [pathname]);
+  // `pathname` is the single explicit channel. The earlier
+  // `require("next/navigation")` probe always returned undefined (it
+  // couldn't call `usePathname` conditionally) so it was a no-op in
+  // disguise — removed.
+  const currentPathname = pathname;
 
   // Calculate active state for each item
   const itemsWithActive = useMemo(() => {

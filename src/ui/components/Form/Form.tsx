@@ -158,7 +158,10 @@ export default function Form<TFieldValues extends FieldValues = FieldValues>({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (onSubmitSimple && !loading) {
-      onSubmitSimple(e);
+      // Narrow the union: we're in the !isReactHookForm branch, so
+      // onSubmit takes a FormEvent. TS sees the union member's intersected
+      // parameter type and can't prove it; the cast names the branch.
+      (onSubmitSimple as SimpleFormProps["onSubmit"])?.(e);
     }
   };
 

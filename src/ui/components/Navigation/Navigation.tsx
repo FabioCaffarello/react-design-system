@@ -9,7 +9,7 @@
 
 "use client";
 
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { NavLink } from "../../primitives/NavLink";
 import type { NavigationProps } from "./types";
 import { cn, cva } from "../../utils";
@@ -91,28 +91,14 @@ function NavigationWithPathname({
   pathname: providedPathname,
   ...props
 }: NavigationProps & { pathname?: string }) {
-  // Try to get pathname from Next.js if not provided
-  // We use a wrapper pattern to safely call usePathname
-  let currentPathname: string | undefined = providedPathname;
-
-  if (!currentPathname) {
-    // Try to use Next.js usePathname hook
-    // We need to check if we can safely call it
-    try {
-      // @ts-expect-error - usePathname is available at runtime but not in TypeScript types
-      const nextNavigation =
-        // eslint-disable-next-line @typescript-eslint/no-require-imports
-        typeof require !== "undefined" ? require("next/navigation") : null;
-      if (nextNavigation?.usePathname) {
-        const usePathname = nextNavigation.usePathname;
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        currentPathname = usePathname();
-      }
-    } catch {
-      // Next.js not available or hook failed - this is expected and safe
-      currentPathname = undefined;
-    }
-  }
+  // Pathname channel: explicit prop wins. Falls back to
+  // window.location.pathname so a non-Next.js app still gets initial
+  // active-state highlighting. Note: window.location does not re-render
+  // on client-side navigation — Next.js apps should pass
+  // `pathname={usePathname()}` explicitly for reactive updates.
+  const currentPathname: string | undefined =
+    providedPathname ??
+    (typeof window !== "undefined" ? window.location.pathname : undefined);
 
   // Calculate active state for items
   const itemsWithActive = useMemo(() => {

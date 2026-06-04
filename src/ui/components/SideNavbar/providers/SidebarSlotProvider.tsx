@@ -1,12 +1,6 @@
 "use client";
 
-import React, {
-  useState,
-  useRef,
-  useCallback,
-  useMemo,
-  type ReactNode,
-} from "react";
+import { useState, useRef, useCallback, useMemo, type ReactNode } from "react";
 import { SidebarSlotContext } from "../contexts/SidebarSlotContext";
 import type {
   SidebarSlotContextValue,

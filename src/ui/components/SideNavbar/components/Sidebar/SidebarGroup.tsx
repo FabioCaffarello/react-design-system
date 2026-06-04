@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
+import { ChevronDown } from "lucide-react";
 import { useSidebarRequired } from "../../contexts/SidebarContext";
 import { useSideNavbarStateRequired } from "../../contexts/SideNavbarStateContext";
 import { useSideNavbarThemeRequired } from "../../contexts/SideNavbarThemeContext";
@@ -63,12 +64,16 @@ export default function SidebarGroup({
   const isCollapsed = groupStates[id] ?? defaultCollapsed;
   const isActive = activeGroup === id;
 
+  // TODO(phase2): duplicação não-intencional — handleHeaderClick
+  // (abaixo) faz quase a mesma coisa que este handler. Bug de
+  // manutenção; candidato a consolidação.
   const _handleToggle = () => {
     if (collapsible) {
       toggleGroup(id);
     }
     setActiveGroup(id);
   };
+  void _handleToggle;
 
   const handleHeaderClick = () => {
     setActiveGroup(id);

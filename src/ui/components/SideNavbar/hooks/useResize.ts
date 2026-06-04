@@ -91,7 +91,7 @@ export function useResize({
   enabled = true,
 }: UseResizeOptions): UseResizeReturn {
   // Validate bounds on first render
-  if (process.env.NODE_ENV === "development") {
+  if (import.meta.env.DEV) {
     if (!validateWidthBounds(minWidth, maxWidth)) {
       console.warn(
         "[useResize] Invalid bounds: minWidth must be less than maxWidth",

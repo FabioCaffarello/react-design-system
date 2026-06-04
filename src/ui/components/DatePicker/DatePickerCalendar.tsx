@@ -207,7 +207,10 @@ export function DatePickerCalendar({
     onMonthChange?.(newMonth);
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>, date: Date) => {
+  const handleKeyDown = (
+    e: KeyboardEvent<HTMLButtonElement | HTMLDivElement>,
+    date: Date,
+  ) => {
     let newDate: Date | null = null;
 
     switch (e.key) {

@@ -10,7 +10,7 @@ import { getSpacingClass } from "../../tokens";
 
 export interface SearchInputProps extends Omit<
   InputHTMLAttributes<HTMLInputElement>,
-  "size" | "onChange"
+  "size"
 > {
   onSearch?: (value: string) => void;
   onClear?: () => void;
@@ -52,9 +52,9 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     const [internalValue, setInternalValue] = useState<string>(
       typeof defaultValue === "string" ? defaultValue : "",
     );
-    const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(
-      null,
-    );
+    const [debounceTimer, setDebounceTimer] = useState<ReturnType<
+      typeof setTimeout
+    > | null>(null);
 
     const isControlled = controlledValue !== undefined;
     const currentValue = isControlled ? controlledValue : internalValue;

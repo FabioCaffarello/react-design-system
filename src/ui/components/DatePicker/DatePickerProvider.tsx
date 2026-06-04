@@ -50,9 +50,9 @@ export function DatePickerProvider({
     return null;
   };
 
-  const getInitialRange = () => {
-    if (controlledValue !== undefined) return null; // Controlled mode
+  const getInitialRange = (): { start: Date | null; end: Date | null } => {
     if (
+      controlledValue === undefined &&
       defaultValue &&
       mode === "range" &&
       typeof defaultValue === "object" &&

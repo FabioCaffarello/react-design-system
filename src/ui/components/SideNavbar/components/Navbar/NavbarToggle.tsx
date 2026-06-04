@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavbarRequired } from "../../contexts/NavbarContext";
 import Tooltip from "../../../../primitives/Tooltip/Tooltip";

@@ -7,6 +7,10 @@ import Button from "../../primitives/Button/Button";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getRadiusClass } from "../../tokens/radius";
 import type { TableAction } from "../Table/TableActions/TableActions";
+import type {
+  FilterConfig,
+  FilterValue,
+} from "../Table/TableFilters/TableFilters";
 
 export type DataGridColumn<T = unknown> = TableColumn<T> & {
   groupable?: boolean;
@@ -69,9 +73,9 @@ export interface DataGridProps<
 
   // Filters
   filters?: {
-    config: unknown[];
-    onFilter: (filters: Record<string, unknown>) => void;
-    initialValues?: Record<string, unknown>;
+    config: FilterConfig[];
+    onFilter: (filters: Record<string, FilterValue>) => void;
+    initialValues?: Record<string, FilterValue>;
   };
 
   // Actions
@@ -161,10 +165,13 @@ export default function DataGrid<
   const tableColumns: TableColumn<T>[] = useMemo(() => {
     return columns.map((col) => ({
       ...col,
-      width: internalColumnWidths[col.key] || col.defaultWidth,
+      width: internalColumnWidths[col.key as string] || col.defaultWidth,
     }));
   }, [columns, internalColumnWidths]);
 
+  // TODO(phase2): DataGrid agrupamento iniciado mas sem UI de toggle no
+  // header da coluna group-by. Este handler está pronto e órfão — falta
+  // wireá-lo a um clique no header de coluna agrupável.
   const _handleGroupToggle = (columnKey: string) => {
     const newGroups = internalGroups.map((g) =>
       g.column === columnKey ? { ...g, expanded: !g.expanded } : g,
@@ -172,6 +179,7 @@ export default function DataGrid<
     setInternalGroups(newGroups);
     onGroupChange?.(newGroups);
   };
+  void _handleGroupToggle;
 
   const handleExport = (format: "csv" | "xlsx" | "json") => {
     if (onExport) {

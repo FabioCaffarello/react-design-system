@@ -57,6 +57,11 @@ export interface TableContextValue<
   resizable?: boolean;
   columnWidths?: Record<string, number>;
   virtualScrolling?: boolean;
+  virtualScrollingOptions?: {
+    itemHeight?: number;
+    containerHeight?: number;
+    overscan?: number;
+  };
 
   // Empty state
   emptyMessage?: string;
@@ -86,6 +91,11 @@ export interface TableContextValue<
   onColumnResize?: (columnKey: string, width: number) => void;
 }
 
+// TODO(phase2): TableContext perde T — createContext não carrega
+// genérico, então o tipo é achatado para Record<string, unknown> aqui e
+// o cast inverso aparece em useTableContext (linhas abaixo) e no
+// Provider value. Migrar para context factory genérico fecha a
+// gambiarra e elimina os `as unknown as` adjacentes.
 const TableContext = createContext<
   TableContextValue<Record<string, unknown>> | undefined
 >(undefined);

@@ -105,7 +105,7 @@ export default function DrawerContent({
   // as the Textarea 6c guard; the Drawer is a public dialog surface,
   // a silent nameless `role="dialog"` is the defect we close here.
   useEffect(() => {
-    if (process.env.NODE_ENV === "production") return;
+    if (!import.meta.env.DEV) return;
     if (!isOpen) return;
     if (title || ariaLabel || resolvedLabelledBy) return;
     console.warn(
