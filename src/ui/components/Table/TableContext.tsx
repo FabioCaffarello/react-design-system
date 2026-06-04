@@ -1,8 +1,8 @@
 "use client";
 
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext } from "react";
 import type { ReactNode } from "react";
+import { createGenericContext } from "../../hooks/createGenericContext";
 import type { TableColumn } from "./TableTypes";
 import type { FilterConfig } from "./TableFilters/TableFilters";
 import type { TableAction } from "./TableActions/TableActions";
@@ -91,14 +91,24 @@ export interface TableContextValue<
   onColumnResize?: (columnKey: string, width: number) => void;
 }
 
-// TODO(phase2): TableContext perde T — createContext não carrega
-// genérico, então o tipo é achatado para Record<string, unknown> aqui e
-// o cast inverso aparece em useTableContext (linhas abaixo) e no
-// Provider value. Migrar para context factory genérico fecha a
-// gambiarra e elimina os `as unknown as` adjacentes.
-const TableContext = createContext<
-  TableContextValue<Record<string, unknown>> | undefined
->(undefined);
+const tableContext = createGenericContext<TableContextValue>({
+  displayName: "TableContext",
+  errorMessage: "useTableContext must be used within a Table component",
+});
+
+/**
+ * Raw React Context object. Exposed so `useContextSelector(TableContext, …)`
+ * keeps working (see hooks/useContextSelector.ts, which cites Table as
+ * its canonical selector consumer). Prefer the typed hooks below for
+ * direct reads.
+ */
+export const TableContext = tableContext.Context;
+
+/**
+ * Internal Provider — consumed by `TableProvider.tsx` only. Not
+ * re-exported from `Table/index.ts`; keeps the public surface unchanged.
+ */
+export const TableContextProvider = tableContext.Provider;
 
 /**
  * Hook to access Table context
@@ -108,13 +118,7 @@ const TableContext = createContext<
 export function useTableContext<
   T extends Record<string, unknown> = Record<string, unknown>,
 >(): TableContextValue<T> {
-  const context = useContext(TableContext);
-
-  if (context === undefined) {
-    throw new Error("useTableContext must be used within a Table component");
-  }
-
-  return context as unknown as TableContextValue<T>;
+  return tableContext.useContextRequired<TableContextValue<T>>();
 }
 
 /**
@@ -123,8 +127,5 @@ export function useTableContext<
 export function useTableContextOptional<
   T extends Record<string, unknown> = Record<string, unknown>,
 >(): TableContextValue<T> | undefined {
-  const context = useContext(TableContext);
-  return context ? (context as unknown as TableContextValue<T>) : undefined;
+  return tableContext.useContextOptional<TableContextValue<T>>();
 }
-
-export { TableContext };
