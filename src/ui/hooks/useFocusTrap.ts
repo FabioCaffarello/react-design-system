@@ -1,24 +1,7 @@
 "use client";
 
 import { useEffect, type RefObject } from "react";
-
-/**
- * Selector covering tabbable elements per WAI-ARIA Authoring Practices.
- * Mirrors the selector DialogContent has shipped with since the dialog
- * pattern landed; centralising it here closes the duplication door.
- */
-const FOCUSABLE_SELECTOR =
-  'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-
-function getFocusableElements(container: HTMLElement): HTMLElement[] {
-  return Array.from(
-    container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
-  ).filter(
-    (el) =>
-      !(el as HTMLButtonElement | HTMLInputElement).disabled &&
-      el.offsetParent !== null,
-  );
-}
+import { getFocusableElements } from "./focusable";
 
 /**
  * Trap Tab / Shift+Tab cycling within `containerRef` while `isActive`.
