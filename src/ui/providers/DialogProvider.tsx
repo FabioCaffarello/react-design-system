@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useRef, useEffect, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { DialogContext, type DialogContextValue } from "./DialogContext";
+import { useFocusRestore } from "../hooks/useFocusRestore";
 
 export interface DialogProviderProps {
   children: ReactNode;
@@ -21,7 +22,6 @@ export function DialogProvider({
   descriptionId,
 }: DialogProviderProps) {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
-  const previousActiveElement = useRef<HTMLElement | null>(null);
 
   // Use controlled or uncontrolled state
   const isOpen =
@@ -33,18 +33,12 @@ export function DialogProvider({
     onOpenChange?.(newOpen);
   };
 
-  // Store previous active element and restore on close
-  useEffect(() => {
-    if (isOpen) {
-      previousActiveElement.current = document.activeElement as HTMLElement;
-    } else {
-      // Restore focus when closing
-      const timer = setTimeout(() => {
-        previousActiveElement.current?.focus();
-      }, 0);
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen]);
+  // Modal focus restore — consumed from the shared hook introduced in
+  // Phase 3 PR 1. Replaces an inline `previousActiveElement` ref +
+  // `setTimeout(0)` block that this hook now owns. Timing identity is
+  // preserved (the hook uses setTimeout(0)), so Dialog.test.tsx's
+  // restore tests do not need to change.
+  useFocusRestore(isOpen);
 
   // Prevent body scroll when dialog is open
   useEffect(() => {

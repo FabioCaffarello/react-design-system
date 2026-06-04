@@ -3,6 +3,8 @@
 import { useEffect, useRef, type HTMLAttributes, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useDialogContext } from "../../providers/DialogContext";
+import { useFocusTrap } from "../../hooks/useFocusTrap";
+import { useAutoFocus } from "../../hooks/useAutoFocus";
 import { getRadiusClass, getShadowClass, getZIndexClass } from "../../tokens";
 import { getSpacingClass } from "../../tokens/spacing";
 
@@ -28,70 +30,33 @@ export function DialogContent({
   const contentRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  // Focus trap and ESC key handling
+  // Modal focus contract — Tab cycling + auto-focus, consumed from the
+  // shared hooks introduced in Phase 3 PR 1. Replaces an inline
+  // implementation that duplicated the selector / disabled-and-hidden
+  // filter / boundary-check logic verbatim. The hook variant ALSO
+  // closes a focus-outside-container gap the inline trap silently had
+  // (it relied on auto-focus running first to mask it); the hook
+  // pulls focus back to the trap edge regardless. Focus restore on
+  // close is the separate concern of `useFocusRestore`, consumed in
+  // `DialogProvider`.
+  useFocusTrap(contentRef, isOpen);
+  useAutoFocus(contentRef, isOpen);
+
+  // ESC handling stays inline — gated by the per-Dialog `closeOnEscape`
+  // prop, which the shared hooks intentionally don't know about. Same
+  // shape as Drawer's parallel handler.
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || !closeOnEscape) return;
 
-    // Focus first focusable element in dialog
-    const timer = setTimeout(() => {
-      const focusableElements = contentRef.current?.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-      );
-      const firstElement = focusableElements?.[0] as HTMLElement;
-      firstElement?.focus();
-    }, 0);
-
-    // Handle ESC key
     const handleEscape = (e: KeyboardEvent) => {
-      if (closeOnEscape && e.key === "Escape") {
+      if (e.key === "Escape") {
         onClose();
       }
     };
 
-    // Handle Tab key for focus trap
-    const handleTab = (e: KeyboardEvent) => {
-      if (e.key !== "Tab" || !contentRef.current) return;
-
-      const focusableElements = Array.from(
-        contentRef.current.querySelectorAll<HTMLElement>(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-        ),
-      ).filter(
-        (el) =>
-          !(el as HTMLButtonElement | HTMLInputElement).disabled &&
-          el.offsetParent !== null,
-      );
-
-      if (focusableElements.length === 0) {
-        e.preventDefault();
-        return;
-      }
-
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
-
-      if (e.shiftKey) {
-        // Shift + Tab
-        if (document.activeElement === firstElement) {
-          e.preventDefault();
-          lastElement.focus();
-        }
-      } else {
-        // Tab
-        if (document.activeElement === lastElement) {
-          e.preventDefault();
-          firstElement.focus();
-        }
-      }
-    };
-
     document.addEventListener("keydown", handleEscape);
-    document.addEventListener("keydown", handleTab);
-
     return () => {
-      clearTimeout(timer);
       document.removeEventListener("keydown", handleEscape);
-      document.removeEventListener("keydown", handleTab);
     };
   }, [isOpen, onClose, closeOnEscape]);
 
