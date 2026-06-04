@@ -28,7 +28,7 @@ export default function LoginBox({
           e.preventDefault();
           if (props.onSubmit) props.onSubmit(e);
         }}
-        className={cn(getSpacingClass("base", "space-y"), props.className)}
+        className={getSpacingClass("base", "space-y")}
       >
         <div className={getSpacingClass("sm", "space-y")}>
           <Label htmlFor="login-email" variant="required">
@@ -50,7 +50,7 @@ export default function LoginBox({
           >
             Forgot password?
           </Button>
-          <Button variant="regular" type="submit">
+          <Button variant="primary" type="submit">
             Sign in
           </Button>
         </div>
