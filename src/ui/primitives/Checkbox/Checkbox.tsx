@@ -5,6 +5,7 @@ import {
   useEffect,
   forwardRef,
   memo,
+  useId,
   useMemo,
   useCallback,
 } from "react";
@@ -65,11 +66,11 @@ const Checkbox = memo(
     },
     ref,
   ) {
-    // Memoize IDs
-    const checkboxId = useMemo(
-      () => id || `checkbox-${Math.random().toString(36).substr(2, 9)}`,
-      [id],
-    );
+    // Stable fallback id when the consumer doesn't provide one. useId
+    // is SSR-safe and stable across renders, replacing the deprecated
+    // Math.random().substr() pattern.
+    const reactId = useId();
+    const checkboxId = id || `checkbox-${reactId}`;
 
     const errorId = useMemo(
       () => (error ? `${checkboxId}-error` : undefined),
