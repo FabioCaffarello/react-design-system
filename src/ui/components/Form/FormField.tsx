@@ -24,12 +24,8 @@ export interface FormFieldProps<
     ) => ReturnType<UseFormReturn<TFieldValues>["register"]>;
     error?: string;
     value?: unknown;
-    onChange?: (
-      e: React.ChangeEvent<
-        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-      >,
-    ) => void;
-    onBlur?: () => void;
+    onChange?: ReturnType<UseFormReturn<TFieldValues>["register"]>["onChange"];
+    onBlur?: ReturnType<UseFormReturn<TFieldValues>["register"]>["onBlur"];
   }) => ReactNode;
   rules?: RegisterOptions<TFieldValues>;
   className?: string;
