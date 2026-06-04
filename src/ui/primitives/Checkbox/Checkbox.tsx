@@ -14,8 +14,10 @@ import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import { cn } from "../../utils";
 
-export interface CheckboxProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
+export interface CheckboxProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "type"
+> {
   label?: ReactNode;
   error?: boolean;
   /**

@@ -6,8 +6,7 @@ import { useSideNavbarThemeRequired } from "../contexts/SideNavbarThemeContext";
 import { useSideNavbarConfigRequired } from "../contexts/SideNavbarConfigContext";
 import { getZIndexClass } from "../../../tokens/z-index";
 
-export interface SideNavbarBackdropProps
-  extends HTMLAttributes<HTMLDivElement> {
+export interface SideNavbarBackdropProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Override visibility (uses context by default)
    */

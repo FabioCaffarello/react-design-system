@@ -5,8 +5,10 @@ import { useRef, useEffect, type HTMLAttributes, ReactNode } from "react";
 import { cn } from "../../utils";
 import { getRadiusClass, getSpacingClass } from "../../tokens";
 
-export interface TabsListProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, "orientation"> {
+export interface TabsListProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "orientation"
+> {
   children: ReactNode;
   variant?: "default" | "compact";
   /**
