@@ -23,7 +23,7 @@
  */
 
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Popover from "./Popover";
 
@@ -165,6 +165,88 @@ describe("Popover Accessibility", () => {
       close.focus();
       await user.keyboard("{Enter}");
       expect(handleOpenChange).toHaveBeenCalledWith(false);
+    });
+
+    /**
+     * Non-modal focus restore (WAI-ARIA disclosure pattern). The popover
+     * does NOT auto-focus on open and does NOT trap focus (intentional —
+     * see aria-modal="false" above); the single focus obligation it
+     * carries is to return focus to the opening element on close, so a
+     * keyboard user who tabbed into the panel and pressed Escape is not
+     * stranded with focus on a now-removed element.
+     *
+     * Test surface: park focus inside the panel after open, close via
+     * controlled prop flip, and assert focus is back on the trigger
+     * that had focus before open. setTimeout(0) defers the restore
+     * past React's commit, so we use fake timers to advance.
+     */
+    it("restores focus to the previously focused element on close", () => {
+      vi.useFakeTimers();
+      try {
+        // Set up a trigger outside the popover render to act as the
+        // "previously focused" element — focus it BEFORE the popover
+        // mounts so useFocusRestore snapshots it as the opening
+        // activeElement.
+        const externalTrigger = document.createElement("button");
+        externalTrigger.textContent = "External trigger";
+        document.body.appendChild(externalTrigger);
+        externalTrigger.focus();
+        expect(document.activeElement).toBe(externalTrigger);
+
+        const { rerender } = render(
+          <Popover
+            trigger={<button>Open</button>}
+            open={false}
+            showCloseButton
+            title="Help"
+          >
+            <p>Help text</p>
+          </Popover>,
+        );
+
+        // Open the popover. useFocusRestore snapshots external trigger.
+        rerender(
+          <Popover
+            trigger={<button>Open</button>}
+            open={true}
+            showCloseButton
+            title="Help"
+          >
+            <p>Help text</p>
+          </Popover>,
+        );
+
+        // Park focus inside the panel (popover doesn't auto-focus —
+        // simulate the user tabbing in and landing on close).
+        const close = screen.getByRole("button", { name: "Close popover" });
+        close.focus();
+        expect(document.activeElement).toBe(close);
+
+        // Close the popover.
+        rerender(
+          <Popover
+            trigger={<button>Open</button>}
+            open={false}
+            showCloseButton
+            title="Help"
+          >
+            <p>Help text</p>
+          </Popover>,
+        );
+
+        // Advance the setTimeout(0) the restore hook schedules on
+        // isOpen → false. After this tick, focus should be back on the
+        // external trigger snapshot.
+        act(() => {
+          vi.runAllTimers();
+        });
+
+        expect(document.activeElement).toBe(externalTrigger);
+
+        externalTrigger.remove();
+      } finally {
+        vi.useRealTimers();
+      }
     });
   });
 
