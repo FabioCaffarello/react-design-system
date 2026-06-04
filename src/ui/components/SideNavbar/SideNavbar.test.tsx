@@ -506,4 +506,190 @@ describe("SideNavbar", () => {
       );
     });
   });
+
+  /**
+   * Per-Navbar override of the main toggle (Phase 2C Treatment 2).
+   *
+   * Render-driven (no effect, no state, no new context): SideNavbarRoot
+   * inspects its direct `children` synchronously during render, finds
+   * the first <SideNavbar.Navbar> carrying `showMainToggle` and/or
+   * `mainTogglePosition`, and uses those values to resolve the show /
+   * position of the global toggle it renders at the <aside> level.
+   *
+   * Selector convention here: the toggle carries a `data-position`
+   * attribute (set in SideNavbarToggle.tsx) — far more stable than a
+   * role+name regex, and survives changes to the button's label /
+   * tooltip text.
+   */
+  describe("Navbar main-toggle override (Phase 2C, render-driven)", () => {
+    function findMainToggle(container: HTMLElement): HTMLElement | null {
+      return container.querySelector("aside [data-position]");
+    }
+
+    // Caso 1 — visibility override hides the toggle.
+    it("showMainToggle={false} on a Navbar hides the main toggle", () => {
+      const { container } = render(
+        <SideNavbar showToggle>
+          <SideNavbar.Navbar showMainToggle={false}>
+            <SideNavbar.Navbar.Item icon={<div />} label="Home" id="home" />
+          </SideNavbar.Navbar>
+        </SideNavbar>,
+      );
+      expect(findMainToggle(container)).toBeNull();
+    });
+
+    // Caso 2 — position override moves the toggle's data-position.
+    it("mainTogglePosition='bottom' moves the toggle's data-position", () => {
+      const { container } = render(
+        <SideNavbar showToggle togglePosition="floating">
+          <SideNavbar.Navbar mainTogglePosition="bottom">
+            <SideNavbar.Navbar.Item icon={<div />} label="Home" id="home" />
+          </SideNavbar.Navbar>
+        </SideNavbar>,
+      );
+      const toggle = findMainToggle(container);
+      expect(toggle).not.toBeNull();
+      expect(toggle).toHaveAttribute("data-position", "bottom");
+    });
+
+    // Caso 3 — no override falls back to the global toggle context.
+    it("no override → toggle uses SideNavbar root's togglePosition", () => {
+      const { container } = render(
+        <SideNavbar showToggle togglePosition="top">
+          <SideNavbar.Navbar>
+            <SideNavbar.Navbar.Item icon={<div />} label="Home" id="home" />
+          </SideNavbar.Navbar>
+        </SideNavbar>,
+      );
+      expect(findMainToggle(container)).toHaveAttribute("data-position", "top");
+    });
+
+    // Caso 4 — multi-Navbar with overrides: single toggle from the
+    // first child in tree order, plus dev warning.
+    it("multiple Navbars with overrides → single toggle from first; dev warning fires", () => {
+      const consoleErrorSpy = vi
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      const { container } = render(
+        <SideNavbar showToggle togglePosition="floating">
+          <SideNavbar.Navbar mainTogglePosition="top">
+            <SideNavbar.Navbar.Item icon={<div />} label="A" id="a" />
+          </SideNavbar.Navbar>
+          <SideNavbar.Navbar mainTogglePosition="bottom">
+            <SideNavbar.Navbar.Item icon={<div />} label="B" id="b" />
+          </SideNavbar.Navbar>
+        </SideNavbar>,
+      );
+      const toggles = container.querySelectorAll("aside [data-position]");
+      expect(toggles).toHaveLength(1);
+      expect(toggles[0]).toHaveAttribute("data-position", "top");
+      // toHaveBeenCalledWith (NOT exact count: StrictMode double-renders
+      // would inflate count; the property we care about is "warning
+      // surfaced", not arity).
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        expect.stringContaining(
+          "multiple <SideNavbar.Navbar> children set main-toggle overrides",
+        ),
+      );
+      consoleErrorSpy.mockRestore();
+    });
+
+    // Caso 5 — mixed (one override, one without): toggle from the
+    // overriding Navbar, no multi-override warning.
+    it("mixed (one override, one without) → toggle from overriding Navbar; no warning", () => {
+      const consoleErrorSpy = vi
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      const { container } = render(
+        <SideNavbar showToggle togglePosition="floating">
+          <SideNavbar.Navbar mainTogglePosition="bottom">
+            <SideNavbar.Navbar.Item icon={<div />} label="A" id="a" />
+          </SideNavbar.Navbar>
+          <SideNavbar.Navbar>
+            <SideNavbar.Navbar.Item icon={<div />} label="B" id="b" />
+          </SideNavbar.Navbar>
+        </SideNavbar>,
+      );
+      expect(findMainToggle(container)).toHaveAttribute(
+        "data-position",
+        "bottom",
+      );
+      expect(consoleErrorSpy).not.toHaveBeenCalledWith(
+        expect.stringContaining(
+          "multiple <SideNavbar.Navbar> children set main-toggle overrides",
+        ),
+      );
+      consoleErrorSpy.mockRestore();
+    });
+
+    // Caso 6 — DOM guard: toggle always lives in <aside>, never in
+    // <nav>. Pins the property against regression to a model-B-style
+    // implementation that would relocate the DOM.
+    it("main toggle always lives in <aside>, never in <nav>", () => {
+      const { container } = render(
+        <SideNavbar showToggle togglePosition="floating">
+          <SideNavbar.Navbar mainTogglePosition="bottom">
+            <SideNavbar.Navbar.Item icon={<div />} label="Home" id="home" />
+          </SideNavbar.Navbar>
+        </SideNavbar>,
+      );
+      const toggle = findMainToggle(container);
+      expect(toggle).not.toBeNull();
+      const asideAncestor = toggle!.closest("aside");
+      const navAncestor = toggle!.closest("nav");
+      expect(asideAncestor).not.toBeNull();
+      if (navAncestor !== null) {
+        expect(navAncestor.contains(toggle!)).toBe(false);
+      }
+    });
+
+    // Caso 7 — render-driven guard: override applies synchronously on
+    // first render, without any waitFor / act / effect running. Traps
+    // any regression to an effect-driven implementation that would
+    // reintroduce SSR hydration mismatches.
+    it("override applies synchronously on first render (no waitFor / no effects required)", () => {
+      const { container } = render(
+        <SideNavbar showToggle togglePosition="floating">
+          <SideNavbar.Navbar mainTogglePosition="bottom">
+            <SideNavbar.Navbar.Item icon={<div />} label="Home" id="home" />
+          </SideNavbar.Navbar>
+        </SideNavbar>,
+      );
+      // Query runs immediately after render() — no await, no waitFor,
+      // no act(). If the implementation needed an effect to resolve
+      // the override, this assertion would fail: the toggle would
+      // still show togglePosition="floating" on first commit and only
+      // flip to "bottom" after the effect ran.
+      const toggle = findMainToggle(container);
+      expect(toggle).toHaveAttribute("data-position", "bottom");
+    });
+
+    // Caso 8 — wrapper-nesting guard: a Navbar wrapped in another
+    // element is NOT inspected (only direct children are). The
+    // override falls back to global, AND dev mode warns about the
+    // miswiring so the failure isn't silent.
+    it("Navbar override wrapped inside a non-Navbar element → fallback + dev warning", () => {
+      const consoleErrorSpy = vi
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      const { container } = render(
+        <SideNavbar showToggle togglePosition="top">
+          <div data-testid="wrapper">
+            <SideNavbar.Navbar mainTogglePosition="bottom">
+              <SideNavbar.Navbar.Item icon={<div />} label="Home" id="home" />
+            </SideNavbar.Navbar>
+          </div>
+        </SideNavbar>,
+      );
+      // Fallback to the root's togglePosition — the override was not
+      // picked up because the Navbar isn't a direct child.
+      expect(findMainToggle(container)).toHaveAttribute("data-position", "top");
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        expect.stringContaining(
+          "a <SideNavbar.Navbar> with a main-toggle override appears nested inside a wrapper element",
+        ),
+      );
+      consoleErrorSpy.mockRestore();
+    });
+  });
 });
