@@ -15,7 +15,7 @@ export interface AutocompleteListProps {
   onSelect: (option: AutocompleteOptionType) => void;
   loading?: boolean;
   emptyMessage?: string;
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
   showSelectAll?: boolean;
   allSelected?: boolean;
   onSelectAll?: () => void;

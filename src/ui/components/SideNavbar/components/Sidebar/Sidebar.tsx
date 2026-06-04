@@ -38,7 +38,7 @@ import { cn } from "../../../../utils";
 function Sidebar({ children, className = "", style, ...props }: SidebarProps) {
   const rootState = useSideNavbarStateRequired();
   const rootTheme = useSideNavbarThemeRequired();
-  const sidebarRef = useRef<HTMLElement>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [hasHeader, setHasHeader] = useState(false);
   const [hasFooter, setHasFooter] = useState(false);

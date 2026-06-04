@@ -545,7 +545,7 @@ export interface SidebarContextValue {
 
   // Sidebar-specific state
   /** Reference to sidebar element */
-  sidebarRef: React.RefObject<HTMLElement | null>;
+  sidebarRef: React.RefObject<HTMLDivElement | null>;
   /** Current scroll position */
   scrollPosition: number;
   /** Set scroll position */
