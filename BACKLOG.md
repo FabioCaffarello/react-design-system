@@ -1308,3 +1308,19 @@ Descoberto via mapa de consumers do Slider que mostrou: 12 dos 13 axe violations
 **Por que não foi consertado junto:** ordem de heading e nome do dialog são concerns ortogonais. O fix do nome (aria-labelledby) **não depende** de re-mapear o heading. Mudar o h3 pra h2 (ou usar role/level ARIA) é decisão separada que precisa medir contexto real do consumer.
 **Hipótese provável:** **não-issue real**. Dialogs e modais são tradicionalmente tratados como subtree de heading própria pelos AT — o usuário entra no contexto modal antes de "ouvir" o h3, então o pulo aparente é convenção esperada. WAI-ARIA Authoring Practices não mandata level específico pra título de dialog.
 **Como decidir:** observar se algum re-baseline futuro com cenário de página completa (DashboardLayout + Popover dentro, ex.) dispara `heading-order` na hierarquia da story. Se não disparar até o gate flip, fica como decisão arquitetural deferida com este registro como contexto. Se disparar, avaliar trocar h3 por h2 OU envelopar com a role correta.
+
+## DataGrid row grouping — props/types reserved (@experimental)
+
+**Descoberto em:** Phase 2C triagem dos `_underscored` (DataGrid `_handleGroupToggle`).
+**Estado:** API pública de grouping (`DataGridGroup`, `groups`, `onGroupChange`, `groupable`) está exportada e tipada, mas a feature não é implementada de ponta a ponta — não há render de group headers, agregação de linhas por coluna, expand/collapse de grupo. O scaffolding (state interno `internalGroups`, handler `_handleGroupToggle`, botão "Group" sem `onClick`) foi removido como parte do freeze; só os tipos e os argumentos das props permaneceram (com `_` prefix na destructure), marcados como `@experimental` no JSDoc.
+**Por que não foi completado:** completar grouping é investimento grande sem caso de uso real puxando a API — risco de construir a abstração errada agora e quebrar quando o primeiro consumer chegar (a API já é pública). Estratégia: congelar honestamente até haver demanda.
+**O que precisa pra implementar:**
+
+- Table primitive: suporte a `groupBy` (header de grupo renderizado entre linhas, agrupamento de `data` por valor da coluna group-by, render condicional dos rows de cada grupo conforme `expanded`).
+- DataGrid: UI de seleção de coluna group-by (provavelmente menu/dropdown no botão "Group" que volta), wire de `_handleGroupToggle` ao header de grupo, persistência do `expanded` por grupo.
+- Virtualização: estratégia para grouping + virtual scrolling coexistirem (group headers contam como linhas? ou são fixos sticky?).
+- Compatibilidade com filtros + sort dentro de grupos: ordem de operação (group-then-sort vs sort-then-group?) e UX (filtro afeta visibilidade de grupo inteiro?).
+- Testes: a11y de group header (`aria-expanded`, `aria-controls`), keyboard navigation entre grupos, screen reader announce ao expandir.
+
+**Sinal de demanda:** abrir issue/PR quando o primeiro consumer pedir agrupamento numa página real. Sem isso, fica reservado.
+**Como decidir:** quando o sinal vier, esta entrada é o briefing inicial. Avaliar se o shape atual de `DataGridGroup` (`{ column: string; expanded?: boolean }`) ainda cobre o caso de uso real OU se a feature precisa de uma forma diferente (multi-level grouping, group aggregations, etc.) — se sim, o `@experimental` na JSDoc dá cobertura para refinar o shape sem violar semver.

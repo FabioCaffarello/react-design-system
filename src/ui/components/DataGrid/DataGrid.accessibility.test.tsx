@@ -11,9 +11,11 @@
  *     reachable via Tab; export buttons fire onExport with the
  *     format string
  *   - Focus Management: each export button is its own tab stop
- *   - Screen Reader Support: the toolbar exists only when exportable,
- *     groupable, or toolbarActions is supplied — no phantom controls;
- *     omitting all three suppresses the toolbar entirely
+ *   - Screen Reader Support: the toolbar exists only when exportable or
+ *     toolbarActions is supplied — no phantom controls; omitting both
+ *     suppresses the toolbar entirely. (Grouping props are @experimental
+ *     and do NOT contribute to the toolbar gate today — see the
+ *     DataGridGroup JSDoc and BACKLOG.md.)
  *
  * Mirrors the structure of Header.accessibility.test.tsx as the
  * canonical scaffold for component-level a11y suites.
@@ -55,12 +57,18 @@ describe("DataGrid Accessibility", () => {
       expect(screen.getByRole("button", { name: /JSON/i })).toBeInTheDocument();
     });
 
-    it("groupable toolbar exposes a Group button", () => {
+    it("groupable does not surface a Group button (props @experimental)", () => {
+      // DataGridGroup / groups / onGroupChange / groupable are reserved
+      // for forward-compatibility but not yet wired to rendering. The
+      // previous Group button rendered without behaviour and was removed;
+      // groupable now also does NOT trigger the toolbar landmark
+      // (see "no toolbar landmark" test below). See BACKLOG.md for the
+      // roadmap entry.
       render(<DataGrid columns={columns} data={data} groupable />);
 
       expect(
-        screen.getByRole("button", { name: /Group/i }),
-      ).toBeInTheDocument();
+        screen.queryByRole("button", { name: /Group/i }),
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -99,11 +107,24 @@ describe("DataGrid Accessibility", () => {
   });
 
   describe("Screen Reader Support", () => {
-    it("no toolbar landmark when neither exportable, groupable, nor toolbarActions is set", () => {
+    it("no toolbar landmark when neither exportable nor toolbarActions is set", () => {
       render(<DataGrid columns={columns} data={data} />);
 
       // Toolbar buttons would surface here — AT users hear nothing
-      // toolbar-related when nothing is configured.
+      // toolbar-related when nothing is configured. `groupable` is
+      // intentionally excluded from this gate today (props @experimental).
+      expect(
+        screen.queryByRole("button", { name: /CSV|XLSX|JSON|Group/i }),
+      ).not.toBeInTheDocument();
+    });
+
+    it("groupable alone does not produce a toolbar (props @experimental)", () => {
+      // Sanity pin: the previous gate `exportable || groupable ||
+      // toolbarActions` meant `groupable` alone surfaced an empty toolbar
+      // box. After the freeze, groupable is inert and the toolbar stays
+      // absent unless exportable or toolbarActions justifies it.
+      render(<DataGrid columns={columns} data={data} groupable />);
+
       expect(
         screen.queryByRole("button", { name: /CSV|XLSX|JSON|Group/i }),
       ).not.toBeInTheDocument();

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, type ReactNode } from "react";
-import { Download, ArrowUpDown } from "lucide-react";
+import { Download } from "lucide-react";
 import Table, { type TableColumn } from "../Table/Table";
 import Button from "../../primitives/Button/Button";
 import { getSpacingClass } from "../../tokens/spacing";
@@ -20,6 +20,12 @@ export type DataGridColumn<T = unknown> = TableColumn<T> & {
   maxWidth?: number;
 };
 
+/**
+ * @experimental Reserved for upcoming row-grouping support; not yet wired
+ * to rendering. The shape is fixed for forward-compatibility, but passing
+ * a `groups` array to `<DataGrid>` has no visual effect today. Tracked in
+ * BACKLOG.md under "DataGrid row grouping — props/types reserved".
+ */
 export interface DataGridGroup {
   column: string;
   expanded?: boolean;
@@ -39,8 +45,24 @@ export interface DataGridProps<
   multiSort?: boolean;
 
   // Grouping
+  /**
+   * @experimental Reserved for upcoming row-grouping support; not yet wired
+   * to rendering. Passing this has no visual effect today — the grid renders
+   * a flat table regardless. Tracked in BACKLOG.md under "DataGrid row
+   * grouping — props/types reserved".
+   */
   groups?: DataGridGroup[];
+  /**
+   * @experimental Reserved for upcoming row-grouping support; not yet wired.
+   * The callback is never invoked today. Tracked in BACKLOG.md.
+   */
   onGroupChange?: (groups: DataGridGroup[]) => void;
+  /**
+   * @experimental Reserved for upcoming row-grouping support; not yet wired.
+   * Passing `true` has no visual effect today — the grouping toolbar button
+   * was removed because it rendered but had no behaviour. Tracked in
+   * BACKLOG.md.
+   */
   groupable?: boolean;
 
   // Column Management
@@ -128,9 +150,11 @@ export default function DataGrid<
   sortColumn,
   sortDirection,
   multiSort: _multiSort = false,
-  groups = [],
-  onGroupChange,
-  groupable = false,
+  // Grouping props are @experimental — see DataGridGroup JSDoc. Accepted
+  // for forward-compatibility but not yet wired to rendering.
+  groups: _groups,
+  onGroupChange: _onGroupChange,
+  groupable: _groupable = false,
   resizable = true,
   reorderable: _reorderable = false,
   onColumnReorder: _onColumnReorder,
@@ -156,7 +180,6 @@ export default function DataGrid<
   emptyStateAction,
   className = "",
 }: DataGridProps<T>) {
-  const [internalGroups, setInternalGroups] = useState<DataGridGroup[]>(groups);
   const [internalColumnWidths, setInternalColumnWidths] = useState<
     Record<string, number>
   >(columnWidths || {});
@@ -168,18 +191,6 @@ export default function DataGrid<
       width: internalColumnWidths[col.key as string] || col.defaultWidth,
     }));
   }, [columns, internalColumnWidths]);
-
-  // TODO(phase2): DataGrid agrupamento iniciado mas sem UI de toggle no
-  // header da coluna group-by. Este handler está pronto e órfão — falta
-  // wireá-lo a um clique no header de coluna agrupável.
-  const _handleGroupToggle = (columnKey: string) => {
-    const newGroups = internalGroups.map((g) =>
-      g.column === columnKey ? { ...g, expanded: !g.expanded } : g,
-    );
-    setInternalGroups(newGroups);
-    onGroupChange?.(newGroups);
-  };
-  void _handleGroupToggle;
 
   const handleExport = (format: "csv" | "xlsx" | "json") => {
     if (onExport) {
@@ -233,7 +244,7 @@ export default function DataGrid<
   return (
     <div className={`${getSpacingClass("base", "space-y")} ${className}`}>
       {/* Toolbar */}
-      {(exportable || groupable || toolbarActions) && (
+      {(exportable || toolbarActions) && (
         <div
           className={`
           flex
@@ -246,17 +257,13 @@ export default function DataGrid<
           ${getRadiusClass("lg")}
         `}
         >
-          <div className={`flex items-center ${getSpacingClass("sm", "gap")}`}>
-            {groupable && (
-              <Button
-                variant="outline"
-                size="sm"
-                leftIcon={<ArrowUpDown className="h-4 w-4" />}
-              >
-                Group
-              </Button>
-            )}
-          </div>
+          {/* Left slot reserved for the grouping toolbar (currently
+              @experimental — see DataGridGroup JSDoc). The empty div
+              preserves the justify-between layout so toolbarActions and
+              the export controls stay anchored to the right. */}
+          <div
+            className={`flex items-center ${getSpacingClass("sm", "gap")}`}
+          />
 
           <div className={`flex items-center ${getSpacingClass("sm", "gap")}`}>
             {toolbarActions}
