@@ -74,14 +74,33 @@ export function useFocusTrap(
 
       const first = focusables[0];
       const last = focusables[focusables.length - 1];
+      const active = document.activeElement;
+
+      // Focus is currently OUTSIDE the trap container — either it
+      // hasn't entered yet (consumer hasn't auto-focused, or doesn't
+      // auto-focus by design) or it escaped earlier. The boundary
+      // checks below (`active === first` / `=== last`) would both miss
+      // this case and let the browser advance Tab to whatever is next
+      // in document order, which is an element BEHIND the overlay.
+      // Pull focus back to the appropriate edge first. This was a real
+      // gap in DialogContent's inline trap — DialogContent only got
+      // away with it because it always auto-focused the first element
+      // on open, masking the outside-focus case. Consumers of this
+      // hook may decouple the auto-focus from the trap (Drawer is
+      // expected to), so we close the gap here.
+      if (!container.contains(active)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+        return;
+      }
 
       if (e.shiftKey) {
-        if (document.activeElement === first) {
+        if (active === first) {
           e.preventDefault();
           last.focus();
         }
       } else {
-        if (document.activeElement === last) {
+        if (active === last) {
           e.preventDefault();
           first.focus();
         }

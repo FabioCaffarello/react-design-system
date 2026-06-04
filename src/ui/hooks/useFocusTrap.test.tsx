@@ -219,4 +219,57 @@ describe("useFocusTrap", () => {
     expect(event.defaultPrevented).toBe(false);
     expect(document.activeElement).toBe(buttons[2]);
   });
+
+  // ---------------------------------------------------------------------
+  // Focus-outside-container guard. Boundary-only intervention is not
+  // enough — if the consumer doesn't auto-focus the trap container on
+  // open (or auto-focus is delayed / decoupled), focus is still on
+  // whatever was outside the trap when the user presses Tab. Without
+  // this guard, the browser advances to the next document-order element
+  // — which is BEHIND the overlay. These two tests pin the fix; the
+  // existing DialogContent inline trap silently has this gap and got
+  // away with it because Dialog always auto-focuses on open.
+  // ---------------------------------------------------------------------
+
+  it("focus outside container: Tab pulls focus to first focusable inside trap", () => {
+    const { buttons } = buildTrap(["A", "B", "C"]);
+
+    // Set up an "outside" button — exists in the document but NOT a
+    // child of the trap container. Focus it before firing Tab.
+    const outside = document.createElement("button");
+    outside.textContent = "Outside";
+    document.body.appendChild(outside);
+    makeVisible(outside);
+    outside.focus();
+    expect(document.activeElement).toBe(outside);
+
+    const event = fireTabAtDocument({ shift: false });
+
+    // The hook must intervene: preventDefault and pull focus to the
+    // FIRST focusable inside the trap. Without the guard, the browser
+    // would have advanced from `outside` to the next document-order
+    // focusable, which is `A` only because the trap happens to be next
+    // — in a real overlay scenario the next document focusable is
+    // something behind the overlay.
+    expect(event.defaultPrevented).toBe(true);
+    expect(document.activeElement).toBe(buttons[0]);
+  });
+
+  it("focus outside container: Shift+Tab pulls focus to last focusable inside trap", () => {
+    const { buttons } = buildTrap(["A", "B", "C"]);
+
+    const outside = document.createElement("button");
+    outside.textContent = "Outside";
+    document.body.appendChild(outside);
+    makeVisible(outside);
+    outside.focus();
+    expect(document.activeElement).toBe(outside);
+
+    const event = fireTabAtDocument({ shift: true });
+
+    // Shift+Tab from outside should pull to the LAST focusable inside
+    // (the "tail" of the trap, mirroring Shift+Tab's reverse direction).
+    expect(event.defaultPrevented).toBe(true);
+    expect(document.activeElement).toBe(buttons[2]);
+  });
 });
