@@ -89,30 +89,11 @@ export function useNavLink({
     return false;
   }, [active]);
 
-  // Auto-detect Next.js Link component (RFC-002 APPROVED)
-  const NextLink = useMemo(() => {
-    try {
-      // Dynamic require for Next.js Link (RFC-002 APPROVED)
-      // This is safe because we're in a try-catch and only for optional dependency
-      // @ts-expect-error - require is available at runtime but not in TypeScript types
-      const nextLink =
-        // eslint-disable-next-line @typescript-eslint/no-require-imports
-        typeof require !== "undefined" ? require("next/link") : null;
-      return (
-        nextLink as {
-          default?: React.ComponentType<{
-            href: string;
-            children?: React.ReactNode;
-            className?: string;
-            [key: string]: unknown;
-          }>;
-        } | null
-      )?.default;
-    } catch {
-      // Next.js not available - this is expected and safe
-      return undefined;
-    }
-  }, []);
+  // Consumers who want Next.js routing pass `as={NextLink}` explicitly on
+  // NavLink. We no longer auto-detect: a CommonJS `require("next/link")`
+  // probe doesn't survive ESM bundlers and the auto-detect branch was
+  // already brittle in practice.
+  const NextLink = undefined;
 
   return {
     isActive,
