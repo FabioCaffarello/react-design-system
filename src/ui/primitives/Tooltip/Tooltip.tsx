@@ -12,6 +12,7 @@ import {
   useState,
   useRef,
   useEffect,
+  useId,
   cloneElement,
   isValidElement,
 } from "react";
@@ -67,8 +68,12 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(
   const tooltipRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
 
-  // Generate unique ID for tooltip
-  const tooltipId = `tooltip-${Math.random().toString(36).substr(2, 9)}`;
+  // Stable per-instance ID for the tooltip popup. useId is SSR-safe and
+  // stable across renders — the previous Math.random() approach generated
+  // a fresh ID on every render, which silently breaks the
+  // aria-describedby <-> tooltip id pairing observed by assistive tech
+  // across re-renders.
+  const tooltipId = `tooltip-${useId()}`;
 
   const handleMouseEnter = () => {
     const id = setTimeout(() => {

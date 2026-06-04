@@ -1,7 +1,7 @@
 "use client";
 
 import type { HTMLAttributes, ReactNode, KeyboardEvent } from "react";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useId } from "react";
 import { cn, mergeRefs } from "../../utils";
 import {
   getRadiusClass,
@@ -75,9 +75,13 @@ export default function Dropdown({
   const menuRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  // Generate unique IDs
-  const menuId = `dropdown-menu-${Math.random().toString(36).substr(2, 9)}`;
-  const triggerId = `dropdown-trigger-${Math.random().toString(36).substr(2, 9)}`;
+  // Stable per-instance IDs. Math.random() at the call site regenerated
+  // both IDs on every render, so aria-controls / aria-labelledby (which
+  // pair the trigger with the menu) silently desynced across renders.
+  // useId is SSR-safe and stable per component instance.
+  const reactId = useId();
+  const menuId = `dropdown-menu-${reactId}`;
+  const triggerId = `dropdown-trigger-${reactId}`;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
