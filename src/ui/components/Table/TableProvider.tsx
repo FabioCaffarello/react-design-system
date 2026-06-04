@@ -173,7 +173,7 @@ export function TableProvider<
   // Filter state
   const isFilterControlled = controlledFilterValues !== undefined;
   const [internalFilterValues, setInternalFilterValues] =
-    useState<Record<string, unknown>>(initialFilterValues);
+    useState<Record<string, FilterValue>>(initialFilterValues);
 
   const filterValues = isFilterControlled
     ? controlledFilterValues!
@@ -377,8 +377,11 @@ export function TableProvider<
     [isColumnWidthsControlled, onColumnResize],
   );
 
-  // Use controlledColumnWidths from props if provided
+  // TODO(phase2): alias órfão. O comentário "Use controlledColumnWidths
+  // from props if provided" promete um ponto de injeção que nunca foi
+  // consumido — `columnWidths` é lido direto em outros pontos.
   const _controlledColumnWidths = columnWidths;
+  void _controlledColumnWidths;
 
   // TODO(phase2): TableContext perde T — createContext não carrega
   // genérico (ver TableContext.tsx). O useMemo mantém TableContextValue<T>

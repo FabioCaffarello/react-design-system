@@ -169,6 +169,9 @@ export default function DataGrid<
     }));
   }, [columns, internalColumnWidths]);
 
+  // TODO(phase2): DataGrid agrupamento iniciado mas sem UI de toggle no
+  // header da coluna group-by. Este handler está pronto e órfão — falta
+  // wireá-lo a um clique no header de coluna agrupável.
   const _handleGroupToggle = (columnKey: string) => {
     const newGroups = internalGroups.map((g) =>
       g.column === columnKey ? { ...g, expanded: !g.expanded } : g,
@@ -176,6 +179,7 @@ export default function DataGrid<
     setInternalGroups(newGroups);
     onGroupChange?.(newGroups);
   };
+  void _handleGroupToggle;
 
   const handleExport = (format: "csv" | "xlsx" | "json") => {
     if (onExport) {
