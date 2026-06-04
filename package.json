@@ -26,7 +26,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "npx tsc --project tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist || true && vite build && npm run build:validate",
+    "build": "npx tsc --project tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist && vite build && npm run build:validate",
     "build:validate": "tsx scripts/validate-build-exports.ts",
     "lint": "eslint .",
     "typecheck": "tsc --build --force tsconfig.json",
