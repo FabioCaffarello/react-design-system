@@ -211,10 +211,9 @@ function convertSimplifiedToProviderProps<T extends Record<string, unknown>>(
   // Determine pagination mode
   let mode: "client" | "server" | "auto" = paginationMode || "auto";
   if (mode === "auto") {
-    mode =
-      pagination && pagination.total !== undefined && pagination.onPageChange
-        ? "server"
-        : "client";
+    // pagination.onPageChange is required by the type, so its presence
+    // is implied by `pagination` itself.
+    mode = pagination && pagination.total !== undefined ? "server" : "client";
   }
 
   return {

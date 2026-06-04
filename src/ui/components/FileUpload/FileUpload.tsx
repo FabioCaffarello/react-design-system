@@ -95,7 +95,7 @@ export default function FileUpload({
       const fileUpload: FileUploadFile = {
         file,
         id: fileId,
-        error,
+        error: error ?? undefined,
         progress: showProgress ? 0 : undefined,
       };
 

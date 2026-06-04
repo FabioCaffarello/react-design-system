@@ -91,12 +91,18 @@ export default function TableHeaderCell({
     };
 
     const handleMouseUp = () => {
-      document.removeEventListener("mousemove", handleMouseMove as unknown);
+      document.removeEventListener(
+        "mousemove",
+        handleMouseMove as unknown as EventListener,
+      );
       document.removeEventListener("mouseup", handleMouseUp);
       resizeStartRef.current = null;
     };
 
-    document.addEventListener("mousemove", handleMouseMove as unknown);
+    document.addEventListener(
+      "mousemove",
+      handleMouseMove as unknown as EventListener,
+    );
     document.addEventListener("mouseup", handleMouseUp);
   };
 

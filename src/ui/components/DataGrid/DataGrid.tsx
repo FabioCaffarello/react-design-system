@@ -161,7 +161,7 @@ export default function DataGrid<
   const tableColumns: TableColumn<T>[] = useMemo(() => {
     return columns.map((col) => ({
       ...col,
-      width: internalColumnWidths[col.key] || col.defaultWidth,
+      width: internalColumnWidths[col.key as string] || col.defaultWidth,
     }));
   }, [columns, internalColumnWidths]);
 

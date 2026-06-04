@@ -10,7 +10,7 @@ import { getSpacingClass } from "../../tokens";
 
 export interface SearchInputProps extends Omit<
   InputHTMLAttributes<HTMLInputElement>,
-  "size" | "onChange"
+  "size"
 > {
   onSearch?: (value: string) => void;
   onClear?: () => void;
