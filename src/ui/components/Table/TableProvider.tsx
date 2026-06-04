@@ -377,12 +377,6 @@ export function TableProvider<
     [isColumnWidthsControlled, onColumnResize],
   );
 
-  // TODO(phase2): alias órfão. O comentário "Use controlledColumnWidths
-  // from props if provided" promete um ponto de injeção que nunca foi
-  // consumido — `columnWidths` é lido direto em outros pontos.
-  const _controlledColumnWidths = columnWidths;
-  void _controlledColumnWidths;
-
   const contextValue: TableContextValue<T> = useMemo(
     () => ({
       columns,
