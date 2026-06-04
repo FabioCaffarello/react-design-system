@@ -13,7 +13,9 @@
  *   - Keyboard Navigation: closeOnEscape can be opted out cleanly;
  *     unrelated keys do not close
  *   - Focus Management: close button (when shown) has accessible name
- *     and is keyboard-activatable
+ *     and is keyboard-activatable; the modal focus contract is honoured
+ *     (auto-focus on open, Tab cycling within the surface,
+ *     restoration to the opening element on close — WCAG 2.4.3)
  *   - Screen Reader Support: overlay is aria-hidden so AT never
  *     announces it as a separate region; close button text is the
  *     icon's accessible name, not the icon glyph
@@ -22,13 +24,61 @@
  * canonical scaffold for component-level a11y suites.
  */
 
-import { describe, it, expect, vi, afterEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Drawer from "./Drawer";
 
+/**
+ * File-wide offsetParent prop-up. The Drawer wires `useAutoFocus`,
+ * which on a container with no focusable children falls through to
+ * focusing the container itself with `tabindex="-1"`. In jsdom every
+ * connected element reports `offsetParent === null` (no layout
+ * engine), so the focusables filter rejects everything — including the
+ * close button — and the fallback steals focus from any element the
+ * test has manually focused. That breaks tests that depend on a
+ * specific element retaining focus (e.g. "close button activates
+ * onClick from the keyboard" — Enter dispatches against the fallback
+ * container, not the button).
+ *
+ * The fix is to mock `offsetParent` at the prototype level so every
+ * HTMLElement looks "visible" to the hook. Done once at file scope so
+ * every test runs against a consistent baseline. Matches the
+ * `installVisibleOffsetParentMock` shape used inside the Modal Focus
+ * Contract block.
+ */
+let restoreOffsetParentDescriptor: PropertyDescriptor | undefined;
+beforeEach(() => {
+  restoreOffsetParentDescriptor = Object.getOwnPropertyDescriptor(
+    HTMLElement.prototype,
+    "offsetParent",
+  );
+  Object.defineProperty(HTMLElement.prototype, "offsetParent", {
+    configurable: true,
+    get() {
+      return document.body;
+    },
+  });
+});
+
 afterEach(() => {
   document.body.style.overflow = "";
+  if (restoreOffsetParentDescriptor) {
+    Object.defineProperty(
+      HTMLElement.prototype,
+      "offsetParent",
+      restoreOffsetParentDescriptor,
+    );
+  } else {
+    delete (HTMLElement.prototype as unknown as Record<string, unknown>)
+      .offsetParent;
+  }
 });
 
 describe("Drawer Accessibility", () => {
@@ -153,6 +203,197 @@ describe("Drawer Accessibility", () => {
       expect(closeButton).toHaveFocus();
       await user.keyboard("{Enter}");
       expect(handleOpenChange).toHaveBeenCalledWith(false);
+    });
+  });
+
+  /**
+   * Modal focus contract — the WCAG 2.4.3 / WAI-ARIA modal-dialog
+   * obligations that the Drawer's `role="dialog" aria-modal="true"`
+   * declares. Before Phase 3 PR 2 the Drawer carried the declaration
+   * without honouring any of the obligations; these tests pin the
+   * contract end-to-end against the actual rendered component, on top
+   * of the per-hook unit tests in `src/ui/hooks/useFocus*.test.tsx`.
+   *
+   * jsdom prerequisite: the file-scope `beforeEach` prototype-mocks
+   * `offsetParent` so every HTMLElement looks "visible" to the focus
+   * hooks. Without that, the hooks' visibility filter would reject
+   * every rendered element and the auto-focus fallback would steal
+   * focus to the dialog container.
+   */
+  describe("Modal focus contract (trap, auto-focus, restore)", () => {
+    it("auto-focuses the first focusable inside the drawer on open", async () => {
+      render(
+        <Drawer defaultOpen>
+          <Drawer.Content title="Settings" showCloseButton>
+            <button type="button">First</button>
+            <button type="button">Second</button>
+          </Drawer.Content>
+        </Drawer>,
+      );
+
+      // Auto-focus is deferred via setTimeout(0); waitFor polls until
+      // the timer fires and the hook has moved focus.
+      await waitFor(() => {
+        // Close button renders before content children in DOM order
+        // (header is the first row of the dialog). It's the first
+        // focusable; auto-focus should land on it.
+        const closeBtn = screen.getByRole("button", { name: /close drawer/i });
+        expect(document.activeElement).toBe(closeBtn);
+      });
+    });
+
+    it("Tab on the last focusable cycles back to the first (trap engaged)", async () => {
+      render(
+        <Drawer defaultOpen>
+          <Drawer.Content title="Settings">
+            <button type="button">First</button>
+            <button type="button">Last</button>
+          </Drawer.Content>
+        </Drawer>,
+      );
+
+      const first = screen.getByRole("button", { name: "First" });
+      const last = screen.getByRole("button", { name: "Last" });
+
+      // Manually park focus on Last (defeating the auto-focus that
+      // would otherwise land on First, the natural first focusable
+      // since there's no close button here).
+      last.focus();
+      expect(document.activeElement).toBe(last);
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Tab",
+        bubbles: true,
+        cancelable: true,
+      });
+      document.dispatchEvent(event);
+
+      expect(event.defaultPrevented).toBe(true);
+      expect(document.activeElement).toBe(first);
+    });
+
+    it("Shift+Tab on the first focusable cycles back to the last (trap engaged)", async () => {
+      render(
+        <Drawer defaultOpen>
+          <Drawer.Content title="Settings">
+            <button type="button">First</button>
+            <button type="button">Last</button>
+          </Drawer.Content>
+        </Drawer>,
+      );
+
+      const first = screen.getByRole("button", { name: "First" });
+      const last = screen.getByRole("button", { name: "Last" });
+
+      first.focus();
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Tab",
+        shiftKey: true,
+        bubbles: true,
+        cancelable: true,
+      });
+      document.dispatchEvent(event);
+
+      expect(event.defaultPrevented).toBe(true);
+      expect(document.activeElement).toBe(last);
+    });
+
+    it("restores focus to the opening element on Escape close", async () => {
+      vi.useFakeTimers();
+      try {
+        // Place a "trigger" outside the drawer; focus it before render.
+        // It plays the role of "whatever had focus before the drawer
+        // opened" — useFocusRestore snapshots document.activeElement
+        // at that moment and restores to it when isOpen → false.
+        const trigger = document.createElement("button");
+        trigger.textContent = "Trigger";
+        document.body.appendChild(trigger);
+        trigger.focus();
+        expect(document.activeElement).toBe(trigger);
+
+        const { rerender } = render(
+          <Drawer open={false}>
+            <Drawer.Content title="Settings">
+              <button type="button">Inside</button>
+            </Drawer.Content>
+          </Drawer>,
+        );
+
+        // Open the drawer.
+        rerender(
+          <Drawer open={true}>
+            <Drawer.Content title="Settings">
+              <button type="button">Inside</button>
+            </Drawer.Content>
+          </Drawer>,
+        );
+
+        // Flush the auto-focus timer so focus moves into the drawer.
+        act(() => {
+          vi.runAllTimers();
+        });
+        const inside = screen.getByRole("button", { name: "Inside" });
+        expect(document.activeElement).toBe(inside);
+
+        // Close (simulating Escape route).
+        rerender(
+          <Drawer open={false}>
+            <Drawer.Content title="Settings">
+              <button type="button">Inside</button>
+            </Drawer.Content>
+          </Drawer>,
+        );
+
+        // Flush the restore timer.
+        act(() => {
+          vi.runAllTimers();
+        });
+
+        expect(document.activeElement).toBe(trigger);
+      } finally {
+        vi.useRealTimers();
+      }
+    });
+
+    it("trap unmounts cleanly when the drawer closes (no zombie listener)", async () => {
+      const { rerender } = render(
+        <Drawer open={true}>
+          <Drawer.Content title="Settings">
+            <button type="button">Inside</button>
+          </Drawer.Content>
+        </Drawer>,
+      );
+
+      // Close the drawer — DrawerContent returns null when !isOpen,
+      // so the effect cleanups run.
+      rerender(
+        <Drawer open={false}>
+          <Drawer.Content title="Settings">
+            <button type="button">Inside</button>
+          </Drawer.Content>
+        </Drawer>,
+      );
+
+      // Park focus on an outside button. If the trap is still alive,
+      // Tab would preventDefault here.
+      const outside = document.createElement("button");
+      outside.textContent = "Outside";
+      document.body.appendChild(outside);
+      outside.focus();
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Tab",
+        bubbles: true,
+        cancelable: true,
+      });
+      document.dispatchEvent(event);
+
+      // No trap is active — the listener was removed when the effect
+      // cleanup ran on close. defaultPrevented stays false.
+      expect(event.defaultPrevented).toBe(false);
+      // Cleanup the outside element to keep the suite hermetic.
+      outside.remove();
     });
   });
 

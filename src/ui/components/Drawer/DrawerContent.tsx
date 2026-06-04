@@ -1,12 +1,15 @@
 "use client";
 
-import { useEffect, useId, type ReactNode } from "react";
+import { useEffect, useId, useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { getShadowClass } from "../../tokens/shadows";
 import { getZIndexClass } from "../../tokens/z-index";
 import { getAnimationClass } from "../../tokens/animations";
 import { getSpacingClass } from "../../tokens/spacing";
 import { useDrawerContext } from "./DrawerContext";
+import { useFocusRestore } from "../../hooks/useFocusRestore";
+import { useFocusTrap } from "../../hooks/useFocusTrap";
+import { useAutoFocus } from "../../hooks/useAutoFocus";
 import { X } from "lucide-react";
 import { Button } from "../../primitives";
 
@@ -74,6 +77,25 @@ export default function DrawerContent({
     closeOnOverlayClick,
     closeOnEscape,
   } = useDrawerContext();
+
+  // Modal focus contract: trap + auto-focus + restore. The drawer ships
+  // role="dialog" aria-modal="true" — WAI-ARIA's modal pattern requires
+  // focus to enter on open, cycle within the surface while open, and
+  // return to the opening element on close. Prior to Phase 3 PR 2 the
+  // drawer declared the role without honouring any of these — a real
+  // WCAG 2.4.3 gap. The three hooks compose deliberately:
+  //   - useFocusRestore snapshots document.activeElement on the rising
+  //     edge (before useAutoFocus moves focus inside) and restores on
+  //     the falling edge.
+  //   - useFocusTrap cycles Tab/Shift+Tab within contentRef and pulls
+  //     errant focus back inside.
+  //   - useAutoFocus moves focus to the first focusable child (or the
+  //     panel itself, with tabindex=-1) on the rising edge, deferred
+  //     via setTimeout(0) to run after React's commit.
+  const contentRef = useRef<HTMLDivElement>(null);
+  useFocusRestore(isOpen);
+  useFocusTrap(contentRef, isOpen);
+  useAutoFocus(contentRef, isOpen);
 
   // Close on escape
   useEffect(() => {
@@ -148,6 +170,7 @@ export default function DrawerContent({
 
       {/* Drawer */}
       <div
+        ref={contentRef}
         className={`
           fixed
           ${positionClasses[position]}
