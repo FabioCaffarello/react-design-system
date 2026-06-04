@@ -52,9 +52,9 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     const [internalValue, setInternalValue] = useState<string>(
       typeof defaultValue === "string" ? defaultValue : "",
     );
-    const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(
-      null,
-    );
+    const [debounceTimer, setDebounceTimer] = useState<ReturnType<
+      typeof setTimeout
+    > | null>(null);
 
     const isControlled = controlledValue !== undefined;
     const currentValue = isControlled ? controlledValue : internalValue;
