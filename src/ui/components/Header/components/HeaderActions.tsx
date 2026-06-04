@@ -9,7 +9,7 @@
 
 "use client";
 
-import React, { type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { cn } from "../../../utils";
 import { getSpacingClass } from "../../../tokens/spacing";
 

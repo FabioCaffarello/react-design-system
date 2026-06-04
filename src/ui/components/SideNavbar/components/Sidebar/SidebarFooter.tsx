@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useSidebarRequired } from "../../contexts/SidebarContext";
 import { getSpacingClass } from "../../../../tokens";
 import type { SidebarFooterProps } from "../../types";

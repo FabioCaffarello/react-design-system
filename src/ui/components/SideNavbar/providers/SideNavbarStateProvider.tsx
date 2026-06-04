@@ -1,12 +1,6 @@
 "use client";
 
-import React, {
-  useState,
-  useCallback,
-  useEffect,
-  useRef,
-  useMemo,
-} from "react";
+import { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import { SideNavbarStateContext } from "../contexts/SideNavbarStateContext";
 import { useSideNavbarThemeRequired } from "../contexts/SideNavbarThemeContext";
 import { useSideNavbarConfigRequired } from "../contexts/SideNavbarConfigContext";

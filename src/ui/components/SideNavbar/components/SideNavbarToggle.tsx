@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { useSideNavbarStateRequired } from "../contexts/SideNavbarStateContext";
 import { useSideNavbarThemeRequired } from "../contexts/SideNavbarThemeContext";

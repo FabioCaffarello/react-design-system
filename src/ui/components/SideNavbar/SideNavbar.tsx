@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { SideNavbarProvider } from "./providers/SideNavbarProvider";
 import { SideNavbarThemeProvider } from "./providers/SideNavbarThemeProvider";
 import { SideNavbarConfigProvider } from "./providers/SideNavbarConfigProvider";

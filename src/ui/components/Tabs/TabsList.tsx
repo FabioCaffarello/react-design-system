@@ -1,7 +1,7 @@
 "use client";
 
 import { useTabsContext } from "./TabsContext";
-import { useRef, useEffect, type HTMLAttributes, ReactNode } from "react";
+import { useRef, useEffect, type HTMLAttributes, type ReactNode } from "react";
 import { cn } from "../../utils";
 import { getRadiusClass, getSpacingClass } from "../../tokens";
 

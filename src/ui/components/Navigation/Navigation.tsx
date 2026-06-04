@@ -9,7 +9,7 @@
 
 "use client";
 
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { NavLink } from "../../primitives/NavLink";
 import type { NavigationProps } from "./types";
 import { cn, cva } from "../../utils";

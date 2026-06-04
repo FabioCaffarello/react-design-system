@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { useSidebarSlotRequired } from "../../contexts/SidebarSlotContext";
 
 export interface SidebarSlotProps {
