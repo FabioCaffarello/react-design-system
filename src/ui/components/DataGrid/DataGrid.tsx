@@ -7,6 +7,10 @@ import Button from "../../primitives/Button/Button";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getRadiusClass } from "../../tokens/radius";
 import type { TableAction } from "../Table/TableActions/TableActions";
+import type {
+  FilterConfig,
+  FilterValue,
+} from "../Table/TableFilters/TableFilters";
 
 export type DataGridColumn<T = unknown> = TableColumn<T> & {
   groupable?: boolean;
@@ -69,9 +73,9 @@ export interface DataGridProps<
 
   // Filters
   filters?: {
-    config: unknown[];
-    onFilter: (filters: Record<string, unknown>) => void;
-    initialValues?: Record<string, unknown>;
+    config: FilterConfig[];
+    onFilter: (filters: Record<string, FilterValue>) => void;
+    initialValues?: Record<string, FilterValue>;
   };
 
   // Actions
