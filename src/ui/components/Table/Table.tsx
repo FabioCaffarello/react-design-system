@@ -122,14 +122,27 @@ type TableProps<T extends Record<string, unknown> = Record<string, unknown>> =
  * </Table>
  * ```
  */
-function TableComponent<T = unknown>(props: TableProps<T>) {
-  const { className = "", ...restProps } = props;
+function TableComponent<
+  T extends Record<string, unknown> = Record<string, unknown>,
+>(props: TableProps<T>) {
+  const {
+    className = "",
+    "aria-label": ariaLabel,
+    "aria-labelledby": ariaLabelledBy,
+    ...restProps
+  } = props as SimplifiedTableProps<T> & DeclarativeTableProps<T>;
   const hasChildren = "children" in props && props.children !== undefined;
 
-  // Convert simplified API props to provider props
+  // Convert simplified API props to provider props.
+  // The two double-casts below are safe: `restProps` originates from the
+  // same TableProps<T> union and convertSimplifiedToProviderProps' return
+  // mirrors TableProviderProps's shape — but TS cannot prove either via
+  // structural narrowing, so we assert the contract explicitly.
   const providerProps: TableProviderProps<T> = hasChildren
-    ? (restProps as DeclarativeTableProps<T>)
-    : convertSimplifiedToProviderProps(restProps as SimplifiedTableProps<T>);
+    ? (restProps as unknown as TableProviderProps<T>)
+    : (convertSimplifiedToProviderProps(
+        restProps as SimplifiedTableProps<T>,
+      ) as unknown as TableProviderProps<T>);
 
   // If children are provided, use declarative API
   if (hasChildren) {
@@ -155,8 +168,8 @@ function TableComponent<T = unknown>(props: TableProps<T>) {
           <table
             className="min-w-full divide-y divide-line-default"
             role="table"
-            aria-label={props["aria-label"]}
-            aria-labelledby={props["aria-labelledby"]}
+            aria-label={ariaLabel}
+            aria-labelledby={ariaLabelledBy}
             aria-rowcount={providerProps.total || providerProps.data.length}
             aria-colcount={
               providerProps.columns.length +
