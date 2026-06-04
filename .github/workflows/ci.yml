@@ -98,6 +98,9 @@ jobs:
       - name: Validate cross-layer imports
         run: node scripts/validate-cross-layer-imports.mjs
 
+      - name: Validate provider canonicity
+        run: node scripts/validate-provider-canonicity.mjs
+
   typecheck:
     name: Typecheck (tsc --build)
     runs-on: ubuntu-latest
