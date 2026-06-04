@@ -90,7 +90,7 @@ export default function FileUpload({
 
     fileArray.forEach((file) => {
       const error = validateFile(file);
-      const fileId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      const fileId = `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
 
       const fileUpload: FileUploadFile = {
         file,
