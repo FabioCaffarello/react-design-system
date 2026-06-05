@@ -1324,3 +1324,33 @@ Descoberto via mapa de consumers do Slider que mostrou: 12 dos 13 axe violations
 
 **Sinal de demanda:** abrir issue/PR quando o primeiro consumer pedir agrupamento numa página real. Sem isso, fica reservado.
 **Como decidir:** quando o sinal vier, esta entrada é o briefing inicial. Avaliar se o shape atual de `DataGridGroup` (`{ column: string; expanded?: boolean }`) ainda cobre o caso de uso real OU se a feature precisa de uma forma diferente (multi-level grouping, group aggregations, etc.) — se sim, o `@experimental` na JSDoc dá cobertura para refinar o shape sem violar semver.
+
+## Vitest `isolate: false` — conscientemente adiado
+
+**Descoberto em:** Phase 3 Track B (timing investigation), pós-merge de #142.
+**Estado:** A suíte hoje roda com `pool: forks + isolate: true` (defaults de vitest). Wall-clock local 32s, CI Test job 1m43s (gating) + 2m1s (coverage) = 4m9s antes de #142, ~2m30s depois. Funciona, é correta, não está no caminho crítico do CI (a11y baseline domina, ~11min).
+**Por que importa lembrar:** Track B mediu o ganho de `--no-isolate` (4.4× local: 32s → 7s, ~1min adicional off CI Test job) e descobriu por que NÃO trocar agora. A próxima vez que alguém propuser perf de testes, esta entrada existe pra evitar refazer o experimento.
+
+**Trade-off central que deu a decisão:** isolamento de processo forte (impossível vazar entre arquivos) vs disciplina de cleanup (fácil de furar silenciosamente). A rede que protegeu Phases 7-13 inteiras e Track A inteira é justamente o isolamento. Trocar uma rede forte por uma fraca pra ganhar tempo num job que não é gargalo é regressão de governança disfarçada de ganho de perf.
+
+**Por que NÃO trocar hoje:**
+
+1. **Perf não justifica.** Test (~2m30s pós-#142) não está no caminho crítico. A11y baseline (~11min) bound a latência de PR; 4× num job que cabe folgado na janela não muda nada visível.
+2. **O experimento provou que a disciplina falha.** Com cleanup explícito adicionado e o anti-padrão `vi.mock("react-dom")` corrigido (commit do Modal portal rewrite), restaram 0 falhas — mas só DEPOIS de auditar 707 leaks. Trocar config significa que todo teste futuro tem que ser perfeitamente comportado pra sempre, ou vaza silenciosamente.
+3. **Auditoria terciária incompleta.** Track B não fez varredura exaustiva de: `document.body.appendChild(...)` sem `.remove()`, `document.addEventListener(...)` sem cleanup, `vi.useFakeTimers()` sem `vi.useRealTimers()` afterAll. São candidatos a leaks desconhecidos. Trocar a config antes de mapear é risco não-medido.
+
+**Pré-requisitos pra reconsiderar (se algum dia Test virar gargalo de CI):**
+
+- **(a)** Registrar `afterEach(cleanup)` explícito em `src/setupTests.ts`:
+  ```ts
+  import { cleanup } from "@testing-library/react";
+  import { afterEach } from "vitest";
+  afterEach(cleanup);
+  ```
+  Sob `isolate: true` é redundante (RTL auto-cleanup via globals já cobre), mas sob `isolate: false` o auto-registro do RTL não sobrevive à mudança de worker compartilhado e este passa a ser pré-requisito das 707 falhas identificadas pela investigação.
+- **(b)** Modal portal tests JÁ corrigidos no commit `fix(modal): query portal content via screen, drop fragile react-dom mock` — `vi.mock("react-dom")` era anti-padrão independente do isolamento. Não precisa refazer.
+- **(c)** Auditoria terciária de state-leaks: varredura grep + correção pontual de cada ocorrência (`appendChild` sem `remove`, `addEventListener` sem `removeEventListener`, `vi.useFakeTimers` órfão). Estimativa: meia dúzia de testes, fix de poucas linhas cada.
+
+**Como decidir:** observar o tempo do Test job no CI ao longo do tempo. Se a11y baseline cair (otimização futura) E Test passar a dominar PR latency, ou se Test cruzar ~5min (hoje 2m30s, folga de 2.5min), reconsiderar com os 3 pré-requisitos acima. Antes disso, manter `isolate: true` é a escolha conservadora correta — perf que não é gargalo não justifica perda de safety net.
+
+**Briefing de quem atacar:** rodar `npx vitest run --no-isolate` ANTES de mexer em qualquer config — o output mostra exatamente quais testes vazam e onde, em alguns segundos. Track B fez isso uma vez; valeu o investimento, vale repetir antes de reconfigurar.
