@@ -14,7 +14,7 @@
  * canonical scaffold for component-level a11y suites.
  */
 
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   render,
   screen,
@@ -32,6 +32,42 @@ vi.mock("react-dom", async () => {
     ...actual,
     createPortal: (node: React.ReactNode) => node,
   };
+});
+
+/**
+ * jsdom offsetParent prop-up. After PR 5, Modal consumes the shared
+ * useAutoFocus + useFocusTrap hooks, which filter focusable candidates
+ * by `offsetParent !== null`. jsdom returns null for offsetParent on
+ * every connected element (no layout engine), so without this mock
+ * the hooks reject all rendered buttons and useAutoFocus falls
+ * through to focusing the modal container itself. That breaks the
+ * "first focusable" assertion. Same prototype-level mock used in
+ * Drawer's and Dialog's a11y suites.
+ */
+let restoreOffsetParentDescriptor: PropertyDescriptor | undefined;
+beforeEach(() => {
+  restoreOffsetParentDescriptor = Object.getOwnPropertyDescriptor(
+    HTMLElement.prototype,
+    "offsetParent",
+  );
+  Object.defineProperty(HTMLElement.prototype, "offsetParent", {
+    configurable: true,
+    get() {
+      return document.body;
+    },
+  });
+});
+afterEach(() => {
+  if (restoreOffsetParentDescriptor) {
+    Object.defineProperty(
+      HTMLElement.prototype,
+      "offsetParent",
+      restoreOffsetParentDescriptor,
+    );
+  } else {
+    delete (HTMLElement.prototype as unknown as Record<string, unknown>)
+      .offsetParent;
+  }
 });
 
 describe("Modal Accessibility", () => {
@@ -118,18 +154,43 @@ describe("Modal Accessibility", () => {
   });
 
   describe("Focus Management", () => {
-    it("moves focus to the modal on open", async () => {
+    it("moves focus to the first focusable inside the modal on open", async () => {
+      // Behaviour change in PR 5: pre-migration the modal focused its
+      // OWN container (the tabindex={-1} panel). The shared
+      // useAutoFocus hook targets the first focusable child instead,
+      // matching Dialog/Drawer. With title + default
+      // showCloseButton=true, the close button renders first in DOM
+      // order, so focus lands on it.
       render(
         <Modal isOpen onClose={() => {}} title="Settings">
           <p>Content</p>
         </Modal>,
       );
 
-      // Modal applies focus inside a setTimeout(0); flush microtasks.
+      await waitFor(() => {
+        const closeButton = screen.getByRole("button", {
+          name: /close modal/i,
+        });
+        expect(document.activeElement).toBe(closeButton);
+      });
+    });
+
+    it("falls back to focusing the panel container when no focusable child exists", async () => {
+      // Confirms the hook's no-focusable-children fallback. Without
+      // a title (no auto-rendered close button), with showCloseButton
+      // explicitly false, and with only text content, there is nothing
+      // tabbable inside — the panel's tabindex={-1} carries the focus
+      // so the dialog still owns it.
+      render(
+        <Modal isOpen onClose={() => {}} showCloseButton={false}>
+          <p>Nothing tabbable here</p>
+        </Modal>,
+      );
+
       await waitFor(() => {
         const dialog = screen.getByRole("dialog");
-        const focusable = dialog.querySelector('[tabindex="-1"]');
-        expect(document.activeElement).toBe(focusable);
+        const panel = dialog.querySelector('[tabindex="-1"]');
+        expect(document.activeElement).toBe(panel);
       });
     });
 
@@ -158,8 +219,141 @@ describe("Modal Accessibility", () => {
         );
       });
 
-      expect(externalTrigger).toHaveFocus();
+      // After PR 5, useFocusRestore defers the restore via
+      // setTimeout(0) (matching DialogProvider's pre-existing shape).
+      // Pre-migration the inline cleanup ran synchronously; the
+      // assertion now needs to wait for the deferred restore to fire.
+      await waitFor(() => {
+        expect(externalTrigger).toHaveFocus();
+      });
       externalTrigger.remove();
+    });
+  });
+
+  /**
+   * Modal focus contract — WCAG 2.4.3 / WAI-ARIA modal-dialog
+   * obligations. Pre-PR-#141 the Modal carried `role="dialog"
+   * aria-modal="true"` without honouring any of the trap obligations
+   * — Tab would leak through to the page behind the overlay. This
+   * block pins the trap end-to-end on top of the per-hook unit tests
+   * in `src/ui/hooks/useFocusTrap.test.tsx`.
+   */
+  describe("Modal focus contract (trap engaged)", () => {
+    it("Tab on the last focusable cycles back to the first", () => {
+      render(
+        <Modal isOpen onClose={() => {}} showCloseButton={false}>
+          <button type="button">First</button>
+          <button type="button">Last</button>
+        </Modal>,
+      );
+
+      const first = screen.getByRole("button", { name: "First" });
+      const last = screen.getByRole("button", { name: "Last" });
+
+      // Park focus on Last (defeating auto-focus, which would land
+      // on First).
+      last.focus();
+      expect(document.activeElement).toBe(last);
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Tab",
+        bubbles: true,
+        cancelable: true,
+      });
+      document.dispatchEvent(event);
+
+      expect(event.defaultPrevented).toBe(true);
+      expect(document.activeElement).toBe(first);
+    });
+
+    it("Shift+Tab on the first focusable cycles back to the last", () => {
+      render(
+        <Modal isOpen onClose={() => {}} showCloseButton={false}>
+          <button type="button">First</button>
+          <button type="button">Last</button>
+        </Modal>,
+      );
+
+      const first = screen.getByRole("button", { name: "First" });
+      const last = screen.getByRole("button", { name: "Last" });
+
+      first.focus();
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Tab",
+        shiftKey: true,
+        bubbles: true,
+        cancelable: true,
+      });
+      document.dispatchEvent(event);
+
+      expect(event.defaultPrevented).toBe(true);
+      expect(document.activeElement).toBe(last);
+    });
+
+    it("Tab with focus outside the modal pulls focus back to the first inside (inherited guard)", () => {
+      // Inherits the focus-outside-container guard added to
+      // useFocusTrap in #137 review. Pre-trap Modal had no such
+      // guard, plus no auto-focus inside (focused the container) —
+      // Tab from outside the container leaked straight through to
+      // whatever was next in document order.
+      render(
+        <Modal isOpen onClose={() => {}} showCloseButton={false}>
+          <button type="button">First</button>
+          <button type="button">Last</button>
+        </Modal>,
+      );
+
+      const first = screen.getByRole("button", { name: "First" });
+
+      const outside = document.createElement("button");
+      outside.textContent = "Outside";
+      document.body.appendChild(outside);
+      outside.focus();
+      expect(document.activeElement).toBe(outside);
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Tab",
+        bubbles: true,
+        cancelable: true,
+      });
+      document.dispatchEvent(event);
+
+      expect(event.defaultPrevented).toBe(true);
+      expect(document.activeElement).toBe(first);
+
+      outside.remove();
+    });
+
+    it("trap teardown leaves the document keydown listener unattached when isOpen flips false", () => {
+      const { rerender } = render(
+        <Modal isOpen onClose={() => {}} showCloseButton={false}>
+          <button type="button">Inside</button>
+        </Modal>,
+      );
+
+      rerender(
+        <Modal isOpen={false} onClose={() => {}} showCloseButton={false}>
+          <button type="button">Inside</button>
+        </Modal>,
+      );
+
+      const outside = document.createElement("button");
+      outside.textContent = "Outside";
+      document.body.appendChild(outside);
+      outside.focus();
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Tab",
+        bubbles: true,
+        cancelable: true,
+      });
+      document.dispatchEvent(event);
+
+      // Trap is detached — no preventDefault and no forced focus
+      // change.
+      expect(event.defaultPrevented).toBe(false);
+      outside.remove();
     });
   });
 
@@ -185,19 +379,15 @@ describe("Modal Accessibility", () => {
         </Modal>,
       );
 
-      // Modal grabs focus via setTimeout(0) on open; wait for it to settle
-      // before focusing the close button, otherwise the focus shift races
-      // ahead of our user.keyboard call.
-      const dialog = screen.getByRole("dialog");
-      await waitFor(() => {
-        expect(dialog.querySelector('[tabindex="-1"]')).toBe(
-          document.activeElement,
-        );
-      });
-
+      // After PR 5, useAutoFocus targets the first focusable, which IS
+      // the close button when title + default showCloseButton renders
+      // it. So focus is already on the close button after the
+      // setTimeout(0) auto-focus timer settles — no need to focus it
+      // manually before pressing Enter.
       const closeButton = screen.getByRole("button", { name: /close modal/i });
-      closeButton.focus();
-      expect(closeButton).toHaveFocus();
+      await waitFor(() => {
+        expect(closeButton).toHaveFocus();
+      });
       await user.keyboard("{Enter}");
 
       expect(handleClose).toHaveBeenCalled();

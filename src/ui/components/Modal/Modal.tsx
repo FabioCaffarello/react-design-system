@@ -8,6 +8,9 @@ import { getRadiusClass } from "../../tokens/radius";
 import { getShadowClass } from "../../tokens/shadows";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getZIndexClass } from "../../tokens/z-index";
+import { useFocusRestore } from "../../hooks/useFocusRestore";
+import { useFocusTrap } from "../../hooks/useFocusTrap";
+import { useAutoFocus } from "../../hooks/useAutoFocus";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   isOpen: boolean;
@@ -44,21 +47,28 @@ export default function Modal({
   ...props
 }: Props) {
   const modalRef = useRef<HTMLDivElement>(null);
-  const previousActiveElement = useRef<HTMLElement | null>(null);
 
-  // Focus trap and ESC key handling
+  // Modal focus contract: trap + restore + auto-focus from the shared
+  // Phase 3 hooks. Replaces an inline implementation that snapshotted
+  // document.activeElement, focused the modal CONTAINER (not its first
+  // focusable child), and restored on cleanup. The hook variant of
+  // auto-focus targets the first focusable inside the modal — matching
+  // Dialog/Drawer post-PR-#138/#140 — and falls back to focusing the
+  // container with tabindex=-1 when no focusable child exists, so the
+  // existing tabIndex={-1} on the inner div still has a job to do in
+  // that fallback path. The trap was MISSING pre-PR-#141: Modal
+  // declared aria-modal=true without any Tab interception, identical
+  // shape to the Drawer gap closed in #138. WCAG 2.4.3.
+  useFocusRestore(isOpen);
+  useFocusTrap(modalRef, isOpen);
+  useAutoFocus(modalRef, isOpen);
+
+  // ESC handling stays inline. Same shape as the Dialog/Drawer parallel
+  // handlers — the shared hooks intentionally don't know about
+  // close-callback semantics.
   useEffect(() => {
     if (!isOpen) return;
 
-    // Store previous active element
-    previousActiveElement.current = document.activeElement as HTMLElement;
-
-    // Focus modal on open
-    const timer = setTimeout(() => {
-      modalRef.current?.focus();
-    }, 0);
-
-    // Handle ESC key
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onClose();
@@ -66,12 +76,8 @@ export default function Modal({
     };
 
     document.addEventListener("keydown", handleEscape);
-
-    // Restore focus on close
     return () => {
-      clearTimeout(timer);
       document.removeEventListener("keydown", handleEscape);
-      previousActiveElement.current?.focus();
     };
   }, [isOpen, onClose]);
 
