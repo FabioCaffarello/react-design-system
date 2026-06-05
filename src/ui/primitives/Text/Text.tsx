@@ -78,7 +78,7 @@ const TEXT_COLOR_CLASSES: Record<
   },
 };
 
-interface Props<
+export interface TextProps<
   T extends ElementType,
 > extends HTMLAttributes<JSX.IntrinsicElements> {
   variant?:
@@ -97,8 +97,8 @@ interface Props<
   colorShade?: TextColorShade;
 }
 
-type ReturnProps<P extends ElementType> = Props<P> &
-  Omit<ComponentPropsWithoutRef<P>, keyof Props<P>>;
+type ReturnProps<P extends ElementType> = TextProps<P> &
+  Omit<ComponentPropsWithoutRef<P>, keyof TextProps<P>>;
 
 function TextComponent<T extends ElementType = "p">(
   {

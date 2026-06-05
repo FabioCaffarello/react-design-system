@@ -4,7 +4,7 @@ import { getTypographySize } from "../../tokens/typography";
 import { getSpacingClass } from "../../tokens/spacing";
 import { cn } from "../../utils";
 
-interface Props extends HTMLAttributes<HTMLDivElement> {
+export interface ErrorMessageProps extends HTMLAttributes<HTMLDivElement> {
   message: string;
   id?: string;
 }
@@ -25,7 +25,7 @@ export default function ErrorMessage({
   id,
   className = "",
   ...props
-}: Props) {
+}: ErrorMessageProps) {
   const baseClasses = [
     getSpacingClass("xs", "mt"),
     getTypographySize("bodySmall"),

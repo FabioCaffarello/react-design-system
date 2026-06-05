@@ -46,6 +46,7 @@ export { default as Chip } from "./primitives/Chip/Chip";
 export type { ChipProps, ChipSize, ChipVariant } from "./primitives/Chip/Chip";
 
 export { default as ErrorMessage } from "./primitives/ErrorMessage/ErrorMessage";
+export type { ErrorMessageProps } from "./primitives/ErrorMessage/ErrorMessage";
 
 export { default as Info } from "./primitives/Info/Info";
 export type { InfoProps } from "./primitives/Info/Info";
@@ -68,6 +69,7 @@ export type {
 } from "./primitives/Spinner/Spinner";
 
 export { default as Text } from "./primitives/Text/Text";
+export type { TextProps } from "./primitives/Text/Text";
 
 // ---------- layouts (2) ----------
 export { Container } from "./layouts/Container/Container";
