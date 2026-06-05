@@ -1,3 +1,10 @@
+## [3.2.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.1.0...v3.2.0) (2026-06-05)
+
+
+### ✨ Features
+
+* **server-entry:** promote Badge, Card, Label, Separator to ./server ([#155](https://github.com/FabioCaffarello/react-design-system/issues/155)) ([#158](https://github.com/FabioCaffarello/react-design-system/issues/158)) ([79cfe1b](https://github.com/FabioCaffarello/react-design-system/commit/79cfe1b0132aa0dd03e5c1d7b76ea555a9009c97)), closes [#157](https://github.com/FabioCaffarello/react-design-system/issues/157) [#157](https://github.com/FabioCaffarello/react-design-system/issues/157) [#157](https://github.com/FabioCaffarello/react-design-system/issues/157)
+
 ## [3.1.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.0.0...v3.1.0) (2026-06-05)
 
 
