@@ -553,7 +553,12 @@
      * ============================================ */
 
     --ring-color: var(--color-brand-primary-400);
-    --ring-default: 0 0 0 var(--ring-width) rgb(129 140 248 / 0.3);
+    /* D7: color-mix preserves the brand-primary-400 → 30% alpha relationship
+     * across reskins. If a consumer overrides --color-brand-primary-400, the
+     * focus ring follows automatically. WCAG 2.4.11 (focus-visible) is
+     * verified against the resolved alpha in test:a11y:baseline. */
+    --ring-default: 0 0 0 var(--ring-width)
+      color-mix(in srgb, var(--color-brand-primary-400) 30%, transparent);
   }
 
   /* ::selection inside @media — sibling to the :root rule above so
