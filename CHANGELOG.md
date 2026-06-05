@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/FabioCaffarello/react-design-system/compare/v2.0.0...v2.0.1) (2026-06-05)
+
+
+### 🐛 Bug Fixes
+
+* **build:** emit "use client" banner so RDS works in Next 16 RSC ([#148](https://github.com/FabioCaffarello/react-design-system/issues/148)) ([#149](https://github.com/FabioCaffarello/react-design-system/issues/149)) ([d04b42d](https://github.com/FabioCaffarello/react-design-system/commit/d04b42d3f0a9e348c17ee441ffccd326e7ebf904)), closes [#2](https://github.com/FabioCaffarello/react-design-system/issues/2)
+
 ## [2.0.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.24.0...v2.0.0) (2026-06-05)
 
 
