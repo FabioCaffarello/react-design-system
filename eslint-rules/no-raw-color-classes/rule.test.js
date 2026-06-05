@@ -97,6 +97,16 @@ tester.run("no-raw-color-classes", rule, {
       code: `const cls = "text-gray-500 bg-pink-300";`,
       errors: [{ messageId: "rawColorClass" }, { messageId: "rawColorClass" }],
     },
+    // Brand primitives are also blocked — components consume them via
+    // semantic roles (text-fg-brand, bg-surface-brand), not raw classes.
+    {
+      code: `const cls = "text-brand-primary-500";`,
+      errors: [{ messageId: "rawColorClass" }],
+    },
+    {
+      code: `const el = <div className="bg-brand-secondary-100" />;`,
+      errors: [{ messageId: "rawColorClass" }],
+    },
     // Wrong-named exception comment doesn't excuse a different class.
     {
       code: [

@@ -43,10 +43,14 @@ const DARK = join(ROOT, "src/styles/themes/dark.css");
 const THEME_AGNOSTIC = new Set(["--color-scrim", "--color-tint-hover"]);
 
 // Match only LHS definitions: `  --color-XXX: ...;`
-// Skip primitive shades (slate-900, indigo-400, etc.) — those are
-// values, not theme-overridable role tokens.
+// Skip primitive shades (slate-900, indigo-400, brand-primary-500, etc.)
+// — those are values, not theme-overridable role tokens. The single brand
+// scale (--color-brand-primary-*, --color-brand-secondary-*) is the
+// reskin surface introduced by issue #152 (Caminho C): one scale 50..950
+// declared once in primitives/brand.css; semantic tokens pick the
+// per-theme step (-400 in dark, -500/-600 in light).
 const PRIMITIVE_RE =
-  /^--color-(slate|gray|zinc|red|green|blue|yellow|orange|pink|indigo|violet|cyan|emerald|amber|rose|sky|fuchsia|purple|teal|lime|white|black)(-\d+)?$/;
+  /^--color-(brand-primary|brand-secondary|slate|gray|zinc|red|green|blue|yellow|orange|pink|indigo|violet|cyan|emerald|amber|rose|sky|fuchsia|purple|teal|lime|white|black)(-\d+)?$/;
 
 function parseSemanticDefs(text) {
   const re = /^\s*(--color-[a-z0-9-]+)\s*:/gm;

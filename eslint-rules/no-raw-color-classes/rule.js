@@ -19,8 +19,13 @@
 
 const COLOR_PROPS =
   "text|bg|border|fill|stroke|ring|outline|divide|placeholder|caret|accent|decoration|shadow";
+// brand-primary / brand-secondary listed first so the longest match wins
+// (alternation tries left-to-right; without that order, a future entry
+// like `brand` would never be reached). These are the design system's
+// own brand primitive scales — components consume them via semantic
+// roles (text-fg-brand, bg-surface-brand, etc.), not raw classes.
 const COLOR_NAMES =
-  "gray|slate|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose";
+  "brand-primary|brand-secondary|gray|slate|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose";
 const COLOR_SHADES = "50|100|200|300|400|500|600|700|800|900|950";
 
 const RAW_REGEX = new RegExp(

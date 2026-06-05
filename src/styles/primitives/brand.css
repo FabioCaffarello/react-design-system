@@ -1,0 +1,52 @@
+/**
+ * Brand Primitive Scales — brasil-a-vera identity (default, overridable)
+ *
+ * The RDS ships a default brand identity. Consumers reskin by redefining
+ * --color-brand-primary-* / --color-brand-secondary-* in their own
+ * @theme or :root. The Tailwind primitives in colors.css
+ * (--color-indigo-*, --color-pink-*, --color-cyan-*, ...) stay honest
+ * to their official Tailwind v4 HEX and are NOT the reskin surface.
+ *
+ * Semantic tokens in semantic/colors.css cascade via var() and DO NOT
+ * need to be touched by consumers.
+ *
+ * primary scale: institutional navy from brasil-a-vera globals.css.
+ * secondary scale: OKLCH-derived from ADR-024 brasil-a-vera purple
+ *   (hue 295). Reproducible via scripts/derive-brand-secondary.mjs.
+ *
+ * @brand brasil-a-vera (default, overridable)
+ */
+
+@theme {
+  /* ============================================
+   * BRAND PRIMARY — institutional navy (brasil-a-vera)
+   * ============================================ */
+
+  --color-brand-primary-50: #f0f4f8;
+  --color-brand-primary-100: #d9e2ec;
+  --color-brand-primary-200: #bcccdc;
+  --color-brand-primary-300: #9fb3c8;
+  --color-brand-primary-400: #7390ad;
+  --color-brand-primary-500: #486581;
+  --color-brand-primary-600: #334e68;
+  --color-brand-primary-700: #243b53;
+  --color-brand-primary-800: #1a2a3a;
+  --color-brand-primary-900: #102a43;
+  --color-brand-primary-950: #061a35;
+
+  /* ============================================
+   * BRAND SECONDARY — ADR-024 purple (OKLCH-derived, hue 295)
+   * ============================================ */
+
+  --color-brand-secondary-50: #f7f5ff;
+  --color-brand-secondary-100: #eee9ff;
+  --color-brand-secondary-200: #e0d6ff;
+  --color-brand-secondary-300: #cbb8ff;
+  --color-brand-secondary-400: #aa89fc;
+  --color-brand-secondary-500: #8e58f2;
+  --color-brand-secondary-600: #703bc8;
+  --color-brand-secondary-700: #582aa2;
+  --color-brand-secondary-800: #44227e;
+  --color-brand-secondary-900: #32185d;
+  --color-brand-secondary-950: #180635;
+}

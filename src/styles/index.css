@@ -45,6 +45,7 @@
  * ============================================ */
 
 @import "./primitives/colors.css";
+@import "./primitives/brand.css";
 @import "./primitives/spacing.css";
 @import "./primitives/typography.css";
 @import "./primitives/shadows.css";

@@ -49,7 +49,7 @@ Each color role has four shades:
 import { getColorClass } from "@fabio.caffarello/react-design-system";
 
 // Background color
-const bgClass = getColorClass("primary", "DEFAULT", "bg"); // 'bg-indigo-500'
+const bgClass = getColorClass("primary", "DEFAULT", "bg"); // 'bg-brand-primary-500'
 
 // Text color
 const textClass = getColorClass("error", "dark", "text"); // 'text-red-600'
@@ -74,23 +74,30 @@ The brand foreground vocabulary exposes two roles:
   relative to its default (e.g., the icon/label of the currently
   active item in a navbar).
 
-Light theme uses `indigo-500` for `fg-brand` and `indigo-600` for
-`fg-brand-emphasis` (darker). Dark theme uses `indigo-400` for
-`fg-brand` and `indigo-300` for `fg-brand-emphasis` (lighter), preserving
-the "emphasis is more contrasted against the surface" relationship in
-both modes.
+Light theme uses `brand-primary-500` for `fg-brand` and `brand-primary-600`
+for `fg-brand-emphasis` (darker). Dark theme uses `brand-primary-400` for
+`fg-brand` and `brand-primary-300` for `fg-brand-emphasis` (lighter),
+preserving the "emphasis is more contrasted against the surface"
+relationship in both modes.
 
 The secondary brand foreground mirrors this structure:
 
-- `text-fg-brand-secondary` — Default secondary brand foreground (pink
-  scale). Use for secondary-branded text/icons in their idle/neutral
-  presentation.
+- `text-fg-brand-secondary` — Default secondary brand foreground
+  (`brand-secondary` scale). Use for secondary-branded text/icons in
+  their idle/neutral presentation.
 - `text-fg-brand-secondary-emphasis` — Emphasis variant of secondary
   brand foreground. Intensified shade for selected/active states in
   secondary brand contexts.
 
-Same shade relationship as primary: `pink-500/600` (light, default/
-emphasis) and `pink-400/300` (dark, default/emphasis).
+Same shade relationship as primary: `brand-secondary-500/600` (light,
+default/emphasis) and `brand-secondary-400/300` (dark, default/emphasis).
+
+The `brand-primary` and `brand-secondary` scales are the design system's
+own primitives, declared in `src/styles/primitives/brand.css`. They are
+the reskin surface — consumers redefine them in their own `:root` or
+`@theme`, and every semantic token cascades automatically. Tailwind
+primitives (`indigo`, `pink`, `cyan`, ...) stay honest to their official
+Tailwind v4 HEX and are **not** the reskin surface.
 
 ### Status Neutral
 

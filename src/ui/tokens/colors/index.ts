@@ -30,6 +30,9 @@ export type {
 
 export { COLOR_SCALES } from "./types";
 
+// Brand primitive palettes (reskin surface — see src/styles/primitives/brand.css)
+export { BRAND_PRIMARY, BRAND_SECONDARY } from "./brand";
+
 // Primitive color palettes
 export {
   INDIGO,
@@ -85,13 +88,13 @@ export {
 // Re-export brand colors for convenience
 export const BRAND_COLORS = {
   primary: {
-    name: "indigo" as const,
+    name: "brand-primary" as const,
     light: 400 as const,
     default: 500 as const,
     dark: 600 as const,
   },
   secondary: {
-    name: "violet" as const,
+    name: "brand-secondary" as const,
     light: 400 as const,
     default: 500 as const,
     dark: 600 as const,
