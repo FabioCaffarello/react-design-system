@@ -25,14 +25,14 @@ import {
 import userEvent from "@testing-library/user-event";
 import Modal from "./Modal";
 
-// Mock createPortal so the modal renders inline for jsdom queries.
-vi.mock("react-dom", async () => {
-  const actual = await vi.importActual("react-dom");
-  return {
-    ...actual,
-    createPortal: (node: React.ReactNode) => node,
-  };
-});
+// Modal renders via createPortal(document.body). RTL's `screen`
+// queries already read from `document.body`, so portal content is
+// reachable without mocking react-dom. The previous
+// `vi.mock("react-dom", ...) { createPortal: node => node }` was
+// fragile across files — under `--no-isolate` the worker's react-dom
+// module cache made whichever Modal test file loaded first win the
+// mock, and the other file's mock was silently ignored. See
+// Modal.test.tsx for the parallel cleanup.
 
 /**
  * jsdom offsetParent prop-up. After PR 5, Modal consumes the shared
