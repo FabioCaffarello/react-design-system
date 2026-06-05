@@ -2,27 +2,48 @@
 /**
  * next-smoke
  *
- * Issue #148 acceptance criterion #2: the RDS test surface includes a
- * minimal Next 16 App Router app where primitives are consumed from a
- * Server Component without a manual `"use client"` wrapper.
+ * The fixture under `fixtures/next-smoke/` is a minimal Next 16 App
+ * Router app whose only page is a Server Component that imports from
+ * BOTH RDS entries simultaneously. Building it exercises the two
+ * directive invariants the library promises end-to-end:
  *
- * What this script does:
- *   1. Build the RDS library (so dist/index.{js,cjs} reflect the head
- *      of vite.config.ts, including the `"use client";` banner).
- *   2. Install the fixture's dependencies. The fixture's package.json
- *      points at the repo root via `file:..`, so npm resolves RDS to
- *      the just-built dist via the package `exports` field.
- *   3. Run `next build` inside the fixture. If the bundle is missing
- *      `"use client"`, Next's RSC compilation fails to evaluate RDS in
- *      the server runtime with `(0, j.createContext) is not a function`,
- *      and `next build` exits non-zero — this script propagates the
- *      failure.
+ *   1. **Issue #148** — `import { Button } from "@fabio.caffarello/
+ *      react-design-system"` from a Server Component compiles cleanly
+ *      because the main bundle ships `"use client";` at its head. Next's
+ *      RSC compiler reads the directive, places the import behind a
+ *      client boundary, and `next build` succeeds. If the banner is
+ *      lost (vite.config.ts regression, minifier strip, etc.), the
+ *      build fails inside `next build` with
+ *      `TypeError: (0, j.createContext) is not a function`.
  *
- * The fixture lives under `fixtures/next-smoke/` and is committed to
- * the repo; `node_modules` and `.next` are gitignored.
+ *   2. **Issue #150** — `import { Text, Container } from
+ *      "@fabio.caffarello/react-design-system/server"` from the same
+ *      Server Component compiles AND does not cross a client boundary,
+ *      because the `./server` bundle has no `"use client"` directive
+ *      and exports only modules whose render is hook-free. The
+ *      identifier-grep at the tail of this script verifies this
+ *      empirically: it scans every client chunk emitted in `.next/`
+ *      and asserts that no `__rsc_module_…?from=…/server/…` reference
+ *      contains a server-only component name without also containing
+ *      a client one. (Next's RSC manifest names client-boundary
+ *      modules by source path; absence from the manifest is the
+ *      positive signal that `./server` produced no boundary.)
+ *
+ * Pipeline:
+ *   1. Build RDS (both bundles) so dist/index.{js,cjs} AND
+ *      dist/server/index.{js,cjs} exist as the fixture's `file:..`
+ *      install will resolve them.
+ *   2. npm install in the fixture (resolves `@fabio.caffarello/
+ *      react-design-system` → repo root via package.json `file:..`).
+ *   3. Run `next build` — the build itself is the issue-#148 gate.
+ *   4. Scan `.next/server/app/` and `.next/static/chunks/` to confirm
+ *      no client boundary was created for the server-safe imports.
+ *
+ * `--skip-build` short-circuits step 1 for fast iteration when the
+ * dist hasn't changed; pass it when you've already built locally.
  */
 import { execSync } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const root = process.cwd();
@@ -38,24 +59,150 @@ if (!existsSync(fixtureDir)) {
 const skipBuild = process.argv.includes("--skip-build");
 
 if (!skipBuild) {
-  console.log("[next-smoke] (1/3) Building RDS library...");
+  console.log("[next-smoke] (1/4) Building RDS library...");
   execSync("npm run build", { cwd: root, stdio: "inherit" });
 } else {
-  console.log("[next-smoke] (1/3) Skipping RDS build (--skip-build).");
+  console.log("[next-smoke] (1/4) Skipping RDS build (--skip-build).");
 }
 
-console.log("[next-smoke] (2/3) Installing fixture dependencies...");
+// Sanity: the fixture's import paths assume both entries exist on
+// disk. Catch the common regression where the build pipeline emitted
+// dist/index but not dist/server (e.g. a vite.config.server.ts syntax
+// error swallowed by the build script chain) — issue #150 acceptance.
+for (const rel of [
+  "dist/index.js",
+  "dist/index.cjs",
+  "dist/server/index.js",
+  "dist/server/index.cjs",
+]) {
+  if (!existsSync(join(root, rel))) {
+    console.error(
+      `[next-smoke] FAIL — ${rel} missing. The fixture's two-entry import will not resolve.`,
+    );
+    process.exit(1);
+  }
+}
+
+console.log("[next-smoke] (2/4) Installing fixture dependencies...");
 execSync("npm install --no-audit --no-fund --loglevel=error", {
   cwd: fixtureDir,
   stdio: "inherit",
 });
 
-console.log("[next-smoke] (3/3) Running `next build` in fixture...");
+console.log("[next-smoke] (3/4) Running `next build` in fixture...");
 execSync("npx --no-install next build", {
   cwd: fixtureDir,
   stdio: "inherit",
 });
 
+// Step 4 — empirical "did `./server` introduce a client boundary?"
+// check.
+//
+// Next's App Router emits, for every page, a file
+//   .next/server/app/<route>_client-reference-manifest.js
+// that registers `globalThis.__RSC_MANIFEST["/<route>"] = { … }`.
+// The `clientModules` field of that object is the *authoritative*
+// list of source modules Next placed behind a client boundary for the
+// route. Its keys are normalised paths like
+//   "[project]/dist/index.js"
+//   "[project]/dist/index.js <module evaluation>"
+//   "[project]/node_modules/lucide-react/dist/esm/Icon.mjs"
+//
+// This is a much stronger signal than scanning static chunk bodies
+// (Turbopack strips path comments and normalises identifiers, so a
+// content grep on chunks produced false negatives during development
+// of this script). The manifest is the contract; we read it directly.
+//
+// Acceptance:
+//   - At least one clientModules key must reference the main RDS
+//     entry (".../dist/index.js"). The page imports Button from it
+//     and Button is a client primitive, so the boundary MUST exist.
+//     Absence means the test build did not actually exercise the
+//     issue-#148 path.
+//   - NO clientModules key may reference the server entry
+//     (".../dist/server/index.js" or any other file under dist/server/).
+//     Its presence means Next was forced to treat the server entry
+//     as a client boundary — the very regression issue #150 is here
+//     to prevent. The likely root causes are spelled out in the
+//     error message.
+console.log("[next-smoke] (4/4) Reading .next RSC client-reference manifest…");
+
+const manifestPath = join(
+  fixtureDir,
+  ".next/server/app/page_client-reference-manifest.js",
+);
+if (!existsSync(manifestPath)) {
+  console.error(
+    `[next-smoke] FAIL — RSC client-reference manifest not found at ${manifestPath}. The fixture's only route is "/"; if Next emitted nothing for it, the build did not run as expected.`,
+  );
+  process.exit(1);
+}
+
+// The manifest is a sealed-object assignment. Sandbox its evaluation
+// against a controlled `globalThis` shim so we can read `__RSC_MANIFEST`
+// without executing in the current Node context.
+const manifestSrc = readFileSync(manifestPath, "utf-8");
+const sandbox = { __RSC_MANIFEST: {} };
+const fn = new Function("globalThis", manifestSrc);
+fn(sandbox);
+
+const pageManifest = sandbox.__RSC_MANIFEST["/page"];
+if (!pageManifest || !pageManifest.clientModules) {
+  console.error(
+    `[next-smoke] FAIL — manifest at ${manifestPath} did not populate __RSC_MANIFEST["/page"].clientModules. Schema change in Next? Read the manifest by hand to confirm.`,
+  );
+  process.exit(1);
+}
+
+const clientModuleKeys = Object.keys(pageManifest.clientModules);
+
+// Match keys via substring on normalised forward-slash paths to avoid
+// Windows / mac path drift confusing the gate. Manifest entries on all
+// platforms use `[project]/…/forward/slashes`.
+const SERVER_NEEDLE = "/dist/server/index.";
+const MAIN_NEEDLE = "/dist/index.";
+
+const serverLeaks = clientModuleKeys.filter((k) => k.includes(SERVER_NEEDLE));
+const mainBoundaries = clientModuleKeys.filter(
+  (k) => k.includes(MAIN_NEEDLE) && !k.includes(SERVER_NEEDLE),
+);
+
+if (serverLeaks.length > 0) {
+  console.error(
+    `[next-smoke] FAIL — \`./server\` entry produced ${serverLeaks.length} client boundary entr(y/ies) in Next's RSC manifest:`,
+  );
+  for (const k of serverLeaks.slice(0, 5)) console.error(`    ${k}`);
+  console.error("");
+  console.error("    Likely causes (in order of priority):");
+  console.error(
+    '      1. dist/server/index.{js,cjs} regained a `"use client"`',
+  );
+  console.error(
+    "         banner — `validate-use-client-in-dist.mjs` should also fail.",
+  );
+  console.error(
+    "      2. src/ui/server.ts re-exports a module that the analyser now",
+  );
+  console.error(
+    "         classifies as client-only — run `node scripts/analyze-server-safe.mjs`",
+  );
+  console.error(
+    "         and compare to the server-safe-map.json that committed alongside the regression.",
+  );
+  console.error("      3. A barrel import slipped into src/ui/server.ts —");
+  console.error("         `validate-server-entry.mjs` should catch this too.");
+  process.exit(1);
+}
+
+if (mainBoundaries.length === 0) {
+  console.error(
+    `[next-smoke] FAIL — main entry (\`${MAIN_NEEDLE}\`) absent from Next's RSC client manifest. The page imports Button from the main entry; Next should have produced a client boundary. Absence suggests either tree-shaking removed the import or the build was a no-op.`,
+  );
+  console.error("    Manifest keys present (first 10):");
+  for (const k of clientModuleKeys.slice(0, 10)) console.error(`      ${k}`);
+  process.exit(1);
+}
+
 console.log(
-  "[next-smoke] PASS — Next 16 Server Component built RDS imports without RSC errors.",
+  `[next-smoke] PASS — Next 16 RSC manifest confirms: main entry produced ${mainBoundaries.length} client boundary entr(y/ies); server entry produced 0.`,
 );

@@ -31,3 +31,14 @@ node scripts/validate-cross-layer-imports.mjs
 # canonicity.mjs header for the historical case this gate closes.
 echo "Validating provider canonicity..."
 node scripts/validate-provider-canonicity.mjs
+
+# Validate the server-entry contract (issue #150). src/ui/server.ts
+# must re-export only modules that the transitive analyser classifies
+# as server-safe, must import each from its concrete source file (no
+# barrels), and if dist/server/ exists from a recent build, must
+# carry zero client-API call sites in the emitted bundle. The dual
+# `validate-use-client-in-dist.mjs` runs at build time (build:validate
+# step in package.json) and is not duplicated here — pre-push runs
+# before `npm run build` would in CI.
+echo "Validating server entry..."
+node scripts/validate-server-entry.mjs
