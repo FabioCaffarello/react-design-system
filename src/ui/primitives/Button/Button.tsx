@@ -23,7 +23,8 @@ export type ButtonVariant =
   | "error"
   | "outline"
   | "ghost"
-  | "iconOnly";
+  | "iconOnly"
+  | "link";
 export type ButtonSize = "sm" | "md" | "lg";
 
 export interface ButtonProps extends Omit<
@@ -122,6 +123,40 @@ const buttonVariants = cva(
           "focus:ring-line-focus",
           getSpacingClass("none", "p"),
         ),
+        // Textual call-to-action — brand-coloured text, underline on
+        // hover, no chrome (no surface, no border). Padding is zeroed
+        // out per size in compoundVariants so the bounding box hugs
+        // the text (height intrinsic). Issue #156.
+        //
+        // Focus ring: `focus:ring-line-focus` keeps the same focus
+        // family the other no-chrome variants use (ghost, outline,
+        // iconOnly). The base's `focus:ring-2` + `focus:ring-offset-2`
+        // produce a 2px ring 2px away from the text bounding box; the
+        // 2px offset is rendered in surface-base so the ring contrasts
+        // against surface (≥3:1 for WCAG 2.4.11, verified) rather than
+        // colliding with the brand-coloured text. The element keeps
+        // `getRadiusClass("md")` from the base, which is invisible
+        // without chrome but rounds the focus ring corners.
+        //
+        // hover:underline pairs with `underline-offset-4` so the
+        // underline that appears on hover sits clear of the descenders
+        // (WCAG-aligned with link best practice). At rest the link
+        // carries no underline — the brand colour alone signals
+        // affordance, matching the shadcn convention this variant is
+        // modelled on (see issue body).
+        //
+        // disabled: inherits opacity-50 + cursor-not-allowed from the
+        // base. We do NOT special-case `disabled:no-underline` because
+        // a disabled link should still receive the same visual
+        // treatment as a disabled chrome variant — the opacity and
+        // cursor signal the disabled state.
+        link: cn(
+          "bg-transparent",
+          "text-fg-brand",
+          "underline-offset-4",
+          "hover:underline",
+          "focus:ring-line-focus",
+        ),
       },
       size: {
         sm: cn(
@@ -160,6 +195,27 @@ const buttonVariants = cva(
         variant: "iconOnly",
         size: "lg",
         class: cn("h-12", "w-12", getSpacingClass("none", "p")),
+      },
+      // Link variant zeroes the size's padding via compoundVariants so
+      // the override runs AFTER the size block's `px-N`/`py-N` and
+      // twMerge picks the zero value (`cn` joins variant before
+      // compound). The size's typography and gap survive — the link's
+      // text scales with size and icons still get gap-N when present.
+      // Issue #156.
+      {
+        variant: "link",
+        size: "sm",
+        class: cn(getSpacingClass("none", "px"), getSpacingClass("none", "py")),
+      },
+      {
+        variant: "link",
+        size: "md",
+        class: cn(getSpacingClass("none", "px"), getSpacingClass("none", "py")),
+      },
+      {
+        variant: "link",
+        size: "lg",
+        class: cn(getSpacingClass("none", "px"), getSpacingClass("none", "py")),
       },
     ],
     defaultVariants: {
