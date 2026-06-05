@@ -7,6 +7,12 @@
 
 import { spawn } from "child_process";
 
+// Forward any extra CLI args (e.g. `npm run test -- --coverage`). The CI
+// Test job uses this to ride the same gating wrapper while collecting
+// v8 coverage in the same run instead of executing the suite twice
+// (see .github/workflows/ci.yml: "Run tests with coverage (gating)").
+const passthroughArgs = process.argv.slice(2);
+
 const testProcess = spawn(
   "npx",
   [
@@ -16,6 +22,7 @@ const testProcess = spawn(
     "--reporter=verbose",
     "--exclude",
     "**/*.stories.tsx",
+    ...passthroughArgs,
   ],
   {
     stdio: ["inherit", "pipe", "pipe"],

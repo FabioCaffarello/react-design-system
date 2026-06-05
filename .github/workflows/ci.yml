@@ -132,15 +132,20 @@ jobs:
           rm -rf node_modules/.vite
           rm -rf .storybook-static
 
-      - name: Run tests (gating)
-        run: npm run test
-
-      # Run coverage separately so a threshold miss does not break the gating
-      # signal. The project's global coverage is currently below the 80% floor
-      # configured in vite.config.ts; tests still gate via `npm run test`.
-      - name: Collect coverage (non-blocking thresholds)
+      # Single run gates AND produces coverage. The threshold overrides
+      # keep coverage non-blocking (the project's global coverage is
+      # currently below the 80% floor configured in vite.config.ts);
+      # a real test failure still fails this step. Previously the
+      # Test job ran the suite twice (gating without coverage, then
+      # coverage with non-blocking thresholds) — that was ~2 minutes
+      # of redundant CPU per PR for no signal we don't already get
+      # from a single instrumented run. Validation that v8 coverage
+      # instrumentation does NOT mask a failing test: see the PR that
+      # introduced this step (a deliberately broken assertion still
+      # produced npm exit code 1 with --coverage on).
+      - name: Run tests with coverage (gating)
         run: |
-          npx vitest run --coverage \
+          npm run test -- --coverage \
             --coverage.thresholds.lines=0 \
             --coverage.thresholds.functions=0 \
             --coverage.thresholds.statements=0 \
