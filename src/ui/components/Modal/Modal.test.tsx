@@ -1,22 +1,17 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import Modal from "./Modal";
 import { Button } from "../../primitives";
 
-// Mock createPortal
-vi.mock("react-dom", async () => {
-  const actual = await vi.importActual("react-dom");
-  return {
-    ...actual,
-    createPortal: (node: React.ReactNode) => node,
-  };
-});
+// Modal renders via createPortal(document.body). DON'T mock react-dom
+// to make it render inline — `vi.mock("react-dom", ...)` is fragile
+// across files: under `--no-isolate` the worker's react-dom module
+// cache makes whichever Modal test file loads first win the mock, and
+// the other file's mock is silently ignored. Use `screen` queries
+// (which read from `document.body`) instead — same surface RTL is
+// designed for, no module-cache fragility.
 
 describe("Modal", () => {
-  beforeEach(() => {
-    document.body.innerHTML = "";
-  });
-
   afterEach(() => {
     document.body.style.overflow = "";
   });
@@ -64,26 +59,22 @@ describe("Modal", () => {
 
   it("calls onClose when overlay is clicked", () => {
     const handleClose = vi.fn();
-    const { container } = render(
+    render(
       <Modal isOpen={true} onClose={handleClose} title="Test Modal">
         <p>Content</p>
       </Modal>,
     );
-    const overlay = container.querySelector('[role="dialog"]');
-    if (overlay) {
-      fireEvent.click(overlay);
-    }
+    fireEvent.click(screen.getByRole("dialog"));
     expect(handleClose).toHaveBeenCalled();
   });
 
   it("has dialog role and aria-modal", () => {
-    const { container } = render(
+    render(
       <Modal isOpen={true} onClose={() => {}} title="Test Modal">
         <p>Content</p>
       </Modal>,
     );
-    const dialog = container.querySelector('[role="dialog"]');
-    expect(dialog).toHaveAttribute("aria-modal", "true");
+    expect(screen.getByRole("dialog")).toHaveAttribute("aria-modal", "true");
   });
 
   it("renders title when provided", () => {
