@@ -1,3 +1,10 @@
+## [3.1.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.0.0...v3.1.0) (2026-06-05)
+
+
+### ✨ Features
+
+* **primitives:** add asChild to Button and Chip (Radix Slot) — [#154](https://github.com/FabioCaffarello/react-design-system/issues/154) ([#157](https://github.com/FabioCaffarello/react-design-system/issues/157)) ([e02b11c](https://github.com/FabioCaffarello/react-design-system/commit/e02b11ced06891e83cc6a68d8aad241e13d024fe))
+
 ## [3.0.0](https://github.com/FabioCaffarello/react-design-system/compare/v2.1.0...v3.0.0) (2026-06-05)
 
 
