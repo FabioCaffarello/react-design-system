@@ -1,11 +1,11 @@
 @import "./styles/index.css";
 
 /**
- * AIppin Design System - Root Style Entry
+ * Design System - Root Style Entry
  *
  * This file imports the complete design system.
  * Keep this file minimal - all styles are organized in src/styles/
  *
- * @brand AIppin
+ * @brand brasil-a-vera (default, overridable)
  * @version 1.0.0
  */

@@ -1,10 +1,10 @@
 /**
- * AIppin Design System - Semantic Color Tokens
+ * Design System - Semantic Color Tokens
  *
  * Semantic colors that reference primitive palettes.
  * These are the colors you should use in components.
  *
- * @brand AIppin
+ * @brand brasil-a-vera (default, overridable)
  * @version 1.0.0
  */
 

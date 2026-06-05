@@ -1,9 +1,9 @@
 /**
- * AIppin Design System - Color Tokens Index
+ * Design System - Color Tokens Index
  *
  * Central export for all color-related tokens and utilities.
  *
- * @brand AIppin
+ * @brand brasil-a-vera (default, overridable)
  * @version 1.0.0
  */
 

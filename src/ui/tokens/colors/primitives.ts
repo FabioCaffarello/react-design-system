@@ -1,10 +1,10 @@
 /**
- * AIppin Design System - Primitive Color Tokens
+ * Design System - Primitive Color Tokens
  *
  * Complete color palettes with all shades (50-950).
  * These match the CSS variables defined in primitives/colors.css
  *
- * @brand AIppin
+ * @brand brasil-a-vera (default, overridable)
  * @version 1.0.0
  */
 

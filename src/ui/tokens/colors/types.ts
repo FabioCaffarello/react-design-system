@@ -1,9 +1,9 @@
 /**
- * AIppin Design System - Color Token Types
+ * Design System - Color Token Types
  *
  * TypeScript types for the color system.
  *
- * @brand AIppin
+ * @brand brasil-a-vera (default, overridable)
  * @version 1.0.0
  */
 

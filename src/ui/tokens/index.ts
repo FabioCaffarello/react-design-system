@@ -3,7 +3,7 @@
  *
  * Centralized exports for all design tokens.
  *
- * @brand AIppin
+ * @brand brasil-a-vera (default, overridable)
  * @version 2.0.0
  */
 

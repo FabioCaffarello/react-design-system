@@ -22,7 +22,7 @@
 @source not "../../**/*.md";
 
 /**
- * AIppin Design System - Main CSS Entry Point
+ * Design System - Main CSS Entry Point
  *
  * This file imports all design system styles in the correct order.
  * Import this file in your application to get the complete design system.
@@ -34,7 +34,7 @@
  * 4. Themes (light/dark + variants)
  * 5. Utilities (helper classes)
  *
- * @brand AIppin
+ * @brand brasil-a-vera (default, overridable)
  * @version 1.0.0
  */
 
