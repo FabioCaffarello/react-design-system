@@ -154,4 +154,84 @@ describe("Chip Accessibility", () => {
       expect(wrapper).toBeInTheDocument();
     });
   });
+
+  describe("asChild — a11y contract on the collapsed node", () => {
+    // The asChild form transfers a11y responsibility to the consumer's
+    // child. The Chip frame and its inner buttons are NOT rendered —
+    // the child IS the chip. Specifically:
+    //
+    //   - role: the child's native role (link for <a>, etc.). Chip
+    //     does not impose a role of its own.
+    //   - selection state: NO aria-pressed (would lie on a link).
+    //     Consumers communicate route state via aria-current="page"
+    //     directly on the child.
+    //   - focus: the child carries the focus ring. Chip does not
+    //     attach focus utility classes to the projected node.
+    //   - disabled: aria-disabled is forwarded, but anchor navigation
+    //     is NOT blocked by it — consumers must gate href upstream.
+    //
+    // These tests assert each of those contracts on the collapsed node
+    // so a future refactor that re-introduces wrapping/role-stealing
+    // shows up as a failure here rather than as a regression at the
+    // consumer.
+
+    it("the collapsed node IS the chip — no wrapping element interposes", () => {
+      const { container } = render(
+        <Chip asChild>
+          <a href="/x">Filter</a>
+        </Chip>,
+      );
+
+      // Container's first child is the consumer's <a>, with nothing
+      // between it and the test DOM root.
+      expect(container.firstChild?.nodeName).toBe("A");
+      expect(container.firstChild).toBe(
+        screen.getByRole("link", { name: "Filter" }),
+      );
+    });
+
+    it("a selected route is communicated via aria-current on the child, not aria-pressed", () => {
+      render(
+        <Chip asChild selected>
+          <a href="/x" aria-current="page">
+            Active filter
+          </a>
+        </Chip>,
+      );
+
+      const link = screen.getByRole("link", { name: "Active filter" });
+      expect(link).toHaveAttribute("aria-current", "page");
+      expect(link).not.toHaveAttribute("aria-pressed");
+      // role stays link — the chip frame's classes don't change the
+      // accessibility tree role.
+      expect(screen.queryByRole("button")).not.toBeInTheDocument();
+    });
+
+    it("the chip frame imposes no role on the child", () => {
+      const { container } = render(
+        <Chip asChild>
+          <a href="/x">Filter</a>
+        </Chip>,
+      );
+      const anchor = container.querySelector("a")!;
+      // Chip does NOT stamp `role="button"` or `role="option"` onto
+      // the projected element — the native <a> role survives.
+      expect(anchor).not.toHaveAttribute("role");
+    });
+
+    it("aria-disabled is forwarded but navigation is the consumer's responsibility", () => {
+      render(
+        <Chip asChild disabled>
+          <a href="/x">Disabled filter</a>
+        </Chip>,
+      );
+
+      const link = screen.getByRole("link", { name: "Disabled filter" });
+      expect(link).toHaveAttribute("aria-disabled", "true");
+      // We intentionally do NOT clobber href — that's a consumer
+      // decision. AT users hear "disabled link", but click still
+      // navigates unless the consumer gates href upstream.
+      expect(link).toHaveAttribute("href", "/x");
+    });
+  });
 });

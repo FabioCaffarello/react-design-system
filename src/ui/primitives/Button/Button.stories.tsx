@@ -447,6 +447,49 @@ export const Polymorphic: Story = {
   },
 };
 
+export const AsChild: Story = {
+  render: () => (
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <p className="text-sm text-fg-secondary">
+          Projects Button styling onto a real <code>{"<a>"}</code> — preserves
+          native navigation, no JS needed.
+        </p>
+        <Button asChild variant="primary">
+          <a href="https://example.com" target="_blank" rel="noopener">
+            Open external
+          </a>
+        </Button>
+      </div>
+      <div className="space-y-2">
+        <p className="text-sm text-fg-secondary">
+          Combined with <code>leftIcon</code> / <code>rightIcon</code> — icons
+          land inside the projected element via <code>Slottable</code>.
+        </p>
+        <Button asChild variant="secondary" leftIcon={<Download />}>
+          <a href="/report.pdf" download>
+            Download report
+          </a>
+        </Button>
+      </div>
+      <p className="text-xs text-fg-tertiary">
+        Idiomatic Radix Slot pattern. The child element keeps its own type,
+        props, and TS contract (e.g. Next <code>Link</code> still validates{" "}
+        <code>href</code> / <code>prefetch</code>). Prefer <code>asChild</code>{" "}
+        over <code>as</code> when consuming framework Link components.
+      </p>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "asChild form (issue #154): the Button projects its classes/ARIA/ref onto a single child element, preserving the child's element type and native props. Idiomatic for framework Link components in server-rendered/zero-JS consumers.",
+      },
+    },
+  },
+};
+
 // Event Stories
 export const WithEvents: Story = {
   render: () => {

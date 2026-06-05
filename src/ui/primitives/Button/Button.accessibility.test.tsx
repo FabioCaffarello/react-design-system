@@ -150,4 +150,52 @@ describe("Button Accessibility", () => {
       expect(btn).toHaveTextContent("Saving…");
     });
   });
+
+  describe("asChild — a11y contract on the projected element", () => {
+    // The asChild form projects Button's classes onto the consumer's
+    // child. The child remains the native element it always was: a
+    // link is still a link, an anchor still uses link semantics. AT
+    // users hear "link", not "button" — the visual chrome doesn't
+    // override the role.
+    it("rendered as a link still announces as a link, not a button", () => {
+      render(
+        <Button asChild>
+          <a href="/profile">Profile</a>
+        </Button>,
+      );
+
+      // Native <a href> → role=link in the accessibility tree.
+      expect(screen.getByRole("link", { name: "Profile" })).toBeInTheDocument();
+      expect(screen.queryByRole("button")).not.toBeInTheDocument();
+    });
+
+    it("aria-label on Button is forwarded to the child element", () => {
+      render(
+        <Button asChild aria-label="Open profile">
+          <a href="/profile">→</a>
+        </Button>,
+      );
+
+      // The accessible name comes from the projected aria-label, not
+      // the visible "→" glyph.
+      expect(
+        screen.getByRole("link", { name: "Open profile" }),
+      ).toBeInTheDocument();
+    });
+
+    it("disabled on Button surfaces as aria-disabled on the child link", () => {
+      render(
+        <Button asChild disabled>
+          <a href="/profile">Profile</a>
+        </Button>,
+      );
+
+      const link = screen.getByRole("link", { name: "Profile" });
+      // Native <a> has no `disabled` attribute, but AT users still
+      // hear the disabled state via aria-disabled. Note: anchors do
+      // NOT block navigation on aria-disabled alone; consumers must
+      // gate href upstream when truly blocking is needed.
+      expect(link).toHaveAttribute("aria-disabled", "true");
+    });
+  });
 });

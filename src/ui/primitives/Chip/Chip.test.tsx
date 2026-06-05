@@ -229,6 +229,96 @@ describe("Chip", () => {
     });
   });
 
+  describe("asChild", () => {
+    it("renders the single child element instead of the chip frame (no outer <div>)", () => {
+      const { container } = render(
+        <Chip asChild>
+          <a href="/filter">Active</a>
+        </Chip>,
+      );
+      // The collapsed form is JUST the child. No wrapping <div>.
+      expect(container.querySelector("div")).toBeNull();
+      const anchor = container.querySelector("a");
+      expect(anchor).not.toBeNull();
+      expect(anchor).toHaveAttribute("href", "/filter");
+      expect(anchor).toHaveTextContent("Active");
+    });
+
+    it("projects Chip frame classes (variant + selected) onto the child", () => {
+      const { container } = render(
+        <Chip asChild variant="filled" selected>
+          <a href="/x">Tag</a>
+        </Chip>,
+      );
+      const anchor = container.querySelector("a")!;
+      // selected variant → bg-surface-brand-strong + border-line-brand
+      expect(anchor).toHaveClass("bg-surface-brand-strong");
+      expect(anchor).toHaveClass("border-line-brand");
+      // base structural class
+      expect(anchor).toHaveClass("inline-flex");
+    });
+
+    it("preserves `selected` styling without emitting aria-pressed on the link", () => {
+      // <a> is not a toggle button; aria-pressed would lie.
+      // Consumers express route-state with `aria-current="page"` on the
+      // child instead — see the a11y suite.
+      render(
+        <Chip asChild selected>
+          <a href="/x">Tag</a>
+        </Chip>,
+      );
+      const link = screen.getByRole("link", { name: "Tag" });
+      expect(link).not.toHaveAttribute("aria-pressed");
+    });
+
+    it("sets aria-disabled on the child when disabled", () => {
+      render(
+        <Chip asChild disabled>
+          <a href="/x">Tag</a>
+        </Chip>,
+      );
+      expect(screen.getByRole("link", { name: "Tag" })).toHaveAttribute(
+        "aria-disabled",
+        "true",
+      );
+    });
+
+    it("merges the child's own className with the projected classes", () => {
+      const { container } = render(
+        <Chip asChild className="from-chip">
+          <a href="/x" className="from-child">
+            Tag
+          </a>
+        </Chip>,
+      );
+      const anchor = container.querySelector("a")!;
+      expect(anchor).toHaveClass("from-chip");
+      expect(anchor).toHaveClass("from-child");
+    });
+
+    it("forwards ref to the projected child element", () => {
+      const ref = { current: null as HTMLDivElement | null };
+      render(
+        <Chip asChild ref={ref}>
+          <a href="/x">Tag</a>
+        </Chip>,
+      );
+      expect(ref.current).not.toBeNull();
+      expect((ref.current as unknown as HTMLElement).tagName).toBe("A");
+    });
+
+    it("renders no inner label-button and no X button (the chip IS the child)", () => {
+      const { container } = render(
+        <Chip asChild>
+          <a href="/x">Tag</a>
+        </Chip>,
+      );
+      // Zero <button> elements, the consumer-provided <a> is the whole chip.
+      expect(container.querySelector("button")).toBeNull();
+      expect(screen.queryByLabelText(/Remove/)).not.toBeInTheDocument();
+    });
+  });
+
   describe("Clickable + removable architecture (no nested-interactive)", () => {
     // When BOTH onClick and onRemove are provided (and not selected/disabled),
     // the chip splits into two sibling <button>s — the label-button (carries

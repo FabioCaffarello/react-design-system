@@ -41,13 +41,30 @@ The variant ladder runs from `primary` (highest emphasis) through `secondary`, `
 
 {/* exception: polymorphic as-prop framing — SKILL.md Props handling exception clause */}
 
-`as`, `href`, and `target` make Button polymorphic. Controls renders `as` as an opaque `ElementType` — the table below documents the link pattern explicitly.
+Button is polymorphic in two flavors. `asChild` is the recommended path for framework Link components; `as` remains for the simple `as="a"` case and back-compat.
 
-| Prop     | Type          | Notes                                                                                     |
-| -------- | ------------- | ----------------------------------------------------------------------------------------- |
-| `as`     | `ElementType` | Render as a different element. Most commonly `as="a"` for a styled link.                  |
-| `href`   | `string`      | Required when `as="a"`; ignored otherwise.                                                |
-| `target` | `string`      | Standard anchor target. Pair with `rel="noopener noreferrer"` for `target="_blank"` links. |
+| Prop       | Type          | Notes                                                                                                                                                                          |
+| ---------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `asChild`  | `boolean`     | When true, project Button's classes/ARIA/ref onto the single child element via Radix `Slot`. Preserves the child's TS type, element, and native props. **Wins over `as`.**     |
+| `as`       | `ElementType` | Render Button as a different element type. Most commonly `as="a"` for a styled link.                                                                                           |
+| `href`     | `string`      | Used by `as="a"`; ignored otherwise. With `asChild`, set `href` on the child Link instead.                                                                                     |
+| `target`   | `string`      | Standard anchor target. Pair with `rel="noopener noreferrer"` for `target="_blank"` links.                                                                                     |
+
+### When to use `asChild` vs `as`
+
+Reach for `asChild` when wrapping a framework Link component (`next/link`, `react-router-dom`, etc.) where you want to preserve the Link's own TS contract and native props (`href`, `prefetch`, `scroll`, `rel`, `target`). The child element renders untouched aside from Button's styling — server-rendered navigation works without JavaScript on the client.
+
+```tsx
+<Button asChild variant="primary">
+  <Link href="/profile" prefetch>
+    Open profile
+  </Link>
+</Button>
+```
+
+Reach for `as` when you just need a different intrinsic element (`as="a"`, `as="div"`) and don't have a framework Link to defer to. It is the older, simpler form and stays supported. Passing both `as` and `asChild` is a misconfiguration: `asChild` wins and a dev-only warning is logged.
+
+<Canvas of={ButtonStories.AsChild} />
 
 ## Accessibility
 

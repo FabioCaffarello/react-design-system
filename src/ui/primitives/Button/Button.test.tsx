@@ -212,6 +212,115 @@ describe("Button", () => {
     });
   });
 
+  describe("asChild", () => {
+    it("renders the child element type instead of <button>", () => {
+      const { container } = render(
+        <Button asChild>
+          <a href="/profile">Profile</a>
+        </Button>,
+      );
+      expect(container.querySelector("button")).toBeNull();
+      const anchor = container.querySelector("a");
+      expect(anchor).not.toBeNull();
+      expect(anchor).toHaveAttribute("href", "/profile");
+      expect(anchor).toHaveTextContent("Profile");
+    });
+
+    it("projects Button classes onto the child", () => {
+      const { container } = render(
+        <Button asChild variant="primary" size="lg">
+          <a href="/x">Go</a>
+        </Button>,
+      );
+      const anchor = container.querySelector("a")!;
+      // variant=primary (token semantic class) and size=lg padding
+      expect(anchor).toHaveClass("bg-surface-brand-strong");
+      expect(anchor).toHaveClass("px-6");
+    });
+
+    it("merges the child's own className with the Button classes", () => {
+      const { container } = render(
+        <Button asChild>
+          <a href="/x" className="custom-anchor">
+            Go
+          </a>
+        </Button>,
+      );
+      const anchor = container.querySelector("a")!;
+      expect(anchor).toHaveClass("custom-anchor");
+      expect(anchor).toHaveClass("bg-surface-brand-strong");
+    });
+
+    it("preserves native child props (href, target, rel)", () => {
+      const { container } = render(
+        <Button asChild>
+          <a href="/x" target="_blank" rel="noopener">
+            Go
+          </a>
+        </Button>,
+      );
+      const anchor = container.querySelector("a")!;
+      expect(anchor).toHaveAttribute("href", "/x");
+      expect(anchor).toHaveAttribute("target", "_blank");
+      expect(anchor).toHaveAttribute("rel", "noopener");
+    });
+
+    it("forwards ref to the child element (the <a>, not a wrapping <button>)", () => {
+      const ref = { current: null as HTMLElement | null };
+      render(
+        <Button asChild ref={ref as React.RefObject<HTMLButtonElement>}>
+          <a href="/x">Go</a>
+        </Button>,
+      );
+      expect(ref.current).not.toBeNull();
+      expect(ref.current?.tagName).toBe("A");
+    });
+
+    it("renders leftIcon and rightIcon inside the child via Slottable", () => {
+      const { container } = render(
+        <Button
+          asChild
+          leftIcon={<Play data-testid="play-icon" />}
+          rightIcon={<X data-testid="x-icon" />}
+        >
+          <a href="/x">Go</a>
+        </Button>,
+      );
+      const anchor = container.querySelector("a")!;
+      expect(anchor).toContainElement(screen.getByTestId("play-icon"));
+      expect(anchor).toContainElement(screen.getByTestId("x-icon"));
+      expect(anchor).toHaveTextContent("Go");
+    });
+
+    it('does not emit type="button" on the projected child (irrelevant on <a>)', () => {
+      const { container } = render(
+        <Button asChild>
+          <a href="/x">Go</a>
+        </Button>,
+      );
+      const anchor = container.querySelector("a")!;
+      expect(anchor).not.toHaveAttribute("type", "button");
+    });
+
+    it("asChild wins over `as`: when both provided, the child is used and a dev warning fires", () => {
+      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+      const { container } = render(
+        <Button asChild as="span">
+          <a href="/x">Go</a>
+        </Button>,
+      );
+      // The rendered root is the child <a>, not a <span>.
+      expect(container.querySelector("a")).not.toBeNull();
+      expect(container.querySelector("span")).toBeNull();
+      // Dev warn fired exactly because `as` was redundant.
+      expect(warnSpy).toHaveBeenCalled();
+      expect(warnSpy.mock.calls[0][0]).toMatch(
+        /\[Button\].*`as` is ignored when `asChild`/,
+      );
+      warnSpy.mockRestore();
+    });
+  });
+
   describe("Edge Cases", () => {
     it("handles rapid clicks", () => {
       const handleClick = vi.fn();
