@@ -1,6 +1,4 @@
-"use client";
-
-import { memo, useMemo, useCallback } from "react";
+import { memo } from "react";
 import type { HTMLAttributes } from "react";
 import { cn, cva } from "../../utils";
 import { getRadiusClass, getShadowClass, getSpacingClass } from "../../tokens";
@@ -81,21 +79,18 @@ const Card = memo(function Card({
   // with action buttons inside). Decoupling fixes that without changing
   // the visual behavior. Stories that want a clickable card already pass
   // `onClick` (see the InteractiveCard sites at lines 281 and 352).
-  const isInteractive = useMemo(() => onClick !== undefined, [onClick]);
+  const isInteractive = onClick !== undefined;
   const role = isInteractive ? "button" : undefined;
   const tabIndex = isInteractive ? 0 : undefined;
 
   const classes = cn(cardVariants({ variant, padding }), className);
 
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLDivElement>) => {
-      if (isInteractive && (e.key === "Enter" || e.key === " ")) {
-        e.preventDefault();
-        onClick?.();
-      }
-    },
-    [isInteractive, onClick],
-  );
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (isInteractive && (e.key === "Enter" || e.key === " ")) {
+      e.preventDefault();
+      onClick?.();
+    }
+  };
 
   return (
     <div
