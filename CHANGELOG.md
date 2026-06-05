@@ -1,3 +1,14 @@
+## [3.0.0](https://github.com/FabioCaffarello/react-design-system/compare/v2.1.0...v3.0.0) (2026-06-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* **tokens:** introduce brand primitive layer — Caminho C (#152)
+
+### ✨ Features
+
+* **tokens:** introduce brand primitive layer — Caminho C ([#152](https://github.com/FabioCaffarello/react-design-system/issues/152)) ([3b63b72](https://github.com/FabioCaffarello/react-design-system/commit/3b63b721caf525a08b8e8cc56d8a200af2929417))
+
 ## [2.1.0](https://github.com/FabioCaffarello/react-design-system/compare/v2.0.1...v2.1.0) (2026-06-05)
 
 
