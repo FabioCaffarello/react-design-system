@@ -11,7 +11,13 @@ import { defineConfig, globalIgnores } from "eslint/config";
 import dsColor from "./eslint-rules/index.js";
 
 export default defineConfig([
-  globalIgnores(["dist", "storybook-static", "**/*.d.ts", "coverage/**"]),
+  globalIgnores([
+    "dist",
+    "storybook-static",
+    "**/*.d.ts",
+    "coverage/**",
+    "fixtures/**",
+  ]),
   {
     files: ["**/*.{ts,tsx}"],
     ignores: [

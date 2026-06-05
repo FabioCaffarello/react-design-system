@@ -65,6 +65,22 @@ export default defineConfig(() => {
         output: {
           // Preserve named exports — required for library mode consumers.
           exports: "named",
+          // Mark the whole bundle as a React Server Components "client"
+          // module. Source files carry `"use client"` directives, but
+          // Rollup flattens them when bundling — the emitted bundle would
+          // otherwise have zero directives and evaluate in the Server
+          // runtime of Next App Router (etc.), where React.createContext
+          // is undefined and the module crashes on import from a Server
+          // Component. Issue #148.
+          //
+          // RDS is a single-bundle UI library that uses hooks/createContext
+          // at module-evaluation time across the cascade, so marking the
+          // whole bundle client is correct: Server Components freely
+          // import from "use client" modules. The banner is the first
+          // statement of the emitted file, before esbuild's minified
+          // output, satisfying the RSC requirement that "use client"
+          // precede all other statements.
+          banner: '"use client";',
           globals: {
             react: "React",
             "react-dom": "ReactDOM",

@@ -1,0 +1,23 @@
+{
+  "name": "rds-next-smoke",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Smoke fixture for issue #148 — imports RDS from a Next 16 Server Component and verifies the build succeeds (i.e. the bundle carries `\"use client\"`).",
+  "scripts": {
+    "build": "next build"
+  },
+  "dependencies": {
+    "@fabio.caffarello/react-design-system": "file:../..",
+    "lucide-react": "^1.17.0",
+    "next": "^16.2.7",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-hook-form": "^7.77.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.6.0",
+    "@types/react": "^19.2.16",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "~6.0.3"
+  }
+}

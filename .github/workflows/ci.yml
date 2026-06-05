@@ -59,7 +59,7 @@ jobs:
           # Anything OUTSIDE these paths (docs, .claude/ rules, husky
           # hooks, lockfile-validating scripts, …) cannot move a story
           # and is safe to skip.
-          UI_PATTERN='^(src/(ui|styles|docs)/|\.storybook/|eslint-rules/|package(-lock)?\.json|vite\.config\.ts|tsconfig.*\.json|scripts/(a11y-serial-baseline|validate-a11y-baseline|storybook-smoke)\.mjs|\.github/workflows/ci\.yml|\.github/actions/setup/)'
+          UI_PATTERN='^(src/(ui|styles|docs)/|\.storybook/|eslint-rules/|fixtures/|package(-lock)?\.json|vite\.config\.ts|tsconfig.*\.json|scripts/(a11y-serial-baseline|validate-a11y-baseline|storybook-smoke|next-smoke|validate-use-client-in-dist)\.mjs|\.github/workflows/ci\.yml|\.github/actions/setup/)'
 
           if echo "$CHANGED" | grep -qE "$UI_PATTERN"; then
             echo "UI / story / style / build files changed — running storybook-build and a11y-baseline."
@@ -181,6 +181,39 @@ jobs:
           path: dist/
           if-no-files-found: error
           retention-days: 14
+
+  # Next 16 Server Component smoke. Reproduces issue #148: importing
+  # any RDS primitive from a Next App Router Server Component without a
+  # manual `"use client"` wrapper. The fixture lives in
+  # fixtures/next-smoke/ and is a self-contained Next 16 app whose
+  # app/page.tsx is a Server Component that imports Button + Text.
+  # Without `"use client"` at the head of dist/index.{js,cjs}, Next's
+  # RSC compiler fails to evaluate RDS in the server runtime and the
+  # build exits non-zero — the smoke gate flips red on regression.
+  # Pairs with `scripts/validate-use-client-in-dist.mjs` which catches
+  # the same class of regression at the artifact level (faster signal,
+  # no Next install required).
+  next-smoke:
+    name: Next 16 Server Component smoke
+    needs: [paths, build]
+    if: needs.paths.outputs.ui_changed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Download dist artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist
+
+      - name: Run Next 16 smoke
+        run: node scripts/next-smoke.mjs --skip-build
 
   build-storybook:
     name: Build Storybook
@@ -378,6 +411,7 @@ jobs:
         build,
         build-storybook,
         storybook-smoke,
+        next-smoke,
         a11y-baseline-light,
         a11y-baseline-dark,
       ]

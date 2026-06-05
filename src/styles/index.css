@@ -9,6 +9,18 @@
 @source "../../src/ui/**/*.{ts,tsx}";
 @source "../../src/ui/**/*.{js,jsx}";
 
+/*
+ * Exclude paths Tailwind v4 would otherwise pick up via automatic content
+ * detection. Without these, fixture strings inside ESLint-rule tests
+ * (e.g. `bg-[var(--color-foo)]` in eslint-rules/no-raw-color-classes/
+ * rule.test.js) and tokens cited as deprecated in historical docs
+ * (e.g. `--color-primary-100` in PHASE_7_SEMANTIC_COLORS.md) leak into
+ * the emitted dist/react-design-system.css as orphan classes/vars.
+ * Issue #148 notes.
+ */
+@source not "../../eslint-rules/**";
+@source not "../../**/*.md";
+
 /**
  * AIppin Design System - Main CSS Entry Point
  *

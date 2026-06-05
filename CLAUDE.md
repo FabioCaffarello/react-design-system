@@ -57,15 +57,17 @@ npm run build             # library build (build:validate auto-checks exports)
 npm run build-storybook   # static storybook
 npm run storybook:smoke   # runtime smoke-test all stories (Phase 13a)
 npm run test:a11y:baseline # serial axe baseline of record (light + dark, ~11min on local SSD, workers=1)
+npm run test:next-smoke   # build RDS + `next build` a Next 16 Server Component fixture against the freshly-built dist. Gates that the bundle carries `"use client"` end-to-end through Next's RSC compiler (issue #148 acceptance criterion #2). Fixture lives in fixtures/next-smoke/.
 node scripts/validate-a11y-baseline.mjs # gate: exits 1 if critical+serious>0 on either theme (reads a11y-baseline.json)
 node scripts/validate-dark-coverage.mjs # gate: fails if dark.css's two declaration blocks diverge in their token set
 node scripts/validate-file-set.mjs # gate: every component dir under src/ui/{primitives,components,layouts}/ ships .tsx/.test.tsx/.stories.tsx/index.ts (grandfathered exceptions allowlisted inside the script)
 node scripts/validate-cross-layer-imports.mjs # gate: primitives never import from components or layouts; layouts import primitives only (no allowlist — main currently passes clean)
 node scripts/validate-provider-canonicity.mjs # gate: infra Provider/Context modules (Toast/Dialog/Theme/Config) live ONLY in src/ui/providers/ — duplicates elsewhere create disjoint Context instances and silently break consumer hooks
 node scripts/validate-no-localhost-in-lockfile.mjs # fails if any `resolved` URL points to localhost (Verdaccio contamination)
+node scripts/validate-use-client-in-dist.mjs # gate: dist/index.{js,cjs} must begin with `"use client";` so RSC frameworks (Next App Router, etc.) don't crash on `React.createContext` when a Server Component imports from RDS. The directive is injected by `rollupOptions.output.banner` in vite.config.ts; this validator is the gate that fails on regression. Wired into `build:validate`.
 ```
 
-Three scripts in `package.json` are not invoked directly: `build:validate` runs at the tail of `build` to verify the emitted dist exports compile (`tsx scripts/validate-build-exports.ts`); `postplop` runs after `plop` to prettier-format the generated component; `prepare` is husky's own lifecycle hook that installs git hooks during `npm install`. They count toward the script surface and should not be removed without updating this section.
+Three scripts in `package.json` are not invoked directly: `build:validate` runs at the tail of `build` and chains two checks — `tsx scripts/validate-build-exports.ts` (verifies critical named exports survive the bundle) **and** `node scripts/validate-use-client-in-dist.mjs` (verifies the `"use client";` banner reached the emitted dist entries); `postplop` runs after `plop` to prettier-format the generated component; `prepare` is husky's own lifecycle hook that installs git hooks during `npm install`. They count toward the script surface and should not be removed without updating this section.
 
 The `a11y-baseline` job in `.github/workflows/ci.yml` runs both in sequence (`test:a11y:baseline` then the validator) and is part of the `ci-success` aggregator's `needs` list, so it gates merges to `main` via branch protection. The validator is the actual enforcement mechanism — `parameters.a11y.test: "error"` in `.storybook/preview.tsx` is cosmetic (no `@storybook/addon-vitest` plugin wired into the vitest workspace), see the long comment there.
 
