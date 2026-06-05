@@ -1,5 +1,5 @@
 /**
- * AIppin Design System - Semantic Colors
+ * Design System - Semantic Colors
  *
  * Meaningful color tokens that reference primitive values.
  * Declared in @theme so Tailwind v4 generates native utility classes
@@ -7,7 +7,7 @@
  * Theme overrides (light/dark) remain in selectors —
  * see themes/{light,dark}.css.
  *
- * @brand AIppin
+ * @brand brasil-a-vera (default, overridable)
  * @version 1.0.0
  */
 
@@ -17,14 +17,14 @@
    * Core brand identity colors
    * ============================================ */
 
-  --color-brand-primary: var(--color-indigo-500);
-  --color-brand-primary-light: var(--color-indigo-400);
-  --color-brand-primary-dark: var(--color-indigo-600);
-  --color-brand-primary-darker: var(--color-indigo-700);
+  --color-brand-primary: var(--color-brand-primary-500);
+  --color-brand-primary-light: var(--color-brand-primary-400);
+  --color-brand-primary-dark: var(--color-brand-primary-600);
+  --color-brand-primary-darker: var(--color-brand-primary-700);
 
-  --color-brand-secondary: var(--color-pink-500);
-  --color-brand-secondary-light: var(--color-pink-400);
-  --color-brand-secondary-dark: var(--color-pink-600);
+  --color-brand-secondary: var(--color-brand-secondary-500);
+  --color-brand-secondary-light: var(--color-brand-secondary-400);
+  --color-brand-secondary-dark: var(--color-brand-secondary-600);
 
   --color-brand-accent: var(--color-cyan-500);
   --color-brand-accent-light: var(--color-cyan-400);
@@ -45,16 +45,16 @@
   --color-fg-inverse-secondary: var(--color-slate-200);
 
   /* Link colors */
-  --color-fg-link: var(--color-indigo-600);
-  --color-fg-link-hover: var(--color-indigo-700);
-  --color-fg-link-active: var(--color-indigo-800);
-  --color-fg-link-visited: var(--color-violet-600);
+  --color-fg-link: var(--color-brand-primary-600);
+  --color-fg-link-hover: var(--color-brand-primary-700);
+  --color-fg-link-active: var(--color-brand-primary-800);
+  --color-fg-link-visited: var(--color-brand-secondary-700);
 
   /* Brand text */
   --color-fg-brand: var(--color-brand-primary);
-  --color-fg-brand-emphasis: var(--color-indigo-600);
+  --color-fg-brand-emphasis: var(--color-brand-primary-600);
   --color-fg-brand-secondary: var(--color-brand-secondary);
-  --color-fg-brand-secondary-emphasis: var(--color-pink-600);
+  --color-fg-brand-secondary-emphasis: var(--color-brand-secondary-600);
 
   /* Feedback text */
   --color-fg-success: var(--color-emerald-700);
@@ -76,14 +76,14 @@
   --color-surface-inverse-subtle: var(--color-slate-800);
 
   /* Brand backgrounds */
-  --color-surface-brand-subtle: var(--color-indigo-50);
-  --color-surface-brand-muted: var(--color-indigo-100);
-  --color-surface-brand: var(--color-indigo-500);
-  --color-surface-brand-strong: var(--color-indigo-600);
-  --color-surface-brand-emphasis: var(--color-indigo-600);
+  --color-surface-brand-subtle: var(--color-brand-primary-50);
+  --color-surface-brand-muted: var(--color-brand-primary-100);
+  --color-surface-brand: var(--color-brand-primary-500);
+  --color-surface-brand-strong: var(--color-brand-primary-600);
+  --color-surface-brand-emphasis: var(--color-brand-primary-600);
 
-  --color-surface-secondary-subtle: var(--color-pink-50);
-  --color-surface-secondary: var(--color-pink-700);
+  --color-surface-secondary-subtle: var(--color-brand-secondary-50);
+  --color-surface-secondary: var(--color-brand-secondary-700);
 
   --color-surface-accent-subtle: var(--color-cyan-50);
   --color-surface-accent: var(--color-cyan-500);
@@ -112,12 +112,12 @@
   --color-line-inverse: var(--color-slate-700);
 
   /* Focus borders */
-  --color-line-focus: var(--color-indigo-500);
-  --color-line-focus-ring: var(--color-indigo-500);
+  --color-line-focus: var(--color-brand-primary-500);
+  --color-line-focus-ring: var(--color-brand-primary-500);
 
   /* Brand borders */
-  --color-line-brand: var(--color-indigo-500);
-  --color-line-secondary: var(--color-pink-500);
+  --color-line-brand: var(--color-brand-primary-500);
+  --color-line-secondary: var(--color-brand-secondary-500);
   --color-line-accent: var(--color-cyan-500);
 
   /* ============================================
@@ -128,11 +128,11 @@
   --color-surface-hover: var(--color-slate-50);
   --color-surface-hover-subtle: var(--color-slate-50);
   --color-surface-active: var(--color-slate-100);
-  --color-surface-selected: var(--color-indigo-50);
-  --color-surface-selected-subtle: var(--color-indigo-50);
+  --color-surface-selected: var(--color-brand-primary-50);
+  --color-surface-selected-subtle: var(--color-brand-primary-50);
   /* state-disabled fused into surface-disabled (identical values) */
   --color-surface-disabled-subtle: var(--color-slate-50);
-  --color-surface-focus: var(--color-indigo-100);
+  --color-surface-focus: var(--color-brand-primary-100);
 
   /* ============================================
    * FEEDBACK COLORS
@@ -203,7 +203,7 @@
   --color-icon-subtle: var(--color-slate-300);
   --color-icon-emphasis: var(--color-slate-700);
   --color-icon-inverse: var(--color-white);
-  --color-icon-brand: var(--color-indigo-500);
+  --color-icon-brand: var(--color-brand-primary-500);
   --color-icon-success: var(--color-emerald-500);
   --color-icon-warning: var(--color-amber-500);
   --color-icon-error: var(--color-rose-500);

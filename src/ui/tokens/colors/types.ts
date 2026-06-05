@@ -1,9 +1,9 @@
 /**
- * AIppin Design System - Color Token Types
+ * Design System - Color Token Types
  *
  * TypeScript types for the color system.
  *
- * @brand AIppin
+ * @brand brasil-a-vera (default, overridable)
  * @version 1.0.0
  */
 
@@ -33,8 +33,17 @@ export const COLOR_SCALES: ColorScale[] = [
 
 /**
  * Primitive color names (raw color palettes)
+ *
+ * Two families coexist:
+ * - Tailwind tones (indigo, violet, ..., lime) — honest to Tailwind v4 HEX.
+ * - Brand primitives (brand-primary, brand-secondary) — the design system's
+ *   own scales, declared in src/styles/primitives/brand.css and mirrored
+ *   in src/ui/tokens/colors/brand.ts. These are the reskin surface;
+ *   semantic tokens reference them, not Tailwind tones.
  */
 export type PrimitiveColorName =
+  | "brand-primary"
+  | "brand-secondary"
   | "indigo"
   | "violet"
   | "cyan"

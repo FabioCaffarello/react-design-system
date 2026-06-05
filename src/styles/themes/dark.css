@@ -1,10 +1,10 @@
 /**
- * AIppin Design System - Dark Theme
+ * Design System - Dark Theme
  *
  * Dark color scheme overrides.
  * Activated via data-theme="dark" or .dark class.
  *
- * @brand AIppin
+ * @brand brasil-a-vera (default, overridable)
  * @version 1.0.0
  */
 
@@ -19,14 +19,14 @@
    * Slightly lighter for dark backgrounds
    * ============================================ */
 
-  --color-brand-primary: var(--color-indigo-400);
-  --color-brand-primary-light: var(--color-indigo-300);
-  --color-brand-primary-dark: var(--color-indigo-500);
-  --color-brand-primary-darker: var(--color-indigo-600);
+  --color-brand-primary: var(--color-brand-primary-400);
+  --color-brand-primary-light: var(--color-brand-primary-300);
+  --color-brand-primary-dark: var(--color-brand-primary-500);
+  --color-brand-primary-darker: var(--color-brand-primary-600);
 
-  --color-brand-secondary: var(--color-pink-400);
-  --color-brand-secondary-light: var(--color-pink-300);
-  --color-brand-secondary-dark: var(--color-pink-500);
+  --color-brand-secondary: var(--color-brand-secondary-400);
+  --color-brand-secondary-light: var(--color-brand-secondary-300);
+  --color-brand-secondary-dark: var(--color-brand-secondary-500);
 
   --color-brand-accent: var(--color-cyan-400);
   --color-brand-accent-light: var(--color-cyan-300);
@@ -47,16 +47,16 @@
   --color-fg-inverse-secondary: var(--color-slate-700);
 
   /* Link colors */
-  --color-fg-link: var(--color-indigo-400);
-  --color-fg-link-hover: var(--color-indigo-300);
-  --color-fg-link-active: var(--color-indigo-200);
-  --color-fg-link-visited: var(--color-violet-400);
+  --color-fg-link: var(--color-brand-primary-400);
+  --color-fg-link-hover: var(--color-brand-primary-300);
+  --color-fg-link-active: var(--color-brand-primary-200);
+  --color-fg-link-visited: var(--color-brand-secondary-300);
 
   /* Brand text */
-  --color-fg-brand: var(--color-indigo-400);
-  --color-fg-brand-emphasis: var(--color-indigo-300);
-  --color-fg-brand-secondary: var(--color-pink-400);
-  --color-fg-brand-secondary-emphasis: var(--color-pink-300);
+  --color-fg-brand: var(--color-brand-primary-400);
+  --color-fg-brand-emphasis: var(--color-brand-primary-300);
+  --color-fg-brand-secondary: var(--color-brand-secondary-400);
+  --color-fg-brand-secondary-emphasis: var(--color-brand-secondary-300);
 
   /* Feedback text */
   --color-fg-success: var(--color-emerald-400);
@@ -77,14 +77,14 @@
   --color-surface-inverse-subtle: var(--color-slate-100);
 
   /* Brand backgrounds */
-  --color-surface-brand-subtle: var(--color-indigo-950);
-  --color-surface-brand-muted: var(--color-indigo-900);
-  --color-surface-brand: var(--color-indigo-500);
-  --color-surface-brand-strong: var(--color-indigo-400);
-  --color-surface-brand-emphasis: var(--color-indigo-400);
+  --color-surface-brand-subtle: var(--color-brand-primary-950);
+  --color-surface-brand-muted: var(--color-brand-primary-900);
+  --color-surface-brand: var(--color-brand-primary-500);
+  --color-surface-brand-strong: var(--color-brand-primary-400);
+  --color-surface-brand-emphasis: var(--color-brand-primary-400);
 
-  --color-surface-secondary-subtle: var(--color-pink-950);
-  --color-surface-secondary: var(--color-pink-500);
+  --color-surface-secondary-subtle: var(--color-brand-secondary-950);
+  --color-surface-secondary: var(--color-brand-secondary-500);
 
   --color-surface-accent-subtle: var(--color-cyan-950);
   --color-surface-accent: var(--color-cyan-500);
@@ -118,15 +118,15 @@
   --color-line-emphasis: var(--color-slate-600);
   --color-line-strong: var(--color-slate-500);
   --color-line-inverse: var(--color-slate-200);
-  --color-line-focus: var(--color-indigo-400);
-  --color-line-focus-ring: var(--color-indigo-400);
+  --color-line-focus: var(--color-brand-primary-400);
+  --color-line-focus-ring: var(--color-brand-primary-400);
 
   /* Brand-colored borders — mirror the brand foreground/border ladder
-   * (light shade -500 → dark shade -400) so a Tabs underline or branded
-   * outline reads against a slate-900 surface at ~5:1 (indigo-400),
-   * ~6:1 (pink-400), ~9:1 (cyan-400). */
-  --color-line-brand: var(--color-indigo-400);
-  --color-line-secondary: var(--color-pink-400);
+   * (light theme uses -500, dark theme uses -400) so a Tabs underline or
+   * branded outline reads against a dark surface. Concrete contrast is
+   * verified per release via test:a11y:baseline. */
+  --color-line-brand: var(--color-brand-primary-400);
+  --color-line-secondary: var(--color-brand-secondary-400);
   --color-line-accent: var(--color-cyan-400);
 
   /* ============================================
@@ -136,15 +136,15 @@
   --color-surface-hover: var(--color-slate-800);
   --color-surface-hover-subtle: var(--color-slate-900);
   --color-surface-active: var(--color-slate-700);
-  --color-surface-selected: var(--color-indigo-950);
-  --color-surface-selected-subtle: var(--color-indigo-900);
+  --color-surface-selected: var(--color-brand-primary-950);
+  --color-surface-selected-subtle: var(--color-brand-primary-900);
   /* state-disabled fused into surface-disabled (identical values).
    * disabled-subtle is intentionally close to canvas — slate-900 over
    * canvas slate-950 is ~1.16:1, mirroring the light pattern where
    * slate-50 over white is also barely perceptible. The role is
    * "barely-perceptible disabled wash", not "visible disabled tint". */
   --color-surface-disabled-subtle: var(--color-slate-900);
-  --color-surface-focus: var(--color-indigo-900);
+  --color-surface-focus: var(--color-brand-primary-900);
 
   /* ============================================
    * FEEDBACK COLORS
@@ -199,7 +199,7 @@
   --color-icon-subtle: var(--color-slate-600);
   --color-icon-emphasis: var(--color-slate-200);
   --color-icon-inverse: var(--color-slate-900);
-  --color-icon-brand: var(--color-indigo-400);
+  --color-icon-brand: var(--color-brand-primary-400);
   --color-icon-success: var(--color-emerald-400);
   --color-icon-warning: var(--color-amber-400);
   --color-icon-error: var(--color-rose-400);
@@ -259,7 +259,7 @@
 
   --surface-code-inline-bg: var(--color-slate-800);
   --surface-code-inline-border: var(--color-slate-700);
-  --surface-code-inline-color: var(--color-pink-400);
+  --surface-code-inline-color: var(--color-brand-secondary-300);
 
   /* ============================================
    * TOOLTIP
@@ -274,15 +274,20 @@
    * More visible on dark backgrounds
    * ============================================ */
 
-  --ring-color: var(--color-indigo-400);
-  --ring-default: 0 0 0 var(--ring-width) rgb(129 140 248 / 0.3);
+  --ring-color: var(--color-brand-primary-400);
+  /* D7: color-mix preserves the brand-primary-400 → 30% alpha relationship
+   * across reskins. If a consumer overrides --color-brand-primary-400, the
+   * focus ring follows automatically. WCAG 2.4.11 (focus-visible) is
+   * verified against the resolved alpha in test:a11y:baseline. */
+  --ring-default: 0 0 0 var(--ring-width)
+    color-mix(in srgb, var(--color-brand-primary-400) 30%, transparent);
 
   /* ============================================
    * SELECTION
    * ============================================ */
 
   ::selection {
-    background-color: var(--color-indigo-700);
+    background-color: var(--color-brand-primary-700);
     color: var(--color-white);
   }
 }
@@ -318,14 +323,14 @@
      * BRAND COLORS
      * ============================================ */
 
-    --color-brand-primary: var(--color-indigo-400);
-    --color-brand-primary-light: var(--color-indigo-300);
-    --color-brand-primary-dark: var(--color-indigo-500);
-    --color-brand-primary-darker: var(--color-indigo-600);
+    --color-brand-primary: var(--color-brand-primary-400);
+    --color-brand-primary-light: var(--color-brand-primary-300);
+    --color-brand-primary-dark: var(--color-brand-primary-500);
+    --color-brand-primary-darker: var(--color-brand-primary-600);
 
-    --color-brand-secondary: var(--color-pink-400);
-    --color-brand-secondary-light: var(--color-pink-300);
-    --color-brand-secondary-dark: var(--color-pink-500);
+    --color-brand-secondary: var(--color-brand-secondary-400);
+    --color-brand-secondary-light: var(--color-brand-secondary-300);
+    --color-brand-secondary-dark: var(--color-brand-secondary-500);
 
     --color-brand-accent: var(--color-cyan-400);
     --color-brand-accent-light: var(--color-cyan-300);
@@ -344,15 +349,15 @@
     --color-fg-inverse: var(--color-slate-900);
     --color-fg-inverse-secondary: var(--color-slate-700);
 
-    --color-fg-link: var(--color-indigo-400);
-    --color-fg-link-hover: var(--color-indigo-300);
-    --color-fg-link-active: var(--color-indigo-200);
-    --color-fg-link-visited: var(--color-violet-400);
+    --color-fg-link: var(--color-brand-primary-400);
+    --color-fg-link-hover: var(--color-brand-primary-300);
+    --color-fg-link-active: var(--color-brand-primary-200);
+    --color-fg-link-visited: var(--color-brand-secondary-300);
 
-    --color-fg-brand: var(--color-indigo-400);
-    --color-fg-brand-emphasis: var(--color-indigo-300);
-    --color-fg-brand-secondary: var(--color-pink-400);
-    --color-fg-brand-secondary-emphasis: var(--color-pink-300);
+    --color-fg-brand: var(--color-brand-primary-400);
+    --color-fg-brand-emphasis: var(--color-brand-primary-300);
+    --color-fg-brand-secondary: var(--color-brand-secondary-400);
+    --color-fg-brand-secondary-emphasis: var(--color-brand-secondary-300);
 
     --color-fg-success: var(--color-emerald-400);
     --color-fg-warning: var(--color-amber-400);
@@ -371,14 +376,14 @@
     --color-surface-inverse: var(--color-slate-50);
     --color-surface-inverse-subtle: var(--color-slate-100);
 
-    --color-surface-brand-subtle: var(--color-indigo-950);
-    --color-surface-brand-muted: var(--color-indigo-900);
-    --color-surface-brand: var(--color-indigo-500);
-    --color-surface-brand-strong: var(--color-indigo-400);
-    --color-surface-brand-emphasis: var(--color-indigo-400);
+    --color-surface-brand-subtle: var(--color-brand-primary-950);
+    --color-surface-brand-muted: var(--color-brand-primary-900);
+    --color-surface-brand: var(--color-brand-primary-500);
+    --color-surface-brand-strong: var(--color-brand-primary-400);
+    --color-surface-brand-emphasis: var(--color-brand-primary-400);
 
-    --color-surface-secondary-subtle: var(--color-pink-950);
-    --color-surface-secondary: var(--color-pink-500);
+    --color-surface-secondary-subtle: var(--color-brand-secondary-950);
+    --color-surface-secondary: var(--color-brand-secondary-500);
 
     --color-surface-accent-subtle: var(--color-cyan-950);
     --color-surface-accent: var(--color-cyan-500);
@@ -410,11 +415,11 @@
     --color-line-emphasis: var(--color-slate-600);
     --color-line-strong: var(--color-slate-500);
     --color-line-inverse: var(--color-slate-200);
-    --color-line-focus: var(--color-indigo-400);
-    --color-line-focus-ring: var(--color-indigo-400);
+    --color-line-focus: var(--color-brand-primary-400);
+    --color-line-focus-ring: var(--color-brand-primary-400);
 
-    --color-line-brand: var(--color-indigo-400);
-    --color-line-secondary: var(--color-pink-400);
+    --color-line-brand: var(--color-brand-primary-400);
+    --color-line-secondary: var(--color-brand-secondary-400);
     --color-line-accent: var(--color-cyan-400);
 
     /* ============================================
@@ -424,10 +429,10 @@
     --color-surface-hover: var(--color-slate-800);
     --color-surface-hover-subtle: var(--color-slate-900);
     --color-surface-active: var(--color-slate-700);
-    --color-surface-selected: var(--color-indigo-950);
-    --color-surface-selected-subtle: var(--color-indigo-900);
+    --color-surface-selected: var(--color-brand-primary-950);
+    --color-surface-selected-subtle: var(--color-brand-primary-900);
     --color-surface-disabled-subtle: var(--color-slate-900);
-    --color-surface-focus: var(--color-indigo-900);
+    --color-surface-focus: var(--color-brand-primary-900);
 
     /* ============================================
      * FEEDBACK COLORS
@@ -476,7 +481,7 @@
     --color-icon-subtle: var(--color-slate-600);
     --color-icon-emphasis: var(--color-slate-200);
     --color-icon-inverse: var(--color-slate-900);
-    --color-icon-brand: var(--color-indigo-400);
+    --color-icon-brand: var(--color-brand-primary-400);
     --color-icon-success: var(--color-emerald-400);
     --color-icon-warning: var(--color-amber-400);
     --color-icon-error: var(--color-rose-400);
@@ -534,7 +539,7 @@
 
     --surface-code-inline-bg: var(--color-slate-800);
     --surface-code-inline-border: var(--color-slate-700);
-    --surface-code-inline-color: var(--color-pink-400);
+    --surface-code-inline-color: var(--color-brand-secondary-300);
 
     /* ============================================
      * TOOLTIP
@@ -547,14 +552,19 @@
      * FOCUS RING
      * ============================================ */
 
-    --ring-color: var(--color-indigo-400);
-    --ring-default: 0 0 0 var(--ring-width) rgb(129 140 248 / 0.3);
+    --ring-color: var(--color-brand-primary-400);
+    /* D7: color-mix preserves the brand-primary-400 → 30% alpha relationship
+     * across reskins. If a consumer overrides --color-brand-primary-400, the
+     * focus ring follows automatically. WCAG 2.4.11 (focus-visible) is
+     * verified against the resolved alpha in test:a11y:baseline. */
+    --ring-default: 0 0 0 var(--ring-width)
+      color-mix(in srgb, var(--color-brand-primary-400) 30%, transparent);
   }
 
   /* ::selection inside @media — sibling to the :root rule above so
    * older browsers without CSS nesting still parse cleanly. */
   :root:not([data-theme="light"]):not(.light) ::selection {
-    background-color: var(--color-indigo-700);
+    background-color: var(--color-brand-primary-700);
     color: var(--color-white);
   }
 }

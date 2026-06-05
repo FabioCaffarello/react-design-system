@@ -1,10 +1,10 @@
 /**
- * AIppin Design System - Shadows
+ * Design System - Shadows
  *
  * Elevation system using box shadows.
  * Creates depth and visual hierarchy.
  *
- * @brand AIppin
+ * @brand brasil-a-vera (default, overridable)
  * @version 1.0.0
  */
 
@@ -44,21 +44,40 @@
    * For brand-colored elements
    * ============================================ */
 
-  /* Primary (Indigo) shadows */
+  /* Brand-primary shadows — color-mix follows consumer reskin of
+   * --color-brand-primary-500 (issue #152 Caminho C). */
   --shadow-primary-sm:
-    0 1px 3px 0 rgb(99 102 241 / 0.2), 0 1px 2px -1px rgb(99 102 241 / 0.2);
+    0 1px 3px 0
+      color-mix(in srgb, var(--color-brand-primary-500) 20%, transparent),
+    0 1px 2px -1px
+      color-mix(in srgb, var(--color-brand-primary-500) 20%, transparent);
   --shadow-primary-md:
-    0 4px 6px -1px rgb(99 102 241 / 0.2), 0 2px 4px -2px rgb(99 102 241 / 0.2);
+    0 4px 6px -1px
+      color-mix(in srgb, var(--color-brand-primary-500) 20%, transparent),
+    0 2px 4px -2px
+      color-mix(in srgb, var(--color-brand-primary-500) 20%, transparent);
   --shadow-primary-lg:
-    0 10px 15px -3px rgb(99 102 241 / 0.2), 0 4px 6px -4px rgb(99 102 241 / 0.2);
+    0 10px 15px -3px
+      color-mix(in srgb, var(--color-brand-primary-500) 20%, transparent),
+    0 4px 6px -4px
+      color-mix(in srgb, var(--color-brand-primary-500) 20%, transparent);
 
-  /* Secondary (Violet) shadows */
+  /* Brand-secondary shadows */
   --shadow-secondary-sm:
-    0 1px 3px 0 rgb(139 92 246 / 0.2), 0 1px 2px -1px rgb(139 92 246 / 0.2);
+    0 1px 3px 0
+      color-mix(in srgb, var(--color-brand-secondary-500) 20%, transparent),
+    0 1px 2px -1px
+      color-mix(in srgb, var(--color-brand-secondary-500) 20%, transparent);
   --shadow-secondary-md:
-    0 4px 6px -1px rgb(139 92 246 / 0.2), 0 2px 4px -2px rgb(139 92 246 / 0.2);
+    0 4px 6px -1px
+      color-mix(in srgb, var(--color-brand-secondary-500) 20%, transparent),
+    0 2px 4px -2px
+      color-mix(in srgb, var(--color-brand-secondary-500) 20%, transparent);
   --shadow-secondary-lg:
-    0 10px 15px -3px rgb(139 92 246 / 0.2), 0 4px 6px -4px rgb(139 92 246 / 0.2);
+    0 10px 15px -3px
+      color-mix(in srgb, var(--color-brand-secondary-500) 20%, transparent),
+    0 4px 6px -4px
+      color-mix(in srgb, var(--color-brand-secondary-500) 20%, transparent);
 
   /* Success (Emerald) shadows */
   --shadow-success-sm:
@@ -99,7 +118,8 @@
 
   /* Input shadows */
   --shadow-input: var(--shadow-xs);
-  --shadow-input-focus: 0 0 0 3px rgb(99 102 241 / 0.1);
+  --shadow-input-focus: 0 0 0 3px
+    color-mix(in srgb, var(--color-brand-primary-500) 10%, transparent);
   --shadow-input-error: 0 0 0 3px rgb(244 63 94 / 0.1);
   --shadow-input-success: 0 0 0 3px rgb(16 185 129 / 0.1);
 
@@ -131,8 +151,10 @@
    * For special emphasis
    * ============================================ */
 
-  --glow-primary: 0 0 20px rgb(99 102 241 / 0.3);
-  --glow-secondary: 0 0 20px rgb(139 92 246 / 0.3);
+  --glow-primary: 0 0 20px
+    color-mix(in srgb, var(--color-brand-primary-500) 30%, transparent);
+  --glow-secondary: 0 0 20px
+    color-mix(in srgb, var(--color-brand-secondary-500) 30%, transparent);
   --glow-accent: 0 0 20px rgb(6 182 212 / 0.3);
   --glow-success: 0 0 20px rgb(16 185 129 / 0.3);
   --glow-warning: 0 0 20px rgb(245 158 11 / 0.3);

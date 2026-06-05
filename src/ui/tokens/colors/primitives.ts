@@ -1,10 +1,10 @@
 /**
- * AIppin Design System - Primitive Color Tokens
+ * Design System - Primitive Color Tokens
  *
  * Complete color palettes with all shades (50-950).
  * These match the CSS variables defined in primitives/colors.css
  *
- * @brand AIppin
+ * @brand brasil-a-vera (default, overridable)
  * @version 1.0.0
  */
 
@@ -15,6 +15,7 @@ import type {
   PrimitiveColorName,
   PrimitiveColors,
 } from "./types";
+import { BRAND_PRIMARY, BRAND_SECONDARY } from "./brand";
 
 /**
  * Helper to create a color token
@@ -407,6 +408,8 @@ export const LIME: ColorPalette = {
  * All primitive colors combined
  */
 export const PRIMITIVE_COLORS: PrimitiveColors = {
+  "brand-primary": BRAND_PRIMARY,
+  "brand-secondary": BRAND_SECONDARY,
   indigo: INDIGO,
   violet: VIOLET,
   cyan: CYAN,

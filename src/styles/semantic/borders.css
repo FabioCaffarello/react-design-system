@@ -1,9 +1,9 @@
 /**
- * AIppin Design System - Border Tokens
+ * Design System - Border Tokens
  *
  * Border widths, styles, and complete border definitions.
  *
- * @brand AIppin
+ * @brand brasil-a-vera (default, overridable)
  * @version 1.0.0
  */
 
@@ -101,17 +101,25 @@
 
   /* Focus ring */
   --ring-width: 3px;
-  --ring-color: var(--color-indigo-500);
+  --ring-color: var(--color-brand-primary-500);
   --ring-opacity: 0.2;
   --ring-offset-width: 2px;
   --ring-offset-color: var(--color-white);
 
-  /* Focus ring compositions */
-  --ring-default: 0 0 0 var(--ring-width) rgb(99 102 241 / 0.2);
-  --ring-success: 0 0 0 var(--ring-width) rgb(16 185 129 / 0.2);
-  --ring-warning: 0 0 0 var(--ring-width) rgb(245 158 11 / 0.2);
-  --ring-error: 0 0 0 var(--ring-width) rgb(244 63 94 / 0.2);
-  --ring-info: 0 0 0 var(--ring-width) rgb(14 165 233 / 0.2);
+  /* Focus ring compositions — color-mix preserves the alpha relationship
+   * across consumer reskins (brand-primary override propagates to the
+   * ring automatically). Status rings keep their universal Tailwind
+   * tones (status semantics are not brand-overridable; see issue #152). */
+  --ring-default: 0 0 0 var(--ring-width)
+    color-mix(in srgb, var(--color-brand-primary-500) 20%, transparent);
+  --ring-success: 0 0 0 var(--ring-width)
+    color-mix(in srgb, var(--color-emerald-500) 20%, transparent);
+  --ring-warning: 0 0 0 var(--ring-width)
+    color-mix(in srgb, var(--color-amber-500) 20%, transparent);
+  --ring-error: 0 0 0 var(--ring-width)
+    color-mix(in srgb, var(--color-rose-500) 20%, transparent);
+  --ring-info: 0 0 0 var(--ring-width)
+    color-mix(in srgb, var(--color-sky-500) 20%, transparent);
 
   /* ============================================
    * DIVIDER TOKENS

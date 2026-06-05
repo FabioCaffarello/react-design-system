@@ -1,10 +1,10 @@
 /**
- * AIppin Design System - Theme Base
+ * Design System - Theme Base
  *
  * Shared theme configuration and utilities.
  * This file sets up the theme system foundation.
  *
- * @brand AIppin
+ * @brand brasil-a-vera (default, overridable)
  * @version 1.0.0
  */
 
@@ -117,7 +117,9 @@
 
   --scrollbar-width: 8px;
   --scrollbar-width-thin: 4px;
-  --scrollbar-track-bg: var(--color-surface-subtle);
+  /* slate-100 preserved from the prior themes/light.css declaration
+   * (D4). dark.css redeclares this token with a darker value. */
+  --scrollbar-track-bg: var(--color-slate-100);
   --scrollbar-thumb-bg: var(--color-slate-300);
   --scrollbar-thumb-hover-bg: var(--color-slate-400);
   --scrollbar-radius: var(--radius-full);
@@ -213,7 +215,7 @@
  * ============================================ */
 
 ::selection {
-  background-color: var(--color-indigo-200);
+  background-color: var(--color-brand-primary-200);
   color: var(--color-slate-900);
 }
 

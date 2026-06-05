@@ -1,10 +1,10 @@
 /**
- * AIppin Design System - Semantic Color Tokens
+ * Design System - Semantic Color Tokens
  *
  * Semantic colors that reference primitive palettes.
  * These are the colors you should use in components.
  *
- * @brand AIppin
+ * @brand brasil-a-vera (default, overridable)
  * @version 1.0.0
  */
 
@@ -14,25 +14,17 @@ import type {
   SemanticColorPalette,
   ColorToken,
 } from "./types";
-import {
-  INDIGO,
-  VIOLET,
-  CYAN,
-  SLATE,
-  EMERALD,
-  AMBER,
-  ROSE,
-  SKY,
-} from "./primitives";
+import { CYAN, SLATE, EMERALD, AMBER, ROSE, SKY } from "./primitives";
+import { BRAND_PRIMARY, BRAND_SECONDARY } from "./brand";
 
 /**
  * Light theme semantic colors
  */
 export const SEMANTIC_COLORS_LIGHT: SemanticColorPalette = {
   primary: {
-    light: INDIGO[400],
-    DEFAULT: INDIGO[500],
-    dark: INDIGO[600],
+    light: BRAND_PRIMARY[400],
+    DEFAULT: BRAND_PRIMARY[500],
+    dark: BRAND_PRIMARY[600],
     contrast: {
       hex: "#ffffff",
       rgb: "255, 255, 255",
@@ -42,9 +34,9 @@ export const SEMANTIC_COLORS_LIGHT: SemanticColorPalette = {
     },
   },
   secondary: {
-    light: VIOLET[400],
-    DEFAULT: VIOLET[500],
-    dark: VIOLET[600],
+    light: BRAND_SECONDARY[400],
+    DEFAULT: BRAND_SECONDARY[500],
+    dark: BRAND_SECONDARY[600],
     contrast: {
       hex: "#ffffff",
       rgb: "255, 255, 255",
@@ -132,9 +124,9 @@ export const SEMANTIC_COLORS_LIGHT: SemanticColorPalette = {
  */
 export const SEMANTIC_COLORS_DARK: SemanticColorPalette = {
   primary: {
-    light: INDIGO[500],
-    DEFAULT: INDIGO[400],
-    dark: INDIGO[300],
+    light: BRAND_PRIMARY[500],
+    DEFAULT: BRAND_PRIMARY[400],
+    dark: BRAND_PRIMARY[300],
     contrast: {
       hex: "#ffffff",
       rgb: "255, 255, 255",
@@ -144,9 +136,9 @@ export const SEMANTIC_COLORS_DARK: SemanticColorPalette = {
     },
   },
   secondary: {
-    light: VIOLET[500],
-    DEFAULT: VIOLET[400],
-    dark: VIOLET[300],
+    light: BRAND_SECONDARY[500],
+    DEFAULT: BRAND_SECONDARY[400],
+    dark: BRAND_SECONDARY[300],
     contrast: {
       hex: "#ffffff",
       rgb: "255, 255, 255",

@@ -1,187 +1,26 @@
 /**
- * AIppin Design System - Light Theme
+ * Light Theme — minimal mode indicator
  *
- * Light color scheme overrides.
- * Default theme for the design system.
+ * Light is the default theme: all light-mode token values are declared
+ * once in semantic/colors.css (@theme), themes/base.css (shared
+ * cross-theme tokens like scrollbar/code/shadow), and semantic/surfaces.css.
+ * This file ONLY carries the theme-mode indicator and the color-scheme
+ * hint — there is nothing else for it to redeclare without drifting from
+ * the @theme defaults.
  *
- * @brand AIppin
- * @version 1.0.0
+ * Architecture rationale: the Caminho C refactor (issue #152) chose
+ * "single source of truth for light" over "redundant declarations + a
+ * coverage validator" — eliminate the drift surface rather than police it.
+ *
+ * Dark mode keeps its own themes/dark.css (necessarily — dark redeclares
+ * ~117 tokens and validate-dark-coverage.mjs guards the @media duplication).
+ *
+ * @brand brasil-a-vera (default, overridable)
  */
 
-/* Light theme - default (no class needed) and explicit .light class */
 :root,
 [data-theme="light"],
 .light {
-  /* Theme indicator */
   --theme-mode: light;
   color-scheme: light;
-
-  /* ============================================
-   * FOREGROUND COLORS
-   * ============================================ */
-
-  --color-fg-primary: var(--color-slate-900);
-  --color-fg-secondary: var(--color-slate-600);
-  --color-fg-tertiary: var(--color-slate-500);
-  --color-fg-quaternary: var(--color-slate-400);
-  --color-fg-placeholder: var(--color-slate-400);
-  --color-fg-disabled: var(--color-slate-300);
-  --color-fg-inverse: var(--color-white);
-  --color-fg-inverse-secondary: var(--color-slate-200);
-
-  /* Link colors */
-  --color-fg-link: var(--color-indigo-600);
-  --color-fg-link-hover: var(--color-indigo-700);
-  --color-fg-link-active: var(--color-indigo-800);
-
-  /* Feedback text */
-  --color-fg-success: var(--color-emerald-700);
-  --color-fg-warning: var(--color-amber-700);
-  --color-fg-error: var(--color-rose-700);
-  --color-fg-info: var(--color-sky-700);
-
-  /* ============================================
-   * SURFACE COLORS — Backgrounds
-   * ============================================ */
-
-  --color-surface-canvas: var(--color-white);
-  --color-surface-subtle: var(--color-slate-50);
-  --color-surface-muted: var(--color-slate-100);
-  --color-surface-emphasis: var(--color-slate-200);
-  --color-surface-strong: var(--color-slate-300);
-  --color-surface-inverse: var(--color-slate-900);
-  --color-surface-inverse-subtle: var(--color-slate-800);
-
-  /* Brand backgrounds */
-  --color-surface-brand-subtle: var(--color-indigo-50);
-  --color-surface-brand-muted: var(--color-indigo-100);
-  --color-surface-brand: var(--color-indigo-500);
-  --color-surface-brand-strong: var(--color-indigo-600);
-  --color-surface-brand-emphasis: var(--color-indigo-600);
-
-  /* ============================================
-   * SURFACE COLORS — Elevation layers
-   * ============================================ */
-
-  --color-surface-base: var(--color-white);
-  --color-surface-raised: var(--color-white);
-  --color-surface-overlay: var(--color-white);
-  --color-surface-sunken: var(--color-slate-50);
-  --color-surface-disabled: var(--color-slate-100);
-
-  /* ============================================
-   * LINE COLORS
-   * ============================================ */
-
-  --color-line-default: var(--color-slate-200);
-  --color-line-muted: var(--color-slate-100);
-  --color-line-subtle: var(--color-slate-100);
-  --color-line-emphasis: var(--color-slate-300);
-  --color-line-strong: var(--color-slate-400);
-  --color-line-inverse: var(--color-slate-700);
-  --color-line-focus: var(--color-indigo-500);
-
-  /* ============================================
-   * SURFACE COLORS — Interactive states
-   * ============================================ */
-
-  --color-surface-hover: var(--color-slate-50);
-  --color-surface-hover-subtle: var(--color-slate-50);
-  --color-surface-active: var(--color-slate-100);
-  --color-surface-selected: var(--color-indigo-50);
-  --color-surface-selected-subtle: var(--color-indigo-50);
-  /* state-disabled fused into surface-disabled (identical values) */
-  --color-surface-focus: var(--color-indigo-100);
-
-  /* ============================================
-   * FEEDBACK COLORS
-   * ============================================ */
-
-  /* Success */
-  --color-success: var(--color-emerald-500);
-  --color-success-light: var(--color-emerald-400);
-  --color-success-dark: var(--color-emerald-700);
-  --color-success-bg: var(--color-emerald-50);
-  --color-success-bg-emphasis: var(--color-emerald-100);
-  --color-success-border: var(--color-emerald-200);
-
-  /* Warning */
-  --color-warning: var(--color-amber-500);
-  --color-warning-light: var(--color-amber-400);
-  --color-warning-dark: var(--color-amber-700);
-  --color-warning-bg: var(--color-amber-50);
-  --color-warning-bg-emphasis: var(--color-amber-100);
-  --color-warning-border: var(--color-amber-200);
-
-  /* Error */
-  --color-error: var(--color-rose-700);
-  --color-error-light: var(--color-rose-400);
-  --color-error-dark: var(--color-rose-700);
-  --color-error-bg: var(--color-rose-50);
-  --color-error-bg-emphasis: var(--color-rose-100);
-  --color-error-border: var(--color-rose-200);
-
-  /* Info */
-  --color-info: var(--color-sky-500);
-  --color-info-light: var(--color-sky-400);
-  --color-info-dark: var(--color-sky-700);
-  --color-info-bg: var(--color-sky-50);
-  --color-info-bg-emphasis: var(--color-sky-100);
-  --color-info-border: var(--color-sky-200);
-
-  /* ============================================
-   * ICON COLORS
-   * ============================================ */
-
-  --color-icon-default: var(--color-slate-500);
-  --color-icon-muted: var(--color-slate-400);
-  --color-icon-subtle: var(--color-slate-300);
-  --color-icon-emphasis: var(--color-slate-700);
-  --color-icon-inverse: var(--color-white);
-
-  /* ============================================
-   * OVERLAY COLORS
-   * ============================================ */
-
-  --color-overlay-light: rgb(255 255 255 / 0.8);
-  --color-overlay-dark: rgb(15 23 42 / 0.5);
-  --color-overlay-backdrop: rgb(0 0 0 / 0.5);
-
-  /* ============================================
-   * SHADOWS
-   * Light theme uses lighter shadows
-   * ============================================ */
-
-  --shadow-card: var(--shadow-sm);
-  --shadow-card-hover: var(--shadow-md);
-  --shadow-dropdown: var(--shadow-lg);
-  --shadow-modal: var(--shadow-xl);
-  --shadow-tooltip: var(--shadow-md);
-
-  /* ============================================
-   * SCROLLBAR
-   * ============================================ */
-
-  --scrollbar-track-bg: var(--color-slate-100);
-  --scrollbar-thumb-bg: var(--color-slate-300);
-  --scrollbar-thumb-hover-bg: var(--color-slate-400);
-
-  /* ============================================
-   * SKELETON
-   * ============================================ */
-
-  --color-skeleton-base: var(--color-slate-200);
-  --color-skeleton-shine: var(--color-slate-100);
-
-  /* ============================================
-   * CODE
-   * ============================================ */
-
-  --surface-code-bg: var(--color-slate-900);
-  --surface-code-border: var(--color-slate-700);
-  --surface-code-color: var(--color-slate-100);
-
-  --surface-code-inline-bg: var(--color-slate-100);
-  --surface-code-inline-border: var(--color-slate-200);
-  --surface-code-inline-color: var(--color-rose-600);
 }
