@@ -1,7 +1,7 @@
 {
   "name": "@fabio.caffarello/react-design-system",
   "private": false,
-  "version": "1.24.0",
+  "version": "1.24.1",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -41,12 +41,10 @@
     "prepare": "husky"
   },
   "peerDependencies": {
-    "@hookform/resolvers": "^5.4.0",
-    "lucide-react": "^0.552.0",
+    "lucide-react": "^0.552.0 || ^1.0.0",
     "react": ">=19",
     "react-dom": ">=19",
-    "react-hook-form": "^7.77.0",
-    "zod": "^3.0.0"
+    "react-hook-form": "^7.77.0"
   },
   "overrides": {
     "handlebars": "^4.7.9",
@@ -84,7 +82,6 @@
     "@commitlint/cli": "^20.3.1",
     "@commitlint/config-conventional": "^20.3.1",
     "@eslint/js": "^10.0.1",
-    "@hookform/resolvers": "^5.4.0",
     "@playwright/test": "^1.60.0",
     "@storybook/addon-a11y": "^10.4.2",
     "@storybook/addon-coverage": "^3.0.1",
@@ -117,7 +114,7 @@
     "husky": "^9.1.7",
     "jsdom": "^29.1.1",
     "lint-staged": "^16.2.7",
-    "lucide-react": "^0.552.0",
+    "lucide-react": "^1.17.0",
     "madge": "^8.0.0",
     "plop": "^4.0.4",
     "postcss": "^8.5.6",
@@ -132,8 +129,7 @@
     "typescript-eslint": "^8.60.1",
     "vite": "^7.1.7",
     "vite-tsconfig-paths": "^6.1.1",
-    "vitest": "^4.1.8",
-    "zod": "^3.0.0"
+    "vitest": "^4.1.8"
   },
   "eslintConfig": {
     "extends": [
