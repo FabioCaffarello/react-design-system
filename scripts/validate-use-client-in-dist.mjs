@@ -2,32 +2,60 @@
 /**
  * validate-use-client-in-dist
  *
- * Verifies that dist/index.{js,cjs} begin with a `"use client";` directive.
+ * Asserts the **dual** invariant on the published bundles:
  *
- * Why: when the React Server Components runtime (Next App Router, etc.)
- * evaluates an imported module on the server, it requires the file to
- * carry a `"use client"` directive *as its first statement* to know the
- * module should run on the client. RDS is a single-bundle UI library
- * that uses `React.createContext` and hooks at module-evaluation time —
- * without the directive, importing anything from RDS in a Server
- * Component crashes with `(0, j.createContext) is not a function`
- * (issue #148).
+ *   - `dist/index.{js,cjs}` MUST start with `"use client";` — RDS's
+ *     main entry is a single-bundle UI library that touches
+ *     `React.createContext` and hooks at module-evaluation time, so the
+ *     React Server Components runtime requires the directive to mark
+ *     the whole module as client. Without it, importing anything from
+ *     `@fabio.caffarello/react-design-system` from a Next App Router
+ *     Server Component crashes with
+ *     `(0, j.createContext) is not a function` (issue #148).
  *
- * The directive is injected by `rollupOptions.output.banner` in
- * vite.config.ts. This script is the gate that fails when the banner is
- * lost (config regression, Vite/Rollup version change, minifier
- * stripping leading directives, etc.). See `.claude/rules/ci-gates.md`.
+ *   - `dist/server/index.{js,cjs}` MUST NOT start with `"use client"`
+ *     (any quote style) — the whole point of the server entry
+ *     (`./server`) is to be importable from a Server Component without
+ *     introducing a client boundary. If a regression accidentally
+ *     stamps the directive on this bundle, the consumer's bundler
+ *     would treat every server-safe primitive as a Client Component
+ *     and the opt-in path would be silently inert. Issue #150.
+ *
+ * The directives are controlled by `rollupOptions.output.banner` in
+ * `vite.config.ts` (main entry, emits the directive) and the absence
+ * of any banner in `vite.config.server.ts` (server entry). This script
+ * is the gate that catches the moment those configurations drift.
+ * See `.claude/rules/ci-gates.md`.
  */
 import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 
-const DIRECTIVE = '"use client"';
-const TARGETS = ["dist/index.js", "dist/index.cjs"];
-const PREFIX_BYTES = 64;
-
+const PREFIX_BYTES = 96;
 const failures = [];
 
-for (const rel of TARGETS) {
+// Each target carries an explicit verdict on whether the directive
+// must be PRESENT or ABSENT. The single shared scanner avoids
+// asymmetric logic per target.
+const TARGETS = [
+  { path: "dist/index.js", directive: "required" },
+  { path: "dist/index.cjs", directive: "required" },
+  { path: "dist/server/index.js", directive: "forbidden" },
+  { path: "dist/server/index.cjs", directive: "forbidden" },
+];
+
+// React's `"use client"` directive matches both quote styles per
+// the spec; the main bundle emits double-quoted via vite banner but
+// the forbidden-side check has to catch BOTH so a future minifier
+// switch can't slip through. The trailing semicolon is optional —
+// directives are valid without one per the JS spec, and the
+// asymmetric risk matters: requiring `;` makes the *required* check
+// falsely fail (annoying) but makes the *forbidden* check falsely
+// pass (silent hole — a future minifier ASI-stripping the semicolon
+// would let "use client" slip into dist/server/index.* past the gate).
+const DIRECTIVE_REGEX = /^﻿?(?:"use client"|'use client');?/;
+const REQUIRED_LITERAL = '"use client";';
+
+for (const { path: rel, directive } of TARGETS) {
   const abs = join(process.cwd(), rel);
   if (!existsSync(abs)) {
     failures.push(
@@ -35,40 +63,48 @@ for (const rel of TARGETS) {
     );
     continue;
   }
-  // Read the first chunk only — the directive must be at byte 0 (modulo
-  // an optional BOM), so we never need to scan further.
   const head = readFileSync(abs, { encoding: "utf8" }).slice(0, PREFIX_BYTES);
-  // Tolerate an optional UTF-8 BOM, then require the directive verbatim
-  // as the first statement. `"use client"` and `'use client'` both
-  // satisfy the React spec; the banner emits the double-quoted form.
   const stripped = head.replace(/^﻿/, "");
-  if (!stripped.startsWith(`${DIRECTIVE};`)) {
+  const present = DIRECTIVE_REGEX.test(stripped);
+
+  if (directive === "required" && !present) {
     failures.push(
-      `${rel}: missing leading \`${DIRECTIVE};\` directive — got: ${JSON.stringify(stripped.slice(0, 32))}…`,
+      `${rel}: MUST start with \`${REQUIRED_LITERAL}\` but does not — got: ${JSON.stringify(stripped.slice(0, 40))}…`,
+    );
+  } else if (directive === "forbidden" && present) {
+    failures.push(
+      `${rel}: MUST NOT start with \`"use client"\` (this is the server entry) — got: ${JSON.stringify(stripped.slice(0, 40))}…`,
     );
   }
 }
 
 if (failures.length > 0) {
   console.error(
-    '[validate-use-client-in-dist] FAIL — dist bundle(s) missing `"use client";` directive:',
+    "[validate-use-client-in-dist] FAIL — dual directive invariant violated:",
   );
   for (const msg of failures) {
     console.error(`  - ${msg}`);
   }
   console.error("");
   console.error(
-    "The directive is set via `rollupOptions.output.banner` in vite.config.ts.",
+    "Main entry: `banner: '\"use client\";'` set in vite.config.ts → dist/index.{js,cjs}.",
   );
   console.error(
-    "Without it, RDS crashes when imported from a Next App Router Server",
+    "Server entry: NO banner in vite.config.server.ts → dist/server/index.{js,cjs}.",
   );
   console.error(
-    "Component with `createContext is not a function` (issue #148).",
+    "If the main entry is missing the directive, importing RDS from a Server",
   );
+  console.error(
+    "Component crashes with `createContext is not a function` (issue #148).",
+  );
+  console.error(
+    "If the server entry HAS the directive, the opt-in server boundary is",
+  );
+  console.error("silently broken (issue #150).");
   process.exit(1);
 }
 
 console.log(
-  `[validate-use-client-in-dist] OK — \`${DIRECTIVE};\` present at the head of all ${TARGETS.length} dist entries.`,
+  `[validate-use-client-in-dist] OK — main dist carries \`"use client";\`, server dist does not.`,
 );

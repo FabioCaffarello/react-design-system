@@ -59,7 +59,7 @@ jobs:
           # Anything OUTSIDE these paths (docs, .claude/ rules, husky
           # hooks, lockfile-validating scripts, …) cannot move a story
           # and is safe to skip.
-          UI_PATTERN='^(src/(ui|styles|docs)/|\.storybook/|eslint-rules/|fixtures/|package(-lock)?\.json|vite\.config\.ts|tsconfig.*\.json|scripts/(a11y-serial-baseline|validate-a11y-baseline|storybook-smoke|next-smoke|validate-use-client-in-dist)\.mjs|\.github/workflows/ci\.yml|\.github/actions/setup/)'
+          UI_PATTERN='^(src/(ui|styles|docs)/|\.storybook/|eslint-rules/|fixtures/|package(-lock)?\.json|vite\.config(\.server)?\.ts|tsconfig.*\.json|scripts/(a11y-serial-baseline|validate-a11y-baseline|storybook-smoke|next-smoke|validate-use-client-in-dist|validate-server-entry|analyze-server-safe)\.mjs|scripts/lib/server-safe\.mjs|\.github/workflows/ci\.yml|\.github/actions/setup/)'
 
           if echo "$CHANGED" | grep -qE "$UI_PATTERN"; then
             echo "UI / story / style / build files changed — running storybook-build and a11y-baseline."
@@ -100,6 +100,19 @@ jobs:
 
       - name: Validate provider canonicity
         run: node scripts/validate-provider-canonicity.mjs
+
+      # Issue #150. Verifies src/ui/server.ts re-exports only modules
+      # the transitive analyser classifies as server-safe, imports
+      # them from concrete source files (no folder-index barrels), and
+      # if dist/server/ already exists from a sibling build job, that
+      # the emitted bundle calls no React client API. This step does
+      # NOT require the build artifact (the source-level checks 1 and
+      # 2 stand on their own); the bundle-level check 3 is silently
+      # skipped when dist/server/ is absent. The matching artifact-
+      # level check (`validate-use-client-in-dist.mjs`) runs inside the
+      # `build` job below as part of `build:validate`.
+      - name: Validate server entry
+        run: node scripts/validate-server-entry.mjs
 
   typecheck:
     name: Typecheck (tsc --build)
@@ -182,17 +195,30 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-  # Next 16 Server Component smoke. Reproduces issue #148: importing
-  # any RDS primitive from a Next App Router Server Component without a
-  # manual `"use client"` wrapper. The fixture lives in
-  # fixtures/next-smoke/ and is a self-contained Next 16 app whose
-  # app/page.tsx is a Server Component that imports Button + Text.
-  # Without `"use client"` at the head of dist/index.{js,cjs}, Next's
-  # RSC compiler fails to evaluate RDS in the server runtime and the
-  # build exits non-zero — the smoke gate flips red on regression.
-  # Pairs with `scripts/validate-use-client-in-dist.mjs` which catches
-  # the same class of regression at the artifact level (faster signal,
-  # no Next install required).
+  # Next 16 Server Component smoke. Covers TWO directive invariants in
+  # the same Next build:
+  #
+  #   - Issue #148. Importing `Button` (a client primitive) from the
+  #     main entry (`@fabio.caffarello/react-design-system`) into a
+  #     Next App Router Server Component must compile cleanly because
+  #     `dist/index.{js,cjs}` carry `"use client";` at their head. A
+  #     regression that drops the banner makes `next build` fail with
+  #     `(0, j.createContext) is not a function` during RSC compile.
+  #
+  #   - Issue #150. Importing `Text` and `Container` from the new
+  #     `./server` entry into the same Server Component must compile
+  #     AND not produce a client boundary. The script reads the RSC
+  #     client-reference manifest emitted by Next at
+  #     `.next/server/app/page_client-reference-manifest.js` and
+  #     asserts that no `[project]/dist/server/index.js` key appears
+  #     in `__RSC_MANIFEST["/page"].clientModules`. Presence of one
+  #     means Next was forced to put the server entry behind a client
+  #     boundary — either a `"use client"` regression on the server
+  #     bundle (`validate-use-client-in-dist.mjs` should also fail) or
+  #     a barrel/transitive-client regression in `src/ui/server.ts`
+  #     (`validate-server-entry.mjs` should also fail). Both artifact-
+  #     level gates run earlier; the manifest check is the end-to-end
+  #     proof that the two work together as designed.
   next-smoke:
     name: Next 16 Server Component smoke
     needs: [paths, build]

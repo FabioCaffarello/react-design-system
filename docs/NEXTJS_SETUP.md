@@ -1,201 +1,77 @@
-# Next.js Setup Guide
+# Next.js setup
 
-> **⚠️ IMPORTANTE**: Este design system requer configuração especial para funcionar com Next.js e Turbopack devido a problemas de inicialização de módulos. Siga as instruções abaixo cuidadosamente.
+Verified against Next 16 (App Router, Turbopack) on RDS 2.x. The same shape works on Next 15.
 
-**Versão:** 1.10.3+  
-**Status:** ✅ Solução Estrutural Implementada
-
----
-
-## 🚨 Problema Conhecido
-
-O design system pode causar erro de inicialização durante o build do Next.js (com webpack ou Turbopack):
-
-```
-ReferenceError: Cannot access 'aN' before initialization
-```
-
-Este é um problema conhecido relacionado ao code splitting do Next.js durante o bundling. O problema persiste mesmo com Turbopack (Next.js 15+).
-
-**Status Atual:**
-
-- ❌ Problema persiste com Turbopack (`next build --turbo`)
-- ⚠️ Configurações de webpack não se aplicam ao Turbopack
-- 🔍 Investigação em andamento
-
----
-
-## ✅ Solução: Configuração do Next.js
-
-> **⚠️ NOTA**: As configurações abaixo funcionam apenas com webpack (Next.js sem `--turbo`). Para Turbopack, veja a seção "Turbopack" abaixo.
-
-### Passo 1: Atualizar `next.config.js` (Webpack)
-
-Adicione a seguinte configuração ao seu `next.config.js`:
-
-```javascript
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  // ... suas configurações existentes
-
-  webpack: (config, { isServer }) => {
-    // Force design system providers into a single chunk
-    // This prevents code splitting that breaks initialization order
-    config.optimization = {
-      ...config.optimization,
-      splitChunks: {
-        ...config.optimization.splitChunks,
-        cacheGroups: {
-          ...config.optimization.splitChunks.cacheGroups,
-          designSystemProviders: {
-            test: /[\\/]node_modules[\\/]@fabio\.caffarello[\\/]react-design-system[\\/].*providers/,
-            name: "design-system-providers",
-            chunks: "all",
-            enforce: true,
-            priority: 20, // High priority to ensure it's created
-          },
-        },
-      },
-    };
-
-    // Use deterministic module IDs to ensure consistent builds
-    config.optimization.moduleIds = "deterministic";
-
-    return config;
-  },
-};
-
-module.exports = nextConfig;
-```
-
-### Passo 2: Testar Build
+## Install
 
 ```bash
-npm run build
+npm install @fabio.caffarello/react-design-system
+npm install react@^19 react-dom@^19 lucide-react@^1 react-hook-form@^7
 ```
 
-O build deve passar sem erros.
+`react`, `react-dom`, `lucide-react`, and `react-hook-form` are peer dependencies — Next already ships compatible majors of `react` and `react-dom`, but you do install the other two.
 
----
+## Stylesheet
 
-## ⚡ Turbopack (Next.js 15+)
-
-**Status:** ✅ **RESOLVIDO** - Solução implementada
-
-O Turbopack é o novo bundler do Next.js 15+. O problema foi identificado e resolvido.
-
-### Solução
-
-O problema estava nas **extensions** (especialmente React Flow) sendo code-split incorretamente. A solução foi remover as extensions do export principal e disponibilizá-las via entry point separado.
-
-### Como Usar com Turbopack
-
-**✅ Componentes Principais (funcionam normalmente):**
-
-```typescript
-import {
-  AppProvider,
-  Button,
-  Input,
-} from "@fabio.caffarello/react-design-system";
-```
-
-**✅ Extensions (importar do entry point separado):**
-
-```typescript
-// Importar extensions do entry point separado
-import {
-  FlowProvider,
-  FlowCanvas,
-} from "@fabio.caffarello/react-design-system/extensions/flow";
-
-// Ou do entry point geral de extensions
-import { ExtensionRegistry } from "@fabio.caffarello/react-design-system/extensions";
-```
-
-### Build com Turbopack
-
-```bash
-# Build com Turbopack (padrão no Next.js 15+)
-next build --turbo
-```
-
-**✅ Agora funciona corretamente!**
-
-### Detalhes Técnicos
-
-- As extensions foram removidas do export principal (`src/ui/index.ts`)
-- Extensions estão disponíveis via entry points separados já configurados
-- Isso evita que o Turbopack code-split incorretamente o React Flow e outras dependências complexas
-
----
-
-## 🔧 Configuração Alternativa (Se a Primeira Não Funcionar)
-
-Se a configuração acima não resolver, tente esta versão mais agressiva:
-
-```javascript
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  // ... suas configurações existentes
-
-  webpack: (config, { isServer }) => {
-    // Prevent code splitting of design system entirely
-    config.optimization = {
-      ...config.optimization,
-      splitChunks: {
-        ...config.optimization.splitChunks,
-        cacheGroups: {
-          ...config.optimization.splitChunks.cacheGroups,
-          default: {
-            ...config.optimization.splitChunks.cacheGroups.default,
-            minChunks: 2,
-            priority: -20,
-            reuseExistingChunk: true,
-          },
-          designSystem: {
-            test: /[\\/]node_modules[\\/]@fabio\.caffarello[\\/]react-design-system/,
-            name: "design-system",
-            chunks: "all",
-            enforce: true,
-            priority: 30, // Very high priority
-            minChunks: 1,
-          },
-        },
-      },
-      moduleIds: "deterministic",
-    };
-
-    return config;
-  },
-};
-
-module.exports = nextConfig;
-```
-
----
-
-## 📝 Uso do AppProvider
-
-Após configurar o Next.js, você pode usar o `AppProvider` normalmente:
+Import the bundled stylesheet once, at the top of your root layout. It carries the full token cascade (semantic colors, dark theme, etc.).
 
 ```tsx
 // app/layout.tsx
+import "@fabio.caffarello/react-design-system/styles";
+```
+
+No Tailwind setup is required in your project — RDS ships its own CSS and exposes only the semantic classes documented in `.claude/rules/colors.md`.
+
+## Two JS entries
+
+RDS exposes two JS entries that can be used together in the same Server Component:
+
+- **`@fabio.caffarello/react-design-system`** — the default entry. Carries everything (providers, hooks, all primitives, components, layouts, tokens). Its emitted bundle starts with `"use client";`, so importing it from a Server Component (Next App Router) compiles cleanly: Next reads the directive and places the import behind a client boundary. This is the entry to use for `Button`, `Input`, `Dialog`, `Tabs`, `SideNavbar`, `Toast`, `AppProvider`, and every other component that actually has state or hooks.
+- **`@fabio.caffarello/react-design-system/server`** — the opt-in server entry (issue #150). Re-exports only the components whose render tree is hook-free and createContext-free: `Text`, `Skeleton`, `Spinner`, `Progress`, `Chip`, `ErrorMessage`, `Info`, `Container`, `Stack`, `Breadcrumb`, `Timeline`, `AutocompleteOption`, `DialogHeader`, `DialogFooter`, `DrawerHeader`, `DrawerFooter`, `HeaderActions`, `HeaderNavigation`, `MenuSeparator`, `NavbarSeparator`, `TableCell`. Its emitted bundle has **no** `"use client"` directive, so importing it from a Server Component does NOT cross a client boundary. The components render on the server; their JS does not ship to the browser. Useful for SEO-critical / first-paint-critical routes where the page shell is presentational.
+
+The two entries can be mixed freely in the same file:
+
+```tsx
+// app/profile/page.tsx — a Server Component
+import { Button } from "@fabio.caffarello/react-design-system";
+import { Text, Container } from "@fabio.caffarello/react-design-system/server";
+
+export default function ProfilePage() {
+  return (
+    <Container>
+      {/* These render on the server and do not ship to the client. */}
+      <Text variant="heading" as="h1">
+        Profile
+      </Text>
+
+      {/* Button has client hooks; Next inserts a boundary automatically. */}
+      <Button variant="primary">Edit</Button>
+    </Container>
+  );
+}
+```
+
+## Providers in the App Router
+
+If you use any of the global providers (`AppProvider`, `ToastProvider`, `DialogProvider`, `ThemeProvider`, `ConfigProvider`), they live in the main entry and must be mounted at the root. The natural place is the root layout:
+
+```tsx
+// app/layout.tsx
+import "@fabio.caffarello/react-design-system/styles";
 import { AppProvider } from "@fabio.caffarello/react-design-system";
 
-export default function RootLayout({ children }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="pt-BR">
+    <html lang="en">
       <body>
         <AppProvider
           config={{
             theme: { defaultTheme: "light" },
-            providers: {
-              theme: true,
-              config: true,
-              toast: true,
-              dialog: true,
-            },
+            providers: { theme: true, config: true, toast: true, dialog: true },
           }}
         >
           {children}
@@ -206,83 +82,39 @@ export default function RootLayout({ children }) {
 }
 ```
 
----
+`AppProvider` itself is a client component (it owns React state for theme and global config), so Next puts the boundary around it automatically. You do not need to add `"use client"` to the layout — the import directive on the main bundle is sufficient.
 
-## 🆘 Se o Problema Persistir
+## Theme override
 
-### Workaround Temporário
-
-Se a configuração não resolver, use este workaround:
+OS color scheme is followed automatically. To force light or dark, set `data-theme` or the matching class on `<html>`:
 
 ```tsx
-// app/providers.tsx
-"use client";
-
-import dynamic from "next/dynamic";
-
-const AppProvider = dynamic(
-  () =>
-    import("@fabio.caffarello/react-design-system").then((m) => ({
-      default: m.AppProvider,
-    })),
-  {
-    ssr: false, // Disable SSR for AppProvider
-    loading: () => <div>Loading...</div>, // Optional loading state
-  },
-);
-
-export function Providers({ children }: { children: React.ReactNode }) {
-  return (
-    <AppProvider
-      config={{
-        theme: { defaultTheme: "light" },
-        providers: {
-          theme: true,
-          config: true,
-          toast: true,
-          dialog: true,
-        },
-      }}
-    >
-      {children}
-    </AppProvider>
-  );
-}
+<html lang="en" data-theme="dark">
+  ...
+</html>
 ```
 
-```tsx
-// app/layout.tsx
-import { Providers } from "./providers";
+See `README.md` for the full set of override mechanisms.
 
-export default function RootLayout({ children }) {
-  return (
-    <html lang="pt-BR">
-      <body>
-        <Providers>{children}</Providers>
-      </body>
-    </html>
-  );
-}
-```
+## What you do NOT need
 
-**Limitações do Workaround:**
+Earlier RDS versions (pre-1.0 and pre-2.0) required `next.config.js` webpack tweaks — `splitChunks` overrides for the providers, `moduleIds: "deterministic"`, `dynamic({ ssr: false })` workarounds for `AppProvider`, etc. None of that is needed on RDS 2.x:
 
-- ⚠️ AppProvider não está disponível durante SSR
-- ⚠️ Pode causar flash de conteúdo
-- ⚠️ Funcionalidades SSR limitadas
+- The single-bundle main entry (Phase 13d) collapses the cross-chunk `cva` initialization bug structurally — no Next-side `splitChunks` config required.
+- The `"use client";` banner at the head of `dist/index.{js,cjs}` (issue #148) makes the bundle compatible with Next 16's RSC compiler — no `dynamic({ ssr: false })` wrapper required.
+- The `./server` opt-in entry (issue #150) covers the only scenario where you'd legitimately want to avoid the main bundle's client boundary on a specific page.
 
----
+If you find yourself reaching for any of those workarounds against RDS 2.x, treat it as a regression report — the public Next 16 smoke fixture under `fixtures/next-smoke/` should reproduce the failure with the same import shape your app uses.
 
-## 📞 Suporte
+## How the fixture validates this
 
-Se você encontrar problemas:
+`fixtures/next-smoke/` is a minimal Next 16 App Router app whose only route is a Server Component that imports from BOTH RDS entries simultaneously. `scripts/next-smoke.mjs` builds RDS, runs `next build` against the fixture, and reads Next's RSC client-reference manifest at `.next/server/app/page_client-reference-manifest.js` to assert:
 
-1. Verifique que está usando a versão mais recente do design system
-2. Verifique que a configuração do Next.js está correta
-3. Teste com o workaround temporário
-4. Entre em contato com o time do design system
+- the main entry produced a client boundary entry in `clientModules` (issue #148 path exercised), AND
+- the `./server` entry produced zero client boundary entries (issue #150 promise verified).
 
----
+The script runs in CI on every PR that touches RDS source, the Vite configs, the validators, or the fixture itself (path-filtered in `.github/workflows/ci.yml`). If either invariant breaks, the smoke job fails with a precise message naming which entry leaked.
 
-**Última Atualização:** 2026-01-19  
-**Versão do Design System:** 1.10.3+
+## Versions
+
+RDS 2.x. The Next-specific bugs from RDS 1.x (referenced in older issues — `Cannot access 'aN' before initialization`, `createContext is not a function`) are resolved structurally and gated against regression. RDS 1.x is out of support; upgrade.

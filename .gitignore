@@ -32,5 +32,8 @@ coverage
 smoke-report.json
 smoke-failures/
 
+# Issue #150 server-safe analyzer output (regenerated on every run)
+server-safe-map.json
+
 # Claude Code harness runtime
 .claude/scheduled_tasks.lock
