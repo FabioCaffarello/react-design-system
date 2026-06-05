@@ -1,3 +1,10 @@
+## [3.3.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.2.0...v3.3.0) (2026-06-05)
+
+
+### ✨ Features
+
+* **primitives:** add Button variant `link` — text-fg-brand, underline on hover, no chrome ([#156](https://github.com/FabioCaffarello/react-design-system/issues/156)) ([#159](https://github.com/FabioCaffarello/react-design-system/issues/159)) ([d7c6e43](https://github.com/FabioCaffarello/react-design-system/commit/d7c6e4396798e192f1e763c37dc1104651632f9e)), closes [#157](https://github.com/FabioCaffarello/react-design-system/issues/157) [#486581](https://github.com/FabioCaffarello/react-design-system/issues/486581) [#7390](https://github.com/FabioCaffarello/react-design-system/issues/7390) [#157](https://github.com/FabioCaffarello/react-design-system/issues/157) [#155](https://github.com/FabioCaffarello/react-design-system/issues/155) [#158](https://github.com/FabioCaffarello/react-design-system/issues/158)
+
 ## [3.2.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.1.0...v3.2.0) (2026-06-05)
 
 
