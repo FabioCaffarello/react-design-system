@@ -151,6 +151,73 @@ describe("Button Accessibility", () => {
     });
   });
 
+  describe("variant link — a11y contract", () => {
+    // Issue #156. The link variant has no chrome (no surface, no
+    // border, no padding), so the focus ring is the ONLY visual
+    // indication of keyboard focus on it. Two consequences worth
+    // asserting at the a11y layer:
+    //
+    //   - The element must still be in the natural tab order. With
+    //     no chrome it would be easy to forget that the button is
+    //     still a button — the test below confirms `tab()` lands on
+    //     it.
+    //   - The focus-ring class trio (`focus:ring-2`,
+    //     `focus:ring-offset-2`, `focus:ring-line-focus`) must be on
+    //     the element so the ring renders when focused. Contrast of
+    //     the ring against surface-base is verified by the project-
+    //     level axe baseline (light + dark) rather than jsdom, which
+    //     does not compute styles from the Tailwind cascade.
+    //
+    // The semantic role contract for the asChild + link combination
+    // (Button asChild around an <a> renders as role="link") lives in
+    // the broader asChild block below — same code path, same test.
+    it("link variant button is in the natural tab order", async () => {
+      const user = userEvent.setup();
+      render(
+        <>
+          <button>Before</button>
+          <Button variant="link">Read more</Button>
+          <button>After</button>
+        </>,
+      );
+
+      screen.getByRole("button", { name: "Before" }).focus();
+      await user.tab();
+      expect(screen.getByRole("button", { name: "Read more" })).toHaveFocus();
+    });
+
+    it("link variant emits the focus-ring class trio (visibility contract for the no-chrome variant)", () => {
+      // Repeats the equivalent unit-level assertion to make the a11y
+      // contract self-evident in this file too: removing any of these
+      // three classes invisibly defeats keyboard focus indication
+      // (axe in the baseline run would catch it via color-contrast on
+      // focus, but the absence-of-class is a simpler tripwire).
+      render(<Button variant="link">Read more</Button>);
+      const btn = screen.getByRole("button", { name: "Read more" });
+      expect(btn).toHaveClass("focus:ring-2");
+      expect(btn).toHaveClass("focus:ring-offset-2");
+      expect(btn).toHaveClass("focus:ring-line-focus");
+    });
+
+    it("link variant combined with asChild renders as a link, not a button", () => {
+      // The canonical brasil-a-vera shape:
+      //   <Button variant="link" asChild><Link href>…</Link></Button>
+      // AT users hear "Ver perfil completo, link", not "Ver perfil
+      // completo, button". The styling projection does NOT change
+      // the semantic role — that's purely the child element's job.
+      render(
+        <Button asChild variant="link">
+          <a href="/parlamentares/123">Ver perfil completo</a>
+        </Button>,
+      );
+
+      expect(
+        screen.getByRole("link", { name: "Ver perfil completo" }),
+      ).toBeInTheDocument();
+      expect(screen.queryByRole("button")).not.toBeInTheDocument();
+    });
+  });
+
   describe("asChild — a11y contract on the projected element", () => {
     // The asChild form projects Button's classes onto the consumer's
     // child. The child remains the native element it always was: a

@@ -96,6 +96,125 @@ describe("Button", () => {
     expect(button).toBeInTheDocument();
   });
 
+  // Issue #156. The link variant is the only Button variant with no
+  // chrome (no surface, no border, no padding) — its visual identity
+  // is the brand-coloured text and the underline that appears on
+  // hover. The tests below assert the four properties that
+  // collectively define it: brand foreground, underline-offset (so
+  // the hover-state line clears descenders), padding zeroed by
+  // compoundVariants per size, and the hover class is emitted (the
+  // actual hover state is JSDOM-untestable but the class presence is
+  // the lever the styling depends on).
+  describe("variant link", () => {
+    it("applies link variant classes standalone", () => {
+      const { container } = render(
+        <Button variant="link">View profile</Button>,
+      );
+      const button = container.querySelector("button")!;
+      // Brand foreground (token semantic, not a raw indigo class).
+      expect(button).toHaveClass("text-fg-brand");
+      // Underline pair: offset at rest so the on-hover underline
+      // clears descenders cleanly; underline appears on hover.
+      expect(button).toHaveClass("underline-offset-4");
+      expect(button).toHaveClass("hover:underline");
+      // No background and no border = no chrome.
+      expect(button).toHaveClass("bg-transparent");
+    });
+
+    it.each(["sm", "md", "lg"] as const)(
+      "zeroes padding for size %s via compoundVariants",
+      (size) => {
+        const { container } = render(
+          <Button variant="link" size={size}>
+            Link
+          </Button>,
+        );
+        const button = container.querySelector("button")!;
+        // The compoundVariant entry for {variant:link, size:N} emits
+        // px-0/py-0 which twMerge prefers over the size block's
+        // px-N/py-N (compoundVariants run last in cva). Height is
+        // intrinsic to the text — there is no `h-N` on link variant.
+        expect(button).toHaveClass("px-0");
+        expect(button).toHaveClass("py-0");
+      },
+    );
+
+    it("preserves the size's typography scale", () => {
+      // Size still drives the text size — `sm` link reads as small
+      // text, `lg` as large. Only the padding is overridden.
+      const { container: smContainer } = render(
+        <Button variant="link" size="sm">
+          Small
+        </Button>,
+      );
+      expect(smContainer.querySelector("button")).toHaveClass("text-sm");
+      const { container: lgContainer } = render(
+        <Button variant="link" size="lg">
+          Large
+        </Button>,
+      );
+      expect(lgContainer.querySelector("button")).toHaveClass("text-lg");
+    });
+
+    it("emits a focus-ring class for keyboard visibility", () => {
+      // No chrome means the focus ring is the only visual indication
+      // of focus. Base sets `focus:ring-2` + `focus:ring-offset-2`;
+      // link variant sets `focus:ring-line-focus`. Together they
+      // produce a 2-px ring 2-px clear of the text bounding box,
+      // contrasting against surface-base (≥3:1 verified for both
+      // themes — WCAG 2.4.11).
+      const { container } = render(
+        <Button variant="link">Focusable link</Button>,
+      );
+      const button = container.querySelector("button")!;
+      expect(button).toHaveClass("focus:ring-2");
+      expect(button).toHaveClass("focus:ring-offset-2");
+      expect(button).toHaveClass("focus:ring-line-focus");
+    });
+
+    it("does not emit any chrome (bg-surface-*, border-*) on the rendered element", () => {
+      const { container } = render(<Button variant="link">Link</Button>);
+      const button = container.querySelector("button")!;
+      // The contract is "no chrome" — defensively assert against the
+      // patterns the other variants paint. The two classes named here
+      // are the most likely accidental carry-over via a future
+      // refactor that adds a default border/surface to the base
+      // block. Loose `*-` regex would over-match (the bg-transparent
+      // we DO emit would trip a `bg-` check); these literal asserts
+      // catch the specific failure modes without false positives.
+      expect(button).not.toHaveClass("bg-surface-brand-strong");
+      expect(button).not.toHaveClass("bg-surface-secondary");
+      expect(button).not.toHaveClass("bg-surface-hover");
+      expect(button).not.toHaveClass("border-2");
+    });
+
+    it("projects link classes onto the asChild target so <Link> renders as the styled link", () => {
+      // The 25 brasil-a-vera call sites that motivated #156 use
+      // `<Button variant="link" asChild><Link href>…</Link></Button>`.
+      // Verifying both the styling (link variant classes land on the
+      // anchor) AND the native props survive (`href` preserved) is
+      // the test the issue body asked for explicitly.
+      const { container } = render(
+        <Button asChild variant="link" size="md">
+          <a href="/parlamentares/123">Ver perfil completo</a>
+        </Button>,
+      );
+      const anchor = container.querySelector("a")!;
+      expect(anchor).not.toBeNull();
+      expect(container.querySelector("button")).toBeNull();
+      // Native anchor props survive — this is what makes the variant
+      // work with Next's <Link prefetch>: Slot projects classes onto
+      // the child, the child keeps its own href / target / data-*.
+      expect(anchor).toHaveAttribute("href", "/parlamentares/123");
+      // Link variant classes land on the anchor.
+      expect(anchor).toHaveClass("text-fg-brand");
+      expect(anchor).toHaveClass("underline-offset-4");
+      expect(anchor).toHaveClass("hover:underline");
+      expect(anchor).toHaveClass("px-0");
+      expect(anchor).toHaveClass("py-0");
+    });
+  });
+
   describe("Keyboard Navigation", () => {
     it("calls onClick when Enter key is pressed", () => {
       const handleClick = vi.fn();

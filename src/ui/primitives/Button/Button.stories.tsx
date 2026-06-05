@@ -49,6 +49,7 @@ A versatile button component with multiple variants, sizes, and states. Supports
         "outline",
         "ghost",
         "iconOnly",
+        "link",
       ],
       description: "Button variant",
     },
@@ -184,6 +185,31 @@ export const IconOnly: Story = {
   },
 };
 
+// Issue #156. Link variant — textual call-to-action with no chrome.
+// Brand foreground, underline-offset at rest, underline on hover. The
+// `Link` story below is the focus point; `AllVariants` and
+// `LinkAsChild` cover composition and the asChild path that motivated
+// the issue (~25 brasil-a-vera call sites projecting the link style
+// onto Next's <Link>). The story renders identically under the
+// Storybook theme toggle — the a11y baseline runs in both light and
+// dark, which exercises the brand-on-surface-base contrast and the
+// focus-ring contrast against surface-base in each theme without a
+// dedicated `LinkDark` story per .claude/rules/stories.md.
+export const Link: Story = {
+  args: {
+    variant: "link",
+    children: "Read more →",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Link variant (issue #156): brand-coloured text, underline on hover, no chrome (no background, no border, no padding). Use for textual CTAs inside cards/lists; combine with `asChild` to project the styling onto a real `<a>` / `<Link>` while preserving native navigation props.",
+      },
+    },
+  },
+};
+
 export const Sizes: Story = {
   render: () => (
     <div className="flex items-center gap-4">
@@ -262,6 +288,7 @@ export const AllVariants: Story = {
           leftIcon={<X className="h-5 w-5" />}
           aria-label="Close"
         />
+        <Button variant="link">Link</Button>
       </div>
       <div className="flex items-center gap-4">
         <Button variant="primary" isLoading>
@@ -485,6 +512,75 @@ export const AsChild: Story = {
       description: {
         story:
           "asChild form (issue #154): the Button projects its classes/ARIA/ref onto a single child element, preserving the child's element type and native props. Idiomatic for framework Link components in server-rendered/zero-JS consumers.",
+      },
+    },
+  },
+};
+
+// The canonical brasil-a-vera shape that issues #154 and #156
+// together exist to serve. The story renders the link-variant +
+// asChild combination across the three sizes, plus an icon example
+// for the "→" / "Download" affordance pattern used in card CTAs.
+// Anchors with `target="_blank" rel="noopener"` mimic the real
+// outbound links in the consumer; Next's <Link prefetch> resolves to
+// the same anchor markup at the consumer-end, so the styling
+// behaviour you see here is what consumers see in production.
+export const LinkAsChild: Story = {
+  render: () => (
+    <div className="space-y-4">
+      <div className="space-y-2">
+        <p className="text-sm text-fg-secondary">
+          Canonical brasil-a-vera shape: textual CTA inside a card that projects
+          the link style onto a real <code>{"<a>"}</code> (or framework{" "}
+          <code>{"<Link>"}</code>).
+        </p>
+        <Button asChild variant="link">
+          <a href="/parlamentares/123">Ver perfil completo →</a>
+        </Button>
+      </div>
+      <div className="space-y-2">
+        <p className="text-sm text-fg-secondary">
+          Link variant respects the size prop's typography scale (sm / md / lg)
+          while keeping zero padding — the bounding box hugs the text.
+        </p>
+        <div className="flex items-baseline gap-4">
+          <Button asChild variant="link" size="sm">
+            <a href="/x">Small link</a>
+          </Button>
+          <Button asChild variant="link" size="md">
+            <a href="/x">Medium link</a>
+          </Button>
+          <Button asChild variant="link" size="lg">
+            <a href="/x">Large link</a>
+          </Button>
+        </div>
+      </div>
+      <div className="space-y-2">
+        <p className="text-sm text-fg-secondary">
+          With <code>leftIcon</code> / <code>rightIcon</code> — icons land
+          inside the projected anchor via <code>Slottable</code>; the link stays
+          inline with the surrounding text flow.
+        </p>
+        <Button asChild variant="link" rightIcon={<Download />}>
+          <a href="/report.pdf" download>
+            Download relatório
+          </a>
+        </Button>
+      </div>
+      <p className="text-xs text-fg-tertiary">
+        Combines issue #154 (asChild) + issue #156 (link variant). The 25
+        brasil-a-vera call sites that motivated both issues use this exact shape
+        against Next&apos;s <code>{"<Link>"}</code>, where <code>asChild</code>{" "}
+        preserves <code>href</code> / <code>prefetch</code> and the link variant
+        projects the visual affordance.
+      </p>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Link variant combined with asChild (issues #154 + #156): the canonical brasil-a-vera shape for textual CTAs in cards/lists. Renders identically under the Storybook light/dark toggle; the a11y baseline exercises contrast (text-fg-brand on surface-base) and focus-ring visibility in both themes.",
       },
     },
   },
