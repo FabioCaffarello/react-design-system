@@ -1,3 +1,457 @@
+## [2.0.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.24.0...v2.0.0) (2026-06-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* consumers importing `type { AutocompleteOption }` must
+switch to `type { AutocompleteOptionType }`. The component export
+`AutocompleteOption` is unchanged.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* fix(types): replace NodeJS.Timeout with ReturnType<typeof setTimeout>
+
+TS2503: NodeJS is not in scope for browser code (the app tsconfig
+intentionally excludes the node type ambient). `ReturnType<typeof
+setTimeout>` is the standard browser-safe shape — it resolves to
+`number` in the DOM lib and `Timeout` under @types/node, so the same
+expression works in both runtimes without leaking node globals.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* fix(navigation,navlink)!: drop Next.js require() auto-detection probes
+
+TS2591 + TS2578: three sites used `typeof require !== "undefined" &&
+require("next/...")` to optionally pick up Next.js APIs. `require` is
+not a global in modern ESM browser bundles — TS rightly refuses to
+type it, the @ts-expect-error directives masked the gap, and the
+probes were brittle in practice (bundlers vary, the
+useNavigationActiveState probe always returned undefined per its own
+"For now" comment, and Navigation.tsx's branch violated rules-of-hooks
+to call usePathname() conditionally).
+
+Replacements per site:
+
+- useNavLink: drop the NextLink probe. Consumers wanting Next routing
+  pass `as={NextLink}` on NavLink — `as` already takes priority over
+  the auto-detect path per the existing code.
+- useNavigationActiveState: `pathname` prop is the single explicit
+  channel. The probe was a no-op in disguise.
+- Navigation: explicit `pathname` prop wins, else fall back to
+  `window.location.pathname` (SSR-safe). Next.js consumers should
+  continue passing `pathname={usePathname()}` for reactive updates;
+  this preserves the active-state highlight for non-Next apps without
+  the require() dance.
+* `useNavLink` no longer auto-supplies a NextLink
+component. Apps that relied on `NextLink` from this hook must pass
+`as={NextLink}` to NavLink explicitly.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* fix(types): replace process.env.NODE_ENV with import.meta.env.DEV
+
+TS2591: process is not a global in browser code (and we don't pull in
+@types/node ambient). Vite injects `import.meta.env.DEV` at build time
+as a real boolean — the same role process.env.NODE_ENV was playing in
+these dev-only a11y warning guards, with the right typing and no leaked
+node globals.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* fix(types): widen RefObject<T> prop types to match React 19 useRef shape
+
+TS2322: React 19's `useRef<T>(null)` returns `RefObject<T | null>`,
+not `RefObject<T>`. Components that received a ref via prop still
+declared `RefObject<HTMLDivElement>`, which the caller couldn't
+satisfy. Widened to `RefObject<HTMLDivElement | null>` in
+AutocompleteList, DatePickerPopup, and SidebarContextValue.
+
+Also retyped Sidebar's local ref from `HTMLElement` to `HTMLDivElement`
+to match the `<div>` it attaches to; SidebarContextValue.sidebarRef
+follows.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* fix(types): type cloneElement child props in Dialog Trigger/Close
+
+TS2769 + TS18046: under React 19, `ReactElement<unknown>` exposes
+children.props as `unknown`, so the previous `children.props.onClick`
+read failed typecheck and the `cloneElement(child, … as unknown)`
+escape hatch papered over the gap.
+
+Make the prop shape explicit: `ReactElement<{ onClick?: ... }>`. The
+cloneElement call is now valid without a cast, and the optional
+forwarding uses `?.` instead of an if/then.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* fix(types): pointwise narrows and coercions
+
+Several unrelated single-call-site fixes flushed in one commit:
+
+- DialogContent: cast focus-trap element to HTMLButtonElement|HTMLInputElement
+  before reading .disabled (HTMLElement has no .disabled).
+- Table: `pagination.onPageChange` is required by the type, so the
+  truthiness check (TS2774) is dead. Drop it.
+- TableHeaderCell: addEventListener overload (TS2769) — cast handler
+  via EventListener.
+- TableFilters: FilterValue is `string|number|boolean|null|undefined` but
+  Input/Select expect `string|number|readonly string[]|undefined`. Coerce
+  via `String(value ?? "")` at the boundary.
+- DataGrid: keyof T index against `Record<string, number>` (TS2536) —
+  cast to string.
+- FileUpload: validateFile returns `string|null` but the field type is
+  `string|undefined`. Coerce via `?? undefined`.
+- SearchInput: SearchInputProps Omits `onChange` and then destructures
+  it as a prop. Stop omitting it.
+- DatePickerProvider: getInitialRange returned `null` in controlled
+  mode but useState's slot is `{start, end}`. Always return the empty
+  range shape; controlled mode reads controlledValue elsewhere.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* feat(tokens): extend getSpacingClass to accept space-x direction
+
+Closes the asymmetry with `space-y` (Principle 9 — incomplete family).
+Breadcrumb was the lone in-tree consumer of `space-x` and could not
+satisfy the type union; the system response is to extend the getter,
+not to add a literal-exception. The ESLint rule now flags raw
+`space-x-N` alongside `space-y-N`, restoring symmetric enforcement.
+
+.claude/rules/tokens.md is updated in the same commit (docs-sync
+rule): the "NOT in scope" carve-out for `space-x-N` is replaced by
+inclusion in the supported direction list.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* fix(types): map Header/LoginBox variants to real ButtonVariant values
+
+TS2322 across three sites — all symptoms of consumers naming variants
+that don't exist on the canonical `ButtonVariant` union (primary,
+secondary, error, outline, ghost, iconOnly):
+
+- HeaderHamburger: drop the phantom "default" from its local variant
+  union; "ghost" is the default and "outline" remains.
+- LoginBox Sign-in: variant="regular" had no destination — submit
+  action is the primary CTA, so map to "primary".
+- LoginBox form className: `props.className` was read after `className`
+  had already been destructured out of props, so the consumer's
+  className silently dropped on the `<form>`. The outer `<div>` already
+  receives it; remove the dead reference.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* fix(types): make Collapsible.trigger optional + small narrows
+
+- Collapsible: SidebarGroup/SideNavbarGroup use Collapsible purely as
+  the animated content container — they own the trigger button outside
+  the Collapsible. The `trigger` prop was required (TS2741 at both
+  callers), but the component is fully usable without one. Make trigger
+  optional; render the toggle button only when supplied.
+- SideNavbarToggle: TS2339 + TS6133 — the destructure of `minWidth`
+  from SideNavbarThemeContextValue referenced a property that the
+  type does not declare, and the other two destructured fields
+  (navigationWidth, contentWidth) were _underscored and unread.
+  Removed for now; phase-2 audit will decide whether the theme context
+  should grow these fields.
+- DatePickerCalendar: handleKeyDown was typed for HTMLDivElement but
+  attached to a button (TS2345). Widened to the union.
+- DataGrid: filters prop was typed with `unknown[]` and
+  `Record<string, unknown>`, but Table consumes
+  `FilterConfig[]` / `Record<string, FilterValue>`. Pull the canonical
+  types from Table's TableFilters and use them.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* fix(table): tighten Table generic to satisfy TableProps constraint
+
+TS2344/TS2322/TS2345/TS7053/TS2571/TS2339 — the Table function generic
+was unconstrained `<T = unknown>` while TableProps<T> requires
+`T extends Record<string, unknown>`. Tightening the function generic
+fixes the constraint mismatch without changing the exported
+`TableProps<T>` shape (consumers already supply
+`T extends Record<string, unknown>` via TableColumn<T>'s constraint).
+
+Companion changes to close the gate at zero:
+
+- Table.tsx: extract className/aria-label/aria-labelledby from props via
+  destructure cast — TableProps is a discriminated union and indexed
+  access (`props["aria-label"]`) cannot narrow per-branch (TS7053).
+- TableProvider.tsx: row-indexing casts (`row as Record<string, unknown>`)
+  for sort/filter loops; safer `id?: { toString(): string }` shape for
+  getRowId's structural read.
+- TableContext.tsx + TableProvider.tsx: add
+  `virtualScrollingOptions` to TableContextValue (additive, completes the
+  family — TableBody already reads the field).
+- TableProvider value cast: `contextValue as unknown as
+  TableContextValue<Record<string, unknown>>` is the single bridge
+  between the per-call T and the singular global context.
+
+Marked TODO(phase2) at TableContext creation + TableProvider's useMemo:
+createContext doesn't carry generics, which forces the cast. Migration
+to a context-factory pattern fixes both at the same time. See the
+symmetric TODO landed in FormProvider in the same series.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* fix(form): narrow union, fix RHF generics, ArrayPath constraint
+
+Three independent typecheck fixes in the Form area:
+
+- Form.tsx: in the simple branch (no `form` prop), onSubmit is the
+  SimpleFormProps variant of the union. TS sees the union's intersected
+  parameter type and rejects the FormEvent call. Cast the local
+  onSubmitSimple to SimpleFormProps["onSubmit"] at the call site.
+- FormProvider.tsx: FormContext is typed `FormContextValue<FieldValues>`
+  (createContext doesn't carry the generic). Cast the per-call
+  `FormContextValue<TFieldValues>` to the default at the Provider value
+  boundary. TODO(phase2) lined up to migrate to a generic context
+  factory in parallel with the matching TableContext/TableProvider TODO.
+- useFormFieldArray.ts: the second generic parameter must extend
+  ArrayPath<TFieldValues>, not Path<TFieldValues>. RHF's useFieldArray
+  enforces this at runtime; the type was lying.
+
+FormField's onBlur typing is deliberately not in this commit — the
+honest fix is a breaking change to a public callback shape and follows
+in a separate commit after the consumer-grep is reported.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* fix(types): mark 6 underscored vars as audited Phase-2 work + filter typing
+
+Six _underscored locals were flagged TS6133 by tsc --build:
+- DataGrid `_handleGroupToggle` — column-grouping handler ready,
+  header-click UI never wired.
+- SideNavbar Navbar `_mainTogglePosition`, `_shouldShowMainToggle` —
+  toggle position/visibility computed but the rendered nav ignores
+  them.
+- SideNavbar SidebarGroup `_handleToggle` — duplicate of
+  handleHeaderClick; consolidation pending.
+- SideNavbar SideNavbarToggle `_isInlinePosition` — inline-branch
+  computed, style ignores it.
+- Table TableProvider `_controlledColumnWidths` — orphan alias whose
+  comment promised an injection point that never materialised.
+
+These are fios soltos from in-progress features, not stale debt. Per
+Phase 0 charter: don't delete in-progress work to silence the gate.
+Each site gets:
+  // TODO(phase2): <diagnóstico do que falta wirear>
+  const _foo = …;
+  void _foo;
+The `void _foo` makes the binding observably read for tsc6133 without
+faking a runtime use. Phase 2's underscored-vars sweep will pick up
+each TODO marker.
+
+Also: TableProvider's internalFilterValues was useState<Record<string,
+unknown>>, but the prop and TableContextValue.filterState declare
+Record<string, FilterValue>. Align the state typing so the contextValue
+narrows correctly — the cast at the provider boundary stops absorbing
+the mismatch.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* fix(form)!: align FormField onBlur/onChange with react-hook-form types
+
+TS2322: FormField's children render-prop declared
+  onChange?: (e: React.ChangeEvent<...>) => void;
+  onBlur?: () => void;
+but the implementation forwards `fieldRegister.onBlur`, which is RHF's
+ChangeHandler — the prior typing was lying about the shape.
+
+The honest fix is to expose the same handler types RHF emits from
+register(). Forwarding `fieldRegister.onBlur` is required for RHF's
+validation modes (mode: "onBlur") to fire and for `touched` state to
+track correctly — fabricating an event-less handler (the option floated
+in the diff review) would silently break those.
+
+In-repo grep: zero FormField call-sites destructure onBlur from the
+children callback. External consumers passing `onBlur={() => something()}`
+(0-arg arrow ignoring the event) continue to compile because a no-arg
+function is assignable to RHF's ChangeHandler. Only consumers who
+declared `const cb: () => void = …` and passed it as onBlur will hit a
+type error.
+* FormField's children render-prop now exposes onBlur
+and onChange as ReturnType<UseFormReturn<TFieldValues>["register"]>'s
+matching fields (RHF's ChangeHandler), instead of the previous custom
+() => void / React.ChangeEvent shapes. Migration: drop the explicit
+() => void annotation if you had one; pass the handler through to your
+input (typical pattern: `<Input {...register("foo")} />` does not
+destructure onBlur and is unaffected).
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* refactor(utils): add mergeRefs helper for composed ref forwarding
+
+mergeRefs composes any number of refs (callback or object) into a
+single RefCallback. Designed for the cloneElement pattern where a
+parent owns an internal ref to a trigger AND the consumer may have
+supplied their own ref on that trigger — both need to land on the same
+node. Under React 19, a consumer's `<Child ref={r}/>` flows through
+`child.props.ref` after cloneElement; that's the second argument
+mergeRefs is meant to receive.
+
+Five unit tests cover: callback ref, object ref, mixed, undefined/null
+no-op, and null-node propagation on unmount.
+
+Dropdown will adopt it in a follow-up commit. Tooltip, DialogTrigger,
+DialogClose, Popover are open candidates for Phase 2 (the inline
+merge-ref pattern they ship today is the same fragility this helper
+exists to remove).
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* fix(dropdown): forward consumer ref via mergeRefs (React 19)
+
+TS2769/TS18046/TS2339/TS2345/TS2322 — Dropdown.tsx read child.ref to
+forward a consumer-supplied ref alongside its own internal triggerRef.
+React 19 moved consumer refs out of the element itself and into
+child.props.ref; the old read path returns undefined under React 19 AND
+fails to typecheck.
+
+Replacements:
+- Adopt mergeRefs(triggerRef, trigger.props.ref) — composed ref
+  forwarding via the new src/ui/utils helper, replacing the inline
+  callback that hand-rolled the same logic with the wrong React-19
+  property.
+- Widen triggerRef to HTMLElement | null (Button → button, plain →
+  div role="button"); HTMLDivElement was a lie that worked only
+  because of the wrapper div in the else branch.
+- Type TriggerChildProps explicitly with the props cloneElement
+  overrides, so children.props.onClick / onKeyDown / aria-label etc.
+  stop being `unknown`.
+- onKeyDown handler typed as React.KeyboardEvent (default Element);
+  HTMLElement narrowing fought the React.cloneElement overload.
+- Else-branch (non-element trigger): wrap the div ref in a callback so
+  RefObject<HTMLElement> can land on a HTMLDivElement slot (refs are
+  invariant on the inner type — comment in the code names this).
+
+DropdownProps.trigger remains `ReactNode` exported — no public API
+change. Under peerDependency `react: ">=19"`, consumer refs that
+previously broke silently now thread through correctly.
+
+Test coverage in the companion commit: ref forwarding to the
+underlying element, plus consumer onClick/onKeyDown preservation
+(merged-not-replaced).
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* test(dropdown): cover trigger ref forwarding and handler preservation
+
+Three new tests under "Trigger Ref Forwarding":
+
+1. createRef passed to <Button ref={…}/> as trigger lands on the DOM
+   button after render (proves the React 19 props.ref → mergeRefs path
+   works end-to-end).
+2. Consumer-supplied onClick on the trigger fires on user click
+   (Dropdown's handler composes with, not replaces, the original).
+3. Consumer-supplied onKeyDown on the trigger fires on keyDown
+   (same composition guarantee for the keyboard path).
+
+These guard against the silent regression a future cloneElement
+refactor would otherwise introduce: deduction-only verification was
+how the React 19 typing broke unnoticed for the original 119-error
+build. Behaviour test forces the next refactor to keep working.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* build: remove error-masking || true from build script
+
+The trailing `|| true` after the `.d.ts` emit step swallowed every type
+error during build — combined with Vite/esbuild's type-erasure, this
+hid the same 119 errors the CI typecheck gate also missed via `-p` vs
+`--build`. With the typecheck pipeline at zero errors and the gate
+correctly wired, the masking is both unnecessary and dangerous: future
+type regressions would silently emit a partial .d.ts and ship.
+
+Removed. `npm run build` now fails on any TS error, matching what
+`npm run typecheck` reports.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* fix(dialog): migrate DialogFooter sm:space-x-2 to getSpacingClass
+
+The extended ds/no-raw-spacing-classes rule (now covering space-x-N)
+caught this pre-existing raw class. Migrate to
+getSpacingClass("sm", "space-x"); preserves the same 8px gap (sm = 2)
+under the responsive sm: prefix.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* docs: add ci-gates rule and surface typecheck script in CLAUDE.md
+
+New .claude/rules/ci-gates.md: states the rule that every CI/CT gate
+must be verified by inducing the failure it is supposed to catch — not
+only by observing it pass. Catalogues the Phase-0 traps so they cannot
+silently return:
+- `tsc -p` against a solution-style tsconfig typechecks zero files and
+  exits 0 (use `tsc --build`).
+- `|| true` chained after a typecheck step turns every TS error into a
+  silent partial .d.ts emit.
+- tsconfig `exclude` does not skip transitive imports.
+- pre-commit/pre-push hooks ARE local gates; --no-verify is bypassing
+  verification you were asked to perform.
+
+CLAUDE.md updates per docs-sync:
+- Commands section now lists `npm run typecheck` (tsc --build --force).
+- New Hard-rules item points to ci-gates.md and restates the
+  test-the-gate principle in one line.
+
+.claude/rules/docs-sync.md gets a new derivation entry: the new
+hard-rule in CLAUDE.md is derived from ci-gates.md (authoritative
+file). Touching ci-gates.md is the trigger to revisit the gist in
+CLAUDE.md.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* test(eslint): update no-raw-spacing-classes tests for space-x in scope
+
+The earlier feat(tokens) extended getSpacingClass with `space-x` AND
+the ESLint rule that enforces it, but the rule's own test file kept
+asserting `space-x-N` was a valid (out-of-scope) pattern. Move
+`space-x-2` from `valid` to `invalid`; collapse the `space-y-reverse`
+test to cover both reverse variants. 25/25 passing.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+
+* Phase 0: unmask the typecheck gate and zero out the backlog (119 → 0) (#127) ([50e1bed](https://github.com/FabioCaffarello/react-design-system/commit/50e1bedc9d98e4d5aea89971c83dcabaa41d636e)), closes [#127](https://github.com/FabioCaffarello/react-design-system/issues/127)
+
+
+### ✨ Features
+
+* **form-primitives:** add success state to Checkbox / Radio / Switch / Textarea ([5b5f896](https://github.com/FabioCaffarello/react-design-system/commit/5b5f89670126009c9c57cd3f1287924204c6e25e))
+* **lint:** add ds/no-raw-spacing-classes rule (warn level, Phase A) ([#110](https://github.com/FabioCaffarello/react-design-system/issues/110)) ([b3a55b5](https://github.com/FabioCaffarello/react-design-system/commit/b3a55b50d4860a408be5424964370886815cad1e))
+* **sidenavbar:** wire Navbar showMainToggle/mainTogglePosition overrides (render-driven) ([#135](https://github.com/FabioCaffarello/react-design-system/issues/135)) ([1f820fb](https://github.com/FabioCaffarello/react-design-system/commit/1f820fb0485993acb5f1cb672d1a41510ca2d2fb)), closes [#130](https://github.com/FabioCaffarello/react-design-system/issues/130)
+* **tabs:** expose orientation as typed prop on TabsList ([5030314](https://github.com/FabioCaffarello/react-design-system/commit/5030314c9a0dd05d0d0426e05c89b469806532ae))
+
+
+### 🐛 Bug Fixes
+
+* **deps:** unbundle unused peers, widen lucide-react to ^0.552 || ^1 ([#145](https://github.com/FabioCaffarello/react-design-system/issues/145)) ([#146](https://github.com/FabioCaffarello/react-design-system/issues/146)) ([1b9adc3](https://github.com/FabioCaffarello/react-design-system/commit/1b9adc33b6396571a5c934a34cd46a31716c5099))
+* **drawer:** implement modal focus contract (trap, auto-focus, restore) ([#138](https://github.com/FabioCaffarello/react-design-system/issues/138)) ([6b2bdef](https://github.com/FabioCaffarello/react-design-system/commit/6b2bdef9d64cbb35342fa3de724ce74dfbfb512e))
+* **file-upload:** replace deprecated substr in file id generation ([#131](https://github.com/FabioCaffarello/react-design-system/issues/131)) ([99e4193](https://github.com/FabioCaffarello/react-design-system/commit/99e41937401e605b5a69215c9060f35914d96487)), closes [#130](https://github.com/FabioCaffarello/react-design-system/issues/130) [#130](https://github.com/FabioCaffarello/react-design-system/issues/130) [#130](https://github.com/FabioCaffarello/react-design-system/issues/130)
+* **modal:** query portal content via screen, drop fragile react-dom mock ([#143](https://github.com/FabioCaffarello/react-design-system/issues/143)) ([b97fd6b](https://github.com/FabioCaffarello/react-design-system/commit/b97fd6b52bf8da582aa909dc036cf70996a07705)), closes [post-#142](https://github.com/FabioCaffarello/post-/issues/142) [#142](https://github.com/FabioCaffarello/react-design-system/issues/142)
+* **popover:** restore focus to opening element on close ([#139](https://github.com/FabioCaffarello/react-design-system/issues/139)) ([5a6dedf](https://github.com/FabioCaffarello/react-design-system/commit/5a6dedf27c6446219af810c892fb22ae7ffed8ef))
+* replace deprecated Math.random().substr() ids with React.useId across 9 sites ([#130](https://github.com/FabioCaffarello/react-design-system/issues/130)) ([58f4e57](https://github.com/FabioCaffarello/react-design-system/commit/58f4e579b29f6d8783bc1ef3c9b04d7a1b9f316b))
+
+
+### 📝 Documentation
+
+* **claude-md:** sync Commands section with package.json reality ([95d1543](https://github.com/FabioCaffarello/react-design-system/commit/95d1543bcde886cb1a13c9a84ae804ef88ea46cc))
+* drop 5 historical phase/bootstrap markdowns ([#126](https://github.com/FabioCaffarello/react-design-system/issues/126)) ([9257ef7](https://github.com/FabioCaffarello/react-design-system/commit/9257ef7e5f951f6ddf113c81e483c712f2b17711))
+
+
+### ♻️ Code Refactoring
+
+* **datagrid:** freeze grouping as [@experimental](https://github.com/experimental), remove dead Group button ([#134](https://github.com/FabioCaffarello/react-design-system/issues/134)) ([ebea840](https://github.com/FabioCaffarello/react-design-system/commit/ebea8408ffddd24cbe83d734813118a389d8f0d7))
+* **dialog:** consume shared focus hooks (trap, auto-focus, restore) ([#140](https://github.com/FabioCaffarello/react-design-system/issues/140)) ([d746929](https://github.com/FabioCaffarello/react-design-system/commit/d7469292a5c60efcf3629f0518552a1bf5d69b03))
+* **form-primitives:** standardize helperText across Switch / Textarea ([45cd627](https://github.com/FabioCaffarello/react-design-system/commit/45cd627ff88381cbde40c98346338ade7d94f308))
+* **primitives:** forwardRef on Collapsible / NavLink / Tooltip ([aee8bfa](https://github.com/FabioCaffarello/react-design-system/commit/aee8bfaf4a96b22b5c7b4963d527ca7fbbf9b01c))
+* **sidenavbar,table:** remove dead derived values (_isInlinePosition, _controlledColumnWidths) ([#133](https://github.com/FabioCaffarello/react-design-system/issues/133)) ([3f43f76](https://github.com/FabioCaffarello/react-design-system/commit/3f43f76712499c9d8f437548770adedf50e837b1))
+* **spacing:** drain long tail to 0 — 28 files (W5.1.5 Phase D) ([#113](https://github.com/FabioCaffarello/react-design-system/issues/113)) ([2cd1ec7](https://github.com/FabioCaffarello/react-design-system/commit/2cd1ec7ecdac23c3a1a72f1313908cb54c61366a)), closes [#112](https://github.com/FabioCaffarello/react-design-system/issues/112) [#112](https://github.com/FabioCaffarello/react-design-system/issues/112) [#110](https://github.com/FabioCaffarello/react-design-system/issues/110) [#111](https://github.com/FabioCaffarello/react-design-system/issues/111) [#112](https://github.com/FabioCaffarello/react-design-system/issues/112) [#112](https://github.com/FabioCaffarello/react-design-system/issues/112)
+* **spacing:** migrate next 15 files to getSpacingClass (W5.1.4 Phase C) ([#112](https://github.com/FabioCaffarello/react-design-system/issues/112)) ([97f5f8b](https://github.com/FabioCaffarello/react-design-system/commit/97f5f8b96df281a1c46e817bf4e19ec7c42f1b3a)), closes [#111](https://github.com/FabioCaffarello/react-design-system/issues/111) [#110](https://github.com/FabioCaffarello/react-design-system/issues/110) [#111](https://github.com/FabioCaffarello/react-design-system/issues/111)
+* **spacing:** migrate top-5 violation files to getSpacingClass (W5.1.3 Phase B) ([#111](https://github.com/FabioCaffarello/react-design-system/issues/111)) ([f76e7dc](https://github.com/FabioCaffarello/react-design-system/commit/f76e7dc998c7ffd98c2fa538bc83d9be44ec6ab5)), closes [#110](https://github.com/FabioCaffarello/react-design-system/issues/110)
+* **text:** remove stale color prop with no visual effect ([59318f5](https://github.com/FabioCaffarello/react-design-system/commit/59318f591a7238a466dcb17c9a34e653a9670288))
+
 ## [1.24.0](https://github.com/FabioCaffarello/react-design-system/compare/v1.23.17...v1.24.0) (2026-06-02)
 
 
