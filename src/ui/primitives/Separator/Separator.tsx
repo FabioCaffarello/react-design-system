@@ -1,6 +1,4 @@
-"use client";
-
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import type { HTMLAttributes } from "react";
 import { cn } from "../../utils";
 
@@ -26,33 +24,30 @@ export interface SeparatorProps extends HTMLAttributes<HTMLHRElement> {
  * <Separator orientation="vertical" variant="dashed" />
  * ```
  */
+const separatorOrientationClasses = {
+  horizontal: "w-full border-t",
+  vertical: "h-full border-l self-stretch",
+} as const;
+
+const separatorVariantClasses = {
+  solid: "border-solid",
+  dashed: "border-dashed",
+  dotted: "border-dotted",
+} as const;
+
 const Separator = memo(function Separator({
   orientation = "horizontal",
   variant = "solid",
   className = "",
   ...props
 }: SeparatorProps) {
-  const classes = useMemo(() => {
-    const baseClasses = ["border-0", "border-line-default"];
-
-    const orientationClasses = {
-      horizontal: "w-full border-t",
-      vertical: "h-full border-l self-stretch",
-    };
-
-    const variantClasses = {
-      solid: "border-solid",
-      dashed: "border-dashed",
-      dotted: "border-dotted",
-    };
-
-    return cn(
-      ...baseClasses,
-      orientationClasses[orientation],
-      variantClasses[variant],
-      className,
-    );
-  }, [orientation, variant, className]);
+  const classes = cn(
+    "border-0",
+    "border-line-default",
+    separatorOrientationClasses[orientation],
+    separatorVariantClasses[variant],
+    className,
+  );
 
   if (orientation === "vertical") {
     return (

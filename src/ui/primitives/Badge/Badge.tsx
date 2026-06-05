@@ -1,6 +1,4 @@
-"use client";
-
-import { memo, forwardRef, useMemo } from "react";
+import { memo, forwardRef } from "react";
 import type { HTMLAttributes, ReactNode } from "react";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
@@ -200,28 +198,28 @@ const Badge = memo(
     },
     ref,
   ) {
-    // Memoize classes
-    const classes = useMemo(
-      () => cn(badgeVariants({ variant, size, style }), className),
-      [variant, size, style, className],
-    );
+    const classes = cn(badgeVariants({ variant, size, style }), className);
 
-    // Memoize accessible label
-    const accessibleLabel = useMemo(() => {
-      if (ariaLabel) return ariaLabel;
-      if (typeof children === "string") return children;
-      // Try to extract text from ReactNode
-      if (typeof children === "object" && children !== null) {
-        if ("props" in children) {
-          const childProps = (children as { props?: { children?: unknown } })
-            .props;
-          if (childProps?.children && typeof childProps.children === "string") {
-            return childProps.children;
-          }
-        }
+    // Best-effort accessible name resolution: explicit aria-label wins;
+    // string children become the label; single-wrapped string children
+    // (e.g. <Badge><span>Active</span></Badge>) are unwrapped one level.
+    // Otherwise undefined and the consumer is responsible for naming
+    // the badge externally.
+    let accessibleLabel: string | undefined;
+    if (ariaLabel) {
+      accessibleLabel = ariaLabel;
+    } else if (typeof children === "string") {
+      accessibleLabel = children;
+    } else if (
+      typeof children === "object" &&
+      children !== null &&
+      "props" in children
+    ) {
+      const childProps = (children as { props?: { children?: unknown } }).props;
+      if (childProps?.children && typeof childProps.children === "string") {
+        accessibleLabel = childProps.children;
       }
-      return undefined;
-    }, [ariaLabel, children]);
+    }
 
     return (
       <span

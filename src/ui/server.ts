@@ -32,7 +32,7 @@
 // composes them via its normal RSC client-boundary semantics.
 // ============================================================================
 
-// ---------- primitives (7) ----------
+// ---------- primitives (11) ----------
 //
 // Every primitive is imported from its concrete source file (not the
 // folder index) so the dependency the analyser sees matches the
@@ -42,6 +42,14 @@
 // reading directly from the source file makes every re-export here
 // transparent to `scripts/analyze-server-safe.mjs` and
 // `scripts/validate-server-entry.mjs`.
+export { default as Badge } from "./primitives/Badge/Badge";
+export type {
+  BadgeProps,
+  BadgeSize,
+  BadgeStyle,
+  BadgeVariant,
+} from "./primitives/Badge/Badge";
+
 export { default as Chip } from "./primitives/Chip/Chip";
 export type { ChipProps, ChipSize, ChipVariant } from "./primitives/Chip/Chip";
 
@@ -51,12 +59,21 @@ export type { ErrorMessageProps } from "./primitives/ErrorMessage/ErrorMessage";
 export { default as Info } from "./primitives/Info/Info";
 export type { InfoProps } from "./primitives/Info/Info";
 
+export { default as Label } from "./primitives/Label/Label";
+
 export { default as Progress } from "./primitives/Progress/Progress";
 export type {
   ProgressProps,
   ProgressSize,
   ProgressVariant,
 } from "./primitives/Progress/Progress";
+
+export { default as Separator } from "./primitives/Separator/Separator";
+export type {
+  SeparatorOrientation,
+  SeparatorProps,
+  SeparatorVariant,
+} from "./primitives/Separator/Separator";
 
 export { default as Skeleton } from "./primitives/Skeleton/Skeleton";
 export type { SkeletonProps } from "./primitives/Skeleton/Skeleton";
@@ -78,7 +95,7 @@ export type { ContainerProps } from "./layouts/Container/Container";
 export { Stack } from "./layouts/Stack/Stack";
 export type { StackProps } from "./layouts/Stack/Stack";
 
-// ---------- components (12) ----------
+// ---------- components (13) ----------
 export { default as AutocompleteOption } from "./components/Autocomplete/AutocompleteOption";
 export type {
   AutocompleteOptionProps,
@@ -87,6 +104,8 @@ export type {
 
 export { default as Breadcrumb } from "./components/Breadcrumb/Breadcrumb";
 export type { BreadcrumbItem } from "./components/Breadcrumb/Breadcrumb";
+
+export { default as Card } from "./components/Card/Card";
 
 export { DialogHeader } from "./components/Dialog/DialogHeader";
 export type { DialogHeaderProps } from "./components/Dialog/DialogHeader";

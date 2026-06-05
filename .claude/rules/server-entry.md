@@ -15,11 +15,13 @@ The two bundles share no chunks. The cva cross-chunk regression that defeated th
 
 A module is server-safe if it AND every value-imported source inside `src/ui/` is free of the React client APIs `useState`, `useEffect`, `useLayoutEffect`, `useReducer`, `useContext`, `useRef`, `useImperativeHandle`, `useCallback`, `useMemo`, `useId`, `useTransition`, `useDeferredValue`, `useSyncExternalStore`, `useInsertionEffect`, `useOptimistic`, and `createContext`.
 
-The current set is **21 components**, listed in `src/ui/server.ts` and re-derived on demand by `node scripts/analyze-server-safe.mjs`:
+The current set is **25 components**, listed in `src/ui/server.ts` and re-derived on demand by `node scripts/analyze-server-safe.mjs`:
 
-- **Primitives (7)**: `Chip`, `ErrorMessage`, `Info`, `Progress`, `Skeleton`, `Spinner`, `Text`.
+- **Primitives (10)**: `Badge`, `Chip`, `ErrorMessage`, `Info`, `Label`, `Progress`, `Separator`, `Skeleton`, `Spinner`, `Text`.
 - **Layouts (2)**: `Container`, `Stack`.
-- **Components (12)**: `AutocompleteOption`, `Breadcrumb`, `DialogHeader`, `DialogFooter`, `DrawerHeader`, `DrawerFooter`, `HeaderActions`, `HeaderNavigation`, `MenuSeparator`, `NavbarSeparator`, `TableCell`, `Timeline`.
+- **Components (13)**: `AutocompleteOption`, `Breadcrumb`, `Card`, `DialogHeader`, `DialogFooter`, `DrawerHeader`, `DrawerFooter`, `HeaderActions`, `HeaderNavigation`, `MenuSeparator`, `NavbarSeparator`, `TableCell`, `Timeline`.
+
+Badge, Label, Separator, and Card were promoted in issue #155: each previously held `useMemo` (and Card additionally `useCallback`) calls that were purely decorative — they memoized class-string concatenations and a single `onClick !== undefined` boolean, not render-driving state. Inlining those expressions removed the only barrier without changing observable behaviour or perf (string concatenation is nanoseconds; `React.memo` on the component is preserved and continues to gate re-renders at the consumer-prop boundary).
 
 Type-only imports (`import type { … }` and `import { type X, … }` inline specifiers) are erased by TypeScript before the bundler runs and are therefore ignored by the analyser. Bare specifiers (anything not starting with `.` or `/`) are not walked because the server build externalises every third-party dep — see the next section for why that matters.
 
