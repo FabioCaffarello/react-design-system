@@ -230,6 +230,133 @@ describe("Modal Accessibility", () => {
     });
   });
 
+  /**
+   * Modal focus contract — WCAG 2.4.3 / WAI-ARIA modal-dialog
+   * obligations. Pre-PR-#141 the Modal carried `role="dialog"
+   * aria-modal="true"` without honouring any of the trap obligations
+   * — Tab would leak through to the page behind the overlay. This
+   * block pins the trap end-to-end on top of the per-hook unit tests
+   * in `src/ui/hooks/useFocusTrap.test.tsx`.
+   */
+  describe("Modal focus contract (trap engaged)", () => {
+    it("Tab on the last focusable cycles back to the first", () => {
+      render(
+        <Modal isOpen onClose={() => {}} showCloseButton={false}>
+          <button type="button">First</button>
+          <button type="button">Last</button>
+        </Modal>,
+      );
+
+      const first = screen.getByRole("button", { name: "First" });
+      const last = screen.getByRole("button", { name: "Last" });
+
+      // Park focus on Last (defeating auto-focus, which would land
+      // on First).
+      last.focus();
+      expect(document.activeElement).toBe(last);
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Tab",
+        bubbles: true,
+        cancelable: true,
+      });
+      document.dispatchEvent(event);
+
+      expect(event.defaultPrevented).toBe(true);
+      expect(document.activeElement).toBe(first);
+    });
+
+    it("Shift+Tab on the first focusable cycles back to the last", () => {
+      render(
+        <Modal isOpen onClose={() => {}} showCloseButton={false}>
+          <button type="button">First</button>
+          <button type="button">Last</button>
+        </Modal>,
+      );
+
+      const first = screen.getByRole("button", { name: "First" });
+      const last = screen.getByRole("button", { name: "Last" });
+
+      first.focus();
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Tab",
+        shiftKey: true,
+        bubbles: true,
+        cancelable: true,
+      });
+      document.dispatchEvent(event);
+
+      expect(event.defaultPrevented).toBe(true);
+      expect(document.activeElement).toBe(last);
+    });
+
+    it("Tab with focus outside the modal pulls focus back to the first inside (inherited guard)", () => {
+      // Inherits the focus-outside-container guard added to
+      // useFocusTrap in #137 review. Pre-trap Modal had no such
+      // guard, plus no auto-focus inside (focused the container) —
+      // Tab from outside the container leaked straight through to
+      // whatever was next in document order.
+      render(
+        <Modal isOpen onClose={() => {}} showCloseButton={false}>
+          <button type="button">First</button>
+          <button type="button">Last</button>
+        </Modal>,
+      );
+
+      const first = screen.getByRole("button", { name: "First" });
+
+      const outside = document.createElement("button");
+      outside.textContent = "Outside";
+      document.body.appendChild(outside);
+      outside.focus();
+      expect(document.activeElement).toBe(outside);
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Tab",
+        bubbles: true,
+        cancelable: true,
+      });
+      document.dispatchEvent(event);
+
+      expect(event.defaultPrevented).toBe(true);
+      expect(document.activeElement).toBe(first);
+
+      outside.remove();
+    });
+
+    it("trap teardown leaves the document keydown listener unattached when isOpen flips false", () => {
+      const { rerender } = render(
+        <Modal isOpen onClose={() => {}} showCloseButton={false}>
+          <button type="button">Inside</button>
+        </Modal>,
+      );
+
+      rerender(
+        <Modal isOpen={false} onClose={() => {}} showCloseButton={false}>
+          <button type="button">Inside</button>
+        </Modal>,
+      );
+
+      const outside = document.createElement("button");
+      outside.textContent = "Outside";
+      document.body.appendChild(outside);
+      outside.focus();
+
+      const event = new KeyboardEvent("keydown", {
+        key: "Tab",
+        bubbles: true,
+        cancelable: true,
+      });
+      document.dispatchEvent(event);
+
+      // Trap is detached — no preventDefault and no forced focus
+      // change.
+      expect(event.defaultPrevented).toBe(false);
+      outside.remove();
+    });
+  });
+
   describe("Screen Reader Support", () => {
     it("close button has an accessible name", () => {
       render(
