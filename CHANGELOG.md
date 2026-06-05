@@ -1,3 +1,10 @@
+## [2.1.0](https://github.com/FabioCaffarello/react-design-system/compare/v2.0.1...v2.1.0) (2026-06-05)
+
+
+### ✨ Features
+
+* **server-entry:** add ./server export for RSC-safe components ([#150](https://github.com/FabioCaffarello/react-design-system/issues/150)) ([#151](https://github.com/FabioCaffarello/react-design-system/issues/151)) ([24a43f5](https://github.com/FabioCaffarello/react-design-system/commit/24a43f5749d2fad3818c52b2c128852c42cf9a27)), closes [#148](https://github.com/FabioCaffarello/react-design-system/issues/148) [#148](https://github.com/FabioCaffarello/react-design-system/issues/148) [#148](https://github.com/FabioCaffarello/react-design-system/issues/148)
+
 ## [2.0.1](https://github.com/FabioCaffarello/react-design-system/compare/v2.0.0...v2.0.1) (2026-06-05)
 
 
