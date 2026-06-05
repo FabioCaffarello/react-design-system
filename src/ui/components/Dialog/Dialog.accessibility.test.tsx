@@ -21,10 +21,50 @@
  * canonical scaffold for component-level a11y suites.
  */
 
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Dialog from "./Dialog";
+
+/**
+ * jsdom offsetParent prop-up. After Phase 3 PR 4, DialogContent
+ * consumes the shared `useFocusTrap` + `useAutoFocus` hooks, which
+ * filter focusable candidates by `offsetParent !== null`. jsdom
+ * returns `null` for offsetParent on every connected element (no
+ * layout engine), so without this mock the hooks reject all rendered
+ * buttons and useAutoFocus falls through to focusing the dialog
+ * container itself (which carries `tabIndex={-1}`). That breaks the
+ * "first focusable" assertion in Focus Management.
+ *
+ * Prototype-level mock so every HTMLElement looks "visible" to the
+ * hooks for the duration of each test. Same shape used in Drawer's
+ * a11y suite.
+ */
+let restoreOffsetParentDescriptor: PropertyDescriptor | undefined;
+beforeEach(() => {
+  restoreOffsetParentDescriptor = Object.getOwnPropertyDescriptor(
+    HTMLElement.prototype,
+    "offsetParent",
+  );
+  Object.defineProperty(HTMLElement.prototype, "offsetParent", {
+    configurable: true,
+    get() {
+      return document.body;
+    },
+  });
+});
+afterEach(() => {
+  if (restoreOffsetParentDescriptor) {
+    Object.defineProperty(
+      HTMLElement.prototype,
+      "offsetParent",
+      restoreOffsetParentDescriptor,
+    );
+  } else {
+    delete (HTMLElement.prototype as unknown as Record<string, unknown>)
+      .offsetParent;
+  }
+});
 
 describe("Dialog Accessibility", () => {
   describe("ARIA Labels and Roles", () => {
