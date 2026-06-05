@@ -7,6 +7,13 @@ coverage
 # Dependencies
 node_modules
 
+# Smoke fixtures — keep authored sources prettier-managed, but exclude
+# generated build output (`.next/`) and tsconfig.json (`next build`
+# rewrites it on every run to inject jsx mode and `.next/types/**`
+# include paths).
+fixtures/*/.next
+fixtures/*/tsconfig.json
+
 # Templates (Handlebars — not valid TS/JS)
 plop-templates
 
