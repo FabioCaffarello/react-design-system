@@ -41,6 +41,38 @@ Chip renders in source order: the `label` (the `children` content — the chip's
 
 <Controls of={ChipStories.Default} />
 
+## Polymorphic chip via `asChild`
+
+`asChild` (issue #154) projects the chip frame onto a single child element — typically a framework Link — instead of rendering the standard `<div>` + inner-button structure. The collapsed node **is** the chip: no inner button, no X. The pattern is what enables server-rendered, zero-JS filter chips in Next/RSC consumers (one `<a href>` per chip, native navigation, prefetch preserved).
+
+```tsx
+<Chip asChild variant="filled" selected>
+  <Link href="/filtros/em-votacao" prefetch aria-current="page">
+    Em votação
+  </Link>
+</Chip>
+```
+
+<Canvas of={ChipStories.AsChild} />
+
+### Forbidden in this form (enforced by TypeScript)
+
+| Prop       | Why                                                                                                                                                                                                                                                                                  |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `onClick`  | The child element owns activation. Pass the handler (or `href`) on the child Link / button itself.                                                                                                                                                                                  |
+| `onRemove` | The collapsed node has no slot for an X button. Use the standard (non-`asChild`) form when removal is required.                                                                                                                                                                     |
+
+### A11y responsibility transfer (read before adopting)
+
+The standard Chip is carefully shaped to avoid two axe failures (`aria-required-parent`, `nested-interactive`). `asChild` defers that shape entirely to the consumer's child. **You inherit responsibility for:**
+
+- **Role**: the child's native role is what AT users hear. An `<a href>` reads as a link; a `<button>` reads as a button. The chip's `selected` styling does NOT change this.
+- **Selected state**: `selected` still applies the visual `bg-surface-brand-strong` + `border-line-brand`. It does **NOT** emit `aria-pressed` — a link is not a two-state control. Communicate the selected route to AT users with `aria-current="page"` on the child Link.
+- **Focus**: the child carries the focus ring. Chip does not attach `focus:ring-*` utilities to the projected node — if the child is a Link without a focus style, supply one explicitly.
+- **Disabled**: `aria-disabled` is forwarded, but `disabled` on `<a>` does NOT block navigation. Gate `href` upstream when truly blocking is required.
+
+The forbidden `onClick` / `onRemove` are enforced at the TypeScript level (discriminated union) — the compiler rejects them rather than failing silently at runtime.
+
 ## Accessibility
 
 Chip's accessibility shape depends on which interactions are wired. A non-interactive Chip (no `onClick`, no `onRemove`) renders as a labelled token with no role — content is announced inline.

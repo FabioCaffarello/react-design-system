@@ -1,6 +1,14 @@
 import { forwardRef, memo, useMemo } from "react";
 import type { ButtonHTMLAttributes, ReactNode, ElementType } from "react";
+import { Slot, Slottable } from "@radix-ui/react-slot";
 import { getRadiusClass } from "../../tokens/radius";
+
+// Ambient declaration so the dev-only warn below typechecks without
+// pulling @types/node into the app tsconfig. At runtime the consumer's
+// bundler (webpack/turbopack/etc.) replaces `process.env.NODE_ENV` with
+// a literal; the `typeof process` guard keeps the branch safe in
+// browser/edge runtimes where `process` doesn't exist.
+declare const process: { env: { NODE_ENV?: string } };
 import { getSpacingClass } from "../../tokens/spacing";
 import {
   getTypographyClasses,
@@ -33,6 +41,24 @@ export interface ButtonProps extends Omit<
   as?: ElementType;
   href?: string;
   target?: string;
+  /**
+   * When true, render via Radix `Slot`: classes, ARIA, ref and remaining
+   * props are projected onto the single child element instead of an
+   * intrinsic `<button>`. The child keeps its own element type and props
+   * intact — including framework-native props like `<Link href prefetch>`.
+   *
+   * `asChild` takes precedence over `as`: if both are supplied, `as` is
+   * ignored and a dev-only warning is logged.
+   *
+   * @example
+   * ```tsx
+   * <Button asChild variant="primary">
+   *   <Link href="/profile" prefetch>Open profile</Link>
+   * </Button>
+   * // → <a class="…button classes" href="/profile" data-prefetch>Open profile</a>
+   * ```
+   */
+  asChild?: boolean;
 }
 
 /**
@@ -168,35 +194,33 @@ function IconWrapper({
 /**
  * Button Component
  *
- * A styled button component with variants, sizes, and loading states.
- * Follows Atomic Design principles as an Atom component.
- * Uses Builder Pattern for class construction.
- * Supports polymorphic `as` prop for rendering as different elements (Link, NextLink, etc.).
+ * A styled button with variants, sizes, and loading states.
+ *
+ * Polymorphism — two APIs:
+ *   - `as` (legacy): swap the root element type. `<Button as={Link} href="…">`.
+ *   - `asChild` (recommended): project Button's styling onto the single
+ *     child element. Idiomatic Radix Slot pattern, preserves the child's
+ *     own props and TS type (e.g. `<Link href prefetch>`). When `asChild`
+ *     is true, `as` is ignored.
  *
  * @example
  * ```tsx
  * // Basic usage
- * <Button variant="primary" size="md" onClick={handleClick}>
- *   Click me
- * </Button>
+ * <Button variant="primary" size="md" onClick={handleClick}>Click me</Button>
  *
  * // With icons
- * <Button leftIcon={<Icon />} rightIcon={<Icon />}>
- *   Action
- * </Button>
+ * <Button leftIcon={<Icon />} rightIcon={<Icon />}>Action</Button>
  *
  * // Loading state
- * <Button isLoading loadingText="Saving...">
- *   Save
+ * <Button isLoading loadingText="Saving...">Save</Button>
+ *
+ * // Polymorphic via asChild (preserves Next Link's TS type and native props)
+ * <Button asChild variant="primary">
+ *   <Link href="/page" prefetch>Open</Link>
  * </Button>
  *
- * // As Link
- * <Button as={Link} href="/page">
- *   Navigate
- * </Button>
- *
- * // Icon only
- * <Button variant="iconOnly" leftIcon={<Icon />} aria-label="Close" />
+ * // Polymorphic via legacy `as`
+ * <Button as="a" href="/page">Navigate</Button>
  * ```
  */
 const Button = memo(
@@ -210,7 +234,8 @@ const Button = memo(
       leftIcon,
       rightIcon,
       fullWidth = false,
-      as: Component = "button",
+      asChild = false,
+      as,
       className = "",
       disabled = false,
       children,
@@ -219,6 +244,22 @@ const Button = memo(
     },
     ref,
   ) {
+    // asChild wins over `as`. Warn in dev so the precedence is observable
+    // instead of being a silent override. Production builds strip this branch.
+    if (
+      typeof process !== "undefined" &&
+      process.env.NODE_ENV !== "production" &&
+      asChild &&
+      as !== undefined &&
+      as !== "button"
+    ) {
+      console.warn(
+        "[Button] `as` is ignored when `asChild` is true; the child element is used as the root. Drop one of the two props to silence this warning.",
+      );
+    }
+
+    const Component: ElementType = asChild ? Slot : (as ?? "button");
+
     // Memoize classes computation
     const classes = useMemo(
       () =>
@@ -268,10 +309,14 @@ const Button = memo(
       [loadingIcon, spinnerSize, spinnerVariant],
     );
 
-    // Build button props (spread props at the end to allow overrides)
-    // If type is explicitly provided in props, use it; otherwise default to 'button' for button elements
+    // Build button props (spread props at the end to allow overrides).
+    // `type="button"` default applies only when rendering an intrinsic
+    // <button>. asChild and `as` (custom) projections leave it off so we
+    // don't paint a meaningless `type` attribute onto <a> / <Link>.
     const defaultType =
-      Component === "button" && !props.type ? "button" : undefined;
+      !asChild && (as === undefined || as === "button") && !props.type
+        ? "button"
+        : undefined;
     const buttonProps = {
       className: classes,
       disabled: disabled || isLoading,
@@ -281,6 +326,24 @@ const Button = memo(
       ...(defaultType ? { type: defaultType } : {}),
       ...props,
     };
+
+    // asChild path: render Slot with the icons and Slottable as direct
+    // sibling children (NOT wrapped in a React.Fragment). Slot's
+    // children-processing inspects each direct child for Slottable; if
+    // the children are wrapped in a Fragment, Slot's SlotClone merges
+    // the projected props into the Fragment itself (a silent no-op for
+    // className / aria / ref), and nothing reaches the consumer's
+    // element. Hence the two distinct branches below: same content
+    // shape, different host element, different child layout.
+    if (asChild) {
+      return (
+        <Component ref={ref} {...buttonProps}>
+          {leftIcon && <IconWrapper position="left">{leftIcon}</IconWrapper>}
+          <Slottable>{children}</Slottable>
+          {rightIcon && <IconWrapper position="right">{rightIcon}</IconWrapper>}
+        </Component>
+      );
+    }
 
     return (
       <Component ref={ref} {...buttonProps}>

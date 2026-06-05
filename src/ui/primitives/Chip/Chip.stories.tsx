@@ -580,3 +580,50 @@ export const RemovableState: Story = {
     },
   },
 };
+
+export const AsChild: Story = {
+  render: () => (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center gap-2">
+        <p className="w-28 text-sm text-fg-secondary">Idle:</p>
+        <Chip asChild variant="outlined">
+          <a href="/filtros/em-aberto" className="no-underline">
+            Em aberto
+          </a>
+        </Chip>
+        <Chip asChild>
+          <a href="/filtros/encerrado" className="no-underline">
+            Encerrado
+          </a>
+        </Chip>
+      </div>
+      <div className="flex items-center gap-2">
+        <p className="w-28 text-sm text-fg-secondary">Selected route:</p>
+        <Chip asChild variant="filled" selected>
+          <a
+            href="/filtros/em-votacao"
+            aria-current="page"
+            className="no-underline"
+          >
+            Em votação
+          </a>
+        </Chip>
+      </div>
+      <p className="text-xs text-fg-tertiary">
+        asChild collapses the chip into a single navigation node. Use{" "}
+        <code>aria-current=&quot;page&quot;</code> on the child (not{" "}
+        <code>aria-pressed</code>) to communicate the selected route.{" "}
+        <code>onClick</code> / <code>onRemove</code> are forbidden at the TS
+        level in this form.
+      </p>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "asChild form (issue #154): the chip frame is projected onto a single child element (e.g. <Link>). The collapsed node IS the chip — no inner button, no X. Use the standard form when the chip is a toggle or has a remove action.",
+      },
+    },
+  },
+};

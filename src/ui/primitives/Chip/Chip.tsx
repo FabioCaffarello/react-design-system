@@ -2,6 +2,7 @@
 
 import { forwardRef, type ReactNode } from "react";
 import { X } from "lucide-react";
+import { Slot } from "@radix-ui/react-slot";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getTypographySize } from "../../tokens/typography";
@@ -10,29 +11,85 @@ import { cn, cva } from "../../utils";
 export type ChipVariant = "default" | "outlined" | "filled";
 export type ChipSize = "sm" | "md" | "lg";
 
-export interface ChipProps {
+interface ChipBaseProps {
   children: ReactNode;
   variant?: ChipVariant;
   size?: ChipSize;
-  onRemove?: () => void;
   selected?: boolean;
   disabled?: boolean;
   className?: string;
   "aria-label"?: string;
-  onClick?: () => void;
   tabIndex?: number;
 }
+
+interface ChipStandardProps extends ChipBaseProps {
+  asChild?: false;
+  onRemove?: () => void;
+  onClick?: () => void;
+}
+
+/**
+ * `asChild` collapses the chip into a single node provided by the
+ * consumer (typically `<Link>`). The non-interactive frame + inner
+ * label-button + X structure is intentionally NOT rendered — the child
+ * IS the chip. As a consequence:
+ *
+ *   - `onClick` and `onRemove` are forbidden at the type level. The
+ *     child's own click handler (and `href`) is what fires; consumers
+ *     who need a removable selected filter use the standard
+ *     (non-asChild) form.
+ *   - `selected` still applies the visual classes via `chipVariants`,
+ *     but NO `aria-pressed` is emitted. Toggle-button semantics on
+ *     `<a>` would lie — a link isn't a two-state control. Consumers
+ *     that need the selected route surfaced to AT users should pass
+ *     `aria-current="page"` (or similar) directly on the child Link.
+ *
+ * @see `.claude/rules/components.md` and the inline a11y notes below.
+ */
+interface ChipAsChildProps extends ChipBaseProps {
+  asChild: true;
+  /**
+   * `onClick` is forbidden when `asChild` is true — the child element
+   * owns interaction. Pass the handler (or `href`) on the child.
+   */
+  onClick?: never;
+  /**
+   * `onRemove` is forbidden when `asChild` is true — the collapsed
+   * node has no slot for an X button. Use the standard (non-asChild)
+   * form when removal is required.
+   */
+  onRemove?: never;
+}
+
+export type ChipProps = ChipStandardProps | ChipAsChildProps;
 
 /**
  * Chip Component
  *
- * A chip/tag component for displaying labels, filters, or selected items.
- * Follows Atomic Design principles as an Atom component.
+ * A chip/tag for labels, filters, or selected items.
+ *
+ * Standard form: an outer `<div>` frame (never interactive) with an
+ * inner `<button>` label (when `onClick`) and a sibling X `<button>`
+ * (when `onRemove`). This shape closes two axe violations the older
+ * implementation hit — `aria-required-parent` (role=option without a
+ * listbox) and `nested-interactive` (clickable outer + clickable X).
+ *
+ * `asChild` form: a single node provided by the consumer (e.g.
+ * `<Link>`), with the chip's classes projected via Radix `Slot`. See
+ * the `ChipAsChildProps` JSDoc for the a11y responsibility transfer
+ * — the consumer's child carries `href`, focus behavior, and any
+ * route-state ARIA (`aria-current`). Forbidden in this form:
+ * `onClick`, `onRemove` (TS-level).
  *
  * @example
  * ```tsx
  * <Chip>Tag</Chip>
  * <Chip onRemove={() => console.log('removed')}>Removable</Chip>
+ *
+ * // Navigation chip — server-rendered, zero-JS-friendly.
+ * <Chip asChild variant="filled">
+ *   <Link href="/filtros/ativo" prefetch aria-current="page">Active</Link>
+ * </Chip>
  * ```
  */
 // Chip variants using CVA
@@ -124,22 +181,19 @@ const chipVariants = cva(
   },
 );
 
-const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(
-  {
+const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(props, ref) {
+  const {
     children,
     variant = "default",
     size = "md",
-    onRemove,
     selected = false,
     disabled = false,
     className = "",
     "aria-label": ariaLabel,
-    onClick,
     tabIndex,
-    ...props
-  },
-  ref,
-) {
+    asChild = false,
+  } = props;
+
   // Generate accessible label
   const getAccessibleLabel = (): string | undefined => {
     if (ariaLabel) return ariaLabel;
@@ -159,6 +213,42 @@ const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(
   };
 
   const accessibleLabel = getAccessibleLabel();
+
+  // asChild path: collapse the entire chip structure (frame + label
+  // button + X) into the single consumer-provided node. The frame's
+  // visual classes are projected onto the child via Slot.
+  //
+  // A11Y RESPONSIBILITY TRANSFER. The child element owns:
+  //   - focus (its native focus ring, or its own focus utilities)
+  //   - activation (its own click handler / href for navigation)
+  //   - route-state semantics: `aria-current="page"` on a selected
+  //     Link is the right tool. `aria-pressed` is intentionally NOT
+  //     emitted here — a link is not a toggle button.
+  //   - disabled semantics: `aria-disabled` is set when `disabled` is
+  //     true, but it does NOT block navigation. Consumers that must
+  //     truly disable navigation should also gate `href` upstream.
+  //
+  // TS forbids `onClick` / `onRemove` in this form (see ChipAsChildProps).
+  if (asChild) {
+    return (
+      <Slot
+        ref={ref}
+        className={cn(
+          chipVariants({ variant, size, selected, disabled }),
+          className,
+        )}
+        aria-label={ariaLabel}
+        aria-disabled={disabled || undefined}
+        tabIndex={tabIndex}
+      >
+        {children}
+      </Slot>
+    );
+  }
+
+  // Standard form below. Narrow `props` so the union picks up
+  // onClick/onRemove handlers (forbidden when asChild=true at TS level).
+  const { onRemove, onClick } = props as ChipStandardProps;
 
   // Architecture:
   //   The label is a real `<button>` whenever the chip is meant to be
@@ -213,7 +303,6 @@ const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(
         className,
       )}
       aria-disabled={disabled}
-      {...props}
     >
       {useLabelButton ? (
         <button
