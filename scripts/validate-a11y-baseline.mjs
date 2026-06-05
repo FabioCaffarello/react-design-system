@@ -37,6 +37,9 @@
  *
  *   node scripts/validate-a11y-baseline.mjs            # reads ./a11y-baseline.json
  *   node scripts/validate-a11y-baseline.mjs <path>     # custom path
+ *   node scripts/validate-a11y-baseline.mjs <path> --compare <reference>
+ *                                                      # also assert byImpact
+ *                                                      # matches reference per-theme
  *
  * Themes checked
  *
@@ -50,12 +53,35 @@
  *   pre-existing baseline files (from before this change) validating
  *   the same way.
  *
+ * --compare anti-regression guard (PR #144)
+ *
+ *   When the CI runner ships in parallel mode (`--workers N`), a
+ *   false-green where axe reads partial DOM and reports FEWER
+ *   violations than the committed reference would slip past the
+ *   critical+serious=0 floor (which is already at zero — going below
+ *   zero is not possible). The --compare flag closes that gap by
+ *   asserting the CI run's byImpact per theme matches the committed
+ *   reference exactly. A mismatch means EITHER (a) a worker race is
+ *   silently dropping or doubling violations, OR (b) a legitimate
+ *   component change shifted the count — both deserve human
+ *   investigation. A real fix that legitimately moves the number
+ *   updates the committed reference in the same PR; the gate then
+ *   continues to assert equality.
+ *
+ *   totalStories is also compared. The suite expanding from 852 to
+ *   856 was a recent example of a divergence the gate would catch
+ *   today; the reference is regenerated in the same PR as the suite
+ *   itself when stories are added or removed.
+ *
  * Exit codes
  *
- *   0 — every measured theme has critical+serious = 0 AND no errored stories
+ *   0 — every measured theme has critical+serious = 0 AND no errored
+ *       stories AND (if --compare was given) byImpact + totalStories
+ *       match the reference for every checked theme
  *   1 — gate breached. Detailed failure message lists which theme,
  *       which rules, and how many nodes for each.
- *   2 — input error (file missing, malformed JSON, missing theme data).
+ *   2 — input error (file missing, malformed JSON, missing theme data,
+ *       --compare reference missing or malformed).
  */
 
 import { readFile } from "node:fs/promises";
@@ -63,8 +89,27 @@ import { resolve } from "node:path";
 
 const DEFAULT_PATH = "a11y-baseline.json";
 const FLOOR_IMPACTS = ["critical", "serious"];
+const IMPACT_KEYS = ["critical", "serious", "moderate", "minor"];
 
-const argPath = process.argv[2] || DEFAULT_PATH;
+// Lightweight CLI parse: positional path + optional `--compare <reference>`.
+const argv = process.argv.slice(2);
+let argPath = DEFAULT_PATH;
+let comparePath = null;
+for (let i = 0; i < argv.length; i++) {
+  const a = argv[i];
+  if (a === "--compare") {
+    comparePath = argv[++i];
+    if (!comparePath) {
+      console.error("[a11y-gate] --compare requires a path argument");
+      process.exit(2);
+    }
+  } else if (!a.startsWith("--")) {
+    argPath = a;
+  } else {
+    console.error(`[a11y-gate] unknown flag: ${a}`);
+    process.exit(2);
+  }
+}
 const absPath = resolve(process.cwd(), argPath);
 
 let report;
@@ -134,6 +179,66 @@ for (const theme of themesToCheck) {
   }
 }
 
+// (3) --compare reference check (PR #144 anti-regression guard).
+//
+//     Reads the committed reference baseline and asserts that the CI
+//     run's byImpact + totalStories match it per theme. A mismatch in
+//     EITHER direction (lower OR higher) deserves human investigation:
+//     lower under workers=N suggests a false-green from axe reading
+//     partial DOM; higher is a real regression already mostly covered
+//     by the floor check (this catches moderate/minor regressions the
+//     floor would miss). A legitimate component change that moves the
+//     number updates the committed reference in the same PR.
+if (comparePath) {
+  const refAbs = resolve(process.cwd(), comparePath);
+  let reference;
+  try {
+    const refRaw = await readFile(refAbs, "utf8");
+    reference = JSON.parse(refRaw);
+  } catch (err) {
+    console.error(
+      `[a11y-gate] cannot read --compare reference ${refAbs}: ${err.message}`,
+    );
+    process.exit(2);
+  }
+
+  for (const theme of themesToCheck) {
+    const ciTheme = report[theme];
+    const refTheme = reference[theme];
+    if (!refTheme) {
+      console.error(
+        `[a11y-gate] --compare reference ${refAbs} has no data for theme "${theme}". The reference must cover every theme the CI run measures. Regenerate locally with \`npm run test:a11y:baseline\`.`,
+      );
+      process.exit(2);
+    }
+
+    const diffs = [];
+    if (ciTheme.totalStories !== refTheme.totalStories) {
+      diffs.push({
+        field: "totalStories",
+        ci: ciTheme.totalStories,
+        ref: refTheme.totalStories,
+      });
+    }
+    for (const impact of IMPACT_KEYS) {
+      const ciN = ciTheme.byImpact?.[impact] ?? 0;
+      const refN = refTheme.byImpact?.[impact] ?? 0;
+      if (ciN !== refN) {
+        diffs.push({ field: `byImpact.${impact}`, ci: ciN, ref: refN });
+      }
+    }
+
+    if (diffs.length > 0) {
+      failures.push({
+        theme,
+        kind: "reference-mismatch",
+        referencePath: comparePath,
+        diffs,
+      });
+    }
+  }
+}
+
 if (failures.length === 0) {
   const summary = themesToCheck
     .map(
@@ -169,6 +274,20 @@ for (const f of failures) {
         `    ${rule.id} [${rule.impact}] — ${rule.nodes} nodes across ${rule.stories} stories`,
       );
     }
+  } else if (f.kind === "reference-mismatch") {
+    console.error(
+      `  [${f.theme}] CI run diverges from committed reference (${f.referencePath}):`,
+    );
+    for (const d of f.diffs) {
+      const dir = d.ci < d.ref ? "↓ LOWER" : "↑ HIGHER";
+      console.error(`    ${d.field}: CI=${d.ci} ref=${d.ref}  (${dir})`);
+    }
+    console.error(
+      `    Lower under workers=N suggests a false-green (axe reading partial DOM).`,
+    );
+    console.error(
+      `    Higher is a real regression or a legitimate change — regenerate the reference (\`npm run test:a11y:baseline\`) and commit it if intentional.`,
+    );
   }
 }
 console.error(

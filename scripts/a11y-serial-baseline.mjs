@@ -17,14 +17,36 @@
  *     not BrowserContext in this Playwright version; setting it at
  *     context creation is the equivalent and applies to all pages.
  *
- * Why serial + fresh context per story:
- *   Phase C PR2 measured a workers=6 shared-context paralelo against a
- *   workers=1 fresh-context serial. The paralelo had axe-race on 2
- *   interactive stories (Form/with-events, Toast/clear-all). The serial
- *   closed that variance. Observed wall clock ~5.5min per theme on 852
- *   stories with a local storybook-static (BACKLOG predicted ~48min
- *   under slower I/O; record the actual run duration in the output).
- *   See BACKLOG "Phase C PR2 — calibragem metodológica".
+ * Why fresh BrowserContext per story (workers>1 is safe here):
+ *   The historical race was workers=6 + SHARED BrowserContext (Phase C
+ *   PR2). It manifested as `"Axe is already running"` errors on 2
+ *   interactive stories (Form/with-events, Toast/clear-all). TWO
+ *   structural fixes that survive in this script close that gap:
+ *
+ *     1. `globals=a11y.manual:!true` URL flag (see runStory below) —
+ *        disables the addon-a11y `afterEach` runner per page. The
+ *        addon no longer schedules its own axe.run that would race
+ *        with this script's run.
+ *     2. `browser.newContext(...)` inside `runStory` — every story
+ *        gets its own context regardless of workers. The original
+ *        "shared context" failure mode is structurally impossible:
+ *        no two workers ever touch the same DOM.
+ *
+ *   Phase 4 (PR #144) re-measured under those fixes: 28 stress runs
+ *   covering ~9.860 story executions INCLUDING the original failure
+ *   configurations (workers=6 ×3, workers=8 ×3) reported zero
+ *   variance on the 2 historically problematic stories. The race is
+ *   structurally resolved.
+ *
+ *   This script's default stays `workers: 1` — safest for ad-hoc
+ *   local runs by someone who hasn't read this comment. CI (ci.yml)
+ *   opts into `--workers 2` consciously to match the runner's 2-vCPU
+ *   count, doubling baseline throughput per theme. Going higher than
+ *   the runner's core count does not help and may mask timing
+ *   issues; we deliberately do NOT set --workers 4+ in CI.
+ *
+ *   See BACKLOG "Phase C PR2 — calibragem metodológica" (updated in
+ *   PR #144 with the resolution and re-measurement evidence).
  *
  * Why same axe-core as the gate:
  *   `@storybook/addon-a11y@10.0.3` depends on `axe-core@^4.2.0` and

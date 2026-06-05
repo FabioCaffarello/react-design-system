@@ -291,11 +291,31 @@ jobs:
           name: storybook-static
           path: storybook-static
 
+      # workers=2 matches the runner's vCPU count exactly. The race
+      # historic-flaky pattern (workers + shared BrowserContext) was
+      # structurally resolved by two earlier fixes that are still in
+      # place: (1) addon-a11y is disabled per-page via the
+      # `globals=a11y.manual:!true` URL flag inside the runner, so the
+      # addon's afterEach axe.run cannot collide with the script's;
+      # (2) the script creates a fresh BrowserContext per story
+      # regardless of worker count. Phase 4 measured 28 stress runs
+      # (~9.860 story executions) including the original failure
+      # configurations (workers=6, workers=8) with zero variance on
+      # the 2 historically problematic stories
+      # (components/form--with-events, components/toast--clear-all).
       - name: Run a11y baseline (light theme only)
-        run: node scripts/a11y-serial-baseline.mjs --theme light --output a11y-baseline-light.json
+        run: node scripts/a11y-serial-baseline.mjs --theme light --workers 2 --output a11y-baseline-light.json
 
-      - name: Validate baseline floor (critical+serious=0)
-        run: node scripts/validate-a11y-baseline.mjs a11y-baseline-light.json
+      # --compare against the committed reference is the anti-regression
+      # guard for parallelism. The floor check below (critical+serious=0)
+      # can't detect a false-green where axe under workers=N reads a
+      # partial DOM and reports FEWER violations than serial would — the
+      # number would just be at-or-below the floor and pass. The compare
+      # asserts that ALL byImpact buckets + totalStories match the
+      # committed baseline per theme. A mismatch in either direction
+      # fails the gate with a clear diagnostic.
+      - name: Validate baseline floor + reference parity
+        run: node scripts/validate-a11y-baseline.mjs a11y-baseline-light.json --compare a11y-baseline.json
 
       - name: Upload a11y baseline (light) artifact
         if: always()
@@ -328,11 +348,13 @@ jobs:
           name: storybook-static
           path: storybook-static
 
+      # See light theme job above for the rationale on --workers 2
+      # and the --compare anti-regression guard.
       - name: Run a11y baseline (dark theme only)
-        run: node scripts/a11y-serial-baseline.mjs --theme dark --output a11y-baseline-dark.json
+        run: node scripts/a11y-serial-baseline.mjs --theme dark --workers 2 --output a11y-baseline-dark.json
 
-      - name: Validate baseline floor (critical+serious=0)
-        run: node scripts/validate-a11y-baseline.mjs a11y-baseline-dark.json
+      - name: Validate baseline floor + reference parity
+        run: node scripts/validate-a11y-baseline.mjs a11y-baseline-dark.json --compare a11y-baseline.json
 
       - name: Upload a11y baseline (dark) artifact
         if: always()
