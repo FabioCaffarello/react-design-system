@@ -20,14 +20,17 @@
  *      "@fabio.caffarello/react-design-system/server"` from the same
  *      Server Component compiles AND does not cross a client boundary,
  *      because the `./server` bundle has no `"use client"` directive
- *      and exports only modules whose render is hook-free. The
- *      identifier-grep at the tail of this script verifies this
- *      empirically: it scans every client chunk emitted in `.next/`
- *      and asserts that no `__rsc_module_…?from=…/server/…` reference
- *      contains a server-only component name without also containing
- *      a client one. (Next's RSC manifest names client-boundary
- *      modules by source path; absence from the manifest is the
- *      positive signal that `./server` produced no boundary.)
+ *      and exports only modules whose render is hook-free. Step 4
+ *      verifies this empirically by reading Next's RSC client-reference
+ *      manifest at `.next/server/app/page_client-reference-manifest.js`
+ *      — the `clientModules` field of `__RSC_MANIFEST["/page"]` is the
+ *      authoritative list of source modules Next placed behind a client
+ *      boundary for the route. The gate asserts `dist/index.*` appears
+ *      in that list (issue #148 path exercised) and `dist/server/index.*`
+ *      does NOT (issue #150 path verified). The manifest is the contract;
+ *      we read it directly rather than scanning chunk bodies, which
+ *      Turbopack normalises in ways that produced false negatives during
+ *      development of this script.
  *
  * Pipeline:
  *   1. Build RDS (both bundles) so dist/index.{js,cjs} AND

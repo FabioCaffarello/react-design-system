@@ -170,6 +170,11 @@ if (existsSync(DIST_JS)) {
   // An earlier version that anchored `import\s*\{` directly missed
   // every React import in our actual bundles, producing a silent
   // false-green — a textbook ci-gates.md "test the gate" finding.
+  //
+  // Limitation: this only catches named-import and aliased-named-import
+  // forms. A future bundle that uses `import * as React from "react"`
+  // plus `React.createContext(...)` would slip past. Not produced by
+  // the current Rollup output; flagged for future bundler swaps.
   const reactImportRe =
     /import\s+(?:[A-Za-z_$][\w$]*\s*,\s*)?\{([^}]+)\}\s*from\s*["']react["']/g;
   let im;

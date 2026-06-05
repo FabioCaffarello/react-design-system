@@ -46,8 +46,13 @@ const TARGETS = [
 // React's `"use client"` directive matches both quote styles per
 // the spec; the main bundle emits double-quoted via vite banner but
 // the forbidden-side check has to catch BOTH so a future minifier
-// switch can't slip through.
-const DIRECTIVE_REGEX = /^﻿?(?:"use client"|'use client');/;
+// switch can't slip through. The trailing semicolon is optional —
+// directives are valid without one per the JS spec, and the
+// asymmetric risk matters: requiring `;` makes the *required* check
+// falsely fail (annoying) but makes the *forbidden* check falsely
+// pass (silent hole — a future minifier ASI-stripping the semicolon
+// would let "use client" slip into dist/server/index.* past the gate).
+const DIRECTIVE_REGEX = /^﻿?(?:"use client"|'use client');?/;
 const REQUIRED_LITERAL = '"use client";';
 
 for (const { path: rel, directive } of TARGETS) {

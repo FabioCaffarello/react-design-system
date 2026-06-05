@@ -76,7 +76,7 @@ export type { ContainerProps } from "./layouts/Container/Container";
 export { Stack } from "./layouts/Stack/Stack";
 export type { StackProps } from "./layouts/Stack/Stack";
 
-// ---------- components (13) ----------
+// ---------- components (12) ----------
 export { default as AutocompleteOption } from "./components/Autocomplete/AutocompleteOption";
 export type {
   AutocompleteOptionProps,

@@ -151,6 +151,12 @@ export function resolveImport(spec, fromFile) {
 // The cache also breaks cycles: re-entering a file in progress returns
 // the tentative "server" verdict, which is updated to "client" if a
 // real client hit is found further down the walk.
+//
+// Limitation: re-entry on a file mid-classification returns the tentative
+// `{ verdict: "server" }` cache entry, so an A→B→A cycle where A's
+// clientness is learned through B can leave B's cache entry stale. Not
+// triggered on the current server-safe set; a future contributor
+// introducing such a cycle should revisit this.
 export function classify(file, cache = new Map()) {
   if (cache.has(file)) return cache.get(file);
   cache.set(file, { verdict: "server", chain: [] });
