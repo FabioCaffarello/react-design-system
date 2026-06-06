@@ -95,13 +95,22 @@ export type { ContainerProps } from "./layouts/Container/Container";
 export { Stack } from "./layouts/Stack/Stack";
 export type { StackProps } from "./layouts/Stack/Stack";
 
-// ---------- components (13) ----------
-export { default as AutocompleteOption } from "./components/Autocomplete/AutocompleteOption";
-export type {
-  AutocompleteOptionProps,
-  AutocompleteOptionType,
-} from "./components/Autocomplete/AutocompleteOption";
-
+// ---------- components (12) ----------
+// AutocompleteOption was removed from this entry in the issue #160 sweep.
+// The static analyser in `scripts/lib/server-safe.mjs` had classified it
+// server-safe (it uses no hooks and no createContext), but the component
+// emits `<div onClick={handleClick}>` unconditionally and its `onSelect`
+// prop is REQUIRED — so there is no guard pattern that would make the
+// emitted handler conditional. Rendering it from a Server Component
+// fails RSC serialisation with "Event handlers cannot be passed to
+// Client Component props". The runtime smoke in `fixtures/next-smoke/
+// app/page.tsx` (extended in the same sweep to cover the entire server
+// surface) is what catches this class of bug — the static analyser
+// cannot, because distinguishing "always-on closure" from "consumer
+// pass-through" requires AST origin tracking with a real risk of false
+// positives on legitimate components. See `.claude/rules/server-entry.md`.
+// AutocompleteOption stays available via the main entry (`.`), where
+// it ships behind the `"use client"` banner that its own source carries.
 export { default as Breadcrumb } from "./components/Breadcrumb/Breadcrumb";
 export type { BreadcrumbItem } from "./components/Breadcrumb/Breadcrumb";
 
