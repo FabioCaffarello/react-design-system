@@ -98,7 +98,7 @@ const Card = memo(function Card({
       role={role}
       tabIndex={tabIndex}
       onClick={onClick}
-      onKeyDown={handleKeyDown}
+      onKeyDown={isInteractive ? handleKeyDown : undefined}
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledBy}
       {...props}
