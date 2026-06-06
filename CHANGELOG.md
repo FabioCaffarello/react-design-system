@@ -1,3 +1,10 @@
+## [3.3.1](https://github.com/FabioCaffarello/react-design-system/compare/v3.3.0...v3.3.1) (2026-06-06)
+
+
+### 🐛 Bug Fixes
+
+* **card+server-entry:** RSC-safe Card guard + full smoke surface coverage ([#160](https://github.com/FabioCaffarello/react-design-system/issues/160)) ([#161](https://github.com/FabioCaffarello/react-design-system/issues/161)) ([56323fb](https://github.com/FabioCaffarello/react-design-system/commit/56323fbcf61fb3089e50d53b1af008cfea9a83f3)), closes [#155](https://github.com/FabioCaffarello/react-design-system/issues/155)
+
 ## [3.3.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.2.0...v3.3.0) (2026-06-05)
 
 
