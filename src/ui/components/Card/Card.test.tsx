@@ -103,4 +103,30 @@ describe("Card", () => {
       expect(card).toHaveAttribute("tabIndex", "0");
     });
   });
+
+  describe("non-interactive Card emits no role / tabIndex (issue #160)", () => {
+    // A non-interactive Card (no `onClick`) must emit a plain <div>
+    // with no ARIA interactivity surface. The RSC failure mode that
+    // motivated this guard — an always-on `onKeyDown` closure assigned
+    // to the `<div>` — is NOT testable from JSDOM: React attaches
+    // event handlers via its own delegation system, never as DOM
+    // attributes, so `hasAttribute("onkeydown")` returns false even
+    // when the handler IS being passed. The gate that exercises the
+    // RSC failure mode end-to-end lives in
+    // `fixtures/next-smoke/app/page.tsx`: rendering `<Card>` (no
+    // onClick) inside a Next 16 Server Component fails `next build`
+    // with "Event handlers cannot be passed to Client Component props"
+    // if `onKeyDown={isInteractive ? handleKeyDown : undefined}`
+    // regresses back to `onKeyDown={handleKeyDown}`. The role and
+    // tabIndex assertions below are the JSDOM-visible companions to
+    // the same intent; they DO catch a regression where the guard
+    // pattern is removed from the role/tabIndex lines as well.
+
+    it("Card without onClick has no role and no tabIndex", () => {
+      const { container } = render(<Card>Static content</Card>);
+      const card = container.firstChild as HTMLElement;
+      expect(card).not.toHaveAttribute("role");
+      expect(card).not.toHaveAttribute("tabIndex");
+    });
+  });
 });
