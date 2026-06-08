@@ -6,10 +6,8 @@
  * @see EPIC-004: PageHeader Component (Molecule)
  */
 
-"use client";
-
 import Breadcrumb from "../Breadcrumb/Breadcrumb";
-import { Text } from "../../primitives";
+import Text from "../../primitives/Text/Text";
 import type { PageHeaderProps } from "./types";
 import { cn, cva } from "../../utils";
 import { getSpacingClass } from "../../tokens/spacing";

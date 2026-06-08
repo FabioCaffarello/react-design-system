@@ -21,13 +21,15 @@ Server-safety is decided on **two axes**, by two different gates:
 
 A module is server-safe only when it passes **both** axes.
 
-The current set is **24 components**, listed in `src/ui/server.ts` and re-derived on demand by `node scripts/analyze-server-safe.mjs`:
+The current set is **25 components**, listed in `src/ui/server.ts` and re-derived on demand by `node scripts/analyze-server-safe.mjs`:
 
 - **Primitives (10)**: `Badge`, `Chip`, `ErrorMessage`, `Info`, `Label`, `Progress`, `Separator`, `Skeleton`, `Spinner`, `Text`.
 - **Layouts (2)**: `Container`, `Stack`.
-- **Components (12)**: `Breadcrumb`, `Card`, `DialogHeader`, `DialogFooter`, `DrawerHeader`, `DrawerFooter`, `HeaderActions`, `HeaderNavigation`, `MenuSeparator`, `NavbarSeparator`, `TableCell`, `Timeline`.
+- **Components (13)**: `Breadcrumb`, `Card`, `DialogHeader`, `DialogFooter`, `DrawerHeader`, `DrawerFooter`, `HeaderActions`, `HeaderNavigation`, `MenuSeparator`, `NavbarSeparator`, `PageHeader`, `TableCell`, `Timeline`.
 
 Badge, Label, Separator, and Card were promoted in issue #155: each previously held `useMemo` (and Card additionally `useCallback`) calls that were purely decorative — they memoized class-string concatenations and a single `onClick !== undefined` boolean, not render-driving state. Inlining those expressions removed the only barrier without changing observable behaviour or perf (string concatenation is nanoseconds; `React.memo` on the component is preserved and continues to gate re-renders at the consumer-prop boundary).
+
+**`PageHeader` promoted in issue #178.** Its body never used a React client API — the `"use client"` directive at the top of `PageHeader.tsx` was vestigial. The analyser nonetheless classified it client-only because of a barrel import `import { Text } from "../../primitives"` that the static walk follows transitively into `primitives/index.ts`, which re-exports `Input.tsx` (`useMemo`). Replacing the barrel with a concrete-source-file import (`import Text from "../../primitives/Text/Text"`) and removing the directive flipped the classification with no behavioural change. This is the exact mechanism rule 1 below exists to prevent on `src/ui/server.ts`; the same anti-pattern in non-entry files is not gated, but `#178` is the canonical worked example of it as a latent blocker on promotion.
 
 **`AutocompleteOption` removed in #160.** Originally promoted in #150, it passed axis 1 (no hooks, no `createContext`) but failed axis 2 once the smoke fixture was extended to render the full surface: its source emits `<div onClick={handleClick}>` where `handleClick` is a local closure that calls the required `onSelect` prop. There is no guard pattern available — `onSelect` is required, so `handleClick` must always exist; the only honest fix is to keep the component on the main entry (where its source `"use client"` directive applies) and remove it from this entry. The same #160 sweep also fixed `Card`'s analogous bug (`onKeyDown={handleKeyDown}` → `onKeyDown={isInteractive ? handleKeyDown : undefined}`) — Card kept its place because its `onClick` is optional and the handler can be elided when `isInteractive` is false.
 
