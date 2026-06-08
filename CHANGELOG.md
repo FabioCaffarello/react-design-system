@@ -1,3 +1,10 @@
+## [3.4.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.3.1...v3.4.0) (2026-06-08)
+
+
+### ✨ Features
+
+* **server-entry:** promote PageHeader to ./server ([#178](https://github.com/FabioCaffarello/react-design-system/issues/178)) ([#179](https://github.com/FabioCaffarello/react-design-system/issues/179)) ([490f854](https://github.com/FabioCaffarello/react-design-system/commit/490f8548c3d2ed4c476725f6f4711b231dce4a61)), closes [#155](https://github.com/FabioCaffarello/react-design-system/issues/155)
+
 ## [3.3.1](https://github.com/FabioCaffarello/react-design-system/compare/v3.3.0...v3.3.1) (2026-06-06)
 
 
