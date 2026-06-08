@@ -95,7 +95,7 @@ export type { ContainerProps } from "./layouts/Container/Container";
 export { Stack } from "./layouts/Stack/Stack";
 export type { StackProps } from "./layouts/Stack/Stack";
 
-// ---------- components (12) ----------
+// ---------- components (13) ----------
 // AutocompleteOption was removed from this entry in the issue #160 sweep.
 // The static analyser in `scripts/lib/server-safe.mjs` had classified it
 // server-safe (it uses no hooks and no createContext), but the component
@@ -139,6 +139,12 @@ export type { MenuSeparatorProps } from "./components/Menu/MenuSeparator";
 
 export { default as NavbarSeparator } from "./components/SideNavbar/components/Navbar/NavbarSeparator";
 export type { NavbarSeparatorProps } from "./components/SideNavbar/types";
+
+export { default as PageHeader } from "./components/PageHeader/PageHeader";
+export type {
+  PageHeaderProps,
+  PageHeaderVariant,
+} from "./components/PageHeader/types";
 
 export { default as TableCell } from "./components/Table/TableCell";
 export type { TableCellProps } from "./components/Table/TableCell";

@@ -53,6 +53,7 @@ import {
   Label,
   MenuSeparator,
   NavbarSeparator,
+  PageHeader,
   Progress,
   Separator,
   Skeleton,
@@ -101,6 +102,12 @@ export default function Page() {
 
         <MenuSeparator />
         <NavbarSeparator />
+
+        <PageHeader
+          title="static page header"
+          description="static description"
+          breadcrumb={[{ label: "Home", href: "/" }, { label: "Section" }]}
+        />
 
         <Timeline
           items={[
