@@ -1,3 +1,10 @@
+## [3.7.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.6.0...v3.7.0) (2026-06-09)
+
+
+### ✨ Features
+
+* **stat:** StatGroup + Stat compound (consolidates [#164](https://github.com/FabioCaffarello/react-design-system/issues/164)+[#166](https://github.com/FabioCaffarello/react-design-system/issues/166)) ([#183](https://github.com/FabioCaffarello/react-design-system/issues/183)) ([ff6af38](https://github.com/FabioCaffarello/react-design-system/commit/ff6af3820391d05b246f94f124f97df323460c9d)), closes [#178](https://github.com/FabioCaffarello/react-design-system/issues/178)
+
 ## [3.6.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.5.0...v3.6.0) (2026-06-09)
 
 
