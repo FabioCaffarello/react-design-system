@@ -1,0 +1,101 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Design System/Guides/ScrollSpy" />
+
+# Scroll spy — `useScrollSpy`
+
+A long page with a sidebar nav that highlights the section currently in view is a recurring requirement (table of contents, profile pages with sections, settings categories, long docs). The design system ships this as a **hook**, not a component, because the visual surface is already covered by `Navigation` + `NavLink` with the `active` prop — what was missing is the behaviour that decides _which section is active right now_.
+
+This recipe shows the canonical composition. It is the only sanctioned way to wire the behaviour at the moment; if you find yourself building a `<SectionNav>` component, re-read the verdict on the original issue first.
+
+## The hook
+
+```ts
+import { useScrollSpy } from "@fabio.caffarello/react-design-system";
+
+const active = useScrollSpy(["intro", "votos", "gastos"], {
+  // Optional. Defaults to "0px 0px -50% 0px" — a section is considered
+  // active when it enters the upper half of the viewport. To compensate
+  // for a sticky header, prefix the top with a negative pixel value.
+  rootMargin: "-56px 0px -50% 0px",
+});
+```
+
+The full behavioural contract — return value semantics, tie-breaking, SSR safety, cleanup, the `ids` stability sentinel — lives in the JSDoc above the hook. Read it before you wire the hook into anything non-trivial; the contract documents decisions (e.g., `activeId` starts at `null`, not at the first id) that would otherwise surprise a downstream agent.
+
+## Recipe — vertical sticky nav, manual `active`
+
+```tsx
+"use client";
+
+import {
+  useScrollSpy,
+  Navigation,
+  NavLink,
+} from "@fabio.caffarello/react-design-system";
+
+const SECTIONS = [
+  { id: "intro", label: "Introdução" },
+  { id: "votos", label: "Votos" },
+  { id: "gastos", label: "Gastos" },
+];
+
+export function ProfileToc() {
+  const active = useScrollSpy(
+    SECTIONS.map((s) => s.id),
+    { rootMargin: "-56px 0px -50% 0px" },
+  );
+
+  return (
+    <nav className="sticky top-14">
+      <Navigation orientation="vertical">
+        {SECTIONS.map((s) => (
+          <NavLink
+            key={s.id}
+            href={`#${s.id}`}
+            active={s.id === active}
+            aria-current={s.id === active ? "location" : undefined}
+          >
+            {s.label}
+          </NavLink>
+        ))}
+      </Navigation>
+    </nav>
+  );
+}
+```
+
+Three pieces collaborate, and the boundary between them is the point of the recipe:
+
+1. **`SECTIONS`** is a module-scope constant. The hook detects changes to the `ids` set via a string sentinel (`ids.join("|")`), so a stable array reference avoids unnecessary observer recreation; a constant is the simplest stable reference. If your section list is dynamic, wrap it in `useMemo`.
+2. **`useScrollSpy`** owns the behaviour: it observes the DOM nodes whose ids you passed and returns the id of the topmost intersecting section. It does not know about the nav. It does not know about layout. It returns a string or `null`.
+3. **`Navigation` + `NavLink`** own the visual. The recipe passes `active={s.id === active}` and `aria-current={…}` per item. The nav itself is wrapped in a `<nav className="sticky top-14">` because `sticky` is a layout decision, not a prop on `Navigation` — the consumer decides where the nav sticks and at what offset, and that offset has to match the `rootMargin` negative top so that the section gets marked active right as it clears the header.
+
+## The sections in the page
+
+Each `<NavLink href="#id">` needs a corresponding element with that `id` somewhere down the page. With the Card compound (#165) the canonical pairing is:
+
+```tsx
+<Card asSection id="intro" aria-labelledby="intro-title">
+  <Card.Header>
+    <Card.Title id="intro-title">Introdução</Card.Title>
+  </Card.Header>
+  <Card.Body>{/* … */}</Card.Body>
+</Card>
+```
+
+The `id` on the Card root is what `useScrollSpy` resolves via `document.getElementById`; the `id` on `Card.Title` is what feeds `aria-labelledby` so the landmark is named. Two ids, one section, semantically distinct — see the Card compound docs for the landmark contract.
+
+## Why not a `<SectionNav>` component
+
+The original issue (#167) proposed a `<SectionNav>` that bundled the scrollspy behaviour with a fixed visual layout. The design-system review chose the hook instead because:
+
+- The visual surface (sticky vertical nav with active highlighting) already existed — composing the hook with `Navigation`/`NavLink` is two lines.
+- A component would have coupled `<SectionNav>` to a sibling component (`<SectionCard>`) via an opaque id-string convention. The DS cannot validate that coupling; the hook makes it the consumer's local concern.
+- A hook is reusable in non-nav contexts (TOC of docs, settings page categories, form steppers driven by scroll).
+
+If the recipe above is too verbose for your case, the right move is _local_ — wrap it in your own component inside the consumer app, not inside the design system.
+
+## Client-only by construction
+
+The hook calls `useEffect` and `IntersectionObserver`. It is **not** part of the `./server` entry — see `.claude/rules/server-entry.md` for why hooks never appear there. Consumers importing from `./server` get an "export not found" error if they try, which is the intended early-failure surface. Always import `useScrollSpy` from the main entry of the package.

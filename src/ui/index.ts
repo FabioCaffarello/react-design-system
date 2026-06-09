@@ -76,3 +76,15 @@ export {
 // 5. COMPONENTS (depend on providers, tokens, and utils)
 export * from "./primitives";
 export * from "./components";
+
+// 6. Public hooks (consumer-facing)
+// ============================================================================
+// Hooks listed below are part of the public API surface of the package and
+// follow the semver-bound contract defined in `.claude/rules/hooks.md`.
+// Internal hooks under `src/ui/hooks/` are NOT re-exported from this file —
+// they are implementation detail of RDS components and free to change.
+// Adding a hook here is a one-way promotion; the rule file explains the
+// promotion criteria and the JSDoc contract a public hook must carry.
+// ============================================================================
+export { useScrollSpy } from "./hooks/useScrollSpy";
+export type { UseScrollSpyOptions } from "./hooks/useScrollSpy";
