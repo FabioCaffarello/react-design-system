@@ -95,7 +95,7 @@ export type { ContainerProps } from "./layouts/Container/Container";
 export { Stack } from "./layouts/Stack/Stack";
 export type { StackProps } from "./layouts/Stack/Stack";
 
-// ---------- components (13) ----------
+// ---------- components (18) ----------
 // AutocompleteOption was removed from this entry in the issue #160 sweep.
 // The static analyser in `scripts/lib/server-safe.mjs` had classified it
 // server-safe (it uses no hooks and no createContext), but the component
@@ -115,6 +115,30 @@ export { default as Breadcrumb } from "./components/Breadcrumb/Breadcrumb";
 export type { BreadcrumbItem } from "./components/Breadcrumb/Breadcrumb";
 
 export { default as Card } from "./components/Card/Card";
+export type { CardProps } from "./components/Card/Card";
+
+// Card compound subcomponents. Each lives in its own source file so the
+// server/client boundary is per-file: the root Card and every subcomponent
+// here are presentational with no hooks, so they all ship in `./server`.
+// Interactive children supplied via `<Card.Actions>` (typically `<Button>`)
+// cross the RSC boundary as client references — the wrapper stays
+// server-safe. `data-card-actions` on `CardActions` is the structural
+// marker `CardHeader` uses via Tailwind `:has()` to switch its grid
+// layout when actions are present; see CardActions.tsx.
+export { CardHeader } from "./components/Card/CardHeader";
+export type { CardHeaderProps } from "./components/Card/CardHeader";
+
+export { CardTitle } from "./components/Card/CardTitle";
+export type { CardTitleProps, CardTitleAs } from "./components/Card/CardTitle";
+
+export { CardSubtitle } from "./components/Card/CardSubtitle";
+export type { CardSubtitleProps } from "./components/Card/CardSubtitle";
+
+export { CardActions } from "./components/Card/CardActions";
+export type { CardActionsProps } from "./components/Card/CardActions";
+
+export { CardBody } from "./components/Card/CardBody";
+export type { CardBodyProps } from "./components/Card/CardBody";
 
 export { DialogHeader } from "./components/Dialog/DialogHeader";
 export type { DialogHeaderProps } from "./components/Dialog/DialogHeader";

@@ -2,8 +2,10 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 import { expect, userEvent, within, waitFor } from "storybook/test";
 import { useState } from "react";
+import { Users } from "lucide-react";
 import Card from "./Card";
 import { Text, Button } from "../../primitives";
+import Badge from "../../primitives/Badge/Badge";
 
 const meta: Meta<typeof Card> = {
   title: "Components/Card",
@@ -458,6 +460,111 @@ export const SelectedState: StoryObj<typeof Card> = {
       },
     },
   },
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// Compound subcomponents (#165)
+// ─────────────────────────────────────────────────────────────────────────
+//
+// The Card compound exposes Card.Header / Card.Title / Card.Subtitle /
+// Card.Actions / Card.Body via dot-notation (and also as named exports for
+// tree-shaking). Every subcomponent is presentational and ships in
+// `./server` — interactive children that the consumer composes inside
+// `Card.Actions` (typically `<Button>`) cross the RSC boundary naturally
+// as client references.
+
+export const Compound: StoryObj<typeof Card> = {
+  render: () => (
+    <Card asSection aria-labelledby="story-compound-title" padding="large">
+      <Card.Header>
+        <Card.Title id="story-compound-title">Parlamentares</Card.Title>
+        <Card.Subtitle>Câmara e Senado, atualizado em tempo real</Card.Subtitle>
+        <Card.Actions>
+          <Button variant="ghost">Editar</Button>
+        </Card.Actions>
+      </Card.Header>
+      <Card.Body>
+        <Text as="p" className="text-fg-secondary">
+          The Card body holds the primary content of the section.
+        </Text>
+      </Card.Body>
+    </Card>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Full compound surface: asSection landmark with an accessible name (aria-labelledby → Card.Title id), header with title + subtitle + actions, and body. This is the canonical 'SectionCard' arquetype.",
+      },
+    },
+  },
+};
+
+export const CompoundWithIconAndBadge: StoryObj<typeof Card> = {
+  render: () => (
+    <Card asSection aria-labelledby="story-icon-badge-title" padding="large">
+      <Card.Header>
+        <Card.Title
+          id="story-icon-badge-title"
+          icon={<Users size={18} aria-hidden="true" />}
+          badge={<Badge variant="primary">Beta</Badge>}
+        >
+          Parlamentares
+        </Card.Title>
+        <Card.Subtitle>Inclui presidentes de comissões</Card.Subtitle>
+      </Card.Header>
+      <Card.Body>
+        <Text as="p" className="text-fg-secondary">
+          Title with the `icon` and `badge` slot props. Icon always renders
+          before the text; badge always after. Two stable positions.
+        </Text>
+      </Card.Body>
+    </Card>
+  ),
+};
+
+export const CompoundHeaderOnly: StoryObj<typeof Card> = {
+  render: () => (
+    <Card padding="large">
+      <Card.Header>
+        <Card.Title>Header without body</Card.Title>
+        <Card.Subtitle>Slots collapse cleanly when omitted</Card.Subtitle>
+      </Card.Header>
+    </Card>
+  ),
+};
+
+export const CompoundBodyOnly: StoryObj<typeof Card> = {
+  render: () => (
+    <Card padding="large">
+      <Card.Body>
+        <Text as="p">
+          Body without a header — equivalent to the legacy flat Card usage.
+        </Text>
+      </Card.Body>
+    </Card>
+  ),
+};
+
+export const CompoundWithoutSection: StoryObj<typeof Card> = {
+  render: () => (
+    <Card padding="large">
+      <Card.Header>
+        <Card.Title as="h3">A card that is NOT a landmark</Card.Title>
+        <Card.Subtitle>
+          Default <code>asSection</code> is <code>false</code>; the root is a
+          plain <code>div</code>. Use this for visual grouping that does not
+          warrant a landmark in the document outline.
+        </Card.Subtitle>
+      </Card.Header>
+      <Card.Body>
+        <Text as="p" className="text-fg-secondary">
+          The compound subcomponents work identically with or without{" "}
+          <code>asSection</code>.
+        </Text>
+      </Card.Body>
+    </Card>
+  ),
 };
 
 export default meta;
