@@ -95,7 +95,7 @@ export type { ContainerProps } from "./layouts/Container/Container";
 export { Stack } from "./layouts/Stack/Stack";
 export type { StackProps } from "./layouts/Stack/Stack";
 
-// ---------- components (18) ----------
+// ---------- components (20) ----------
 // AutocompleteOption was removed from this entry in the issue #160 sweep.
 // The static analyser in `scripts/lib/server-safe.mjs` had classified it
 // server-safe (it uses no hooks and no createContext), but the component
@@ -169,6 +169,21 @@ export type {
   PageHeaderProps,
   PageHeaderVariant,
 } from "./components/PageHeader/types";
+
+// Stat + StatGroup — the consolidated metrics primitive (#166, replaces
+// the originally proposed `KpiStrip` and `StatsGrid` as a single compound).
+// Both are pure presentation; the consumer composes them inside `./server`
+// without crossing a client boundary. Concrete-file re-exports per rule 1
+// of `.claude/rules/server-entry.md`.
+export { default as Stat } from "./components/Stat/Stat";
+export type { StatProps, StatTone, StatAlign } from "./components/Stat/Stat";
+
+export { StatGroup } from "./components/Stat/StatGroup";
+export type {
+  StatGroupProps,
+  StatGroupLayout,
+  StatGroupCols,
+} from "./components/Stat/StatGroup";
 
 export { default as TableCell } from "./components/Table/TableCell";
 export type { TableCellProps } from "./components/Table/TableCell";

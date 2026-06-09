@@ -64,6 +64,8 @@ import {
   Skeleton,
   Spinner,
   Stack,
+  Stat,
+  StatGroup,
   TableCell,
   Text,
   Timeline,
@@ -123,6 +125,20 @@ export default function Page() {
 
         <MenuSeparator />
         <NavbarSeparator />
+
+        {/* Stat compound (#166) — server-safe. The empty-state branch
+            (value={null}) exercises the em-dash + aria-label path inside
+            an RSC build; static props only, no functions. */}
+        <StatGroup layout="grid" cols={4}>
+          <Stat value="9,4 mil" label="Parlamentares" align="center" />
+          <Stat value="3,2 mil" label="Proposições" align="center" />
+          <Stat value={0} label="Votações" hint="legítimo: 0" />
+          <Stat
+            value={null}
+            label="Alinhamento"
+            hint="empty: aria-label No data"
+          />
+        </StatGroup>
 
         <PageHeader
           title="static page header"

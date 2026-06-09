@@ -1,5 +1,15 @@
 export { default as Card } from "./Card";
 
+export { Stat, StatGroup } from "./Stat";
+export type {
+  StatProps,
+  StatTone,
+  StatAlign,
+  StatGroupProps,
+  StatGroupLayout,
+  StatGroupCols,
+} from "./Stat";
+
 export * from "./Form";
 
 export { default as Breadcrumb } from "./Breadcrumb";

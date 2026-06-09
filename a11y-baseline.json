@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-09T01:49:32.299Z",
+  "generatedAt": "2026-06-09T15:23:41.263Z",
   "axeCoreVersion": "4.11.4",
   "workers": 1,
   "settleMs": 200,
@@ -7,8 +7,8 @@
   "filter": null,
   "themes": ["light", "dark"],
   "light": {
-    "durationMs": 345186,
-    "totalStories": 865,
+    "durationMs": 354515,
+    "totalStories": 875,
     "storiesWithViolations": 5,
     "totalNodes": 7,
     "byImpact": {
@@ -112,8 +112,8 @@
     ]
   },
   "dark": {
-    "durationMs": 347101,
-    "totalStories": 865,
+    "durationMs": 354938,
+    "totalStories": 875,
     "storiesWithViolations": 5,
     "totalNodes": 7,
     "byImpact": {
