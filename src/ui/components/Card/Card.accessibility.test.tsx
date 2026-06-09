@@ -151,4 +151,70 @@ describe("Card Accessibility", () => {
       expect(buttons[0]).toHaveTextContent("Action");
     });
   });
+
+  describe("asSection landmark (#165)", () => {
+    // Four affirmative tests that cover both axes of the landmark
+    // contract — equivalent, for a11y, of the "prove the gate fails
+    // when it should" discipline from .claude/rules/ci-gates.md:
+    //
+    //   1. asSection + aria-labelledby → NAMED region landmark.
+    //   2. Default (no asSection) → no region role exposed.
+    //   3. asSection without a name → dev warn fires (the dev-time
+    //      safety net that replaces the missing axe rule — axe does
+    //      not flag <section> without a name because it's valid HTML,
+    //      just bad for AT navigation).
+    //   4. asSection + aria-label alone → still named, NO warn.
+
+    it("asSection + aria-labelledby produces a NAMED region landmark", () => {
+      render(
+        <Card asSection aria-labelledby="card-title">
+          <Card.Header>
+            <Card.Title id="card-title">Parlamentares</Card.Title>
+          </Card.Header>
+        </Card>,
+      );
+      // The implicit role of <section> with an accessible name is "region".
+      const region = screen.getByRole("region", { name: "Parlamentares" });
+      expect(region).toBeInTheDocument();
+      expect(region.tagName).toBe("SECTION");
+    });
+
+    it("default (no asSection) does NOT expose a region role", () => {
+      render(<Card aria-labelledby="any">Plain</Card>);
+      expect(screen.queryByRole("region")).not.toBeInTheDocument();
+    });
+
+    it("asSection WITHOUT an accessible name fires the dev warn", () => {
+      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+      try {
+        render(<Card asSection>Anonymous landmark</Card>);
+        expect(warnSpy).toHaveBeenCalledTimes(1);
+        const message = warnSpy.mock.calls[0]![0] as string;
+        expect(message).toContain("[Card]");
+        expect(message).toContain("asSection");
+        expect(message).toContain("aria-labelledby");
+      } finally {
+        warnSpy.mockRestore();
+      }
+    });
+
+    it("asSection + aria-label alone is enough — NO warn", () => {
+      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+      try {
+        render(
+          <Card asSection aria-label="Resumo">
+            conteúdo
+          </Card>,
+        );
+        expect(warnSpy).not.toHaveBeenCalled();
+        // aria-label is a valid accessible name on <section>; axe-equivalent
+        // region role is exposed.
+        expect(
+          screen.getByRole("region", { name: "Resumo" }),
+        ).toBeInTheDocument();
+      } finally {
+        warnSpy.mockRestore();
+      }
+    });
+  });
 });

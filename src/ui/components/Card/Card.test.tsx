@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import Card from "./Card";
+import { CardHeader, CardTitle, CardSubtitle, CardActions, CardBody } from ".";
 
 describe("Card", () => {
   it("renders with children", () => {
@@ -127,6 +128,116 @@ describe("Card", () => {
       const card = container.firstChild as HTMLElement;
       expect(card).not.toHaveAttribute("role");
       expect(card).not.toHaveAttribute("tabIndex");
+    });
+  });
+
+  describe("compound subcomponents (#165)", () => {
+    it("exposes subcomponents via dot-notation", () => {
+      expect(Card.Header).toBe(CardHeader);
+      expect(Card.Title).toBe(CardTitle);
+      expect(Card.Subtitle).toBe(CardSubtitle);
+      expect(Card.Actions).toBe(CardActions);
+      expect(Card.Body).toBe(CardBody);
+    });
+
+    it("renders the full compound surface", () => {
+      render(
+        <Card>
+          <Card.Header>
+            <Card.Title>Title text</Card.Title>
+            <Card.Subtitle>Subtitle text</Card.Subtitle>
+            <Card.Actions>
+              <button type="button">Edit</button>
+            </Card.Actions>
+          </Card.Header>
+          <Card.Body>Body text</Card.Body>
+        </Card>,
+      );
+      expect(screen.getByText("Title text")).toBeInTheDocument();
+      expect(screen.getByText("Subtitle text")).toBeInTheDocument();
+      expect(screen.getByText("Body text")).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Edit" })).toBeInTheDocument();
+    });
+
+    it("collapses absent slots: header alone is fine without actions or subtitle", () => {
+      render(
+        <Card>
+          <Card.Header>
+            <Card.Title>Only title</Card.Title>
+          </Card.Header>
+          <Card.Body>Body</Card.Body>
+        </Card>,
+      );
+      expect(screen.getByText("Only title")).toBeInTheDocument();
+      expect(screen.getByText("Body")).toBeInTheDocument();
+    });
+
+    it("body alone is fine without header", () => {
+      render(
+        <Card>
+          <Card.Body>Body only</Card.Body>
+        </Card>,
+      );
+      expect(screen.getByText("Body only")).toBeInTheDocument();
+    });
+
+    it("CardTitle renders icon, text, and badge in order", () => {
+      render(
+        <Card.Title
+          icon={<span data-testid="ico">i</span>}
+          badge={<span data-testid="bdg">B</span>}
+        >
+          Parlamentares
+        </Card.Title>,
+      );
+      const ico = screen.getByTestId("ico");
+      const bdg = screen.getByTestId("bdg");
+      const txt = screen.getByText("Parlamentares");
+      expect(ico).toBeInTheDocument();
+      expect(bdg).toBeInTheDocument();
+      // DOM order: ico → text → badge
+      const positionIco = ico.compareDocumentPosition(txt);
+      const positionBdg = txt.compareDocumentPosition(bdg);
+      expect(positionIco & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      expect(positionBdg & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    });
+
+    it("CardTitle defaults to h2 and accepts as prop", () => {
+      const { rerender } = render(<Card.Title>Default</Card.Title>);
+      expect(
+        screen.getByRole("heading", { level: 2, name: "Default" }),
+      ).toBeInTheDocument();
+      rerender(<Card.Title as="h3">Deep</Card.Title>);
+      expect(
+        screen.getByRole("heading", { level: 3, name: "Deep" }),
+      ).toBeInTheDocument();
+    });
+
+    it("CardActions carries data-card-actions for header layout switch", () => {
+      const { container } = render(<Card.Actions>act</Card.Actions>);
+      const root = container.firstChild as HTMLElement;
+      expect(root).toHaveAttribute("data-card-actions");
+    });
+  });
+
+  describe("asSection (#165)", () => {
+    it("default is false: root is a <div>", () => {
+      const { container } = render(<Card>Plain</Card>);
+      const root = container.firstChild as HTMLElement;
+      expect(root.tagName).toBe("DIV");
+    });
+
+    it("asSection={true} with aria-labelledby renders <section>", () => {
+      const { container } = render(
+        <Card asSection aria-labelledby="t">
+          <Card.Header>
+            <Card.Title id="t">Titled</Card.Title>
+          </Card.Header>
+        </Card>,
+      );
+      const root = container.firstChild as HTMLElement;
+      expect(root.tagName).toBe("SECTION");
+      expect(root).toHaveAttribute("aria-labelledby", "t");
     });
   });
 });

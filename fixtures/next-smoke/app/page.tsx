@@ -40,6 +40,11 @@ import {
   Badge,
   Breadcrumb,
   Card,
+  CardActions,
+  CardBody,
+  CardHeader,
+  CardSubtitle,
+  CardTitle,
   Chip,
   Container,
   DialogFooter,
@@ -87,6 +92,22 @@ export default function Page() {
         </Stack>
 
         <Card>card without onClick — must not emit onKeyDown (issue #160)</Card>
+
+        {/* Card compound (#165) — server-safe across every subcomponent.
+            The asSection branch is exercised with an accessible name so
+            the dev warn does NOT fire here; landmark-without-name is
+            covered by the Card.accessibility.test.tsx suite, not by the
+            RSC smoke. */}
+        <Card asSection aria-labelledby="card-compound-title">
+          <CardHeader>
+            <CardTitle id="card-compound-title">compound title</CardTitle>
+            <CardSubtitle>compound subtitle</CardSubtitle>
+            <CardActions>
+              <span>static action node</span>
+            </CardActions>
+          </CardHeader>
+          <CardBody>compound body</CardBody>
+        </Card>
 
         <Breadcrumb
           items={[{ label: "Home", href: "/" }, { label: "Section" }]}
