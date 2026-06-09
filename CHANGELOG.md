@@ -1,3 +1,10 @@
+## [3.6.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.5.0...v3.6.0) (2026-06-09)
+
+
+### ✨ Features
+
+* **hooks:** useScrollSpy + establish public hooks contract ([#167](https://github.com/FabioCaffarello/react-design-system/issues/167)) ([#182](https://github.com/FabioCaffarello/react-design-system/issues/182)) ([04b5083](https://github.com/FabioCaffarello/react-design-system/commit/04b5083ee1fbb261ae9fdf7c3286c78cfc7e82bc)), closes [#165](https://github.com/FabioCaffarello/react-design-system/issues/165)
+
 ## [3.5.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.4.0...v3.5.0) (2026-06-09)
 
 
