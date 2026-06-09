@@ -16,6 +16,20 @@ updates:
     labels:
       - dependencies
       - npm
+    ignore:
+      # eslint-plugin-react-hooks 6.x/7.x changes flat-config plugin shape
+      # (object form per ESLint v10 migration); the upgrade requires a manual
+      # rewrite of eslint.config.js. Track in a dedicated PR when scheduled.
+      - dependency-name: "eslint-plugin-react-hooks"
+        update-types: ["version-update:semver-major"]
+      # eslint-plugin-react-refresh 0.5.x is ESM-only, renames customHOCs →
+      # extraHOCs, and changes its export shape. Dedicated PR.
+      - dependency-name: "eslint-plugin-react-refresh"
+        update-types: ["version-update:semver-major"]
+      # @vitejs/plugin-react 6.x requires Vite 8+; we're on Vite ^7.1.7.
+      # Re-evaluate once a Vite 7 → 8 upgrade lands.
+      - dependency-name: "@vitejs/plugin-react"
+        update-types: ["version-update:semver-major"]
     groups:
       storybook:
         patterns:
