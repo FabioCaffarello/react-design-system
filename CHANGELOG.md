@@ -1,3 +1,10 @@
+## [3.5.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.4.0...v3.5.0) (2026-06-09)
+
+
+### ✨ Features
+
+* **card:** compound subcomponents — Header/Title/Subtitle/Actions/Body ([#165](https://github.com/FabioCaffarello/react-design-system/issues/165)) ([#181](https://github.com/FabioCaffarello/react-design-system/issues/181)) ([1c59dda](https://github.com/FabioCaffarello/react-design-system/commit/1c59dda989858fc45c6524762fb5b50228ea7193)), closes [#160](https://github.com/FabioCaffarello/react-design-system/issues/160)
+
 ## [3.4.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.3.1...v3.4.0) (2026-06-08)
 
 
