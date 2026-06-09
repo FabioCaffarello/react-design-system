@@ -83,6 +83,15 @@ The `a11y-baseline` job in `.github/workflows/ci.yml` runs both in sequence (`te
 - **Adding a component to the server entry.** Land it under `src/ui/`, run `node scripts/analyze-server-safe.mjs` to confirm its transitive imports stay clean, add an explicit re-export in `src/ui/server.ts` (concrete source-file path — NEVER a folder-index barrel, that would pull client siblings in transitively), **render it in `fixtures/next-smoke/app/page.tsx` with minimal static props (no functions)**, and update both `.claude/rules/server-entry.md`'s inventory and this section in the same commit per `.claude/rules/docs-sync.md`. The fixture step is the #160 reinforcement — it exercises every server-safe component in a real Server Component build so the runtime catches the "function-as-DOM-prop unconditionally" class of bug that the static analyser cannot see.
 - **Rules and enforcement details.** `.claude/rules/server-entry.md`. Four gates fire on regression: source-level (`validate-server-entry.mjs`), artifact-level dual directive (`validate-use-client-in-dist.mjs`), bundle-emission scan (third check inside `validate-server-entry.mjs` once `dist/server/` exists), and end-to-end Next 16 manifest read plus full-surface render (`next-smoke.mjs` step 3 build + step 4 manifest; the page renders every component in `src/ui/server.ts`). Each was verified to fail when it should fail per `.claude/rules/ci-gates.md` — including the #160 reinforcement: reverting the Card guard makes `next build` exit non-zero with the same RSC serialisation error the consumer reported.
 
+## Public hooks
+
+Hooks live in `src/ui/hooks/`. Two disjoint categories, distinguished by export surface, not by location:
+
+- **Internal hooks** (`useFocusTrap`, `useAutoFocus`, `useFocusRestore`, `useCollapsible`, etc. — eight today) are NOT re-exported from `src/ui/index.ts`. They're implementation detail of RDS components and may change in any commit without semver consideration.
+- **Public hooks** are re-exported from `src/ui/index.ts` under the **`Public hooks (consumer-facing)`** section comment. They carry a semver-bound contract: signatures, defaults, edge cases, and behaviours don't change without `feat:`/`fix:`/breaking discipline. Today's set: **`useScrollSpy`** (issue #167, the first one).
+
+Hooks NEVER appear in `./server` — they call React client APIs by definition. The full discipline (promotion criteria internal → public, JSDoc contract requirements, location/test conventions, the one-way-only nature of promotion) lives in `.claude/rules/hooks.md`. Adding a public hook requires the rule-file enumeration update + this section's "today's set" update in the same commit per `.claude/rules/docs-sync.md`.
+
 ## What NOT to do
 
 - Do not add features for external consumers (token versioning, component registry, migration tooling, Figma sync, MCP). This is mono-brand and solo.
