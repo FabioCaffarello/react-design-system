@@ -234,4 +234,3 @@ export const Accessibility: Story = {
 
 - [Documentação oficial do Storybook](https://storybook.js.org/)
 - [Guia de Events e States](./EVENTS_STATES_GUIDE.md)
-- [Guia de Categorização](./CATEGORIZATION_GUIDE.md)

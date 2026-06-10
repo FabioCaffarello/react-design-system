@@ -6,6 +6,15 @@ npm run test
 echo "Running lint check..."
 npm run lint
 
+# Typecheck with project references (tsc --build --force). The founding
+# trauma of this harness is a typecheck gate that silently checked
+# nothing (the `tsc -p` vs `--build` trap — see .claude/rules/ci-gates.md);
+# the cost asymmetry is ~30s per push vs months of false-green. The husky
+# v9 shim runs this file with `sh -e`, so a non-zero exit here aborts
+# the push.
+echo "Running typecheck..."
+npm run typecheck
+
 # Validate dark-theme coverage (both blocks in dark.css must stay in
 # lockstep — see scripts/validate-dark-coverage.mjs header for context).
 echo "Validating dark-theme coverage..."
@@ -42,3 +51,10 @@ node scripts/validate-provider-canonicity.mjs
 # before `npm run build` would in CI.
 echo "Validating server entry..."
 node scripts/validate-server-entry.mjs
+
+# Validate docs sync (mechanical half of .claude/rules/docs-sync.md):
+# every `npm run X` mentioned in a doc exists in package.json scripts,
+# and every relative markdown link resolves. Negative references carry
+# a `docs-ok:` marker on/above the line.
+echo "Validating docs sync..."
+node scripts/validate-docs-sync.mjs

@@ -230,7 +230,7 @@ Para cada componente, verifique:
 Após migrar todos os eventos e estados para as stories individuais:
 
 1. ✅ Verificar que todas as stories têm eventos e estados documentados
-2. ✅ Executar script de validação: `npm run validate-stories`
+2. ✅ Validar as stories (hoje coberto pela regra ESLint `ds/story-discipline` e por `npm run storybook:smoke`)
 3. ✅ Remover `EventCatalog.mdx` e `StateCatalog.mdx`
 4. ✅ Atualizar links que referenciam esses arquivos
 
