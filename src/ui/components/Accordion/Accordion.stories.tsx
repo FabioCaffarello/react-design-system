@@ -151,6 +151,53 @@ export const RichContent: Story = {
   },
 };
 
+export const CardStyledItems: Story = {
+  args: {
+    items: [
+      {
+        id: "votes",
+        title: "Recent votes",
+        triggerClassName: "font-semibold text-base",
+        className: "bg-surface-base px-4",
+        content: (
+          <div className="space-y-3">
+            {Array.from({ length: 20 }, (_, i) => (
+              <div
+                key={i}
+                className="rounded-lg border border-line-default p-3"
+              >
+                <p className="font-medium">Vote #{i + 1}</p>
+                <p className="text-sm">
+                  A tall paginated list item — together these exceed 1000px,
+                  which the old max-height clamp used to cut off silently.
+                </p>
+              </div>
+            ))}
+          </div>
+        ),
+      },
+      {
+        id: "alignment",
+        title: "Alignment",
+        triggerClassName: "font-semibold text-base",
+        className: "bg-surface-base px-4",
+        content: "Per-item className styles each section as a separate card.",
+      },
+    ],
+    type: "multiple",
+    defaultOpen: ["votes"],
+    className: "space-y-3",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Per-item `className` / `triggerClassName` style each section as a standalone card with section-title typography, and open panels grow to any content height — no 1000px clamp (issue #202).",
+      },
+    },
+  },
+};
+
 export const LongContent: Story = {
   args: {
     items: [

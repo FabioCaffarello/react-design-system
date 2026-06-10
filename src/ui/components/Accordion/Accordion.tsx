@@ -6,6 +6,7 @@ import { getSpacingClass } from "../../tokens/spacing";
 import { getAnimationClass } from "../../tokens/animations";
 import { getTypographyClasses } from "../../tokens/typography";
 import { getRadiusClass } from "../../tokens/radius";
+import { cn } from "../../utils/cn";
 
 export type AccordionType = "single" | "multiple";
 
@@ -14,6 +15,12 @@ export interface AccordionItem {
   title: string;
   content: ReactNode;
   disabled?: boolean;
+  /** Extra classes for the item wrapper (the bordered card). Merged after the defaults, so conflicting Tailwind classes win. */
+  className?: string;
+  /** Extra classes for the header button — overrides the default `label` typography (e.g. `font-semibold text-base`). */
+  triggerClassName?: string;
+  /** Extra classes for the content padding wrapper inside the panel. */
+  contentClassName?: string;
 }
 
 export interface AccordionProps {
@@ -29,7 +36,9 @@ export interface AccordionProps {
  *
  * A collapsible content component that can display multiple items.
  * Supports single and multiple selection modes.
- * Follows Atomic Design principles as an Atom component.
+ *
+ * Open panels animate via `grid-template-rows: 0fr → 1fr`, so content of
+ * any height expands fully — there is no max-height clamp (issue #202).
  *
  * @example
  * ```tsx
@@ -82,31 +91,28 @@ export default function Accordion({
         return (
           <div
             key={item.id}
-            className={`border border-line-default ${getRadiusClass("md")} overflow-hidden`}
+            className={cn(
+              "border border-line-default",
+              getRadiusClass("md"),
+              "overflow-hidden",
+              item.className,
+            )}
           >
             <button
               type="button"
               onClick={() => handleToggle(item.id)}
               disabled={isDisabled}
-              className={`
-                w-full
-                flex
-                items-center
-                justify-between
-                ${getSpacingClass("base", "px")}
-                ${getSpacingClass("md", "py")}
-                ${getTypographyClasses("label")}
-                text-left
-                text-fg-primary
-                bg-surface-base
-                hover:bg-surface-hover
-                focus:outline-none
-                focus:ring-2
-                focus:ring-offset-2
-                focus:ring-line-focus
-                ${getAnimationClass("base")}
-                ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
-              `}
+              className={cn(
+                "w-full flex items-center justify-between",
+                getSpacingClass("base", "px"),
+                getSpacingClass("md", "py"),
+                getTypographyClasses("label"),
+                "text-left text-fg-primary bg-surface-base hover:bg-surface-hover",
+                "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-line-focus",
+                getAnimationClass("base"),
+                isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",
+                item.triggerClassName,
+              )}
               aria-expanded={isOpen}
               aria-controls={`accordion-content-${item.id}`}
               aria-disabled={isDisabled}
@@ -122,23 +128,31 @@ export default function Accordion({
                 aria-hidden="true"
               />
             </button>
+            {/* grid-rows 0fr→1fr animates open/close at any content height
+                (no max-height clamp — issue #202). The inner min-h-0 +
+                overflow-hidden row is what lets the fraction collapse. */}
             <div
               id={`accordion-content-${item.id}`}
-              className={`
-                overflow-hidden
-                ${getAnimationClass("base")}
-                ${isOpen ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"}
-              `}
+              className={cn(
+                "grid",
+                getAnimationClass("base"),
+                isOpen
+                  ? "grid-rows-[1fr] opacity-100"
+                  : "grid-rows-[0fr] opacity-0",
+              )}
               aria-hidden={!isOpen}
             >
-              <div
-                className={`
-                ${getSpacingClass("base", "px")}
-                ${getSpacingClass("md", "py")}
-                text-fg-secondary
-              `}
-              >
-                {item.content}
+              <div className="min-h-0 overflow-hidden">
+                <div
+                  className={cn(
+                    getSpacingClass("base", "px"),
+                    getSpacingClass("md", "py"),
+                    "text-fg-secondary",
+                    item.contentClassName,
+                  )}
+                >
+                  {item.content}
+                </div>
               </div>
             </div>
           </div>
