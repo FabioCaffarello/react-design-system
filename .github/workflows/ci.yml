@@ -101,6 +101,13 @@ jobs:
       - name: Validate provider canonicity
         run: node scripts/validate-provider-canonicity.mjs
 
+      # Mechanises the two mechanical checks from .claude/rules/docs-sync.md:
+      # every `npm run X` a doc mentions exists in package.json scripts,
+      # and every relative markdown link resolves. Negative references
+      # carry a `docs-ok:` marker on/above the line.
+      - name: Validate docs sync
+        run: node scripts/validate-docs-sync.mjs
+
       # Issue #150. Verifies src/ui/server.ts re-exports only modules
       # the transitive analyser classifies as server-safe, imports
       # them from concrete source files (no folder-index barrels), and

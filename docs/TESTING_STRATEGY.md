@@ -73,31 +73,25 @@ export const InteractionTest: Story = {
 };
 ```
 
-### 3. E2E Tests
+### 3. Runtime Smoke
 
-**Ferramenta**: Playwright
+**Ferramenta**: scripts próprios sobre browser real (Playwright como lib) e Next 16
 
-**Localização**: `tests/e2e/*.spec.ts`
+**Execução**: `npm run storybook:smoke` (renderiza todas as stories e falha em erro de console/render) e `npm run test:next-smoke` (builda o fixture RSC contra o dist recém-buildado)
 
-**Execução**: `npm run test:e2e`
+**Cobertura**: todas as stories; superfície completa do entry `./server`
 
-**Cobertura**: Fluxos críticos e integrações
+> O projeto **não** tem suíte E2E de fluxos (Playwright specs) nem visual
+> regression (Chromatic) — decisão mono-brand/solo, ver "What NOT to do"
+> no CLAUDE.md. Os smokes acima são a camada runtime que existe.
 
-### 4. Visual Regression
+### 4. Accessibility Tests
 
-**Ferramenta**: Chromatic
+**Ferramenta**: suítes dedicadas `*.accessibility.test.tsx` por componente (Vitest + Testing Library) + baseline axe-core serial
 
-**Execução**: `npm run test:visual`
+**Execução**: `npm run test` (inclui as suítes a11y); `npm run test:a11y:baseline` gera o baseline de registro (light + dark) e `node scripts/validate-a11y-baseline.mjs` é o gate (exit 1 se critical+serious > 0)
 
-**Cobertura**: Todas as stories
-
-### 5. Accessibility Tests
-
-**Ferramenta**: @storybook/addon-a11y + axe-core
-
-**Execução**: Automático no Storybook + `npm run validate-a11y`
-
-**Cobertura**: WCAG 2.1 AA (60+ regras)
+**Cobertura**: WCAG 2.1 AA — ver `.claude/rules/testing.md` para o scaffold de quatro seções
 
 ## Estratégia de Cobertura
 

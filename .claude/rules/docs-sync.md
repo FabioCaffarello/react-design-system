@@ -5,6 +5,8 @@ globs: docs/**/*.md, CLAUDE.md, README.md
 
 # Docs-sync rules
 
+<!-- docs-ok: the paragraph below names phantom scripts as negative references — that is the drift story this rule exists to tell -->
+
 Some documents are **derived**: they restate, for human readers, conventions whose canonical definition lives elsewhere. When the source moves and the derived doc doesn't, the derived doc starts teaching the opposite of what the project enforces — and because this repo is maintained mainly through Claude Code prompts, the next agent follows the stale doc and reintroduces exactly what a rule forbids. This rule exists because `docs/STORYBOOK_GUIDE.md` drifted that way: it kept teaching the `Atoms/Molecules/Organisms/Templates/Patterns` taxonomy, `tags: ['autodocs']`, and `@storybook/react` imports long after `.claude/rules/stories.md` and `CLAUDE.md` had banned all three, and it documented `npm run validate-stories` / `generate-story-index` scripts that never existed in `package.json`.
 
 ## Derived docs and their sources of truth
@@ -21,12 +23,15 @@ A change to any source below **must** update every derived doc that restates it,
 - `CLAUDE.md`'s "Public hooks" section is derived from `.claude/rules/hooks.md` (canonical) and from `src/ui/index.ts` (today's set). It restates the one-line gist + a pointer; the rule file owns the detail.
 - `README.md` install/usage snippets are derived from `package.json` `exports`/`peerDependencies` and from `src/docs/Introduction.mdx`.
 - `src/docs/ComponentStatus.mdx` inventory counts are derived from the actual component dirs under `src/ui/`.
+- `.claude/README.md` is derived from the actual contents of `.claude/` (the rules/skills/commands/agents/hooks that exist, and each rule's frontmatter `globs`) and from `.claude/settings.json` (the hook wiring it describes). Adding, removing, or re-scoping anything under `.claude/` means updating its table in the same commit. Yes — Mnemosyne watches her own house.
 
 ## The full set, not one source
 
 The failure mode that motivated this rule: a sweep was scoped as "fix what contradicts `stories.md`" and so it cross-checked **only** `stories.md`, nearly shipping two `CLAUDE.md` violations (an MCP addon and phantom npm scripts) because they didn't contradict the one source in scope. When auditing a derived doc, cross-check it against **every** source listed for it above — not just the one named in the task. A line can be valid against one source and forbidden by another.
 
 ## Verification before commit
+
+The first and third bullets are mechanised by `scripts/validate-docs-sync.mjs` (pre-push + CI lint job) — it scans **all** `.md`/`.mdx` docs, not only the derived set above, and supports a `docs-ok: <reason>` HTML-comment marker on/above a line for legitimate negative references. The other bullets remain manual judgment.
 
 - For each derived doc touched, grep it for every `npm run <name>` and confirm each name exists in `package.json` scripts. Zero phantom scripts.
 - Negative references are allowed and expected: a doc may name a banned pattern (e.g. `Atoms/Molecules`, `tags: ['autodocs']`) precisely to tell the reader _not_ to use it. Distinguish "this doc teaches X" (drift — fix) from "this doc says don't use X" (correct — keep).

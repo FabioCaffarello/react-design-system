@@ -42,3 +42,10 @@ node scripts/validate-provider-canonicity.mjs
 # before `npm run build` would in CI.
 echo "Validating server entry..."
 node scripts/validate-server-entry.mjs
+
+# Validate docs sync (mechanical half of .claude/rules/docs-sync.md):
+# every `npm run X` mentioned in a doc exists in package.json scripts,
+# and every relative markdown link resolves. Negative references carry
+# a `docs-ok:` marker on/above the line.
+echo "Validating docs sync..."
+node scripts/validate-docs-sync.mjs
