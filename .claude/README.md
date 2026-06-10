@@ -37,7 +37,10 @@ Put anything machine-specific or private in `settings.local.json`
 ## Editing this setup
 
 Keep `CLAUDE.md` lean — it loads every session, so every line taxes every
-prompt. Push detail into path-scoped `rules/` files that only load when
-relevant, and keep only invariants + pointers in `CLAUDE.md`. When the
+prompt. As of the PR3 compaction it measures ~90 lines / ~1.6k tokens;
+treat **~2k tokens as the ceiling** — if an edit pushes past that, the
+detail belongs in a path-scoped `rules/` file with a gist + pointer left
+behind. (This number is measured, not aspirational; per `docs-sync.md` it
+updates whenever CLAUDE.md materially grows or shrinks.) When the
 architecture changes, update `CLAUDE.md` and the rules in the same PR as
 the code.
