@@ -13,6 +13,12 @@
  *     Server Component crashes with
  *     `(0, j.createContext) is not a function` (issue #148).
  *
+ *   - `dist/hooks/index.{js,cjs}` MUST start with `"use client";` too —
+ *     the granular hooks entry (`./hooks`, issue #203) ships public
+ *     hooks, which call React client APIs by definition; without the
+ *     directive, importing the entry from a Server Component crashes
+ *     the same way as the main entry would (issue #148).
+ *
  *   - `dist/server/index.{js,cjs}` MUST NOT start with `"use client"`
  *     (any quote style) — the whole point of the server entry
  *     (`./server`) is to be importable from a Server Component without
@@ -22,9 +28,11 @@
  *     and the opt-in path would be silently inert. Issue #150.
  *
  * The directives are controlled by `rollupOptions.output.banner` in
- * `vite.config.ts` (main entry, emits the directive) and the absence
- * of any banner in `vite.config.server.ts` (server entry). This script
- * is the gate that catches the moment those configurations drift.
+ * `vite.config.ts` (main entry, emits the directive) and
+ * `vite.config.hooks.ts` (hooks entry, emits it too), and by the
+ * absence of any banner in `vite.config.server.ts` (server entry).
+ * This script is the gate that catches the moment those
+ * configurations drift.
  * See `.claude/rules/ci-gates.md`.
  */
 import { readFileSync, existsSync } from "node:fs";
@@ -39,6 +47,8 @@ const failures = [];
 const TARGETS = [
   { path: "dist/index.js", directive: "required" },
   { path: "dist/index.cjs", directive: "required" },
+  { path: "dist/hooks/index.js", directive: "required" },
+  { path: "dist/hooks/index.cjs", directive: "required" },
   { path: "dist/server/index.js", directive: "forbidden" },
   { path: "dist/server/index.cjs", directive: "forbidden" },
 ];
@@ -90,6 +100,9 @@ if (failures.length > 0) {
     "Main entry: `banner: '\"use client\";'` set in vite.config.ts → dist/index.{js,cjs}.",
   );
   console.error(
+    "Hooks entry: same banner in vite.config.hooks.ts → dist/hooks/index.{js,cjs}.",
+  );
+  console.error(
     "Server entry: NO banner in vite.config.server.ts → dist/server/index.{js,cjs}.",
   );
   console.error(
@@ -106,5 +119,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `[validate-use-client-in-dist] OK — main dist carries \`"use client";\`, server dist does not.`,
+  `[validate-use-client-in-dist] OK — main and hooks dists carry \`"use client";\`, server dist does not.`,
 );

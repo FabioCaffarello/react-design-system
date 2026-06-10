@@ -20,12 +20,18 @@ Hooks in this codebase fall in two disjoint categories. The distinction is **not
 ### Public hooks (consumer-facing)
 
 - **Where:** also `src/ui/hooks/*.{ts,tsx}`. Same folder; the distinction lives in the export, not the path.
-- **Who consumes them:** end users of the package, importing from `@fabio.caffarello/react-design-system`.
-- **Export surface:** explicit re-export from `src/ui/index.ts` under the **`Public hooks (consumer-facing)`** section comment. The comment is load-bearing — it's what tells the next agent "this is part of the public API contract". Adding a hook above or outside that comment by accident is the failure mode this rule exists to prevent.
+- **Who consumes them:** end users of the package, importing from `@fabio.caffarello/react-design-system` or — the lean path — from `@fabio.caffarello/react-design-system/hooks`.
+- **Export surface:** explicit re-export from **two** places, kept in lockstep: (1) `src/ui/index.ts`, under the **`Public hooks (consumer-facing)`** section comment — the comment is load-bearing; it's what tells the next agent "this is part of the public API contract". Adding a hook above or outside that comment by accident is the failure mode this rule exists to prevent. (2) `src/ui/hooks-entry.ts`, the source of the granular `./hooks` entry (issue #203) — a public hook missing there silently denies consumers the lean import path. `scripts/validate-build-exports.ts` (in `build:validate`) fails when `dist/hooks/index.js` lacks a hook from its `publicHooks` list; that list updates together with this file's "today's set".
 - **Stability:** semver-bound. Signature changes and behavioural changes go through `feat:` / `fix:` / breaking changes the same way any public component does. Renames are breaking. Default-value changes are breaking when observable.
 - **Today's set:** `useScrollSpy` (the first one, established by #167).
 
 The two categories share the folder but **must not** share an entry in `src/ui/index.ts`. An internal hook accidentally re-exported under the public section becomes public the moment it ships; reverting it later is a breaking change. The opposite mistake — a public hook NOT re-exported — silently denies the consumer the API the docs promise.
+
+## The `./hooks` entry (issue #203)
+
+The granular entry exists because the main entry is a single pre-bundled `"use client"` file by design (see the vite.config.ts header for the cva cross-chunk history), which is opaque to the consumer bundler's tree-shaking: importing just `useScrollSpy` from `.` measured **+277KB minified** on a Next 16 route — the whole barrel. `vite.config.hooks.ts` is a third independent Vite build (same no-shared-chunks discipline as the server build) that emits `dist/hooks/index.{js,cjs}` from `src/ui/hooks-entry.ts`: a sub-1KB bundle with every third-party dep external and the `"use client"` banner ON (hooks are client by definition — see "Never in `./server`" below; `validate-use-client-in-dist.mjs` asserts the directive is present, the inverse of its server-dist check). `hooks-entry.ts` follows the `server.ts` discipline: concrete source-file re-exports only, never a folder barrel — a barrel would pull every internal hook (and through them, components) into the lean bundle.
+
+Adding a public hook therefore touches: `src/ui/index.ts` (public section), `src/ui/hooks-entry.ts`, the `publicHooks` list in `scripts/validate-build-exports.ts`, this file's "today's set", and the `CLAUDE.md` gist — same commit, per `.claude/rules/docs-sync.md`. Internal hooks never appear in `hooks-entry.ts` for the same reason they never appear in `index.ts`: shipping is publishing.
 
 ## Promotion criteria (internal → public)
 

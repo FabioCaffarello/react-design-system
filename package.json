@@ -19,6 +19,11 @@
       "import": "./dist/server/index.js",
       "require": "./dist/server/index.cjs"
     },
+    "./hooks": {
+      "types": "./dist/ui/hooks-entry.d.ts",
+      "import": "./dist/hooks/index.js",
+      "require": "./dist/hooks/index.cjs"
+    },
     "./styles": "./dist/react-design-system.css",
     "./styles.css": "./dist/react-design-system.css"
   },
@@ -31,7 +36,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "npx tsc --project tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist && vite build && vite build --config vite.config.server.ts && npm run build:validate",
+    "build": "npx tsc --project tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist && vite build && vite build --config vite.config.server.ts && vite build --config vite.config.hooks.ts && npm run build:validate",
     "build:validate": "tsx scripts/validate-build-exports.ts && node scripts/validate-use-client-in-dist.mjs && node scripts/validate-server-entry.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --build --force tsconfig.json",

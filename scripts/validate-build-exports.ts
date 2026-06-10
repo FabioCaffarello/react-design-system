@@ -185,6 +185,33 @@ function checkCriticalExports(buildExports: string[]): {
 }
 
 /**
+ * Check the granular hooks entry (issue #203): dist/hooks/index.js must
+ * exist and export every public hook. The list mirrors the `Public hooks
+ * (consumer-facing)` section of src/ui/index.ts — a public hook present on
+ * the main entry but missing from ./hooks silently denies consumers the
+ * lean import path the entry exists for.
+ */
+function checkHooksEntryExports(): string[] {
+  const failures: string[] = [];
+  const publicHooks = ["useScrollSpy"];
+  const hooksBuildPath = join(process.cwd(), "dist/hooks/index.js");
+
+  if (!existsSync(hooksBuildPath)) {
+    return [
+      "dist/hooks/index.js does not exist (vite.config.hooks.ts build missing?)",
+    ];
+  }
+
+  const content = readFileSync(hooksBuildPath, "utf-8");
+  for (const hook of publicHooks) {
+    if (!content.includes(hook)) {
+      failures.push(`public hook \`${hook}\` missing from dist/hooks/index.js`);
+    }
+  }
+  return failures;
+}
+
+/**
  * Main validation function
  */
 async function validateBuildExports() {
@@ -220,6 +247,19 @@ async function validateBuildExports() {
     );
     process.exit(1);
   }
+
+  // Check the granular hooks entry
+  console.log("\n✅ Checking hooks entry exports...");
+  const hooksFailures = checkHooksEntryExports();
+  if (hooksFailures.length > 0) {
+    console.error(`\n❌ Hooks entry (./hooks) validation failed:`);
+    hooksFailures.forEach((msg) => console.error(`   - ${msg}`));
+    console.error(
+      "\n   Check vite.config.hooks.ts and src/ui/hooks-entry.ts.\n",
+    );
+    process.exit(1);
+  }
+  console.log("   ✓ dist/hooks/index.js exports every public hook");
 
   console.log("\n✅ Build validation passed!");
   console.log("   All critical exports are present in the build.\n");
