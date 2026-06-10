@@ -1,0 +1,67 @@
+/**
+ * {{pascalCase name}} Accessibility Tests
+ *
+ * Scaffold suite mirroring the canonical four-section layout of
+ * Header.accessibility.test.tsx (ARIA Labels and Roles / Keyboard
+ * Navigation / Focus Management / Screen Reader Support). These
+ * assertions pass for the generated div scaffold — fill each section
+ * with the component's REAL a11y contract (roles, labels, keyboard
+ * operability, focus behavior) as it gains interactivity. The file-set
+ * gate (scripts/validate-file-set.mjs) requires this file to exist;
+ * WCAG 2.1 AA requires it to mean something.
+ */
+
+import { createRef } from "react";
+import { describe, it, expect } from "vitest";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import {{pascalCase name}} from "./{{pascalCase name}}";
+
+describe("{{pascalCase name}} Accessibility", () => {
+  describe("ARIA Labels and Roles", () => {
+    it("exposes an accessible name when role and aria-label are provided", () => {
+      render(
+        <{{pascalCase name}} role="group" aria-label="Example {{pascalCase name}}">
+          Content
+        </{{pascalCase name}}>,
+      );
+      expect(
+        screen.getByRole("group", { name: "Example {{pascalCase name}}" }),
+      ).toBeInTheDocument();
+    });
+  });
+
+  describe("Keyboard Navigation", () => {
+    it("does not steal focus on mount", () => {
+      render(<{{pascalCase name}}>Content</{{pascalCase name}}>);
+      expect(document.body).toHaveFocus();
+    });
+
+    it("is reachable via Tab when made focusable", async () => {
+      const user = userEvent.setup();
+      render(<{{pascalCase name}} tabIndex={0}>Content</{{pascalCase name}}>);
+      await user.tab();
+      expect(screen.getByText("Content")).toHaveFocus();
+    });
+  });
+
+  describe("Focus Management", () => {
+    it("supports programmatic focus through the forwarded ref", () => {
+      const ref = createRef<HTMLDivElement>();
+      render(
+        <{{pascalCase name}} ref={ref} tabIndex={-1}>
+          Content
+        </{{pascalCase name}}>,
+      );
+      ref.current?.focus();
+      expect(ref.current).toHaveFocus();
+    });
+  });
+
+  describe("Screen Reader Support", () => {
+    it("renders its text content for assistive technology", () => {
+      render(<{{pascalCase name}}>Readable content</{{pascalCase name}}>);
+      expect(screen.getByText("Readable content")).toBeVisible();
+    });
+  });
+});

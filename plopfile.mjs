@@ -1,6 +1,7 @@
 export default function plop(/** @type {import("plop").NodePlopAPI} */ plop) {
   plop.setGenerator("ui", {
-    description: "Create a new UI component",
+    description:
+      "Create a new UI component — emits the full five-file set required by scripts/validate-file-set.mjs",
     prompts: [
       {
         type: "list",
@@ -25,38 +26,6 @@ export default function plop(/** @type {import("plop").NodePlopAPI} */ plop) {
         message: "Component description",
         default: "A new component",
       },
-      {
-        type: "confirm",
-        name: "hasVariants",
-        message: "Does this component have variants?",
-        default: false,
-      },
-      {
-        type: "input",
-        name: "variants",
-        message: "Variants (comma-separated, e.g., primary,secondary,outline)",
-        when: (answers) => answers.hasVariants,
-        default: "primary,secondary",
-      },
-      {
-        type: "confirm",
-        name: "hasSizes",
-        message: "Does this component have sizes?",
-        default: false,
-      },
-      {
-        type: "input",
-        name: "sizes",
-        message: "Sizes (comma-separated, e.g., sm,md,lg)",
-        when: (answers) => answers.hasSizes,
-        default: "sm,md,lg",
-      },
-      {
-        type: "confirm",
-        name: "hasChildren",
-        message: "Does this component accept children?",
-        default: true,
-      },
     ],
 
     actions: () => [
@@ -67,14 +36,29 @@ export default function plop(/** @type {import("plop").NodePlopAPI} */ plop) {
       },
       {
         type: "add",
+        path: "./src/ui/{{type}}s/{{pascalCase name}}/{{pascalCase name}}.test.tsx",
+        templateFile: "./plop-templates/Test.tsx.hbs",
+      },
+      {
+        type: "add",
+        path: "./src/ui/{{type}}s/{{pascalCase name}}/{{pascalCase name}}.accessibility.test.tsx",
+        templateFile: "./plop-templates/AccessibilityTest.tsx.hbs",
+      },
+      {
+        type: "add",
         path: "./src/ui/{{type}}s/{{pascalCase name}}/{{pascalCase name}}.stories.tsx",
         templateFile: "./plop-templates/Story.tsx.hbs",
+      },
+      {
+        type: "add",
+        path: "./src/ui/{{type}}s/{{pascalCase name}}/index.ts",
+        templateFile: "./plop-templates/index.ts.hbs",
       },
       {
         type: "append",
         path: "./src/ui/{{type}}s/index.ts",
         template:
-          'export { default as {{pascalCase name}} } from "./{{pascalCase name}}/{{pascalCase name}}";',
+          'export { default as {{pascalCase name}} } from "./{{pascalCase name}}";\nexport type { {{pascalCase name}}Props } from "./{{pascalCase name}}";',
       },
     ],
   });
