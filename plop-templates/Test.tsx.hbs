@@ -1,0 +1,38 @@
+/**
+ * Scaffold suite — these assertions pass for the generated div scaffold.
+ * Replace/extend with the component's real behavior contract (variants,
+ * interaction, controlled/uncontrolled, edge cases) per
+ * .claude/rules/testing.md before shipping. Coverage floor: 80%.
+ */
+
+import { createRef } from "react";
+import { describe, it, expect } from "vitest";
+import { render, screen } from "@testing-library/react";
+import {{pascalCase name}} from "./{{pascalCase name}}";
+
+describe("{{pascalCase name}}", () => {
+  describe("rendering", () => {
+    it("renders its children", () => {
+      render(<{{pascalCase name}}>Content</{{pascalCase name}}>);
+      expect(screen.getByText("Content")).toBeInTheDocument();
+    });
+
+    it("merges a custom className onto the root element", () => {
+      render(<{{pascalCase name}} className="custom-class">Content</{{pascalCase name}}>);
+      expect(screen.getByText("Content")).toHaveClass("custom-class");
+    });
+  });
+
+  describe("props pass-through", () => {
+    it("spreads rest props onto the root element", () => {
+      render(<{{pascalCase name}} id="root-id">Content</{{pascalCase name}}>);
+      expect(screen.getByText("Content")).toHaveAttribute("id", "root-id");
+    });
+
+    it("forwards its ref to the root element", () => {
+      const ref = createRef<HTMLDivElement>();
+      render(<{{pascalCase name}} ref={ref}>Content</{{pascalCase name}}>);
+      expect(ref.current).toBeInstanceOf(HTMLDivElement);
+    });
+  });
+});
