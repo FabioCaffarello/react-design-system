@@ -52,7 +52,7 @@ npm run test              # vitest
 npm run test:coverage     # vitest with coverage
 npm run lint              # eslint
 npm run typecheck         # tsc --build --force tsconfig.json (project references)
-npm run plop              # scaffold component (postplop auto-formats output)
+npm run plop              # scaffold component — emits the full five-file set required by validate-file-set.mjs (postplop auto-formats output)
 npm run build             # library build (build:validate auto-checks exports)
 npm run build-storybook   # static storybook
 npm run storybook:smoke   # runtime smoke-test all stories (Phase 13a)

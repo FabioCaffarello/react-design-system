@@ -1,15 +1,16 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import {{pascalCase name}} from "./{{pascalCase name}}";
 
 const meta: Meta<typeof {{pascalCase name}}> = {
-  title: "UI/{{pascalCase type}}s/{{pascalCase name}}",
+  title: "{{pascalCase type}}s/{{pascalCase name}}",
   component: {{pascalCase name}},
 };
 
-export const Primary: StoryObj<typeof {{pascalCase name}}> = {
+export default meta;
+type Story = StoryObj<typeof {{pascalCase name}}>;
+
+export const Default: Story = {
   args: {
-    children: "Hello from Storybook",
+    children: "{{pascalCase name}}",
   },
 };
-
-export default meta;
