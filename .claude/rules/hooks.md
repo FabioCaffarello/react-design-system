@@ -1,3 +1,8 @@
+---
+description: Internal vs public hook categories, the promotion contract, and JSDoc requirements
+globs: src/ui/hooks/**, src/ui/index.ts
+---
+
 # Hook rules
 
 Hooks in this codebase fall in two disjoint categories. The distinction is **not** about location (both live under `src/ui/hooks/`) — it's about the **export surface** and the **stability contract** that comes with it. Get this wrong and either (a) a consumer ends up depending on a hook that the next PR refactors freely, or (b) an internal hook accumulates contract-grade JSDoc and a behavioural API that nothing public ever exercises. Both are real costs in a project maintained mainly by Claude Code prompts; the rule below keeps the two categories from blurring.
