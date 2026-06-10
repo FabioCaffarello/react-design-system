@@ -336,45 +336,21 @@ secondary scale. It is a report, not a gate.
 
 ### `fg-quaternary`: AA-by-construction exception
 
-`text-fg-quaternary` (slate-400) is the 4th tier of an ordered four-level
-hierarchy: `fg-primary` (slate-900) → `fg-secondary` (slate-600) →
-`fg-tertiary` (slate-500) → `fg-quaternary` (slate-400). Each tier is
-deliberately more muted than the one above.
+**Invariant.** `text-fg-quaternary` is the 4th tier of the ordered
+foreground hierarchy and, by construction, cannot pass WCAG 2.1 AA over
+a light background without ceasing to be the 4th tier (derivation in
+Histórico). This is a structural property, not a token bug; the token
+stays, under the conditions below.
 
-**Mathematical constraint.** `fg-tertiary` over `surface-base` (white)
-is 4.76, just +0.26 above WCAG 2.1 AA. By construction, `fg-quaternary`
-must be more muted than `fg-tertiary` to occupy the 4th tier. A neutral
-shade lighter than slate-500 and still passing AA over white does not
-exist in the scale. **Therefore `fg-quaternary` cannot pass AA over a
-light background without ceasing to be `fg-quaternary`.** This is a
-structural property of the 4-level ordered hierarchy, not a token bug.
-
-**Sites that carry this exception.** Four sites use `fg-quaternary` in the _pending-sequence-marker_ role on a light background where the contrast fails AA — these are the sites that carry the exception (and the `data-marker="pending"` attribute that anchors the directed suppression):
-
-- `src/ui/components/Stepper/Stepper.tsx:162` (horizontal pending bubble)
-- `src/ui/components/Stepper/Stepper.tsx:289` (vertical pending bubble)
-- `src/ui/components/Timeline/Timeline.tsx:86` (horizontal pending dot)
-- `src/ui/components/Timeline/Timeline.tsx:184` (vertical pending dot)
-
-**Other uses of `fg-quaternary` that do not fail AA in their context do not need this exception nor the `data-marker` attribute.** Example: the SideNavbar collapsible-group chevron at `src/ui/tokens/sidebar.ts:52` (consumed by `SidebarContent.tsx`) uses `fg-quaternary` over a tinted sidebar surface where the contrast passes empirically — no current baseline story flags it. The list above is "sites that carry the failing case", not "every occurrence of the token". Before adopting this exception, a new consumer should first check whether its actual rendering context fails AA — if not, the exception (and the suppression scaffolding) is unnecessary.
-
-**Design evidence — consumers treat the marker as decorative.** Both
-components are constructed so the glyph inside the bubble is never the
-only carrier of identity:
-
-- Stepper renders the step number only when `showStepNumbers` prop is
-  true: `showStepNumbers ? index + 1 : null`. The number is opt-out by
-  prop.
-- Timeline renders the index as the third fallback in
-  `item.icon || (status === "completed" ? <CheckCircle2 /> : index + 1)`.
-  Consumer may supply `item.icon` at any time; the number never renders
-  for completed items.
-
-Identity is carried by the always-rendered required adjacent title
-(Stepper `step.title`, Timeline `item.title` — `fg-primary` or
-`fg-secondary`, well above AA), reinforced by visual position in the
-sequence and by state color (completed = green-filled bubble,
-pending = white-with-light-border, active = brand-filled bubble).
+**Scope.** The exception covers exactly the **pending-sequence-marker**
+role: `Stepper`'s pending bubble and `Timeline`'s pending dot (each in
+horizontal and vertical layout). Every carrying site sets
+`data-marker="pending"` — that attribute is the canonical anchor; grep
+for it to find the live list, do not rely on line numbers. Uses of
+`fg-quaternary` whose actual rendering context passes AA (e.g. the
+SideNavbar collapsible-group chevron token in `src/ui/tokens/sidebar.ts`,
+over a tinted surface) need neither the exception nor the scaffolding —
+check the real context before adopting.
 
 **Boundary condition — when the exception does NOT apply.** This
 exception covers the marker as a **decorative-hierarchical hint**
@@ -391,36 +367,22 @@ These uses have genuine insufficient contrast — fix by supplying
 architectural exception covers redundant use; it does not legitimize
 critical use.**
 
-**Enforcement.** The four sites listed above carry a
-`data-marker="pending"` attribute that anchors the directed
-`parameters.a11y` suppression in the affected stories to the **role**
-(pending sequence marker), not to the bubble's style classes. The
-attribute is conditional on the consuming component's pending status
-value — note that Stepper and Timeline use different enums for the
-same role: Stepper's `StepperStatus` is `"pending" | "active" |
-"completed" | "error"`, while Timeline's `status` field is
-`"default" | "active" | "completed" | "error"`. The data-marker
-condition is the component-specific pending value
-(`status === "pending"` in Stepper, `status === "default"` in
-Timeline) — verify by reading the source enum, not by visual analogy.
-The suppression selector is:
+**Enforcement.** `data-marker="pending"` anchors the directed
+`parameters.a11y` suppression in the affected stories to the role, not
+to the bubble's style classes:
 
 ```ts
 { id: "color-contrast", selector: ":not([data-marker='pending'])" }
 ```
 
-This survives a future restyle of the bubble — selector ties to the
-semantic role attribute, not to `bg-surface-base` / `border-line-emphasis`
-/ `text-fg-quaternary` class compounds. When the bubble's appearance
-changes, `data-marker="pending"` persists and the exception still
-applies. When the bubble stops being a pending marker, the attribute
-disappears and the exception expires automatically. A new consumer
-using `fg-quaternary` in the same hierarchy-decorative role **only
-needs** to set `data-marker="pending"` (status-conditional on its own
-pending enum value) and reference this section **if** its context
-actually fails AA — chevron-style consumers like
-`src/ui/tokens/sidebar.ts:52` over a tinted bg do not need the
-scaffolding.
+The attribute is conditional on the component's own pending enum value —
+Stepper: `status === "pending"` (`StepperStatus`); Timeline:
+`status === "default"` (its `status` union has no `"pending"` member) —
+verify by reading the source enum, not by visual analogy. The anchor
+survives restyles and expires automatically when the marker stops
+meaning "pending" (rationale in Histórico). A new consumer in the same
+role only needs the status-conditional `data-marker="pending"` plus a
+reference to this section, and only **if** its context actually fails AA.
 
 ## When NOT to create a new token
 
@@ -473,3 +435,38 @@ Stories (`*.stories.tsx`) are intentionally out of the rule's scope
 pending a triage phase. The rule scans by AST, not by grep, so it does
 not share the BSD-vs-GNU `--include` brace-expansion pitfall that hid
 `src/ui/tokens/sidebar.ts` from the original Phase 7 sweep.
+
+## Histórico
+
+Extended argumentation behind the operative sections above. Nothing here
+is normative on its own — if a statement matters for a decision, it has
+a counterpart in the sections above.
+
+### `fg-quaternary` AA derivation and design evidence
+
+- **The mathematical constraint.** The light-mode hierarchy maps to
+  `fg-primary` slate-900 → `fg-secondary` slate-600 → `fg-tertiary`
+  slate-500 → `fg-quaternary` slate-400, each tier deliberately more
+  muted than the one above. `fg-tertiary` over `surface-base` (white)
+  measures 4.76:1 — only +0.26 above the AA threshold. Any neutral
+  lighter than slate-500 fails AA over white, so a 4th tier that passes
+  AA over a light background cannot exist in the scale; that is why the
+  exception is "AA-by-construction" rather than a fixable bug.
+- **Design evidence — consumers treat the marker as decorative.** The
+  glyph inside the bubble is never the only carrier of identity:
+  Stepper renders the step number only when `showStepNumbers` is true
+  (`showStepNumbers ? index + 1 : null` — opt-out by prop); Timeline
+  renders the index only as the third fallback in
+  `item.icon || (status === "completed" ? <CheckCircle2 /> : index + 1)`,
+  so a consumer may supply `item.icon` at any time and the number never
+  renders for completed items. Identity is carried by the always-rendered
+  required adjacent title (Stepper `step.title`, Timeline `item.title` —
+  `fg-primary`/`fg-secondary`, well above AA), reinforced by position in
+  the sequence and by state color (completed = green-filled bubble,
+  pending = white-with-light-border, active = brand-filled bubble).
+- **Why the anchor is `data-marker` and not class compounds.** A restyle
+  changes the bubble's classes freely while the role attribute persists.
+  The live list of carrying sites is whatever
+  `grep -rn 'data-marker="pending"' src/ui/` returns — that grep
+  replacing a hardcoded file:line list is the point of anchoring by
+  attribute.

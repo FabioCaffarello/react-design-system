@@ -1,3 +1,8 @@
+---
+description: Infra Provider/Context modules live ONLY in src/ui/providers/ — duplicates create disjoint Contexts
+globs: src/ui/providers/**, src/ui/**/*Provider*.tsx, src/ui/**/*Context*.tsx, scripts/validate-provider-canonicity.mjs
+---
+
 # Provider rules
 
 `src/ui/providers/` is the **infra layer**. It hosts the global

@@ -1,3 +1,8 @@
+---
+description: Prove every CI/CT gate fails when it should — the anti-false-green discipline
+globs: .github/workflows/**, .husky/**, scripts/validate-*.mjs, scripts/*-smoke.mjs, scripts/a11y-serial-baseline.mjs, eslint-rules/**, tsconfig*.json
+---
+
 # CI gate rules
 
 A CI gate that exists but does not gate is worse than no gate — it

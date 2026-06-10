@@ -1,3 +1,8 @@
+---
+description: The ./server entry contract — what may ship in it, the two safety axes, and the gates
+globs: src/ui/server.ts, vite.config.server.ts, vite.config.ts, fixtures/next-smoke/**, scripts/lib/server-safe.mjs, scripts/validate-server-entry.mjs, scripts/analyze-server-safe.mjs, scripts/validate-use-client-in-dist.mjs, scripts/next-smoke.mjs
+---
+
 # Server entry rules
 
 Issue #150 added a second entry point `@fabio.caffarello/react-design-system/server` that ships only the components whose render tree is safe to run inside a React Server Component. This file is the canonical contract for what may live in that entry, how to add to it, and what catches regressions.
