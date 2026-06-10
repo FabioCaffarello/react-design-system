@@ -94,6 +94,18 @@ remove every import path that leads into it from included roots. Or
 shard it into its own referenced project that you exclude from the
 solution. Neither is what `exclude` does by itself.
 
+### A gate-shaped parameter that gates nothing (`parameters.a11y.test: "error"`)
+
+`.storybook/preview.tsx` sets `parameters.a11y.test: "error"`, which
+reads like an a11y gate. It is cosmetic: no `@storybook/addon-vitest`
+plugin is wired into a vitest workspace and `npm run test` excludes
+`*.stories.tsx`, so the addon's afterEach handler never fires in CI.
+The actual enforcement mechanism is the serial axe baseline plus
+`scripts/validate-a11y-baseline.mjs` — that script's header carries
+the full analysis, and the long comment in `.storybook/preview.tsx`
+restates it at the site. Treat any similar "test: error" parameter as
+decoration until you have found the runner that honors it.
+
 ### Skipping hooks (`--no-verify`, `--no-gpg-sign`, etc.)
 
 Pre-commit/pre-push hooks ARE local gates. If you skip them because
