@@ -31,7 +31,11 @@ The failure mode that motivated this rule: a sweep was scoped as "fix what contr
 
 ## Verification before commit
 
-The first and third bullets are mechanised by `scripts/validate-docs-sync.mjs` (pre-push + CI lint job) — it scans **all** `.md`/`.mdx` docs, not only the derived set above, and supports a `docs-ok: <reason>` HTML-comment marker on/above a line for legitimate negative references. The other bullets remain manual judgment.
+The first and third bullets are mechanised by `scripts/validate-docs-sync.mjs` (pre-push + CI lint job). Its scope is **wider** than the derived-doc enumeration above, deliberately: a phantom script is drift in any doc, not only a derived one. The scan roots are `docs/`, `.claude/` (recursively — rules, skills, commands, agents, README), `src/docs/`, plus root `CLAUDE.md` and `README.md`; every `.md`/`.mdx` under them.
+
+The `docs-ok: <reason>` escape (HTML comment) is **line-scoped, not file-scoped**: it exempts a match only when the marker sits on the same line as the match or on the first non-blank line above it. A `docs-ok` cannot suppress a violation further down the file — file-wide suppression would recreate by silencing exactly the false-green the gate exists to kill. Use it for negative references only (naming a phantom/banned thing to say "don't"/"never existed").
+
+The other bullets (semantic restatements, "teaches X" vs "says don't use X" triage, the 100%-phantom check before removing a section) remain manual judgment.
 
 - For each derived doc touched, grep it for every `npm run <name>` and confirm each name exists in `package.json` scripts. Zero phantom scripts.
 - Negative references are allowed and expected: a doc may name a banned pattern (e.g. `Atoms/Molecules`, `tags: ['autodocs']`) precisely to tell the reader _not_ to use it. Distinguish "this doc teaches X" (drift — fix) from "this doc says don't use X" (correct — keep).

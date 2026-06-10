@@ -6,26 +6,20 @@ Este documento descreve a estratégia completa de testes do React Design System.
 
 O design system utiliza múltiplas camadas de testes:
 
-- **Unit Tests**: Testes de componentes individuais
-- **Integration Tests**: Testes de interação entre componentes
-- **E2E Tests**: Testes end-to-end no Storybook
-- **Visual Regression**: Testes de regressão visual
-- **Accessibility Tests**: Testes de acessibilidade
+- **Unit/Behavior Tests**: Vitest + Testing Library, por componente
+- **Accessibility Tests**: suíte dedicada por componente + baseline axe-core
+- **Runtime Smoke**: todas as stories renderizadas em browser real + fixture RSC Next 16
 
 ## Estrutura de Testes
 
 ```
-tests/
-├── e2e/              # Testes E2E com Playwright
-│   ├── button.spec.ts
-│   ├── accessibility.spec.ts
-│   └── navigation.spec.ts
 src/
 ├── **/*.test.tsx                # Unit tests (behavior) junto com componentes
 ├── **/*.accessibility.test.tsx  # A11y tests dedicados (ARIA / keyboard /
 │                                # focus / screen reader); mirror
 │                                # Header.accessibility.test.tsx
-└── **/*.stories.tsx             # Story tests (via Vitest)
+└── **/*.stories.tsx             # Stories (NÃO rodam como testes Vitest —
+                                 # ver "Story Tests" abaixo)
 ```
 
 ## Tipos de Testes
@@ -54,11 +48,11 @@ describe("Button", () => {
 
 ### 2. Story Tests
 
-**Ferramenta**: Vitest + Storybook Test Runner
+**Ferramenta**: play functions (`storybook/test`) exercitadas no Storybook
 
 **Localização**: `src/**/*.stories.tsx`
 
-**Execução**: `npm run test`
+**Execução**: interativa no Storybook local; `npm run storybook:smoke` renderiza toda story em CI (mas não executa play functions). **`npm run test` exclui `*.stories.tsx` por configuração** — não há Storybook-stories-as-vitest wiring neste projeto (ver o comentário longo em `.storybook/preview.tsx`); play functions são documentação executável, não gate.
 
 **Exemplo**:
 
@@ -115,9 +109,11 @@ export const InteractionTest: Story = {
 npm run test:coverage
 ```
 
-## Testes por Categoria
+## Testes por Camada
 
-### Atoms
+(O modelo é o de 3 camadas do CLAUDE.md — primitives / components / layouts. Não usar Atoms/Molecules/Organisms; a taxonomia atômica foi banida do projeto.)
+
+### Primitives
 
 **Foco**: Renderização, props, estados básicos
 
@@ -128,33 +124,33 @@ npm run test:coverage
 - Estados (disabled, loading, etc.)
 - Acessibilidade básica
 
-### Molecules
+### Components
 
-**Foco**: Interação entre atoms, comportamento composto
+**Foco**: Interação entre primitives, comportamento composto
 
 **Exemplos**:
 
 - Interação entre componentes
 - Validação de formulários
-- Estados complexos
+- Estados complexos (controlled/uncontrolled)
 
-### Organisms
+### Layouts
 
-**Foco**: Fluxos completos, integração
+**Foco**: Estrutura e composição
 
 **Exemplos**:
 
-- Fluxos de usuário
-- Gerenciamento de estado
-- Integração com APIs
+- Renderização de children
+- Variantes de estrutura (direção, espaçamento, colunas)
+- Semântica do elemento raiz
 
 ## Testes de Acessibilidade
 
 ### Automatizados
 
-- **@storybook/addon-a11y**: Verificação automática
-- **axe-core**: Análise de acessibilidade
-- **WCAG 2.1 AA**: 60+ regras configuradas
+- **axe-core** via `scripts/a11y-serial-baseline.mjs`: o enforcement real (baseline light + dark, gate em CI)
+- **@storybook/addon-a11y**: painel de inspeção no Storybook local — útil, mas **não é gate** (`parameters.a11y.test: "error"` é cosmético sem o wiring vitest; ver `.storybook/preview.tsx`)
+- **WCAG 2.1 AA**: regras configuradas em `.storybook/a11y-config.mjs`, compartilhadas entre o addon e o baseline
 
 ### Manuais
 
@@ -164,18 +160,10 @@ npm run test:coverage
 
 ## Testes de Performance
 
-### Métricas
-
-- Render time
-- Re-render count
-- Bundle size
-- Memory usage
-
-### Ferramentas
-
-- `storybook-addon-performance`
-- React DevTools Profiler
-- Lighthouse CI
+Não há testes de performance automatizados. A ferramenta manual é o React
+DevTools Profiler. O `storybook-addon-performance` está instalado mas
+**desativado** (comentado em `.storybook/main.ts`); reativá-lo é uma decisão
+explícita, não um estado corrente. Não há Lighthouse CI.
 
 ## CI/CD Integration
 
@@ -189,13 +177,16 @@ Testes são executados automaticamente em:
 
 ### Workflow
 
+O pipeline real é o `.github/workflows/ci.yml` (fonte da verdade); em resumo:
+
 ```yaml
-- Run lint
-- Run unit tests
-- Run story tests
-- Run E2E tests (se necessário)
-- Run visual regression (Chromatic)
-- Generate coverage report
+- Lint (ESLint + Prettier + validadores estruturais)
+- Typecheck (tsc --build --force)
+- Test (Vitest + coverage)
+- Build library (com build:validate) / Build Storybook
+- Storybook smoke + Next 16 Server Component smoke (atrás do paths-filter)
+- A11y baseline light + dark (atrás do paths-filter)
+- ci-success (agregador exigido pela branch protection)
 ```
 
 ## Best Practices
@@ -238,8 +229,7 @@ screen.getByTestId("submit-button");
 ### 4. Mantenha Testes Rápidos
 
 - Unit tests: < 1s cada
-- Story tests: < 5s cada
-- E2E tests: < 30s cada
+- Os smokes e o baseline a11y têm jobs próprios em CI — não os reproduza dentro de testes unitários
 
 ### 5. Teste Acessibilidade
 
@@ -269,25 +259,16 @@ Sempre inclua testes de acessibilidade:
 3. Verifique se testes estão sendo executados
 4. Revise configuração de coverage
 
-### E2E tests são lentos
-
-**Soluções**:
-
-1. Execute apenas testes relevantes
-2. Use parallel execution
-3. Otimize seletores
-4. Cache browsers
-
 ## Próximos Passos
 
 1. **Aumentar Coverage**: De 80% para 90%
-2. **Expandir E2E**: Mais componentes e fluxos
-3. **Performance Tests**: Métricas automatizadas
-4. **Snapshot Tests**: Para componentes estáticos
+
+(Snapshot tests não entram aqui: `.claude/rules/testing.md` os veta como
+asserção primária. E2E de fluxos e visual regression seguem fora de escopo
+por decisão — ver "What NOT to do" no CLAUDE.md.)
 
 ## Recursos
 
 - [Testing Library](https://testing-library.com/)
 - [Vitest](https://vitest.dev/)
-- [Playwright](https://playwright.dev/)
-- [Chromatic](https://www.chromatic.com/)
+- [Playwright](https://playwright.dev/) — usado como **lib** pelos smokes e pelo baseline a11y, não como test runner de specs
