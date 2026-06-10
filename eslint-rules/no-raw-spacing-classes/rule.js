@@ -13,8 +13,12 @@
  *   - Gap:     `gap-N`, `gap-x-N`, `gap-y-N`
  *   - Stack:   `space-x-N`, `space-y-N`
  *
- * Where N is any value in the SpacingScale union from spacing.ts
- * (`0|0.5|1|1.5|2|2.5|3|3.5|4|5|6|8|10|12|16|20|24|32|40|48|64|80|96`).
+ * Where N is one of the scales `getSpacingClass` actually exposes
+ * (the `SPACING_TOKENS` map in spacing.ts:
+ * `0|0.5|1|1.5|2|2.5|3|3.5|4|6|8|10|12|16|20|24`). The broader
+ * `SpacingScale` type union also lists 5 and 32…96, but those steps
+ * have no `SPACING_TOKENS` key — they pass through unflagged, per the
+ * SCALES note below.
  *
  * What it does NOT match (by design):
  *   - Negative margin `-mt-N` — lookbehind ensures the prefix isn't

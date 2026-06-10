@@ -1,11 +1,27 @@
-import type { HTMLAttributes } from "react";
+import { forwardRef } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 
-interface Props extends HTMLAttributes<HTMLDivElement> {}
-
-export default function {{pascalCase name}}(props: Props) {
-  return (
-    <div
-      {...props}
-    />
-  );
+export interface {{pascalCase name}}Props extends HTMLAttributes<HTMLDivElement> {
+  /** Content rendered inside the component. */
+  children?: ReactNode;
 }
+
+/**
+ * {{pascalCase name}}
+ *
+ * {{description}}
+ */
+const {{pascalCase name}} = forwardRef<HTMLDivElement, {{pascalCase name}}Props>(
+  function {{pascalCase name}}({ className, children, ...rest }, ref) {
+    // Compose base classes with cn(...) from "../../utils" as the
+    // component gains styling. Read .claude/rules/colors.md before
+    // applying any color; use the token getters for spacing/radius/shadow.
+    return (
+      <div ref={ref} className={className} {...rest}>
+        {children}
+      </div>
+    );
+  },
+);
+
+export default {{pascalCase name}};

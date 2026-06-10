@@ -315,11 +315,24 @@ Don't reach for `text-fg-quaternary` to render a "no status" dot — use
 ### Brand foreground emphasis pair
 
 `text-fg-brand` and `text-fg-brand-emphasis` form a pair where emphasis
-is **darker** in light mode (indigo-600 vs indigo-500) and **lighter**
-in dark mode (indigo-300 vs indigo-400). The "emphasis is more
-contrasted against the surface" relationship is preserved across themes.
-Same pattern for `text-fg-brand-secondary` / `-secondary-emphasis`. Don't
-flatten the pair to a single token "to simplify."
+is **darker** in light mode (`brand-primary-600` vs the base
+`brand-primary`) and **lighter** in dark mode (`brand-primary-300` vs
+`brand-primary-400`). The "emphasis is more contrasted against the
+surface" relationship is preserved across themes. Same pattern for
+`text-fg-brand-secondary` / `-secondary-emphasis` over the
+`brand-secondary-*` scale. Don't flatten the pair to a single token
+"to simplify."
+
+### Brand primitive scales (ADR-024)
+
+The brand primitives `--color-brand-primary-*` and
+`--color-brand-secondary-*` live in `src/styles/primitives/brand.css` —
+semantic tokens reference them, components never do. The secondary
+scale is OKLCH-derived (hue locked at 295) from the ADR-024
+"brasil-a-vera" anchors, smoothed across the 11 stops.
+`node scripts/derive-brand-secondary.mjs` regenerates the HEX stops for
+manual comparison against `brand.css`; run it when retuning the
+secondary scale. It is a report, not a gate.
 
 ### `fg-quaternary`: AA-by-construction exception
 
