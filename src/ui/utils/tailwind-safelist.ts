@@ -79,7 +79,9 @@ export const TAILWIND_SAFELIST = [
  * Documentation for Tailwind v4 configuration
  *
  * In Tailwind v4, safelist is configured via CSS using @theme or @source directives.
- * Since we're using @tailwindcss/postcss, we can add safelist in the CSS file.
+ * Since we're using the @tailwindcss/vite plugin (see vite.config.ts and
+ * .claude/rules/tokens.md — the PostCSS pipeline is banned), we can add
+ * safelist in the CSS file.
  *
  * For dynamic classes, we should ensure they're:
  * 1. Used in component code (so Tailwind detects them)

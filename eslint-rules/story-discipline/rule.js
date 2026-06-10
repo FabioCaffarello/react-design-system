@@ -17,10 +17,13 @@
  *      previously documented in stories.md. The allowlist matches the
  *      categorical statement in stories.md:17.
  *
- * Scope: `.stories.tsx` files only. `.mdx` titles (5 legacy files) are
- * NOT covered here — see BACKLOG item "Migrar 5 legacy MDX standalone →
- * attached Meta"; after that migration, .mdx loses literal `title=` and
- * the residual grep in stories.md can be removed.
+ * Scope: `.stories.tsx` files only. `.mdx` titles are NOT covered
+ * here — the residual surface is four stable infrastructure pages
+ * (Introduction, ComponentStatus, the ComponentComposition guide,
+ * Tokens), all under the valid `Design System/` segment and checked
+ * by the residual grep documented in stories.md. The five legacy
+ * component MDX files migrated to attached `<Meta of={...}>` (no
+ * literal `title=`) — see the commits referenced in stories.md.
  */
 
 const ALLOWED_SEGMENTS = [
