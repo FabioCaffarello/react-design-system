@@ -18,7 +18,7 @@ runs:
         file_path: ./.github/ci-settings.yml
 
     - name: Set up Node via Volta
-      uses: volta-cli/action@v4
+      uses: volta-cli/action@v5
       with:
         # NOTE: `package-json-path` intentionally omitted. With it, volta-cli
         # rewrites the package.json to pin `volta.node`, leaving uncommitted
@@ -37,7 +37,7 @@ runs:
         echo "node_version=${node_ver#v}" >> "$GITHUB_OUTPUT"
 
     - name: Cache npm
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ steps.versions.outputs.node_version }}-${{ hashFiles('**/package-lock.json') }}

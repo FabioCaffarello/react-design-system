@@ -60,7 +60,19 @@ jobs:
         id: semantic-release
         uses: cycjimmy/semantic-release-action@v6
         with:
-          semantic_version: 23
+          # semantic-release 25: its release-notes-generator (v14 family)
+          # consumes the new conventional-changelog preset shape
+          # ({commits, parser, writer, whatBump}). Our release.config.cjs uses
+          # preset "conventionalcommits", resolved from THIS repo's
+          # node_modules — conventional-changelog-conventionalcommits jumped
+          # 7.0.2 -> 9.3.1 (new shape) via the @commitlint/config-conventional
+          # 21 bump (#170), which broke semantic-release 23's generator (v13,
+          # old shape): writerOpts came back empty, the writer fell back to its
+          # default transform, and every release failed with
+          # "RangeError: Invalid time value" (issue #206). 25 is also the
+          # major the action's own lockfile ships, so the runtime
+          # npm-downgrade mutation goes away.
+          semantic_version: 25
           extra_plugins: |
             @semantic-release/changelog
             @semantic-release/git
