@@ -1,3 +1,21 @@
+## [3.8.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.7.0...v3.8.0) (2026-06-11)
+
+### ✨ Features
+
+* **accordion:** remove max-height clamp and add per-item class overrides ([#204](https://github.com/FabioCaffarello/react-design-system/issues/204)) ([2703845](https://github.com/FabioCaffarello/react-design-system/commit/2703845cb99636d8dd96c3967b7f4874e5625c0d)), closes [#202](https://github.com/FabioCaffarello/react-design-system/issues/202)
+* **build:** granular ./hooks entry — public hooks without the main bundle ([#205](https://github.com/FabioCaffarello/react-design-system/issues/205)) ([fd544b7](https://github.com/FabioCaffarello/react-design-system/commit/fd544b755e9201eca4c2b5de89d26c85f990ee82)), closes [#203](https://github.com/FabioCaffarello/react-design-system/issues/203)
+* **gates:** add validate-docs-sync gate and harden permission settings ([#199](https://github.com/FabioCaffarello/react-design-system/issues/199)) ([30e8544](https://github.com/FabioCaffarello/react-design-system/commit/30e85443b06fd4823e5014a59ce76b376ab1d767))
+* **plop:** emit the complete five-file component set ([#197](https://github.com/FabioCaffarello/react-design-system/issues/197)) ([fdb3956](https://github.com/FabioCaffarello/react-design-system/commit/fdb39569caba04b346ef531bfb71c77d590361d2))
+
+### 🐛 Bug Fixes
+
+* **ci:** bump semantic-release to 25 — restore the release pipeline ([#207](https://github.com/FabioCaffarello/react-design-system/issues/207)) ([2e40c3e](https://github.com/FabioCaffarello/react-design-system/commit/2e40c3e26a625c7d4f7216003bbb65ee8ce4a500)), closes [#170](https://github.com/FabioCaffarello/react-design-system/issues/170) [#197](https://github.com/FabioCaffarello/react-design-system/issues/197) [#206](https://github.com/FabioCaffarello/react-design-system/issues/206) [#204](https://github.com/FabioCaffarello/react-design-system/issues/204)
+
+### ♻️ Code Refactoring
+
+* **harness:** compact CLAUDE.md to constitution size (PR3/E1) ([#200](https://github.com/FabioCaffarello/react-design-system/issues/200)) ([621109b](https://github.com/FabioCaffarello/react-design-system/commit/621109b2ac9bfd6c0cf6e8d448b8ec0566cdd501)), closes [166/#178](https://github.com/166/react-design-system/issues/178)
+* **harness:** rule template + promotion criteria + colors.md pilot (PR5) ([#201](https://github.com/FabioCaffarello/react-design-system/issues/201)) ([ab32c22](https://github.com/FabioCaffarello/react-design-system/commit/ab32c223bc928652b33d119f41850b6085c404e5))
+
 ## [3.7.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.6.0...v3.7.0) (2026-06-09)
 
 
