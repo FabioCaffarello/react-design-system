@@ -212,6 +212,44 @@ function checkHooksEntryExports(): string[] {
 }
 
 /**
+ * Check the granular entry (issue #208): dist/granular/index.js must
+ * exist and re-export the public surface. Spot-check sentinel names
+ * across layers — a missing sentinel means the preserveModules barrel
+ * silently lost part of the surface (e.g. an over-aggressive
+ * tree-shake config).
+ */
+function checkGranularEntryExports(): string[] {
+  const failures: string[] = [];
+  // NOTE: layouts (Stack/Container) are deliberately absent — the main
+  // entry never exported them (they ship via ./server only), and the
+  // granular barrel mirrors the main entry's surface.
+  const sentinels = [
+    "Accordion",
+    "Button",
+    "Card",
+    "AppProvider",
+    "useScrollSpy",
+  ];
+  const granularBarrel = join(process.cwd(), "dist/granular/index.js");
+
+  if (!existsSync(granularBarrel)) {
+    return [
+      "dist/granular/index.js does not exist (vite.config.granular.ts build missing?)",
+    ];
+  }
+
+  const content = readFileSync(granularBarrel, "utf-8");
+  for (const name of sentinels) {
+    if (!content.includes(name)) {
+      failures.push(
+        `sentinel export \`${name}\` missing from the granular barrel`,
+      );
+    }
+  }
+  return failures;
+}
+
+/**
  * Main validation function
  */
 async function validateBuildExports() {
@@ -260,6 +298,19 @@ async function validateBuildExports() {
     process.exit(1);
   }
   console.log("   ✓ dist/hooks/index.js exports every public hook");
+
+  // Check the granular entry (issue #208)
+  console.log("\n✅ Checking granular entry exports...");
+  const granularFailures = checkGranularEntryExports();
+  if (granularFailures.length > 0) {
+    console.error(`\n❌ Granular entry (./granular) validation failed:`);
+    granularFailures.forEach((msg) => console.error(`   - ${msg}`));
+    console.error(
+      "\n   Check vite.config.granular.ts and the dist/granular output.\n",
+    );
+    process.exit(1);
+  }
+  console.log("   ✓ dist/granular/index.js re-exports the public surface");
 
   console.log("\n✅ Build validation passed!");
   console.log("   All critical exports are present in the build.\n");
