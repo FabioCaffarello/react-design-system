@@ -35,7 +35,7 @@
  * configurations drift.
  * See `.claude/rules/ci-gates.md`.
  */
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const PREFIX_BYTES = 96;
@@ -52,6 +52,34 @@ const TARGETS = [
   { path: "dist/server/index.js", directive: "forbidden" },
   { path: "dist/server/index.cjs", directive: "forbidden" },
 ];
+
+// The granular entry (./granular, issue #208) is a preserveModules
+// tree: EVERY emitted module must independently carry the directive,
+// because a Server Component may import any granular module and Next
+// places exactly that module's graph behind the boundary. Walk the
+// whole tree and require the directive on each .js file — a per-chunk
+// banner regression in vite.config.granular.ts would otherwise surface
+// only as a consumer crash.
+const GRANULAR_ROOT = "dist/granular";
+function collectJs(dir, acc) {
+  for (const name of readdirSync(dir)) {
+    const p = join(dir, name);
+    if (statSync(p).isDirectory()) collectJs(p, acc);
+    else if (name.endsWith(".js")) acc.push(p);
+  }
+  return acc;
+}
+if (existsSync(join(process.cwd(), GRANULAR_ROOT))) {
+  for (const abs of collectJs(join(process.cwd(), GRANULAR_ROOT), [])) {
+    TARGETS.push({
+      path: abs.slice(process.cwd().length + 1),
+      directive: "required",
+    });
+  }
+} else {
+  // Missing tree fails through the existing not-found branch below.
+  TARGETS.push({ path: `${GRANULAR_ROOT}/index.js`, directive: "required" });
+}
 
 // React's `"use client"` directive matches both quote styles per
 // the spec; the main bundle emits double-quoted via vite banner but
@@ -119,5 +147,5 @@ if (failures.length > 0) {
 }
 
 console.log(
-  `[validate-use-client-in-dist] OK — main and hooks dists carry \`"use client";\`, server dist does not.`,
+  `[validate-use-client-in-dist] OK — main, hooks, and granular dists carry \`"use client";\` (${TARGETS.filter((t) => t.directive === "required").length} files), server dist does not.`,
 );

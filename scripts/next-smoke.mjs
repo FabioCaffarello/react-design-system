@@ -62,10 +62,10 @@ if (!existsSync(fixtureDir)) {
 const skipBuild = process.argv.includes("--skip-build");
 
 if (!skipBuild) {
-  console.log("[next-smoke] (1/4) Building RDS library...");
+  console.log("[next-smoke] (1/5) Building RDS library...");
   execSync("npm run build", { cwd: root, stdio: "inherit" });
 } else {
-  console.log("[next-smoke] (1/4) Skipping RDS build (--skip-build).");
+  console.log("[next-smoke] (1/5) Skipping RDS build (--skip-build).");
 }
 
 // Sanity: the fixture's import paths assume both entries exist on
@@ -77,6 +77,7 @@ for (const rel of [
   "dist/index.cjs",
   "dist/server/index.js",
   "dist/server/index.cjs",
+  "dist/granular/index.js",
 ]) {
   if (!existsSync(join(root, rel))) {
     console.error(
@@ -86,13 +87,13 @@ for (const rel of [
   }
 }
 
-console.log("[next-smoke] (2/4) Installing fixture dependencies...");
+console.log("[next-smoke] (2/5) Installing fixture dependencies...");
 execSync("npm install --no-audit --no-fund --loglevel=error", {
   cwd: fixtureDir,
   stdio: "inherit",
 });
 
-console.log("[next-smoke] (3/4) Running `next build` in fixture...");
+console.log("[next-smoke] (3/5) Running `next build` in fixture...");
 execSync("npx --no-install next build", {
   cwd: fixtureDir,
   stdio: "inherit",
@@ -128,7 +129,7 @@ execSync("npx --no-install next build", {
 //     as a client boundary — the very regression issue #150 is here
 //     to prevent. The likely root causes are spelled out in the
 //     error message.
-console.log("[next-smoke] (4/4) Reading .next RSC client-reference manifest…");
+console.log("[next-smoke] (4/5) Reading .next RSC client-reference manifest…");
 
 const manifestPath = join(
   fixtureDir,
@@ -208,4 +209,82 @@ if (mainBoundaries.length === 0) {
 
 console.log(
   `[next-smoke] PASS — Next 16 RSC manifest confirms: main entry produced ${mainBoundaries.length} client boundary entr(y/ies); server entry produced 0.`,
+);
+
+// Step 5 — the issue #208 granularity gate.
+//
+// Two twin client pages render the same single component (Accordion):
+//   app/granular/page.tsx       — imports from `./granular` (preserveModules tree)
+//   app/barrel-control/page.tsx — imports from `.` (single pre-bundled file)
+//
+// Methodology mirrors the consumer's measurement that reverted the
+// Accordion adoption (+264KB, issue #208): take the JS chunks each
+// prerendered route HTML actually references (Turbopack emits no
+// global app-build-manifest, but the HTML is the ground truth of what
+// a browser downloads), then compare ONLY the chunks EXCLUSIVE to each
+// route — chunks shared by both routes are the framework baseline
+// (Next/React runtime) and would dilute the signal. The assertion is
+// RELATIVE — the granular route's exclusive payload must be under half
+// of the control's — so it self-calibrates as the library grows
+// instead of pinning stale byte budgets. Measured at introduction:
+// 36KB vs 277KB (13%). The failure mode it kills is unmistakable: when
+// granularity regresses (preserveModules/banner/sideEffects drift
+// making the bundler pull the whole barrel), both exclusive sets
+// converge and the ratio approaches 1.
+console.log("[next-smoke] (5/5) Granularity check (issue #208)…");
+
+const routeChunks = (route) => {
+  const htmlPath = join(fixtureDir, `.next/server/app/${route}.html`);
+  if (!existsSync(htmlPath)) {
+    console.error(
+      `[next-smoke] FAIL — prerendered HTML not found at ${htmlPath}; cannot run the granularity check. Did the Next build layout change?`,
+    );
+    process.exit(1);
+  }
+  const html = readFileSync(htmlPath, "utf-8");
+  return new Set(html.match(/\/_next\/static\/[^" ]*\.js/g) ?? []);
+};
+const chunkBytes = (chunkSet) =>
+  [...chunkSet].reduce(
+    (sum, p) => sum + statSync(join(fixtureDir, ".next", p.slice("/_next/".length))).size,
+    0,
+  );
+
+const granularChunks = routeChunks("granular");
+const controlChunks = routeChunks("barrel-control");
+const granularOnly = new Set([...granularChunks].filter((c) => !controlChunks.has(c)));
+const controlOnly = new Set([...controlChunks].filter((c) => !granularChunks.has(c)));
+
+if (granularOnly.size === 0 || controlOnly.size === 0) {
+  console.error(
+    `[next-smoke] FAIL — expected both routes to have exclusive chunks (granular-only: ${granularOnly.size}, control-only: ${controlOnly.size}). If the sets fully overlap, the two imports resolved to the same modules and the comparison is void.`,
+  );
+  process.exit(1);
+}
+
+const granularBytes = chunkBytes(granularOnly);
+const controlBytes = chunkBytes(controlOnly);
+const ratio = granularBytes / controlBytes;
+
+if (ratio >= 0.5) {
+  console.error(
+    `[next-smoke] FAIL — granular route's exclusive JS is ${(ratio * 100).toFixed(1)}% of the barrel-control route's (${granularBytes} vs ${controlBytes} bytes); expected < 50%.`,
+  );
+  console.error(
+    "    Importing one component from `./granular` pulled (most of) the barrel —",
+  );
+  console.error(
+    "    the regression issue #208 exists to prevent. Likely causes: preserveModules",
+  );
+  console.error(
+    "    dropped from vite.config.granular.ts; `sideEffects` removed from package.json;",
+  );
+  console.error(
+    "    or the `./granular` export remapped to the single-bundle entry.",
+  );
+  process.exit(1);
+}
+
+console.log(
+  `[next-smoke] PASS — granular route's exclusive JS ${granularBytes} bytes vs barrel-control's ${controlBytes} bytes (${(ratio * 100).toFixed(1)}%). One-component import stays granular.`,
 );
