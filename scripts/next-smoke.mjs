@@ -246,14 +246,19 @@ const routeChunks = (route) => {
 };
 const chunkBytes = (chunkSet) =>
   [...chunkSet].reduce(
-    (sum, p) => sum + statSync(join(fixtureDir, ".next", p.slice("/_next/".length))).size,
+    (sum, p) =>
+      sum + statSync(join(fixtureDir, ".next", p.slice("/_next/".length))).size,
     0,
   );
 
 const granularChunks = routeChunks("granular");
 const controlChunks = routeChunks("barrel-control");
-const granularOnly = new Set([...granularChunks].filter((c) => !controlChunks.has(c)));
-const controlOnly = new Set([...controlChunks].filter((c) => !granularChunks.has(c)));
+const granularOnly = new Set(
+  [...granularChunks].filter((c) => !controlChunks.has(c)),
+);
+const controlOnly = new Set(
+  [...controlChunks].filter((c) => !granularChunks.has(c)),
+);
 
 if (granularOnly.size === 0 || controlOnly.size === 0) {
   console.error(
