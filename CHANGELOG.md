@@ -1,3 +1,9 @@
+## [3.9.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.8.0...v3.9.0) (2026-06-11)
+
+### ✨ Features
+
+* **build:** granular client entry ./granular — preserveModules tree ([#209](https://github.com/FabioCaffarello/react-design-system/issues/209)) ([8d53ef9](https://github.com/FabioCaffarello/react-design-system/commit/8d53ef9fb65c477f5a1f35d1ca97ecc90e43a544)), closes [#208](https://github.com/FabioCaffarello/react-design-system/issues/208) [#205](https://github.com/FabioCaffarello/react-design-system/issues/205)
+
 ## [3.8.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.7.0...v3.8.0) (2026-06-11)
 
 ### ✨ Features
