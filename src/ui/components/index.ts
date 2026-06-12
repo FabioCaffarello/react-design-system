@@ -164,3 +164,6 @@ export {
 // These are full page structures that are configurable but have sensible defaults
 
 export { DashboardLayout, type DashboardLayoutProps } from "./DashboardLayout";
+
+export { default as FilterChips } from "./FilterChips";
+export type { FilterChipsProps } from "./FilterChips";
