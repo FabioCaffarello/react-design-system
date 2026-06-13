@@ -25,3 +25,5 @@ When creating or editing a component:
 5. **Accessibility.** Keyboard operable, correct ARIA role/state, visible focus ring. Interactive elements have accessible names.
 
 6. **No cross-layer upward imports.** primitives never import from components or layouts. components may import primitives. layouts import primitives only.
+
+7. **Stories change the a11y baseline.** A new component ships 5+ stories, which join the Storybook story set the CI a11y gate counts. Regenerate the committed reference with `npm run test:a11y:baseline` and commit `a11y-baseline.json` in the same PR — the `A11y baseline (light/dark)` jobs fail at the `--compare` story-set parity check (`totalStories: CI=N ref=M`) otherwise, even when lint/typecheck/tests/smoke are all green. Confirm `critical=0 serious=0` (the floor) before committing. This is the last step of landing a component and the easiest to forget; the `test:a11y:baseline` command and the two-parallel-jobs CI gate are documented in `CLAUDE.md`'s Commands section and its a11y note.
