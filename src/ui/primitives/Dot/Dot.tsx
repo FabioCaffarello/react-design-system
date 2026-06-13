@@ -23,9 +23,9 @@ export interface DotProps extends HTMLAttributes<HTMLSpanElement> {
 /**
  * Dot Component
  *
- * A simple colored circle for status indication.
- * Follows Atomic Design principles as an Atom component.
- * Uses semantic color tokens for consistent theming.
+ * A simple colored circle for status indication. A primitive —
+ * indivisible, composes no other UI. Uses semantic color tokens for
+ * consistent theming.
  *
  * @example
  * ```tsx
