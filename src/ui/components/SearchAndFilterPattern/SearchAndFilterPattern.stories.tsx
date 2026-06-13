@@ -20,11 +20,11 @@ A complete search and filter pattern that combines SearchInput with filter contr
 This pattern solves the common UX problem of searching and filtering lists of items.
 
 ### Components Used
-- SearchInput (molecule)
-- Card (molecule)
-- Button (atom)
+- SearchInput
+- Card
+- Button
 - Container, Stack (layouts)
-- Text (atom)
+- Text
 
 ### Events
 

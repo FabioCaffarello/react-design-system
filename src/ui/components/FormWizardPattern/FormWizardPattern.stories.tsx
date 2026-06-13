@@ -45,11 +45,11 @@ graph TB
 \`\`\`
 
 ### Components Used
-- Stepper (organism)
-- Form (molecule)
+- Stepper
+- Form
 - Input, Checkbox, Select (atoms)
 - Container, Stack (layouts)
-- Button (atom)
+- Button
 
 ### Events
 
