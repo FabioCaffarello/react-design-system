@@ -7,9 +7,10 @@
  * contracts:
  *
  *   - ARIA Labels and Roles: opens on Cmd+K (and the trigger if
- *     provided); closes on Escape; the searchbox sits inside the
- *     overlay; each command is a button with the visible label as
- *     accessible name
+ *     provided); closes on Escape; the panel is a role="dialog"
+ *     aria-modal="true"; the search input is a combobox wired to a
+ *     listbox of role="option" commands via aria-controls +
+ *     aria-activedescendant
  *   - Keyboard Navigation: ArrowUp/Down navigate filtered items;
  *     Enter activates the highlighted item; Escape closes
  *   - Focus Management: opening focuses the input; the rest of the
@@ -29,10 +30,11 @@ import CommandPalette, { type CommandItem } from "./CommandPalette";
 
 const newFile = vi.fn();
 const save = vi.fn();
+const quit = vi.fn();
 const items: CommandItem[] = [
   { id: "1", label: "New file", action: newFile, keywords: ["create"] },
   { id: "2", label: "Save", action: save, group: "File" },
-  { id: "3", label: "Quit", action: vi.fn() },
+  { id: "3", label: "Quit", action: quit },
 ];
 
 describe("CommandPalette Accessibility", () => {
@@ -45,14 +47,18 @@ describe("CommandPalette Accessibility", () => {
       ).toBeInTheDocument();
     });
 
-    it("each command renders as a button with the label as accessible name", () => {
+    it("each command renders as a listbox option with the label as accessible name", () => {
       render(<CommandPalette items={items} defaultOpen />);
 
+      // The results region is a listbox; the search input is a combobox
+      // wired to it via aria-controls + aria-activedescendant.
+      expect(screen.getByRole("listbox")).toBeInTheDocument();
+      expect(screen.getByRole("combobox")).toBeInTheDocument();
       expect(
-        screen.getByRole("button", { name: /New file/i }),
+        screen.getByRole("option", { name: /New file/i }),
       ).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /Save/i })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: /Quit/i })).toBeInTheDocument();
+      expect(screen.getByRole("option", { name: /Save/i })).toBeInTheDocument();
+      expect(screen.getByRole("option", { name: /Quit/i })).toBeInTheDocument();
     });
   });
 
@@ -75,8 +81,9 @@ describe("CommandPalette Accessibility", () => {
       expect(newFile).toHaveBeenCalledTimes(1);
     });
 
-    it("ArrowDown then Enter activates the second item", async () => {
+    it("ArrowDown follows the visible (grouped) order, not the raw items order", async () => {
       const user = userEvent.setup();
+      quit.mockClear();
       save.mockClear();
       render(<CommandPalette items={items} defaultOpen />);
 
@@ -87,7 +94,12 @@ describe("CommandPalette Accessibility", () => {
         await user.keyboard("{Enter}");
       });
 
-      expect(save).toHaveBeenCalledTimes(1);
+      // Regression: items render grouped — "Other" (New file, Quit) then
+      // "File" (Save) — so the visually-second row is Quit, even though
+      // Save is second in the raw items array. ArrowDown must follow the
+      // rendered order, not items.indexOf.
+      expect(quit).toHaveBeenCalledTimes(1);
+      expect(save).not.toHaveBeenCalled();
     });
 
     it("Escape closes the palette", async () => {
@@ -124,6 +136,32 @@ describe("CommandPalette Accessibility", () => {
         expect(input).toHaveFocus();
       });
     });
+
+    it("is a modal dialog and restores focus to the trigger on close", async () => {
+      const user = userEvent.setup();
+      render(
+        <CommandPalette
+          items={items}
+          trigger={<button>Open palette</button>}
+        />,
+      );
+
+      const trigger = screen.getByRole("button", { name: "Open palette" });
+      await act(async () => {
+        await user.click(trigger);
+      });
+
+      const dialog = await screen.findByRole("dialog");
+      expect(dialog).toHaveAttribute("aria-modal", "true");
+
+      await act(async () => {
+        await user.keyboard("{Escape}");
+      });
+
+      // Regression: closing left focus stranded on <body>; it must return
+      // to whatever opened the palette (WCAG 2.4.3).
+      await waitFor(() => expect(trigger).toHaveFocus());
+    });
   });
 
   describe("Screen Reader Support", () => {
@@ -147,15 +185,12 @@ describe("CommandPalette Accessibility", () => {
       // 'New file' has keyword "create" — it filters by that keyword,
       // but the button's accessible name is the label only, not the
       // concatenation of label + keyword.
-      const button = screen.getByRole("button", { name: /New file/i });
-      // The button's accessible-name computation excludes the keyword
-      // "create" — testing-library's getByRole(name) does the full
-      // accessible-name calculation, so if it found "create", the
-      // earlier matcher would have to be `/create/`. Asserting the
-      // exact contract: the visible button text contains "New file"
-      // and not "create".
-      expect(button.textContent).toMatch(/New file/);
-      expect(button.textContent).not.toMatch(/create/i);
+      const option = screen.getByRole("option", { name: /New file/i });
+      // The option's accessible name excludes the keyword "create":
+      // getByRole(name) runs the full accessible-name calculation, so the
+      // visible text is "New file", not a label+keyword concatenation.
+      expect(option.textContent).toMatch(/New file/);
+      expect(option.textContent).not.toMatch(/create/i);
     });
 
     it("Cmd+K toggles the palette open/closed", async () => {

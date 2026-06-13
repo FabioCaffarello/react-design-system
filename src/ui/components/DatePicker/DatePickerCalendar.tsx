@@ -53,14 +53,24 @@ function isDateInRange(
   return time >= start.getTime() && time <= end.getTime();
 }
 
+// Compare by calendar day, not by instant. Cells are local midnight, but
+// consumers routinely pass minDate={new Date()} (now, with a time-of-day)
+// to mean "today onward"; a raw `date < minDate` then disabled today
+// because midnight < now. Normalizing both sides to the start of their day
+// makes the bounds inclusive of the boundary day, as intended.
+function startOfDay(d: Date): number {
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+}
+
 function isDateDisabled(
   date: Date,
   minDate?: Date,
   maxDate?: Date,
   disabledDates?: Date[],
 ): boolean {
-  if (minDate && date < minDate) return true;
-  if (maxDate && date > maxDate) return true;
+  const day = startOfDay(date);
+  if (minDate && day < startOfDay(minDate)) return true;
+  if (maxDate && day > startOfDay(maxDate)) return true;
   if (disabledDates?.some((d) => isSameDay(date, d))) return true;
   return false;
 }
@@ -127,14 +137,31 @@ export function DatePickerCalendar({
     }
   }, [controlledMonth]);
 
-  // Roving tabindex: when focusedDate changes (via arrow keys or initial
-  // mount), move the DOM focus to the matching cell. Without this, axe
-  // sees a correct grid structure but the keyboard experience is broken
-  // — arrow keys change only the state, not the actual focus.
+  // Roving tabindex: when focusedDate changes via arrow keys, move DOM
+  // focus to the matching cell. Two bugs fixed here:
+  //  1. The initial mount is skipped — the calendar opens on input FOCUS,
+  //     so focusing a grid cell on mount yanked focus away from the input
+  //     the user just focused (they couldn't type). The grid is reachable
+  //     via Tab (roving tabindex) / ArrowDown; focus only follows arrow
+  //     navigation, not the open.
+  //  2. The lookup key is normalized to local midnight. Cells render their
+  //     data-date from a midnight-local Date, but focusedDate (seeded from
+  //     selectedDate/today) carries a time-of-day, so the raw
+  //     toISOString() never matched and focus silently failed.
+  const isInitialMount = useRef(true);
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
     if (!calendarRef.current) return;
+    const key = new Date(
+      focusedDate.getFullYear(),
+      focusedDate.getMonth(),
+      focusedDate.getDate(),
+    ).toISOString();
     const cell = calendarRef.current.querySelector<HTMLElement>(
-      `[data-date="${focusedDate.toISOString()}"]`,
+      `[data-date="${key}"]`,
     );
     if (cell) cell.focus();
   }, [focusedDate]);
@@ -410,6 +437,7 @@ export function DatePickerCalendar({
                   aria-label={date.toDateString()}
                   aria-selected={isSelected}
                   aria-disabled={isDisabled}
+                  aria-current={isToday ? "date" : undefined}
                 >
                   {date.getDate()}
                 </button>

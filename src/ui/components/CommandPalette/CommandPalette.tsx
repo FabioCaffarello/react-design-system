@@ -5,6 +5,7 @@ import {
   useEffect,
   useRef,
   useCallback,
+  useId,
   type KeyboardEvent,
 } from "react";
 import { createPortal } from "react-dom";
@@ -15,6 +16,8 @@ import { getShadowClass } from "../../tokens/shadows";
 import { getZIndexClass } from "../../tokens/z-index";
 import { getAnimationClass } from "../../tokens/animations";
 import Input from "../../primitives/Input/Input";
+import { useFocusTrap } from "../../hooks/useFocusTrap";
+import { useFocusRestore } from "../../hooks/useFocusRestore";
 
 export interface CommandItem {
   id: string;
@@ -69,9 +72,18 @@ export default function CommandPalette({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const listboxId = useId();
 
   const isControlled = controlledOpen !== undefined;
   const isOpen = isControlled ? controlledOpen : internalOpen;
+
+  // Modal command palette: trap Tab within the panel while open and
+  // return focus to whatever opened it on close (the panel renders
+  // role="dialog" aria-modal="true" below — without these the overlay
+  // leaked focus to the page behind it and stranded keyboard users).
+  useFocusRestore(isOpen);
+  useFocusTrap(panelRef, isOpen);
 
   // Filter items based on search query
   const filteredItems = items.filter((item) => {
@@ -98,6 +110,16 @@ export default function CommandPalette({
     {} as Record<string, CommandItem[]>,
   );
 
+  // Flatten groups in VISUAL render order so keyboard selectedIndex and
+  // the rendered order agree. filteredItems keeps original-items order,
+  // which diverges from the grouped layout once groups interleave — so
+  // ArrowDown/Up appeared to jump around the list.
+  const orderedItems = Object.values(groupedItems).flat();
+  const activeOptionId =
+    isOpen && orderedItems[selectedIndex]
+      ? `${listboxId}-option-${selectedIndex}`
+      : undefined;
+
   const handleOpenChange = useCallback(
     (newOpen: boolean) => {
       if (!isControlled) {
@@ -107,11 +129,21 @@ export default function CommandPalette({
       if (newOpen) {
         setSearchQuery("");
         setSelectedIndex(0);
-        setTimeout(() => inputRef.current?.focus(), 0);
       }
     },
     [isControlled, onOpenChange],
   );
+
+  // Focus the search input when the palette opens. Deferred via an effect
+  // (NOT the autoFocus attribute) so it runs AFTER useFocusRestore's
+  // passive effect has snapshotted the opener. A synchronous autoFocus
+  // fires during commit, before that snapshot, so the snapshot would
+  // capture the input itself and focus restore on close would no-op.
+  useEffect(() => {
+    if (!isOpen) return;
+    const timer = setTimeout(() => inputRef.current?.focus(), 0);
+    return () => clearTimeout(timer);
+  }, [isOpen]);
 
   const handleSelect = (item: CommandItem) => {
     item.action();
@@ -126,7 +158,7 @@ export default function CommandPalette({
 
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      setSelectedIndex((prev) => Math.min(prev + 1, filteredItems.length - 1));
+      setSelectedIndex((prev) => Math.min(prev + 1, orderedItems.length - 1));
       return;
     }
 
@@ -138,8 +170,8 @@ export default function CommandPalette({
 
     if (e.key === "Enter") {
       e.preventDefault();
-      if (filteredItems[selectedIndex]) {
-        handleSelect(filteredItems[selectedIndex]);
+      if (orderedItems[selectedIndex]) {
+        handleSelect(orderedItems[selectedIndex]);
       }
       return;
     }
@@ -204,6 +236,10 @@ export default function CommandPalette({
       onClick={() => handleOpenChange(false)}
     >
       <div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Command palette"
         className={`
           w-full
           max-w-2xl
@@ -236,7 +272,12 @@ export default function CommandPalette({
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
             className="flex-1 border-0 focus:ring-0"
-            autoFocus
+            role="combobox"
+            aria-expanded={isOpen}
+            aria-controls={listboxId}
+            aria-activedescendant={activeOptionId}
+            aria-autocomplete="list"
+            aria-label={placeholder}
           />
           <div
             className={`
@@ -259,6 +300,9 @@ export default function CommandPalette({
         {/* Results */}
         <div
           ref={listRef}
+          id={listboxId}
+          role="listbox"
+          aria-label="Commands"
           className={`
             max-h-96
             overflow-y-auto
@@ -278,9 +322,14 @@ export default function CommandPalette({
             </div>
           ) : (
             Object.entries(groupedItems).map(([group, groupItems]) => (
-              <div key={group}>
+              <div
+                key={group}
+                role="group"
+                aria-label={group !== "Other" ? group : undefined}
+              >
                 {group !== "Other" && (
                   <div
+                    aria-hidden="true"
                     className={`
                     ${getSpacingClass("sm", "px")}
                     ${getSpacingClass("xs", "py")}
@@ -295,13 +344,17 @@ export default function CommandPalette({
                   </div>
                 )}
                 {groupItems.map((item, _index) => {
-                  const globalIndex = filteredItems.indexOf(item);
+                  const globalIndex = orderedItems.indexOf(item);
                   const isSelected = globalIndex === selectedIndex;
 
                   return (
                     <button
                       key={item.id}
                       type="button"
+                      id={`${listboxId}-option-${globalIndex}`}
+                      role="option"
+                      aria-selected={isSelected}
+                      tabIndex={-1}
                       data-index={globalIndex}
                       onClick={() => handleSelect(item)}
                       className={`
