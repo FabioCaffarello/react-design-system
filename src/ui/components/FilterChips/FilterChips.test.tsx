@@ -122,6 +122,22 @@ describe("FilterChips", () => {
         "Filtros de parlamentares",
       );
     });
+
+    it("consumer aria-labelledby suppresses the derived aria-label (no redundant attribute)", () => {
+      render(
+        <>
+          <span id="grp-label">Filtros de parlamentares</span>
+          <FilterChips label="Filtros" aria-labelledby="grp-label">
+            <Chip>UF: SP</Chip>
+          </FilterChips>
+        </>,
+      );
+      const group = screen.getByRole("group");
+      expect(group).toHaveAttribute("aria-labelledby", "grp-label");
+      // The string label must NOT leave a stale aria-label alongside the
+      // consumer's aria-labelledby — labelledby is the only naming.
+      expect(group).not.toHaveAttribute("aria-label");
+    });
   });
 
   describe("wrap", () => {

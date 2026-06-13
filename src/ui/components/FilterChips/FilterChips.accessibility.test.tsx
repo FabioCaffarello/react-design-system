@@ -68,6 +68,23 @@ describe("FilterChips Accessibility", () => {
       expect(screen.getByText("Filtros")).toBeInTheDocument();
     });
 
+    it("consumer aria-labelledby names the group, leaving no redundant aria-label", () => {
+      render(
+        <>
+          <span id="fc-grp">Filtros de parlamentares</span>
+          <FilterChips label="Filtros" aria-labelledby="fc-grp">
+            <Chip>UF: SP</Chip>
+          </FilterChips>
+        </>,
+      );
+      // Effective accessible name resolves through aria-labelledby...
+      expect(
+        screen.getByRole("group", { name: "Filtros de parlamentares" }),
+      ).toBeInTheDocument();
+      // ...and no derived aria-label is left to compete with it.
+      expect(screen.getByRole("group")).not.toHaveAttribute("aria-label");
+    });
+
     it("non-string label → no derived aria-label (consumer must name the group)", () => {
       render(
         <FilterChips label={<em>Filtros</em>}>

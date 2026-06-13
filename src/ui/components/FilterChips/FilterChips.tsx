@@ -45,14 +45,16 @@ export interface FilterChipsProps extends HTMLAttributes<HTMLDivElement> {
  * announce the chips as one named unit. The accessible name resolves in
  * this order:
  *
- * 1. An explicit `aria-label` (or `aria-labelledby`) passed by the
- *    consumer always wins — it is spread onto the root after the
- *    derived value and overrides it.
+ * 1. An explicit `aria-label` OR `aria-labelledby` passed by the
+ *    consumer always wins — when either is present, no name is derived
+ *    from `label`, so the consumer's attribute is the only naming on the
+ *    element (no redundant `aria-label` is left alongside an
+ *    `aria-labelledby`).
  * 2. Otherwise, when `label` is a non-empty plain string, it is reused
  *    as the group's `aria-label` automatically.
  * 3. When `label` is a non-string `ReactNode` (or absent), no
- *    `aria-label` is derived — supply `aria-label` yourself if the
- *    group needs a name AT users can identify it by.
+ *    `aria-label` is derived — supply `aria-label`/`aria-labelledby`
+ *    yourself if the group needs a name AT users can identify it by.
  *
  * ### Server-safe
  *
@@ -88,8 +90,18 @@ export function FilterChips({
   className,
   ...props
 }: FilterChipsProps) {
+  // The string label doubles as the group's accessible name — but only
+  // when the consumer supplies no naming of their own. An explicit
+  // `aria-label` OR `aria-labelledby` (both spread onto the root below)
+  // takes precedence; deriving a name alongside `aria-labelledby` would
+  // leave a redundant `aria-label` on the element, so suppress it here
+  // rather than relying on ARIA name-computation precedence to hide it.
+  const hasConsumerName =
+    props["aria-label"] != null || props["aria-labelledby"] != null;
   const derivedAriaLabel =
-    typeof label === "string" && label !== "" ? label : undefined;
+    !hasConsumerName && typeof label === "string" && label !== ""
+      ? label
+      : undefined;
 
   return (
     <div
@@ -104,7 +116,10 @@ export function FilterChips({
       {...props}
     >
       {label ? (
-        <span className="text-fg-secondary text-sm">{label}</span>
+        // shrink-0 keeps the label a stable leading unit: in the wrapping
+        // flex run it must not be squeezed or mid-word-wrapped when the
+        // chips overflow — it stays on one line and the chips wrap around it.
+        <span className="shrink-0 text-fg-secondary text-sm">{label}</span>
       ) : null}
       {children}
     </div>
