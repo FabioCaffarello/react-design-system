@@ -168,6 +168,13 @@ export {
 
 export { DashboardLayout, type DashboardLayoutProps } from "./DashboardLayout";
 
+export { default as HeroSection } from "./HeroSection";
+export type {
+  HeroSectionProps,
+  HeroSectionVariant,
+  HeroSectionAlign,
+} from "./HeroSection";
+
 export { default as TabsAsLinks } from "./TabsAsLinks";
 export type {
   TabsAsLinksProps,

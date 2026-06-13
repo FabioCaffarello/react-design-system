@@ -95,7 +95,7 @@ export type { ContainerProps } from "./layouts/Container/Container";
 export { Stack } from "./layouts/Stack/Stack";
 export type { StackProps } from "./layouts/Stack/Stack";
 
-// ---------- components (22) ----------
+// ---------- components (23) ----------
 // AutocompleteOption was removed from this entry in the issue #160 sweep.
 // The static analyser in `scripts/lib/server-safe.mjs` had classified it
 // server-safe (it uses no hooks and no createContext), but the component
@@ -165,6 +165,19 @@ export type { HeaderActionsProps } from "./components/Header/components/HeaderAc
 
 export { HeaderNavigation } from "./components/Header/components/HeaderNavigation";
 export type { HeaderNavigationProps } from "./components/Header/components/HeaderNavigation";
+
+// HeroSection — top-of-page hero shell (#163). Pure presentation: kicker /
+// title / description / actions / kpis / meta slots with three visual
+// treatments. No hooks, no handler on the DOM (interactive children land in
+// the `actions` slot and cross the RSC boundary as client references), so the
+// wrapper ships in `./server`. Concrete-file re-export per rule 1 of
+// `.claude/rules/server-entry.md`.
+export { default as HeroSection } from "./components/HeroSection/HeroSection";
+export type {
+  HeroSectionProps,
+  HeroSectionVariant,
+  HeroSectionAlign,
+} from "./components/HeroSection/HeroSection";
 
 export { default as MenuSeparator } from "./components/Menu/MenuSeparator";
 export type { MenuSeparatorProps } from "./components/Menu/MenuSeparator";
