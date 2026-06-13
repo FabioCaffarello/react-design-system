@@ -1,3 +1,13 @@
+## [3.13.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.12.0...v3.13.0) (2026-06-13)
+
+### ✨ Features
+
+* **exports:** publish orphaned Dot and ButtonGroup components ([#216](https://github.com/FabioCaffarello/react-design-system/issues/216)) ([9bc4d64](https://github.com/FabioCaffarello/react-design-system/commit/9bc4d64b10dbd251d28229ad71eaca3ed168cb69))
+
+### 📝 Documentation
+
+* **rules:** require a11y baseline regen when landing a component ([#215](https://github.com/FabioCaffarello/react-design-system/issues/215)) ([233b54a](https://github.com/FabioCaffarello/react-design-system/commit/233b54a7e436b5246447941eb2cb5b7dc9532d82)), closes [#213](https://github.com/FabioCaffarello/react-design-system/issues/213) [#214](https://github.com/FabioCaffarello/react-design-system/issues/214)
+
 ## [3.12.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.11.0...v3.12.0) (2026-06-13)
 
 ### ✨ Features
