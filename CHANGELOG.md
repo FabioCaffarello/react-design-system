@@ -1,3 +1,9 @@
+## [3.11.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.10.0...v3.11.0) (2026-06-13)
+
+### ✨ Features
+
+* **components:** add TabsAsLinks — tabs as URL navigation ([#210](https://github.com/FabioCaffarello/react-design-system/issues/210)) ([#214](https://github.com/FabioCaffarello/react-design-system/issues/214)) ([b097f11](https://github.com/FabioCaffarello/react-design-system/commit/b097f11f93b6edf87d41833fc508480ddea9d92b))
+
 ## [3.10.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.9.0...v3.10.0) (2026-06-13)
 
 ### ✨ Features
