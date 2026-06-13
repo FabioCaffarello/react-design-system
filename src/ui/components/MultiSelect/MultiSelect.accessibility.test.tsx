@@ -37,15 +37,41 @@ describe("MultiSelect Accessibility", () => {
       render(<MultiSelect options={options} label="Fruits" />);
 
       expect(
-        screen.getByRole("textbox", { name: "Fruits" }),
+        screen.getByRole("combobox", { name: "Fruits" }),
       ).toBeInTheDocument();
+    });
+
+    it("exposes chosen options via aria-selected on a multiselectable listbox", async () => {
+      const user = userEvent.setup();
+      render(
+        <MultiSelect options={options} label="Fruits" value={["apple"]} />,
+      );
+
+      const input = screen.getByRole("combobox", { name: "Fruits" });
+      await act(async () => {
+        await user.click(input);
+      });
+
+      const listbox = await screen.findByRole("listbox");
+      // Regression: MultiSelect reused the single-select option whose
+      // aria-selected tracked the HIGHLIGHT, not the chosen state, so a
+      // screen reader could not tell which options were actually selected.
+      expect(listbox).toHaveAttribute("aria-multiselectable", "true");
+      expect(screen.getByRole("option", { name: /Apple/i })).toHaveAttribute(
+        "aria-selected",
+        "true",
+      );
+      expect(screen.getByRole("option", { name: /Banana/i })).toHaveAttribute(
+        "aria-selected",
+        "false",
+      );
     });
 
     it("listbox inherits the input's name via cascaded aria-label", async () => {
       const user = userEvent.setup();
       render(<MultiSelect options={options} label="Fruits" />);
 
-      const input = screen.getByRole("textbox", { name: "Fruits" });
+      const input = screen.getByRole("combobox", { name: "Fruits" });
       await user.click(input);
 
       const listbox = await screen.findByRole("listbox");
@@ -87,7 +113,7 @@ describe("MultiSelect Accessibility", () => {
       const user = userEvent.setup();
       render(<MultiSelect options={options} label="Fruits" />);
 
-      const input = screen.getByRole("textbox", { name: "Fruits" });
+      const input = screen.getByRole("combobox", { name: "Fruits" });
       input.focus();
       await user.keyboard("{ArrowDown}");
 
@@ -101,7 +127,7 @@ describe("MultiSelect Accessibility", () => {
         <MultiSelect options={options} label="Fruits" onChange={onChange} />,
       );
 
-      const input = screen.getByRole("textbox", { name: "Fruits" });
+      const input = screen.getByRole("combobox", { name: "Fruits" });
       input.focus();
       await user.keyboard("{ArrowDown}{Enter}");
 
@@ -118,7 +144,7 @@ describe("MultiSelect Accessibility", () => {
         <MultiSelect options={options} label="Fruits" onChange={onChange} />,
       );
 
-      const input = screen.getByRole("textbox", { name: "Fruits" });
+      const input = screen.getByRole("combobox", { name: "Fruits" });
       await act(async () => {
         await user.click(input);
       });
@@ -139,7 +165,7 @@ describe("MultiSelect Accessibility", () => {
       const user = userEvent.setup();
       render(<MultiSelect options={options} label="Fruits" />);
 
-      const input = screen.getByRole("textbox", { name: "Fruits" });
+      const input = screen.getByRole("combobox", { name: "Fruits" });
       await act(async () => {
         await user.click(input);
       });
@@ -173,7 +199,7 @@ describe("MultiSelect Accessibility", () => {
         />,
       );
 
-      const input = screen.getByRole("textbox", { name: "Fruits" });
+      const input = screen.getByRole("combobox", { name: "Fruits" });
       // When chips already populate the field, the placeholder is
       // cleared — AT users don't hear "Apple, Select fruits..." which
       // would be confusing.

@@ -20,6 +20,10 @@ export interface AutocompleteListProps {
   allSelected?: boolean;
   onSelectAll?: () => void;
   onDeselectAll?: () => void;
+  /** listbox id; option ids are derived as `${id}-option-${index}`. */
+  id?: string;
+  /** Multi-select: values currently selected, to drive aria-selected. */
+  selectedValues?: string[];
   /**
    * Accessible name for the listbox. axe `aria-input-field-name`
    * (serious) flags a `role="listbox"` portal without `aria-label` /
@@ -51,6 +55,8 @@ const AutocompleteList = forwardRef<HTMLDivElement, AutocompleteListProps>(
       allSelected = false,
       onSelectAll,
       onDeselectAll,
+      id,
+      selectedValues,
       "aria-label": ariaLabel,
       "aria-labelledby": ariaLabelledBy,
     },
@@ -73,7 +79,9 @@ const AutocompleteList = forwardRef<HTMLDivElement, AutocompleteListProps>(
     const listContent = (
       <div
         ref={ref}
+        id={id}
         role="listbox"
+        aria-multiselectable={selectedValues ? true : undefined}
         aria-label={ariaLabelledBy ? undefined : ariaLabel}
         aria-labelledby={ariaLabelledBy}
         className={`
@@ -96,6 +104,8 @@ const AutocompleteList = forwardRef<HTMLDivElement, AutocompleteListProps>(
       >
         {loading ? (
           <div
+            role="status"
+            aria-live="polite"
             className={`
               ${getSpacingClass("md", "p")}
               text-sm
@@ -107,6 +117,8 @@ const AutocompleteList = forwardRef<HTMLDivElement, AutocompleteListProps>(
           </div>
         ) : options.length === 0 ? (
           <div
+            role="status"
+            aria-live="polite"
             className={`
               ${getSpacingClass("md", "p")}
               text-sm
@@ -138,8 +150,14 @@ const AutocompleteList = forwardRef<HTMLDivElement, AutocompleteListProps>(
             {options.map((option, index) => (
               <AutocompleteOption
                 key={option.value}
+                id={id ? `${id}-option-${index}` : undefined}
                 option={option}
                 isHighlighted={index === highlightedIndex}
+                selected={
+                  selectedValues
+                    ? selectedValues.includes(option.value)
+                    : undefined
+                }
                 onSelect={onSelect}
               />
             ))}

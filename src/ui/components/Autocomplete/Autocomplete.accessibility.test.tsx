@@ -41,7 +41,7 @@ describe("Autocomplete Accessibility", () => {
       render(<Autocomplete options={options} label="Fruit" />);
 
       expect(
-        screen.getByRole("textbox", { name: "Fruit" }),
+        screen.getByRole("combobox", { name: "Fruit" }),
       ).toBeInTheDocument();
     });
 
@@ -49,7 +49,7 @@ describe("Autocomplete Accessibility", () => {
       const user = userEvent.setup();
       render(<Autocomplete options={options} label="Fruit" />);
 
-      const input = screen.getByRole("textbox", { name: "Fruit" });
+      const input = screen.getByRole("combobox", { name: "Fruit" });
       await user.click(input);
 
       expect(await screen.findByRole("listbox")).toBeInTheDocument();
@@ -59,7 +59,7 @@ describe("Autocomplete Accessibility", () => {
       const user = userEvent.setup();
       render(<Autocomplete options={options} label="Fruit" />);
 
-      const input = screen.getByRole("textbox", { name: "Fruit" });
+      const input = screen.getByRole("combobox", { name: "Fruit" });
       await user.click(input);
 
       const opts = await screen.findAllByRole("option");
@@ -74,7 +74,7 @@ describe("Autocomplete Accessibility", () => {
       const user = userEvent.setup();
       render(<Autocomplete options={options} label="Fruit" />);
 
-      const input = screen.getByRole("textbox", { name: "Fruit" });
+      const input = screen.getByRole("combobox", { name: "Fruit" });
       await user.click(input);
 
       const listbox = await screen.findByRole("listbox");
@@ -104,7 +104,7 @@ describe("Autocomplete Accessibility", () => {
       const user = userEvent.setup();
       render(<Autocomplete options={options} label="Fruit" />);
 
-      const input = screen.getByRole("textbox", { name: "Fruit" });
+      const input = screen.getByRole("combobox", { name: "Fruit" });
       input.focus();
       await user.keyboard("{ArrowDown}");
 
@@ -124,7 +124,7 @@ describe("Autocomplete Accessibility", () => {
         <Autocomplete options={options} label="Fruit" onSelect={onSelect} />,
       );
 
-      const input = screen.getByRole("textbox", { name: "Fruit" });
+      const input = screen.getByRole("combobox", { name: "Fruit" });
       input.focus();
       await user.keyboard("{ArrowDown}{Enter}");
 
@@ -142,7 +142,7 @@ describe("Autocomplete Accessibility", () => {
         <Autocomplete options={options} label="Fruit" onSelect={onSelect} />,
       );
 
-      const input = screen.getByRole("textbox", { name: "Fruit" });
+      const input = screen.getByRole("combobox", { name: "Fruit" });
       input.focus();
       await user.keyboard("{ArrowDown}");
       await screen.findByRole("listbox");
@@ -160,7 +160,7 @@ describe("Autocomplete Accessibility", () => {
       const user = userEvent.setup();
       render(<Autocomplete options={options} label="Fruit" />);
 
-      const input = screen.getByRole("textbox", { name: "Fruit" });
+      const input = screen.getByRole("combobox", { name: "Fruit" });
       input.focus();
       await user.keyboard("{ArrowDown}{ArrowDown}");
 
@@ -175,7 +175,7 @@ describe("Autocomplete Accessibility", () => {
       const user = userEvent.setup();
       render(<Autocomplete options={options} label="Fruit" />);
 
-      const input = screen.getByRole("textbox", { name: "Fruit" });
+      const input = screen.getByRole("combobox", { name: "Fruit" });
       await user.click(input);
 
       const cherry = await screen.findByRole("option", { name: "Cherry" });
@@ -186,7 +186,7 @@ describe("Autocomplete Accessibility", () => {
       const user = userEvent.setup();
       render(<Autocomplete options={options} label="Fruit" />);
 
-      const input = screen.getByRole("textbox", { name: "Fruit" });
+      const input = screen.getByRole("combobox", { name: "Fruit" });
       await act(async () => {
         await user.type(input, "an");
       });

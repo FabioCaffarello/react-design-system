@@ -182,15 +182,22 @@ export default function DataGrid<
 }: DataGridProps<T>) {
   const [internalColumnWidths, setInternalColumnWidths] = useState<
     Record<string, number>
-  >(columnWidths || {});
+  >({});
+  // Controlled when the consumer passes columnWidths; otherwise internal
+  // state owns it. The old code seeded internal state from the prop ONCE
+  // at mount and then ignored every later prop change.
+  const isColumnWidthsControlled = columnWidths !== undefined;
+  const effectiveColumnWidths = isColumnWidthsControlled
+    ? columnWidths
+    : internalColumnWidths;
 
   // Convert DataGrid columns to Table columns
   const tableColumns: TableColumn<T>[] = useMemo(() => {
     return columns.map((col) => ({
       ...col,
-      width: internalColumnWidths[col.key as string] || col.defaultWidth,
+      width: effectiveColumnWidths[col.key as string] || col.defaultWidth,
     }));
-  }, [columns, internalColumnWidths]);
+  }, [columns, effectiveColumnWidths]);
 
   const handleExport = (format: "csv" | "xlsx" | "json") => {
     if (onExport) {
@@ -206,21 +213,21 @@ export default function DataGrid<
   };
 
   const exportToCSV = (data: T[], cols: DataGridColumn<T>[]) => {
-    const headers = cols
-      .filter((c) => c.exportable !== false)
-      .map((c) => c.label || c.key);
-    const rows = data.map((row) =>
-      cols
-        .filter((c) => c.exportable !== false)
-        .map((c) => {
-          const value = row[c.key];
-          return typeof value === "string" && value.includes(",")
-            ? `"${value}"`
-            : value;
-        }),
-    );
+    // RFC 4180: quote a field (and double its internal quotes) whenever it
+    // contains a comma, a double-quote, OR a newline. The old code only
+    // quoted on comma, so values with quotes/newlines produced malformed,
+    // column-misaligned CSV.
+    const esc = (v: unknown): string => {
+      const s = v == null ? "" : String(v);
+      return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+    const exportCols = cols.filter((c) => c.exportable !== false);
+    const headers = exportCols.map((c) => esc(c.label || c.key));
+    const rows = data.map((row) => exportCols.map((c) => esc(row[c.key])));
 
-    const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+    const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join(
+      "\r\n",
+    );
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -271,7 +278,10 @@ export default function DataGrid<
               <div
                 className={`flex items-center ${getSpacingClass("xs", "gap")}`}
               >
-                {exportFormats.map((format) => (
+                {(onExport
+                  ? exportFormats
+                  : exportFormats.filter((f) => f === "csv" || f === "json")
+                ).map((format) => (
                   <Button
                     key={format}
                     variant="outline"
@@ -304,9 +314,11 @@ export default function DataGrid<
         rowId={rowId}
         actions={actions}
         resizable={resizable}
-        columnWidths={internalColumnWidths}
+        columnWidths={effectiveColumnWidths}
         onColumnResize={(key, width) => {
-          setInternalColumnWidths((prev) => ({ ...prev, [key]: width }));
+          if (!isColumnWidthsControlled) {
+            setInternalColumnWidths((prev) => ({ ...prev, [key]: width }));
+          }
           onColumnResize?.(key, width);
         }}
         virtualScrolling={virtualScrolling}

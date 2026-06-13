@@ -53,6 +53,22 @@ describe("Autocomplete", () => {
     });
   });
 
+  it("keeps an option selectable through the mousedown→click sequence", async () => {
+    // Regression: the list is portalled to document.body (outside the
+    // container), so the document mousedown listener used to close it
+    // before the option's click fired — losing the selection.
+    const handleSelect = vi.fn();
+    render(<Autocomplete options={mockOptions} onSelect={handleSelect} />);
+    const input = screen.getByRole("combobox");
+
+    fireEvent.focus(input);
+    const option = await screen.findByText("Option 1");
+    fireEvent.mouseDown(option);
+    fireEvent.click(option);
+
+    expect(handleSelect).toHaveBeenCalledWith(mockOptions[0]);
+  });
+
   it("shows loading state", async () => {
     render(<Autocomplete options={mockOptions} loading />);
     const input = screen.getByPlaceholderText("Type to search...");
@@ -121,7 +137,7 @@ describe("Autocomplete", () => {
 
     it("label prop renders a visible label associated via htmlFor", () => {
       render(<Autocomplete label="Fruit" options={mockOptions} />);
-      const input = screen.getByRole("textbox", { name: "Fruit" });
+      const input = screen.getByRole("combobox", { name: "Fruit" });
       expect(input).toBeInTheDocument();
       const label = screen.getByText("Fruit");
       expect(label.tagName).toBe("LABEL");
@@ -131,7 +147,7 @@ describe("Autocomplete", () => {
 
     it("aria-label prop sets the input's invisible name", () => {
       render(<Autocomplete aria-label="Fruit" options={mockOptions} />);
-      const input = screen.getByRole("textbox", { name: "Fruit" });
+      const input = screen.getByRole("combobox", { name: "Fruit" });
       expect(input).toBeInTheDocument();
       expect(warnSpy).not.toHaveBeenCalled();
     });

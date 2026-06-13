@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useId, forwardRef } from "react";
 import Input from "../../primitives/Input/Input";
+import { mergeRefs } from "../../utils";
 import { ChevronDown, Loader2 } from "lucide-react";
 import AutocompleteList from "./AutocompleteList";
 import type { AutocompleteOptionType } from "./AutocompleteOption";
@@ -88,6 +89,7 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
   ) {
     const autoId = useId();
     const inputId = idProp ?? autoId;
+    const listboxId = `${inputId}-listbox`;
     const [internalValue, setInternalValue] = useState<string>(
       typeof defaultValue === "string" ? defaultValue : "",
     );
@@ -159,6 +161,20 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
       inputRef.current?.focus();
     };
 
+    // Next/previous ENABLED option index, wrapping, skipping disabled
+    // options (arrow nav previously landed on disabled options where
+    // Enter then did nothing — a dead keypress).
+    const moveHighlight = (prev: number, dir: 1 | -1): number => {
+      const n = filteredOptions.length;
+      if (n === 0) return -1;
+      const start = prev < 0 ? (dir === 1 ? -1 : 0) : prev;
+      for (let i = 1; i <= n; i++) {
+        const idx = (((start + dir * i) % n) + n) % n;
+        if (!filteredOptions[idx].disabled) return idx;
+      }
+      return prev;
+    };
+
     // Handle keyboard navigation
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (!isOpen || filteredOptions.length === 0) {
@@ -171,15 +187,11 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
       switch (e.key) {
         case "ArrowDown":
           e.preventDefault();
-          setHighlightedIndex((prev) =>
-            prev < filteredOptions.length - 1 ? prev + 1 : 0,
-          );
+          setHighlightedIndex((prev) => moveHighlight(prev, 1));
           break;
         case "ArrowUp":
           e.preventDefault();
-          setHighlightedIndex((prev) =>
-            prev > 0 ? prev - 1 : filteredOptions.length - 1,
-          );
+          setHighlightedIndex((prev) => moveHighlight(prev, -1));
           break;
         case "Enter":
           e.preventDefault();
@@ -203,9 +215,15 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
       if (!isOpen) return;
 
       const handleClickOutside = (e: MouseEvent) => {
+        const target = e.target as Node;
+        // The list is portalled to document.body, so it is NOT inside
+        // containerRef — without the listRef check, a mousedown on an
+        // option closed the list before its click fired, losing the
+        // selection.
         if (
           containerRef.current &&
-          !containerRef.current.contains(e.target as Node)
+          !containerRef.current.contains(target) &&
+          !listRef.current?.contains(target)
         ) {
           setIsOpen(false);
           setHighlightedIndex(-1);
@@ -216,6 +234,14 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
       return () =>
         document.removeEventListener("mousedown", handleClickOutside);
     }, [isOpen]);
+
+    // Clear any pending debounce timer on unmount (avoids a state update
+    // on an unmounted component / a dangling timer).
+    useEffect(() => {
+      return () => {
+        if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+      };
+    }, []);
 
     // Scroll highlighted item into view
     useEffect(() => {
@@ -265,16 +291,29 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
       );
     }, [label, ariaLabel, ariaLabelledBy, inputId]);
 
-    const shouldShowList = isOpen && (hasOptions || loading || emptyMessage);
+    const shouldShowList =
+      isOpen && (hasOptions || loading || Boolean(emptyMessage));
+    const activeOptionId =
+      shouldShowList &&
+      highlightedIndex >= 0 &&
+      highlightedIndex < filteredOptions.length
+        ? `${listboxId}-option-${highlightedIndex}`
+        : undefined;
 
     return (
       <div ref={containerRef} className={`relative ${className}`}>
         <Input
-          ref={inputRef || ref}
+          ref={mergeRefs(inputRef, ref)}
           id={inputId}
           label={label}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledBy}
+          role="combobox"
+          aria-expanded={shouldShowList}
+          aria-controls={shouldShowList ? listboxId : undefined}
+          aria-haspopup="listbox"
+          aria-autocomplete="list"
+          aria-activedescendant={activeOptionId}
           value={searchValue}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
@@ -299,6 +338,7 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
         {shouldShowList && (
           <AutocompleteList
             ref={listRef}
+            id={listboxId}
             options={filteredOptions}
             highlightedIndex={highlightedIndex}
             onSelect={handleSelect}
