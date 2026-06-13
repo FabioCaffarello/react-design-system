@@ -167,3 +167,10 @@ export {
 // These are full page structures that are configurable but have sensible defaults
 
 export { DashboardLayout, type DashboardLayoutProps } from "./DashboardLayout";
+
+export { default as TabsAsLinks } from "./TabsAsLinks";
+export type {
+  TabsAsLinksProps,
+  TabAsLink,
+  TabsAsLinksVariant,
+} from "./TabsAsLinks";
