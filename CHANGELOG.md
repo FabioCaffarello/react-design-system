@@ -1,3 +1,9 @@
+## [3.12.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.11.0...v3.12.0) (2026-06-13)
+
+### ✨ Features
+
+* **components:** add HeroSection — top-of-page hero with slots + variants ([#163](https://github.com/FabioCaffarello/react-design-system/issues/163)) ([#213](https://github.com/FabioCaffarello/react-design-system/issues/213)) ([afa57eb](https://github.com/FabioCaffarello/react-design-system/commit/afa57eb004282cc8c19c47fb72f5109c1672230c)), closes [#178](https://github.com/FabioCaffarello/react-design-system/issues/178)
+
 ## [3.11.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.10.0...v3.11.0) (2026-06-13)
 
 ### ✨ Features
