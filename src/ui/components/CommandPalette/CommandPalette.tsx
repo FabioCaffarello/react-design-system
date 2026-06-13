@@ -309,28 +309,16 @@ export default function CommandPalette({
             ${getSpacingClass("sm", "py")}
           `}
         >
-          {Object.keys(groupedItems).length === 0 ? (
+          {Object.entries(groupedItems).map(([group, groupItems]) => (
             <div
-              className={`
-              ${getSpacingClass("lg", "p")}
-              text-center
-              text-sm
-              text-fg-secondary
-            `}
+              key={group}
+              role="group"
+              aria-label={group !== "Other" ? group : undefined}
             >
-              {emptyMessage}
-            </div>
-          ) : (
-            Object.entries(groupedItems).map(([group, groupItems]) => (
-              <div
-                key={group}
-                role="group"
-                aria-label={group !== "Other" ? group : undefined}
-              >
-                {group !== "Other" && (
-                  <div
-                    aria-hidden="true"
-                    className={`
+              {group !== "Other" && (
+                <div
+                  aria-hidden="true"
+                  className={`
                     ${getSpacingClass("sm", "px")}
                     ${getSpacingClass("xs", "py")}
                     text-xs
@@ -339,25 +327,25 @@ export default function CommandPalette({
                     uppercase
                     tracking-wider
                   `}
-                  >
-                    {group}
-                  </div>
-                )}
-                {groupItems.map((item, _index) => {
-                  const globalIndex = orderedItems.indexOf(item);
-                  const isSelected = globalIndex === selectedIndex;
+                >
+                  {group}
+                </div>
+              )}
+              {groupItems.map((item, _index) => {
+                const globalIndex = orderedItems.indexOf(item);
+                const isSelected = globalIndex === selectedIndex;
 
-                  return (
-                    <button
-                      key={item.id}
-                      type="button"
-                      id={`${listboxId}-option-${globalIndex}`}
-                      role="option"
-                      aria-selected={isSelected}
-                      tabIndex={-1}
-                      data-index={globalIndex}
-                      onClick={() => handleSelect(item)}
-                      className={`
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    id={`${listboxId}-option-${globalIndex}`}
+                    role="option"
+                    aria-selected={isSelected}
+                    tabIndex={-1}
+                    data-index={globalIndex}
+                    onClick={() => handleSelect(item)}
+                    className={`
                         w-full
                         flex
                         items-center
@@ -368,47 +356,63 @@ export default function CommandPalette({
                         ${getAnimationClass("base")}
                         ${isSelected ? "bg-surface-brand-muted" : "hover:bg-surface-hover"}
                       `}
-                    >
-                      {item.icon && (
-                        <div
-                          className={`
+                  >
+                    {item.icon && (
+                      <div
+                        className={`
                           ${
                             isSelected
                               ? "text-fg-brand-emphasis"
                               : "text-fg-secondary"
                           }
                         `}
-                        >
-                          {item.icon}
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <div
-                          className={`
+                      >
+                        {item.icon}
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <div
+                        className={`
                           text-sm
                           font-medium
                           ${isSelected ? "text-fg-brand-emphasis" : "text-fg-primary"}
                         `}
-                        >
-                          {item.label}
-                        </div>
-                        {item.description && (
-                          // fg-secondary on selected: brand-muted bg drops fg-tertiary below AA;
-                          // caption role preserved, intensity raised for contrast.
-                          <div
-                            className={`text-xs ${isSelected ? "text-fg-secondary" : "text-fg-tertiary"} ${getSpacingClass("0.5", "mt")}`}
-                          >
-                            {item.description}
-                          </div>
-                        )}
+                      >
+                        {item.label}
                       </div>
-                    </button>
-                  );
-                })}
-              </div>
-            ))
-          )}
+                      {item.description && (
+                        // fg-secondary on selected: brand-muted bg drops fg-tertiary below AA;
+                        // caption role preserved, intensity raised for contrast.
+                        <div
+                          className={`text-xs ${isSelected ? "text-fg-secondary" : "text-fg-tertiary"} ${getSpacingClass("0.5", "mt")}`}
+                        >
+                          {item.description}
+                        </div>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          ))}
         </div>
+        {/* Empty state lives OUTSIDE the listbox: a listbox whose only
+            child is a message violates aria-required-children (critical),
+            whereas an empty listbox is allowed. role=status announces it. */}
+        {Object.keys(groupedItems).length === 0 && (
+          <div
+            role="status"
+            aria-live="polite"
+            className={`
+              ${getSpacingClass("lg", "p")}
+              text-center
+              text-sm
+              text-fg-secondary
+            `}
+          >
+            {emptyMessage}
+          </div>
+        )}
       </div>
     </div>
   ) : null;

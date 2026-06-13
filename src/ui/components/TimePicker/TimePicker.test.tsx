@@ -6,7 +6,7 @@ import TimePicker from "./TimePicker";
 describe("TimePicker", () => {
   it("renders correctly", () => {
     render(<TimePicker />);
-    const input = screen.getByRole("textbox");
+    const input = screen.getByRole("combobox");
     expect(input).toBeInTheDocument();
   });
 
@@ -19,19 +19,19 @@ describe("TimePicker", () => {
     const handleChange = vi.fn();
     render(<TimePicker format="24h" onChange={handleChange} />);
     // TimePicker opens on click, but we can test the input
-    const input = screen.getByRole("textbox");
+    const input = screen.getByRole("combobox");
     expect(input).toBeInTheDocument();
   });
 
   it("handles 12h format", () => {
     render(<TimePicker format="12h" />);
-    const input = screen.getByRole("textbox");
+    const input = screen.getByRole("combobox");
     expect(input).toBeInTheDocument();
   });
 
   it("handles disabled state", () => {
     render(<TimePicker disabled />);
-    const input = screen.getByRole("textbox");
+    const input = screen.getByRole("combobox");
     expect(input).toBeDisabled();
   });
 
@@ -50,7 +50,7 @@ describe("TimePicker", () => {
       <TimePicker defaultValue="00:30" format="24h" onChange={handleChange} />,
     );
 
-    const trigger = screen.getByRole("textbox") as HTMLInputElement;
+    const trigger = screen.getByRole("combobox") as HTMLInputElement;
     expect(trigger.value).toBe("00:30");
 
     await act(async () => {

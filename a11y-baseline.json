@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-13T05:39:19.091Z",
+  "generatedAt": "2026-06-13T19:20:05.017Z",
   "axeCoreVersion": "4.11.4",
   "workers": 1,
   "settleMs": 200,
@@ -7,7 +7,7 @@
   "filter": null,
   "themes": ["light", "dark"],
   "light": {
-    "durationMs": 359536,
+    "durationMs": 365837,
     "totalStories": 897,
     "storiesWithViolations": 5,
     "totalNodes": 7,
@@ -112,7 +112,7 @@
     ]
   },
   "dark": {
-    "durationMs": 360719,
+    "durationMs": 365984,
     "totalStories": 897,
     "storiesWithViolations": 5,
     "totalNodes": 7,

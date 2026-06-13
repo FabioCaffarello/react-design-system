@@ -336,6 +336,7 @@ export default function TimePicker({
             helperText={helperText}
             leftIcon={<Clock className="h-4 w-4" />}
             className="cursor-pointer"
+            role="combobox"
             aria-haspopup="dialog"
             aria-expanded={!disabled && open}
             onKeyDown={handleTriggerKeyDown}
