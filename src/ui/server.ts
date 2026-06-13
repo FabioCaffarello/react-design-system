@@ -95,7 +95,7 @@ export type { ContainerProps } from "./layouts/Container/Container";
 export { Stack } from "./layouts/Stack/Stack";
 export type { StackProps } from "./layouts/Stack/Stack";
 
-// ---------- components (21) ----------
+// ---------- components (22) ----------
 // AutocompleteOption was removed from this entry in the issue #160 sweep.
 // The static analyser in `scripts/lib/server-safe.mjs` had classified it
 // server-safe (it uses no hooks and no createContext), but the component
@@ -195,6 +195,20 @@ export type {
 
 export { default as TableCell } from "./components/Table/TableCell";
 export type { TableCellProps } from "./components/Table/TableCell";
+
+// TabsAsLinks — tabs as URL navigation (#210). The server-safe counterpart to
+// the interactive `Tabs` widget: each tab is a real link, the active state is
+// a caller-supplied boolean, and the root is a named <nav> with
+// aria-current="page" (the navigation pattern, not role="tab"). No hooks, no
+// DOM handlers; defaults to a plain <a> and accepts a `linkComponent` (e.g.
+// next/link) that crosses the RSC boundary as a client reference. Concrete-file
+// re-export per rule 1 of `.claude/rules/server-entry.md`.
+export { default as TabsAsLinks } from "./components/TabsAsLinks/TabsAsLinks";
+export type {
+  TabsAsLinksProps,
+  TabAsLink,
+  TabsAsLinksVariant,
+} from "./components/TabsAsLinks/TabsAsLinks";
 
 export { default as Timeline } from "./components/Timeline/Timeline";
 export type {
