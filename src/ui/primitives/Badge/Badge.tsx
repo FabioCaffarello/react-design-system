@@ -34,7 +34,6 @@ export interface BadgeProps extends Omit<
  * Badge Component
  *
  * A versatile badge component for displaying status, priority, and other labels.
- * Follows Atomic Design principles as an Atom component.
  * Uses tokens for consistent theming.
  *
  * @example

@@ -41,7 +41,6 @@ export interface TooltipProps extends HTMLAttributes<HTMLDivElement> {
  * Tooltip Component
  *
  * A tooltip component for displaying additional information on hover.
- * Follows Atomic Design principles as an Atom component.
  *
  * @example
  * ```tsx

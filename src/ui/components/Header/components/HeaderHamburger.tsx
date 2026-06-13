@@ -3,7 +3,7 @@
  *
  * Hamburger button for toggling mobile menu.
  *
- * @see EPIC-002: Header Component (Molecule)
+ * @see EPIC-002: Header Component
  * @see TASK-027: Hamburger Button
  */
 

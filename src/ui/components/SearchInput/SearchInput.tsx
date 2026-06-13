@@ -23,7 +23,6 @@ export interface SearchInputProps extends Omit<
  * SearchInput Component
  *
  * A search input component with icon, clear button, and loading state.
- * Follows Atomic Design principles as a Molecule component.
  *
  * @example
  * ```tsx

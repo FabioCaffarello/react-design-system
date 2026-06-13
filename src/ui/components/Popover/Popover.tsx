@@ -57,7 +57,6 @@ export interface PopoverProps {
  *
  * A popover component that displays content in a floating panel.
  * Supports positioning, portal rendering, and keyboard navigation.
- * Follows Atomic Design principles as an Atom component.
  *
  * @example
  * ```tsx

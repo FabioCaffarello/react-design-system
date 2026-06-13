@@ -81,7 +81,6 @@ export interface InputProps extends Omit<
  * Input Component
  *
  * A styled text input component with label, error/success states, icons, and clear button.
- * Follows Atomic Design principles as an Atom component.
  * Uses Composite Pattern when combined with Label and ErrorMessage.
  *
  * @example

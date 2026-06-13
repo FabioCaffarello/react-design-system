@@ -42,7 +42,6 @@ export interface SwitchProps extends Omit<
  * Switch Component
  *
  * A toggle switch component for on/off states.
- * Follows Atomic Design principles as an Atom component.
  *
  * @example
  * ```tsx

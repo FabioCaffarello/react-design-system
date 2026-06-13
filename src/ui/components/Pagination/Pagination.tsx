@@ -18,7 +18,6 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
  * Pagination Component
  *
  * A pagination component for navigating through pages of data.
- * Follows Atomic Design principles as a Molecule component.
  *
  * @example
  * ```tsx
