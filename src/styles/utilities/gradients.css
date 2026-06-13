@@ -1,0 +1,32 @@
+/* ============================================
+ * GRADIENT SURFACE UTILITIES
+ *
+ * Composed surface treatments for the HeroSection archetype (issue #163).
+ *
+ * These are NOT new color tokens — every stop references an existing
+ * semantic `--color-surface-*` custom property, so the gradient flips with
+ * the active theme automatically (light/dark) with zero per-theme upkeep.
+ * No raw hex/rgb lives here; the ESLint color rules scan component .tsx
+ * className literals, and a component consuming `hero-gradient` stays clean
+ * because the color decision is encoded in CSS via semantic tokens (same
+ * mechanism as `.skeleton` in utilities/animations.css).
+ *
+ * `.hero-gradient` and `.hero-glow` are intentionally separate so the
+ * `gradient-glow` variant composes them (`hero-gradient hero-glow`) without
+ * duplicating the gradient declaration.
+ * ============================================ */
+
+.hero-gradient {
+  background-image: linear-gradient(
+    135deg,
+    var(--color-surface-brand-subtle) 0%,
+    var(--color-surface-secondary-subtle) 100%
+  );
+}
+
+/* Brand halo for the `gradient-glow` variant. Reuses the existing
+ * `--glow-primary` token (primitives/shadows.css) — a brand-colored outer
+ * box-shadow. Theme-agnostic by design (a brand glow reads in both themes). */
+.hero-glow {
+  box-shadow: var(--glow-primary);
+}

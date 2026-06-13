@@ -167,3 +167,10 @@ export {
 // These are full page structures that are configurable but have sensible defaults
 
 export { DashboardLayout, type DashboardLayoutProps } from "./DashboardLayout";
+
+export { default as HeroSection } from "./HeroSection";
+export type {
+  HeroSectionProps,
+  HeroSectionVariant,
+  HeroSectionAlign,
+} from "./HeroSection";

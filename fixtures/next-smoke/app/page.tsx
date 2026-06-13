@@ -55,6 +55,7 @@ import {
   FilterChips,
   HeaderActions,
   HeaderNavigation,
+  HeroSection,
   Info,
   Label,
   MenuSeparator,
@@ -160,6 +161,18 @@ export default function Page() {
           title="static page header"
           description="static description"
           breadcrumb={[{ label: "Home", href: "/" }, { label: "Section" }]}
+        />
+
+        {/* HeroSection (#163) — server-safe top-of-page hero. Static string
+            props only (no functions): the string title doubles as the
+            <section> landmark name, and the gradient-glow variant exercises
+            the decorated-surface path inside an RSC build. */}
+        <HeroSection
+          variant="gradient-glow"
+          kicker="static kicker"
+          title="static hero"
+          description="static description"
+          meta="static meta"
         />
 
         <Timeline
