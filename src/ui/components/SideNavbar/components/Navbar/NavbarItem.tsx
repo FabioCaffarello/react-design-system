@@ -270,7 +270,11 @@ export default function NavbarItem({
 
   const element = href ? (
     <a
-      href={href}
+      // A disabled link must leave the tab order and stop being a
+      // navigable/announced anchor — aria-disabled alone does neither.
+      // Dropping href makes the <a> non-focusable; tabIndex=-1 is belt
+      // and suspenders. (handleClick already no-ops when disabled.)
+      href={disabled ? undefined : href}
       target={target}
       rel={target === "_blank" ? "noopener noreferrer" : undefined}
       onClick={handleClick}
@@ -279,6 +283,7 @@ export default function NavbarItem({
       aria-label={label}
       aria-current={isActive ? "page" : undefined}
       aria-disabled={disabled}
+      tabIndex={disabled ? -1 : undefined}
     >
       {content}
     </a>

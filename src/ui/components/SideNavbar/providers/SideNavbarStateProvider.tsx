@@ -91,9 +91,12 @@ export function SideNavbarStateProvider({
     mobileBreakpoint: config.mobileBreakpoint,
     onMobileChange: (mobile) => {
       onMobileChange?.(mobile);
-      // Auto-collapse on mobile if using collapse variant
+      // Auto-collapse on mobile if using collapse variant. Notify the
+      // consumer too — every other collapse path fires onCollapseChange,
+      // and a silent auto-collapse leaves controlled mirrors out of sync.
       if (mobile && config.mobileVariant === "collapse" && !isControlled) {
         setInternalCollapsed(true);
+        onCollapseChange?.(true);
       }
     },
     enabled: config.responsive,

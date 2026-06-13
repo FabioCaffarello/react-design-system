@@ -45,6 +45,7 @@ export default function TableRow<
 
   const id = getRowId(row, rowIndex);
   const isSelected = selectionState.selectedRows.includes(id);
+  const isRowInteractive = !!onRowClick;
 
   const handleClick = (e: React.MouseEvent<HTMLTableRowElement>) => {
     if (onClick) {
@@ -55,12 +56,27 @@ export default function TableRow<
     }
   };
 
+  // Keyboard operability for onRowClick (WCAG 2.1.1). role stays "row" —
+  // promoting the <tr> to role="button" would strip it from the table's
+  // grid/row structure for assistive tech, which is worse than the gap
+  // being fixed. A focusable row with Enter/Space activation keeps the
+  // table semantics intact while making the action reachable.
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTableRowElement>) => {
+    if (!onRowClick) return;
+    if (e.key === "Enter" || e.key === " ") {
+      if (e.key === " ") e.preventDefault();
+      onRowClick(row);
+    }
+  };
+
   return (
     <tr
       role="row"
       aria-selected={selectable ? isSelected : undefined}
       aria-rowindex={rowIndex + 1}
-      className={`hover:bg-surface-hover ${isSelected ? "bg-surface-selected" : ""} ${className}`}
+      tabIndex={isRowInteractive ? 0 : undefined}
+      onKeyDown={isRowInteractive ? handleKeyDown : undefined}
+      className={`hover:bg-surface-hover ${isRowInteractive ? "cursor-pointer" : ""} ${isSelected ? "bg-surface-selected" : ""} ${className}`}
       onClick={handleClick}
       style={style}
       {...props}

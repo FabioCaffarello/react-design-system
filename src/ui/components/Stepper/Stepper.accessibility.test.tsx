@@ -52,6 +52,40 @@ describe("Stepper Accessibility", () => {
       ).toBeInTheDocument();
     });
 
+    it("marks the active step with aria-current='step'", () => {
+      render(<Stepper steps={steps} defaultCurrentStep={1} />);
+
+      expect(
+        screen.getByRole("button", { name: "Step 2: Profile" }),
+      ).toHaveAttribute("aria-current", "step");
+      expect(
+        screen.getByRole("button", { name: "Step 1: Account" }),
+      ).not.toHaveAttribute("aria-current");
+    });
+
+    it("conveys error status in the accessible name, not by color alone", () => {
+      render(
+        <Stepper
+          steps={[
+            {
+              id: "one",
+              title: "Account",
+              content: <p>One</p>,
+              status: "error",
+            },
+            { id: "two", title: "Profile", content: <p>Two</p> },
+          ]}
+        />,
+      );
+
+      // Regression: an error step previously rendered no glyph and no
+      // text — it differed from a normal step by red color only (WCAG
+      // 1.4.1 / 4.1.3). The status is now in the accessible name.
+      expect(
+        screen.getByRole("button", { name: "Step 1: Account (error)" }),
+      ).toBeInTheDocument();
+    });
+
     it("titleless step falls back to aria-label='Step N'", () => {
       render(
         <Stepper

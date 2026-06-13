@@ -1,7 +1,7 @@
 "use client";
 
 import type { HTMLAttributes } from "react";
-import { useState } from "react";
+import { useState, useId } from "react";
 import { Input, Select, Label, Button } from "../../../primitives";
 import { getSpacingClass } from "../../../tokens/spacing";
 import { X, Filter } from "lucide-react";
@@ -53,6 +53,7 @@ export default function TableFilters({
   const [filterValues, setFilterValues] =
     useState<Record<string, FilterValue>>(initialValues);
   const [isExpanded, setIsExpanded] = useState(false);
+  const panelId = `table-filters-panel-${useId()}`;
 
   const hasActiveFilters = Object.values(filterValues).some(
     (value) => value !== "" && value !== null && value !== undefined,
@@ -95,6 +96,8 @@ export default function TableFilters({
           <button
             type="button"
             onClick={() => setIsExpanded(!isExpanded)}
+            aria-expanded={isExpanded}
+            aria-controls={panelId}
             className={`flex items-center ${getSpacingClass("sm", "gap")} text-sm font-medium text-fg-secondary hover:text-fg-primary`}
           >
             <Filter className="h-4 w-4" />
@@ -122,6 +125,7 @@ export default function TableFilters({
 
         {isExpanded && (
           <div
+            id={panelId}
             className={`${getSpacingClass("base", "mt")} grid grid-cols-1 ${getSpacingClass("base", "gap")} sm:grid-cols-2 lg:grid-cols-3`}
           >
             {filters.map((filter) => {

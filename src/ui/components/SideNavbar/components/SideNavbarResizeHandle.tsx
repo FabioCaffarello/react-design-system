@@ -28,7 +28,7 @@ export default function SideNavbarResizeHandle({
 }: SideNavbarResizeHandleProps) {
   const { currentWidth, setWidth, isResizing, startResize } =
     useSideNavbarStateRequired();
-  const { resizable } = useSideNavbarConfigRequired();
+  const { resizable, minWidth, maxWidth } = useSideNavbarConfigRequired();
 
   if (!resizable) {
     return null;
@@ -61,6 +61,8 @@ export default function SideNavbarResizeHandle({
       aria-orientation="vertical"
       aria-label="Resize sidebar"
       aria-valuenow={currentWidth}
+      aria-valuemin={minWidth}
+      aria-valuemax={maxWidth}
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === "ArrowLeft" || e.key === "ArrowRight") {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { Check } from "lucide-react";
+import { Check, AlertCircle } from "lucide-react";
 import { getSpacingClass } from "../../tokens/spacing";
 import { getRadiusClass } from "../../tokens/radius";
 import { getAnimationClass } from "../../tokens/animations";
@@ -110,6 +110,35 @@ export default function Stepper({
   const isFirstStep = currentStepIndex === 0;
   const isLastStep = currentStepIndex === steps.length - 1;
 
+  // Accessible name carries error status so it is perceivable to screen
+  // readers (the bubble glyph is decorative; aria-label wins on a button).
+  // Error previously had neither glyph nor text — only red color (WCAG
+  // 1.4.1). Completed already carries the Check glyph, so its name stays
+  // unchanged. Active/current is conveyed via aria-current="step".
+  const stepAriaLabel = (
+    step: StepperStep,
+    index: number,
+    status: StepperStatus,
+  ): string =>
+    `Step ${index + 1}${step.title ? `: ${step.title}` : ""}${
+      status === "error" ? " (error)" : ""
+    }`;
+
+  // Non-color status signal in the bubble: completed → check, error →
+  // alert glyph (the error status previously changed only the bubble
+  // color, with no glyph and no text — WCAG 1.4.1 failure).
+  const renderBubbleContent = (
+    status: StepperStatus,
+    index: number,
+  ): ReactNode =>
+    status === "completed" ? (
+      <Check className="h-5 w-5" />
+    ) : status === "error" ? (
+      <AlertCircle className="h-5 w-5" aria-hidden="true" />
+    ) : showStepNumbers ? (
+      index + 1
+    ) : null;
+
   if (orientation === "vertical") {
     return (
       <div className={`flex ${getSpacingClass("base", "gap")} ${className}`}>
@@ -130,11 +159,8 @@ export default function Stepper({
                     type="button"
                     onClick={() => handleStepClick(index)}
                     disabled={!allowNavigation || step.disabled}
-                    aria-label={
-                      step.title
-                        ? `Step ${index + 1}: ${step.title}`
-                        : `Step ${index + 1}`
-                    }
+                    aria-current={isActive ? "step" : undefined}
+                    aria-label={stepAriaLabel(step, index, status)}
                     // data-marker="pending" — see .claude/rules/colors.md
                     // "fg-quaternary: AA-by-construction exception". Anchors
                     // the directed a11y suppression to the pending-marker
@@ -164,11 +190,7 @@ export default function Stepper({
                       ${!allowNavigation || step.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
                     `}
                   >
-                    {status === "completed" ? (
-                      <Check className="h-5 w-5" />
-                    ) : showStepNumbers ? (
-                      index + 1
-                    ) : null}
+                    {renderBubbleContent(status, index)}
                   </button>
                   {index < steps.length - 1 && (
                     <div
@@ -188,6 +210,7 @@ export default function Stepper({
                     type="button"
                     onClick={() => handleStepClick(index)}
                     disabled={!allowNavigation || step.disabled}
+                    id={`${step.id}-title`}
                     className={`
                       text-left
                       ${isActive ? "font-semibold" : "font-medium"}
@@ -213,6 +236,10 @@ export default function Stepper({
         {/* Step Content */}
         <div className="flex-1">
           <div
+            role="region"
+            aria-labelledby={
+              currentStep ? `${currentStep.id}-title` : undefined
+            }
             className={`
             ${getSpacingClass("lg", "p")}
             border
@@ -221,7 +248,7 @@ export default function Stepper({
             bg-surface-base
           `}
           >
-            {currentStep.content}
+            {currentStep?.content}
           </div>
 
           {/* Navigation */}
@@ -260,11 +287,8 @@ export default function Stepper({
                   type="button"
                   onClick={() => handleStepClick(index)}
                   disabled={!allowNavigation || step.disabled}
-                  aria-label={
-                    step.title
-                      ? `Step ${index + 1}: ${step.title}`
-                      : `Step ${index + 1}`
-                  }
+                  aria-current={isActive ? "step" : undefined}
+                  aria-label={stepAriaLabel(step, index, status)}
                   // data-marker="pending" — see .claude/rules/colors.md
                   // "fg-quaternary: AA-by-construction exception".
                   {...(status === "pending"
@@ -291,16 +315,13 @@ export default function Stepper({
                     ${!allowNavigation || step.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}
                   `}
                 >
-                  {status === "completed" ? (
-                    <Check className="h-5 w-5" />
-                  ) : showStepNumbers ? (
-                    index + 1
-                  ) : null}
+                  {renderBubbleContent(status, index)}
                 </button>
                 <div
                   className={`${getSpacingClass("sm", "mt")} text-center ${getSpacingClass("sm", "px")}`}
                 >
                   <p
+                    id={`${step.id}-title`}
                     className={`
                       text-sm
                       font-medium
@@ -334,6 +355,8 @@ export default function Stepper({
 
       {/* Step Content */}
       <div
+        role="region"
+        aria-labelledby={currentStep ? `${currentStep.id}-title` : undefined}
         className={`
         ${getSpacingClass("lg", "p")}
         border
@@ -342,7 +365,7 @@ export default function Stepper({
         bg-surface-base
       `}
       >
-        {currentStep.content}
+        {currentStep?.content}
       </div>
 
       {/* Navigation */}
