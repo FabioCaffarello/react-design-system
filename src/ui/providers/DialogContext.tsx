@@ -8,6 +8,14 @@ export interface DialogContextValue {
   onClose: () => void;
   titleId?: string;
   descriptionId?: string;
+  /** True while at least one Dialog.Title is mounted. */
+  hasTitle: boolean;
+  /** True while at least one Dialog.Description is mounted. */
+  hasDescription: boolean;
+  /** Register a mounted Title; returns an unregister cleanup. */
+  registerTitle: () => () => void;
+  /** Register a mounted Description; returns an unregister cleanup. */
+  registerDescription: () => () => void;
 }
 
 export const DialogContext = createContext<DialogContextValue | undefined>(

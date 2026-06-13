@@ -8,6 +8,7 @@ import {
   getTypographySizeFromFontSize,
   getTypographyWeightFromFontWeight,
 } from "../../tokens";
+import { get } from "react-hook-form";
 import type { FieldValues, Path, RegisterOptions } from "react-hook-form";
 import type { ReactNode } from "react";
 import type { UseFormReturn } from "react-hook-form";
@@ -19,6 +20,13 @@ export interface FormFieldProps<
   label?: string;
   children: (props: {
     name: string;
+    /**
+     * Stable id owned by FormField — equal to `name` and already wired to
+     * the label's `htmlFor`. Spread it onto the input so the label points
+     * at a real element (`<Input id={id} {...register(name)} />`) instead
+     * of relying on the consumer to remember to hardcode a matching id.
+     */
+    id: string;
     register: (
       fieldName: Path<TFieldValues>,
     ) => ReturnType<UseFormReturn<TFieldValues>["register"]>;
@@ -72,7 +80,13 @@ export function FormField<TFieldValues extends FieldValues = FieldValues>({
   } = form;
 
   const fieldRegister = register(name, rules);
-  const error = errors[name]?.message as string | undefined;
+  // react-hook-form stores errors in a nested object keyed by path
+  // segments, not by the dotted string. A flat `errors[name]` lookup is
+  // always undefined for dotted paths (`items.0.name`, `user.email`),
+  // silently swallowing the error. `get` resolves the path the same way
+  // RHF does internally — and the same way `watch(name)` below already
+  // does for the value.
+  const error = get(errors, name)?.message as string | undefined;
   const value = watch(name);
 
   return (
@@ -99,6 +113,7 @@ export function FormField<TFieldValues extends FieldValues = FieldValues>({
       )}
       {children({
         name,
+        id: name,
         register: (fieldName: Path<TFieldValues>) => register(fieldName, rules),
         error,
         value,

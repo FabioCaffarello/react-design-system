@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import TimePicker from "./TimePicker";
 
 describe("TimePicker", () => {
@@ -37,5 +38,32 @@ describe("TimePicker", () => {
   it("displays error state", () => {
     render(<TimePicker error helperText="Invalid time" />);
     expect(screen.getByText("Invalid time")).toBeInTheDocument();
+  });
+
+  it("parses midnight (00:xx) in 24h format without coercing to noon", async () => {
+    // Regression: `h || 12` coerced a legitimate 0 hour to 12, so the
+    // popup spinner desynced from the trigger and incrementing midnight
+    // jumped to 13:00 instead of 01:00.
+    const user = userEvent.setup();
+    const handleChange = vi.fn();
+    render(
+      <TimePicker defaultValue="00:30" format="24h" onChange={handleChange} />,
+    );
+
+    const trigger = screen.getByRole("textbox") as HTMLInputElement;
+    expect(trigger.value).toBe("00:30");
+
+    await act(async () => {
+      await user.click(trigger);
+    });
+
+    const hours = await screen.findByRole("spinbutton", { name: "Hours" });
+    expect(hours).toHaveAttribute("aria-valuenow", "0");
+    expect(hours).toHaveAttribute("aria-valuetext", "00");
+
+    await act(async () => {
+      await user.click(screen.getByRole("button", { name: "Increment hours" }));
+    });
+    expect(handleChange).toHaveBeenLastCalledWith("01:30");
   });
 });

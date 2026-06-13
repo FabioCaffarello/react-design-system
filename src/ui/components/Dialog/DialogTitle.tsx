@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, type HTMLAttributes } from "react";
+import { useId, useEffect, type HTMLAttributes } from "react";
 import { useDialogContext } from "../../providers/DialogContext";
 import { getTypographyClasses } from "../../tokens";
 
@@ -18,6 +18,10 @@ export function DialogTitle({
   const context = useDialogContext();
   const generatedId = useId();
   const finalId = id || context.titleId || generatedId;
+
+  // Tell the dialog a Title is present so it emits aria-labelledby.
+  const { registerTitle } = context;
+  useEffect(() => registerTitle(), [registerTitle]);
 
   return (
     <Component

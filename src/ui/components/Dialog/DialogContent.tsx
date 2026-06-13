@@ -26,7 +26,8 @@ export function DialogContent({
   className = "",
   ...props
 }: DialogContentProps) {
-  const { isOpen, onClose, titleId, descriptionId } = useDialogContext();
+  const { isOpen, onClose, titleId, descriptionId, hasTitle, hasDescription } =
+    useDialogContext();
   const contentRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -96,8 +97,8 @@ export function DialogContent({
           ref={contentRef}
           role="dialog"
           aria-modal="true"
-          aria-labelledby={titleId}
-          aria-describedby={descriptionId}
+          aria-labelledby={hasTitle ? titleId : undefined}
+          aria-describedby={hasDescription ? descriptionId : undefined}
           className={`
             relative w-full
             ${sizeClasses[size]}

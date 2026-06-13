@@ -1,7 +1,7 @@
 "use client";
 
 import type { HTMLAttributes, ReactNode } from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { getRadiusClass } from "../../tokens/radius";
@@ -44,9 +44,17 @@ export default function Modal({
   showCloseButton = true,
   footer,
   className = "",
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
   ...props
 }: Props) {
   const modalRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const titleId = useId();
+  // Accessible-name precedence: explicit aria-labelledby > the title
+  // heading > consumer aria-label. Mirrors DrawerContent so a titleless
+  // Modal can still be named from the outside (axe aria-dialog-name).
+  const resolvedLabelledBy = ariaLabelledBy ?? (title ? titleId : undefined);
 
   // Modal focus contract: trap + restore + auto-focus from the shared
   // Phase 3 hooks. Replaces an inline implementation that snapshotted
@@ -129,14 +137,23 @@ export default function Modal({
       className={baseClasses.join(" ")}
       role="dialog"
       aria-modal="true"
-      aria-labelledby={title ? "modal-title" : undefined}
+      aria-labelledby={resolvedLabelledBy}
+      aria-label={resolvedLabelledBy ? undefined : ariaLabel}
       onClick={(e) => {
-        if (e.target === e.currentTarget) {
+        // The panel calls stopPropagation, so any click reaching this
+        // handler is on the backdrop. The visible dim layer is the
+        // overlay div (painted above the centering div), so a real
+        // pointer hits overlayRef — not currentTarget. Accept both.
+        if (e.target === e.currentTarget || e.target === overlayRef.current) {
           onClose();
         }
       }}
     >
-      <div className={overlayClasses.join(" ")} aria-hidden="true" />
+      <div
+        ref={overlayRef}
+        className={overlayClasses.join(" ")}
+        aria-hidden="true"
+      />
       <div
         className={`flex min-h-full items-center justify-center ${getSpacingClass("base", "p")}`}
       >
@@ -152,7 +169,7 @@ export default function Modal({
               className={`flex justify-between items-center ${getSpacingClass("base", "mb")}`}
             >
               <h2
-                id="modal-title"
+                id={titleId}
                 className="text-xl font-semibold text-fg-primary"
               >
                 {title}

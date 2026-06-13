@@ -8,6 +8,7 @@ import {
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Dialog from "./Dialog";
+import { AlertDialog } from "./AlertDialog";
 import Button from "../../primitives/Button/Button";
 
 describe("Dialog", () => {
@@ -465,6 +466,59 @@ describe("Dialog", () => {
         },
         { timeout: 2000 },
       );
+    });
+  });
+});
+
+describe("AlertDialog", () => {
+  afterEach(() => {
+    document.body.style.overflow = "";
+  });
+
+  it("closes itself on Confirm in uncontrolled mode (defaultOpen)", async () => {
+    const user = userEvent.setup();
+    const onConfirm = vi.fn();
+    render(
+      <AlertDialog
+        defaultOpen
+        title="Delete item"
+        description="This cannot be undone."
+        onConfirm={onConfirm}
+      />,
+    );
+
+    expect(
+      await screen.findByRole("dialog", { name: "Delete item" }),
+    ).toBeInTheDocument();
+
+    await act(async () => {
+      await user.click(screen.getByRole("button", { name: "Confirm" }));
+    });
+
+    expect(onConfirm).toHaveBeenCalledTimes(1);
+    // Regression: in uncontrolled mode onOpenChange is undefined, so the
+    // old handler never closed the dialog — it stayed open forever.
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("dialog", { name: "Delete item" }),
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  it("closes itself on Cancel in uncontrolled mode (defaultOpen)", async () => {
+    const user = userEvent.setup();
+    const onCancel = vi.fn();
+    render(<AlertDialog defaultOpen title="Confirm" onCancel={onCancel} />);
+
+    await act(async () => {
+      await user.click(screen.getByRole("button", { name: "Cancel" }));
+    });
+
+    expect(onCancel).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("dialog", { name: "Confirm" }),
+      ).not.toBeInTheDocument();
     });
   });
 });

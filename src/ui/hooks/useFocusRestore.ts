@@ -31,21 +31,37 @@ import { useEffect, useRef } from "react";
  */
 export function useFocusRestore(isOpen: boolean): void {
   const previousActiveElement = useRef<HTMLElement | null>(null);
+  const restoreTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (isOpen) {
-      previousActiveElement.current =
-        (document.activeElement as HTMLElement | null) ?? null;
-    } else {
+    if (!isOpen) return;
+
+    // Rising edge: cancel any pending restore (rapid close→open) and
+    // snapshot whatever had focus before the overlay opened. The snapshot
+    // is taken before useAutoFocus (called after this hook) moves focus
+    // inside the overlay.
+    if (restoreTimer.current !== null) {
+      clearTimeout(restoreTimer.current);
+      restoreTimer.current = null;
+    }
+    previousActiveElement.current =
+      (document.activeElement as HTMLElement | null) ?? null;
+
+    // Restore from the effect CLEANUP — not from an `isOpen === false`
+    // branch. The cleanup fires on BOTH the falling edge (isOpen → false
+    // while mounted) AND on unmount-while-open. The latter is the common
+    // `{isOpen && <Overlay />}` pattern: closing unmounts the subtree, so
+    // an isOpen=false render never happens and a falling-edge-only restore
+    // would leave focus stranded on <body> (WCAG 2.4.3).
+    return () => {
       const previous = previousActiveElement.current;
       // setTimeout(0) defers the restore until after React has committed
-      // the close transition and removed the overlay's DOM (so the
-      // restore target isn't a now-disposed element inside the overlay
-      // — it's whatever had focus *before* the overlay opened).
-      const timer = setTimeout(() => {
+      // the close and removed the overlay's DOM, so focus lands on the
+      // pre-open element rather than a now-disposed node inside the overlay.
+      restoreTimer.current = setTimeout(() => {
         previous?.focus();
+        restoreTimer.current = null;
       }, 0);
-      return () => clearTimeout(timer);
-    }
+    };
   }, [isOpen]);
 }

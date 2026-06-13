@@ -93,6 +93,9 @@ export default function Form<TFieldValues extends FieldValues = FieldValues>({
 
     const handleSubmit = form.handleSubmit(
       async (data) => {
+        // Honor `loading` the same way simple mode does (line ~160) so an
+        // in-flight submit isn't fired a second time (duplicate API call).
+        if (loading) return;
         try {
           await onSubmitData(data);
         } catch (err) {

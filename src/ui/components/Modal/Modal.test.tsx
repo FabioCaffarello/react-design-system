@@ -68,6 +68,67 @@ describe("Modal", () => {
     expect(handleClose).toHaveBeenCalled();
   });
 
+  it("calls onClose when the visible dim overlay layer is clicked", () => {
+    // Regression: the dim backdrop a real pointer hits is the overlay
+    // div, not the role=dialog container. The old `e.target ===
+    // e.currentTarget`-only check never fired for genuine outside
+    // clicks.
+    const handleClose = vi.fn();
+    render(
+      <Modal isOpen={true} onClose={handleClose} title="Test Modal">
+        <p>Content</p>
+      </Modal>,
+    );
+    const overlay = screen
+      .getByRole("dialog")
+      .querySelector('[aria-hidden="true"]') as HTMLElement;
+    expect(overlay).toBeTruthy();
+    fireEvent.click(overlay);
+    expect(handleClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not call onClose when the panel content is clicked", () => {
+    const handleClose = vi.fn();
+    render(
+      <Modal isOpen={true} onClose={handleClose} title="Test Modal">
+        <p>Content</p>
+      </Modal>,
+    );
+    fireEvent.click(screen.getByText("Content"));
+    expect(handleClose).not.toHaveBeenCalled();
+  });
+
+  it("uses a consumer aria-label as the dialog name when title is omitted", () => {
+    render(
+      <Modal isOpen={true} onClose={() => {}} aria-label="Settings">
+        <p>Content</p>
+      </Modal>,
+    );
+    // Regression: aria-label was spread onto the inner panel, never the
+    // role=dialog element, leaving a titleless dialog with no name.
+    expect(
+      screen.getByRole("dialog", { name: "Settings" }),
+    ).toBeInTheDocument();
+  });
+
+  it("gives each open titled Modal a unique aria-labelledby (useId)", () => {
+    render(
+      <>
+        <Modal isOpen={true} onClose={() => {}} title="First">
+          <p>One</p>
+        </Modal>
+        <Modal isOpen={true} onClose={() => {}} title="Second">
+          <p>Two</p>
+        </Modal>
+      </>,
+    );
+    const [a, b] = screen.getAllByRole("dialog");
+    expect(a.getAttribute("aria-labelledby")).toBeTruthy();
+    expect(a.getAttribute("aria-labelledby")).not.toBe(
+      b.getAttribute("aria-labelledby"),
+    );
+  });
+
   it("has dialog role and aria-modal", () => {
     render(
       <Modal isOpen={true} onClose={() => {}} title="Test Modal">
