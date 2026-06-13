@@ -14,8 +14,8 @@ export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
 /**
  * ButtonGroup Component
  *
- * A group of buttons displayed together.
- * Follows Atomic Design principles as a Molecule component.
+ * A group of buttons displayed together. A component — composed from
+ * `Button` primitives.
  *
  * @example
  * ```tsx

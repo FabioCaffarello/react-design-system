@@ -181,3 +181,6 @@ export type {
   TabAsLink,
   TabsAsLinksVariant,
 } from "./TabsAsLinks";
+
+export { ButtonGroup } from "./ButtonGroup";
+export type { ButtonGroupProps } from "./ButtonGroup";

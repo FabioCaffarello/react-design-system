@@ -67,3 +67,6 @@ export * from "./Chip";
 export type { ChipProps, ChipVariant, ChipSize } from "./Chip";
 
 export * from "./Avatar";
+
+export { Dot } from "./Dot";
+export type { DotProps, DotVariant, DotSize } from "./Dot";
