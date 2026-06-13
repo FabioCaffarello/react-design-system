@@ -1,3 +1,9 @@
+## [3.10.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.9.0...v3.10.0) (2026-06-13)
+
+### ✨ Features
+
+* **components:** add FilterChips — labeled grouping wrapper for Chip filter bars ([#211](https://github.com/FabioCaffarello/react-design-system/issues/211)) ([c8656b2](https://github.com/FabioCaffarello/react-design-system/commit/c8656b290bc4841223d9ef5047f66bfa4a86e39b)), closes [#162](https://github.com/FabioCaffarello/react-design-system/issues/162)
+
 ## [3.9.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.8.0...v3.9.0) (2026-06-11)
 
 ### ✨ Features
