@@ -69,6 +69,7 @@ import {
   Stat,
   StatGroup,
   TableCell,
+  TabsAsLinks,
   Text,
   Timeline,
 } from "@fabio.caffarello/react-design-system/server";
@@ -193,6 +194,19 @@ export default function Page() {
             </tr>
           </tbody>
         </table>
+
+        {/* TabsAsLinks (#210) — server-safe URL-nav tabs. Static items only
+            (string labels + hrefs, a caller-supplied active boolean); the
+            default <a> rendering keeps the render zero-JS, and the named
+            <nav> + aria-current path runs inside the RSC build. */}
+        <TabsAsLinks
+          aria-label="Smoke tabs"
+          items={[
+            { label: "Overview", href: "?tab=overview", active: true },
+            { label: "Alerts", href: "?tab=alerts", count: 3 },
+            { label: "Settings", href: "?tab=settings" },
+          ]}
+        />
       </main>
     </Container>
   );

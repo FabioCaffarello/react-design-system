@@ -174,3 +174,10 @@ export type {
   HeroSectionVariant,
   HeroSectionAlign,
 } from "./HeroSection";
+
+export { default as TabsAsLinks } from "./TabsAsLinks";
+export type {
+  TabsAsLinksProps,
+  TabAsLink,
+  TabsAsLinksVariant,
+} from "./TabsAsLinks";
