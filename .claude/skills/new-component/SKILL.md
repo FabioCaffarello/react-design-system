@@ -29,6 +29,8 @@ Build a complete, production-grade component for this mono-brand design system.
 
 6. **Verify**: `npm run lint` clean. Run the validation greps from `.claude/rules/colors.md` (Quick validation section) against the new files — both must return zero hits. Report what was created and any token additions.
 
+7. **Refresh the a11y baseline.** A new component adds its stories (5+) to the Storybook set, which changes the count the CI a11y gate compares against. Run `npm run test:a11y:baseline` (build-storybook + serial axe, light + dark, ~11min local) and commit the regenerated `a11y-baseline.json` in the same PR. Confirm the run reports `critical=0 serious=0` (the floor) first — otherwise the `--compare` story-set parity check in the `A11y baseline (light/dark)` CI jobs fails (`totalStories: CI=N ref=M`) even when lint, typecheck, tests, and the Next smoke are all green. (Skipping this is the #1 way a fully-passing local build still goes red in CI.)
+
 ## Guardrails
 
 - Don't add dependencies. If you think one is needed, stop and ask.
