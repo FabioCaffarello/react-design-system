@@ -95,7 +95,7 @@ export type { ContainerProps } from "./layouts/Container/Container";
 export { Stack } from "./layouts/Stack/Stack";
 export type { StackProps } from "./layouts/Stack/Stack";
 
-// ---------- components (20) ----------
+// ---------- components (21) ----------
 // AutocompleteOption was removed from this entry in the issue #160 sweep.
 // The static analyser in `scripts/lib/server-safe.mjs` had classified it
 // server-safe (it uses no hooks and no createContext), but the component
@@ -151,6 +151,14 @@ export type { DrawerHeaderProps } from "./components/Drawer/DrawerHeader";
 
 export { default as DrawerFooter } from "./components/Drawer/DrawerFooter";
 export type { DrawerFooterProps } from "./components/Drawer/DrawerFooter";
+
+// FilterChips — the chip-group filter bar shell (#162). Pure presentation
+// (role="group" + neutral text label + flex wrap); the interactive
+// identity lives in each Chip — including the zero-JS `<Chip asChild>
+// <Link/></Chip>` form — so the wrapper never emits a handler on the DOM.
+// Concrete-file re-export per rule 1 of `.claude/rules/server-entry.md`.
+export { FilterChips } from "./components/FilterChips/FilterChips";
+export type { FilterChipsProps } from "./components/FilterChips/FilterChips";
 
 export { HeaderActions } from "./components/Header/components/HeaderActions";
 export type { HeaderActionsProps } from "./components/Header/components/HeaderActions";

@@ -4,29 +4,24 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 # Component Status
 
-The design system ships **62 components** across three layers. Every component is required to include the same file set — `.tsx`, `.test.tsx`, `.stories.tsx`, `index.ts` — per `.claude/rules/components.md`.
+The design system ships **64 components** across three layers. Every component is required to include the same file set — `.tsx`, `.test.tsx`, `.accessibility.test.tsx`, `.stories.tsx`, `index.ts` — per `.claude/rules/components.md`.
 
 ## Inventory
 
 | Layer      | Count | Documented | Direct test file |
 | ---------- | ----: | ---------: | ---------------: |
 | Primitives |    23 |    23 / 23 |          23 / 23 |
-| Components |    37 |    37 / 37 |          32 / 37 |
-| Layouts    |     2 |      2 / 2 |            0 / 2 |
-| **Total**  |    62 |    62 / 62 |          55 / 62 |
+| Components |    39 |    39 / 39 |          39 / 39 |
+| Layouts    |     2 |      2 / 2 |            2 / 2 |
+| **Total**  |    64 |    64 / 64 |          64 / 64 |
 
 ## Stability
 
-All 62 shipping components are **Stable**. There are currently no Beta, Experimental, or Deprecated items in the surface. Stability is gated by three checks: the required file set, the ≥80% per-component test coverage threshold (`.claude/rules/testing.md`), and WCAG 2.1 AA conformance for keyboard, ARIA, and focus management.
+All 64 shipping components are **Stable**. There are currently no Beta, Experimental, or Deprecated items in the surface. Stability is gated by three checks: the required file set, the ≥80% per-component test coverage threshold (`.claude/rules/testing.md`), and WCAG 2.1 AA conformance for keyboard, ARIA, and focus management.
 
 ## Test coverage gaps
 
-Seven components ship without a `.test.tsx` at the component directory:
-
-- **Five composed patterns** — `DashboardLayout`, `DataTablePattern`, `FormWizardPattern`, `LoginBox`, `SearchAndFilterPattern`. These are thin compositions over already-tested primitives and components; the wrapped surface is exercised indirectly.
-- **Two layouts** — `Container`, `Stack`. Structural-only, no logic to assert beyond render; tests were not authored at the time the layer was added.
-
-These gaps don't block shipping under the present file-set gate but are visible here so any future test sweep has a starting list.
+None. Every component directory ships a direct `.test.tsx` and `.accessibility.test.tsx` — enforced by `scripts/validate-file-set.mjs` with zero grandfathered exceptions. A previous version of this page listed seven components without a direct test file (five composed patterns plus the two layouts); that gap was closed by a later test sweep, and any new component cannot land without the full file set.
 
 ## Where to look
 

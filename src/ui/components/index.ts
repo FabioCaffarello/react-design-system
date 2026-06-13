@@ -10,6 +10,9 @@ export type {
   StatGroupCols,
 } from "./Stat";
 
+export { default as FilterChips } from "./FilterChips";
+export type { FilterChipsProps } from "./FilterChips";
+
 export * from "./Form";
 
 export { default as Breadcrumb } from "./Breadcrumb";

@@ -52,6 +52,7 @@ import {
   DrawerFooter,
   DrawerHeader,
   ErrorMessage,
+  FilterChips,
   HeaderActions,
   HeaderNavigation,
   Info,
@@ -125,6 +126,21 @@ export default function Page() {
 
         <MenuSeparator />
         <NavbarSeparator />
+
+        {/* FilterChips (#162) — server-safe chip-group shell. Static props
+            only: the string label doubles as the group's aria-label, and
+            the chips are the zero-JS asChild form (anchor children, no
+            handlers) plus a plain static Chip. */}
+        <FilterChips label="Filtros">
+          <Chip asChild>
+            <a href="?uf=SP">UF: SP</a>
+          </Chip>
+          <Chip>Partido: PT</Chip>
+        </FilterChips>
+        <FilterChips label="Período" wrap={false}>
+          <Chip>2025</Chip>
+          <Chip>2026</Chip>
+        </FilterChips>
 
         {/* Stat compound (#166) — server-safe. The empty-state branch
             (value={null}) exercises the em-dash + aria-label path inside
