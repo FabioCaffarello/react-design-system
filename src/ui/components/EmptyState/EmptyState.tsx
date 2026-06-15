@@ -23,7 +23,6 @@ export interface EmptyStateProps extends HTMLAttributes<HTMLDivElement> {
  * EmptyState Component
  *
  * A component for displaying empty states when there's no content to show.
- * Follows Atomic Design principles as a Molecule component.
  *
  * @example
  * ```tsx

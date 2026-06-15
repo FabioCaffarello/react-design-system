@@ -38,7 +38,6 @@ const labelVariantClasses: Record<NonNullable<Props["variant"]>, string> = {
  * Label Component
  *
  * A styled label component for form inputs.
- * Follows Atomic Design principles as an Atom component.
  *
  * @example
  * ```tsx

@@ -4,7 +4,7 @@
  * Horizontal header component with logo, navigation, and actions slots.
  * Uses compound components pattern for maximum flexibility.
  *
- * @see EPIC-002: Header Component (Molecule)
+ * @see EPIC-002: Header Component
  * @see RFC-003: Header Composition Pattern (APPROVED)
  * @see ADR-002: Header + SideNavbar Compatibility (ACCEPTED)
  */

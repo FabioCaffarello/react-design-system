@@ -4,7 +4,7 @@
  * Context for managing Header component state, particularly mobile menu state.
  *
  * @see ADR-002: Header + SideNavbar Compatibility (ACCEPTED)
- * @see EPIC-002: Header Component (Molecule)
+ * @see EPIC-002: Header Component
  * @see TASK-014: Implementar HeaderContext Completo
  */
 

@@ -127,7 +127,6 @@ export interface DataGridProps<
  *
  * An advanced data grid component with sorting, filtering, grouping, column management, and export.
  * Extends the Table component with additional enterprise features.
- * Follows Atomic Design principles as an Organism component.
  *
  * @example
  * ```tsx

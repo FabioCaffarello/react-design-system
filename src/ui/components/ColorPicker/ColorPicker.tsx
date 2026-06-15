@@ -26,7 +26,6 @@ export interface ColorPickerProps {
  *
  * A color picker component for selecting colors.
  * Supports hex, rgb, and hsl formats with presets.
- * Follows Atomic Design principles as a Molecule component.
  *
  * @example
  * ```tsx

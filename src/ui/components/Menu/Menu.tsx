@@ -21,7 +21,6 @@ export interface MenuProps {
  * Menu Component
  *
  * A dropdown menu component with keyboard navigation and portal rendering.
- * Follows Atomic Design principles as an Atom component.
  * Uses Compound Component pattern.
  *
  * @example

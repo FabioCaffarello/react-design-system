@@ -47,7 +47,6 @@ export interface SliderProps extends Omit<
  *
  * A range input component for selecting numeric values.
  * Supports single and dual thumb (range) modes.
- * Follows Atomic Design principles as an Atom component.
  *
  * @example
  * ```tsx

@@ -5,7 +5,7 @@
  *
  * Navigation link component with active state detection and Next.js integration.
  *
- * @see EPIC-001: NavLink Component (Atom)
+ * @see EPIC-001: NavLink Component
  * @see RFC-001: NavLink Hook Strategy (APPROVED)
  * @see RFC-002: Next.js Integration Strategy (APPROVED)
  * @see ADR-001: Active State Detection (ACCEPTED)
