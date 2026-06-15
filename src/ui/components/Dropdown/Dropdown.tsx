@@ -46,7 +46,6 @@ export interface DropdownProps extends HTMLAttributes<HTMLDivElement> {
  * Dropdown Component
  *
  * A dropdown menu component for displaying actions and options.
- * Follows Atomic Design principles as a Molecule component.
  *
  * @example
  * ```tsx

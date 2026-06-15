@@ -20,7 +20,6 @@ export interface TablePaginationProps extends HTMLAttributes<HTMLDivElement> {
  * TablePagination Component
  *
  * Pagination controls for tables with page navigation and page size selection.
- * Follows Atomic Design principles as a Molecule component.
  *
  * @example
  * ```tsx

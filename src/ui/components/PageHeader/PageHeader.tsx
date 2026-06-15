@@ -3,7 +3,7 @@
  *
  * Page header component with title, description, breadcrumb, and actions.
  *
- * @see EPIC-004: PageHeader Component (Molecule)
+ * @see EPIC-004: PageHeader Component
  */
 
 import Breadcrumb from "../Breadcrumb/Breadcrumb";

@@ -86,7 +86,6 @@ export interface SelectProps extends Omit<
  * Select Component
  *
  * A styled select dropdown component for forms.
- * Follows Atomic Design principles as an Atom component.
  * Supports both flat options and option groups.
  *
  * @example

@@ -36,7 +36,6 @@ export interface StepperProps {
  *
  * A multi-step wizard component for guided workflows.
  * Supports validation, navigation, and completion callbacks.
- * Follows Atomic Design principles as an Organism component.
  *
  * @example
  * ```tsx

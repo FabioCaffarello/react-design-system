@@ -33,7 +33,6 @@ export interface RatingProps {
  *
  * A rating component for displaying and selecting ratings.
  * Supports filled and outlined variants, half ratings, and read-only mode.
- * Follows Atomic Design principles as a Molecule component.
  *
  * @example
  * ```tsx

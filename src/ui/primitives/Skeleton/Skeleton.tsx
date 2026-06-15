@@ -14,7 +14,6 @@ export interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
  * Skeleton Component
  *
  * A skeleton loader component for displaying loading states.
- * Follows Atomic Design principles as an Atom component.
  *
  * @example
  * ```tsx

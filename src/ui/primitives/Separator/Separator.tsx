@@ -14,7 +14,6 @@ export interface SeparatorProps extends HTMLAttributes<HTMLHRElement> {
  * Separator Component
  *
  * A visual separator component for dividing content.
- * Follows Atomic Design principles as an Atom component.
  * Optimized with React.memo to prevent unnecessary re-renders.
  *
  * @example

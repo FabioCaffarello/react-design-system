@@ -3,7 +3,7 @@
  *
  * Actions slot component for Header (typically buttons, user menu, etc.).
  *
- * @see EPIC-002: Header Component (Molecule)
+ * @see EPIC-002: Header Component
  * @see RFC-003: Header Composition Pattern (APPROVED)
  */
 

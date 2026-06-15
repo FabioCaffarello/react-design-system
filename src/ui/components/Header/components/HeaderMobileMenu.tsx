@@ -3,7 +3,7 @@
  *
  * Mobile menu drawer for Header navigation.
  *
- * @see EPIC-002: Header Component (Molecule)
+ * @see EPIC-002: Header Component
  * @see TASK-028: Mobile Menu (Drawer)
  */
 

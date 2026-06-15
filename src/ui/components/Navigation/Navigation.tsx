@@ -3,7 +3,7 @@
  *
  * Horizontal or vertical navigation component using NavLink internally.
  *
- * @see EPIC-003: Navigation Component (Molecule)
+ * @see EPIC-003: Navigation Component
  * @see RFC-005: Navigation Composition Pattern (APPROVED)
  */
 
