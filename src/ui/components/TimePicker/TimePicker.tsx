@@ -26,7 +26,6 @@ export interface TimePickerProps {
  *
  * A time picker component for selecting time values.
  * Supports 12h and 24h formats.
- * Follows Atomic Design principles as a Molecule component.
  *
  * @example
  * ```tsx

@@ -45,7 +45,6 @@ export interface CommandPaletteProps {
  *
  * A command palette component for quick command search and execution.
  * Supports keyboard navigation, grouping, and filtering.
- * Follows Atomic Design principles as an Organism component.
  *
  * @example
  * ```tsx

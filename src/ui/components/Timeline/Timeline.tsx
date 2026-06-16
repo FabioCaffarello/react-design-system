@@ -28,7 +28,6 @@ export interface TimelineProps {
  *
  * A timeline component for displaying events in chronological order.
  * Supports horizontal and vertical orientations.
- * Follows Atomic Design principles as an Organism component.
  *
  * @example
  * ```tsx

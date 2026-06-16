@@ -28,7 +28,6 @@ export interface RadioProps extends Omit<
  * Radio Component
  *
  * A styled radio input component.
- * Follows Atomic Design principles as an Atom component.
  * Uses Composite Pattern when combined with Label and ErrorMessage.
  *
  * @example

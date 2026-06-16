@@ -13,7 +13,6 @@ export interface ErrorMessageProps extends HTMLAttributes<HTMLDivElement> {
  * ErrorMessage Component
  *
  * A component for displaying validation error messages.
- * Follows Atomic Design principles as an Atom component.
  *
  * @example
  * ```tsx

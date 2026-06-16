@@ -23,7 +23,6 @@ export interface DrawerProps {
  * Drawer Component
  *
  * A side drawer component that slides in from different positions.
- * Follows Atomic Design principles as an Atom component.
  * Uses Compound Component pattern.
  *
  * @example

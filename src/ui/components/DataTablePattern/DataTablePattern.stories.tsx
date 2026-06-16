@@ -24,10 +24,10 @@ A complete data table pattern that combines Table, Pagination, Search, and Actio
 This pattern solves the common UX problem of displaying searchable, paginated data tables.
 
 ### Components Used
-- Table (organism)
-- Pagination (molecule)
-- SearchInput (molecule)
-- Button (atom)
+- Table
+- Pagination
+- SearchInput
+- Button
 - Container (layout)
 - Stack (layout)
 

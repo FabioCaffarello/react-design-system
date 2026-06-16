@@ -28,7 +28,6 @@ export interface TableActionsProps<
  * TableActions Component
  *
  * Dropdown menu for row actions in tables.
- * Follows Atomic Design principles as a Molecule component.
  *
  * @example
  * ```tsx

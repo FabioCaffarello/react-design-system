@@ -40,7 +40,6 @@ export interface FileUploadProps {
  * FileUpload Component
  *
  * A file upload component with drag and drop, preview, validation, and progress.
- * Follows Atomic Design principles as a Molecule component.
  *
  * @example
  * ```tsx

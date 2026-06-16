@@ -22,7 +22,6 @@ interface Props extends HTMLAttributes<HTMLElement> {
  * Breadcrumb Component
  *
  * A breadcrumb navigation component for hierarchical navigation.
- * Follows Atomic Design principles as a Molecule component.
  *
  * @example
  * ```tsx

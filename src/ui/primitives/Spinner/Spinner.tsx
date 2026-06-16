@@ -20,7 +20,6 @@ export interface SpinnerProps extends HTMLAttributes<HTMLDivElement> {
  * Spinner Component
  *
  * A loading spinner component for indicating loading states.
- * Follows Atomic Design principles as an Atom component.
  * Uses Strategy Pattern for different size/variant combinations.
  *
  * @example

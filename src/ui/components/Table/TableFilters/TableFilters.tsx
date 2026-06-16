@@ -29,7 +29,6 @@ export interface TableFiltersProps extends HTMLAttributes<HTMLDivElement> {
  * TableFilters Component
  *
  * Filter controls for tables with support for text, select, and date filters.
- * Follows Atomic Design principles as a Molecule component.
  *
  * @example
  * ```tsx

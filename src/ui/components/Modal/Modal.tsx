@@ -26,7 +26,6 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
  * Modal Component
  *
  * A modal/dialog component with overlay, portal rendering, and accessibility.
- * Follows Atomic Design principles as an Organism component.
  *
  * @example
  * ```tsx

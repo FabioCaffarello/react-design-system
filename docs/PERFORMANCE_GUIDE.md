@@ -14,25 +14,21 @@ Performance é crítica para um design system. Este guia cobre:
 
 ## Build Performance
 
-### Code Splitting
+### Bundle único + entries múltiplas
 
-O design system já implementa code splitting por categoria:
+O bundle principal (`.`) é **um único arquivo, por design** — sem `manualChunks`. Dividir o bundle por categoria reintroduzia um bug de referência cruzada do `cva` entre chunks (o histórico está no cabeçalho de `vite.config.ts`), então tokens, primitives, components e layouts vivem todos no mesmo bundle, sem referências cross-chunk.
 
-```typescript
-// vite.config.ts
-manualChunks: (id) => {
-  if (id.includes("/atoms/")) return "atoms";
-  if (id.includes("/molecules/")) return "molecules";
-  if (id.includes("/organisms/")) return "organisms";
-  if (id.includes("/tokens/")) return "tokens";
-};
-```
+A granularidade para o consumidor vem de **entries adicionais**, não de chunks internos:
+
+- `@fabio.caffarello/react-design-system/granular` (issue #208) — a superfície pública emitida como árvore `preserveModules` (`vite.config.granular.ts`); importe um componente folha em rotas sensíveis a tamanho sem puxar o bundle inteiro.
+- `@fabio.caffarello/react-design-system/server` (issue #150) — o subconjunto server-safe (RSC), sem o banner `"use client"`.
+- `@fabio.caffarello/react-design-system/hooks` (issue #203) — os hooks públicos num bundle sub-1KB.
 
 **Benefícios**:
 
-- Chunks menores
-- Carregamento paralelo
-- Cache mais eficiente
+- Bundle principal estável (sem o bug de cross-chunk do `cva`)
+- Tree-shaking real via `./granular` para imports folha
+- RSC via `./server` sem cruzar a fronteira client
 
 ### Lazy Loading de Stories
 

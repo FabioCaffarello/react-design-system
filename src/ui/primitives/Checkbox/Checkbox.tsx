@@ -38,7 +38,6 @@ export interface CheckboxProps extends Omit<
  * Checkbox Component
  *
  * A styled checkbox input component.
- * Follows Atomic Design principles as an Atom component.
  * Uses Composite Pattern when combined with Label and ErrorMessage.
  *
  * @example

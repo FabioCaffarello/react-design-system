@@ -4,7 +4,7 @@ Este documento descreve padrões avançados de composição de componentes no Re
 
 ## Visão Geral
 
-A composição é um princípio fundamental do design system. Este guia cobre padrões avançados que vão além da composição básica de atoms em molecules.
+A composição é um princípio fundamental do design system. Este guia cobre padrões avançados que vão além da composição básica de primitives em components.
 
 ## Padrões de Composição
 
