@@ -134,4 +134,31 @@ describe("useFocusRestore", () => {
 
     expect(document.activeElement).toBe(secondTrigger);
   });
+
+  it("restores focus on unmount-while-open ({isOpen && <Overlay/>} pattern)", () => {
+    const trigger = document.createElement("button");
+    document.body.appendChild(trigger);
+    trigger.focus();
+
+    // Mount already open — the overlay subtree only exists while open.
+    const { unmount } = renderHook(({ isOpen }) => useFocusRestore(isOpen), {
+      initialProps: { isOpen: true },
+    });
+
+    const insideOverlay = document.createElement("button");
+    document.body.appendChild(insideOverlay);
+    insideOverlay.focus();
+    expect(document.activeElement).toBe(insideOverlay);
+
+    // Regression: closing `{isOpen && <Overlay/>}` unmounts the hook with
+    // isOpen still true — there is no isOpen=false render. The restore
+    // must run from the effect cleanup, not a falling-edge branch, or
+    // focus is stranded on <body> (WCAG 2.4.3).
+    unmount();
+    act(() => {
+      vi.runAllTimers();
+    });
+
+    expect(document.activeElement).toBe(trigger);
+  });
 });

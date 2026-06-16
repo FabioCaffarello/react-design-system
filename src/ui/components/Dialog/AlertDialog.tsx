@@ -5,6 +5,7 @@ import Dialog from "./Dialog";
 import { DialogContent } from "./DialogContent";
 import { DialogHeader } from "./DialogHeader";
 import { DialogFooter } from "./DialogFooter";
+import { useDialogContext } from "../../providers/DialogContext";
 import Button from "../../primitives/Button/Button";
 
 export interface AlertDialogProps {
@@ -19,6 +20,84 @@ export interface AlertDialogProps {
   onConfirm?: () => void;
   onCancel?: () => void;
   children?: ReactNode;
+}
+
+type AlertDialogBodyProps = Pick<
+  AlertDialogProps,
+  | "title"
+  | "description"
+  | "confirmLabel"
+  | "cancelLabel"
+  | "variant"
+  | "onConfirm"
+  | "onCancel"
+  | "children"
+>;
+
+/**
+ * Inner body rendered as a child of <Dialog> so it can read the dialog
+ * context. Closing MUST go through context `onClose` (not the external
+ * `onOpenChange` prop): in uncontrolled mode `onOpenChange` is undefined,
+ * so the old `onOpenChange?.(false)` was a no-op and the alert could
+ * never be dismissed by its own buttons. `onClose` closes in BOTH modes
+ * (it calls the provider's setIsOpen, which drives uncontrolled state and
+ * still notifies a controlled consumer's onOpenChange).
+ */
+function AlertDialogBody({
+  title,
+  description,
+  confirmLabel = "Confirm",
+  cancelLabel = "Cancel",
+  variant = "default",
+  onConfirm,
+  onCancel,
+  children,
+}: AlertDialogBodyProps) {
+  const { onClose } = useDialogContext();
+
+  const handleConfirm = () => {
+    onConfirm?.();
+    onClose();
+  };
+
+  const handleCancel = () => {
+    onCancel?.();
+    onClose();
+  };
+
+  // AlertDialog is a decision gate: the user must pick Confirm or
+  // Cancel, so it suppresses the auto ✕ (showCloseButton={false}) and
+  // overlay-click — consistent with its existing no-dismiss-affordance
+  // contract. DialogContent now renders the ✕ by default (issue #221).
+  return (
+    <DialogContent
+      size="sm"
+      closeOnOverlayClick={false}
+      showCloseButton={false}
+    >
+      {children || (
+        <>
+          <DialogHeader>
+            <Dialog.Title>{title}</Dialog.Title>
+            {description && (
+              <Dialog.Description>{description}</Dialog.Description>
+            )}
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={handleCancel}>
+              {cancelLabel}
+            </Button>
+            <Button
+              variant={variant === "destructive" ? "error" : "primary"}
+              onClick={handleConfirm}
+            >
+              {confirmLabel}
+            </Button>
+          </DialogFooter>
+        </>
+      )}
+    </DialogContent>
+  );
 }
 
 /**
@@ -45,48 +124,26 @@ export function AlertDialog({
   onOpenChange,
   title,
   description,
-  confirmLabel = "Confirm",
-  cancelLabel = "Cancel",
-  variant = "default",
+  confirmLabel,
+  cancelLabel,
+  variant,
   onConfirm,
   onCancel,
   children,
 }: AlertDialogProps) {
-  const handleConfirm = () => {
-    onConfirm?.();
-    onOpenChange?.(false);
-  };
-
-  const handleCancel = () => {
-    onCancel?.();
-    onOpenChange?.(false);
-  };
-
   return (
     <Dialog open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
-      <DialogContent size="sm" closeOnOverlayClick={false}>
-        {children || (
-          <>
-            <DialogHeader>
-              <Dialog.Title>{title}</Dialog.Title>
-              {description && (
-                <Dialog.Description>{description}</Dialog.Description>
-              )}
-            </DialogHeader>
-            <DialogFooter>
-              <Button variant="outline" onClick={handleCancel}>
-                {cancelLabel}
-              </Button>
-              <Button
-                variant={variant === "destructive" ? "error" : "primary"}
-                onClick={handleConfirm}
-              >
-                {confirmLabel}
-              </Button>
-            </DialogFooter>
-          </>
-        )}
-      </DialogContent>
+      <AlertDialogBody
+        title={title}
+        description={description}
+        confirmLabel={confirmLabel}
+        cancelLabel={cancelLabel}
+        variant={variant}
+        onConfirm={onConfirm}
+        onCancel={onCancel}
+      >
+        {children}
+      </AlertDialogBody>
     </Dialog>
   );
 }

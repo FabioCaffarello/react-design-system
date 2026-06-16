@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, type ReactNode } from "react";
+import { useState, useEffect, useCallback, type ReactNode } from "react";
 import { DialogContext, type DialogContextValue } from "./DialogContext";
 import { useFocusRestore } from "../hooks/useFocusRestore";
 
@@ -22,6 +22,23 @@ export function DialogProvider({
   descriptionId,
 }: DialogProviderProps) {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
+
+  // Presence tracking so DialogContent only emits aria-labelledby /
+  // aria-describedby when a Title / Description is actually mounted.
+  // Without this the dialog always pointed those IDREFs at ids that
+  // only exist when the corresponding subcomponent is rendered — a
+  // dangling reference for every title-only (or bare) dialog.
+  const [titleCount, setTitleCount] = useState(0);
+  const [descriptionCount, setDescriptionCount] = useState(0);
+
+  const registerTitle = useCallback(() => {
+    setTitleCount((c) => c + 1);
+    return () => setTitleCount((c) => c - 1);
+  }, []);
+  const registerDescription = useCallback(() => {
+    setDescriptionCount((c) => c + 1);
+    return () => setDescriptionCount((c) => c - 1);
+  }, []);
 
   // Use controlled or uncontrolled state
   const isOpen =
@@ -58,6 +75,10 @@ export function DialogProvider({
     onClose: () => setIsOpen(false),
     titleId,
     descriptionId,
+    hasTitle: titleCount > 0,
+    hasDescription: descriptionCount > 0,
+    registerTitle,
+    registerDescription,
   };
 
   return (

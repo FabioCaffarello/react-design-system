@@ -25,6 +25,7 @@
 
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import SideNavbar from "./SideNavbar";
 
 describe("SideNavbar Accessibility", () => {
@@ -109,6 +110,32 @@ describe("SideNavbar Accessibility", () => {
       expect(
         screen.getByRole("button", { name: /Settings/i }),
       ).toBeInTheDocument();
+    });
+
+    it("collapsible Navbar.Group header is a keyboard-operable button with aria-expanded", async () => {
+      const user = userEvent.setup();
+      render(
+        <SideNavbar>
+          <SideNavbar.Navbar>
+            <SideNavbar.Navbar.Group label="Main" collapsible>
+              <SideNavbar.Navbar.Item icon={<span>H</span>} label="Home" />
+            </SideNavbar.Navbar.Group>
+          </SideNavbar.Navbar>
+        </SideNavbar>,
+      );
+
+      const header = screen.getByRole("button", { name: "Main" });
+      // Regression: the collapsible header was a <div onClick> — not
+      // focusable, no role, no aria-expanded.
+      expect(header).toHaveAttribute("aria-expanded", "true");
+      expect(screen.getByRole("button", { name: /Home/i })).toBeInTheDocument();
+
+      header.focus();
+      await user.keyboard("{Enter}");
+      expect(header).toHaveAttribute("aria-expanded", "false");
+      expect(
+        screen.queryByRole("button", { name: /Home/i }),
+      ).not.toBeInTheDocument();
     });
   });
 

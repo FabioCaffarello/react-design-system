@@ -48,13 +48,32 @@ describe("DataGrid Accessibility", () => {
     });
 
     it("export toolbar buttons expose their own accessible names", () => {
-      render(<DataGrid columns={columns} data={data} exportable />);
+      render(
+        <DataGrid
+          columns={columns}
+          data={data}
+          exportable
+          onExport={() => {}}
+        />,
+      );
 
-      // The buttons render with format text — AT users hear each format
-      // explicitly.
+      // With a consumer onExport, all configured formats render and each
+      // button's format text is its accessible name.
       expect(screen.getByRole("button", { name: /CSV/i })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /XLSX/i })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /JSON/i })).toBeInTheDocument();
+    });
+
+    it("omits formats the built-in serializer cannot handle when no onExport", () => {
+      render(<DataGrid columns={columns} data={data} exportable />);
+
+      // Regression: without onExport the default path only implements CSV
+      // and JSON — rendering an XLSX button made it a focusable no-op.
+      expect(screen.getByRole("button", { name: /CSV/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /JSON/i })).toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: /XLSX/i }),
+      ).not.toBeInTheDocument();
     });
 
     it("groupable does not surface a Group button (props @experimental)", () => {
@@ -94,7 +113,14 @@ describe("DataGrid Accessibility", () => {
 
   describe("Focus Management", () => {
     it("each export button is its own tab stop", () => {
-      render(<DataGrid columns={columns} data={data} exportable />);
+      render(
+        <DataGrid
+          columns={columns}
+          data={data}
+          exportable
+          onExport={() => {}}
+        />,
+      );
 
       // None of the export buttons carries tabindex=-1 — they're
       // independent stops in DOM order.

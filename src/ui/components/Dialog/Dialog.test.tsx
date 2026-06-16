@@ -8,6 +8,7 @@ import {
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Dialog from "./Dialog";
+import { AlertDialog } from "./AlertDialog";
 import Button from "../../primitives/Button/Button";
 
 describe("Dialog", () => {
@@ -147,18 +148,18 @@ describe("Dialog", () => {
       });
     });
 
-    it("closes dialog when close button is clicked", async () => {
+    it("closes dialog when the auto close button is clicked", async () => {
       const user = userEvent.setup();
       render(
         <Dialog defaultOpen>
           <Dialog.Content>
             <Dialog.Title>Test Dialog</Dialog.Title>
-            <Dialog.Close />
           </Dialog.Content>
         </Dialog>,
       );
 
-      // DialogClose renders a button with aria-label="Close dialog"
+      // DialogContent renders the ✕ automatically (showCloseButton
+      // defaults to true, issue #221) with aria-label="Close dialog".
       const closeButton = screen.getByLabelText("Close dialog");
       await act(async () => {
         await user.click(closeButton);
@@ -167,6 +168,44 @@ describe("Dialog", () => {
       await waitFor(() => {
         expect(screen.queryByText("Test Dialog")).not.toBeInTheDocument();
       });
+    });
+  });
+
+  describe("Close button (showCloseButton)", () => {
+    it("renders the auto ✕ by default", () => {
+      render(
+        <Dialog defaultOpen>
+          <Dialog.Content>
+            <Dialog.Title>Test Dialog</Dialog.Title>
+          </Dialog.Content>
+        </Dialog>,
+      );
+
+      expect(screen.getByLabelText("Close dialog")).toBeInTheDocument();
+    });
+
+    it("suppresses the ✕ when showCloseButton={false} (non-dismissable)", () => {
+      render(
+        <Dialog defaultOpen>
+          <Dialog.Content showCloseButton={false}>
+            <Dialog.Title>Test Dialog</Dialog.Title>
+          </Dialog.Content>
+        </Dialog>,
+      );
+
+      expect(screen.queryByLabelText("Close dialog")).not.toBeInTheDocument();
+    });
+
+    it("renders exactly one ✕ (no duplicate with the auto button)", () => {
+      render(
+        <Dialog defaultOpen>
+          <Dialog.Content>
+            <Dialog.Title>Test Dialog</Dialog.Title>
+          </Dialog.Content>
+        </Dialog>,
+      );
+
+      expect(screen.getAllByLabelText("Close dialog")).toHaveLength(1);
     });
   });
 
@@ -466,5 +505,66 @@ describe("Dialog", () => {
         { timeout: 2000 },
       );
     });
+  });
+});
+
+describe("AlertDialog", () => {
+  afterEach(() => {
+    document.body.style.overflow = "";
+  });
+
+  it("closes itself on Confirm in uncontrolled mode (defaultOpen)", async () => {
+    const user = userEvent.setup();
+    const onConfirm = vi.fn();
+    render(
+      <AlertDialog
+        defaultOpen
+        title="Delete item"
+        description="This cannot be undone."
+        onConfirm={onConfirm}
+      />,
+    );
+
+    expect(
+      await screen.findByRole("dialog", { name: "Delete item" }),
+    ).toBeInTheDocument();
+
+    await act(async () => {
+      await user.click(screen.getByRole("button", { name: "Confirm" }));
+    });
+
+    expect(onConfirm).toHaveBeenCalledTimes(1);
+    // Regression: in uncontrolled mode onOpenChange is undefined, so the
+    // old handler never closed the dialog — it stayed open forever.
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("dialog", { name: "Delete item" }),
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  it("closes itself on Cancel in uncontrolled mode (defaultOpen)", async () => {
+    const user = userEvent.setup();
+    const onCancel = vi.fn();
+    render(<AlertDialog defaultOpen title="Confirm" onCancel={onCancel} />);
+
+    await act(async () => {
+      await user.click(screen.getByRole("button", { name: "Cancel" }));
+    });
+
+    expect(onCancel).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("dialog", { name: "Confirm" }),
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  it("does not render the auto ✕ — it is a decision gate (Confirm/Cancel only)", () => {
+    render(<AlertDialog defaultOpen title="Confirm" />);
+
+    // AlertDialog passes showCloseButton={false} to DialogContent so the
+    // user must pick an action rather than dismiss via the ✕.
+    expect(screen.queryByLabelText("Close dialog")).not.toBeInTheDocument();
   });
 });

@@ -270,10 +270,16 @@ export function TableProvider<
   }, [selectable, paginatedData, selectedRows, getRowId]);
 
   const isIndeterminate = useMemo(() => {
-    if (!selectable) return false;
-    const selectedCount = selectedRows.length;
-    return selectedCount > 0 && selectedCount < paginatedData.length;
-  }, [selectable, selectedRows.length, paginatedData.length]);
+    if (!selectable || paginatedData.length === 0) return false;
+    // Count selections on the CURRENT page only, mirroring isAllSelected.
+    // Comparing the global cross-page selectedRows.length against the
+    // current page length made the header checkbox render fully unchecked
+    // when cross-page selections outnumbered a partially-selected page.
+    const selectedOnPage = paginatedData.filter((row, index) =>
+      selectedRows.includes(getRowId(row, index)),
+    ).length;
+    return selectedOnPage > 0 && selectedOnPage < paginatedData.length;
+  }, [selectable, paginatedData, selectedRows, getRowId]);
 
   // Methods
   const setPage = useCallback(

@@ -105,6 +105,24 @@ describe("DatePicker Accessibility", () => {
       // can tab past without surprise.
       expect(dialog).not.toHaveAttribute("aria-modal", "true");
     });
+
+    it("opening the popup keeps focus on the input (no steal to a grid cell)", async () => {
+      // A midnight value in the current month is exactly the case the old
+      // roving-tabindex effect mis-handled: it matched the cell on mount
+      // and called cell.focus(), yanking focus off the input the user had
+      // just focused. Focus must follow arrow navigation, not the open.
+      const midnightInView = new Date();
+      midnightInView.setHours(0, 0, 0, 0);
+      render(<DatePicker aria-label="Date" value={midnightInView} />);
+
+      const input = screen.getByLabelText("Date");
+      await act(async () => {
+        input.focus();
+      });
+
+      await screen.findByRole("dialog");
+      expect(input).toHaveFocus();
+    });
   });
 
   describe("Screen Reader Support", () => {

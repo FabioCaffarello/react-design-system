@@ -71,6 +71,7 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
     ref,
   ) {
     const inputId = useId();
+    const listId = `${inputId}-list`;
     const [internalValue, setInternalValue] = useState<string[]>(defaultValue);
     const [isOpen, setIsOpen] = useState(false);
     const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -133,6 +134,9 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
       onChange?.(newValues);
       onSelect?.(options.filter((opt) => newValues.includes(opt.value)));
       setSearchValue("");
+      // Clearing the search reverts filteredOptions to the full list, so a
+      // stale highlightedIndex would point at a different row — reset it.
+      setHighlightedIndex(-1);
     };
 
     // Handle select all
@@ -140,7 +144,10 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
       const allValues = filteredOptions
         .filter((opt) => !opt.disabled)
         .map((opt) => opt.value);
-      const newValues = [...new Set([...selectedValues, ...allValues])];
+      const merged = [...new Set([...selectedValues, ...allValues])];
+      // Respect maxSelected — the single-toggle path enforces it, so
+      // Select All must not be able to overshoot the cap.
+      const newValues = maxSelected ? merged.slice(0, maxSelected) : merged;
 
       if (!isControlled) {
         setInternalValue(newValues);
@@ -167,6 +174,7 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
 
     // Handle remove chip
     const handleRemoveChip = (value: string) => {
+      if (disabled) return;
       const newValues = selectedValues.filter((v) => v !== value);
 
       if (!isControlled) {
@@ -187,9 +195,12 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
         if (
           e.key === "Backspace" &&
           searchValue === "" &&
-          selectedValues.length > 0
+          selectedOptions.length > 0
         ) {
-          handleRemoveChip(selectedValues[selectedValues.length - 1]);
+          // Remove the LAST VISIBLE chip — chips render from
+          // selectedOptions (options order), which can differ from
+          // selectedValues (insertion order).
+          handleRemoveChip(selectedOptions[selectedOptions.length - 1].value);
         }
         return;
       }
@@ -229,9 +240,14 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
       if (!isOpen) return;
 
       const handleClickOutside = (e: MouseEvent) => {
+        const target = e.target as Node;
+        // The list is portalled to document.body (outside containerRef),
+        // so without the listRef check a mousedown on an option closed the
+        // list before its click toggled the selection.
         if (
           containerRef.current &&
-          !containerRef.current.contains(e.target as Node)
+          !containerRef.current.contains(target) &&
+          !listRef.current?.contains(target)
         ) {
           setIsOpen(false);
           setHighlightedIndex(-1);
@@ -249,7 +265,15 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
       .filter((opt) => !opt.disabled)
       .every((opt) => selectedValues.includes(opt.value));
 
-    const shouldShowList = isOpen && (hasOptions || loading || emptyMessage);
+    const shouldShowList =
+      isOpen && (hasOptions || loading || Boolean(emptyMessage));
+    const atCap = maxSelected != null && selectedValues.length >= maxSelected;
+    const activeOptionId =
+      shouldShowList &&
+      highlightedIndex >= 0 &&
+      highlightedIndex < filteredOptions.length
+        ? `${listId}-option-${highlightedIndex}`
+        : undefined;
 
     return (
       <div ref={containerRef} className={cn("relative", className)}>
@@ -285,6 +309,7 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
           {selectedOptions.map((option) => (
             <Chip
               key={option.value}
+              disabled={disabled}
               onRemove={() => handleRemoveChip(option.value)}
               size={size === "sm" ? "sm" : size === "lg" ? "lg" : "md"}
             >
@@ -304,6 +329,12 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
               inputRef.current = node;
             }}
             type="text"
+            role="combobox"
+            aria-expanded={shouldShowList}
+            aria-haspopup="listbox"
+            aria-controls={shouldShowList ? listId : undefined}
+            aria-autocomplete="list"
+            aria-activedescendant={activeOptionId}
             value={searchValue}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
@@ -328,9 +359,16 @@ const MultiSelect = forwardRef<HTMLInputElement, MultiSelectProps>(
             // role="listbox" without aria-label / aria-labelledby.
             // MultiSelect's `label` is TS-required, so the listbox
             // always inherits a name.
+            id={listId}
+            selectedValues={selectedValues}
             aria-label={label}
             options={filteredOptions.map((opt) => ({
               ...opt,
+              // Once the cap is hit, not-yet-selected options are disabled
+              // so they stop accepting clicks silently (maxSelected was a
+              // no-op with no affordance before).
+              disabled:
+                opt.disabled || (atCap && !selectedValues.includes(opt.value)),
               icon: selectedValues.includes(opt.value) ? (
                 <Check className={cn("h-4", "w-4", "text-fg-brand")} />
               ) : (

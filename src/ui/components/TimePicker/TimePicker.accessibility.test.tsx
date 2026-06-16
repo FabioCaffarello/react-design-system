@@ -97,6 +97,27 @@ describe("TimePicker Accessibility", () => {
   });
 
   describe("Keyboard Navigation", () => {
+    it("Enter on the focused trigger opens the dialog (keyboard-only users)", async () => {
+      const user = userEvent.setup();
+      render(<TimePicker label="Time" />);
+
+      const trigger = screen.getByLabelText("Time");
+      trigger.focus();
+      expect(trigger).toHaveFocus();
+      await act(async () => {
+        await user.keyboard("{Enter}");
+      });
+
+      // Regression: a readOnly trigger Input does not synthesize a click,
+      // so without an explicit keydown handler the popover was impossible
+      // to open via the keyboard (WCAG 2.1.1 failure).
+      expect(
+        await screen.findByRole("dialog", { name: "Select Time" }),
+      ).toBeInTheDocument();
+      expect(trigger).toHaveAttribute("aria-expanded", "true");
+      expect(trigger).toHaveAttribute("aria-haspopup", "dialog");
+    });
+
     it("Enter on Increment hours activates the increment", async () => {
       const user = userEvent.setup();
       const onChange = vi.fn();

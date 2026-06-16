@@ -86,8 +86,12 @@ export const Uncontrolled: Story = {
       <Dialog.Trigger asChild>
         <Button>Open Dialog</Button>
       </Dialog.Trigger>
+      {/*
+        No explicit <Dialog.Close /> here: DialogContent renders the ✕
+        automatically (showCloseButton defaults to true, issue #221).
+        Adding Dialog.Close on top would produce a duplicate ✕.
+      */}
       <Dialog.Content>
-        <Dialog.Close />
         <Dialog.Header>
           <Dialog.Title>Uncontrolled Dialog</Dialog.Title>
           <Dialog.Description>
@@ -95,7 +99,7 @@ export const Uncontrolled: Story = {
           </Dialog.Description>
         </Dialog.Header>
         <div className="p-6 pt-0">
-          <p>Click outside or press Escape to close.</p>
+          <p>Click the ✕, click outside, or press Escape to close.</p>
         </div>
       </Dialog.Content>
     </Dialog>
@@ -209,6 +213,53 @@ export const WithoutOverlayClose: Story = {
         </Dialog>
       </>
     );
+  },
+};
+
+export const NonDismissable: Story = {
+  render: () => {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+      <>
+        <Button onClick={() => setIsOpen(true)}>Open Consent Gate</Button>
+        {/*
+          Non-dismissable pattern (issue #221): the ✕ is suppressed
+          (showCloseButton={false}) and overlay/ESC closing are disabled,
+          so the only way out is an explicit decision. Use for LGPD
+          consent gates, destructive confirmations, or guided wizards.
+        */}
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <Dialog.Content
+            showCloseButton={false}
+            closeOnOverlayClick={false}
+            closeOnEscape={false}
+          >
+            <Dialog.Header>
+              <Dialog.Title>We need your consent</Dialog.Title>
+              <Dialog.Description>
+                This dialog has no ✕ and cannot be dismissed by clicking the
+                overlay or pressing Escape. You must choose an option to
+                continue.
+              </Dialog.Description>
+            </Dialog.Header>
+            <Dialog.Footer>
+              <Button variant="outline" onClick={() => setIsOpen(false)}>
+                Decline
+              </Button>
+              <Button onClick={() => setIsOpen(false)}>Accept</Button>
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog>
+      </>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Non-dismissable dialog: `showCloseButton={false}` removes the auto ✕, paired with `closeOnOverlayClick={false}` and `closeOnEscape={false}` so the user must make an explicit choice.",
+      },
+    },
   },
 };
 

@@ -245,7 +245,13 @@ function convertSimplifiedToProviderProps<T extends Record<string, unknown>>(
     sortDirection,
     onSort,
     filters: filters?.config,
-    filterValues: filters?.initialValues,
+    // Seed the uncontrolled filter state ONLY. Mapping initialValues onto
+    // `filterValues` too flipped the provider into controlled-filter mode
+    // (isFilterControlled = filterValues !== undefined), freezing the
+    // internal filter state forever so client-side filtering never ran.
+    // The simplified Filters API exposes no controlled-filter prop, so
+    // there is no legitimate controlled path through it.
+    filterValues: undefined,
     onFilter: filters?.onFilter,
     initialFilterValues: filters?.initialValues,
     selectable,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 
 export interface ColumnWidth {
   [key: string]: number;
@@ -105,37 +105,24 @@ export function useColumnResizing(
     resizeStateRef.current = null;
   }, []);
 
-  // Handle mouse move and mouse up globally during resize
-  const handleMouseMoveRef = useRef<((e: MouseEvent) => void) | undefined>(
-    undefined,
-  );
-  const handleMouseUpRef = useRef<(() => void) | undefined>(undefined);
-
-  if (typeof window !== "undefined") {
-    handleMouseMoveRef.current = (e: MouseEvent) => {
-      if (isResizing) {
-        handleResize(e.clientX);
-      }
+  // Bind the global mouse listeners only while resizing, and ONLY from an
+  // effect — never the render body. The old render-body version added a
+  // fresh closure on every re-render during a drag (each handleResize →
+  // setColumnWidth → re-render) without removing the previous one, leaking
+  // one mousemove + one mouseup listener per render and firing handleResize
+  // N times per move. The effect captures the exact handlers it attaches
+  // and tears them down on cleanup, so at most one of each exists at a time.
+  useEffect(() => {
+    if (!isResizing || typeof window === "undefined") return;
+    const onMove = (e: MouseEvent) => handleResize(e.clientX);
+    const onUp = () => endResize();
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onUp);
+    return () => {
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseup", onUp);
     };
-
-    handleMouseUpRef.current = () => {
-      if (isResizing) {
-        endResize();
-      }
-    };
-
-    if (isResizing) {
-      document.addEventListener("mousemove", handleMouseMoveRef.current);
-      document.addEventListener("mouseup", handleMouseUpRef.current);
-    } else {
-      if (handleMouseMoveRef.current) {
-        document.removeEventListener("mousemove", handleMouseMoveRef.current);
-      }
-      if (handleMouseUpRef.current) {
-        document.removeEventListener("mouseup", handleMouseUpRef.current);
-      }
-    }
-  }
+  }, [isResizing, handleResize, endResize]);
 
   return {
     columnWidths,

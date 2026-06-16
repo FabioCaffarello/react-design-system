@@ -184,4 +184,62 @@ describe("Table", () => {
     const actionButtons = screen.getAllByLabelText("Row actions");
     expect(actionButtons.length).toBeGreaterThan(0);
   });
+
+  it("triggers onRowClick from the keyboard (Enter) when rows are interactive", () => {
+    const onRowClick = vi.fn();
+    render(
+      <Table
+        columns={[{ key: "name", label: "Name" }]}
+        data={sampleData}
+        onRowClick={onRowClick}
+      />,
+    );
+
+    const row = screen.getByText("Item 1").closest("tr") as HTMLTableRowElement;
+    // Regression: onRowClick rows were mouse-only — no tabindex/onKeyDown.
+    expect(row).toHaveAttribute("tabindex", "0");
+    row.focus();
+    fireEvent.keyDown(row, { key: "Enter" });
+    expect(onRowClick).toHaveBeenCalledWith(sampleData[0]);
+  });
+
+  it("does not make rows focusable when onRowClick is absent", () => {
+    render(
+      <Table columns={[{ key: "name", label: "Name" }]} data={sampleData} />,
+    );
+    const row = screen.getByText("Item 1").closest("tr") as HTMLTableRowElement;
+    expect(row).not.toHaveAttribute("tabindex");
+  });
+
+  it("keeps client-side filtering working when filters.initialValues is set", () => {
+    render(
+      <Table
+        columns={[{ key: "name", label: "Name" }]}
+        data={sampleData}
+        filters={{
+          config: [
+            {
+              key: "name",
+              label: "Name",
+              type: "text",
+              placeholder: "Search",
+            },
+          ],
+          initialValues: { name: "" },
+          onFilter: () => {},
+        }}
+      />,
+    );
+
+    // Expand the disclosure, then filter.
+    fireEvent.click(screen.getByRole("button", { name: /Filters/ }));
+    fireEvent.change(screen.getByPlaceholderText("Search"), {
+      target: { value: "Item 1" },
+    });
+
+    // Regression: passing initialValues silently flipped the table into
+    // controlled-filter mode, freezing internal state so this never filtered.
+    expect(screen.getByText("Item 1")).toBeInTheDocument();
+    expect(screen.queryByText("Item 2")).not.toBeInTheDocument();
+  });
 });

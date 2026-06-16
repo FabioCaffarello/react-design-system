@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, type KeyboardEvent } from "react";
 import { Clock } from "lucide-react";
 import Input from "../../primitives/Input/Input";
 import Popover from "../Popover/Popover";
@@ -51,6 +51,7 @@ export default function TimePicker({
   const [hours, setHours] = useState(12);
   const [minutes, setMinutes] = useState(0);
   const [amPm, setAmPm] = useState<"AM" | "PM">("AM");
+  const [open, setOpen] = useState(false);
 
   const isControlled = controlledValue !== undefined;
   const currentValue = isControlled ? controlledValue : internalValue;
@@ -62,7 +63,11 @@ export default function TimePicker({
 
       if (format === "24h") {
         const [h, m] = timeStr.split(":").map(Number);
-        return { hours: h || 12, minutes: m || 0, amPm: "AM" as const };
+        return {
+          hours: Number.isFinite(h) ? h : 12,
+          minutes: Number.isFinite(m) ? m : 0,
+          amPm: "AM" as const,
+        };
       } else {
         const match = timeStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
         if (match) {
@@ -170,6 +175,22 @@ export default function TimePicker({
     handleMinutesChange(minutes === 0 ? 59 : minutes - 1);
   };
 
+  // Keyboard affordance for the readOnly trigger Input: a focused
+  // readOnly <input> never synthesizes a click, so the Popover's
+  // wrapper onClick (mouse-only) leaves keyboard users unable to open
+  // the dialog at all. Enter/Space toggle; ArrowUp/ArrowDown open.
+  // Gated on `disabled` so a disabled control never surfaces its popup.
+  const handleTriggerKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (disabled) return;
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setOpen((prev) => !prev);
+    } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      setOpen(true);
+    }
+  };
+
   const timePickerContent = (
     <div className={`${getSpacingClass("base", "p")} min-w-48`}>
       <div
@@ -188,7 +209,25 @@ export default function TimePicker({
           >
             ↑
           </Button>
-          <div className="text-2xl font-mono font-semibold w-12 text-center">
+          <div
+            role="spinbutton"
+            tabIndex={disabled ? -1 : 0}
+            aria-label="Hours"
+            aria-valuenow={hours}
+            aria-valuemin={format === "24h" ? 0 : 1}
+            aria-valuemax={format === "24h" ? 23 : 12}
+            aria-valuetext={String(hours).padStart(2, "0")}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowUp") {
+                e.preventDefault();
+                incrementHours();
+              } else if (e.key === "ArrowDown") {
+                e.preventDefault();
+                decrementHours();
+              }
+            }}
+            className="text-2xl font-mono font-semibold w-12 text-center"
+          >
             {String(hours).padStart(2, "0")}
           </div>
           <Button
@@ -217,7 +256,25 @@ export default function TimePicker({
           >
             ↑
           </Button>
-          <div className="text-2xl font-mono font-semibold w-12 text-center">
+          <div
+            role="spinbutton"
+            tabIndex={disabled ? -1 : 0}
+            aria-label="Minutes"
+            aria-valuenow={minutes}
+            aria-valuemin={0}
+            aria-valuemax={59}
+            aria-valuetext={String(minutes).padStart(2, "0")}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowUp") {
+                e.preventDefault();
+                incrementMinutes();
+              } else if (e.key === "ArrowDown") {
+                e.preventDefault();
+                decrementMinutes();
+              }
+            }}
+            className="text-2xl font-mono font-semibold w-12 text-center"
+          >
             {String(minutes).padStart(2, "0")}
           </div>
           <Button
@@ -261,6 +318,10 @@ export default function TimePicker({
   return (
     <div className={className}>
       <Popover
+        open={disabled ? false : open}
+        onOpenChange={(next) => {
+          if (!disabled) setOpen(next);
+        }}
         trigger={
           <Input
             label={label}
@@ -274,6 +335,10 @@ export default function TimePicker({
             helperText={helperText}
             leftIcon={<Clock className="h-4 w-4" />}
             className="cursor-pointer"
+            role="combobox"
+            aria-haspopup="dialog"
+            aria-expanded={!disabled && open}
+            onKeyDown={handleTriggerKeyDown}
           />
         }
         placement="bottom-start"
