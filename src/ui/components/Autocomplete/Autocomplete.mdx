@@ -37,6 +37,22 @@ Autocomplete renders an `input field` (an `Input` primitive with a chevron glyph
 
 <Canvas of={AutocompleteStories.CustomFilter} />
 
+## Form-native integration
+
+Pass `name` (and optionally `form`) to make the Autocomplete participate in native `<form>` submission like a `<select name>`. It renders a synchronized `<input type="hidden" name={name}>` carrying the **selected option value** — not the visible search label — so a `<form method="GET">` submits `name=value` with no `onChange` or router wiring on the consumer side. Use `form` to associate the hidden field with a `<form>` by id when the Autocomplete renders outside it.
+
+```tsx
+<form method="GET" action="/proposicoes">
+  <Autocomplete name="tema" label="Tema" options={temas} />
+  <button type="submit">Filtrar</button>
+</form>
+// submit → /proposicoes?tema=<selected value>
+```
+
+The hidden field is populated once the component hydrates — the combobox itself is interactive (`"use client"`), so this is form-native integration, not a pre-hydration no-JS fallback. For a true zero-JS experience, pair it with a `<noscript>` native `<select name>`.
+
+<Canvas of={AutocompleteStories.FormIntegration} />
+
 ## Props
 
 <Controls of={AutocompleteStories.Default} />

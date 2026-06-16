@@ -3,11 +3,13 @@
 // AND the surface of the `./server` entry in a single render pass:
 //
 //   1. Issue #148 — the main entry (`.`) carries `"use client"` at the
-//      head of its bundle, so importing `Button` (a client primitive)
-//      here does NOT crash with `(0, j.createContext) is not a function`
-//      during RSC compilation. The bundle's directive turns the
-//      Server-Component import into a proper Client-Component boundary
-//      at Next's compiler.
+//      head of its bundle, so importing a client primitive here (now
+//      `Input` — `Button` moved to `./server` in #224) does NOT crash
+//      with `(0, j.createContext) is not a function` during RSC
+//      compilation. The bundle's directive turns the Server-Component
+//      import into a proper Client-Component boundary at Next's compiler.
+//      `Input` is the probe because it genuinely stays client (useState
+//      password toggle, useId, useCallback) — see #224's deferred half.
 //
 //   2. Issue #150 — the new `./server` entry has NO `"use client"`,
 //      and re-exports only the components audited server-safe by
@@ -35,10 +37,11 @@
 // MINIMAL static props (no functions, no class instances) so the smoke
 // exercises the "consumer instantiates without enabling interactivity"
 // path — the exact path that broke the Card.
-import { Button } from "@fabio.caffarello/react-design-system";
+import { Input } from "@fabio.caffarello/react-design-system";
 import {
   Badge,
   Breadcrumb,
+  Button,
   Card,
   CardActions,
   CardBody,
@@ -81,7 +84,20 @@ export default function Page() {
         <Text variant="heading" as="h1">
           RDS server-entry smoke
         </Text>
+        {/* Button (#224) — now server-safe. Exercise the consumer's
+            server forms: a plain styled button, the asChild link form,
+            and a submit button. None pass an onClick, so no function prop
+            is emitted on the DOM element (axis 2). */}
         <Button variant="primary">Server-rendered button</Button>
+        <Button asChild variant="link">
+          <a href="/server-link">server asChild link</a>
+        </Button>
+        <Button type="submit">submit</Button>
+
+        {/* Issue #148 client-boundary probe — Input genuinely stays
+            client (#224's deferred half); importing it from the main
+            entry keeps dist/index.* in the RSC clientModules manifest. */}
+        <Input aria-label="client-boundary probe" />
 
         <Stack>
           <Badge variant="primary">badge</Badge>
