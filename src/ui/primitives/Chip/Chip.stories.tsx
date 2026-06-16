@@ -331,6 +331,76 @@ export const ClickableAndRemovable: Story = {
   },
 };
 
+export const WithCount: Story = {
+  render: () => {
+    const [selected, setSelected] = useState<Set<string>>(new Set(["Câmara"]));
+    const counts: Record<string, number> = {
+      Câmara: 12,
+      Senado: 8,
+      Tramitando: 340,
+    };
+
+    const toggle = (house: string) => {
+      const next = new Set(selected);
+      if (next.has(house)) {
+        next.delete(house);
+      } else {
+        next.add(house);
+      }
+      setSelected(next);
+    };
+
+    return (
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <p className="text-sm text-fg-secondary">
+            Static count chips — the pill inverts with the chip surface.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <Chip count={12}>Câmara</Chip>
+            <Chip variant="outlined" count={8}>
+              Senado
+            </Chip>
+            <Chip variant="filled" count={340}>
+              Tramitando
+            </Chip>
+            <Chip selected count={0}>
+              Arquivadas
+            </Chip>
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <p className="text-sm text-fg-secondary">
+            Interactive filter bar — count is folded into each chip&apos;s
+            accessible name (e.g. &ldquo;Tramitando, 340&rdquo;).
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {Object.entries(counts).map(([house, count]) => (
+              <Chip
+                key={house}
+                selected={selected.has(house)}
+                count={count}
+                onClick={() => toggle(house)}
+              >
+                {house}
+              </Chip>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Chips with a `count` sub-badge (issue #222). The pill inverts with the chip surface — a brand pill on neutral chips, a light pill on brand chips (selected / filled). `count={0}` is a legitimate value. On interactive chips the count is folded into the accessible name so AT users hear it once.",
+      },
+    },
+  },
+};
+
 export const Accessibility: Story = {
   render: () => (
     <div className="space-y-4">

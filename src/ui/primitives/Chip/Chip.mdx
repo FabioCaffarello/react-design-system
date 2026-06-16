@@ -23,7 +23,7 @@ Chip renders a small interactive token — a filter, a selection, a removable ta
 
 ## Anatomy
 
-Chip renders in source order: the `label` (the `children` content — the chip's name or value) and, when `onRemove` is provided, a trailing `remove button` (an `X` icon) inside the same chip surface. When both `onClick` and `onRemove` are present, the click and the remove are two distinct hit targets with separate accessible names.
+Chip renders in source order: the `label` (the `children` content — the chip's name or value), an optional `count` sub-badge, and, when `onRemove` is provided, a trailing `remove button` (an `X` icon) — all inside the same chip surface. When both `onClick` and `onRemove` are present, the click and the remove are two distinct hit targets with separate accessible names.
 
 <Canvas of={ChipStories.Default} />
 
@@ -36,6 +36,12 @@ Chip renders in source order: the `label` (the `children` content — the chip's
 `onClick` makes the entire chip a single interactive surface; combine with `selected` to drive a toggle pattern.
 
 <Canvas of={ChipStories.Clickable} />
+
+### Count sub-badge
+
+The `count` prop renders a count pill at the end of the chip — the filter-bar pattern (`Câmara 12`, `Tramitando 340`). The pill **inverts with the chip surface** so it always contrasts: a brand pill on neutral chips (`default` / `outlined`), a light pill on brand chips (`selected` or `variant="filled"`). `count={0}` is a legitimate value and renders `0`; omit the prop for "no count". On interactive chips the number is folded into the accessible name (`"Câmara, 12"`) so AT users hear it once; pass an explicit `aria-label` to override that phrasing. `count` is forbidden in the `asChild` form (the consumer composes the node).
+
+<Canvas of={ChipStories.WithCount} />
 
 ## Props
 

@@ -229,6 +229,78 @@ describe("Chip", () => {
     });
   });
 
+  describe("Count sub-badge (#222)", () => {
+    it("renders the count after the label on a non-interactive chip", () => {
+      render(<Chip count={12}>Casa</Chip>);
+      expect(screen.getByText("Casa")).toBeInTheDocument();
+      expect(screen.getByText("12")).toBeInTheDocument();
+    });
+
+    it("treats 0 as a legitimate count (renders 0, not omitted)", () => {
+      render(<Chip count={0}>Empty</Chip>);
+      expect(screen.getByText("0")).toBeInTheDocument();
+    });
+
+    it("omits the sub-badge entirely when count is undefined", () => {
+      const { container } = render(<Chip>No count</Chip>);
+      // Only the label text node exists; no extra numeric badge span.
+      expect(container.textContent).toBe("No count");
+    });
+
+    it("folds the count into the interactive chip's accessible name", () => {
+      render(
+        <Chip onClick={vi.fn()} count={340}>
+          Tramitando
+        </Chip>,
+      );
+      // AT hears "Tramitando, 340" — the count is part of the name, not
+      // a separate stray "340" announcement (the visible badge is
+      // aria-hidden on interactive chips).
+      expect(
+        screen.getByRole("button", { name: "Tramitando, 340" }),
+      ).toBeInTheDocument();
+    });
+
+    it("lets an explicit aria-label override the folded count name", () => {
+      render(
+        <Chip onClick={vi.fn()} count={12} aria-label="Casa filter">
+          Casa
+        </Chip>,
+      );
+      expect(
+        screen.getByRole("button", { name: "Casa filter" }),
+      ).toBeInTheDocument();
+    });
+
+    it("hides the visible badge from AT on interactive chips", () => {
+      render(
+        <Chip onClick={vi.fn()} count={12}>
+          Casa
+        </Chip>,
+      );
+      const badge = screen.getByText("12");
+      expect(badge).toHaveAttribute("aria-hidden", "true");
+    });
+
+    it("keeps the badge readable on non-interactive chips (no aria-hidden)", () => {
+      render(<Chip count={12}>Casa</Chip>);
+      const badge = screen.getByText("12");
+      expect(badge).not.toHaveAttribute("aria-hidden");
+    });
+
+    it("renders count alongside a remove button (label → count → X order)", () => {
+      render(
+        <Chip onRemove={vi.fn()} count={5}>
+          Apple
+        </Chip>,
+      );
+      expect(screen.getByText("5")).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: /Remove Apple/i }),
+      ).toBeInTheDocument();
+    });
+  });
+
   describe("asChild", () => {
     it("renders the single child element instead of the chip frame (no outer <div>)", () => {
       const { container } = render(

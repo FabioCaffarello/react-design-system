@@ -143,6 +143,21 @@ describe("Chip Accessibility", () => {
       expect(btn).toHaveAccessibleName(/Filter by status/);
     });
 
+    it("count sub-badge is folded into the interactive name, not announced twice", () => {
+      // The visible count pill is aria-hidden on interactive chips and the
+      // number is folded into the button's accessible name, so AT users
+      // hear "Casa, 12" once rather than "Casa" + a stray "12".
+      render(
+        <Chip onClick={vi.fn()} count={12}>
+          Casa
+        </Chip>,
+      );
+
+      const btn = screen.getByRole("button", { name: "Casa, 12" });
+      expect(btn).toHaveAccessibleName("Casa, 12");
+      expect(screen.getByText("12")).toHaveAttribute("aria-hidden", "true");
+    });
+
     it("aria-disabled on outer reflects disabled state for AT consumers", () => {
       render(<Chip disabled>Status</Chip>);
 

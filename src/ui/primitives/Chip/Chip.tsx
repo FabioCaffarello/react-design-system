@@ -5,7 +5,10 @@ import { X } from "lucide-react";
 import { Slot } from "@radix-ui/react-slot";
 import { getRadiusClass } from "../../tokens/radius";
 import { getSpacingClass } from "../../tokens/spacing";
-import { getTypographySize } from "../../tokens/typography";
+import {
+  getTypographySize,
+  getTypographyWeight,
+} from "../../tokens/typography";
 import { cn, cva } from "../../utils";
 
 export type ChipVariant = "default" | "outlined" | "filled";
@@ -26,6 +29,21 @@ interface ChipStandardProps extends ChipBaseProps {
   asChild?: false;
   onRemove?: () => void;
   onClick?: () => void;
+  /**
+   * Optional count sub-badge rendered at the end of the chip (before the
+   * remove ✕, if any) — e.g. `Casa 12`, `Tramitando 340` in a filter bar.
+   *
+   * The sub-badge inverts with the chip surface so it always contrasts:
+   * a brand pill on neutral chips, a light pill on brand chips
+   * (`selected` / `variant="filled"`). The number is folded into the
+   * interactive chip's accessible name (`"Casa, 12"`) so AT users hear
+   * it; pass an explicit `aria-label` to override that phrasing.
+   *
+   * Forbidden in the `asChild` form (the consumer composes the node).
+   * `0` is a legitimate value and renders `0`; omit the prop for "no
+   * count".
+   */
+  count?: number;
 }
 
 /**
@@ -59,6 +77,12 @@ interface ChipAsChildProps extends ChipBaseProps {
    * form when removal is required.
    */
   onRemove?: never;
+  /**
+   * `count` is forbidden when `asChild` is true — the collapsed node is
+   * a single consumer element with no slot for the sub-badge. Render the
+   * count inside the child yourself, or use the standard form.
+   */
+  count?: never;
 }
 
 export type ChipProps = ChipStandardProps | ChipAsChildProps;
@@ -247,8 +271,8 @@ const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(props, ref) {
   }
 
   // Standard form below. Narrow `props` so the union picks up
-  // onClick/onRemove handlers (forbidden when asChild=true at TS level).
-  const { onRemove, onClick } = props as ChipStandardProps;
+  // onClick/onRemove/count (forbidden when asChild=true at TS level).
+  const { onRemove, onClick, count } = props as ChipStandardProps;
 
   // Architecture:
   //   The label is a real `<button>` whenever the chip is meant to be
@@ -294,6 +318,51 @@ const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(props, ref) {
     }
   };
 
+  // Count sub-badge (issue #222). Rendered as a sibling of the label so
+  // the outer flex's `items-center` + `gap` handle alignment/spacing.
+  // The pill inverts with the chip surface so it always contrasts:
+  //   - brand-backed chip (selected || filled) → light pill
+  //     (bg-surface-base + text-fg-brand-emphasis)
+  //   - neutral chip (default/outlined) → brand pill
+  //     (bg-surface-brand-strong + text-fg-inverse, the filled-chip combo)
+  // Both pairs are AA-proven elsewhere in the system.
+  const hasCount = count !== undefined;
+  const chipIsBrandFilled = selected || variant === "filled";
+  const countBadge = hasCount ? (
+    <span
+      // Interactive chips fold the count into the label-button's
+      // aria-label below, so the visible badge is hidden from AT to
+      // avoid a double announce. Non-interactive chips have no
+      // overriding name — the badge stays readable as inline content.
+      aria-hidden={useLabelButton || undefined}
+      className={cn(
+        "inline-flex",
+        "items-center",
+        "justify-center",
+        "tabular-nums",
+        "leading-none",
+        getRadiusClass("full"),
+        getSpacingClass("xs", "px"),
+        getSpacingClass("0.5", "py"),
+        getTypographySize("caption"),
+        getTypographyWeight("label"),
+        chipIsBrandFilled
+          ? cn("bg-surface-base", "text-fg-brand-emphasis")
+          : cn("bg-surface-brand-strong", "text-fg-inverse"),
+      )}
+    >
+      {count}
+    </span>
+  ) : null;
+
+  // When a count is present, fold it into the interactive chip's
+  // accessible name ("Casa, 12") so AT users hear it. An explicit
+  // consumer aria-label always wins (they own the phrasing).
+  const labelWithCount =
+    hasCount && accessibleLabel !== undefined
+      ? `${accessibleLabel}, ${count}`
+      : accessibleLabel;
+
   return (
     <div
       ref={ref}
@@ -311,7 +380,7 @@ const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(props, ref) {
           onKeyDown={handleKeyDown}
           disabled={disabled}
           aria-pressed={selected ? true : undefined}
-          aria-label={ariaLabel || accessibleLabel}
+          aria-label={ariaLabel || labelWithCount}
           tabIndex={
             tabIndex !== undefined ? tabIndex : interactive ? 0 : undefined
           }
@@ -335,6 +404,7 @@ const Chip = forwardRef<HTMLDivElement, ChipProps>(function Chip(props, ref) {
       ) : (
         <span>{children}</span>
       )}
+      {countBadge}
       {onRemove && !disabled && (
         <button
           type="button"
