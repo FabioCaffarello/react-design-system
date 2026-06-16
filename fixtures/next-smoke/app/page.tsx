@@ -50,6 +50,7 @@ import {
   CardTitle,
   Chip,
   Container,
+  DataBadge,
   DialogFooter,
   DialogHeader,
   DrawerFooter,
@@ -111,6 +112,7 @@ export default function Page() {
         <Stack>
           <Badge variant="primary">badge</Badge>
           <Chip>chip</Chip>
+          <DataBadge label="L2" source="Portal Transparência" tone="warning" />
           <ErrorMessage message="static error" />
           <Info>static info</Info>
           <Label htmlFor="dummy">static label</Label>

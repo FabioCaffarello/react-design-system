@@ -70,6 +70,15 @@ export type {
 export { default as Chip } from "./primitives/Chip/Chip";
 export type { ChipProps, ChipSize, ChipVariant } from "./primitives/Chip/Chip";
 
+// DataBadge — issue #228. Pure presentation (no hooks, no client APIs, no
+// DOM handlers of its own — `...rest` pass-through only), so both axes pass.
+export { default as DataBadge } from "./primitives/DataBadge/DataBadge";
+export type {
+  DataBadgeProps,
+  DataBadgeSize,
+  DataBadgeTone,
+} from "./primitives/DataBadge/DataBadge";
+
 export { default as ErrorMessage } from "./primitives/ErrorMessage/ErrorMessage";
 export type { ErrorMessageProps } from "./primitives/ErrorMessage/ErrorMessage";
 

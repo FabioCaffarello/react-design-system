@@ -26,9 +26,9 @@ Server-safety is decided on **two axes**, by two different gates:
 
 A module is server-safe only when it passes **both** axes.
 
-The current set is **37 exports**, listed in `src/ui/server.ts` and re-derived on demand by `node scripts/analyze-server-safe.mjs`. The inventory counts **value exports**, not "top-level components" — subcomponents of compounds (`Card.Header`, `DialogHeader`, etc.) count individually because they are re-exported individually from `src/ui/server.ts` and the consumer imports them by their named export. A compound parent like `Card` and its 5 dot-notation children (`Card.Header`, `Card.Title`, `Card.Subtitle`, `Card.Actions`, `Card.Body`) contribute 6 lines to this count, not 1. The parent annotation in parentheses below makes the compound relation visible:
+The current set is **38 exports**, listed in `src/ui/server.ts` and re-derived on demand by `node scripts/analyze-server-safe.mjs`. The inventory counts **value exports**, not "top-level components" — subcomponents of compounds (`Card.Header`, `DialogHeader`, etc.) count individually because they are re-exported individually from `src/ui/server.ts` and the consumer imports them by their named export. A compound parent like `Card` and its 5 dot-notation children (`Card.Header`, `Card.Title`, `Card.Subtitle`, `Card.Actions`, `Card.Body`) contribute 6 lines to this count, not 1. The parent annotation in parentheses below makes the compound relation visible:
 
-- **Primitives (12)**: `Badge`, `Button`, `Chip`, `ErrorMessage`, `Info`, `InputBase`, `Label`, `Progress`, `Separator`, `Skeleton`, `Spinner`, `Text`.
+- **Primitives (13)**: `Badge`, `Button`, `Chip`, `DataBadge`, `ErrorMessage`, `Info`, `InputBase`, `Label`, `Progress`, `Separator`, `Skeleton`, `Spinner`, `Text`.
 - **Layouts (2)**: `Container`, `Stack`.
 - **Components (23)**: `Breadcrumb`, `Card`, `CardHeader (Card.Header)`, `CardTitle (Card.Title)`, `CardSubtitle (Card.Subtitle)`, `CardActions (Card.Actions)`, `CardBody (Card.Body)`, `DialogHeader (Dialog.Header)`, `DialogFooter (Dialog.Footer)`, `DrawerHeader (Drawer.Header)`, `DrawerFooter (Drawer.Footer)`, `FilterChips`, `HeaderActions`, `HeaderNavigation`, `HeroSection`, `MenuSeparator (Menu.Separator)`, `NavbarSeparator`, `PageHeader`, `Stat`, `StatGroup`, `TableCell (Table.Cell)`, `TabsAsLinks`, `Timeline`.
 

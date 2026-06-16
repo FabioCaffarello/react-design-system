@@ -1,0 +1,62 @@
+import { Meta, Canvas, Controls } from "@storybook/addon-docs/blocks";
+import * as DataBadgeStories from "./DataBadge.stories";
+
+<Meta of={DataBadgeStories} />
+
+# DataBadge
+
+DataBadge renders an inline metadata chip that carries a value **and where it came from**. It pairs a primary `label` with a lesser-emphasis `source` sub-label and a semantic `tone`. Reach for it in data and transparency UIs where a number or status only means something alongside its provenance — "L2 · Portal Transparência", "Aprovada · Câmara".
+
+## When to use
+
+- Use DataBadge when a datum must travel with its **source**: confidence levels, statuses, or figures whose origin (an institution, a portal, an analysis pass) is part of the meaning.
+- Use the `tone` to encode the datum's semantic role — `success` (approved), `warning` (attention), `error` (rejected), `info` (informational), `neutral` (no specific state), or the brand pair `primary` / `secondary`.
+- Add an `icon` to reinforce the kind of source (an institution, a place) — it is decorative and never the only signal.
+
+## When not to use
+
+- Use `Badge` for a single-string status or count with no provenance — Badge has no `source` slot.
+- Use `Chip` for a selectable filter or removable token — Chip is a control; DataBadge is a label.
+- Use `Info` for an on-hover explanation — it is a tooltip affordance, not an inline badge.
+- For the bold "achievement" treatment (solid saturated fill, white text — e.g. "Virou norma"), use the `bg-{status}-solid` + `text-fg-on-{status}` token pair directly; DataBadge intentionally uses the soft-wash tone scale so a row of badges stays calm.
+
+## Tone vocabulary
+
+DataBadge reuses the `Badge` role vocabulary (role, not tone) so the color treatment is shared and already AA-verified. Map a consumer's tone names onto these roles:
+
+| Consumer tone | DataBadge `tone` |
+| ------------- | ---------------- |
+| `default`     | `neutral`        |
+| `success`     | `success`        |
+| `warning`     | `warning`        |
+| `destructive` | `error`          |
+| `brand`       | `primary`        |
+| `accent`      | `info` (or `secondary`) |
+
+## Examples
+
+<Canvas of={DataBadgeStories.WithSource} />
+
+The full tone ladder — each combines a soft-wash background, an AA-safe tone text color, and a matching border.
+
+<Canvas of={DataBadgeStories.Tones} />
+
+`source` is optional; without it the badge is a single labeled value.
+
+<Canvas of={DataBadgeStories.LabelOnly} />
+
+An optional decorative `icon` reinforces the source's kind.
+
+<Canvas of={DataBadgeStories.WithIcon} />
+
+## Props
+
+<Controls of={DataBadgeStories.Playground} />
+
+## Accessibility
+
+DataBadge renders as an inline `<span>` with **no implicit role** — its accessible name is its visible text, read as "label, then source". The middot separator and any `icon` are `aria-hidden`, so they are not announced. The hierarchy between label and source is conveyed by size and weight, never by dropping the source below its tone's AA-safe text color.
+
+Because metadata is static (not a live announcement), DataBadge carries no `status` live-region role. If a group of badges needs to be announced as a unit, pass `role="group"` and an `aria-label` via props.
+
+The tone colors are tuned for WCAG 2.1 AA on the canonical canvas. When placing a DataBadge over a colored surface, verify contrast manually — the tokens are surface-relative, not absolute.
