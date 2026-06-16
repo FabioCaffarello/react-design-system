@@ -60,6 +60,7 @@ import {
   HeaderNavigation,
   HeroSection,
   Info,
+  InputBase,
   Label,
   MenuSeparator,
   NavbarSeparator,
@@ -98,6 +99,14 @@ export default function Page() {
             client (#224's deferred half); importing it from the main
             entry keeps dist/index.* in the RSC clientModules manifest. */}
         <Input aria-label="client-boundary probe" />
+
+        {/* InputBase (#224) — server-safe presentational input. Static
+            props only (id for label association, name for native submit);
+            no client state. The enclosing native GET form is exactly the
+            zero-client-state use case the server entry unblocks. */}
+        <form method="get" action="/search">
+          <InputBase id="q" name="q" label="Search" placeholder="Buscar…" />
+        </form>
 
         <Stack>
           <Badge variant="primary">badge</Badge>
