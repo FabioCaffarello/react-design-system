@@ -39,7 +39,7 @@ A complete dashboard page layout that combines SideNavbar, Container, and Stack.
 This template provides a full page structure with header, sidebar, main content, and footer.
 
 ### Components Used
-- SideNavbar (organism)
+- SideNavbar
 - Container (layout)
 - Stack (layout)
 
