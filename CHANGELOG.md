@@ -1,3 +1,9 @@
+## [4.2.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.1.0...v4.2.0) (2026-06-16)
+
+### ✨ Features
+
+* **input:** extract server-safe InputBase, compose it from Input ([#224](https://github.com/FabioCaffarello/react-design-system/issues/224)) ([c8449e2](https://github.com/FabioCaffarello/react-design-system/commit/c8449e285c36fd370b9cd683ea416817c0d5a9a9))
+
 ## [4.1.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.0.0...v4.1.0) (2026-06-16)
 
 ### ✨ Features
