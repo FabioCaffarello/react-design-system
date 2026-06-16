@@ -2,6 +2,7 @@ import { Meta } from "@storybook/addon-docs/blocks";
 import {
   ColorPalette,
   StatusSolidColors,
+  ChartPalette,
   SpacingReference,
   TypographyReference,
   ShadowReference,
@@ -167,6 +168,35 @@ overlay`, which is the _container_ of the overlay (white in light,
 
 If a future state needs a similar translucent layer (pressed, focus,
 selected), use the same naming family: `--color-tint-pressed`, etc.
+
+### Data-Visualization Palette (`chart-*`)
+
+A **categorical** palette for charts — a separate axis from the feedback
+colors. `success`/`warning`/`error`/`info` encode _state_; the chart
+palette encodes _category_ ("which series is this"). Never use `error` to
+mean "series 3".
+
+The values are the canonical **Okabe-Ito** colorblind-safe palette (8
+colors, distinguishable under deuteranopia/protanopia/tritanopia), with
+`black` swapped for a neutral gray so the 8th series survives a dark
+canvas. Dark-theme variants lift luminance (hue preserved) to clear 3:1
+over `surface-canvas`.
+
+<ChartPalette />
+
+```tsx
+import { getChartColor } from "@fabio.caffarello/react-design-system";
+
+// 0-based, wraps modulo 8, returns a theme-aware var(--color-chart-N):
+{
+  series.map((s, i) => <Bar key={s.id} dataKey={s.id} fill={getChartColor(i)} />);
+}
+```
+
+**On-white caveat:** orange/sky-blue/yellow/gray fall below 3:1 on a white
+canvas — intrinsic to Okabe-Ito's light hues. Fine for fills (bars,
+areas); for thin strokes (lines) add an outline or order a darker series
+first. The colorblind-safety guarantee is independent of this.
 
 ## Spacing Tokens
 

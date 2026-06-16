@@ -207,6 +207,21 @@
   --color-info-solid: var(--color-sky-700);
 
   /* ============================================
+   * DATA-VISUALIZATION CATEGORICAL PALETTE (Okabe-Ito, dark-calibrated)
+   * Luminance lifted (hue preserved) so each series clears 3:1 over
+   * slate-950. Must mirror the @media block below. See semantic/colors.css.
+   * ============================================ */
+
+  --color-chart-1: #f2b441; /* orange */
+  --color-chart-2: #7fc8f0; /* sky blue */
+  --color-chart-3: #2cc79a; /* bluish green */
+  --color-chart-4: #f47a2e; /* vermillion */
+  --color-chart-5: #4da3dc; /* blue */
+  --color-chart-6: #e098c3; /* reddish purple */
+  --color-chart-7: #f5ec6b; /* yellow */
+  --color-chart-8: #b8bcc4; /* gray */
+
+  /* ============================================
    * ICON COLORS
    * ============================================ */
 
@@ -499,6 +514,19 @@
     --color-warning-solid: var(--color-amber-700);
     --color-error-solid: var(--color-rose-700);
     --color-info-solid: var(--color-sky-700);
+
+    /* ============================================
+     * DATA-VISUALIZATION CATEGORICAL PALETTE (Okabe-Ito, dark-calibrated)
+     * ============================================ */
+
+    --color-chart-1: #f2b441; /* orange */
+    --color-chart-2: #7fc8f0; /* sky blue */
+    --color-chart-3: #2cc79a; /* bluish green */
+    --color-chart-4: #f47a2e; /* vermillion */
+    --color-chart-5: #4da3dc; /* blue */
+    --color-chart-6: #e098c3; /* reddish purple */
+    --color-chart-7: #f5ec6b; /* yellow */
+    --color-chart-8: #b8bcc4; /* gray */
 
     /* ============================================
      * ICON COLORS

@@ -141,6 +141,33 @@ values.
 <span className="bg-success-solid text-fg-on-success">Virou norma</span>
 ```
 
+### Data-visualization categorical palette (`chart-*`)
+
+`bg-chart-1 … bg-chart-8` (and `text-chart-*`) are a **categorical**
+palette for data-viz — a separate axis from the feedback colors. The
+feedback families (`success`/`warning`/`error`/`info`) encode **state**;
+the chart palette encodes **category** ("which series is this"). Never
+reach for `error` to mean "series 3" — it destroys the state semantics
+and the chart's meaning.
+
+The values are the canonical **Okabe-Ito** colorblind-safe palette (8
+colors, the reference set distinguishable under deuteranopia/protanopia/
+tritanopia), with the canonical `black` swapped for a neutral gray so the
+8th series survives on a dark canvas. Dark-theme variants lift luminance
+(hue preserved) so each series clears 3:1 over `surface-canvas`.
+
+- **Consume via `getChartColor(i)`** (`src/ui/tokens/chart.ts`) — 0-based,
+  wraps modulo 8, returns a theme-aware `var(--color-chart-N)` for recharts
+  `fill`/`stroke` or inline styles. `getChartColorClass(i, "bg"|"text")`
+  returns the Tailwind class for legend dots.
+- **On-white caveat:** orange/sky-blue/yellow/gray are below 3:1 on a white
+  canvas (intrinsic to Okabe-Ito's light hues). Fine for **fills** (bars,
+  areas); for thin **strokes** add an outline or order a darker series
+  first. The colorblind-safety guarantee is independent of this.
+- The chart tokens carry literal HEX (not a primitive-scale reference)
+  because Okabe-Ito is an external canonical set, not a 50..950 ramp — a
+  documented, intentional exception to the "reference a primitive" norm.
+
 ### Theme-agnostic translucent layers
 
 `bg-scrim` (50% black) and `bg-tint-hover` (10% black) **do not flip**

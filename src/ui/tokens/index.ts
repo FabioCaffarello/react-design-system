@@ -76,3 +76,13 @@ export { SIDEBAR_TOKENS, getNestedIndentClass } from "./sidebar";
 export * from "./switch";
 export { SWITCH_TOKENS, getSwitchClasses } from "./switch";
 export type { SwitchSizeToken } from "./switch";
+
+// Chart (data-visualization categorical palette — Okabe-Ito)
+export * from "./chart";
+export {
+  CHART_PALETTE_SIZE,
+  CHART_PALETTE_TOKENS,
+  getChartColor,
+  getChartColorClass,
+} from "./chart";
+export type { ChartColorIndex, ChartColorToken } from "./chart";

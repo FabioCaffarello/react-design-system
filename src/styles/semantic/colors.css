@@ -209,6 +209,32 @@
   --color-info-solid: var(--color-sky-700);
 
   /* ============================================
+   * DATA-VISUALIZATION CATEGORICAL PALETTE (Okabe-Ito)
+   *
+   * Colorblind-safe categorical colors for chart series (parties, vote
+   * types, ranges). A SEPARATE axis from the semantic feedback colors:
+   * success/warning/error/info encode STATE, never CATEGORY. These are the
+   * canonical Okabe & Ito (2008) tones — the reference palette engineered to
+   * stay distinguishable under deuteranopia/protanopia/tritanopia — with the
+   * canonical `black` swapped for a neutral gray so the 8th series survives
+   * on a dark canvas. Dark-theme variants in themes/dark.css lift luminance
+   * (hue preserved) so each series clears 3:1 over slate-950 (WCAG 1.4.11).
+   * These intentionally carry literal HEX rather than referencing a tonal
+   * primitive scale — Okabe-Ito is an external canonical set, not a 50..950
+   * ramp. Consume via getChartColor(i) (src/ui/tokens/chart.ts) or the
+   * bg-chart-N / text-chart-N utilities. See .claude/rules/colors.md.
+   * ============================================ */
+
+  --color-chart-1: #e69f00; /* orange */
+  --color-chart-2: #56b4e9; /* sky blue */
+  --color-chart-3: #009e73; /* bluish green */
+  --color-chart-4: #d55e00; /* vermillion */
+  --color-chart-5: #0072b2; /* blue */
+  --color-chart-6: #cc79a7; /* reddish purple */
+  --color-chart-7: #f0e442; /* yellow */
+  --color-chart-8: #999999; /* gray (Okabe-Ito uses black; gray survives dark) */
+
+  /* ============================================
    * SCRIM & TRANSLUCENT STATE LAYERS
    * Theme-agnostic — these must stay dark in all modes by design.
    * Scrim is a backdrop veil that focuses attention on an overlay.

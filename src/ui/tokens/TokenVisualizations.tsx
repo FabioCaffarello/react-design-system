@@ -11,6 +11,7 @@ import {
   ANIMATION_TOKENS,
   Z_INDEX_TOKENS,
   OPACITY_TOKENS,
+  CHART_PALETTE_TOKENS,
 } from "./index";
 import { SEMANTIC_COLORS_LIGHT, type SemanticColorName } from "./colors/index";
 
@@ -154,6 +155,31 @@ export function StatusSolidColors() {
           <span className="text-xs text-gray-500">
             + {onColor} · {ratio} AA
           </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Data-visualization categorical palette (Okabe-Ito).
+ *
+ * Eight colorblind-safe categorical colors for chart series. Distinct from
+ * the semantic feedback colors — these encode category, not state. Consume
+ * via `getChartColor(i)` (0-based, wraps modulo 8, theme-aware).
+ */
+export function ChartPalette() {
+  return (
+    <div className="flex flex-wrap gap-3">
+      {CHART_PALETTE_TOKENS.map((token) => (
+        <div key={token.index} className="flex flex-col items-center gap-1">
+          <div
+            className={`h-16 w-16 rounded-md border border-line-default ${token.bg}`}
+          />
+          <span className="text-xs font-medium text-gray-700">
+            chart-{token.index}
+          </span>
+          <span className="text-xs text-gray-500">{token.name}</span>
         </div>
       ))}
     </div>
