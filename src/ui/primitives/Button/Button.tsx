@@ -1,4 +1,4 @@
-import { forwardRef, memo, useMemo } from "react";
+import { forwardRef, memo } from "react";
 import type { ButtonHTMLAttributes, ReactNode, ElementType } from "react";
 import { Slot, Slottable } from "@radix-ui/react-slot";
 import { getRadiusClass } from "../../tokens/radius";
@@ -316,53 +316,38 @@ const Button = memo(
 
     const Component: ElementType = asChild ? Slot : (as ?? "button");
 
-    // Memoize classes computation
-    const classes = useMemo(
-      () =>
-        cn(
-          buttonVariants({
-            variant,
-            size,
-          }),
-          fullWidth && "w-full",
-          className,
-        ),
-      [variant, size, fullWidth, className],
+    // These were `useMemo` originally — all decorative (class-string
+    // concat, small boolean/string/JSX picks), none gating render-driving
+    // state. Inlined so Button carries NO React client API and qualifies
+    // for the `./server` entry (issue #224), the same de-memoization
+    // precedent as Badge/Label/Card in #155. `React.memo` on the
+    // component is preserved and still gates re-renders at the
+    // consumer-prop boundary; the inlined work is nanoseconds.
+    const classes = cn(
+      buttonVariants({ variant, size }),
+      fullWidth && "w-full",
+      className,
     );
 
-    // Memoize icon-only check
-    const isIconOnly = useMemo(
-      () => variant === "iconOnly" || (!children && (leftIcon || rightIcon)),
-      [variant, children, leftIcon, rightIcon],
-    );
+    const isIconOnly =
+      variant === "iconOnly" || (!children && (leftIcon || rightIcon));
 
-    // Memoize aria label
-    const finalAriaLabel = useMemo(
-      () =>
-        isIconOnly && !ariaLabel && !children
-          ? "Button" // Fallback, but should be provided
-          : ariaLabel,
-      [isIconOnly, ariaLabel, children],
-    );
+    const finalAriaLabel =
+      isIconOnly && !ariaLabel && !children
+        ? "Button" // Fallback, but should be provided
+        : ariaLabel;
 
-    // Memoize spinner variant computation
-    const spinnerVariant = useMemo((): "primary" | "secondary" | "neutral" => {
-      if (variant === "error") return "primary"; // Red buttons use primary spinner (white)
-      if (variant === "primary" || variant === "secondary") return "neutral"; // Colored buttons use neutral spinner
-      return "primary"; // Default
-    }, [variant]);
+    const spinnerVariant: "primary" | "secondary" | "neutral" =
+      variant === "error"
+        ? "primary" // Red buttons use primary spinner (white)
+        : variant === "primary" || variant === "secondary"
+          ? "neutral" // Colored buttons use neutral spinner
+          : "primary";
 
-    // Memoize spinner size
-    const spinnerSize = useMemo(
-      () => (size === "sm" ? "sm" : size === "lg" ? "lg" : "md"),
-      [size],
-    );
+    const spinnerSize = size === "sm" ? "sm" : size === "lg" ? "lg" : "md";
 
-    // Memoize loading icon
-    const displayLoadingIcon = useMemo(
-      () =>
-        loadingIcon || <Spinner size={spinnerSize} variant={spinnerVariant} />,
-      [loadingIcon, spinnerSize, spinnerVariant],
+    const displayLoadingIcon = loadingIcon || (
+      <Spinner size={spinnerSize} variant={spinnerVariant} />
     );
 
     // Build button props (spread props at the end to allow overrides).

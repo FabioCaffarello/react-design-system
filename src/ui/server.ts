@@ -50,6 +50,23 @@ export type {
   BadgeVariant,
 } from "./primitives/Badge/Badge";
 
+// Button — promoted in issue #224. Its body held six purely-decorative
+// `useMemo` calls (class-string concat, a boolean, spinner variant/size,
+// the loading icon) that were inlined (same de-memoization precedent as
+// Badge/Label/Card in #155), removing the only axis-1 barrier. Axis 2 is
+// satisfied because Button never assigns a handler to its DOM element
+// unconditionally — `onClick` and friends arrive via `...props` and are
+// `undefined` until the consumer passes them, so a server-rendered
+// `<Button>`/`<Button asChild><Link/></Button>`/`<button type="submit">`
+// emits no function prop. The full inventory note lives in
+// `.claude/rules/server-entry.md`.
+export { default as Button } from "./primitives/Button/Button";
+export type {
+  ButtonProps,
+  ButtonSize,
+  ButtonVariant,
+} from "./primitives/Button/Button";
+
 export { default as Chip } from "./primitives/Chip/Chip";
 export type { ChipProps, ChipSize, ChipVariant } from "./primitives/Chip/Chip";
 
