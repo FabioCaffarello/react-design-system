@@ -42,6 +42,12 @@ Input renders in source order: an optional `label` (rendered as a separate `Labe
 
 <Canvas of={InputStories.WithIcons} />
 
+## Server-safe core: `InputBase`
+
+`Input` is interactive by nature — the password-visibility toggle, the clear button, and the auto-generated `id` all need React client state, so `Input` is client-only. For React Server Components and native zero-client-state `<form>`s, import **`InputBase`** from `@fabio.caffarello/react-design-system/server` (issue #224). It is the presentational core `Input` is built from — label, the `<input>`, decorative icons, a trailing `rightSlot`, and the helper/error line — with no hooks. `Input` composes it, so the two never drift visually.
+
+The one difference: `InputBase` does not auto-generate an `id` (that needs `useId`), so pass an `id` whenever you pass a `label` to bind the `<label htmlFor>`. See the `Primitives/InputBase` stories and `.claude/rules/server-entry.md`.
+
 ## Props
 
 <Controls of={InputStories.Default} />

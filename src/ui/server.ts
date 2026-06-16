@@ -32,7 +32,7 @@
 // composes them via its normal RSC client-boundary semantics.
 // ============================================================================
 
-// ---------- primitives (11) ----------
+// ---------- primitives (12) ----------
 //
 // Every primitive is imported from its concrete source file (not the
 // folder index) so the dependency the analyser sees matches the
@@ -75,6 +75,21 @@ export type { ErrorMessageProps } from "./primitives/ErrorMessage/ErrorMessage";
 
 export { default as Info } from "./primitives/Info/Info";
 export type { InfoProps } from "./primitives/Info/Info";
+
+// InputBase — the server-safe presentational core of Input (issue #224).
+// The interactive `Input` (password toggle via useState, clear handler,
+// useId auto-id) stays main-entry-only and COMPOSES this base; InputBase
+// itself holds no React client state, so a server-rendered / native
+// `<form method="GET">` input imports it here. Interactivity (a submit
+// button, a client onChange) is wired at the consumer boundary as usual.
+// Concrete-file re-export per rule 1 of `.claude/rules/server-entry.md`.
+export { default as InputBase } from "./primitives/Input/InputBase";
+export type {
+  InputBaseProps,
+  InputSize,
+  InputVariant,
+  InputState,
+} from "./primitives/Input/InputBase";
 
 export { default as Label } from "./primitives/Label/Label";
 
