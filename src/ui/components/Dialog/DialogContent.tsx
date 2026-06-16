@@ -7,6 +7,7 @@ import { useFocusTrap } from "../../hooks/useFocusTrap";
 import { useAutoFocus } from "../../hooks/useAutoFocus";
 import { getRadiusClass, getShadowClass, getZIndexClass } from "../../tokens";
 import { getSpacingClass } from "../../tokens/spacing";
+import { DialogClose } from "./DialogClose";
 
 export interface DialogContentProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -16,6 +17,25 @@ export interface DialogContentProps extends Omit<
   size?: "sm" | "md" | "lg" | "xl" | "fullscreen";
   closeOnOverlayClick?: boolean;
   closeOnEscape?: boolean;
+  /**
+   * Render the built-in close (✕) button in the top-right corner.
+   *
+   * Defaults to `true`, matching `Modal` and the house overlay
+   * convention (`Drawer` / `Popover` expose the same prop). Set `false`
+   * for **non-dismissable** dialogs where the consumer owns dismissal —
+   * LGPD consent gates, destructive confirmations with escalating
+   * friction, or guided wizards where a stray ✕ would abandon the flow.
+   *
+   * When `true`, do NOT also place an explicit `<Dialog.Close />` inside
+   * the content: that compound is for *custom placement* (e.g. a close
+   * affordance inside the footer) and would render a duplicate ✕. Use
+   * one or the other.
+   *
+   * Suppressing the ✕ only removes the button — ESC and overlay-click
+   * still close. For a fully non-dismissable dialog, pair this with
+   * `closeOnEscape={false}` and `closeOnOverlayClick={false}`.
+   */
+  showCloseButton?: boolean;
 }
 
 export function DialogContent({
@@ -23,6 +43,7 @@ export function DialogContent({
   size = "md",
   closeOnOverlayClick = true,
   closeOnEscape = true,
+  showCloseButton = true,
   className = "",
   ...props
 }: DialogContentProps) {
@@ -111,6 +132,15 @@ export function DialogContent({
           {...props}
         >
           {children}
+          {/*
+            The ✕ is rendered LAST in the DOM (after children) but
+            positioned absolute top-right by DialogClose, so it never
+            steals the "first focusable" auto-focus target from the
+            content/form — same ordering shadcn/Radix use. Reuses the
+            DialogClose compound so the close affordance has a single
+            implementation (icon button + aria-label + context onClose).
+          */}
+          {showCloseButton && <DialogClose />}
         </div>
       </div>
     </div>

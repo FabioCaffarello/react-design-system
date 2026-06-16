@@ -65,8 +65,16 @@ function AlertDialogBody({
     onClose();
   };
 
+  // AlertDialog is a decision gate: the user must pick Confirm or
+  // Cancel, so it suppresses the auto ✕ (showCloseButton={false}) and
+  // overlay-click — consistent with its existing no-dismiss-affordance
+  // contract. DialogContent now renders the ✕ by default (issue #221).
   return (
-    <DialogContent size="sm" closeOnOverlayClick={false}>
+    <DialogContent
+      size="sm"
+      closeOnOverlayClick={false}
+      showCloseButton={false}
+    >
       {children || (
         <>
           <DialogHeader>

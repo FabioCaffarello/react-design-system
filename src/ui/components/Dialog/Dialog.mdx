@@ -22,7 +22,14 @@ Dialog is a compound dialog component with explicit slots for the trigger, conte
 
 ## Anatomy
 
-Dialog is composed from a deep compound API. The root `Dialog` mounts a context provider carrying open state and the generated `aria-labelledby` / `aria-describedby` IDs. `Dialog.Trigger` wraps the element that opens the dialog (typically a `Button`) and wires `aria-haspopup="dialog"` + `aria-expanded`. `Dialog.Content` is the portaled panel with `role="dialog"` containing the rest. Inside `Dialog.Content`: `Dialog.Header` carries the top region with `Dialog.Title` (the heading, wired to `aria-labelledby`) and optional `Dialog.Description` (the explanatory text, wired to `aria-describedby`). The body content sits between header and footer. `Dialog.Footer` carries the bottom action row. `Dialog.Close` is the explicit dismiss affordance (visible close button or a button inside the footer) that triggers `onOpenChange(false)`.
+Dialog is composed from a deep compound API. The root `Dialog` mounts a context provider carrying open state and the generated `aria-labelledby` / `aria-describedby` IDs. `Dialog.Trigger` wraps the element that opens the dialog (typically a `Button`) and wires `aria-haspopup="dialog"` + `aria-expanded`. `Dialog.Content` is the portaled panel with `role="dialog"` containing the rest. Inside `Dialog.Content`: `Dialog.Header` carries the top region with `Dialog.Title` (the heading, wired to `aria-labelledby`) and optional `Dialog.Description` (the explanatory text, wired to `aria-describedby`). The body content sits between header and footer. `Dialog.Footer` carries the bottom action row.
+
+### Close button
+
+`Dialog.Content` renders a built-in close (✕) button in the top-right corner by default — `showCloseButton` defaults to `true`, matching `Modal` and the `Drawer` / `Popover` convention. Two ways to change it:
+
+- **Suppress it** with `showCloseButton={false}` for **non-dismissable** dialogs — LGPD consent gates, destructive confirmations, guided wizards. Pair it with `closeOnOverlayClick={false}` and `closeOnEscape={false}` for a dialog the user can only leave by making an explicit choice (see the _NonDismissable_ example).
+- **Place it yourself** with the `Dialog.Close` compound — the explicit dismiss affordance (a custom-positioned icon button, or a labelled button inside `Dialog.Footer`) that triggers `onOpenChange(false)`. When you use `Dialog.Close` for custom placement, set `showCloseButton={false}` on `Dialog.Content` so the auto ✕ does not duplicate it.
 
 <Canvas of={DialogStories.Default} />
 
@@ -34,6 +41,8 @@ Dialog is composed from a deep compound API. The root `Dialog` mounts a context 
 
 <Canvas of={DialogStories.WithoutOverlayClose} />
 
+<Canvas of={DialogStories.NonDismissable} />
+
 ## Props
 
 <Controls of={DialogStories.Default} />
@@ -42,9 +51,9 @@ Dialog is composed from a deep compound API. The root `Dialog` mounts a context 
 
 Dialog implements the WAI-ARIA Dialog pattern. `Dialog.Content` carries `role="dialog"` with `aria-modal="true"`, `aria-labelledby` pointing at `Dialog.Title`'s generated ID, and `aria-describedby` pointing at `Dialog.Description`'s generated ID when present. The wiring is automatic — the consumer composes the parts, the provider connects them.
 
-Focus moves to the first focusable element inside `Dialog.Content` on open (often `Dialog.Close` or the first form control) and returns to the trigger on close. While open, focus is trapped inside the dialog — Tab cycles only within the dialog, the underlying page is inert.
+Focus moves to the first focusable element inside `Dialog.Content` on open (the first form control, or the first action button) and returns to the trigger on close. The auto ✕ is rendered last in the DOM and positioned absolutely, so it never steals the initial focus from the content. While open, focus is trapped inside the dialog — Tab cycles only within the dialog, the underlying page is inert.
 
-`Dialog.Close` is a native `<button>` with an explicit `aria-label="Close dialog"` when it renders as the icon-only variant; when used inside `Dialog.Footer` as a labelled button, the visible label provides the accessible name. ESC closes the dialog by default; outside-click closes it unless `closeOnOverlayClick={false}` is passed.
+The auto close button (and the `Dialog.Close` compound) is a native `<button>` with an explicit `aria-label="Close dialog"`; when `Dialog.Close` is used inside `Dialog.Footer` as a labelled button, the visible label provides the accessible name. ESC closes the dialog by default; outside-click closes it unless `closeOnOverlayClick={false}` is passed. A non-dismissable dialog (`showCloseButton={false}` + `closeOnEscape={false}` + `closeOnOverlayClick={false}`) intentionally removes every implicit exit so screen-reader and keyboard users get the same "make a choice" contract as pointer users.
 
 Body scroll locks while the dialog is open so the underlying page does not move under the user. The lock is automatic; do not duplicate it in consumer code.
 
