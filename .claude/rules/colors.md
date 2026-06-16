@@ -49,21 +49,22 @@ list, read "Principle 9 — Incomplete semantic family" before inventing.
 
 ### Foreground (text & icons)
 
-| Family                                              | Purpose                                                      | Common uses                       |
-| --------------------------------------------------- | ------------------------------------------------------------ | --------------------------------- |
-| `text-fg-primary`                                   | Highest-emphasis text                                        | Headings, body copy               |
-| `text-fg-secondary`                                 | Secondary text                                               | Subheads, captions                |
-| `text-fg-tertiary`                                  | Tertiary text                                                | Metadata, help text               |
-| `text-fg-quaternary`                                | Lowest-emphasis text in the ordered hierarchy                | Inactive labels                   |
-| `text-fg-placeholder`                               | Placeholder text                                             | Inputs, search fields             |
-| `text-fg-disabled`                                  | Binary off-state OR disabled interactivity (see Principle 6) | Off-star Rating, disabled Input   |
-| `text-fg-inverse`                                   | Foreground on dark surface                                   | Tooltip body, inverse Toast       |
-| `text-fg-inverse-secondary`                         | Secondary text on inverse surface                            | Subtle inverse labels             |
-| `text-fg-link` / `-hover` / `-active` / `-visited`  | Links — the full state ladder                                | Anchor tags                       |
-| `text-fg-brand`                                     | Default brand foreground                                     | Brand-colored body link, logotype |
-| `text-fg-brand-emphasis`                            | Emphasis brand foreground                                    | Active navbar item icon/label     |
-| `text-fg-brand-secondary` / `-emphasis`             | Secondary brand pair                                         | Secondary-branded UI              |
-| `text-fg-success` / `-warning` / `-error` / `-info` | Feedback text                                                | Inline form errors, status text   |
+| Family                                                          | Purpose                                                      | Common uses                             |
+| --------------------------------------------------------------- | ------------------------------------------------------------ | --------------------------------------- |
+| `text-fg-primary`                                               | Highest-emphasis text                                        | Headings, body copy                     |
+| `text-fg-secondary`                                             | Secondary text                                               | Subheads, captions                      |
+| `text-fg-tertiary`                                              | Tertiary text                                                | Metadata, help text                     |
+| `text-fg-quaternary`                                            | Lowest-emphasis text in the ordered hierarchy                | Inactive labels                         |
+| `text-fg-placeholder`                                           | Placeholder text                                             | Inputs, search fields                   |
+| `text-fg-disabled`                                              | Binary off-state OR disabled interactivity (see Principle 6) | Off-star Rating, disabled Input         |
+| `text-fg-inverse`                                               | Foreground on dark surface                                   | Tooltip body, inverse Toast             |
+| `text-fg-inverse-secondary`                                     | Secondary text on inverse surface                            | Subtle inverse labels                   |
+| `text-fg-link` / `-hover` / `-active` / `-visited`              | Links — the full state ladder                                | Anchor tags                             |
+| `text-fg-brand`                                                 | Default brand foreground                                     | Brand-colored body link, logotype       |
+| `text-fg-brand-emphasis`                                        | Emphasis brand foreground                                    | Active navbar item icon/label           |
+| `text-fg-brand-secondary` / `-emphasis`                         | Secondary brand pair                                         | Secondary-branded UI                    |
+| `text-fg-success` / `-warning` / `-error` / `-info`             | Feedback text                                                | Inline form errors, status text         |
+| `text-fg-on-success` / `-on-warning` / `-on-error` / `-on-info` | On-color text — sits ON a solid status fill (`bg-*-solid`)   | Solid status badge/pill ("Virou norma") |
 
 ### Surface (backgrounds)
 
@@ -112,6 +113,60 @@ where "no specific status" is a legitimate fifth state (Principle 9).
 
 Do not use `text-fg-error` for general red text. Do not use `bg-error`
 for a Dialog accent unless the dialog is semantically an error state.
+
+#### Solid status fill + on-color text (the filled badge/pill)
+
+There are **two** saturated solids per status, and they are not
+interchangeable:
+
+- `bg-success` (`--color-success`, emerald-500) is the **decorative**
+  solid — Dot, Progress fill, Stepper/Timeline bubble. No text sits on
+  it; white over it is only ~2.5:1.
+- `bg-success-solid` (`--color-success-solid`, emerald-700) is the
+  **text-carrying** solid — the filled status badge/pill. It pairs with
+  `text-fg-on-success` (white) at AA for normal text (emerald-700 5.48:1,
+  amber-700 5.02:1, rose-700 6.29:1, sky-700 5.93:1).
+
+This split mirrors `surface-brand` (decorative) vs `surface-brand-strong`
+(carries text). Always pair `bg-{status}-solid` with `text-fg-on-{status}`
+— never `text-fg-inverse` (slate-900 in dark mode, a worse and
+semantically wrong pair over a saturated fill) and never `text-fg-success`
+(the colored text, invisible over its own fill). The solids stay saturated
+with white text in **both** themes by design (a status chip behaves like a
+colored button, not a neutral surface), so `dark.css` declares identical
+values.
+
+```tsx
+// Solid "became law" achievement badge, AA in light and dark:
+<span className="bg-success-solid text-fg-on-success">Virou norma</span>
+```
+
+### Data-visualization categorical palette (`chart-*`)
+
+`bg-chart-1 … bg-chart-8` (and `text-chart-*`) are a **categorical**
+palette for data-viz — a separate axis from the feedback colors. The
+feedback families (`success`/`warning`/`error`/`info`) encode **state**;
+the chart palette encodes **category** ("which series is this"). Never
+reach for `error` to mean "series 3" — it destroys the state semantics
+and the chart's meaning.
+
+The values are the canonical **Okabe-Ito** colorblind-safe palette (8
+colors, the reference set distinguishable under deuteranopia/protanopia/
+tritanopia), with the canonical `black` swapped for a neutral gray so the
+8th series survives on a dark canvas. Dark-theme variants lift luminance
+(hue preserved) so each series clears 3:1 over `surface-canvas`.
+
+- **Consume via `getChartColor(i)`** (`src/ui/tokens/chart.ts`) — 0-based,
+  wraps modulo 8, returns a theme-aware `var(--color-chart-N)` for recharts
+  `fill`/`stroke` or inline styles. `getChartColorClass(i, "bg"|"text")`
+  returns the Tailwind class for legend dots.
+- **On-white caveat:** orange/sky-blue/yellow/gray are below 3:1 on a white
+  canvas (intrinsic to Okabe-Ito's light hues). Fine for **fills** (bars,
+  areas); for thin **strokes** add an outline or order a darker series
+  first. The colorblind-safety guarantee is independent of this.
+- The chart tokens carry literal HEX (not a primitive-scale reference)
+  because Okabe-Ito is an external canonical set, not a 50..950 ramp — a
+  documented, intentional exception to the "reference a primitive" norm.
 
 ### Theme-agnostic translucent layers
 

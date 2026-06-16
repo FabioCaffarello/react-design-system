@@ -62,6 +62,18 @@
   --color-fg-error: var(--color-rose-700);
   --color-fg-info: var(--color-sky-700);
 
+  /* On-color feedback text — the text that sits ON the solid (filled)
+   * status surfaces --color-{status}-solid (see FEEDBACK section). White,
+   * calibrated so it clears WCAG AA for normal text against each solid
+   * (emerald-700 5.48:1, amber-700 5.02:1, rose-700 6.29:1, sky-700 5.93:1).
+   * Do NOT confuse with --color-fg-success (the COLORED text used on neutral
+   * or soft-wash surfaces) nor with --color-fg-inverse (slate-900 in dark —
+   * a worse, semantically wrong pair over a saturated status fill). */
+  --color-fg-on-success: var(--color-white);
+  --color-fg-on-warning: var(--color-white);
+  --color-fg-on-error: var(--color-white);
+  --color-fg-on-info: var(--color-white);
+
   /* ============================================
    * SURFACE COLORS — Backgrounds
    * Page and container backgrounds (canvas, subtle, muted, ...)
@@ -178,6 +190,49 @@
   /* Status neutral — completes the status family (success/warning/error/info/neutral)
    * for components like Dot, status Badge, online presence indicators. */
   --color-status-neutral: var(--color-slate-500);
+
+  /* Solid (filled) status surfaces — saturated backgrounds that CARRY
+   * on-color text (--color-fg-on-{status}, white). Each step is the darkest
+   * needed so white text clears WCAG AA for normal text:
+   *   success emerald-700 (5.48:1), warning amber-700 (5.02:1),
+   *   error rose-700 (6.29:1), info sky-700 (5.93:1).
+   * These are the TEXT-CARRYING counterparts to the DECORATIVE solids
+   * --color-{status} (emerald-500 etc. — used for Dot/Progress fills where no
+   * text sits, and where white would only reach ~2.5:1). Same split as
+   * surface-brand (decorative) vs surface-brand-strong (carries text). They
+   * stay saturated + white in BOTH themes by design (a status chip, like a
+   * colored button), so the dark.css blocks declare identical values rather
+   * than flipping to a lighter step that white could not sit on. */
+  --color-success-solid: var(--color-emerald-700);
+  --color-warning-solid: var(--color-amber-700);
+  --color-error-solid: var(--color-rose-700);
+  --color-info-solid: var(--color-sky-700);
+
+  /* ============================================
+   * DATA-VISUALIZATION CATEGORICAL PALETTE (Okabe-Ito)
+   *
+   * Colorblind-safe categorical colors for chart series (parties, vote
+   * types, ranges). A SEPARATE axis from the semantic feedback colors:
+   * success/warning/error/info encode STATE, never CATEGORY. These are the
+   * canonical Okabe & Ito (2008) tones — the reference palette engineered to
+   * stay distinguishable under deuteranopia/protanopia/tritanopia — with the
+   * canonical `black` swapped for a neutral gray so the 8th series survives
+   * on a dark canvas. Dark-theme variants in themes/dark.css lift luminance
+   * (hue preserved) so each series clears 3:1 over slate-950 (WCAG 1.4.11).
+   * These intentionally carry literal HEX rather than referencing a tonal
+   * primitive scale — Okabe-Ito is an external canonical set, not a 50..950
+   * ramp. Consume via getChartColor(i) (src/ui/tokens/chart.ts) or the
+   * bg-chart-N / text-chart-N utilities. See .claude/rules/colors.md.
+   * ============================================ */
+
+  --color-chart-1: #e69f00; /* orange */
+  --color-chart-2: #56b4e9; /* sky blue */
+  --color-chart-3: #009e73; /* bluish green */
+  --color-chart-4: #d55e00; /* vermillion */
+  --color-chart-5: #0072b2; /* blue */
+  --color-chart-6: #cc79a7; /* reddish purple */
+  --color-chart-7: #f0e442; /* yellow */
+  --color-chart-8: #999999; /* gray (Okabe-Ito uses black; gray survives dark) */
 
   /* ============================================
    * SCRIM & TRANSLUCENT STATE LAYERS

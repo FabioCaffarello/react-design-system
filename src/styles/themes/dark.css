@@ -64,6 +64,14 @@
   --color-fg-error: var(--color-rose-400);
   --color-fg-info: var(--color-sky-400);
 
+  /* On-color feedback text — constant white in both themes (the solid
+   * status surfaces stay saturated + dark in dark mode too). See
+   * semantic/colors.css for the AA rationale. */
+  --color-fg-on-success: var(--color-white);
+  --color-fg-on-warning: var(--color-white);
+  --color-fg-on-error: var(--color-white);
+  --color-fg-on-info: var(--color-white);
+
   /* ============================================
    * SURFACE COLORS — Backgrounds (dark scale)
    * ============================================ */
@@ -189,6 +197,29 @@
   --color-info-bg-emphasis: var(--color-sky-900);
   --color-info-border: var(--color-sky-800);
   --color-info-border-emphasis: var(--color-sky-400);
+
+  /* Solid (filled) status surfaces — saturated chips that stay dark in both
+   * themes so white on-color text clears AA. Identical to light by design.
+   * See semantic/colors.css. */
+  --color-success-solid: var(--color-emerald-700);
+  --color-warning-solid: var(--color-amber-700);
+  --color-error-solid: var(--color-rose-700);
+  --color-info-solid: var(--color-sky-700);
+
+  /* ============================================
+   * DATA-VISUALIZATION CATEGORICAL PALETTE (Okabe-Ito, dark-calibrated)
+   * Luminance lifted (hue preserved) so each series clears 3:1 over
+   * slate-950. Must mirror the @media block below. See semantic/colors.css.
+   * ============================================ */
+
+  --color-chart-1: #f2b441; /* orange */
+  --color-chart-2: #7fc8f0; /* sky blue */
+  --color-chart-3: #2cc79a; /* bluish green */
+  --color-chart-4: #f47a2e; /* vermillion */
+  --color-chart-5: #4da3dc; /* blue */
+  --color-chart-6: #e098c3; /* reddish purple */
+  --color-chart-7: #f5ec6b; /* yellow */
+  --color-chart-8: #b8bcc4; /* gray */
 
   /* ============================================
    * ICON COLORS
@@ -364,6 +395,12 @@
     --color-fg-error: var(--color-rose-400);
     --color-fg-info: var(--color-sky-400);
 
+    /* On-color feedback text — constant white in both themes. */
+    --color-fg-on-success: var(--color-white);
+    --color-fg-on-warning: var(--color-white);
+    --color-fg-on-error: var(--color-white);
+    --color-fg-on-info: var(--color-white);
+
     /* ============================================
      * SURFACE COLORS — Backgrounds
      * ============================================ */
@@ -471,6 +508,25 @@
     --color-info-border-emphasis: var(--color-sky-400);
 
     --color-status-neutral: var(--color-slate-400);
+
+    /* Solid (filled) status surfaces — identical to light by design. */
+    --color-success-solid: var(--color-emerald-700);
+    --color-warning-solid: var(--color-amber-700);
+    --color-error-solid: var(--color-rose-700);
+    --color-info-solid: var(--color-sky-700);
+
+    /* ============================================
+     * DATA-VISUALIZATION CATEGORICAL PALETTE (Okabe-Ito, dark-calibrated)
+     * ============================================ */
+
+    --color-chart-1: #f2b441; /* orange */
+    --color-chart-2: #7fc8f0; /* sky blue */
+    --color-chart-3: #2cc79a; /* bluish green */
+    --color-chart-4: #f47a2e; /* vermillion */
+    --color-chart-5: #4da3dc; /* blue */
+    --color-chart-6: #e098c3; /* reddish purple */
+    --color-chart-7: #f5ec6b; /* yellow */
+    --color-chart-8: #b8bcc4; /* gray */
 
     /* ============================================
      * ICON COLORS

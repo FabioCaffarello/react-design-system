@@ -11,6 +11,7 @@ import {
   ANIMATION_TOKENS,
   Z_INDEX_TOKENS,
   OPACITY_TOKENS,
+  CHART_PALETTE_TOKENS,
 } from "./index";
 import { SEMANTIC_COLORS_LIGHT, type SemanticColorName } from "./colors/index";
 
@@ -96,6 +97,91 @@ function ColorSwatch({
         {label}
       </div>
       <span className="text-xs text-gray-600">{label}</span>
+    </div>
+  );
+}
+
+/**
+ * Solid status fills + on-color text.
+ *
+ * Each swatch is a real `bg-{status}-solid` carrying `text-fg-on-{status}`
+ * (white). These are the TEXT-CARRYING status solids — distinct from the
+ * decorative `bg-{status}` used by Dot/Progress. White clears WCAG AA for
+ * normal text against every fill (ratios annotated).
+ */
+export function StatusSolidColors() {
+  const solids: {
+    status: string;
+    fill: string;
+    onColor: string;
+    ratio: string;
+  }[] = [
+    {
+      status: "success",
+      fill: "bg-success-solid",
+      onColor: "text-fg-on-success",
+      ratio: "5.48:1",
+    },
+    {
+      status: "warning",
+      fill: "bg-warning-solid",
+      onColor: "text-fg-on-warning",
+      ratio: "5.02:1",
+    },
+    {
+      status: "error",
+      fill: "bg-error-solid",
+      onColor: "text-fg-on-error",
+      ratio: "6.29:1",
+    },
+    {
+      status: "info",
+      fill: "bg-info-solid",
+      onColor: "text-fg-on-info",
+      ratio: "5.93:1",
+    },
+  ];
+
+  return (
+    <div className="flex flex-wrap gap-4">
+      {solids.map(({ status, fill, onColor, ratio }) => (
+        <div key={status} className="flex flex-col items-center gap-1">
+          <div
+            className={`flex h-20 w-32 items-center justify-center rounded-md text-sm font-medium ${fill} ${onColor}`}
+          >
+            Virou norma
+          </div>
+          <span className="text-xs text-gray-600">{fill}</span>
+          <span className="text-xs text-gray-500">
+            + {onColor} · {ratio} AA
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Data-visualization categorical palette (Okabe-Ito).
+ *
+ * Eight colorblind-safe categorical colors for chart series. Distinct from
+ * the semantic feedback colors — these encode category, not state. Consume
+ * via `getChartColor(i)` (0-based, wraps modulo 8, theme-aware).
+ */
+export function ChartPalette() {
+  return (
+    <div className="flex flex-wrap gap-3">
+      {CHART_PALETTE_TOKENS.map((token) => (
+        <div key={token.index} className="flex flex-col items-center gap-1">
+          <div
+            className={`h-16 w-16 rounded-md border border-line-default ${token.bg}`}
+          />
+          <span className="text-xs font-medium text-gray-700">
+            chart-{token.index}
+          </span>
+          <span className="text-xs text-gray-500">{token.name}</span>
+        </div>
+      ))}
     </div>
   );
 }

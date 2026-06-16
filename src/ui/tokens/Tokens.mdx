@@ -1,6 +1,8 @@
 import { Meta } from "@storybook/addon-docs/blocks";
 import {
   ColorPalette,
+  StatusSolidColors,
+  ChartPalette,
   SpacingReference,
   TypographyReference,
   ShadowReference,
@@ -116,6 +118,30 @@ Distinct from `text-fg-*` (which is for foreground text/icons) and
 indicators are filled dots/badges representing a state — their own
 semantic family.
 
+### Solid Status Fills (on-color text)
+
+Each status has **two** saturated solids that are not interchangeable:
+
+- `bg-success` (`--color-success`, emerald-500) — the **decorative**
+  solid for `Dot` / `Progress` fills, where no text sits on it.
+- `bg-success-solid` (`--color-success-solid`, emerald-700) — the
+  **text-carrying** solid for filled status badges/pills. It pairs with
+  `text-fg-on-success` (white), calibrated to clear WCAG AA for normal
+  text against every fill.
+
+<StatusSolidColors />
+
+Always pair `bg-{status}-solid` with `text-fg-on-{status}`. Do **not**
+use `text-fg-inverse` (slate-900 in dark — a worse, semantically wrong
+pair over a saturated fill) or `text-fg-success` (the colored text,
+invisible over its own fill). These solids stay saturated + white in
+both themes by design — a status chip behaves like a colored button, not
+a neutral surface.
+
+```tsx
+<span className="bg-success-solid text-fg-on-success">Virou norma</span>
+```
+
 ### Scrim and Tint-hover (theme-agnostic)
 
 Two translucent black tokens that do **not** flip between light and
@@ -142,6 +168,35 @@ overlay`, which is the _container_ of the overlay (white in light,
 
 If a future state needs a similar translucent layer (pressed, focus,
 selected), use the same naming family: `--color-tint-pressed`, etc.
+
+### Data-Visualization Palette (`chart-*`)
+
+A **categorical** palette for charts — a separate axis from the feedback
+colors. `success`/`warning`/`error`/`info` encode _state_; the chart
+palette encodes _category_ ("which series is this"). Never use `error` to
+mean "series 3".
+
+The values are the canonical **Okabe-Ito** colorblind-safe palette (8
+colors, distinguishable under deuteranopia/protanopia/tritanopia), with
+`black` swapped for a neutral gray so the 8th series survives a dark
+canvas. Dark-theme variants lift luminance (hue preserved) to clear 3:1
+over `surface-canvas`.
+
+<ChartPalette />
+
+```tsx
+import { getChartColor } from "@fabio.caffarello/react-design-system";
+
+// 0-based, wraps modulo 8, returns a theme-aware var(--color-chart-N):
+{
+  series.map((s, i) => <Bar key={s.id} dataKey={s.id} fill={getChartColor(i)} />);
+}
+```
+
+**On-white caveat:** orange/sky-blue/yellow/gray fall below 3:1 on a white
+canvas — intrinsic to Okabe-Ito's light hues. Fine for fills (bars,
+areas); for thin strokes (lines) add an outline or order a darker series
+first. The colorblind-safety guarantee is independent of this.
 
 ## Spacing Tokens
 

@@ -14,6 +14,7 @@ export * from "./tokens/spacing";
 export * from "./tokens/typography";
 export * from "./tokens/colors/index";
 export * from "./tokens/breakpoints";
+export * from "./tokens/chart";
 
 // 2. UTILS (pure functions, no side effects)
 export { cn } from "./utils";
@@ -28,6 +29,7 @@ export {
 } from "./tokens/animations";
 export { getZIndexClass, getZIndex } from "./tokens/z-index";
 export { getOpacityClass, getOpacity } from "./tokens/opacity";
+export { getChartColor, getChartColorClass } from "./tokens/chart";
 
 // 3. PROVIDERS (exported from single bundle for Turbopack compatibility)
 // CRITICAL: All providers are exported from providers-bundle.ts to ensure they're

@@ -70,3 +70,6 @@ export * from "./Avatar";
 
 export { Dot } from "./Dot";
 export type { DotProps, DotVariant, DotSize } from "./Dot";
+
+export { default as DataBadge } from "./DataBadge";
+export type { DataBadgeProps } from "./DataBadge";
