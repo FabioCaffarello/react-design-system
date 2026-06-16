@@ -181,4 +181,56 @@ describe("Autocomplete", () => {
       );
     });
   });
+
+  describe("Form-native integration (name/form, #225)", () => {
+    it("renders no hidden field when `name` is absent", () => {
+      const { container } = render(
+        <Autocomplete aria-label="Tema" options={mockOptions} />,
+      );
+      expect(
+        container.querySelector('input[type="hidden"]'),
+      ).not.toBeInTheDocument();
+    });
+
+    it("renders a hidden field carrying the controlled value (not the label)", () => {
+      const { container } = render(
+        <Autocomplete
+          aria-label="Tema"
+          name="tema"
+          form="filtros"
+          value="2"
+          options={mockOptions}
+        />,
+      );
+      const hidden = container.querySelector('input[type="hidden"]');
+      expect(hidden).toHaveAttribute("name", "tema");
+      expect(hidden).toHaveAttribute("form", "filtros");
+      // The option VALUE "2", NOT the visible label "Option 2".
+      expect(hidden).toHaveValue("2");
+    });
+
+    it("starts empty before any selection (uncontrolled)", () => {
+      const { container } = render(
+        <Autocomplete aria-label="Tema" name="tema" options={mockOptions} />,
+      );
+      expect(container.querySelector('input[type="hidden"]')).toHaveValue("");
+    });
+
+    it("syncs the hidden field to the selected option VALUE on select", async () => {
+      const { container } = render(
+        <Autocomplete aria-label="Tema" name="tema" options={mockOptions} />,
+      );
+      const input = screen.getByRole("combobox");
+      fireEvent.focus(input);
+      const option = await screen.findByText("Option 2");
+      fireEvent.mouseDown(option);
+      fireEvent.click(option);
+
+      const hidden = container.querySelector('input[type="hidden"]');
+      // Hidden field carries the value for native form submit; the visible
+      // input shows the human-readable label.
+      await waitFor(() => expect(hidden).toHaveValue("2"));
+      expect(input).toHaveValue("Option 2");
+    });
+  });
 });

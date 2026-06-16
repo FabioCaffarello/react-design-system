@@ -44,6 +44,27 @@ export interface AutocompleteProps {
    */
   "aria-labelledby"?: string;
   id?: string;
+  /**
+   * Name of the form field (issue #225). When set, the component renders
+   * a synchronized `<input type="hidden" name={name}>` carrying the
+   * **selected option value** (not the visible search text), so the
+   * Autocomplete participates in native form submission exactly like a
+   * `<select name>` — a `<form method="GET">` picks up `name=value` with
+   * no `onChange`/router wiring on the consumer side. This is the
+   * form-native integration the brasil-a-vera filter bars need.
+   *
+   * Caveat: the component is interactive (`"use client"`), so the hidden
+   * field is populated once hydrated — it is NOT a pre-hydration no-JS
+   * fallback. For a true zero-JS fallback, pair it with a `<noscript>`
+   * native `<select name>`.
+   */
+  name?: string;
+  /**
+   * Associates the hidden field with a form by id (the native `form`
+   * attribute), for when the Autocomplete renders outside the `<form>`
+   * it submits to. No effect unless `name` is also set.
+   */
+  form?: string;
 }
 
 /**
@@ -84,6 +105,8 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
       "aria-label": ariaLabel,
       "aria-labelledby": ariaLabelledBy,
       id: idProp,
+      name,
+      form,
     },
     ref,
   ) {
@@ -334,6 +357,22 @@ const Autocomplete = forwardRef<HTMLInputElement, AutocompleteProps>(
           }
           className={inputClassName}
         />
+
+        {/*
+          Form-native participation (issue #225). The hidden field carries
+          the SELECTED OPTION VALUE (`currentValue`), not the visible
+          `searchValue` label, so a native `<form>` submits `name=value`
+          like a `<select name>`. Rendered only when `name` is set; `form`
+          lets it associate with a form by id when rendered outside it.
+        */}
+        {name && (
+          <input
+            type="hidden"
+            name={name}
+            value={currentValue ?? ""}
+            form={form}
+          />
+        )}
 
         {shouldShowList && (
           <AutocompleteList

@@ -308,6 +308,56 @@ export const Controlled: Story = {
   },
 };
 
+export const FormIntegration: Story = {
+  render: () => {
+    const [submitted, setSubmitted] = React.useState<string | null>(null);
+
+    return (
+      <form
+        method="GET"
+        onSubmit={(e) => {
+          e.preventDefault();
+          // Mirror what a native GET submit would serialize from the
+          // synchronized hidden field the `name` prop renders.
+          const params = new URLSearchParams();
+          new FormData(e.currentTarget).forEach((v, k) =>
+            params.append(k, String(v)),
+          );
+          setSubmitted(params.toString());
+        }}
+        className="space-y-4 w-full max-w-md"
+      >
+        <Autocomplete
+          options={basicOptions}
+          name="tema"
+          label="Tema"
+          placeholder="Selecione um tema"
+        />
+        <button
+          type="submit"
+          className="px-3 py-1 text-sm bg-surface-brand-strong text-fg-inverse rounded"
+        >
+          Filtrar
+        </button>
+        <p className="text-sm text-fg-secondary">
+          <strong>Submitted query:</strong>{" "}
+          {submitted === null
+            ? "(not submitted yet)"
+            : submitted || "(empty — nothing selected)"}
+        </p>
+      </form>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Form-native integration (#225). The `name` prop renders a synchronized `<input type="hidden">` carrying the SELECTED OPTION VALUE (not the visible label), so the Autocomplete submits like a `<select name>` in a native `<form method="GET">`. Pick an option and submit to see `tema=<value>` in the query string — no onChange/router wiring required.',
+      },
+    },
+  },
+};
+
 export const CustomFilter: Story = {
   args: {
     options: basicOptions,
