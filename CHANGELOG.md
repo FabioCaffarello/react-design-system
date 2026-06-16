@@ -1,3 +1,33 @@
+## [4.0.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.13.0...v4.0.0) (2026-06-16)
+
+### ⚠ BREAKING CHANGES
+
+* **dialog:** DialogContent renders a close button by default
+(showCloseButton defaults to true). Dialogs that relied on no automatic
+X must pass showCloseButton={false}, and any dialog that placed an
+explicit <Dialog.Close /> should drop it (or pass showCloseButton={false})
+to avoid a duplicate X. AlertDialog is unaffected.
+
+Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
+
+### ✨ Features
+
+* **chip:** optional count sub-badge for standard chips ([#222](https://github.com/FabioCaffarello/react-design-system/issues/222)) ([cbd33c8](https://github.com/FabioCaffarello/react-design-system/commit/cbd33c8bada6495fb46c4e6e624d0747545909e6))
+* **dialog:** add showCloseButton to DialogContent, default true ([#221](https://github.com/FabioCaffarello/react-design-system/issues/221)) ([8599012](https://github.com/FabioCaffarello/react-design-system/commit/8599012259657a7fe7aaead02f128891521d57b8))
+
+### 🐛 Bug Fixes
+
+* **a11y:** clear 16 critical axe violations introduced by the bug sweep + regen baseline ([07abc60](https://github.com/FabioCaffarello/react-design-system/commit/07abc60e67cac3fff3f9479b408896a2b9d940f9))
+* **components:** Autocomplete/MultiSelect combobox a11y + DataGrid export/controlled fixes ([fea0455](https://github.com/FabioCaffarello/react-design-system/commit/fea0455cc56e928abda071bc16e4d1e0b6136a7f))
+* **components:** correctness & a11y bug sweep — TimePicker, Modal, Dialog, Form, focus-restore ([5d25cae](https://github.com/FabioCaffarello/react-design-system/commit/5d25caeb4ce27d2edd514abaa761309a58411657))
+* **components:** DatePicker calendar focus + CommandPalette a11y overhaul ([d38e32b](https://github.com/FabioCaffarello/react-design-system/commit/d38e32b9c5063c6cbc53f44090be31fb646a65f1))
+* **components:** Table, Stepper, SideNavbar correctness & a11y fixes ([802f9d2](https://github.com/FabioCaffarello/react-design-system/commit/802f9d2945603a265c010afb3a9a2649f7a04c55))
+
+### 📝 Documentation
+
+* **jsdoc:** drop banned atoms/molecules taxonomy from component JSDoc ([#217](https://github.com/FabioCaffarello/react-design-system/issues/217)) ([acc3cda](https://github.com/FabioCaffarello/react-design-system/commit/acc3cda31d6ccc4fe11ad006af8738126358d31a))
+* remove banned atoms/molecules taxonomy from guides and stories ([#218](https://github.com/FabioCaffarello/react-design-system/issues/218)) ([529edaf](https://github.com/FabioCaffarello/react-design-system/commit/529edaff37a32972aec473e5aab1c7c57fcf560b)), closes [#217](https://github.com/FabioCaffarello/react-design-system/issues/217) [#208](https://github.com/FabioCaffarello/react-design-system/issues/208) [#150](https://github.com/FabioCaffarello/react-design-system/issues/150) [#203](https://github.com/FabioCaffarello/react-design-system/issues/203)
+
 ## [3.13.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.12.0...v3.13.0) (2026-06-13)
 
 ### ✨ Features
