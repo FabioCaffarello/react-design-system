@@ -64,6 +64,14 @@
   --color-fg-error: var(--color-rose-400);
   --color-fg-info: var(--color-sky-400);
 
+  /* On-color feedback text — constant white in both themes (the solid
+   * status surfaces stay saturated + dark in dark mode too). See
+   * semantic/colors.css for the AA rationale. */
+  --color-fg-on-success: var(--color-white);
+  --color-fg-on-warning: var(--color-white);
+  --color-fg-on-error: var(--color-white);
+  --color-fg-on-info: var(--color-white);
+
   /* ============================================
    * SURFACE COLORS — Backgrounds (dark scale)
    * ============================================ */
@@ -189,6 +197,14 @@
   --color-info-bg-emphasis: var(--color-sky-900);
   --color-info-border: var(--color-sky-800);
   --color-info-border-emphasis: var(--color-sky-400);
+
+  /* Solid (filled) status surfaces — saturated chips that stay dark in both
+   * themes so white on-color text clears AA. Identical to light by design.
+   * See semantic/colors.css. */
+  --color-success-solid: var(--color-emerald-700);
+  --color-warning-solid: var(--color-amber-700);
+  --color-error-solid: var(--color-rose-700);
+  --color-info-solid: var(--color-sky-700);
 
   /* ============================================
    * ICON COLORS
@@ -364,6 +380,12 @@
     --color-fg-error: var(--color-rose-400);
     --color-fg-info: var(--color-sky-400);
 
+    /* On-color feedback text — constant white in both themes. */
+    --color-fg-on-success: var(--color-white);
+    --color-fg-on-warning: var(--color-white);
+    --color-fg-on-error: var(--color-white);
+    --color-fg-on-info: var(--color-white);
+
     /* ============================================
      * SURFACE COLORS — Backgrounds
      * ============================================ */
@@ -471,6 +493,12 @@
     --color-info-border-emphasis: var(--color-sky-400);
 
     --color-status-neutral: var(--color-slate-400);
+
+    /* Solid (filled) status surfaces — identical to light by design. */
+    --color-success-solid: var(--color-emerald-700);
+    --color-warning-solid: var(--color-amber-700);
+    --color-error-solid: var(--color-rose-700);
+    --color-info-solid: var(--color-sky-700);
 
     /* ============================================
      * ICON COLORS

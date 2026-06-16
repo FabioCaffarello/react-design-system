@@ -1,6 +1,7 @@
 import { Meta } from "@storybook/addon-docs/blocks";
 import {
   ColorPalette,
+  StatusSolidColors,
   SpacingReference,
   TypographyReference,
   ShadowReference,
@@ -115,6 +116,30 @@ Distinct from `text-fg-*` (which is for foreground text/icons) and
 `bg-line-*` (which is for visual lines like dividers/marks). Status
 indicators are filled dots/badges representing a state — their own
 semantic family.
+
+### Solid Status Fills (on-color text)
+
+Each status has **two** saturated solids that are not interchangeable:
+
+- `bg-success` (`--color-success`, emerald-500) — the **decorative**
+  solid for `Dot` / `Progress` fills, where no text sits on it.
+- `bg-success-solid` (`--color-success-solid`, emerald-700) — the
+  **text-carrying** solid for filled status badges/pills. It pairs with
+  `text-fg-on-success` (white), calibrated to clear WCAG AA for normal
+  text against every fill.
+
+<StatusSolidColors />
+
+Always pair `bg-{status}-solid` with `text-fg-on-{status}`. Do **not**
+use `text-fg-inverse` (slate-900 in dark — a worse, semantically wrong
+pair over a saturated fill) or `text-fg-success` (the colored text,
+invisible over its own fill). These solids stay saturated + white in
+both themes by design — a status chip behaves like a colored button, not
+a neutral surface.
+
+```tsx
+<span className="bg-success-solid text-fg-on-success">Virou norma</span>
+```
 
 ### Scrim and Tint-hover (theme-agnostic)
 

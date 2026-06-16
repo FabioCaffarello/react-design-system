@@ -49,21 +49,22 @@ list, read "Principle 9 — Incomplete semantic family" before inventing.
 
 ### Foreground (text & icons)
 
-| Family                                              | Purpose                                                      | Common uses                       |
-| --------------------------------------------------- | ------------------------------------------------------------ | --------------------------------- |
-| `text-fg-primary`                                   | Highest-emphasis text                                        | Headings, body copy               |
-| `text-fg-secondary`                                 | Secondary text                                               | Subheads, captions                |
-| `text-fg-tertiary`                                  | Tertiary text                                                | Metadata, help text               |
-| `text-fg-quaternary`                                | Lowest-emphasis text in the ordered hierarchy                | Inactive labels                   |
-| `text-fg-placeholder`                               | Placeholder text                                             | Inputs, search fields             |
-| `text-fg-disabled`                                  | Binary off-state OR disabled interactivity (see Principle 6) | Off-star Rating, disabled Input   |
-| `text-fg-inverse`                                   | Foreground on dark surface                                   | Tooltip body, inverse Toast       |
-| `text-fg-inverse-secondary`                         | Secondary text on inverse surface                            | Subtle inverse labels             |
-| `text-fg-link` / `-hover` / `-active` / `-visited`  | Links — the full state ladder                                | Anchor tags                       |
-| `text-fg-brand`                                     | Default brand foreground                                     | Brand-colored body link, logotype |
-| `text-fg-brand-emphasis`                            | Emphasis brand foreground                                    | Active navbar item icon/label     |
-| `text-fg-brand-secondary` / `-emphasis`             | Secondary brand pair                                         | Secondary-branded UI              |
-| `text-fg-success` / `-warning` / `-error` / `-info` | Feedback text                                                | Inline form errors, status text   |
+| Family                                                          | Purpose                                                      | Common uses                             |
+| --------------------------------------------------------------- | ------------------------------------------------------------ | --------------------------------------- |
+| `text-fg-primary`                                               | Highest-emphasis text                                        | Headings, body copy                     |
+| `text-fg-secondary`                                             | Secondary text                                               | Subheads, captions                      |
+| `text-fg-tertiary`                                              | Tertiary text                                                | Metadata, help text                     |
+| `text-fg-quaternary`                                            | Lowest-emphasis text in the ordered hierarchy                | Inactive labels                         |
+| `text-fg-placeholder`                                           | Placeholder text                                             | Inputs, search fields                   |
+| `text-fg-disabled`                                              | Binary off-state OR disabled interactivity (see Principle 6) | Off-star Rating, disabled Input         |
+| `text-fg-inverse`                                               | Foreground on dark surface                                   | Tooltip body, inverse Toast             |
+| `text-fg-inverse-secondary`                                     | Secondary text on inverse surface                            | Subtle inverse labels                   |
+| `text-fg-link` / `-hover` / `-active` / `-visited`              | Links — the full state ladder                                | Anchor tags                             |
+| `text-fg-brand`                                                 | Default brand foreground                                     | Brand-colored body link, logotype       |
+| `text-fg-brand-emphasis`                                        | Emphasis brand foreground                                    | Active navbar item icon/label           |
+| `text-fg-brand-secondary` / `-emphasis`                         | Secondary brand pair                                         | Secondary-branded UI                    |
+| `text-fg-success` / `-warning` / `-error` / `-info`             | Feedback text                                                | Inline form errors, status text         |
+| `text-fg-on-success` / `-on-warning` / `-on-error` / `-on-info` | On-color text — sits ON a solid status fill (`bg-*-solid`)   | Solid status badge/pill ("Virou norma") |
 
 ### Surface (backgrounds)
 
@@ -112,6 +113,33 @@ where "no specific status" is a legitimate fifth state (Principle 9).
 
 Do not use `text-fg-error` for general red text. Do not use `bg-error`
 for a Dialog accent unless the dialog is semantically an error state.
+
+#### Solid status fill + on-color text (the filled badge/pill)
+
+There are **two** saturated solids per status, and they are not
+interchangeable:
+
+- `bg-success` (`--color-success`, emerald-500) is the **decorative**
+  solid — Dot, Progress fill, Stepper/Timeline bubble. No text sits on
+  it; white over it is only ~2.5:1.
+- `bg-success-solid` (`--color-success-solid`, emerald-700) is the
+  **text-carrying** solid — the filled status badge/pill. It pairs with
+  `text-fg-on-success` (white) at AA for normal text (emerald-700 5.48:1,
+  amber-700 5.02:1, rose-700 6.29:1, sky-700 5.93:1).
+
+This split mirrors `surface-brand` (decorative) vs `surface-brand-strong`
+(carries text). Always pair `bg-{status}-solid` with `text-fg-on-{status}`
+— never `text-fg-inverse` (slate-900 in dark mode, a worse and
+semantically wrong pair over a saturated fill) and never `text-fg-success`
+(the colored text, invisible over its own fill). The solids stay saturated
+with white text in **both** themes by design (a status chip behaves like a
+colored button, not a neutral surface), so `dark.css` declares identical
+values.
+
+```tsx
+// Solid "became law" achievement badge, AA in light and dark:
+<span className="bg-success-solid text-fg-on-success">Virou norma</span>
+```
 
 ### Theme-agnostic translucent layers
 
