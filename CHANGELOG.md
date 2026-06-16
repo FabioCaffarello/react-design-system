@@ -1,3 +1,10 @@
+## [4.1.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.0.0...v4.1.0) (2026-06-16)
+
+### ✨ Features
+
+* **autocomplete:** name/form props for native form submission ([#225](https://github.com/FabioCaffarello/react-design-system/issues/225)) ([fc21767](https://github.com/FabioCaffarello/react-design-system/commit/fc2176731421c2236de732f981cf757852b1b974))
+* **button:** expose Button from the ./server entry ([#224](https://github.com/FabioCaffarello/react-design-system/issues/224)) ([42ec2f9](https://github.com/FabioCaffarello/react-design-system/commit/42ec2f970007d2c314bb77015144f7b49cd25082)), closes [#155](https://github.com/FabioCaffarello/react-design-system/issues/155) [#148](https://github.com/FabioCaffarello/react-design-system/issues/148)
+
 ## [4.0.0](https://github.com/FabioCaffarello/react-design-system/compare/v3.13.0...v4.0.0) (2026-06-16)
 
 ### ⚠ BREAKING CHANGES
