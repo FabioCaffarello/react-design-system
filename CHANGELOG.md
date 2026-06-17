@@ -1,3 +1,9 @@
+## [4.5.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.4.0...v4.5.0) (2026-06-17)
+
+### ✨ Features
+
+* **theme:** publish raw [@theme](https://github.com/theme) token source as ./theme export ([#234](https://github.com/FabioCaffarello/react-design-system/issues/234)) ([#235](https://github.com/FabioCaffarello/react-design-system/issues/235)) ([9806898](https://github.com/FabioCaffarello/react-design-system/commit/98068980f29769cb75a1bd5d1d2a4ed2c4432874))
+
 ## [4.4.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.3.0...v4.4.0) (2026-06-17)
 
 ### ✨ Features
