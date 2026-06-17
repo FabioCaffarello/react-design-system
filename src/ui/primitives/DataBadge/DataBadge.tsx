@@ -9,11 +9,14 @@ import {
 import { cn, cva } from "../../utils";
 
 /**
- * Semantic tone for a {@link DataBadge}. Mirrors the `Badge` vocabulary
- * (role, not tone) so the soft-wash color treatment is shared and already
- * AA-verified. Map a consumer's tone names onto these roles:
- * `default → neutral`, `destructive → error`, `brand → primary`,
- * `accent → info` (or `secondary`).
+ * Semantic tone for a {@link DataBadge}. The status/brand members mirror the
+ * `Badge` vocabulary (role, not tone) so the soft-wash treatment is shared
+ * and already AA-verified; `dataviz` adds a CATEGORICAL member (a
+ * reddish-purple wash for "category / analytical" data, the badge-facing
+ * counterpart to the chart palette) that is intentionally NOT a status.
+ * Map a consumer's tone names onto these roles: `default → neutral`,
+ * `destructive → error`, `brand → primary`, `accent → dataviz` (the
+ * data-viz purple — RDS `accent` is cyan, so the category tone is `dataviz`).
  */
 export type DataBadgeTone =
   | "neutral"
@@ -22,7 +25,8 @@ export type DataBadgeTone =
   | "error"
   | "info"
   | "primary"
-  | "secondary";
+  | "secondary"
+  | "dataviz";
 
 export type DataBadgeSize = "sm" | "md";
 
@@ -67,6 +71,9 @@ const dataBadgeVariants = cva(
           "text-fg-brand-secondary-emphasis",
           "border-line-secondary",
         ),
+        // Categorical data-viz tone — fuchsia soft-wash, sibling to the
+        // chart palette. Not a status; distinct from secondary (brand violet).
+        dataviz: cn("bg-dataviz-bg", "text-dataviz-dark", "border-dataviz"),
       },
       size: {
         sm: cn(

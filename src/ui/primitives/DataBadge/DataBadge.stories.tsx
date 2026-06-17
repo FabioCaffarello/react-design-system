@@ -37,6 +37,7 @@ Server-safe — ships from the \`./server\` entry.
         "info",
         "primary",
         "secondary",
+        "dataviz",
       ],
     },
     size: { control: "select", options: ["sm", "md"] },
@@ -71,6 +72,20 @@ export const Tones: Story = {
       <DataBadge label="Em pauta" source="agenda" tone="info" />
       <DataBadge label="Destaque" source="curadoria" tone="primary" />
       <DataBadge label="Arquivada" source="histórico" tone="secondary" />
+      <DataBadge label="L3" source="análise" tone="dataviz" />
+    </div>
+  ),
+};
+
+export const CategoricalTone: Story = {
+  name: "Categorical (data-viz) tone",
+  render: () => (
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-wrap items-center gap-2">
+        <DataBadge label="L1" source="oficial" tone="success" />
+        <DataBadge label="L2" source="Portal Transparência" tone="warning" />
+        <DataBadge label="L3" source="análise" tone="dataviz" />
+      </div>
     </div>
   ),
 };

@@ -22,7 +22,7 @@ DataBadge renders an inline metadata chip that carries a value **and where it ca
 
 ## Tone vocabulary
 
-DataBadge reuses the `Badge` role vocabulary (role, not tone) so the color treatment is shared and already AA-verified. Map a consumer's tone names onto these roles:
+The status/brand tones reuse the `Badge` role vocabulary (role, not tone) so the color treatment is shared and already AA-verified. `dataviz` adds a **categorical** member — a reddish-purple (fuchsia) soft-wash for "category / analytical" data (e.g. a derived/modeled "L3" confidence marker), the badge-facing counterpart to the chart palette. It is deliberately **not** a status, and is distinct from both the brand `secondary` violet and the RDS `accent` (which is cyan). Map a consumer's tone names onto these roles:
 
 | Consumer tone | DataBadge `tone` |
 | ------------- | ---------------- |
@@ -31,7 +31,7 @@ DataBadge reuses the `Badge` role vocabulary (role, not tone) so the color treat
 | `warning`     | `warning`        |
 | `destructive` | `error`          |
 | `brand`       | `primary`        |
-| `accent`      | `info` (or `secondary`) |
+| `accent` / `dataviz` (data-viz purple) | `dataviz` |
 
 ## Examples
 
@@ -40,6 +40,10 @@ DataBadge reuses the `Badge` role vocabulary (role, not tone) so the color treat
 The full tone ladder — each combines a soft-wash background, an AA-safe tone text color, and a matching border.
 
 <Canvas of={DataBadgeStories.Tones} />
+
+The `dataviz` tone sits on the categorical (data-viz) axis rather than the status one — use it for "which category / how derived" markers (a confidence ladder where `L3` is analytical/modeled data), not for a state.
+
+<Canvas of={DataBadgeStories.CategoricalTone} />
 
 `source` is optional; without it the badge is a single labeled value.
 

@@ -221,6 +221,11 @@
   --color-chart-7: #f5ec6b; /* yellow */
   --color-chart-8: #b8bcc4; /* gray */
 
+  /* Data-viz categorical tone (soft wash) — see semantic/colors.css. */
+  --color-dataviz: var(--color-fuchsia-400);
+  --color-dataviz-bg: var(--color-fuchsia-950);
+  --color-dataviz-dark: var(--color-fuchsia-300);
+
   /* ============================================
    * ICON COLORS
    * ============================================ */
@@ -527,6 +532,11 @@
     --color-chart-6: #e098c3; /* reddish purple */
     --color-chart-7: #f5ec6b; /* yellow */
     --color-chart-8: #b8bcc4; /* gray */
+
+    /* Data-viz categorical tone (soft wash) — see semantic/colors.css. */
+    --color-dataviz: var(--color-fuchsia-400);
+    --color-dataviz-bg: var(--color-fuchsia-950);
+    --color-dataviz-dark: var(--color-fuchsia-300);
 
     /* ============================================
      * ICON COLORS

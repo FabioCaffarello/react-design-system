@@ -234,6 +234,18 @@
   --color-chart-7: #f0e442; /* yellow */
   --color-chart-8: #999999; /* gray (Okabe-Ito uses black; gray survives dark) */
 
+  /* Data-viz CATEGORICAL tone (soft wash) — the badge-facing member of the
+   * data-viz axis above. A reddish-purple (fuchsia) wash for "category /
+   * analytical" emphasis (e.g. a DataBadge L3/derived-data marker), kept
+   * deliberately distinct from the brand `secondary` violet (state-vs-brand
+   * vs category) and from `accent` (cyan). Mirrors the status soft-wash
+   * trio (bg / dark text / base-border); white is never on it, so the
+   * AA-relevant pair is text-dataviz-dark over bg-dataviz-bg
+   * (fuchsia-700/50 = 5.89:1 light, fuchsia-300/950 = 8.41:1 dark). */
+  --color-dataviz: var(--color-fuchsia-500);
+  --color-dataviz-bg: var(--color-fuchsia-50);
+  --color-dataviz-dark: var(--color-fuchsia-700);
+
   /* ============================================
    * SCRIM & TRANSLUCENT STATE LAYERS
    * Theme-agnostic — these must stay dark in all modes by design.
