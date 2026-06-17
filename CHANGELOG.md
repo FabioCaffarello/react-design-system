@@ -1,3 +1,9 @@
+## [4.4.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.3.0...v4.4.0) (2026-06-17)
+
+### ✨ Features
+
+* **databadge:** categorical data-viz tone ([#232](https://github.com/FabioCaffarello/react-design-system/issues/232)) ([1795876](https://github.com/FabioCaffarello/react-design-system/commit/1795876d3e93a24d30adada96af6ac7d43fb2a09)), closes [#229](https://github.com/FabioCaffarello/react-design-system/issues/229)
+
 ## [4.3.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.2.0...v4.3.0) (2026-06-17)
 
 ### ✨ Features
