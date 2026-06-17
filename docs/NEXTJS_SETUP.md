@@ -22,6 +22,19 @@ import "@fabio.caffarello/react-design-system/styles";
 
 No Tailwind setup is required in your project — RDS ships its own CSS and exposes only the semantic classes documented in `.claude/rules/colors.md`.
 
+### Optional: when your app also runs Tailwind v4
+
+If your Next app runs its own Tailwind v4, add the raw token source (`./theme`, issue #234) next to the compiled stylesheet so **your** Tailwind generates the design system's token utilities (`text-fg-brand`, `bg-surface-brand-strong`, `ring-line-focus`, `text-fg-brand/80`, …) — theme-aware, from one source of truth:
+
+```css
+/* app/globals.css */
+@import "tailwindcss";
+@import "@fabio.caffarello/react-design-system/styles" layer(rds); /* compiled RDS component classes */
+@import "@fabio.caffarello/react-design-system/theme"; /* raw @theme: your Tailwind builds the token utilities */
+```
+
+`./theme` is the `@theme` source **uncompiled**, so your Tailwind picks it up and emits utilities referencing `var(--color-…)`; the light/dark overrides in the same file flip the resolved color at runtime. Do not re-expose the tokens through a `@theme inline { … }` bridge — `inline` resolves at build time (breaking theming) and a self-referential bridge resolves to `transparent`. Without Tailwind in your app, skip this and import only `./styles`.
+
 ## Two JS entries
 
 RDS exposes two JS entries that can be used together in the same Server Component:

@@ -120,7 +120,8 @@ Consumers can import from:
 - `@fabio.caffarello/react-design-system/server` — the opt-in server entry (issue #150). Re-exports only the components whose render tree is safe to evaluate inside a React Server Component: presentational primitives (`Text`, `Skeleton`, `Spinner`, `Progress`, `Chip`, `ErrorMessage`, `Info`), layout (`Container`, `Stack`), and structural / informational components (`Breadcrumb`, `Timeline`, `AutocompleteOption`, `DialogHeader`, `DialogFooter`, `DrawerHeader`, `DrawerFooter`, `HeaderActions`, `HeaderNavigation`, `MenuSeparator`, `NavbarSeparator`, `TableCell`). The bundle carries NO `"use client"` directive, so importing from it in a Server Component does NOT cross a client boundary — useful for SEO-critical / first-paint-critical routes where the shell shouldn't ship JS to the client.
 - `@fabio.caffarello/react-design-system/hooks` — the granular public-hooks entry (issue #203). Re-exports only the public hooks (today: `useScrollSpy`) as a tiny standalone client bundle (<1KB) with every dependency external. Use it when a route's client component needs a hook but nothing else from RDS: importing a hook from the main entry pulls the whole pre-bundled barrel into the route's client JS (+277KB minified measured on a Next 16 route), because the single-file `"use client"` bundle is opaque to the consumer bundler's tree-shaking. The same hooks remain available from the main entry for back-compat.
 - `@fabio.caffarello/react-design-system/granular` — the granular client entry (issue #208). The SAME public surface as the default entry, emitted as a `preserveModules` tree (one module per source file, `"use client"` on every module, all deps external). Use it for leaf component imports on size-critical routes: importing one component from the default entry pulls the whole pre-bundled barrel (+264KB minified measured for `Accordion` on a Next 16 route); the same import from `./granular` ships only that component's module graph (~36KB, 13% of the barrel payload — gated in CI). Keep app-wide setup (`AppProvider`/providers) on the default entry: the single bundle preserves provider initialization order by construction.
-- `@fabio.caffarello/react-design-system/styles` — the bundled CSS. Same stylesheet regardless of which JS entry you import.
+- `@fabio.caffarello/react-design-system/styles` — the bundled, Tailwind-**compiled** CSS (resolved tokens + every component class). Same stylesheet regardless of which JS entry you import. For consumers who do **not** run Tailwind: import it and the classes already exist.
+- `@fabio.caffarello/react-design-system/theme` (+ `./theme.css`) — the **raw, uncompiled** `@theme` token source plus the light/dark overrides (issue #234). For consumers who run **Tailwind v4 themselves**: import it and your own Tailwind generates the token utilities (`text-fg-brand`, `bg-surface-brand-strong`, `ring-line-focus`, …) natively, theme-aware, from one source of truth — no re-export bridge. See "Extending the tokens with your own Tailwind" below.
 
 The JS entries can be mixed in one Server Component — `import { Text } from "…/server"; import { Button } from "…"` is the normal pattern. The server entry is purely additive; consumers who never use it see no behavioural change.
 
@@ -144,6 +145,19 @@ export default function Profile() {
 ```
 
 Sub-entries (`/primitives`, `/components`, `/tokens`, `/providers`) were removed in Phase 13d — they had been silently broken for external consumers since v1.0.0 because cross-chunk references to `cva` and other shared utilities failed at runtime. A single main entry collapses that class of bug structurally; tree-shaking still works at the named-export level via any modern bundler. The `./server`, `./hooks`, and `./granular` entries sidestep the same regression by each being their OWN independent Vite build with all third-party deps externalised — no chunks are shared between entries, and `./granular`'s preserveModules layout has no extracted chunks at all (source modules map 1:1 to output files).
+
+## Extending the tokens with your own Tailwind
+
+If your app **also** runs Tailwind v4, you can let your own Tailwind generate the design system's token utilities — so `text-fg-brand`, `bg-surface-brand-strong`, `ring-line-focus`, `text-fg-brand/80`, etc. are first-class in your project, theme-aware, with no copied values. Import the **compiled** stylesheet for RDS's own component classes and the **raw** token source for the `@theme`:
+
+```css
+/* your globals.css */
+@import "tailwindcss";
+@import "@fabio.caffarello/react-design-system/styles" layer(rds); /* compiled RDS component classes */
+@import "@fabio.caffarello/react-design-system/theme"; /* raw @theme: your Tailwind builds the token utilities */
+```
+
+`./theme` ships the `@theme` blocks **uncompiled** (not the resolved `@layer theme` output), so your Tailwind reads them and emits the utilities referencing `var(--color-…)` — the light/dark selector overrides in the same file then flip the resolved color at runtime. Do **not** wrap the tokens in a `@theme inline { … }` bridge: `inline` resolves the value at build time and breaks theming (and a self-referential bridge collapses to `transparent` — the bug that motivated this export). Batteries-included consumers who don't run Tailwind keep importing only `./styles` and need none of this.
 
 ## Working with Claude Code
 

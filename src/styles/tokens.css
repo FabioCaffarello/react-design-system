@@ -1,0 +1,59 @@
+/**
+ * Design System — Raw Token Source (consumer-extendable)
+ *
+ * This is the SOURCE-of-truth token cascade with NOTHING Tailwind-specific
+ * around it: no `@import "tailwindcss"`, no `@source`, no utilities, no
+ * component classes. It carries only the `@theme {…}` blocks (primitives +
+ * semantic) and the light/dark selector overrides.
+ *
+ * It exists so a Tailwind v4 consumer can `@import` the design system's
+ * tokens RAW and let THEIR OWN Tailwind generate the utilities natively
+ * (`text-fg-brand`, `bg-surface-brand-strong`, `ring-line-focus`, …) —
+ * theme-aware, with one source of truth and no fragile re-export bridge.
+ * Issue #234.
+ *
+ * Build artifact: `scripts/build-tokens-css.mjs` inlines this `@import`
+ * chain into `dist/tokens.css` WITHOUT running it through Tailwind (the
+ * `@theme` blocks must reach the consumer uncompiled). Published as the
+ * `./theme` (and `./theme.css`) package export.
+ *
+ * DO NOT add `@import "tailwindcss"`, `@source`, `@apply`, or utility/
+ * component CSS here — those belong to `src/styles/index.css` (the batteries-
+ * included compiled `./styles` bundle), never to the raw token source.
+ * `scripts/validate-theme-export.mjs` fails the build if any leak in.
+ *
+ * The import order mirrors `src/styles/index.css` exactly (primitives →
+ * semantic → themes), minus the Tailwind entry and the utilities tail, so
+ * the two never drift in token coverage.
+ *
+ * @brand brasil-a-vera (default, overridable)
+ */
+
+/* ============================================
+ * PRIMITIVE TOKENS
+ * Raw design values — colors, spacing, etc.
+ * ============================================ */
+
+@import "./primitives/colors.css";
+@import "./primitives/brand.css";
+@import "./primitives/spacing.css";
+@import "./primitives/typography.css";
+@import "./primitives/shadows.css";
+@import "./primitives/radius.css";
+@import "./primitives/animations.css";
+
+/* ============================================
+ * SEMANTIC TOKENS
+ * Meaningful tokens that reference primitives.
+ * ============================================ */
+
+@import "./semantic/colors.css";
+@import "./semantic/surfaces.css";
+@import "./semantic/borders.css";
+
+/* ============================================
+ * THEMES
+ * Light/dark selector overrides — essential for theme-awareness.
+ * ============================================ */
+
+@import "./themes/index.css";

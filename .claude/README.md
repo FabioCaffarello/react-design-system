@@ -18,6 +18,7 @@ setup is reproducible.
 | `rules/hooks.md`                | editing `src/ui/hooks/**` or `src/ui/index.ts`     | Internal vs public hook categories + promotion contract               |
 | `rules/providers.md`            | editing providers/ or any `*Provider*`/`*Context*` | Infra Provider/Context canonicity (one path only)                     |
 | `rules/server-entry.md`         | editing server.ts, vite configs, smoke fixture     | Server-entry contract, the two safety axes, enforcement map           |
+| `rules/theme-export.md`         | editing `src/styles/**` or theme-export scripts    | The `./theme` raw-`@theme` export: compiled-vs-raw, inliner, the gate |
 | `skills/new-component/SKILL.md` | `/new-component` or auto                           | Full component creation workflow                                      |
 | `skills/component-doc/SKILL.md` | `/component-doc` or auto                           | MDX doc authoring for an existing component                           |
 | `commands/prune.md`             | `/prune <target>`                                  | Safe dead-weight removal                                              |
