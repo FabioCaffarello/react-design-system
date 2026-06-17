@@ -1,3 +1,11 @@
+## [4.3.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.2.0...v4.3.0) (2026-06-17)
+
+### ✨ Features
+
+* **databadge:** server-safe metadata badge with source + tone ([#228](https://github.com/FabioCaffarello/react-design-system/issues/228)) ([2068e94](https://github.com/FabioCaffarello/react-design-system/commit/2068e947a75cd8cd4e60f69163dfb2d753d41218))
+* **tokens:** Okabe-Ito chart palette + getChartColor ([#229](https://github.com/FabioCaffarello/react-design-system/issues/229)) ([d8701c7](https://github.com/FabioCaffarello/react-design-system/commit/d8701c70a7d343ff26381d341691b574fcd3cf6c))
+* **tokens:** solid status fills + on-color text pair ([#230](https://github.com/FabioCaffarello/react-design-system/issues/230)) ([88fc7e7](https://github.com/FabioCaffarello/react-design-system/commit/88fc7e767db1e8d43a826e8729b3092cedd8f301))
+
 ## [4.2.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.1.0...v4.2.0) (2026-06-16)
 
 ### ✨ Features
