@@ -198,6 +198,14 @@ canvas — intrinsic to Okabe-Ito's light hues. Fine for fills (bars,
 areas); for thin strokes (lines) add an outline or order a darker series
 first. The colorblind-safety guarantee is independent of this.
 
+**Categorical soft-wash (`dataviz`).** For a badge-style "category /
+analytical" tone (not a chart fill), use `bg-dataviz-bg` +
+`text-dataviz-dark` + `border-dataviz` — a reddish-purple fuchsia wash
+(`text-dataviz-dark` over `bg-dataviz-bg` is 5.89:1 light / 8.41:1 dark),
+the badge-facing member of this axis. It is a category, not a status, and
+is distinct from the brand `secondary` violet and from `accent` (cyan).
+Its only consumer today is `DataBadge` `tone="dataviz"`.
+
 ## Spacing Tokens
 
 Spacing tokens are based on a 4px base unit, providing consistent spacing throughout the design system.

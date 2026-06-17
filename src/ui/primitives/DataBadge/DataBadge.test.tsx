@@ -76,6 +76,7 @@ describe("DataBadge", () => {
           "border-line-secondary",
         ],
       ],
+      ["dataviz", ["bg-dataviz-bg", "text-dataviz-dark", "border-dataviz"]],
     ] as const)("applies the %s tone classes", (tone, classes) => {
       const { container } = render(<DataBadge label="x" tone={tone} />);
       expect(rootOf(container)).toHaveClass(...classes);

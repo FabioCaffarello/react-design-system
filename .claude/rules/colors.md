@@ -168,6 +168,17 @@ tritanopia), with the canonical `black` swapped for a neutral gray so the
   because Okabe-Ito is an external canonical set, not a 50..950 ramp — a
   documented, intentional exception to the "reference a primitive" norm.
 
+**Categorical soft-wash tone (`dataviz`).** For badge-style "category /
+analytical" emphasis (not a chart fill), use the `dataviz` soft-wash trio:
+`bg-dataviz-bg` + `text-dataviz-dark` + `border-dataviz` (a reddish-purple
+fuchsia wash; `text-dataviz-dark` over `bg-dataviz-bg` is 5.89:1 light /
+8.41:1 dark). It is the badge-facing member of this data-viz axis — a
+**category**, deliberately distinct from the brand `secondary` violet
+(state-vs-brand-vs-category, Principle 1) and from `accent` (cyan). It
+references the `fuchsia` primitive scale (so, unlike the `chart-*` tokens,
+it is NOT a raw-HEX exception). Today's only consumer is the `DataBadge`
+`tone="dataviz"`.
+
 ### Theme-agnostic translucent layers
 
 `bg-scrim` (50% black) and `bg-tint-hover` (10% black) **do not flip**
