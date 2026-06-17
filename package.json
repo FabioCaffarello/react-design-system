@@ -32,7 +32,9 @@
       "import": "./dist/granular/index.js"
     },
     "./styles": "./dist/react-design-system.css",
-    "./styles.css": "./dist/react-design-system.css"
+    "./styles.css": "./dist/react-design-system.css",
+    "./theme": "./dist/tokens.css",
+    "./theme.css": "./dist/tokens.css"
   },
   "files": [
     "dist",
@@ -43,8 +45,8 @@
     "access": "public"
   },
   "scripts": {
-    "build": "npx tsc --project tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist && vite build && vite build --config vite.config.server.ts && vite build --config vite.config.hooks.ts && vite build --config vite.config.granular.ts && npm run build:validate",
-    "build:validate": "tsx scripts/validate-build-exports.ts && node scripts/validate-use-client-in-dist.mjs && node scripts/validate-server-entry.mjs",
+    "build": "npx tsc --project tsconfig.app.json --declaration --emitDeclarationOnly --outDir dist && vite build && vite build --config vite.config.server.ts && vite build --config vite.config.hooks.ts && vite build --config vite.config.granular.ts && node scripts/build-tokens-css.mjs && npm run build:validate",
+    "build:validate": "tsx scripts/validate-build-exports.ts && node scripts/validate-use-client-in-dist.mjs && node scripts/validate-server-entry.mjs && node scripts/validate-theme-export.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --build --force tsconfig.json",
     "storybook": "storybook dev -p 6006",
