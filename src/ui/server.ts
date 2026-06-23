@@ -150,7 +150,7 @@ export type { ContainerProps } from "./layouts/Container/Container";
 export { Stack } from "./layouts/Stack/Stack";
 export type { StackProps } from "./layouts/Stack/Stack";
 
-// ---------- components (23) ----------
+// ---------- components (24) ----------
 // AutocompleteOption was removed from this entry in the issue #160 sweep.
 // The static analyser in `scripts/lib/server-safe.mjs` had classified it
 // server-safe (it uses no hooks and no createContext), but the component
@@ -168,6 +168,17 @@ export type { StackProps } from "./layouts/Stack/Stack";
 // it ships behind the `"use client"` banner that its own source carries.
 export { default as Breadcrumb } from "./components/Breadcrumb/Breadcrumb";
 export type { BreadcrumbItem } from "./components/Breadcrumb/Breadcrumb";
+
+// EmptyStateBase — server-safe presentational core of EmptyState (issue #252
+// follow-up). EmptyState itself stays main-entry-only because its barrel
+// import of Button (via ../../primitives) transitively pulls Input.tsx →
+// useId, which the analyser correctly flags. EmptyStateBase uses concrete
+// source-file imports only (Text/Text, tokens/spacing, tokens/typography)
+// so the walk stays clean. Trade-off documented in component JSDoc and
+// server-entry.md: the `onAction` callback path is client-only by design;
+// EmptyStateBase covers the zero-JS server case where the CTA is a link.
+export { default as EmptyStateBase } from "./components/EmptyState/EmptyStateBase";
+export type { EmptyStateBaseProps } from "./components/EmptyState/EmptyStateBase";
 
 export { default as Card } from "./components/Card/Card";
 export type { CardProps } from "./components/Card/Card";
