@@ -42,6 +42,7 @@ import {
   AvatarBase,
   Badge,
   Breadcrumb,
+  EmptyStateBase,
   Button,
   Card,
   CardActions,
@@ -234,6 +235,17 @@ export default function Page() {
             </tr>
           </tbody>
         </table>
+
+        {/* EmptyStateBase (#252 follow-up) — server-safe empty-state shell.
+            The two paths exercised: title-only (no message, no action) and
+            the full composition (title + message + zero-JS link action).
+            Neither path emits a function prop on a DOM element (axis 2). */}
+        <EmptyStateBase title="Sem resultados" />
+        <EmptyStateBase
+          title="Nenhuma proposição"
+          message="Tente outros filtros."
+          action={<a href="/?reset">Limpar filtros</a>}
+        />
 
         {/* TabsAsLinks (#210) — server-safe URL-nav tabs. Static items only
             (string labels + hrefs, a caller-supplied active boolean); the
