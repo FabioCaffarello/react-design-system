@@ -1,6 +1,7 @@
 import { type HTMLAttributes, type ReactNode } from "react";
 import { cn } from "../../utils";
 import { getRadiusClass } from "../../tokens/radius";
+import { getSpacingClass } from "../../tokens/spacing";
 
 export type StatGroupLayout = "strip" | "grid";
 export type StatGroupCols = 2 | 3 | 4;
@@ -27,6 +28,53 @@ export interface StatGroupProps extends HTMLAttributes<HTMLDivElement> {
    * @default 4
    */
   cols?: StatGroupCols;
+  /**
+   * Optional slot for a badge that floats centered over the top border of
+   * the container. Use when all metrics in the group share a common
+   * provenance mark (e.g. a trust badge, data-source seal, tier label).
+   *
+   * The slot is intentionally opaque — the consumer supplies any ReactNode
+   * and owns the badge's styling and a11y. `StatGroup` provides only the
+   * positioning, not the badge shape. This is the same convention as the
+   * `kicker` slot in `HeroSection` or the `badge` slot in `PageHeader`.
+   *
+   * ### Layout
+   *
+   * When `floatingBadge` is supplied the outer container gains
+   * `pt-4` (16 px) top padding, which creates a landing zone for the
+   * badge's bottom half while keeping the first stat row clear. The badge
+   * itself is absolutely centred at `top-4 left-1/2`, then shifted up by
+   * `−50%` of its own height so its centre sits on the inner container's
+   * top border. This calibration is accurate for badges up to ~32 px tall
+   * (a standard `Badge` or small `Chip`). If a taller badge is needed,
+   * pass a `className` that increases the top padding to match.
+   *
+   * ### Reading order
+   *
+   * The badge node appears in the DOM **before** the stat cells, so screen
+   * readers encounter it first — "Fonte oficial, followed by the metrics" —
+   * which is the correct contextual order.
+   *
+   * @example
+   * ```tsx
+   * import { CheckCircle2 } from "lucide-react";
+   * import { Badge } from "@fabio.caffarello/react-design-system";
+   *
+   * <StatGroup
+   *   layout="strip"
+   *   floatingBadge={
+   *     <Badge variant="success" size="sm">
+   *       <CheckCircle2 size={10} aria-hidden="true" />
+   *       Fonte oficial
+   *     </Badge>
+   *   }
+   * >
+   *   <Stat icon={<Users />} value="726" label="Parlam." align="center" />
+   *   <Stat icon={<FileText />} value="28,1 mil" label="Proposições" align="center" />
+   * </StatGroup>
+   * ```
+   */
+  floatingBadge?: ReactNode;
   children: ReactNode;
 }
 
@@ -45,17 +93,18 @@ const gridColsMd: Record<StatGroupCols, string> = {
  *
  * ### Divider technique
  *
- * The container has `bg-line-default` and `gap-px` (1 px); each child
- * `Stat` carries its own `bg-surface-base`. The 1 px of gap exposes the
- * container's background as the divider line, while each cell masks its
- * own area with `bg-surface-base`. Works identically for the strip
- * layout (vertical dividers) and the grid layout (vertical AND
- * horizontal dividers, automatically, as the grid reflows). No separate
- * `Divider` component, no per-cell border logic.
+ * The inner container has `bg-line-default` and `gap-px` (1 px); each
+ * child `Stat` carries its own `bg-surface-base`. The 1 px of gap exposes
+ * the container's background as the divider line, while each cell masks
+ * its own area with `bg-surface-base`. Works identically for the strip
+ * layout (vertical dividers) and the grid layout (vertical AND horizontal
+ * dividers, automatically, as the grid reflows). No separate `Divider`
+ * component, no per-cell border logic.
  *
- * The outer ring is `border border-line-default` matching the gap color,
- * with `rounded-lg` and `overflow-hidden` clipping the inner cells to
- * the radius.
+ * The inner ring is `border border-line-default` matching the gap color,
+ * with `rounded-lg` and `overflow-hidden` clipping the inner cells to the
+ * radius. The outer wrapper is `relative` so the optional `floatingBadge`
+ * can be absolutely positioned over the inner container's top border.
  *
  * ### Server-safe
  *
@@ -82,6 +131,7 @@ const gridColsMd: Record<StatGroupCols, string> = {
 export function StatGroup({
   layout = "grid",
   cols = 4,
+  floatingBadge,
   className,
   children,
   ...props
@@ -91,14 +141,26 @@ export function StatGroup({
   return (
     <div
       className={cn(
-        "bg-line-default border border-line-default overflow-hidden gap-px",
-        getRadiusClass("lg"),
-        isGrid ? `grid grid-cols-2 ${gridColsMd[cols]}` : "flex",
+        "relative",
+        floatingBadge && getSpacingClass("base", "pt"),
         className,
       )}
       {...props}
     >
-      {children}
+      {floatingBadge ? (
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+          {floatingBadge}
+        </div>
+      ) : null}
+      <div
+        className={cn(
+          "bg-line-default border border-line-default overflow-hidden gap-px",
+          getRadiusClass("lg"),
+          isGrid ? `grid grid-cols-2 ${gridColsMd[cols]}` : "flex",
+        )}
+      >
+        {children}
+      </div>
     </div>
   );
 }
