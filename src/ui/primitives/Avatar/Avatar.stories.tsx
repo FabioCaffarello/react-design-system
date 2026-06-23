@@ -14,22 +14,28 @@ const meta: Meta<typeof Avatar> = {
 
 A versatile avatar component for displaying user profile images or initials. Supports fallback display when image fails to load.
 
+### Size scale
+
+| size | px  | Use case                          |
+|------|-----|-----------------------------------|
+| xs   | 24  | Tight inline / notification dot   |
+| sm   | 32  | Comment thread, compact row       |
+| md   | 40  | Default — card header, form row   |
+| lg   | 48  | Expanded card, sidebar profile    |
+| xl   | 64  | Detail-page section header        |
+| 2xl  | 96  | Hero profile (PerfilHeader)       |
+| 3xl  | 112 | Full-bleed hero cover             |
+
+### Lazy loading
+
+Pass \`loading="lazy"\` when rendering many avatars in a list (e.g. 24 parliamentary cards per page). The browser defers off-screen image loads, improving LCP. The default is \`"eager"\` for backward compatibility.
+
 ### Events
 
 | Event | Description | Parameters | When Fired |
 |-------|-------------|------------|------------|
 | \`onError\` | Erro ao carregar imagem | \`(event: SyntheticEvent) => void\` | Quando a imagem falha ao carregar |
 | \`onLoad\` | Imagem carregada | \`(event: SyntheticEvent) => void\` | Quando a imagem é carregada com sucesso |
-
-### States
-
-| State | Description | How to Activate | Visual |
-|-------|-------------|-----------------|--------|
-| \`with-image\` | Com imagem | \`src\` prop fornecida | Avatar com imagem |
-| \`with-fallback\` | Com fallback | Sem \`src\` ou erro ao carregar | Avatar com iniciais ou fallback |
-| \`circle\` | Formato circular | \`variant="circle"\` | Avatar circular |
-| \`rounded\` | Formato arredondado | \`variant="rounded"\` | Avatar com bordas arredondadas |
-| \`square\` | Formato quadrado | \`variant="square"\` | Avatar quadrado |
         `,
       },
     },
@@ -49,13 +55,19 @@ A versatile avatar component for displaying user profile images or initials. Sup
     },
     size: {
       control: "select",
-      options: ["xs", "sm", "md", "lg", "xl"],
+      options: ["xs", "sm", "md", "lg", "xl", "2xl", "3xl"],
       description: "Size of the avatar",
     },
     variant: {
       control: "select",
       options: ["circle", "square", "rounded"],
       description: "Shape variant of the avatar",
+    },
+    loading: {
+      control: "select",
+      options: ["eager", "lazy"],
+      description:
+        'Native img loading behaviour. Use "lazy" in listings to defer off-screen images.',
     },
     onError: {
       description: "Callback fired when the image fails to load",
@@ -96,24 +108,100 @@ export const WithImage: Story = {
   },
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Size scale
+// ─────────────────────────────────────────────────────────────────────────────
+
 export const Sizes: Story = {
   render: () => (
-    <div className="flex items-center gap-4">
-      <Avatar fallback="XS" size="xs" alt="Extra small" />
-      <Avatar fallback="SM" size="sm" alt="Small" />
-      <Avatar fallback="MD" size="md" alt="Medium" />
-      <Avatar fallback="LG" size="lg" alt="Large" />
-      <Avatar fallback="XL" size="xl" alt="Extra large" />
+    <div className="flex items-end gap-4">
+      <div className="flex flex-col items-center gap-2">
+        <Avatar fallback="XS" size="xs" alt="Extra small" />
+        <span className="text-fg-tertiary text-xs">xs · 24px</span>
+      </div>
+      <div className="flex flex-col items-center gap-2">
+        <Avatar fallback="SM" size="sm" alt="Small" />
+        <span className="text-fg-tertiary text-xs">sm · 32px</span>
+      </div>
+      <div className="flex flex-col items-center gap-2">
+        <Avatar fallback="MD" size="md" alt="Medium" />
+        <span className="text-fg-tertiary text-xs">md · 40px</span>
+      </div>
+      <div className="flex flex-col items-center gap-2">
+        <Avatar fallback="LG" size="lg" alt="Large" />
+        <span className="text-fg-tertiary text-xs">lg · 48px</span>
+      </div>
+      <div className="flex flex-col items-center gap-2">
+        <Avatar fallback="XL" size="xl" alt="Extra large" />
+        <span className="text-fg-tertiary text-xs">xl · 64px</span>
+      </div>
+      <div className="flex flex-col items-center gap-2">
+        <Avatar fallback="2X" size="2xl" alt="2x large" />
+        <span className="text-fg-tertiary text-xs">2xl · 96px</span>
+      </div>
+      <div className="flex flex-col items-center gap-2">
+        <Avatar fallback="3X" size="3xl" alt="3x large" />
+        <span className="text-fg-tertiary text-xs">3xl · 112px</span>
+      </div>
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story: "All available sizes of the avatar component.",
+        story:
+          "Full size scale from `xs` (24 px) to `3xl` (112 px). `2xl` and `3xl` are the hero sizes for profile headers.",
       },
     },
   },
 };
+
+export const HeroSizes: Story = {
+  name: "Hero sizes — 2xl / 3xl (profile headers)",
+  render: () => (
+    <div className="flex items-start gap-8">
+      <div className="flex flex-col items-center gap-3">
+        <Avatar
+          src="https://i.pravatar.cc/150?img=12"
+          alt="Dep. Maria Silva"
+          fallback="MS"
+          size="2xl"
+        />
+        <div className="text-center">
+          <p className="text-fg-primary text-sm font-medium">
+            Dep. Maria Silva
+          </p>
+          <p className="text-fg-tertiary text-xs">2xl · 96 px</p>
+        </div>
+      </div>
+      <div className="flex flex-col items-center gap-3">
+        <Avatar
+          src="https://i.pravatar.cc/150?img=33"
+          alt="Sen. João Santos"
+          fallback="JS"
+          size="3xl"
+        />
+        <div className="text-center">
+          <p className="text-fg-primary text-sm font-medium">
+            Sen. João Santos
+          </p>
+          <p className="text-fg-tertiary text-xs">3xl · 112 px</p>
+        </div>
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Hero-profile sizes (`2xl` = 96 px, `3xl` = 112 px) — designed for `PerfilHeader` and similar full-bleed identity sections where the parliamentary photo needs to be large and prominent. Matches brasil-a-vera's `size-24` / `sm:size-28` override.",
+      },
+    },
+  },
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Variants
+// ─────────────────────────────────────────────────────────────────────────────
 
 export const Variants: Story = {
   render: () => (
@@ -131,6 +219,10 @@ export const Variants: Story = {
     },
   },
 };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Fallback
+// ─────────────────────────────────────────────────────────────────────────────
 
 export const WithFallback: Story = {
   render: () => (
@@ -175,6 +267,62 @@ export const ImageError: Story = {
     },
   },
 };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Lazy loading
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const LazyLoading: Story = {
+  name: "loading='lazy' — listing optimisation",
+  render: () => (
+    <div className="space-y-4">
+      <p className="text-fg-secondary text-sm">
+        Simulated listing — 12 avatars that would include off-screen items in
+        production. All use <code>loading="lazy"</code> so the browser defers
+        images below the viewport.
+      </p>
+      <div className="flex flex-wrap gap-3">
+        {Array.from({ length: 12 }, (_, i) => (
+          <Avatar
+            key={i}
+            src={`https://i.pravatar.cc/150?img=${i + 1}`}
+            alt={`Parlamentar ${i + 1}`}
+            fallback={`P${i + 1}`}
+            size="md"
+            loading="lazy"
+          />
+        ))}
+      </div>
+      <p className="text-fg-tertiary text-xs">
+        Inspect the network tab: images near the viewport load immediately;
+        others are deferred until scrolled into view.
+      </p>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: `
+Use \`loading="lazy"\` when rendering many avatars in a paginated listing (e.g. 24 parliamentary cards). The browser defers network requests for images outside the viewport, significantly improving **LCP** and reducing data usage on slow connections.
+
+The default is \`"eager"\` (browser native default) to preserve backward compatibility — change only on listings, not on hero avatars above the fold.
+
+\`\`\`tsx
+// Listing row — defer off-screen images
+<Avatar src={parlamentar.foto} alt={parlamentar.nome} loading="lazy" />
+
+// Hero header — keep eager (above the fold)
+<Avatar src={parlamentar.foto} alt={parlamentar.nome} size="2xl" />
+\`\`\`
+        `,
+      },
+    },
+  },
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AvatarGroup
+// ─────────────────────────────────────────────────────────────────────────────
 
 export const Group: Story = {
   render: () => (
@@ -305,7 +453,10 @@ export const GroupSpacing: Story = {
   },
 };
 
+// ─────────────────────────────────────────────────────────────────────────────
 // Event Stories
+// ─────────────────────────────────────────────────────────────────────────────
+
 export const WithEvents: Story = {
   render: () => {
     const handleError = fn(
@@ -349,7 +500,10 @@ export const WithEvents: Story = {
   },
 };
 
-// State Stories
+// ─────────────────────────────────────────────────────────────────────────────
+// State stories
+// ─────────────────────────────────────────────────────────────────────────────
+
 export const WithImageState: Story = {
   args: {
     src: "https://i.pravatar.cc/150?img=1",

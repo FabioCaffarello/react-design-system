@@ -24,7 +24,6 @@ describe("Avatar", () => {
     const img = container.querySelector("img");
     expect(img).toBeInTheDocument();
 
-    // Simulate image error
     if (img) {
       fireEvent.error(img);
     }
@@ -34,26 +33,44 @@ describe("Avatar", () => {
     });
   });
 
-  it("applies correct size classes", () => {
-    const { container, rerender } = render(<Avatar fallback="JD" size="xs" />);
-    let avatar = container.querySelector('div[role="img"]');
-    expect(avatar).toHaveClass("h-6", "w-6", "text-xs");
+  describe("size prop", () => {
+    it("applies correct size classes for all sizes", () => {
+      const { container, rerender } = render(
+        <Avatar fallback="JD" size="xs" />,
+      );
+      let avatar = container.querySelector('div[role="img"]');
+      expect(avatar).toHaveClass("h-6", "w-6", "text-xs");
 
-    rerender(<Avatar fallback="JD" size="sm" />);
-    avatar = container.querySelector('div[role="img"]');
-    expect(avatar).toHaveClass("h-8", "w-8", "text-sm");
+      rerender(<Avatar fallback="JD" size="sm" />);
+      avatar = container.querySelector('div[role="img"]');
+      expect(avatar).toHaveClass("h-8", "w-8", "text-sm");
 
-    rerender(<Avatar fallback="JD" size="md" />);
-    avatar = container.querySelector('div[role="img"]');
-    expect(avatar).toHaveClass("h-10", "w-10", "text-base");
+      rerender(<Avatar fallback="JD" size="md" />);
+      avatar = container.querySelector('div[role="img"]');
+      expect(avatar).toHaveClass("h-10", "w-10", "text-base");
 
-    rerender(<Avatar fallback="JD" size="lg" />);
-    avatar = container.querySelector('div[role="img"]');
-    expect(avatar).toHaveClass("h-12", "w-12", "text-lg");
+      rerender(<Avatar fallback="JD" size="lg" />);
+      avatar = container.querySelector('div[role="img"]');
+      expect(avatar).toHaveClass("h-12", "w-12", "text-lg");
 
-    rerender(<Avatar fallback="JD" size="xl" />);
-    avatar = container.querySelector('div[role="img"]');
-    expect(avatar).toHaveClass("h-16", "w-16", "text-xl");
+      rerender(<Avatar fallback="JD" size="xl" />);
+      avatar = container.querySelector('div[role="img"]');
+      expect(avatar).toHaveClass("h-16", "w-16", "text-xl");
+
+      rerender(<Avatar fallback="JD" size="2xl" />);
+      avatar = container.querySelector('div[role="img"]');
+      expect(avatar).toHaveClass("h-24", "w-24", "text-3xl");
+
+      rerender(<Avatar fallback="JD" size="3xl" />);
+      avatar = container.querySelector('div[role="img"]');
+      expect(avatar).toHaveClass("h-28", "w-28", "text-4xl");
+    });
+
+    it("md is the default size", () => {
+      const { container } = render(<Avatar fallback="JD" />);
+      const avatar = container.querySelector('div[role="img"]');
+      expect(avatar).toHaveClass("h-10", "w-10");
+    });
   });
 
   it("applies correct variant classes", () => {
@@ -120,6 +137,50 @@ describe("Avatar", () => {
     const { container } = render(<Avatar fallback="JD" data-testid="avatar" />);
     const avatar = container.querySelector('[data-testid="avatar"]');
     expect(avatar).toBeInTheDocument();
+  });
+
+  describe("loading prop", () => {
+    it("default loading is eager (no attribute or attribute='eager')", () => {
+      const { container } = render(<Avatar src="/user.jpg" alt="User" />);
+      const img = container.querySelector("img");
+      // Browsers treat "eager" as the default; both absent and explicit "eager"
+      // are equivalent. We just verify "lazy" is NOT set by default.
+      expect(img?.getAttribute("loading")).not.toBe("lazy");
+    });
+
+    it("loading='lazy' is forwarded to the <img> element", () => {
+      const { container } = render(
+        <Avatar src="/user.jpg" alt="User" loading="lazy" />,
+      );
+      const img = container.querySelector("img");
+      expect(img).toHaveAttribute("loading", "lazy");
+    });
+
+    it("loading='eager' is forwarded to the <img> element", () => {
+      const { container } = render(
+        <Avatar src="/user.jpg" alt="User" loading="eager" />,
+      );
+      const img = container.querySelector("img");
+      expect(img).toHaveAttribute("loading", "eager");
+    });
+
+    it("loading has no effect when src is absent (no img rendered)", () => {
+      // When there is no src the <img> is not mounted, so loading is a no-op.
+      const { container } = render(<Avatar fallback="JD" loading="lazy" />);
+      expect(container.querySelector("img")).not.toBeInTheDocument();
+      // Fallback is shown instead.
+      expect(screen.getByText("JD")).toBeInTheDocument();
+    });
+
+    it("loading does NOT land on the wrapper <div>", () => {
+      // The wrapper spreads ...props (HTMLDivElement attrs). `loading` must
+      // NOT leak there — it's a named prop consumed before the spread.
+      const { container } = render(
+        <Avatar src="/user.jpg" alt="User" loading="lazy" />,
+      );
+      const wrapper = container.querySelector('div[role="img"]');
+      expect(wrapper).not.toHaveAttribute("loading");
+    });
   });
 });
 
@@ -240,5 +301,25 @@ describe("AvatarGroup", () => {
     );
     const group = container.querySelector('div[role="group"]');
     expect(group).toHaveClass("custom-group");
+  });
+
+  it("accepts hero sizes (2xl, 3xl) via size prop", () => {
+    const { rerender } = render(
+      <AvatarGroup size="2xl">
+        <Avatar fallback="U1" />
+        <Avatar fallback="U2" />
+      </AvatarGroup>,
+    );
+    // AvatarGroup clones children with the group size — overflow avatar
+    // must also reflect the hero size.
+    rerender(
+      <AvatarGroup max={1} size="2xl">
+        <Avatar fallback="U1" />
+        <Avatar fallback="U2" />
+      </AvatarGroup>,
+    );
+    const overflowAvatar = screen.getByText("+1");
+    const overflowContainer = overflowAvatar.closest('div[role="img"]');
+    expect(overflowContainer).toHaveClass("h-24", "w-24");
   });
 });

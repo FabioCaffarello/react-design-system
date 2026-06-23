@@ -9,7 +9,7 @@ import {
 import { getRadiusClass } from "../../tokens/radius";
 import { cn } from "../../utils";
 
-export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
+export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
 
 export interface AvatarProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -21,14 +21,43 @@ export interface AvatarProps extends Omit<
   size?: AvatarSize;
   variant?: "circle" | "square" | "rounded";
   "aria-label"?: string;
+  /**
+   * Controls the browser's native lazy-loading behaviour for the avatar
+   * `<img>`. Set to `"lazy"` to defer loading until the avatar is near the
+   * viewport — strongly recommended for listings with many off-screen
+   * profile images (e.g. a 24-card parliament listing).
+   *
+   * Maps directly to the native `<img loading>` attribute and has no effect
+   * when `src` is absent (no `<img>` is rendered).
+   *
+   * @default 'eager'
+   */
+  loading?: "lazy" | "eager";
 }
 
 /**
  * Avatar Component
  *
- * A versatile avatar component for displaying user profile images or initials.
- * Supports fallback display when image fails to load or is not provided.
- * Fully accessible with ARIA attributes.
+ * A versatile avatar component for displaying user profile images or
+ * initials. Supports fallback display when image fails to load or is not
+ * provided. Fully accessible with ARIA attributes.
+ *
+ * ### Size scale
+ *
+ * | size | px  | Use case                        |
+ * |------|-----|---------------------------------|
+ * | xs   | 24  | Tight inline / notification dot |
+ * | sm   | 32  | Comment thread, compact row     |
+ * | md   | 40  | Default — card header, form row |
+ * | lg   | 48  | Expanded card, sidebar profile  |
+ * | xl   | 64  | Detail-page section header      |
+ * | 2xl  | 96  | Hero profile (PerfilHeader)     |
+ * | 3xl  | 112 | Full-bleed hero cover           |
+ *
+ * ### Lazy loading
+ *
+ * Pass `loading="lazy"` on listings to defer off-screen image loads. The
+ * default is `"eager"` (matches browser default) for backward compatibility.
  *
  * @example
  * ```tsx
@@ -38,8 +67,11 @@ export interface AvatarProps extends Omit<
  * // With fallback initials
  * <Avatar fallback="JD" alt="John Doe" />
  *
- * // Custom size
- * <Avatar src="/user.jpg" size="lg" />
+ * // Hero profile — larger size + lazy load
+ * <Avatar src="/perfil.jpg" alt="Dep. Silva" size="2xl" />
+ *
+ * // Listing — lazy-load all avatars below the fold
+ * <Avatar src="/user.jpg" alt="User Name" loading="lazy" />
  * ```
  */
 const Avatar = forwardRef<HTMLDivElement, AvatarProps>(function Avatar(
@@ -49,6 +81,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(function Avatar(
     fallback,
     size = "md",
     variant = "circle",
+    loading = "eager",
     "aria-label": ariaLabel,
     className = "",
     ...props
@@ -58,13 +91,14 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(function Avatar(
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  // Size and variant classes (not using cva to avoid type issues with dynamic classes)
   const sizeClasses: Record<AvatarSize, string> = {
     xs: "h-6 w-6 text-xs",
     sm: "h-8 w-8 text-sm",
     md: "h-10 w-10 text-base",
     lg: "h-12 w-12 text-lg",
     xl: "h-16 w-16 text-xl",
+    "2xl": "h-24 w-24 text-3xl",
+    "3xl": "h-28 w-28 text-4xl",
   };
 
   const variantClasses = {
@@ -106,6 +140,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(function Avatar(
         <img
           src={src}
           alt={alt || ""}
+          loading={loading}
           className={cn(
             "w-full",
             "h-full",
