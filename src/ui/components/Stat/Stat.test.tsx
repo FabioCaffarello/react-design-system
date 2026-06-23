@@ -142,6 +142,31 @@ describe("Stat", () => {
   });
 });
 
+// ─────────────────────────────────────────────────────────────────────────────
+// StatGroup
+//
+// DOM structure (after the floatingBadge refactor):
+//
+//   <div class="relative [pt-4?]" {...props}>   ← outer wrapper (root)
+//     [<div class="absolute …">…</div>]          ← badge (conditional)
+//     <div class="bg-line-default …">             ← inner visual container
+//       {children}
+//     </div>
+//   </div>
+//
+// Tests that inspect visual-container classes query the INNER div via
+// `container.firstChild.lastChild` (always the inner container, regardless
+// of whether the badge is rendered, since the badge is prepended and the
+// inner container is always the last child).
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Helper: return the inner visual container (bg-line-default div). */
+function getInnerContainer(container: HTMLElement): HTMLElement {
+  const outer = container.firstChild as HTMLElement;
+  // The inner container is always the last child of the outer wrapper.
+  return outer.lastChild as HTMLElement;
+}
+
 describe("StatGroup", () => {
   describe("layout='grid' (default)", () => {
     it("renders grid layout with mobile=2 cols", () => {
@@ -151,9 +176,9 @@ describe("StatGroup", () => {
           <Stat value="2" label="b" />
         </StatGroup>,
       );
-      const root = container.firstChild as HTMLElement;
-      expect(root.className).toContain("grid");
-      expect(root.className).toContain("grid-cols-2");
+      const inner = getInnerContainer(container);
+      expect(inner.className).toContain("grid");
+      expect(inner.className).toContain("grid-cols-2");
     });
 
     it("cols=4 (default) → md:grid-cols-4", () => {
@@ -162,8 +187,8 @@ describe("StatGroup", () => {
           <Stat value="1" label="a" />
         </StatGroup>,
       );
-      const root = container.firstChild as HTMLElement;
-      expect(root.className).toContain("md:grid-cols-4");
+      const inner = getInnerContainer(container);
+      expect(inner.className).toContain("md:grid-cols-4");
     });
 
     it("cols=3 → md:grid-cols-3", () => {
@@ -172,9 +197,9 @@ describe("StatGroup", () => {
           <Stat value="1" label="a" />
         </StatGroup>,
       );
-      const root = container.firstChild as HTMLElement;
-      expect(root.className).toContain("md:grid-cols-3");
-      expect(root.className).not.toContain("md:grid-cols-4");
+      const inner = getInnerContainer(container);
+      expect(inner.className).toContain("md:grid-cols-3");
+      expect(inner.className).not.toContain("md:grid-cols-4");
     });
 
     it("cols=2 → md:grid-cols-2 (mobile and desktop both 2-up)", () => {
@@ -183,8 +208,8 @@ describe("StatGroup", () => {
           <Stat value="1" label="a" />
         </StatGroup>,
       );
-      const root = container.firstChild as HTMLElement;
-      expect(root.className).toContain("md:grid-cols-2");
+      const inner = getInnerContainer(container);
+      expect(inner.className).toContain("md:grid-cols-2");
     });
   });
 
@@ -196,10 +221,10 @@ describe("StatGroup", () => {
           <Stat value="2" label="b" />
         </StatGroup>,
       );
-      const root = container.firstChild as HTMLElement;
-      expect(root.className).toContain("flex");
-      expect(root.className).not.toContain("grid-cols-2");
-      expect(root.className).not.toContain("md:grid-cols");
+      const inner = getInnerContainer(container);
+      expect(inner.className).toContain("flex");
+      expect(inner.className).not.toContain("grid-cols-2");
+      expect(inner.className).not.toContain("md:grid-cols");
     });
 
     it("ignores cols in strip layout (no md:grid-cols class)", () => {
@@ -208,21 +233,21 @@ describe("StatGroup", () => {
           <Stat value="1" label="a" />
         </StatGroup>,
       );
-      const root = container.firstChild as HTMLElement;
-      expect(root.className).not.toContain("md:grid-cols");
+      const inner = getInnerContainer(container);
+      expect(inner.className).not.toContain("md:grid-cols");
     });
   });
 
   describe("divider technique (1px)", () => {
-    it("container carries bg-line-default for divider expose + gap-px", () => {
+    it("inner container carries bg-line-default for divider expose + gap-px", () => {
       const { container } = render(
         <StatGroup>
           <Stat value="1" label="a" />
         </StatGroup>,
       );
-      const root = container.firstChild as HTMLElement;
-      expect(root.className).toContain("bg-line-default");
-      expect(root.className).toContain("gap-px");
+      const inner = getInnerContainer(container);
+      expect(inner.className).toContain("bg-line-default");
+      expect(inner.className).toContain("gap-px");
     });
 
     it("each Stat masks its own area with bg-surface-base", () => {
@@ -236,6 +261,119 @@ describe("StatGroup", () => {
       const s2 = container.querySelector('[data-testid="s2"]') as HTMLElement;
       expect(s1.className).toContain("bg-surface-base");
       expect(s2.className).toContain("bg-surface-base");
+    });
+  });
+
+  describe("floatingBadge slot", () => {
+    it("renders the badge node when floatingBadge is provided", () => {
+      render(
+        <StatGroup floatingBadge={<span>Fonte oficial</span>}>
+          <Stat value="726" label="Parlam." />
+        </StatGroup>,
+      );
+      expect(screen.getByText("Fonte oficial")).toBeInTheDocument();
+    });
+
+    it("does NOT render a badge wrapper when floatingBadge is absent", () => {
+      const { container } = render(
+        <StatGroup>
+          <Stat value="726" label="Parlam." />
+        </StatGroup>,
+      );
+      const outer = container.firstChild as HTMLElement;
+      // Without floatingBadge, the outer wrapper has exactly one child (inner container).
+      expect(outer.childElementCount).toBe(1);
+    });
+
+    it("outer wrapper gains pt-4 (pt-base spacing) when floatingBadge is present", () => {
+      const { container } = render(
+        <StatGroup floatingBadge={<span>Badge</span>}>
+          <Stat value="1" label="a" />
+        </StatGroup>,
+      );
+      const outer = container.firstChild as HTMLElement;
+      expect(outer.className).toContain("pt-4");
+    });
+
+    it("outer wrapper does NOT gain pt-4 when floatingBadge is absent", () => {
+      const { container } = render(
+        <StatGroup>
+          <Stat value="1" label="a" />
+        </StatGroup>,
+      );
+      const outer = container.firstChild as HTMLElement;
+      expect(outer.className).not.toContain("pt-4");
+    });
+
+    it("badge wrapper is absolutely positioned (for overlay effect)", () => {
+      render(
+        <StatGroup floatingBadge={<span data-testid="badge">Fonte</span>}>
+          <Stat value="1" label="a" />
+        </StatGroup>,
+      );
+      const badge = screen.getByTestId("badge");
+      const badgeWrapper = badge.parentElement as HTMLElement;
+      expect(badgeWrapper.className).toContain("absolute");
+      expect(badgeWrapper.className).toContain("-translate-y-1/2");
+      expect(badgeWrapper.className).toContain("left-1/2");
+      expect(badgeWrapper.className).toContain("-translate-x-1/2");
+    });
+
+    it("badge appears before stat content in DOM (correct AT reading order)", () => {
+      render(
+        <StatGroup floatingBadge={<span>Fonte oficial</span>}>
+          <Stat value="726" label="Parlam." />
+        </StatGroup>,
+      );
+      const badge = screen.getByText("Fonte oficial");
+      const value = screen.getByText("726");
+      // badge must appear BEFORE the stat value in document order.
+      expect(
+        badge.compareDocumentPosition(value) & Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
+    });
+
+    it("inner visual container is unaffected by floatingBadge (same classes)", () => {
+      const { container: withBadge } = render(
+        <StatGroup floatingBadge={<span>Badge</span>}>
+          <Stat value="1" label="a" />
+        </StatGroup>,
+      );
+      const { container: withoutBadge } = render(
+        <StatGroup>
+          <Stat value="1" label="a" />
+        </StatGroup>,
+      );
+      const innerWith = getInnerContainer(withBadge);
+      const innerWithout = getInnerContainer(withoutBadge);
+      expect(innerWith.className).toBe(innerWithout.className);
+    });
+
+    it("forwards props (data-testid, className) to the outer wrapper", () => {
+      const { container } = render(
+        <StatGroup
+          floatingBadge={<span>Badge</span>}
+          data-testid="stat-group"
+          className="custom"
+        >
+          <Stat value="1" label="a" />
+        </StatGroup>,
+      );
+      const outer = container.firstChild as HTMLElement;
+      expect(outer).toHaveAttribute("data-testid", "stat-group");
+      expect(outer.className).toContain("custom");
+    });
+  });
+
+  describe("outer wrapper is always relative", () => {
+    it("outer wrapper carries relative class (enables badge positioning)", () => {
+      const { container } = render(
+        <StatGroup>
+          <Stat value="1" label="a" />
+        </StatGroup>,
+      );
+      const outer = container.firstChild as HTMLElement;
+      expect(outer.className).toContain("relative");
     });
   });
 });

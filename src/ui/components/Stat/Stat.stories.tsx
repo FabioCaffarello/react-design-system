@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Users, FileText, Vote, Clock } from "lucide-react";
+import { Users, FileText, Vote, Clock, ShieldCheck } from "lucide-react";
 import { Stat } from "./Stat";
 import { StatGroup } from "./StatGroup";
+import Badge from "../../primitives/Badge/Badge";
 
 const meta: Meta<typeof StatGroup> = {
   title: "Components/Stat",
@@ -238,6 +239,98 @@ export const ColsTwo: Story = {
       description: {
         story:
           "`cols=2` stays 2-up at every breakpoint — useful when you only have two metrics or want the visual density consistent across viewports.",
+      },
+    },
+  },
+};
+
+// ─────────────────────────────────────────────────────────────────────────
+// floatingBadge slot
+// ─────────────────────────────────────────────────────────────────────────
+
+export const FloatingBadge: Story = {
+  name: "floatingBadge — provenance seal over top border",
+  render: () => (
+    <StatGroup
+      layout="strip"
+      floatingBadge={
+        <Badge variant="success" size="sm">
+          <ShieldCheck size={12} aria-hidden="true" className="mr-1" />
+          Fonte oficial
+        </Badge>
+      }
+    >
+      <Stat
+        icon={<Users size={20} aria-hidden="true" />}
+        value="726"
+        label="Parlam."
+        align="center"
+      />
+      <Stat
+        icon={<FileText size={20} aria-hidden="true" />}
+        value="28,1 mil"
+        label="Proposições"
+        align="center"
+      />
+      <Stat
+        icon={<Vote size={20} aria-hidden="true" />}
+        value="1,1 mil"
+        label="Votações"
+        align="center"
+      />
+    </StatGroup>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: `
+Demonstrates the \`floatingBadge\` slot: an opaque \`ReactNode\` rendered
+centred over the top border of the group container. Use when **all** metrics
+in the group share a common provenance mark (e.g. a trust badge, data-source
+seal, tier label).
+
+The consumer owns the badge's shape, style, and a11y — \`StatGroup\` provides
+only the positioning. The badge node appears in the DOM **before** the stat
+cells so screen readers encounter the provenance mark first.
+
+\`StatGroup\` adds \`pt-4\` (16 px) when \`floatingBadge\` is present so the
+first stat row does not collide with the badge's bottom half. This is
+calibrated for badges up to ~32 px tall. Pass a custom \`className\` to
+increase the spacing for taller badges.
+        `,
+      },
+    },
+  },
+};
+
+export const FloatingBadgeGrid: Story = {
+  name: "floatingBadge — grid layout",
+  render: () => (
+    <StatGroup
+      layout="grid"
+      cols={3}
+      floatingBadge={
+        <Badge variant="info" size="sm">
+          <ShieldCheck size={12} aria-hidden="true" className="mr-1" />
+          Dado oficial
+        </Badge>
+      }
+    >
+      <Stat
+        value="87%"
+        label="Alinhamento"
+        hint="últimos 12 m"
+        tone="success"
+      />
+      <Stat value="R$ 187.472,95" label="Gastos" hint="no mandato" />
+      <Stat value="42" label="Votações" hint="no banco" />
+    </StatGroup>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The `floatingBadge` slot works identically on `layout="grid"` — the badge floats over the top border, and the grid divider technique is unaffected.',
       },
     },
   },
