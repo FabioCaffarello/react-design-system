@@ -1,3 +1,9 @@
+## [4.7.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.6.0...v4.7.0) (2026-06-23)
+
+### ✨ Features
+
+* **avatar:** hero sizes (2xl/3xl) + loading="lazy" forwarding ([#247](https://github.com/FabioCaffarello/react-design-system/issues/247) [#248](https://github.com/FabioCaffarello/react-design-system/issues/248)) ([7051714](https://github.com/FabioCaffarello/react-design-system/commit/7051714af13bbceeecfb95411bc2e9eb03ec0823))
+
 ## [4.6.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.5.0...v4.6.0) (2026-06-23)
 
 ### ✨ Features
