@@ -1,3 +1,9 @@
+## [4.8.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.7.0...v4.8.0) (2026-06-23)
+
+### ✨ Features
+
+* AvatarBase server-safe, Tooltip ReactNode, EmptyState action slot ([#250](https://github.com/FabioCaffarello/react-design-system/issues/250) [#251](https://github.com/FabioCaffarello/react-design-system/issues/251) [#252](https://github.com/FabioCaffarello/react-design-system/issues/252)) ([#253](https://github.com/FabioCaffarello/react-design-system/issues/253)) ([03ad2ec](https://github.com/FabioCaffarello/react-design-system/commit/03ad2eca16feed422ed62ae9ee14faabd9fd8a97))
+
 ## [4.7.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.6.0...v4.7.0) (2026-06-23)
 
 ### ✨ Features
