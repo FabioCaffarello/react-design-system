@@ -343,3 +343,63 @@ export const BottomPosition: Story = {
     },
   },
 };
+
+export const RichContent: Story = {
+  args: {
+    content: (
+      <span>
+        <strong>Dica importante</strong> — verifique a{" "}
+        <a href="#" className="underline" onClick={(e) => e.preventDefault()}>
+          documentação
+        </a>{" "}
+        para mais detalhes.
+      </span>
+    ),
+    children: <Button>Hover (rich content)</Button>,
+    position: "top",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "`content` now accepts any `ReactNode` — pass bold text, inline links, or arbitrary markup. For tooltips where the user needs to *click* a link inside the panel, also set `interactive`.",
+      },
+    },
+  },
+};
+
+export const Interactive: Story = {
+  render: () => (
+    <Tooltip
+      interactive
+      position="bottom"
+      content={
+        <span className="flex flex-col gap-1">
+          <strong className="text-fg-inverse">
+            Pirâmide de Confiança — L2
+          </strong>
+          <span className="text-fg-inverse-secondary text-xs">
+            Dados verificados por fonte oficial.
+          </span>
+          <a
+            href="#"
+            className="text-fg-inverse underline text-xs mt-1"
+            onClick={(e) => e.preventDefault()}
+          >
+            Saiba mais sobre a Pirâmide de Confiança
+          </a>
+        </span>
+      }
+    >
+      <Button variant="secondary">Badge L2 (interactive tooltip)</Button>
+    </Tooltip>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Set `interactive` when the panel contains clickable content (links, buttons). The tooltip stays open while the pointer hovers over the panel (150 ms grace-period bridge from trigger to panel) and while keyboard focus is inside it.",
+      },
+    },
+  },
+};

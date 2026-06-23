@@ -276,4 +276,130 @@ describe("Tooltip", () => {
       expect(triggerRef.current).toBe(screen.getByText("Button"));
     });
   });
+
+  describe("ReactNode content", () => {
+    it("renders a plain string content (backward compat)", () => {
+      render(
+        <Tooltip content="Simple string" delay={0}>
+          <Button>Hover me</Button>
+        </Tooltip>,
+      );
+      fireEvent.focus(screen.getByText("Hover me"));
+      expect(screen.getByRole("tooltip")).toHaveTextContent("Simple string");
+    });
+
+    it("renders a ReactNode content with rich markup", () => {
+      render(
+        <Tooltip
+          content={
+            <>
+              <strong>Title</strong>
+              <p>Description paragraph</p>
+              <a href="#">Link</a>
+            </>
+          }
+          delay={0}
+        >
+          <Button>Hover me</Button>
+        </Tooltip>,
+      );
+      fireEvent.focus(screen.getByText("Hover me"));
+      const tooltip = screen.getByRole("tooltip");
+      expect(tooltip.querySelector("strong")).toHaveTextContent("Title");
+      expect(tooltip.querySelector("p")).toHaveTextContent(
+        "Description paragraph",
+      );
+      expect(tooltip.querySelector("a")).toHaveTextContent("Link");
+    });
+  });
+
+  describe("interactive mode", () => {
+    it("stays visible when mouse enters the tooltip panel (grace period bridged)", async () => {
+      vi.useFakeTimers();
+      try {
+        render(
+          <Tooltip content="Panel content" delay={0} interactive>
+            <Button>Trigger</Button>
+          </Tooltip>,
+        );
+        const button = screen.getByText("Trigger");
+
+        // Show tooltip
+        fireEvent.mouseEnter(button);
+        act(() => vi.advanceTimersByTime(0));
+        expect(screen.getByRole("tooltip")).toBeInTheDocument();
+
+        // Mouse leaves trigger — grace period starts (150ms)
+        fireEvent.mouseLeave(button);
+        // Panel not gone yet
+        expect(screen.getByRole("tooltip")).toBeInTheDocument();
+
+        // Mouse enters the panel before grace period expires
+        fireEvent.mouseEnter(screen.getByRole("tooltip"));
+        act(() => vi.advanceTimersByTime(200));
+
+        // Panel should still be visible (grace-period timer was cancelled)
+        expect(screen.getByRole("tooltip")).toBeInTheDocument();
+      } finally {
+        vi.useRealTimers();
+      }
+    });
+
+    it("closes when mouse leaves the tooltip panel in interactive mode", async () => {
+      render(
+        <Tooltip content="Panel content" delay={0} interactive>
+          <Button>Trigger</Button>
+        </Tooltip>,
+      );
+      const button = screen.getByText("Trigger");
+
+      fireEvent.mouseEnter(button);
+      await waitFor(() =>
+        expect(screen.getByRole("tooltip")).toBeInTheDocument(),
+      );
+
+      const panel = screen.getByRole("tooltip");
+      fireEvent.mouseEnter(panel);
+      fireEvent.mouseLeave(panel);
+
+      await waitFor(() =>
+        expect(screen.queryByRole("tooltip")).not.toBeInTheDocument(),
+      );
+    });
+
+    it("stays open when focus moves from trigger to a link inside the tooltip", () => {
+      render(
+        <Tooltip content={<a href="#">Inside link</a>} delay={0} interactive>
+          <Button>Trigger</Button>
+        </Tooltip>,
+      );
+      const button = screen.getByText("Trigger");
+      fireEvent.focus(button);
+      expect(screen.getByRole("tooltip")).toBeInTheDocument();
+
+      const link = screen.getByRole("link", { name: "Inside link" });
+      // Simulate blur where relatedTarget is the link inside the tooltip
+      fireEvent.blur(button, { relatedTarget: link });
+      // Tooltip must remain open because focus moved into the panel
+      expect(screen.getByRole("tooltip")).toBeInTheDocument();
+    });
+
+    it("closes when focus leaves both trigger and tooltip in interactive mode", () => {
+      render(
+        <>
+          <Tooltip content={<a href="#">Inside link</a>} delay={0} interactive>
+            <Button>Trigger</Button>
+          </Tooltip>
+          <button>Outside</button>
+        </>,
+      );
+      const button = screen.getByText("Trigger");
+      fireEvent.focus(button);
+      expect(screen.getByRole("tooltip")).toBeInTheDocument();
+
+      const outside = screen.getByText("Outside");
+      fireEvent.blur(button, { relatedTarget: outside });
+      expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+    });
+  });
 });

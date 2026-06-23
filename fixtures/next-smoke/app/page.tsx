@@ -39,6 +39,7 @@
 // path — the exact path that broke the Card.
 import { Input } from "@fabio.caffarello/react-design-system";
 import {
+  AvatarBase,
   Badge,
   Breadcrumb,
   Button,
@@ -108,6 +109,18 @@ export default function Page() {
         <form method="get" action="/search">
           <InputBase id="q" name="q" label="Search" placeholder="Buscar…" />
         </form>
+
+        {/* AvatarBase (#250) — server-safe avatar shell. The two paths
+            exercised: initials (src absent — fallback rendered on server)
+            and <img> (src present — no onError handler, static render).
+            Neither path emits a function prop on a DOM element (axis 2). */}
+        <AvatarBase fallback="JP" alt="Server-rendered initials" size="md" />
+        <AvatarBase
+          src="https://i.pravatar.cc/150?img=3"
+          alt="Server-rendered image"
+          size="md"
+          loading="lazy"
+        />
 
         <Stack>
           <Badge variant="primary">badge</Badge>

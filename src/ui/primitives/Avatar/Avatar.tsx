@@ -8,8 +8,11 @@ import {
 } from "react";
 import { getRadiusClass } from "../../tokens/radius";
 import { cn } from "../../utils";
+import type { AvatarSize } from "./AvatarBase";
 
-export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
+// AvatarSize is defined in AvatarBase (the server-safe base) and
+// re-exported here so consumers importing from Avatar get the same type.
+export type { AvatarSize } from "./AvatarBase";
 
 export interface AvatarProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
