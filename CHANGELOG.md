@@ -1,3 +1,9 @@
+## [4.6.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.5.0...v4.6.0) (2026-06-23)
+
+### ✨ Features
+
+* **stat:** add floatingBadge slot to StatGroup ([#245](https://github.com/FabioCaffarello/react-design-system/issues/245)) ([#246](https://github.com/FabioCaffarello/react-design-system/issues/246)) ([0200147](https://github.com/FabioCaffarello/react-design-system/commit/0200147b48bb75da5aa4c875698e84f4036a5aa9))
+
 ## [4.5.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.4.0...v4.5.0) (2026-06-17)
 
 ### ✨ Features
