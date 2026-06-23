@@ -32,7 +32,7 @@
 // composes them via its normal RSC client-boundary semantics.
 // ============================================================================
 
-// ---------- primitives (12) ----------
+// ---------- primitives (14) ----------
 //
 // Every primitive is imported from its concrete source file (not the
 // folder index) so the dependency the analyser sees matches the
@@ -42,6 +42,20 @@
 // reading directly from the source file makes every re-export here
 // transparent to `scripts/analyze-server-safe.mjs` and
 // `scripts/validate-server-entry.mjs`.
+
+// AvatarBase — server-safe presentational core of Avatar (issue #250).
+// The interactive Avatar (useState imageError/imageLoaded, onError swap)
+// stays main-entry-only. AvatarBase covers the zero-JS listing use-case:
+// initials rendered on the server when src is null/absent; <img> when src
+// is present, accepting that a 404 shows the native broken-image indicator
+// (no graceful JS fallback). Concrete-file re-export per rule 1 of
+// .claude/rules/server-entry.md.
+export { default as AvatarBase } from "./primitives/Avatar/AvatarBase";
+export type {
+  AvatarBaseProps,
+  AvatarSize,
+} from "./primitives/Avatar/AvatarBase";
+
 export { default as Badge } from "./primitives/Badge/Badge";
 export type {
   BadgeProps,

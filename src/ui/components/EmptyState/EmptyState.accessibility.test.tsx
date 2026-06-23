@@ -48,6 +48,14 @@ describe("EmptyState Accessibility", () => {
       );
     });
 
+    it("aria-label is just the title when message is absent (title-only variant)", () => {
+      render(<EmptyState title="Nada aqui" />);
+      expect(screen.getByRole("status")).toHaveAttribute(
+        "aria-label",
+        "Nada aqui",
+      );
+    });
+
     it("title renders as <h3> heading", () => {
       render(<EmptyState title="Nothing here" message="Add an item." />);
 
@@ -109,11 +117,34 @@ describe("EmptyState Accessibility", () => {
     });
   });
 
+  describe("Keyboard Navigation", () => {
+    it("action slot link is in the natural tab order", async () => {
+      const userEvent = await import("@testing-library/user-event");
+      const user = userEvent.default.setup();
+      render(
+        <EmptyState
+          title="Sem resultados"
+          action={<a href="/?reset">Limpar filtros</a>}
+        />,
+      );
+
+      await user.tab();
+      expect(
+        screen.getByRole("link", { name: "Limpar filtros" }),
+      ).toHaveFocus();
+    });
+  });
+
   describe("Screen Reader Support", () => {
     it("without CTA, no button is in the AT tree", () => {
       render(<EmptyState title="Nothing" message="Try later." />);
 
       expect(screen.queryByRole("button")).not.toBeInTheDocument();
+    });
+
+    it("action slot link is visible in the AT tree", () => {
+      render(<EmptyState title="Vazio" action={<a href="/back">Voltar</a>} />);
+      expect(screen.getByRole("link", { name: "Voltar" })).toBeInTheDocument();
     });
 
     it("aria-label survives illustration: the AT announcement is unchanged", () => {

@@ -12,7 +12,29 @@ import {
 
 export interface EmptyStateProps extends HTMLAttributes<HTMLDivElement> {
   title: string;
-  message: string;
+  /**
+   * Descriptive message below the title.
+   * Optional — several empty states have only a title (e.g. a section
+   * that speaks for itself). When absent, the `aria-label` is just the
+   * title; the `<p>` element is not rendered.
+   */
+  message?: string;
+  /**
+   * Action slot — accepts any ReactNode (link, button, custom CTA).
+   * Takes priority over `actionLabel` + `onAction`.
+   *
+   * Use this prop when the action is a server-rendered `<a>` or
+   * `next/link` (zero-JS route); the component renders it without
+   * wrapping it in a client Button. When you need a callback-driven
+   * button, use `actionLabel` + `onAction` instead (or pass
+   * `<Button onClick={…}>…</Button>` here).
+   *
+   * @example
+   * // Server-rendered link (zero-JS)
+   * <EmptyState title="Sem resultados" action={<a href="/lista">Limpar filtros</a>} />
+   */
+  action?: ReactNode;
+  /** @deprecated Prefer the `action` slot for new code. Still supported for backwards compat. */
   actionLabel?: string;
   onAction?: () => void;
   illustration?: ReactNode;
@@ -37,6 +59,7 @@ export interface EmptyStateProps extends HTMLAttributes<HTMLDivElement> {
 export default function EmptyState({
   title,
   message,
+  action,
   actionLabel,
   onAction,
   illustration,
@@ -55,7 +78,16 @@ export default function EmptyState({
     className,
   );
 
-  const showAction = variant === "withAction" || (actionLabel && onAction);
+  // `action` slot takes priority; fall back to the legacy actionLabel+onAction pair.
+  const resolvedAction =
+    action ??
+    (actionLabel && onAction ? (
+      <Button variant="primary" onClick={onAction}>
+        {actionLabel}
+      </Button>
+    ) : null);
+
+  const showAction = !!resolvedAction || variant === "withAction";
   const showIllustration = variant === "withIllustration" || illustration;
 
   return (
@@ -63,7 +95,7 @@ export default function EmptyState({
       className={classes}
       role="status"
       aria-live="polite"
-      aria-label={`${title}. ${message}`}
+      aria-label={message ? `${title}. ${message}` : title}
       {...props}
     >
       {showIllustration && illustration && (
@@ -84,23 +116,21 @@ export default function EmptyState({
         {title}
       </Text>
 
-      <Text
-        as="p"
-        className={cn(
-          getTypographySize("bodySmall"),
-          "text-fg-secondary",
-          getSpacingClass("md", "mb"),
-          "max-w-sm", // Max width utility - justified as layout constraint
-        )}
-      >
-        {message}
-      </Text>
-
-      {showAction && actionLabel && onAction && (
-        <Button variant="primary" onClick={onAction}>
-          {actionLabel}
-        </Button>
+      {message && (
+        <Text
+          as="p"
+          className={cn(
+            getTypographySize("bodySmall"),
+            "text-fg-secondary",
+            getSpacingClass("md", "mb"),
+            "max-w-sm", // Max width utility - justified as layout constraint
+          )}
+        >
+          {message}
+        </Text>
       )}
+
+      {showAction && resolvedAction}
     </div>
   );
 }

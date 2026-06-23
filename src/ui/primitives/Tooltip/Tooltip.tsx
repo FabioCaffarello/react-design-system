@@ -24,11 +24,25 @@ import { getTypographySize } from "../../tokens/typography";
 import { getZIndexClass } from "../../tokens/z-index";
 import { cn, cva, mergeRefs } from "../../utils";
 
-export interface TooltipProps extends HTMLAttributes<HTMLDivElement> {
-  content: string;
+// Omit the native HTML `content` attribute (string | undefined) so we can
+// widen it to ReactNode without a type conflict.
+export interface TooltipProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "content"
+> {
+  content: ReactNode;
   children: ReactNode;
   position?: "top" | "bottom" | "left" | "right";
   delay?: number;
+  /**
+   * When true, the tooltip panel stays open while the pointer hovers over it
+   * (150 ms grace-period bridge), and keyboard focus may move into focusable
+   * elements inside the panel (e.g. links). Use for educational / rich
+   * tooltips that contain interactive content.
+   *
+   * @default false
+   */
+  interactive?: boolean;
   "aria-label"?: string;
   /**
    * When true, the tooltip wrapper won't interfere with absolute positioning of children.
@@ -42,10 +56,30 @@ export interface TooltipProps extends HTMLAttributes<HTMLDivElement> {
  *
  * A tooltip component for displaying additional information on hover.
  *
+ * Pass `content` as a plain string for simple labels, or as a `ReactNode`
+ * for rich / educational content. Set `interactive` when the panel contains
+ * clickable elements (links, buttons) — the tooltip then stays open while
+ * the pointer is over the panel and while keyboard focus is inside it.
+ *
  * @example
  * ```tsx
+ * // Simple string
  * <Tooltip content="This is a tooltip">
  *   <Button>Hover me</Button>
+ * </Tooltip>
+ *
+ * // Rich interactive content
+ * <Tooltip
+ *   interactive
+ *   content={
+ *     <>
+ *       <strong>Pirâmide de Confiança L2</strong>
+ *       <p>Dados verificados por fonte oficial.</p>
+ *       <a href="/ajuda/piramide">Saiba mais</a>
+ *     </>
+ *   }
+ * >
+ *   <Badge>L2</Badge>
  * </Tooltip>
  * ```
  */
@@ -55,6 +89,7 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(
     children,
     position = "top",
     delay = 200,
+    interactive = false,
     className = "",
     "aria-label": _ariaLabel,
     preservePositioning = false,
@@ -86,7 +121,14 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(
       clearTimeout(timeoutIdRef.current);
       timeoutIdRef.current = null;
     }
-    setIsVisible(false);
+    if (!interactive) {
+      setIsVisible(false);
+      return;
+    }
+    // Grace period — allows the pointer to travel from the trigger to the
+    // tooltip panel without the tooltip closing in between.
+    const id = setTimeout(() => setIsVisible(false), 150);
+    timeoutIdRef.current = id;
   };
 
   const handleFocus = () => {
@@ -94,7 +136,11 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(
     setIsVisible(true);
   };
 
-  const handleBlur = () => {
+  const handleBlur = (e: FocusEvent<HTMLElement>) => {
+    // When interactive, keep the tooltip open if focus moves into the panel.
+    if (interactive && tooltipRef.current?.contains(e.relatedTarget as Node)) {
+      return;
+    }
     setIsVisible(false);
   };
 
@@ -102,6 +148,30 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(
     if (e.key === "Escape") {
       setIsVisible(false);
       triggerRef.current?.blur();
+    }
+  };
+
+  // --- Interactive tooltip panel handlers ---
+
+  const handleTooltipMouseEnter = () => {
+    // Cancel the pending close started by handleMouseLeave's grace period.
+    if (timeoutIdRef.current) {
+      clearTimeout(timeoutIdRef.current);
+      timeoutIdRef.current = null;
+    }
+  };
+
+  const handleTooltipMouseLeave = () => {
+    setIsVisible(false);
+  };
+
+  const handleTooltipBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+    // Close only when focus leaves both the panel AND the trigger.
+    if (
+      !tooltipRef.current?.contains(e.relatedTarget as Node) &&
+      !triggerRef.current?.contains(e.relatedTarget as Node)
+    ) {
+      setIsVisible(false);
     }
   };
 
@@ -139,7 +209,7 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(
   // Helper to get arrow border color
   // Uses complete classes that Tailwind can detect
   const getArrowBorderColor = (
-    position: "top" | "bottom" | "left" | "right",
+    pos: "top" | "bottom" | "left" | "right",
   ): string => {
     // Arrow follows the tooltip body's surface-inverse color so the
     // triangle's point visually merges into the body.
@@ -149,7 +219,7 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(
       left: "border-l-surface-inverse",
       right: "border-r-surface-inverse",
     };
-    return borderMap[position];
+    return borderMap[pos];
   };
 
   // Tooltip variants using CVA
@@ -279,7 +349,7 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(
             existingProps.onFocus?.(e);
           },
           onBlur: (e: FocusEvent<HTMLElement>) => {
-            handleBlur();
+            handleBlur(e);
             existingProps.onBlur?.(e);
           },
           onKeyDown: (e: KeyboardEvent<HTMLElement>) => {
@@ -304,9 +374,17 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip(
         <div
           ref={tooltipRef}
           id={tooltipId}
-          className={cn(tooltipVariants({ position }))}
+          className={cn(
+            tooltipVariants({ position }),
+            // Interactive tooltips contain rich / wrappable content — override
+            // the CVA whitespace-nowrap with whitespace-normal and cap the width.
+            interactive && "whitespace-normal max-w-xs",
+          )}
           role="tooltip"
           aria-live="polite"
+          onMouseEnter={interactive ? handleTooltipMouseEnter : undefined}
+          onMouseLeave={interactive ? handleTooltipMouseLeave : undefined}
+          onBlur={interactive ? handleTooltipBlur : undefined}
         >
           {content}
           <div className={cn(arrowVariants({ position }))} aria-hidden="true" />

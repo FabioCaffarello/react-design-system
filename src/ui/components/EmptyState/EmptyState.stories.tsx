@@ -371,3 +371,71 @@ export const WithIllustrationState: Story = {
     },
   },
 };
+
+// ── action slot (issue #252) ───────────────────────────────────────────────
+
+export const WithActionSlot: Story = {
+  name: "action slot — server-rendered link",
+  render: () => (
+    <EmptyState
+      title="Sem resultados"
+      message="Nenhum parlamentar corresponde aos filtros aplicados."
+      action={
+        <a
+          href="/?reset"
+          className="text-fg-brand underline text-sm font-medium hover:text-fg-brand-emphasis"
+        >
+          Limpar filtros
+        </a>
+      }
+    />
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The `action` slot accepts any ReactNode — a plain `<a href>`, a `next/link`, or a custom CTA. Use this to keep zero-JS routes free of client islands: the link is server-rendered and requires no hydration, while the legacy `actionLabel` + `onAction` pair still works for callback-driven buttons.",
+      },
+    },
+  },
+};
+
+export const TitleOnly: Story = {
+  name: "Title only (no message)",
+  args: {
+    title: "Nenhum filtro ativo",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "`message` is now optional. Omit it when the title is self-explanatory. The `aria-label` becomes just the title; no `<p>` is rendered.",
+      },
+    },
+  },
+};
+
+export const TitleOnlyWithLink: Story = {
+  name: "Title only + action slot",
+  render: () => (
+    <EmptyState
+      title="Nada por aqui"
+      action={
+        <a
+          href="/"
+          className="text-fg-brand underline text-sm font-medium hover:text-fg-brand-emphasis"
+        >
+          Voltar ao início
+        </a>
+      }
+    />
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Title-only empty state paired with the action slot: no message, no Button, zero-JS.",
+      },
+    },
+  },
+};
