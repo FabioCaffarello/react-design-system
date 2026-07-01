@@ -1,3 +1,9 @@
+## [4.9.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.8.0...v4.9.0) (2026-06-23)
+
+### ✨ Features
+
+* **empty-state:** EmptyStateBase server-safe shell for zero-JS RSC listings ([#252](https://github.com/FabioCaffarello/react-design-system/issues/252)) ([#254](https://github.com/FabioCaffarello/react-design-system/issues/254)) ([6738e4b](https://github.com/FabioCaffarello/react-design-system/commit/6738e4b76e644c4297385116eb07cb94b42ab60e)), closes [#250](https://github.com/FabioCaffarello/react-design-system/issues/250) [#251](https://github.com/FabioCaffarello/react-design-system/issues/251) [#250](https://github.com/FabioCaffarello/react-design-system/issues/250) [#251](https://github.com/FabioCaffarello/react-design-system/issues/251) [#224](https://github.com/FabioCaffarello/react-design-system/issues/224) [#250](https://github.com/FabioCaffarello/react-design-system/issues/250)
+
 ## [4.8.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.7.0...v4.8.0) (2026-06-23)
 
 ### ✨ Features
