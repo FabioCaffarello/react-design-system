@@ -1,3 +1,9 @@
+## [4.10.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.9.0...v4.10.0) (2026-07-01)
+
+### ✨ Features
+
+* AvatarBase, EmptyStateBase server-safe + SectionCard, SectionNav, DetailLayout ([#258](https://github.com/FabioCaffarello/react-design-system/issues/258)) ([33ada15](https://github.com/FabioCaffarello/react-design-system/commit/33ada15b2afd550a715bf4aa9a42d5391e00ffdf)), closes [#250](https://github.com/FabioCaffarello/react-design-system/issues/250) [#251](https://github.com/FabioCaffarello/react-design-system/issues/251) [#252](https://github.com/FabioCaffarello/react-design-system/issues/252) [#250](https://github.com/FabioCaffarello/react-design-system/issues/250) [#251](https://github.com/FabioCaffarello/react-design-system/issues/251) [#252](https://github.com/FabioCaffarello/react-design-system/issues/252) [#252](https://github.com/FabioCaffarello/react-design-system/issues/252) [#224](https://github.com/FabioCaffarello/react-design-system/issues/224) [#250](https://github.com/FabioCaffarello/react-design-system/issues/250) [#255](https://github.com/FabioCaffarello/react-design-system/issues/255) [#256](https://github.com/FabioCaffarello/react-design-system/issues/256) [#257](https://github.com/FabioCaffarello/react-design-system/issues/257) [#255](https://github.com/FabioCaffarello/react-design-system/issues/255) [#256](https://github.com/FabioCaffarello/react-design-system/issues/256) [#257](https://github.com/FabioCaffarello/react-design-system/issues/257)
+
 ## [4.9.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.8.0...v4.9.0) (2026-06-23)
 
 ### ✨ Features
