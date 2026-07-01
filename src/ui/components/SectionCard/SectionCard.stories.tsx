@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FileText, Wallet, Vote, Users } from "lucide-react";
 import { SectionCard } from "./SectionCard";
 import Badge from "../../primitives/Badge/Badge";
-import { Text } from "../../primitives/Text/Text";
+import Text from "../../primitives/Text/Text";
 import { Stack } from "../../layouts/Stack/Stack";
 
 const meta: Meta<typeof SectionCard> = {

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Vote, Wallet, FileText, Users, BarChart } from "lucide-react";
 import { DetailLayout } from "./DetailLayout";
-import { Text } from "../../primitives/Text/Text";
+import Text from "../../primitives/Text/Text";
 import { Stack } from "../../layouts/Stack/Stack";
 import Badge from "../../primitives/Badge/Badge";
 
