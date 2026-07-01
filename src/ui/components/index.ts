@@ -184,3 +184,12 @@ export type {
 
 export { ButtonGroup } from "./ButtonGroup";
 export type { ButtonGroupProps } from "./ButtonGroup";
+
+export { SectionCard } from "./SectionCard";
+export type { SectionCardProps } from "./SectionCard";
+
+export { SectionNav } from "./SectionNav";
+export type { SectionNavProps, SectionNavItem } from "./SectionNav";
+
+export { DetailLayout } from "./DetailLayout";
+export type { DetailLayoutProps, DetailSection } from "./DetailLayout";
