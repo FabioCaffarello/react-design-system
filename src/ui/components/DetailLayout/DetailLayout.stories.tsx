@@ -277,3 +277,109 @@ export const Minimal: Story = {
     navAriaLabel: "Page sections",
   },
 };
+
+export const WithBeforeStats: Story = {
+  name: "WithBeforeStats (slot between header and KPIs)",
+  args: {
+    header: (
+      <Stack gap="xs">
+        <Text as="h1" size="xl" weight="bold">
+          Fulano de Tal
+        </Text>
+        <Text color="secondary">Partido ABC — Estado SP</Text>
+      </Stack>
+    ),
+    beforeStats: (
+      <div
+        style={{
+          padding: "1rem",
+          background: "var(--color-surface-brand-subtle)",
+          borderRadius: "0.5rem",
+          border: "1px solid var(--color-line-brand)",
+        }}
+      >
+        <Text weight="semibold">Leitura rápida</Text>
+        <Text>
+          Parlamentar com alto índice de presença e alinhamento ao governo nas
+          votações do primeiro semestre.
+        </Text>
+      </div>
+    ),
+    stats: (
+      <div
+        style={{
+          display: "flex",
+          gap: "1rem",
+          padding: "1rem",
+          background: "var(--color-surface-subtle)",
+          borderRadius: "0.5rem",
+        }}
+      >
+        <Text>Votações: 342</Text>
+        <Text>Alinhamento: 87%</Text>
+        <Text>Faltas: 12</Text>
+      </div>
+    ),
+    sections: sampleSections,
+    navAriaLabel: "Seções do perfil",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Use `beforeStats` for a page-level summary (e.g. plain-language callout) that sits between the page header and the KPI block.",
+      },
+    },
+  },
+};
+
+export const WithFooter: Story = {
+  name: "WithFooter (cross-links below sections)",
+  args: {
+    sections: sampleSections,
+    footer: (
+      <nav aria-label="Entidades relacionadas">
+        <Text weight="semibold">Veja também</Text>
+        <Stack gap="xs">
+          <Text>
+            <a href="/votacoes/1234">Votação PL 1234/2024</a>
+          </Text>
+          <Text>
+            <a href="/proposicoes/567">PDL 567/2023</a>
+          </Text>
+          <Text>
+            <a href="/parlamentares/sp">Outros parlamentares de SP</a>
+          </Text>
+        </Stack>
+      </nav>
+    ),
+    navAriaLabel: "Page sections",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Use `footer` for cross-entity navigation or any content that belongs after all sections.",
+      },
+    },
+  },
+};
+
+export const WithMobileOrder: Story = {
+  name: "WithMobileOrder (different order on mobile)",
+  args: {
+    sections: sampleSections,
+    // Desktop: votos → gastos → proposicoes (array order)
+    // Mobile: proposicoes → votos → gastos (narrative-first order)
+    mobileOrder: ["proposicoes", "votos", "gastos"],
+    navAriaLabel: "Page sections",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Set `mobileOrder` to change the narrative reading order in the mobile Accordion without affecting the desktop SectionCard stack. IDs absent from `sections` are silently ignored.",
+      },
+    },
+  },
+};

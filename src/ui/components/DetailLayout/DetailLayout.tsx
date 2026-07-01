@@ -50,6 +50,12 @@ export interface DetailLayoutProps extends HTMLAttributes<HTMLDivElement> {
    */
   header?: ReactNode;
   /**
+   * Optional slot rendered between the header and the stats block.
+   * Use for page-level summaries (e.g. a plain-language summary, a callout)
+   * that belong above the KPIs but below the title.
+   */
+  beforeStats?: ReactNode;
+  /**
    * Stats / KPI slot rendered below the header on both breakpoints.
    */
   stats?: ReactNode;
@@ -70,6 +76,15 @@ export interface DetailLayoutProps extends HTMLAttributes<HTMLDivElement> {
    */
   defaultOpenMobile?: string[];
   /**
+   * Narrative order of sections in the mobile Accordion, independent of the
+   * desktop `sections` array order. IDs not found in `sections` are silently
+   * ignored (use for conditional sections that may be absent). Sections
+   * present in `sections` but absent from this list are appended at the end
+   * in their original order. When omitted, mobile uses the same order as
+   * desktop.
+   */
+  mobileOrder?: string[];
+  /**
    * CSS `top` value for the sticky sidebar nav on desktop.
    * Also passed as `scrollOffset` to every `SectionCard`.
    * @default "0"
@@ -80,6 +95,12 @@ export interface DetailLayoutProps extends HTMLAttributes<HTMLDivElement> {
    * @default "Page sections"
    */
   navAriaLabel?: string;
+  /**
+   * Optional slot rendered below the section stack on both breakpoints.
+   * Use for cross-entity navigation links, related-entity footers, or any
+   * content that belongs after all sections.
+   */
+  footer?: ReactNode;
 }
 
 /**
@@ -129,12 +150,15 @@ export interface DetailLayoutProps extends HTMLAttributes<HTMLDivElement> {
 export function DetailLayout({
   breadcrumb,
   header,
+  beforeStats,
   stats,
   sections,
   desktopGridIds = [],
   defaultOpenMobile,
+  mobileOrder,
   stickyNavTop = "0",
   navAriaLabel = "Page sections",
+  footer,
   className,
   style,
   ...props
@@ -154,6 +178,17 @@ export function DetailLayout({
     content: s.content,
   }));
 
+  const mobileAccordionItems = (() => {
+    if (!mobileOrder) return accordionItems;
+    const byId = new Map(accordionItems.map((item) => [item.id, item]));
+    const ordered = mobileOrder
+      .filter((id) => byId.has(id))
+      .map((id) => byId.get(id)!);
+    const mentioned = new Set(mobileOrder);
+    const trailing = accordionItems.filter((item) => !mentioned.has(item.id));
+    return [...ordered, ...trailing];
+  })();
+
   const gridSet = new Set(desktopGridIds);
 
   const mergedStyle: CSSProperties = { ...style };
@@ -170,6 +205,9 @@ export function DetailLayout({
       {/* Header */}
       {header ? <div>{header}</div> : null}
 
+      {/* Before stats */}
+      {beforeStats ? <div>{beforeStats}</div> : null}
+
       {/* Stats */}
       {stats ? <div>{stats}</div> : null}
 
@@ -177,7 +215,7 @@ export function DetailLayout({
       <div className="lg:hidden">
         <Accordion
           type="multiple"
-          items={accordionItems}
+          items={mobileAccordionItems}
           defaultOpen={defaultOpen}
         />
       </div>
@@ -233,6 +271,9 @@ export function DetailLayout({
           })}
         </div>
       </div>
+
+      {/* Footer */}
+      {footer ? <div>{footer}</div> : null}
     </div>
   );
 }

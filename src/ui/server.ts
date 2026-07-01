@@ -150,7 +150,7 @@ export type { ContainerProps } from "./layouts/Container/Container";
 export { Stack } from "./layouts/Stack/Stack";
 export type { StackProps } from "./layouts/Stack/Stack";
 
-// ---------- components (24) ----------
+// ---------- components (25) ----------
 // AutocompleteOption was removed from this entry in the issue #160 sweep.
 // The static analyser in `scripts/lib/server-safe.mjs` had classified it
 // server-safe (it uses no hooks and no createContext), but the component
@@ -262,6 +262,17 @@ export type {
 // Both are pure presentation; the consumer composes them inside `./server`
 // without crossing a client boundary. Concrete-file re-exports per rule 1
 // of `.claude/rules/server-entry.md`.
+// SectionCard — promoted in issue #259. Wraps the Card compound (asSection
+// variant) with an anchor id, scroll-margin-top, icon/badge slots, and an
+// auto-wired aria-labelledby. All its imports are already in this entry
+// (Card, CardHeader, CardTitle, CardSubtitle, CardBody), it uses no hooks,
+// and it assigns no handler to a DOM element unconditionally — axis 1 and
+// axis 2 both pass. The interactive SectionNav (useScrollSpy) stays
+// main-entry-only; SectionCard is the server-safe anchor target it pairs
+// with. Concrete-file re-export per rule 1 of `.claude/rules/server-entry.md`.
+export { SectionCard } from "./components/SectionCard/SectionCard";
+export type { SectionCardProps } from "./components/SectionCard/SectionCard";
+
 export { default as Stat } from "./components/Stat/Stat";
 export type { StatProps, StatTone, StatAlign } from "./components/Stat/Stat";
 

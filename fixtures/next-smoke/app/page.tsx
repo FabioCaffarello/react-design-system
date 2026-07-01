@@ -73,6 +73,7 @@ import {
   Skeleton,
   Spinner,
   Stack,
+  SectionCard,
   Stat,
   StatGroup,
   TableCell,
@@ -235,6 +236,14 @@ export default function Page() {
             </tr>
           </tbody>
         </table>
+
+        {/* SectionCard (#259) — server-safe anchor section shell. Static props
+            only: id, string title, optional scrollOffset. No function props
+            emitted on DOM elements (axis 2). The interactive SectionNav stays
+            main-entry-only; only the anchor target ships here. */}
+        <SectionCard id="smoke-section" title="Smoke section" scrollOffset="0">
+          <Text>section body</Text>
+        </SectionCard>
 
         {/* EmptyStateBase (#252 follow-up) — server-safe empty-state shell.
             The two paths exercised: title-only (no message, no action) and
