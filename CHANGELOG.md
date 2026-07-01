@@ -1,3 +1,9 @@
+## [4.11.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.10.0...v4.11.0) (2026-07-01)
+
+### ✨ Features
+
+* SectionCard server export + DetailLayout footer/mobileOrder/beforeStats ([#262](https://github.com/FabioCaffarello/react-design-system/issues/262)) ([cd8b1a2](https://github.com/FabioCaffarello/react-design-system/commit/cd8b1a21c815c33f6d3de4bf6fae7e6b79a2a329)), closes [#259](https://github.com/FabioCaffarello/react-design-system/issues/259) [#260](https://github.com/FabioCaffarello/react-design-system/issues/260) [#259](https://github.com/FabioCaffarello/react-design-system/issues/259) [#260](https://github.com/FabioCaffarello/react-design-system/issues/260) [259/#260](https://github.com/259/react-design-system/issues/260)
+
 ## [4.10.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.9.0...v4.10.0) (2026-07-01)
 
 ### ✨ Features
