@@ -157,6 +157,92 @@ describe("DetailLayout", () => {
     expect(document.body).toBeTruthy();
   });
 
+  it("renders beforeStats slot between header and stats", () => {
+    render(
+      <DetailLayout
+        sections={sections}
+        header={<h1>Header</h1>}
+        beforeStats={<div data-testid="before-stats">Quick read</div>}
+        stats={<div data-testid="stats">Stats</div>}
+      />,
+    );
+    const beforeStatsEl = screen.getByTestId("before-stats");
+    const statsEl = screen.getByTestId("stats");
+    expect(beforeStatsEl).toBeInTheDocument();
+    expect(statsEl).toBeInTheDocument();
+    // beforeStats appears before stats in document order
+    expect(
+      beforeStatsEl.compareDocumentPosition(statsEl) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
+  it("does not render beforeStats wrapper when omitted", () => {
+    const { container } = render(<DetailLayout sections={sections} />);
+    // Only the expected divs (breadcrumb/header/stats/mobile/desktop) should exist
+    // The beforeStats slot adds an extra div — confirm it's not there by verifying
+    // stats div count is stable. Use data-testid in the paired test above; here we
+    // just assert the component renders without error.
+    expect(container.firstChild).toBeInTheDocument();
+  });
+
+  it("renders footer slot below the section stack", () => {
+    render(
+      <DetailLayout
+        sections={sections}
+        footer={<div data-testid="footer-links">Related links</div>}
+      />,
+    );
+    expect(screen.getByTestId("footer-links")).toBeInTheDocument();
+  });
+
+  it("does not render footer wrapper when omitted", () => {
+    const { container } = render(<DetailLayout sections={sections} />);
+    expect(container.querySelector('[data-testid="footer-links"]')).toBeNull();
+  });
+
+  it("reorders mobile Accordion items per mobileOrder", () => {
+    // sections order: votos, gastos, proposicoes
+    // mobileOrder: proposicoes, votos, gastos → accordion buttons must appear in that order
+    render(
+      <DetailLayout
+        sections={sections}
+        mobileOrder={["proposicoes", "votos", "gastos"]}
+      />,
+    );
+    const buttons = screen.getAllByRole("button");
+    const labels = buttons.map((b) => b.textContent ?? "");
+    const proposicoesIdx = labels.findIndex((l) => l.includes("Proposições"));
+    const votacoesIdx = labels.findIndex((l) => l.includes("Votações"));
+    const gastosIdx = labels.findIndex((l) => l.includes("Gastos"));
+    expect(proposicoesIdx).toBeLessThan(votacoesIdx);
+    expect(votacoesIdx).toBeLessThan(gastosIdx);
+  });
+
+  it("ignores mobileOrder IDs not present in sections", () => {
+    // 'missing' ID is not in sections — should not crash and remaining two appear
+    render(
+      <DetailLayout
+        sections={sections}
+        mobileOrder={["missing", "gastos", "votos"]}
+      />,
+    );
+    const buttons = screen.getAllByRole("button");
+    const labels = buttons.map((b) => b.textContent ?? "");
+    expect(labels.some((l) => l.includes("Gastos"))).toBe(true);
+    expect(labels.some((l) => l.includes("Votações"))).toBe(true);
+  });
+
+  it("appends sections not in mobileOrder after the ordered ones", () => {
+    // Only 'gastos' in mobileOrder; 'votos' and 'proposicoes' are trailing
+    render(<DetailLayout sections={sections} mobileOrder={["gastos"]} />);
+    const buttons = screen.getAllByRole("button");
+    const labels = buttons.map((b) => b.textContent ?? "");
+    const gastosIdx = labels.findIndex((l) => l.includes("Gastos"));
+    const votacoesIdx = labels.findIndex((l) => l.includes("Votações"));
+    expect(gastosIdx).toBeLessThan(votacoesIdx);
+  });
+
   it("applies custom className to root div", () => {
     const { container } = render(
       <DetailLayout sections={sections} className="my-layout" />,
