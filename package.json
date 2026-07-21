@@ -135,7 +135,7 @@
     "husky": "^9.1.7",
     "jsdom": "^29.1.1",
     "lint-staged": "^16.2.7",
-    "lucide-react": "^1.17.0",
+    "lucide-react": "^1.25.0",
     "madge": "^8.0.0",
     "plop": "^4.0.5",
     "postcss": "^8.5.6",
