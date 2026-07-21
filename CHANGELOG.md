@@ -1,3 +1,9 @@
+## [4.11.1](https://github.com/FabioCaffarello/react-design-system/compare/v4.11.0...v4.11.1) (2026-07-21)
+
+### 🐛 Bug Fixes
+
+* **avatar:** reveal image that loads before hydration ([#263](https://github.com/FabioCaffarello/react-design-system/issues/263)) ([4b03737](https://github.com/FabioCaffarello/react-design-system/commit/4b03737219dfacc4fed225c3bc2851a24e330e95))
+
 ## [4.11.0](https://github.com/FabioCaffarello/react-design-system/compare/v4.10.0...v4.11.0) (2026-07-01)
 
 ### ✨ Features
