@@ -2,6 +2,8 @@
 
 import {
   useState,
+  useEffect,
+  useRef,
   forwardRef,
   type HTMLAttributes,
   type ReactNode,
@@ -62,6 +64,14 @@ export interface AvatarProps extends Omit<
  * Pass `loading="lazy"` on listings to defer off-screen image loads. The
  * default is `"eager"` (matches browser default) for backward compatibility.
  *
+ * ### Hydration-safe reveal
+ *
+ * The image fades in on `onLoad`, but an eager, above-the-fold image can
+ * finish loading (or fail) BEFORE React hydrates in SSR apps — the event then
+ * fires with no handler attached. On mount the component reconciles its state
+ * with the `<img>`'s real `complete`/`naturalWidth`, so the photo is never
+ * left stuck invisible and the error fallback still appears (issue #263).
+ *
  * @example
  * ```tsx
  * // With image
@@ -91,8 +101,37 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(function Avatar(
   },
   ref,
 ) {
+  const imgRef = useRef<HTMLImageElement | null>(null);
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+
+  // Reset load/error state whenever `src` changes so a fresh image gets a
+  // fresh chance to load — e.g. swapping a broken src for a valid one, which
+  // would otherwise stay stuck on the initials fallback (imageError never
+  // clears). Uses the official "adjust state during render" pattern to avoid
+  // a flash from a post-commit effect reset.
+  const [trackedSrc, setTrackedSrc] = useState(src);
+  if (src !== trackedSrc) {
+    setTrackedSrc(src);
+    setImageError(false);
+    setImageLoaded(false);
+  }
+
+  // SSR/hydration race (issue #263): an eager, above-the-fold image can finish
+  // loading — or fail — BEFORE React hydrates and attaches onLoad/onError. Those
+  // events then fire into the void, leaving the component stuck at opacity-0
+  // (photo downloaded but invisible) or never showing the error fallback. On
+  // mount and on every src change, sync state to the <img>'s real readiness so
+  // the reveal/fallback happens regardless of when the browser finished.
+  useEffect(() => {
+    const img = imgRef.current;
+    if (!img || !img.complete) return;
+    if (img.naturalWidth > 0) {
+      setImageLoaded(true);
+    } else {
+      setImageError(true);
+    }
+  }, [src]);
 
   const sizeClasses: Record<AvatarSize, string> = {
     xs: "h-6 w-6 text-xs",
@@ -141,6 +180,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(function Avatar(
     >
       {!showFallback && src && (
         <img
+          ref={imgRef}
           src={src}
           alt={alt || ""}
           loading={loading}
