@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import Avatar from "./Avatar";
 import { AvatarGroup } from "./AvatarGroup";
@@ -30,6 +30,68 @@ describe("Avatar", () => {
 
     await waitFor(() => {
       expect(screen.getByText("JD")).toBeInTheDocument();
+    });
+  });
+
+  // Regression: issue #263 — an eager, above-the-fold image can finish loading
+  // (or fail) BEFORE React hydrates and attaches onLoad/onError. Those events
+  // fire into the void, so the component must sync to the <img>'s real
+  // readiness on mount instead of waiting for events that will never come.
+  describe("SSR hydration race (issue #263)", () => {
+    it("reveals an image that completed loading before mount (no load event)", () => {
+      const completeSpy = vi
+        .spyOn(HTMLImageElement.prototype, "complete", "get")
+        .mockReturnValue(true);
+      const naturalWidthSpy = vi
+        .spyOn(HTMLImageElement.prototype, "naturalWidth", "get")
+        .mockReturnValue(120);
+
+      const { container } = render(<Avatar src="/loaded.jpg" alt="User" />);
+      const img = container.querySelector("img");
+
+      // No load event was fired — yet the image must be revealed, not stuck at
+      // opacity-0.
+      expect(img).toHaveClass("opacity-100");
+      expect(img).not.toHaveClass("opacity-0");
+
+      completeSpy.mockRestore();
+      naturalWidthSpy.mockRestore();
+    });
+
+    it("shows the fallback for an image that failed before mount (no error event)", () => {
+      const completeSpy = vi
+        .spyOn(HTMLImageElement.prototype, "complete", "get")
+        .mockReturnValue(true);
+      const naturalWidthSpy = vi
+        .spyOn(HTMLImageElement.prototype, "naturalWidth", "get")
+        .mockReturnValue(0);
+
+      render(<Avatar src="/broken.jpg" fallback="JD" alt="John Doe" />);
+
+      // complete=true with naturalWidth=0 means the load failed; the initials
+      // fallback must appear even though no error event fired.
+      expect(screen.getByText("JD")).toBeInTheDocument();
+
+      completeSpy.mockRestore();
+      naturalWidthSpy.mockRestore();
+    });
+
+    it("re-attempts loading when src changes from a broken to a valid image", async () => {
+      const { container, rerender } = render(
+        <Avatar src="/broken.jpg" fallback="JD" alt="User" />,
+      );
+      const img = container.querySelector("img");
+      if (img) fireEvent.error(img);
+      await waitFor(() => expect(screen.getByText("JD")).toBeInTheDocument());
+
+      // Swapping to a valid src must reset the error state so the <img> renders
+      // again instead of being permanently stuck on the fallback.
+      rerender(<Avatar src="/valid.jpg" fallback="JD" alt="User" />);
+      expect(container.querySelector("img")).toBeInTheDocument();
+      expect(container.querySelector("img")).toHaveAttribute(
+        "src",
+        "/valid.jpg",
+      );
     });
   });
 
